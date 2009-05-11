@@ -2,14 +2,22 @@
 ConcourseConnect 1.0
 Copyright (C) 2009 Concursive Corporation.
 Change Log
-May 1, 2009
+May 11, 2009
 ----------------------------------------------------------------------------
-This is an early access release.
 
-This release is aimed towards those wishing to contribute to the final
-usability of the product.
+Welcome to the first public release of ConcourseConnect.  This version is
+considered stable and mature, and has been used in production for many
+months.
+
+The development team is aggresively adding features, and can certainly use
+your help in building out the functionality.  If you are interested in
+developing ConcourseConnect, adding themes, or providing improved portal
+layouts, please join the product community at:
+http://www.concursive.com/show/concourseconnect
+
 
 ----------------------------------------------------------------------------
 For additional information, support, development or training, visit
 http://www.concursive.com for details. You can also find product FAQs and
 announcements.
+

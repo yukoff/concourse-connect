@@ -1,0 +1,26 @@
+CREATE TABLE tasklog (
+  id SERIAL PRIMARY KEY,
+  task_id INT REFERENCES task(task_id),
+  entered TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  enteredby INT REFERENCES users(user_id) NOT NULL,
+  modified TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  modifiedby INT REFERENCES users(user_id) NOT NULL,
+  priority INTEGER REFERENCES lookup_task_priority NOT NULL,
+  duedate TIMESTAMP(3),
+  complete BOOLEAN DEFAULT false NOT NULL,
+  estimatedloe FLOAT,
+  estimatedloetype INTEGER REFERENCES lookup_task_loe,
+  owner INTEGER REFERENCES users(user_id),
+  completedate TIMESTAMP(3),
+  category_id INTEGER REFERENCES lookup_task_category,
+  functional_area INTEGER REFERENCES lookup_task_functional_area,
+  status INTEGER REFERENCES lookup_task_status,
+  business_value INTEGER REFERENCES lookup_task_value,
+  complexity INTEGER REFERENCES lookup_task_complexity,
+  target_release INTEGER REFERENCES lookup_task_release,
+  target_sprint INTEGER REFERENCES lookup_task_sprint,
+  loe_remaining INTEGER REFERENCES lookup_task_loe_remaining,
+  assigned_to INTEGER REFERENCES lookup_task_assigned_to,
+  assigned_priority INTEGER REFERENCES lookup_task_assigned_priority
+);
+CREATE INDEX tasklog_taskid_idx ON tasklog(task_id);

@@ -1,0 +1,42 @@
+import com.zeroio.utils.CacheUtils;
+import java.sql.*;
+import org.aspcfs.utils.web.*;
+import com.zeroio.iteam.base.*;
+
+int count = 0;
+
+LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
+
+PermissionLookupList permissionLookupList = new PermissionLookupList();
+permissionLookupList.buildList(db);
+
+// Get the permission categories for updating and adding permissions
+PermissionCategoryLookupList permissionCategoryList = new PermissionCategoryLookupList();
+permissionCategoryList.buildList(db);
+
+// Add new permissions
+if (1 == 1) {
+  String categoryName = "Profile";
+  String permissionName = "project-profile-images-add";
+  String permissionDescription = "Contribute images";
+  int permissionLevel = 30;
+  int defaultRole = TeamMember.MEMBER;
+  PermissionLookup permission = permissionLookupList.getByPermission(permissionName);
+  if (permission == null) {
+    PermissionCategoryLookup category = permissionCategoryList.getByDescription(categoryName);
+    if (category != null) {
+      permission = new PermissionLookup();
+      permission.setCategoryId(category.getId());
+      permission.setDefaultRole(roleList.getIdFromLevel(defaultRole));
+      permission.setPermission(permissionName);
+      permission.setDescription(permissionDescription);
+      permission.setLevel(permissionLevel);
+      permission.insert(db);
+      ++count;
+    } else {
+      System.out.println(" WARNING-> permission category not found for adding permission: " + categoryName);
+    }
+  }
+}
+
+System.out.println(" FINISHED-> inserted record count: " + count);

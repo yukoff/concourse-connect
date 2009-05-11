@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<module>
+  <navigation>
+    <!-- Details -->
+    <page name="details">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Configure the wiki module</content>
+                  <title>Profile for ${project.title:html}</title>
+                  <href>/configure/${project.uniqueId}/wiki</href>
+                  <permission>project-setup-customize</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why write a Wiki?</h3>
+                <p>
+                  A wiki is a web site that managers can edit and update.  Wikis provide facts about a particular topic.  Use a wiki to share knowledge.  Customers read wikis to find unbiased information.  You can add more pages to your wiki about relevant topics.   A  running store can have a wiki on proper hydration before a race.   Organizations, like a kite club, may have a wiki about the best types of string to use in strong winds.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Where to Start?</h3>
+                <p>
+                  Under Business Information, click “Fill out this form.”  This information will appear on the home page of your listing.  Be sure to press the save button when you are finished.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to write a Wiki</h3>
+                <ol>
+                  <li>Click any of  the “Edit” links next to the preloaded Sub topics.   (Notice the Edit link to the right of  “Company Overview.”)</li>
+                  <li>Type what you want to appear.  You can remove “Company Overview” if you do not want this as a heading.</li>
+                  <li>Press Save when you are finished.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or edit the Wiki?</h3>
+                <ol>
+                  <li>Only a manager of your business or organization can create or edit your wiki.</li>
+                  <li>A manager can give other members manager rights to edit the wiki</li>
+                  <li>Everyone can read the wiki.</li>
+                  <li>Logged in users can place a comment about the wiki.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+              <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to edit the Wiki</h3>
+                <ol>
+                  <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
+                  <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
+                  <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target="_blank">This link explains what the icons on the editor will do.</a></li>
+                  <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
+                  </ol>
+              ]]>
+            </content>
+          </portlet>
+            <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Wiki Tip</h3>
+                <p>
+                  If you want to insert another page in your wiki, type the words you want to use like “next page.”  Highlight these words then click the chain icon in the edit bar (next to “Format”).   Click “insert” on the popup window.
+                  </p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <page name="details-popup">
+      <row>
+        <column width="auto">
+          <portlet name="WikiPortlet" class="modal">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Wiki Editor -->
+    <page name="editor">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Configure the wiki module</content>
+                  <title>Profile for ${project.title:html}</title>
+                  <href>/configure/${project.uniqueId}/wiki</href>
+                  <permission>project-setup-customize</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet" viewer="editor" >
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+        <column width="300">
+           <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why write a Wiki?</h3>
+                <p>
+                  A wiki is a web site that managers can edit and update.  Wikis provide facts about a particular topic.  Use a wiki to share knowledge.  Customers read wikis to find unbiased information.  You can add more pages to your wiki about relevant topics.   A  running store can have a wiki on proper hydration before a race.   Organizations, like a kite club, may have a wiki about the best types of string to use in strong winds.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Where to Start?</h3>
+                <p>
+                  Under Business Information, click “Fill out this form.”  This information will appear on the home page of your listing.  Be sure to press the save button when you are finished.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to write a Wiki</h3>
+                <ol>
+                  <li>Click any of  the “Edit” links next to the preloaded Sub topics.   (Notice the Edit link to the right of  “Company Overview.”)</li>
+                  <li>Type what you want to appear.  You can remove “Company Overview” if you do not want this as a heading.</li>
+                  <li>Press Save when you are finished.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or edit the Wiki?</h3>
+                <ol>
+                  <li>Only a manager of your business or organization can create or edit your wiki.</li>
+                  <li>A manager can give other members manager rights to edit the wiki</li>
+                  <li>Everyone can read the wiki.</li>
+                  <li>Logged in users can place a comment about the wiki.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+              <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to edit the Wiki</h3>
+                <ol>
+                  <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
+                  <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
+                  <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" targe="_blank">This link explains what the icons on the editor will do.</a></li>
+                  <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
+                  </ol>
+              ]]>
+            </content>
+          </portlet>
+            <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Wiki Tip</h3>
+                <p>
+                  If you want to insert another page in your wiki, type the words you want to use like “next page.”  Highlight these words then click the chain icon in the edit bar (next to “Format”).   Click “insert” on the popup window.
+                  </p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Index -->
+    <page name="index">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Configure the wiki module</content>
+                  <title>Profile for ${project.title:html}</title>
+                  <href>/configure/${project.uniqueId}/wiki</href>
+                  <permission>project-setup-customize</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet" viewer="index">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why write a Wiki?</h3>
+                <p>
+                  A wiki is a web site that managers can edit and update.  Wikis provide facts about a particular topic.  Use a wiki to share knowledge.  Customers read wikis to find unbiased information.  You can add more pages to your wiki about relevant topics.   A  running store can have a wiki on proper hydration before a race.   Organizations, like a kite club, may have a wiki about the best types of string to use in strong winds.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Where to Start?</h3>
+                <p>
+                  Under Business Information, click “Fill out this form.”  This information will appear on the home page of your listing.  Be sure to press the save button when you are finished.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to write a Wiki</h3>
+                <ol>
+                  <li>Click any of  the “Edit” links next to the preloaded Sub topics.   (Notice the Edit link to the right of  “Company Overview.”)</li>
+                  <li>Type what you want to appear.  You can remove “Company Overview” if you do not want this as a heading.</li>
+                  <li>Press Save when you are finished.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or edit the Wiki?</h3>
+                <ol>
+                  <li>Only a manager of your business or organization can create or edit your wiki.</li>
+                  <li>A manager can give other members manager rights to edit the wiki</li>
+                  <li>Everyone can read the wiki.</li>
+                  <li>Logged in users can place a comment about the wiki.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to edit the Wiki</h3>
+                <ol>
+                  <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
+                  <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
+                  <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target="_target">This link explains what the icons on the editor will do.</a></li>
+                  <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
+                  </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Wiki Tip</h3>
+                <p>
+                  If you want to insert another page in your wiki, type the words you want to use like “next page.”  Highlight these words then click the chain icon in the edit bar (next to “Format”).   Click “insert” on the popup window.
+                  </p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Versions -->
+    <page name="versions">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Configure the wiki module</content>
+                  <title>Profile for ${project.title:html}</title>
+                  <href>/configure/${project.uniqueId}/wiki</href>
+                  <permission>project-setup-customize</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet" viewer="versions">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why write a Wiki?</h3>
+                <p>
+                  A wiki is a web site that managers can edit and update.  Wikis provide facts about a particular topic.  Use a wiki to share knowledge.  Customers read wikis to find unbiased information.  You can add more pages to your wiki about relevant topics.   A  running store can have a wiki on proper hydration before a race.   Organizations, like a kite club, may have a wiki about the best types of string to use in strong winds.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Where to Start?</h3>
+                <p>
+                  Under Business Information, click “Fill out this form.”  This information will appear on the home page of your listing.  Be sure to press the save button when you are finished.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to write a Wiki</h3>
+                <ol>
+                  <li>Click any of  the “Edit” links next to the preloaded Sub topics.   (Notice the Edit link to the right of  “Company Overview.”)</li>
+                  <li>Type what you want to appear.  You can remove “Company Overview” if you do not want this as a heading.</li>
+                  <li>Press Save when you are finished.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or edit the Wiki?</h3>
+                <ol>
+                  <li>Only a manager of your business or organization can create or edit your wiki.</li>
+                  <li>A manager can give other members manager rights to edit the wiki</li>
+                  <li>Everyone can read the wiki.</li>
+                  <li>Logged in users can place a comment about the wiki.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to edit the Wiki</h3>
+                <ol>
+                  <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
+                  <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
+                  <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target=_blank">This link explains what the icons on the editor will do.</a></li>
+                  <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
+                  </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Wiki Tip</h3>
+                <p>
+                  If you want to insert another page in your wiki, type the words you want to use like “next page.”  Highlight these words then click the chain icon in the edit bar (next to “Format”).   Click “insert” on the popup window.
+                  </p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Export -->
+    <page name="export">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Configure the wiki module</content>
+                  <title>Profile for ${project.title:html}</title>
+                  <href>/configure/${project.uniqueId}/wiki</href>
+                  <permission>project-setup-customize</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet" viewer="export">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why write a Wiki?</h3>
+                <p>
+                  A wiki is a web site that managers can edit and update.  Wikis provide facts about a particular topic.  Use a wiki to share knowledge.  Customers read wikis to find unbiased information.  You can add more pages to your wiki about relevant topics.   A  running store can have a wiki on proper hydration before a race.   Organizations, like a kite club, may have a wiki about the best types of string to use in strong winds.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Where to Start?</h3>
+                <p>
+                  Under Business Information, click “Fill out this form.”  This information will appear on the home page of your listing.  Be sure to press the save button when you are finished.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to write a Wiki</h3>
+                <ol>
+                  <li>Click any of  the “Edit” links next to the preloaded Sub topics.   (Notice the Edit link to the right of  “Company Overview.”)</li>
+                  <li>Type what you want to appear.  You can remove “Company Overview” if you do not want this as a heading.</li>
+                  <li>Press Save when you are finished.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or edit the Wiki?</h3>
+                <ol>
+                  <li>Only a manager of your business or organization can create or edit your wiki.</li>
+                  <li>A manager can give other members manager rights to edit the wiki</li>
+                  <li>Everyone can read the wiki.</li>
+                  <li>Logged in users can place a comment about the wiki.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to edit the Wiki</h3>
+                <ol>
+                  <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
+                  <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
+                  <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target=_blank">This link explains what the icons on the editor will do.</a></li>
+                  <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Wiki Tip</h3>
+                <p>
+                  If you want to insert another page in your wiki, type the words you want to use like “next page.”  Highlight these words then click the chain icon in the edit bar (next to “Format”).   Click “insert” on the popup window.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <page name="export-popup">
+      <row>
+        <column width="auto">
+          <portlet name="WikiPortlet" class="modal" viewer="export">
+          	<title>${project.features.labelWiki}</title>
+		      </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Export Queue -->
+    <page name="queue">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Configure the wiki module</content>
+                  <title>Profile for ${project.title:html}</title>
+                  <href>/configure/${project.uniqueId}/wiki</href>
+                  <permission>project-setup-customize</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet" viewer="queue" class="file-list ">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why write a Wiki?</h3>
+                <p>
+                  A wiki is a web site that managers can edit and update.  Wikis provide facts about a particular topic.  Use a wiki to share knowledge.  Customers read wikis to find unbiased information.  You can add more pages to your wiki about relevant topics.   A  running store can have a wiki on proper hydration before a race.   Organizations, like a kite club, may have a wiki about the best types of string to use in strong winds.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Where to Start?</h3>
+                <p>
+                  Under Business Information, click “Fill out this form.”  This information will appear on the home page of your listing.  Be sure to press the save button when you are finished.
+                </p>
+             ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to write a Wiki</h3>
+                <ol>
+                  <li>Click any of  the “Edit” links next to the preloaded Sub topics.   (Notice the Edit link to the right of  “Company Overview.”)</li>
+                  <li>Type what you want to appear.  You can remove “Company Overview” if you do not want this as a heading.</li>
+                  <li>Press Save when you are finished.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or edit the Wiki?</h3>
+                <ol>
+                  <li>Only a manager of your business or organization can create or edit your wiki.</li>
+                  <li>A manager can give other members manager rights to edit the wiki</li>
+                  <li>Everyone can read the wiki.</li>
+                  <li>Logged in users can place a comment about the wiki.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to edit the Wiki</h3>
+                <ol>
+                  <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
+                  <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
+                  <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target=_blank">This link explains what the icons on the editor will do.</a></li>
+                  <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Wiki Tip</h3>
+                <p>
+                  If you want to insert another page in your wiki, type the words you want to use like “next page.”  Highlight these words then click the chain icon in the edit bar (next to “Format”).   Click “insert” on the popup window.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    
+    <page name="queue-popup">
+      <row>
+        <column width="auto">
+          <portlet name="WikiPortlet" class="modal" viewer="queue">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <page name="stream-popup">
+      <row>
+        <column width="auto">
+          <portlet name="WikiPortlet" class="modal" viewer="stream">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Configure -->
+    <page name="configure">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Configure the wiki module</content>
+                  <title>Profile for ${project.title:html}</title>
+                  <href>/configure/${project.uniqueId}/wiki</href>
+                  <permission>project-setup-customize</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet" viewer="configure">
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why write a Wiki?</h3>
+                <p>
+                  A wiki is a web site that managers can edit and update.  Wikis provide facts about a particular topic.  Use a wiki to share knowledge.  Customers read wikis to find unbiased information.  You can add more pages to your wiki about relevant topics.   A  running store can have a wiki on proper hydration before a race.   Organizations, like a kite club, may have a wiki about the best types of string to use in strong winds.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Where to Start?</h3>
+                <p>
+                  Under Business Information, click “Fill out this form.”  This information will appear on the home page of your listing.  Be sure to press the save button when you are finished.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to write a Wiki</h3>
+                <ol>
+                  <li>Click any of  the “Edit” links next to the preloaded Sub topics.   (Notice the Edit link to the right of  “Company Overview.”)</li>
+                  <li>Type what you want to appear.  You can remove “Company Overview” if you do not want this as a heading.</li>
+                  <li>Press Save when you are finished.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or edit the Wiki?</h3>
+                <ol>
+                  <li>Only a manager of your business or organization can create or edit your wiki.</li>
+                  <li>A manager can give other members manager rights to edit the wiki</li>
+                  <li>Everyone can read the wiki.</li>
+                  <li>Logged in users can place a comment about the wiki.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to edit the Wiki</h3>
+                <ol>
+                  <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
+                  <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
+                  <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target=_blank">This link explains what the icons on the editor will do.</a></li>
+                  <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Wiki Tip</h3>
+                <p>
+                  If you want to insert another page in your wiki, type the words you want to use like “next page.”  Highlight these words then click the chain icon in the edit bar (next to “Format”).   Click “insert” on the popup window.
+                </p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+  </navigation>
+</module>

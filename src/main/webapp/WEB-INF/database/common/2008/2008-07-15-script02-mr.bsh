@@ -1,0 +1,272 @@
+import com.zeroio.utils.CacheUtils;
+import java.sql.*;
+import org.aspcfs.utils.web.*;
+import com.zeroio.iteam.base.*;
+
+LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
+
+PermissionLookupList permissionLookupList = new PermissionLookupList();
+permissionLookupList.buildList(db);
+
+// Update the following permissions with new default roles
+LinkedHashMap map = new LinkedHashMap();
+map.put("project-details-view", TeamMember.MEMBER);
+map.put("project-details-edit", TeamMember.PROJECT_ADMIN);
+map.put("project-details-delete", TeamMember.PROJECT_ADMIN);
+map.put("project-team-view", TeamMember.PARTICIPANT);
+map.put("project-team-view-email", TeamMember.PROJECT_ADMIN);
+map.put("project-team-edit", TeamMember.MANAGER);
+map.put("project-team-edit-role", TeamMember.MANAGER);
+map.put("project-news-view", TeamMember.GUEST);
+map.put("project-news-view-unreleased", TeamMember.VIP);
+map.put("project-news-view-archived", TeamMember.GUEST);
+map.put("project-news-add", TeamMember.CHAMPION);
+map.put("project-news-edit", TeamMember.CHAMPION);
+map.put("project-news-delete", TeamMember.MANAGER);
+map.put("project-plan-view", TeamMember.MEMBER);
+map.put("project-plan-outline-add", TeamMember.CHAMPION);
+map.put("project-plan-outline-edit", TeamMember.CHAMPION);
+map.put("project-plan-outline-delete", TeamMember.MANAGER);
+map.put("project-plan-outline-modify", TeamMember.CHAMPION);
+map.put("project-plan-activities-assign", TeamMember.CHAMPION);
+map.put("project-lists-view", TeamMember.GUEST);
+map.put("project-lists-add", TeamMember.CHAMPION);
+map.put("project-lists-edit", TeamMember.CHAMPION);
+map.put("project-lists-delete", TeamMember.MANAGER);
+map.put("project-lists-modify", TeamMember.CHAMPION);
+map.put("project-discussion-forums-view", TeamMember.GUEST);
+map.put("project-discussion-forums-add", TeamMember.MANAGER);
+map.put("project-discussion-forums-edit", TeamMember.MANAGER);
+map.put("project-discussion-forums-delete", TeamMember.MANAGER);
+map.put("project-discussion-topics-view", TeamMember.GUEST);
+map.put("project-discussion-topics-add", TeamMember.PARTICIPANT);
+map.put("project-discussion-topics-edit", TeamMember.MANAGER);
+map.put("project-discussion-topics-delete", TeamMember.MANAGER);
+map.put("project-discussion-messages-add", TeamMember.PARTICIPANT);
+map.put("project-discussion-messages-reply", TeamMember.PARTICIPANT);
+map.put("project-discussion-messages-edit", TeamMember.MANAGER);
+map.put("project-discussion-messages-delete", TeamMember.MANAGER);
+map.put("project-tickets-view", TeamMember.GUEST);
+map.put("project-tickets-other", TeamMember.PARTICIPANT);
+map.put("project-tickets-add", TeamMember.PARTICIPANT);
+map.put("project-tickets-edit", TeamMember.CHAMPION);
+map.put("project-tickets-assign", TeamMember.CHAMPION);
+map.put("project-tickets-close", TeamMember.CHAMPION);
+map.put("project-tickets-delete", TeamMember.MANAGER);
+map.put("project-documents-view", TeamMember.GUEST);
+map.put("project-documents-folders-add", TeamMember.MANAGER);
+map.put("project-documents-folders-edit", TeamMember.MANAGER);
+map.put("project-documents-folders-delete", TeamMember.MANAGER);
+map.put("project-documents-files-upload", TeamMember.VIP);
+map.put("project-documents-files-download", TeamMember.PARTICIPANT);
+map.put("project-documents-files-rename", TeamMember.MANAGER);
+map.put("project-documents-files-delete", TeamMember.MANAGER);
+map.put("project-setup-customize", TeamMember.PROJECT_ADMIN);
+map.put("project-setup-permissions", TeamMember.PROJECT_ADMIN);
+map.put("project-wiki-view", TeamMember.GUEST);
+map.put("project-wiki-add", TeamMember.VIP);
+map.put("project-wiki-admin", TeamMember.MANAGER);
+map.put("project-dashboard-view", TeamMember.MEMBER);
+map.put("project-dashboard-add", TeamMember.MANAGER);
+map.put("project-dashboard-admin", TeamMember.MANAGER);
+map.put("project-calendar-view", TeamMember.GUEST);
+map.put("project-calendar-add", TeamMember.CHAMPION);
+map.put("project-calendar-other", TeamMember.MANAGER);
+map.put("project-calendar-delete", TeamMember.MANAGER);
+map.put("project-ads-view", TeamMember.GUEST);
+map.put("project-ads-add", TeamMember.MANAGER);
+map.put("project-ads-admin", TeamMember.MANAGER);
+map.put("project-classifieds-view", TeamMember.GUEST);
+map.put("project-classifieds-add", TeamMember.MANAGER);
+map.put("project-classifieds-admin", TeamMember.MANAGER);
+map.put("project-badges-view", TeamMember.GUEST);
+map.put("project-badges-admin", TeamMember.MANAGER);
+map.put("project-profile-view", TeamMember.GUEST);
+map.put("project-profile-admin", TeamMember.MANAGER);
+map.put("project-reviews-view", TeamMember.GUEST);
+map.put("project-reviews-add", TeamMember.PARTICIPANT);
+map.put("project-reviews-admin", TeamMember.PROJECT_ADMIN);
+map.put("project-team-tools", TeamMember.MANAGER);
+
+// Track number of updated records
+int count = 0;
+
+// Update the permissions
+Iterator i = map.keySet().iterator();
+while (i.hasNext()) {
+  String thisPermission = (String) i.next();
+  int defaultRole = (Integer) map.get(thisPermission);
+  PermissionLookup permission = permissionLookupList.getByPermission(thisPermission);
+  if (permission == null) {
+    System.out.println(" WARNING-> permission not found: " + thisPermission);
+  } else {
+    int newDefaultRole = roleList.getIdFromLevel(defaultRole);
+    if (permission.getDefaultRole() != newDefaultRole) {
+      permission.setDefaultRole(newDefaultRole);
+      permission.update(db);
+      ++count;
+    }
+  }
+}
+
+
+// Rename the permissions
+LinkedHashMap map2 = new LinkedHashMap();
+map2.put("project-team-view", "View members");
+map2.put("project-team-view-email", "See member email addresses");
+map2.put("project-team-edit", "Add and remove members");
+map2.put("project-team-edit-role", "Modify member role");
+map2.put("project-tickets-view", "View issues");
+map2.put("project-tickets-other", "Access to issues created by others");
+map2.put("project-tickets-add", "Add an issue");
+map2.put("project-tickets-edit", "Modify an existing issue");
+map2.put("project-tickets-assign", "Assign issues");
+map2.put("project-tickets-close", "Close/re-open issues");
+map2.put("project-tickets-delete", "Delete issues");
+map2.put("project-wiki-add", "Create and modify public content");
+map2.put("project-ads-view", "View public promotions");
+map2.put("project-ads-add", "Create and modify promotions");
+map2.put("project-ads-admin", "Administrate promotions");
+map2.put("project-setup-customize", "Setup features");
+
+Iterator i2 = map2.keySet().iterator();
+while (i2.hasNext()) {
+  String thisPermission = (String) i2.next();
+  String description = (String) map2.get(thisPermission);
+  PermissionLookup permission = permissionLookupList.getByPermission(thisPermission);
+  if (permission == null) {
+    System.out.println(" WARNING-> permission not found: " + thisPermission);
+  } else {
+    if (!permission.getDescription().equals(description)) {
+      permission.setDescription(description);
+      permission.update(db);
+      ++count;
+    }
+  }
+}
+
+// Get the permission categories for updating and adding permissions
+PermissionCategoryLookupList permissionCategoryList = new PermissionCategoryLookupList();
+permissionCategoryList.buildList(db);
+
+// Rename permission categories
+LinkedHashMap map3 = new LinkedHashMap();
+map3.put("Document Library", "Documents");
+map3.put("Tickets", "Issues");
+map3.put("News", "Blog");
+map3.put("Team Members", "Members");
+map3.put("Advertisements", "Promotions");
+
+Iterator i3 = map3.keySet().iterator();
+while (i3.hasNext()) {
+  String oldName = (String) i3.next();
+  String newName = (String) map3.get(oldName);
+  PermissionCategoryLookup category = permissionCategoryList.getByDescription(oldName);
+  if (category != null) {
+    if (!category.getDescription().equals(newName)) {
+      category.setDescription(newName);
+      category.update(db);
+      ++count;
+    }
+  } else {
+    if (permissionCategoryList.getByDescription(newName) == null) {
+      System.out.println(" WARNING-> permission category not found: " + oldName);
+    }
+  }
+}
+
+
+// Add new permissions
+if (1 == 1) {
+  String categoryName = "Members";
+  String permissionName = "project-team-tools";
+  String permissionDescription = "Grant access to tools";
+  int defaultRole = TeamMember.MANAGER;
+  PermissionLookup permission = permissionLookupList.getByPermission(permissionName);
+  if (permission == null) {
+    PermissionCategoryLookup category = permissionCategoryList.getByDescription(categoryName);
+    if (category != null) {
+      permission = new PermissionLookup();
+      permission.setCategoryId(category.getId());
+      permission.setDefaultRole(roleList.getIdFromLevel(defaultRole));
+      permission.setPermission(permissionName);
+      permission.setDescription(permissionDescription);
+      permission.setLevel(50);
+      permission.insert(db);
+      ++count;
+    } else {
+      System.out.println(" WARNING-> permission category not found for adding permission: " + categoryName);
+    }
+  }
+}
+
+if (1 == 1) {
+  String categoryName = "Wiki";
+  String permissionName = "project-wiki-locked-edit";
+  String permissionDescription = "Create and modify locked content";
+  int defaultRole = TeamMember.CHAMPION;
+  PermissionLookup permission = permissionLookupList.getByPermission(permissionName);
+  if (permission == null) {
+    PermissionCategoryLookup category = permissionCategoryList.getByDescription(categoryName);
+    if (category != null) {
+      permission = new PermissionLookup();
+      permission.setCategoryId(category.getId());
+      permission.setDefaultRole(roleList.getIdFromLevel(defaultRole));
+      permission.setPermission(permissionName);
+      permission.setDescription(permissionDescription);
+      permission.setLevel(22);
+      permission.insert(db);
+      ++count;
+    } else {
+      System.out.println(" WARNING-> permission category not found for adding permission: " + categoryName);
+    }
+  }
+}
+
+if (1 == 1) {
+  String categoryName = "Promotions";
+  String permissionName = "project-ads-private-view";
+  String permissionDescription = "View private promotions";
+  int defaultRole = TeamMember.VIP;
+  PermissionLookup permission = permissionLookupList.getByPermission(permissionName);
+  if (permission == null) {
+    PermissionCategoryLookup category = permissionCategoryList.getByDescription(categoryName);
+    if (category != null) {
+      permission = new PermissionLookup();
+      permission.setCategoryId(category.getId());
+      permission.setDefaultRole(roleList.getIdFromLevel(defaultRole));
+      permission.setPermission(permissionName);
+      permission.setDescription(permissionDescription);
+      permission.setLevel(14);
+      permission.insert(db);
+      ++count;
+    } else {
+      System.out.println(" WARNING-> permission category not found for adding permission: " + categoryName);
+    }
+  }
+}
+
+if (1 == 1) {
+  String categoryName = "Blog";
+  String permissionName = "project-news-add-comment";
+  String permissionDescription = "Comment on entry";
+  int defaultRole = TeamMember.PARTICIPANT;
+  PermissionLookup permission = permissionLookupList.getByPermission(permissionName);
+  if (permission == null) {
+    PermissionCategoryLookup category = permissionCategoryList.getByDescription(categoryName);
+    if (category != null) {
+      permission = new PermissionLookup();
+      permission.setCategoryId(category.getId());
+      permission.setDefaultRole(roleList.getIdFromLevel(defaultRole));
+      permission.setPermission(permissionName);
+      permission.setDescription(permissionDescription);
+      permission.setLevel(36);
+      permission.insert(db);
+      ++count;
+    } else {
+      System.out.println(" WARNING-> permission category not found for adding permission: " + categoryName);
+    }
+  }
+}
+
+System.out.println(" FINISHED-> updated record count: " + count);

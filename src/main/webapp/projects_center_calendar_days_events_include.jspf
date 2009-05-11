@@ -1,0 +1,131 @@
+<%--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  --%>
+<%@ page
+    import="com.concursive.connect.web.modules.calendar.utils.CalendarEvent" %>
+<%
+  //NOTE: The entries of this array should exactly match the entries of the EVENT_TYPES array in CalendarEventList object, the display is based on the order specified in this jsp's array
+  String[] EVENT_TYPES = {
+      "Tasks",
+      "Activities",
+      "Opportunities",
+      "Account Alerts",
+      "Account Contract Alerts",
+      "Contact Activities",
+      "Opportunity Activities",
+      "Holiday",
+      "Assignments",
+      "System Alerts",
+      "Quotes",
+      "Tickets",
+      "Ticket Requests",
+      "Pending Activities",
+      "Project Tickets",
+      "Events",
+      "Milestone Start Dates",
+      "Milestone End Dates"};
+
+%>
+
+<div class="eventsContainer">
+<%-- Iterate through all event types in order specified in the EVENT_TYPES --%>
+<%
+  for (int i = 0; i< java.lang.reflect.Array.getLength(EVENT_TYPES); i++) {
+  String category = EVENT_TYPES[i];
+  if(thisDay.containsKey(category)){
+%>
+
+       <%-- include jsp for event adding based on event type --%>
+    <%  if (category.equals(EVENT_TYPES[1])) { %>
+        <%--<%@ include file="calendar_call_events_include.jsp" %>--%>
+    <%  } else if (category.equals(EVENT_TYPES[0])) { %>
+        <%--<%@ include file="calendar_task_events_include.jsp" %>--%>
+    <%  } else if (category.equals(EVENT_TYPES[2])) { %>
+        <%--<%@ include file="calendar_opportunity_events_include.jsp" %>--%>
+    <%  } else if (category.equals(EVENT_TYPES[3])) { %>
+        <%--<%@ include file="calendar_account_events_include.jsp" %>--%>
+    <%  }  else if (category.equals(EVENT_TYPES[4])) { %>
+        <%--<%@ include file="calendar_account_events_include.jsp" %>--%>
+    <%  } else if (category.equals(EVENT_TYPES[8])) { %>
+        <%@ include file="projects_center_calendar_assignment_include.jspf" %>
+    <%  } else if (category.equals(EVENT_TYPES[10])) { %>
+       <%--<%@ include file="calendar_quotes_events_include.jsp" %>--%>
+    <%  } else if(category.equals(EVENT_TYPES[11])){ %>
+      <%@ include file="projects_center_calendar_ticket_include.jspf" %>
+    <%  } else if(category.equals(EVENT_TYPES[12])){ %>
+      <%--<%@ include file="calendar_ticket_events_due_today_include.jsp" %>--%>
+    <%  } else if(category.equals(EVENT_TYPES[14])){ %>
+      <%--<%@ include file="calendar_project_ticket_events_due_today_include.jsp" %>--%>
+    <%  }else if(category.equals(EVENT_TYPES[15])){ %>
+      <%@ include file="projects_center_calendar_meetings_include.jspf" %>
+    <%  }else if(category.equals(EVENT_TYPES[16])){ %>
+      <%@ include file="projects_center_calendar_outlines_include.jspf" %>
+    <%  }else if(category.equals(EVENT_TYPES[17])){ %>
+      <%@ include file="projects_center_calendar_outlines_include.jspf" %>
+    <%  }else if (category.equals(EVENT_TYPES[7])) {
+        ArrayList tmpList = (ArrayList) thisDay.get(category);
+        CalendarEvent thisEvent = (CalendarEvent) tmpList.get(0);
+    %>
+      <div class="eventsWrapper">
+        <%--<img src="<%= ctx %>/images/select-arrow-trans.gif" border="0" />--%>
+        <h3 class="eventName">Holiday</h3>
+        <p><%= toHtml(thisEvent.getSubject()) %></p>
+      </div>
+    <% }else if (category.equals("System Alerts")) { %>
+      <div class="eventsWrapper">
+        <%-- <img src="<%= ctx %>/images/select-arrow-trans.gif" border="0" /> --%>
+        <img border="0" src="<%= ctx %>/images/box-hold.gif" align="absmiddle" />
+        <p>User login expires</p>
+      </div> 
+    <% }  %>
+
+ <%
+      if(firstEvent){
+        firstEvent = false;
+      }
+    }
+   }
+ %>
+</div>

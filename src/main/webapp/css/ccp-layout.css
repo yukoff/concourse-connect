@@ -1,0 +1,701 @@
+/*
+* FILE INFORMATION
+* Style Type: ConcoursConnect Portal Layout
+* Version:    1
+* Date:       20090301
+* Author:     concursive.com
+* Notes:      Includes legacy class name
+*
+*/
+/* Table of Contents
+
+   $_globals
+
+   1. Portal Header
+       $_identity
+       $_user-menu
+       $_search-form
+       $_navigation
+   2. Portal Body
+       Portal Columns
+       Modal Columns
+   3. Portal Footer
+
+*/
+
+/* @group $_globals */
+
+/* Remove FireFox outline from active links */
+:focus { -moz-outline-style: none; }
+
+/* Body Reset */
+body {
+  margin:0;
+  padding:0;
+}
+
+/* Reset Global Links */
+a {
+  text-decoration:none;
+  color:#1B88B1;
+}
+
+a:hover {
+  text-decoration:underline;
+  color:#1a4686;
+}
+
+/* Remove Borders from Image Links */
+
+a img {
+  border:none
+}
+
+/* Hide Accessability */
+.access {
+  display:none;
+}
+
+img:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+/* Input Classes
+ * Height
+ */
+
+/* @end */
+
+/* Around Entire Portal */
+
+.pageconatiner,
+  .ccp-container {
+  _width: 1024px; /* IE6 width fix */
+  min-width:935px; /* Page can not shrink beyound 935px */
+  margin:0 auto;
+  padding:0;
+}
+
+/* @group 1. Portal Header */
+
+/* @group $_header */
+
+/* Portal Header */
+#header,
+  .ccp-header {
+  padding:0;
+  margin:0 auto;
+  position:relative;
+  max-width:1200px; /* Section can not get larger than 1200px */
+  overflow:hidden; /* scrollbar fix */
+  height:1%; /* IE fix */
+}
+
+/* $_identity : h1 */
+  #header h1,
+  .ccp-header h1 {
+    display:inline;
+    float:left;
+    padding:45px 0 0 15px;
+    font-size:200%;
+}
+
+  #ccp-header-title-image-id {
+  float:left; 
+  margin:30px 0 10px 20px;
+}
+
+/* $_user-navigation : User Navigation  */
+
+  #loggedInHeader,
+    .ccp-user-navigation {
+    float:right;
+    color:#000;
+    text-decoration:none;
+    position:relative;
+    right:-5px;
+  }
+
+    #loggedInHeader a,
+      .ccp-user-navigation a {
+      color:#000;
+    }
+
+    #loggedInHeader p,
+      .ccp-user-navigation p {
+      position: relative;
+      margin: 0;
+      float: left;
+    }
+
+    #loggedInHeader ul,
+    .ccp-user-navigation ul {
+      margin:0;
+      padding:0;
+    }
+
+      #loggedInHeader ul li,
+      .ccp-user-navigation ul li {
+        line-height:27px;
+      }
+
+      #loggedInHeader ul li.first,
+      .ccp-user-navigation ul li.first {
+
+      }
+
+      #loggedInHeader ul li.last,
+      .ccp-user-navigation ul li.last {
+
+      }
+
+      #loggedInHeader ul li a,
+        #loggedInHeader ul li a:hover,
+        #loggedInHeader ul li a:visited
+      .ccp-user-navigation ul li a,
+        .ccp-user-navigation ul li a:hover,
+        .ccp-user-navigation ul li a:visited {
+        
+      }
+
+.ccp-alert {
+  position:absolute;
+  right:10px;
+  top:35px;
+  padding:0 0 0 23px;
+  background:url(../images/icons/mail_blue.png) center left no-repeat;
+}
+
+/* @end */
+
+/* @group $_site-menu */
+
+/* Site Menu  */
+    ul.logForm,
+      .ccp-site-menu {
+      margin:0;
+      float:right;
+      background:url(../themes/default/images/sprites/login_background_gray_20090301.gif) 0 0 no-repeat;
+      height:27px; /* set to height of background image */
+      position:relative;
+      left:-5px;
+    }
+
+      ul.logForm li,
+      .ccp-site-menu li {
+        display:inline;
+        padding: 3px 12px;
+        border-right: 1px solid #ababab;
+      }
+
+        ul.logForm li.first,
+        .ccp-site-menu li.first {
+
+        }
+
+        ul.logForm li.last,
+        .ccp-site-menu li.last {
+			border: none;
+        }
+
+        ul.logForm li a,
+        .ccp-site-menu li a {
+          
+        }
+
+/* @end */
+
+/* @group $_user-menu */
+
+/* User Menu */
+    .ccp-user-menu {
+      float:right;
+      background:url(../themes/default/images/sprites/login_background_gray_20090301.gif) 0 -27px no-repeat;
+      height:27px; /* set to height of background image */
+      padding-right:15px;
+    }
+
+      .ccp-user-menu ul {
+        margin:0;
+        padding:0;
+      }
+
+        .ccp-user-menu li {
+          display:inline;
+          padding: 3px 12px 3px 16px;
+          border-right: 1px solid #c3c3c3;
+        }
+
+          .ccp-user-menu li.first {
+	
+		  }
+		  
+          .ccp-user-menu li.last {
+			border: none;
+          }
+
+/* @end */
+
+/* @group $_search-form */
+
+/* $_search-form : Search Bar */
+  .mainsearch,
+    .ccp-search-form {
+    clear:right;
+    float:right;
+    margin:30px 0;
+    padding:0 5px 0 0; /* IMPORTANT: Off-set input related margin issue */
+    width:auto;
+    _width:700px; /* IE Fix */
+  }
+
+    .mainsearch p,
+    .ccp-search-form label {
+      margin: 0 3px 0 5px;
+      padding:0;
+      font-weight:900;
+    }
+
+    .mainsearch form,
+    .ccp-search-form form {
+      margin: 3px 0 0 5px;
+      padding:0;
+      float: left;
+    }
+
+    .mainsearch fieldset,
+    .ccp-search-form fieldset {
+      border:none;
+      padding:0;
+      margin:0;
+    }
+
+    .mainsearch legend,
+    .ccp-search-form legend {
+      display:none;
+    }
+
+    .mainsearch select,
+    .ccp-search-form select {
+
+    }
+
+    .mainsearch input,
+    .ccp-search-form input {
+      margin:0;
+      padding:0;
+    }
+
+    .mainsearch .search,
+    .ccp-search-form input[type=submit]{
+      margin:0;
+      padding:0;
+    }
+
+/* @end */
+
+/* @group $_navigation */
+
+/* $_navigation : Portal Navigation */
+
+  .tabWrapper,
+  .ccp-navigation {
+    clear:both;
+    padding:11px 5px;
+    height: 1%;
+  }
+
+    .tabWrapper ul,
+    .ccp-navigation ul {
+      padding:0;
+      margin:0;
+    }
+
+      .tabWrapper ul li,
+      .ccp-navigation ul li {
+        list-style: none;
+        margin: 0;
+        padding: 0 5px 0 0;
+        display:inline;
+      }
+
+        .tabWrapper ul li.first,
+        .ccp-navigation ul li.first {
+
+        }
+
+        .tabWrapper ul li.last,
+        .ccp-navigation ul li.last {
+
+        }
+
+        .tabWrapper ul li a,
+        .ccp-navigation ul li a {
+          text-decoration: none!important; /* !important for IE6 */
+          display: inline;
+          padding:5px;
+          line-height:200%;
+        }
+
+        .tabWrapper ul li a.active,
+          .tabWrapper ul li a:hover,
+        .ccp-navigation  ul li a:active,
+          .ccp-navigation  ul li a:hover {
+
+        }
+
+          .tabWrapper ul li a em,
+          .ccp-navigation ul li a em {
+            text-align: center;
+            position: relative;
+            font-style: normal;
+            display: inline;
+            padding: 0 5px 0 0;
+            margin: 0 0 0 5px;
+            letter-spacing:0.05em;
+          }
+
+          .tabWrapper ul li a:visited em,
+          .ccp-navigation ul li a:visited em {
+
+          }
+
+          .tabWrapper ul li a.active em,
+            .tabWrapper ul li a:hover em,
+          .ccp-navigation ul li a.active em,
+            .ccp-navigation ul li a:hover em, {
+
+          }
+
+/* @end */
+
+/* @end */
+
+/* @group 2. Portal Body */
+
+.pageArea,
+.ccp-body {
+  max-width:1190px; /* Section can not get larger than 1200px (1190 + 5 on left + 5 on right = 1200) */
+  min-width:935px; /* 240 + 385 + 300 + 10 (for padding) = 935px */
+  margin:0 auto;
+  padding:5px;
+}
+
+/* Clear any body floats*/
+
+/* @group Portal Columns */
+
+/* Portal Container */
+
+.portletContainer {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.portletContainer td {
+  padding: 0;
+  margin: 0;
+}
+
+/* Container around .portalContainer */
+
+.portalContainer {
+  padding: 0;
+}
+
+  /* Container around ALL portlets, within the ccp-body or pageContainer */
+
+  .portalContainer1 {
+  }
+
+  .portalContainer2 {
+  }
+
+  .portalContainer3 {
+  }
+
+  .portalContainer4 {
+  }
+
+/* Around each portlet row, within the portalContainer */
+
+.portletTable {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-spacing: 0;
+}
+
+  .portletTable1 {
+  }
+
+  .portletTableLast {
+  }
+
+    .portletRow {
+      padding: 0;
+      margin: 0;
+    }
+
+      .portletRow1 {
+        margin: 0;
+      }
+
+      .portletRowLast {
+        
+      }
+
+        /* Around each portlet row, within the portletTable */
+
+        .portletColumn {
+          vertical-align: top;
+          margin: 0;
+          padding: 0;
+          width:auto;
+        }
+
+          .portletColumn1 {
+            padding: 0;
+            width: 240px;
+          }
+
+          .portletColumnLast {
+            width: 300px;
+          }
+          
+
+/* @end */
+
+/* @group Main Columns */
+
+/* Main Column Styles : including portlet modifiers specific to the mainportletColumn */
+
+.mainportletColumn {
+  width:auto;
+  padding:0;
+}
+
+  .mainportletColumn1 {
+
+  }
+
+  .mainportletColumnLast {
+    width:auto;
+    /*display:block;*/
+  }
+
+/* Clear portletWindows in mainportletColumns */
+
+    .mainportletColumn .portletWindowBackground {
+      border: none;
+      background:none;
+      margin-bottom:0;
+    }
+
+      .mainportletColumn .portletWindow {
+
+      }
+
+
+        .mainportletColumn .portletWindow1,
+        .mainportletColumn .portletWindow1 .articleBody {
+          padding:0;
+
+        }
+
+        .mainportletColumn .portletWindowLast {
+          border: none;
+        }
+
+        .mainportletColumn .portletWindowBackground {
+
+        }
+
+          /* Clean up space within portlets for main content */
+          .mainportletColumn .portletWrapper {
+            margin:10px 15px 0;
+            padding:0 0 10px;
+            border-bottom:1px dotted #ccc;
+          }
+
+          .mainportletColumn .portletWindowLast .portletWrapper {
+            border-bottom:none;
+          }
+          
+/* Add spacing for mainportletColumn Headers */
+/* Remove Margin from headings IF they are the first item */
+  /* Breaks Old portlets */
+  .mainportletColumn .portletWrapper > h1,
+  .mainportletColumn .portletWrapper > h2,
+  .mainportletColumn .portletWrapper > h3,
+  .mainportletColumn .portletWrapper > h4,
+  .mainportletColumn .portletWrapper > h5,
+  .mainportletColumn .portletWrapper > h6,
+  .mainportletColumn .portletWindow1 h1,
+  .mainportletColumn .portletWindow1 h2,
+  .mainportletColumn .portletWindow1 h3 {
+    margin-top:2px;
+  }
+
+  /* Make inline span elements of headers smaller font size */
+  .mainportletColumn .portletWindow1 h1 span,
+  .mainportletColumn .portletWindow1 h2 span,
+  .mainportletColumn .portletWindow1 h3 span {
+    font-size:small;
+  }
+          
+/* @end */
+
+/* @group Modal Columns */
+
+/* $_modalportletColumn : modalportletWindow classes are in the ccp-portlets.css */
+
+
+/* Container around all portlets */
+.modalportletContainer {
+  width: 100%;
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* Container around all portlets, within the portletContainer */
+.modalportalContainer {
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+}
+
+  .modalportalContainer1 {
+  }
+
+  .modalportalContainer2 {
+  }
+
+  .modalportalContainer3 {
+  }
+
+  .modalportalContainer4 {
+  }
+
+    /* Around each portlet row, within the portalContainer */
+
+    .modalportletTable {
+      width: 100%;
+      border: 0;
+      margin: 0;
+      padding: 0;
+      border-spacing: 0;
+    }
+
+      .modalportletTable1 {
+
+      }
+
+      .modalportletTableLast {
+      }
+
+      /* Around each portlet row, within the portletTable */
+      .modalportletRow {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-spacing: 0;
+      }
+
+        .modalportletRow1 {
+          margin: 0 !important;
+        }
+
+        .modalportletRowLast {
+        }
+
+          /* Around each portlet column, within the row */
+
+          .modalportletColumn {
+            vertical-align: top;
+            margin: 0;
+            padding: 0 0 0 10px;
+          }
+          
+            .modalportletColumn1 {
+              border: none !important;
+              padding: 0;
+            }
+
+.modalportletColumnLast {
+            }
+
+/* @end */
+
+.ccp-body:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+/* @end */
+
+/* @group 3. Portal Footer */
+
+.footerContainer,
+.ccp-footer {
+  text-align:center; /* Center footer list without setting width */
+  max-width:1200px; /* Section can not get larger than 1200px */
+  margin:0 auto;
+  padding:10px 0;
+  clear:both;
+}
+
+  .footerContainer ul,
+  .ccp-footer ul {
+    margin:0 0 10px 0;
+    padding:0;
+  }
+
+  .ccp-footer ul.site-menu {
+    margin:0 0 20px 0;
+    padding:0;
+  }
+
+    .footerContainer ul li,
+    .ccp-footer ul li,
+    .ccp-footer ul.site-menu li {
+      display:inline;
+      border-right: 1px solid #777;
+      margin: 0;
+      padding:0 7px;
+    }
+    
+      .ccp-footer ul li a {
+        margin-right:1px;
+      }
+
+      .ccp-footer ul.site-menu li a {
+        margin:0 0 0 2px;
+      }
+      
+     .ccp-footer ul li a>em {
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      .footerContainer ul li.first,
+      .ccp-footer ul li.first {
+
+      }
+
+      .footerContainer ul li.last,
+      .ccp-footer ul li.last {
+		    border: none;
+      }
+
+
+/* @end */

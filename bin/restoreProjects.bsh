@@ -1,0 +1,55 @@
+#!/bin/sh
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:dist/connect_tools-1.0.jar:lib/sjsxp-1.0.1.jar:lib/jsr173_1.0_api.jar bsh.Interpreter "$0" "$@"
+
+import com.zeroio.utils.APIConnection;
+import com.zeroio.utils.APIRestore;
+import com.zeroio.transfer.DataRecord;
+import com.zeroio.transfer.DataField;
+import com.zeroio.transfer.DataRecordFactory;
+import com.zeroio.transfer.PropertyList;
+
+import java.io.File;
+import java.util.ArrayList;
+
+File file = new File("backup_projects.xml");
+
+APIConnection conn = new APIConnection();
+conn.setUrl("http://127.0.0.1:8080");
+conn.setClientId(1);
+conn.setCode("plaintext-code-in-database");
+
+ArrayList meta = new ArrayList();
+// Create a copy during restore
+meta.add("mode=copy");
+// Restore the state of the objects as-supplied, start by deleting the record and dependents
+//meta.add("mode=overwrite");
+conn.setTransactionMeta(meta);
+
+// A deep restore is done... a project and its dependent data
+// MUST turn off autocommit
+conn.setAutoCommit(false);
+
+ArrayList exclude = new ArrayList();
+exclude.add("projectCategoryLogoFile");
+exclude.add("badgeCategoryLogoFile");
+exclude.add("badgeLogoFile");
+exclude.add("projectFile");
+
+HashMap replace = new HashMap();
+replace.put("user", "1");
+replace.put("projectCategoryLogoFile", "-1");
+replace.put("badgeCategoryLogoFile", "-1");
+replace.put("badgeLogoFile", "-1");
+
+HashMap options = new HashMap();
+options.put("exclude", exclude);
+options.put("replace", replace);
+
+//APIRestore.restoreAll(conn, file, options);
+//conn.commit();
+
+APIRestore.restore(conn, file, "project", 41);
+//APIRestore.restoreAll(conn, file);
+conn.commit();
+
+System.out.println("Returned: " + (conn.hasError() ? "error" : "success" ));

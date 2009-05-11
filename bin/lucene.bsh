@@ -1,0 +1,67 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/lucene-core-2.3.2.jar bsh.Interpreter "$0" "$@"
+
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Hits;
+
+String CRLF = System.getProperty("line.separator");
+String fs = System.getProperty("file.separator");
+
+try {
+  String indexDir = "testIndex";
+  File indexFile = new File(indexDir);
+  boolean create = !indexFile.exists();
+  
+  if (create) {
+    IndexWriter writer = new IndexWriter(indexDir, new StandardAnalyzer(), create);
+    if (1 == 1) {
+      Document doc = new Document();
+      doc.add(Field.Keyword("type", "project"));
+      doc.add(Field.Text("title", "The title of the project"));
+      //doc.add(Field.UnStored("title", "The title of the project"));
+      doc.add(Field.Text("shortDescription", "This is the short description"));
+      //doc.add(Field.UnStored("shortDescription", "This is the short description"));
+      //doc.add(Field.UnIndexed("projectId", 5));
+      doc.add(Field.Keyword("projectId", "5"));
+      //doc.add(Field.Keyword("date", new java.util.Date()));
+      writer.addDocument(doc);
+    }
+    if (1 == 1) {
+      Document doc = new Document();
+      doc.add(Field.Keyword("type", "news"));
+      //doc.add(Field.Text("subject", "The title of the news"));
+      doc.add(Field.UnStored("subject", "The title of the news"));
+      //doc.add(Field.Text("message", "This is the long description"));
+      doc.add(Field.UnStored("message", "This is the long description"));
+      //doc.add(Field.UnIndexed("projectId", "6"));
+      doc.add(Field.Keyword("projectId", "6"));
+      //doc.add(Field.Keyword("date", new java.util.Date()));
+      writer.addDocument(doc);
+    }
+    writer.optimize();
+    writer.close();
+  }
+  
+  IndexSearcher is = new IndexSearcher(indexDir);
+  
+  String queryString = 
+    "(projectId:5 OR projectId:6) AND ((type:news AND subject:title) OR (type:project AND title:title))";
+  Query query = QueryParser.parse(queryString, "shortDescription", new StandardAnalyzer());
+  Hits hits = is.search(query);
+  System.out.println("Found " + hits.length() + " document(s) that matched query '" + queryString + "':");
+  for (int i = 0; i < hits.length(); i++) {
+    Document doc = hits.doc(i);
+    System.out.println(doc.get("projectId") + " " + doc.get("type"));
+  }
+
+
+} catch (Exception e) {
+  e.printStackTrace(System.out);
+}
+System.exit(0);

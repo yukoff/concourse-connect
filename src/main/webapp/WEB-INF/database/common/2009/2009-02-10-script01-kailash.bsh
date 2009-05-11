@@ -1,0 +1,84 @@
+import java.sql.*;
+import com.concursive.connect.web.modules.contribution.dao.*;
+
+LookupContributionList lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForAdsPlaced
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForAdsPlaced") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForAdsPlaced");
+	lookupContribution.setDescription("Calculate the number of ads placed");
+	lookupContribution.setLevel(50);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForBlogCommentsAdded
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForBlogCommentsAdded") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForBlogCommentsAdded");
+	lookupContribution.setDescription("Calculate the number of blog comments added");
+	lookupContribution.setLevel(60);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForClassifiedsPlaced
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForClassifiedsPlaced") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForClassifiedsPlaced");
+	lookupContribution.setDescription("Calculate the number of classifieds placed");
+	lookupContribution.setLevel(70);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForFilesUploaded
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForFilesUploaded") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForFilesUploaded");
+	lookupContribution.setDescription("Calculate the number of files uploaded");
+	lookupContribution.setLevel(80);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForReviewsAdded
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForReviewsAdded") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForReviewsAdded");
+	lookupContribution.setDescription("Calculate the number of reviews added");
+	lookupContribution.setLevel(90);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForWikiPagesModified
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForWikiPagesModified") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForWikiPagesModified");
+	lookupContribution.setDescription("Calculate the number of wiki pages modified");
+	lookupContribution.setLevel(100);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+

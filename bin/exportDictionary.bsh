@@ -1,0 +1,166 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/bcprov-jdk15-141.jar:lib/postgresql-8.3-604.jdbc3.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar bsh.Interpreter "$0" "$@"
+
+import org.aspcfs.utils.HTTPUtils;
+import org.aspcfs.utils.StringUtils;
+import org.aspcfs.utils.FileUtils;
+import org.aspcfs.utils.StringHelper;
+import org.aspcfs.utils.XMLUtils;
+import org.aspcfs.utils.DatabaseUtils;
+import org.w3c.dom.*;
+import com.zeroio.controller.ConnectionPool;
+import com.zeroio.controller.ConnectionElement;
+import java.sql.*;
+import org.aspcfs.utils.web.PagedListInfo;
+import org.aspcfs.modules.translation.base.*;
+
+String url = "jdbc:postgresql://127.0.0.1:5432/iteam-community";
+String user = "postgres";
+String password = "";
+String driver = "org.postgresql.Driver";
+
+// Create a Connection Pool
+ConnectionPool sqlDriver = new ConnectionPool();
+sqlDriver.setDebug(false);
+sqlDriver.setTestConnections(false);
+sqlDriver.setAllowShrinking(true);
+sqlDriver.setMaxConnections(2);
+sqlDriver.setMaxIdleTime(60000);
+sqlDriver.setMaxDeadTime(1000000);
+
+// Create a connection
+ConnectionElement ce = new ConnectionElement(url, user, password);
+ce.setDriver(driver);
+Connection db = sqlDriver.getConnection(ce);
+
+boolean exportAll = false;
+  
+void exportDictionary(String localeName) {
+    print("");
+
+    print("Processing: " + localeName);
+
+    File destFile = new File("src/languages/dictionary_" + localeName + ".xml");
+
+    int languagePackId = LanguagePack.getLanguagePackId(db, localeName);
+    int defaultLanguagePackId = LanguagePack.getLanguagePackId(db, "en_US");
+
+    // Load the config names
+    LanguagePackConfigList configList = new LanguagePackConfigList();
+    configList.setLanguageId(languagePackId);
+    configList.buildList(db);
+
+    // Load the dictionary to be exported
+    LanguageDictionaryList dictionaryList = new LanguageDictionaryList();
+    dictionaryList.setLanguagePackId(languagePackId);
+    PagedListInfo pagedListInfo = new PagedListInfo();
+    pagedListInfo.setItemsPerPage(-1);
+    pagedListInfo.setDefaultSort("config_id", "");
+    dictionaryList.setPagedListInfo(pagedListInfo);
+    dictionaryList.buildList(db);
+
+
+    // Convert the terms to XML
+    Document document = XMLUtils.createDocument();
+    Element rootElement = document.createElement("aspcfs");
+    document.appendChild(rootElement);
+
+    Node configNode = null;
+    String configName = null;
+    int currentConfigId = -1;
+    Iterator terms = dictionaryList.iterator();
+    while (terms.hasNext()) {
+      LanguageDictionary thisTerm = (LanguageDictionary) terms.next();
+      if (thisTerm.getConfigId() != currentConfigId) {
+        // Append a new config line
+        configName = configList.toName(thisTerm.getConfigId());
+        configNode = document.createElement("config");
+        configNode.setAttribute("name", configName);
+        rootElement.appendChild(configNode);
+        System.out.println("Config: " + configName);
+        currentConfigId = thisTerm.getConfigId();
+      }
+      // Append the param
+      if ("system.modules.label".equals(configName)) {
+        // Special Case
+        Element paramElement = document.createElement("param");
+        paramElement.setAttribute("name", thisTerm.getParamName());
+        configNode.appendChild(paramElement);
+        if (1==1) {
+          Element valueElement = document.createElement("page_title");
+          String paramValue1 = thisTerm.getParamValue1();
+          if (paramValue1 == null) {
+            // Retrieve value from English dictionary for translation
+            paramValue1 = LanguageDictionaryList.lookupValue(db, defaultLanguagePackId, configName, thisTerm.getParamName(), 1);
+          }
+          if (paramValue1 != null) {
+            valueElement.appendChild(document.createCDATASection(paramValue1));
+            paramElement.appendChild(valueElement);
+          } else {
+            System.out.println("NULL1: " + paramName);
+          }
+        }
+        if (1==1) {
+          Element valueElement = document.createElement("menu_title");
+          String paramValue1 = thisTerm.getParamValue1();
+          if (paramValue1 == null) {
+            // Retrieve value from English dictionary for translation
+            paramValue1 = LanguageDictionaryList.lookupValue(db, defaultLanguagePackId, configName, thisTerm.getParamName(), 1);
+          }
+          if (paramValue1 != null) {
+            valueElement.appendChild(document.createCDATASection(paramValue1));
+            paramElement.appendChild(valueElement);
+          } else {
+            System.out.println("NULL2: " + paramName);
+          }
+        }
+      } else {
+        // Normal Case
+        Element paramElement = document.createElement("param");
+        paramElement.setAttribute("name", thisTerm.getParamName());
+        configNode.appendChild(paramElement);
+        // Append the value
+        Element valueElement = document.createElement("value");
+        String paramValue1 = thisTerm.getParamValue1();
+        if (paramValue1 == null) {
+          paramValue1 = LanguageDictionaryList.lookupValue(db, defaultLanguagePackId, configName, thisTerm.getParamName(), 1);
+        }
+        if (paramValue1 != null) {
+          valueElement.appendChild(document.createCDATASection(paramValue1));
+          paramElement.appendChild(valueElement);
+        } else {
+          System.out.println("NULL3: " + paramName);
+        }
+      }
+    }
+
+    // Save the dictionary file
+    XMLUtils.saveXML(document, destFile);
+}
+
+
+if (bsh.args.length == 0 || bsh.args[0] == null || "".equals(bsh.args[0].trim())) {
+  print("");
+  print("    [exporting ALL locales... except en_US]");
+  print("");
+  exportAll = true;
+}
+
+if (!exportAll) {
+  String localeName = bsh.args[0].trim();
+  exportDictionary(localeName);
+} else {
+  LanguagePackList languagePackList = new LanguagePackList();
+  languagePackList.buildList(db);
+  Iterator i = languagePackList.iterator();
+  while (i.hasNext()) {
+    LanguagePack thisPack = (LanguagePack) i.next();
+    if (!thisPack.getLanguageLocale().equals("en_US")) {
+      exportDictionary(thisPack.getLanguageLocale());
+    }
+  }
+}
+
+sqlDriver.free(db);
+print("");
+System.exit(0);

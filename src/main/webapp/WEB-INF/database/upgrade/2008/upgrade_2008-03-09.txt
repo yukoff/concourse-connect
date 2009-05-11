@@ -1,0 +1,5 @@
+# Moved out of 2008-03-10 due to new upgrade scheme, these were used in a
+# previous release
+
+2008-03-16-script01.sql
+2008-02-26-script01.sql

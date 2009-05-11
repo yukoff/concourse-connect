@@ -1,0 +1,5 @@
+# 2008-06-30.txt
+# This script upgrades the 3.3 production database to 4.0
+
+2008-06-30-script01-kailash.bsh
+2008-06-30-script02-kailash.bsh

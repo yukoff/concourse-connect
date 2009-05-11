@@ -1,0 +1,1 @@
+ALTER TABLE projects ADD style VARCHAR(4096);

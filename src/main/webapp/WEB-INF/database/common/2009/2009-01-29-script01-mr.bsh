@@ -1,0 +1,57 @@
+import java.sql.*;
+import com.concursive.connect.web.modules.profile.dao.*;
+
+ProjectCategoryList projectCategoryList = new ProjectCategoryList();
+projectCategoryList.buildList(db);
+
+ProjectCategory minPeople = projectCategoryList.getMinFromValue("People");
+ProjectCategory maxPeople = projectCategoryList.getMaxFromValue("People");
+if (minPeople.getId() != maxPeople.getId()) {
+  PreparedStatement pst = db.prepareStatement(
+    "UPDATE projects " +
+      "SET category_id = ? " +
+      "WHERE category_id = ? "
+  );
+  pst.setInt(1, maxPeople.getId());
+  pst.setInt(2, minPeople.getId());
+  int count = pst.executeUpdate();
+  pst.close();
+
+  System.out.println("Re-parented existing people: " + count);
+
+  minPeople.delete(db, null);
+}
+
+// If there are 2 Projects categories, then move everything to the newer one
+// and delete the old
+ProjectCategory minProjects = projectCategoryList.getMinFromValue("Projects");
+ProjectCategory maxProjects = projectCategoryList.getMaxFromValue("Projects");
+if (minProjects.getId() != maxProjects.getId()) {
+
+  PreparedStatement pst = db.prepareStatement(
+    "UPDATE lookup_project_category " +
+      "SET parent_category = ? " +
+      "WHERE parent_category = ? "
+  );
+  pst.setInt(1, maxProjects.getId());
+  pst.setInt(2, minProjects.getId());
+  int count = pst.executeUpdate();
+  pst.close();
+
+  System.out.println("Re-parented existing project categories: " + count);
+
+  pst = db.prepareStatement(
+    "UPDATE projects " +
+      "SET category_id = ? " +
+      "WHERE category_id = ? "
+  );
+  pst.setInt(1, maxProjects.getId());
+  pst.setInt(2, minProjects.getId());
+  count = pst.executeUpdate();
+  pst.close();
+
+  System.out.println("Re-parented existing projects: " + count);
+
+  minProjects.delete(db, null);
+
+}

@@ -1,0 +1,1051 @@
+<?xml version="1.0"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<project name="ConcourseConnect" default="usage" basedir=".">
+
+  <!-- enable environment variables -->
+  <property environment="env"/>
+
+  <!-- constants -->
+  <property name="POSTGRESQL" value="postgresql"/>
+  <property name="MSSQL" value="mssql"/>
+
+  <!-- project properties -->
+  <property name="project.build.finalName" value="concourseconnect" />
+  <property name="project.war.finalName" value="connect" />
+
+  <!-- computed properties -->
+  <property name="fs" value="${file.separator}"/>
+  <property name="lf" value="${line.separator}"/>
+
+  <!-- Look in the current directory for build.properties -->
+  <property file="build.properties"/>
+  <!-- Use an environment variable to read properties from -->
+  <property file="${env.BUILD_PROPERTIES}"/>
+  <!-- Setup path properties -->
+  <property name="lib.dir" value="${basedir}/lib" />
+  <property name="src.classes.dir" value="${basedir}/src/main/java" />
+  <property name="src.resources.dir" value="${basedir}/src/main/resources" />
+  <property name="src.config.dir" value="${basedir}/src/main/config" />
+  <property name="src.web.dir" value="${basedir}/src/main/webapp" />
+  <property name="src.database.dir" value="${src.web.dir}/WEB-INF/database" />
+  <property name="project.build.directory" value="${basedir}/target" />
+  <property name="build.lib.dir" value="${project.build.directory}/lib" />
+  <property name="build.sql.dir" value="${project.build.directory}/sql" />
+  <property name="build.classes.dir" value="${project.build.directory}/classes" />
+  <property name="build.jsp.dir" value="${project.build.directory}${fs}jsp"/>
+  <property name="build.jspclasses.dir" value="${project.build.directory}${fs}jspclasses"/>
+  <property name="build.docs.dir" value="${project.build.directory}/apidocs" />
+  <property name="test.src.classes.dir" value="${basedir}/src/test/java" />
+  <property name="test.build.dir" value="${project.build.directory}/test-cases" />
+  <property name="test.build.classes.dir" value="${test.build.dir}/classes" />
+  <property name="test.build.lib.dir" value="${test.build.dir}/lib" />
+  <property name="test.reports.dir" value="${project.build.directory}${fs}test-reports" />
+  <property name="dist.dir" value="${project.build.directory}/${project.build.finalName}"/>
+
+  <!-- Default properties -->
+  <property name="WEBSERVER.TYPE" value="catalina"/>
+  <property name="SITE.DBTYPE" value="postgresql"/>
+  <property name="SITE.DRIVER" value="org.postgresql.Driver"/>
+  <property name="TITLE" value="ConcourseConnect"/>
+  <property name="DESCRIPTION" value="A social networking community"/>
+  <property name="KEYWORDS" value="concourseconnect, community, collaboration, intranet"/>
+  <property name="MAIN_PROFILE" value="main-profile"/>
+  <property name="PURPOSE" value="intranet"/>
+
+  <!-- Show ant usage -->
+  <target name="usage">
+    <echo message="ant compile: compile the sources"/>
+    <echo message="ant test-compile: compile the tests"/>
+    <echo message="ant test: compile and run the tests using a test database"/>
+    <echo message="ant test -Dtest=specificTest: compile and run a specific test using a test database"/>
+    <echo message="ant package: compile and generate a war"/>
+    <echo message="ant package-tools: create a distributable tools jar file"/>
+    <echo message="ant site: generate java docs and web site info"/>
+    <echo message="ant clean: delete temporary files used in build"/>
+    <echo message=""/>
+    <echo message="ant deploy-webapp: deploy the webapp as an exploded directory"/>
+    <echo message="ant deploy-tomcat: deploy the webapp .war into a running Tomcat instance"/>
+    <echo message="ant installdb: install the database from the commandline"/>
+    <echo message="ant upgradedb: upgrade the database from the commandline"/>
+    <echo message=""/>
+  </target>
+
+
+
+
+  <!-- Clean -->
+  <target name="clean">
+    <delete dir="${project.build.directory}"/>
+  </target>
+
+
+
+
+  <!-- Initialize -->
+  <target name="initialize">
+    <fail unless="WEBSERVER.TYPE">Initialization aborted
+
+      SOLUTION:
+
+      Uncomment and edit the WEBSERVER.TYPE property in the build.properties
+      file:
+
+      build.properties
+
+    </fail>
+    <!-- Verify the servlet container -->
+    <condition property="TYPE.CATALINA">
+      <equals arg1="${WEBSERVER.TYPE}" arg2="catalina" />
+    </condition>
+    <condition property="CATALINA_HOME" value="${env.CATALINA_HOME}">
+      <and>
+        <equals arg1="${WEBSERVER.TYPE}" arg2="catalina" />
+        <available file="${env.CATALINA_HOME}" />
+      </and>
+    </condition>
+    <condition property="TYPE.WEBLOGIC">
+      <equals arg1="${WEBSERVER.TYPE}" arg2="weblogic" />
+    </condition>
+    <condition property="WEBLOGIC_HOME" value="${env.WEBLOGIC_HOME}">
+      <and>
+        <equals arg1="${WEBSERVER.TYPE}" arg2="weblogic" />
+        <available file="${env.WEBLOGIC_HOME}" />
+      </and>
+    </condition>
+    <condition property="TYPE.GERONIMO">
+      <equals arg1="${WEBSERVER.TYPE}" arg2="geronimo" />
+    </condition>
+    <condition property="GERONIMO_HOME" value="${env.GERONIMO_HOME}">
+      <and>
+        <equals arg1="${WEBSERVER.TYPE}" arg2="geronimo" />
+        <available file="${env.GERONIMO_HOME}" />
+      </and>
+    </condition>
+    <condition property="TYPE.WEBSPHERE">
+      <equals arg1="${WEBSERVER.TYPE}" arg2="websphere" />
+    </condition>
+    <condition property="WEBSPHERE_HOME" value="${env.WEBSPHERE_HOME}">
+      <and>
+        <equals arg1="${WEBSERVER.TYPE}" arg2="websphere" />
+        <available file="${env.WEBSPHERE_HOME}" />
+      </and>
+    </condition>
+    <condition property="TYPE.JBOSS">
+      <equals arg1="${WEBSERVER.TYPE}" arg2="jboss" />
+    </condition>
+    <condition property="JBOSS_HOME" value="${env.JBOSS_HOME}">
+      <and>
+        <equals arg1="${WEBSERVER.TYPE}" arg2="jboss" />
+        <available file="${env.JBOSS_HOME}" />
+      </and>
+    </condition>
+    <condition property="TYPE.GLASSFISH">
+      <equals arg1="${WEBSERVER.TYPE}" arg2="glassfish" />
+    </condition>
+    <condition property="GLASSFISH_HOME" value="${env.GLASSFISH_HOME}">
+      <and>
+        <equals arg1="${WEBSERVER.TYPE}" arg2="glassfish" />
+        <available file="${env.GLASSFISH_HOME}" />
+      </and>
+    </condition>
+  </target>
+
+  <!-- Tomcat 5.x -->
+  <target name="init.servlet5.exists" depends="initialize" if="TYPE.CATALINA">
+    <fail unless="CATALINA_HOME">CATALINA_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${CATALINA_HOME}/common/lib/servlet-api.jar" property="build.servlet5.present" />
+  </target>
+  <target name="init.servlet5.set" depends="init.servlet5.exists" if="build.servlet5.present">
+    <property name="servletJar" value="${CATALINA_HOME}${fs}common${fs}lib${fs}servlet-api.jar" />
+    <property name="jspJar" value="${CATALINA_HOME}${fs}common${fs}lib${fs}jsp-api.jar" />
+    <property name="namingJar" value="${CATALINA_HOME}${fs}common${fs}lib${fs}naming-resources.jar" />
+    <echo message="Web Server: Tomcat 5.x" />
+  </target>
+  <!-- Tomcat 6.x -->
+  <target name="init.servlet6.exists" depends="initialize" if="TYPE.CATALINA">
+    <fail unless="CATALINA_HOME">CATALINA_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${CATALINA_HOME}/lib/servlet-api.jar" property="build.servlet6.present" />
+  </target>
+  <target name="init.servlet6.set" depends="init.servlet6.exists" if="build.servlet6.present">
+    <property name="servletJar" value="${CATALINA_HOME}${fs}lib${fs}servlet-api.jar" />
+    <property name="jspJar" value="${CATALINA_HOME}${fs}lib${fs}jsp-api.jar" />
+    <property name="namingJar" value="${CATALINA_HOME}${fs}lib${fs}catalina.jar" />
+    <echo message="Web Server: Tomcat 6.x" />
+  </target>
+  <!-- Weblogic -->
+  <target name="init.weblogic.exists" depends="initialize" if="TYPE.WEBLOGIC">
+    <fail unless="WEBLOGIC_HOME">WEBLOGIC_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${WEBLOGIC_HOME}${fs}server${fs}lib${fs}weblogic.jar" property="build.weblogic.present" />
+  </target>
+  <target name="init.weblogic.set" depends="init.weblogic.exists" if="build.weblogic.present">
+    <property name="servletJar" value="${WEBLOGIC_HOME}${fs}server${fs}lib${fs}weblogic.jar" />
+    <property name="jspJar" value="${WEBLOGIC_HOME}${fs}server${fs}lib${fs}weblogic.jar" />
+    <echo message="Web Server: WebLogic" />
+  </target>
+  <!-- Geronimo 1.0 -->
+  <target name="init.geronimo10.exists" depends="initialize" if="TYPE.GERONIMO">
+    <fail unless="GERONIMO_HOME">GERONIMO_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${GERONIMO_HOME}/repository/org.apache.geronimo.specs/jars/geronimo-servlet_2.4_spec-1.0.jar" property="build.geronimo10.present" />
+  </target>
+  <target name="init.geronimo10.set" depends="init.geronimo10.exists" if="build.geronimo10.present">
+    <property name="servletJar" value="${GERONIMO_HOME}/repository/org.apache.geronimo.specs/jars/geronimo-servlet_2.4_spec-1.0.jar" />
+    <property name="jspJar" value="${GERONIMO_HOME}/repository/org.apache.geronimo.specs/jars/geronimo-jsp_2.0_spec-1.0.jar" />
+    <property name="namingJar" value="${GERONIMO_HOME}/repository/tomcat/jars/naming-resources-5.5.9.jar" />
+    <echo message="Web Server: Geronimo 1.0" />
+  </target>
+  <!-- Geronimo 1.1 -->
+  <target name="init.geronimo11.exists" depends="initialize" if="TYPE.GERONIMO">
+    <fail unless="GERONIMO_HOME">GERONIMO_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${GERONIMO_HOME}/repository/org/apache/geronimo/specs/geronimo-servlet_2.4_spec/1.0.1/geronimo-servlet_2.4_spec-1.0.1.jar" property="build.geronimo11.present" />
+  </target>
+  <target name="init.geronimo11.set" depends="init.geronimo11.exists" if="build.geronimo11.present">
+    <property name="servletJar" value="${GERONIMO_HOME}/repository/org/apache/geronimo/specs/geronimo-servlet_2.4_spec/1.0.1/geronimo-servlet_2.4_spec-1.0.1.jar" />
+    <property name="jspJar" value="${GERONIMO_HOME}/repository/org/apache/geronimo/specs/geronimo-jsp_2.0_spec/1.0.1/geronimo-jsp_2.0_spec-1.0.1.jar" />
+    <available file="${GERONIMO_HOME}/repository/tomcat/naming-resources/5.5.15/naming-resources-5.5.15.jar" property="namingJar" value="${GERONIMO_HOME}/repository/tomcat/naming-resources/5.5.15/naming-resources-5.5.15.jar" />
+    <available file="${GERONIMO_HOME}/repository/tomcat/naming-resources/5.5.15-142/naming-resources-5.5.15-142.jar" property="namingJar" value="${GERONIMO_HOME}/repository/tomcat/naming-resources/5.5.15-142/naming-resources-5.5.15-142.jar" />
+    <echo message="Web Server: Geronimo 1.1+" />
+  </target>
+  <!-- JBoss -->
+  <target name="init.jboss24.exists" depends="initialize" if="TYPE.JBOSS">
+    <fail unless="JBOSS_HOME">JBOSS_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${JBOSS_HOME}/server/all/lib/javax.servlet.jar" property="build.jboss24.present" />
+  </target>
+  <target name="init.jboss24.set" depends="init.jboss24.exists" if="build.jboss24.present">
+    <property name="servletJar" value="${JBOSS_HOME}/server/all/lib/javax.servlet.jar" />
+    <property name="jspJar" value="${JBOSS_HOME}/server/all/lib/javax.servlet.jsp.jar" />
+    <property name="namingJar" value="${JBOSS_HOME}/server/all/deploy/jbossweb-tomcat55.sar/naming-resources.jar" />
+    <echo message="Web Server: JBoss using Servlet 2.4 API" />
+  </target>
+  <!-- IBM WebSphere -->
+  <target name="init.websphere.exists" depends="initialize" if="TYPE.WEBSPHERE">
+    <fail unless="WEBSPHERE_HOME">WEBSPHERE_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${WEBSPHERE_HOME}{fs}lib{fs}j2ee.jar" property="build.websphere.present" />
+  </target>
+  <target name="init.websphere.set" depends="init.websphere.exists" if="TYPE.WEBSPHERE">
+    <property name="servletJar" value="${WEBSPHERE_HOME}/lib/j2ee.jar" />
+    <echo message="Servlet jar: ${servletJar}" />
+    <echo message="Web Server: WebSphere" />
+  </target>
+  <!-- Sun Glassfish -->
+  <target name="init.glassfish.exists" depends="initialize" if="TYPE.GLASSFISH">
+    <fail unless="GLASSFISH_HOME">GLASSFISH_HOME build.properties entry OR environment variable is required</fail>
+    <available file="${GLASSFISH_HOME}{fs}lib{fs}javaee.jar" property="build.glassfish.present" />
+  </target>
+  <target name="init.glassfish.set" depends="init.glassfish.exists" if="TYPE.GLASSFISH">
+    <property name="servletJar" value="${GLASSFISH_HOME}/lib/javaee.jar" />
+    <!--
+    <property name="jspJar" value="${GLASSFISH_HOME}/lib/appserv-rt.jar" />
+    -->
+    <echo message="Servlet jar: ${servletJar}" />
+    <echo message="Web Server: Glassfish" />
+  </target>
+
+  <target name="init.classpath"
+          depends="initialize,init.servlet6.set,init.servlet5.set,init.weblogic.set,init.geronimo10.set,init.geronimo11.set,init.jboss24.set,init.websphere.set,init.glassfish.set">
+    <path id="web.classpath">
+      <pathelement location="${servletJar}" />
+      <pathelement location="${jspJar}" />
+      <pathelement location="${namingJar}" />
+      <fileset dir="${lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+
+    <tstamp>
+      <format property="date.short" pattern="yyyyMMdd-HHmmss" />
+    </tstamp>
+    <tstamp>
+      <format property="date.long" pattern="yyyy-MM-dd hh:mm:ss aa" />
+    </tstamp>
+    <!-- log the build -->
+    <record name="build.log" append="no" />
+
+    <!-- Begin output -->
+		<echo message="Project: ${ant.project.name}" />
+		<echo message="Date: ${date.long}" />
+		<echo message="User: ${user.name}" />
+		<echo message="System: ${os.name} ${os.arch} ${os.version}" />
+		<echo message="Ant version: ${ant.version}" />
+		<echo message="Java version: ${java.version}" />
+		<echo message="Base path: ${basedir}" />
+  </target>
+
+  <!-- Creates build dir if it does not exist -->
+  <target name="prepare" depends="init.classpath">
+    <mkdir dir="${project.build.directory}"/>
+    <tstamp />
+    <uptodate property="classes.uptodate">
+      <srcfiles dir="${src.classes.dir}" includes="**/*.java"/>
+      <srcfiles dir="${src.resources.dir}" includes="**/*"/>
+      <mapper type="merge" to="${build.lib.dir}/${project.build.finalName}.jar"/>
+    </uptodate>
+  </target>
+
+
+
+
+  <!-- Compile -->
+  <target name="compile" description="Compile source" depends="prepare" unless="classes.uptodate">
+    <!-- Prepare the target compile directory -->
+    <delete dir="${build.classes.dir}"/>
+    <mkdir dir="${build.classes.dir}"/>
+    <!-- Get rid of any classes in the source dir that shouldn't be there -->
+    <delete>
+        <fileset dir="${src.classes.dir}" includes="**/*.class"/>
+    </delete>
+    <!-- Compile the source -->
+    <javac srcdir="${src.classes.dir}"
+           destdir="${build.classes.dir}"
+           verbose="off"
+           optimize="on"
+           deprecation="off">
+      <classpath>
+        <path refid="web.classpath"/>
+      </classpath>
+    </javac>
+    <!-- Prepare the target jars directory -->
+    <delete dir="${build.lib.dir}"/>
+    <mkdir dir="${build.lib.dir}"/>
+    <!-- concourseconnect.jar -->
+    <jar jarfile="${build.lib.dir}/${project.build.finalName}.jar"
+          basedir="${build.classes.dir}"
+          includes="com/concursive/connect/**/*.class"/>
+    <!-- concourseconnect resources -->
+    <jar jarfile="${build.lib.dir}/${project.build.finalName}-resources.jar"
+         basedir="${src.resources.dir}"
+         includes="**/*"/>
+    <!-- webdav.jar -->
+    <copy todir="${build.classes.dir}/org/apache/catalina/servlets">
+      <fileset dir="${src.classes.dir}/org/apache/catalina/servlets">
+        <include name="LocalStrings.properties"/>
+      </fileset>
+    </copy>
+    <jar jarfile="${build.lib.dir}/webdav.jar"
+          basedir="${build.classes.dir}"
+          includes="org/apache/**/*.class,org/apache/**/*.properties"/>
+  </target>
+
+
+
+
+  <!-- Compile Tests -->
+	<target name="test-compile" depends="compile">
+		<delete dir="${test.build.dir}" failonerror="false" />
+		<mkdir dir="${test.build.dir}" />
+		<mkdir dir="${test.build.classes.dir}" />
+		<mkdir dir="${test.build.lib.dir}" />
+    <property name="DEBUG" value="true"/>
+    <property name="DEBUGLEVEL" value="2"/>
+		<javac srcdir="${test.src.classes.dir}" destdir="${test.build.classes.dir}" verbose="off" deprecation="off" fork="true" memoryInitialSize="168m" memoryMaximumSize="168m" debug="${DEBUG}" debuglevel="${DEBUGLEVEL}">
+			<classpath>
+				<path refid="web.classpath" />
+        <pathelement path="${build.classes.dir}" />
+			</classpath>
+		</javac>
+		<jar jarfile="${test.build.lib.dir}/${project.build.finalName}-tests.jar" basedir="${test.build.classes.dir}" includes="**/*.class" />
+    <!-- Determine the property file to use -->
+    <condition property="test.properties.file" value="build.properties">
+      <available file="build.properties"/>
+    </condition>
+    <condition property="test.properties.file" value="${env.BUILD_PROPERTIES}">
+      <available file="${env.BUILD_PROPERTIES}"/>
+    </condition>
+    <fail unless="test.properties.file">Test properties file could not be found</fail>
+	</target>
+
+
+
+
+	<!-- Run Tests -->
+	<target name="test.runner" depends="test-compile" unless="test">
+		<delete dir="${test.reports.dir}" failonerror="false" />
+		<mkdir dir="${test.reports.dir}" />
+		<echo message="+-----------------------" />
+		<echo message="| Tests are running... See full-length results in '${test.reports.dir}'." />
+		<echo message="+---------------------" />
+		<junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="perBatch">
+      <jvmarg value="-DPropertyManager.file=${test.properties.file}"/>
+      <classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+				<path refid="web.classpath" />
+        <pathelement path="${build.classes.dir}" />
+				<fileset dir="${build.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${test.build.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+        <pathelement path="${src.resources.dir}" />
+      </classpath>
+      <!-- All Tests -->
+			<batchtest todir="${test.reports.dir}">
+				<formatter type="xml" />
+				<fileset dir="${test.src.classes.dir}">
+					<include name="**/*Test.java" />
+					<exclude name="**/Abstract*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+  <target name="test.single.test.runner" depends="test-compile" if="test">
+		<delete dir="${test.reports.dir}" failonerror="false" />
+		<mkdir dir="${test.reports.dir}" />
+		<echo message="+-----------------------" />
+		<echo message="| Tests are running... See full-length results in '${test.reports.dir}'." />
+		<echo message="+---------------------" />
+    <junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="perBatch">
+      <jvmarg value="-DPropertyManager.file=${test.properties.file}"/>
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+				<path refid="web.classpath" />
+        <pathelement path="${build.classes.dir}" />
+				<fileset dir="${build.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${test.build.lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+        <pathelement path="${src.resources.dir}" />
+      </classpath>
+			<batchtest todir="${test.reports.dir}">
+				<formatter type="xml" />
+				<fileset dir="${test.src.classes.dir}">
+					<include name="**/${test}.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="test" depends="test.single.test.runner,test.runner" description="Run unit tests">
+	</target>
+
+
+
+
+  <!-- Package the Application -->
+  <target name="prepare-jspc" depends="init.classpath" description="The JSP compiler">
+    <taskdef classname="org.apache.jasper.JspC" name="jasper2" >
+      <classpath id="jspc.classpath">
+        <pathelement location="${java.home}/../lib/tools.jar"/>
+        <fileset dir="${CATALINA_HOME}/bin">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/server/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/common/lib"> 
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+  </target>
+
+  <target name="taskdef.jasper" depends="initialize">
+      <taskdef name="compileJasperReport"
+        classname="net.sf.jasperreports.ant.JRAntCompileTask">
+        <classpath>
+          <fileset dir="${build.lib.dir}">
+            <include name="*.jar"/>
+          </fileset>
+          <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+          </fileset>
+        </classpath>
+      </taskdef>
+    </target>
+
+  <target name="war.instance" unless="NODE">
+    <property name="NODE" value="primary"/>
+  </target>
+
+  <target name="war.archive" depends="taskdef.jasper">
+    <delete dir="${dist.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+    <!-- Copy the .jars -->
+    <copy todir="${dist.dir}/${project.war.finalName}/WEB-INF/lib">
+      <fileset dir="${lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${dist.dir}/${project.war.finalName}/WEB-INF/lib">
+      <fileset dir="${build.lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+    <!-- Copy the web data -->
+    <copy todir="${dist.dir}/${project.war.finalName}">
+      <fileset dir="${src.web.dir}">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+    <!-- Copy the resources -->
+    <mkdir dir="${dist.dir}/${project.war.finalName}/WEB-INF/classes"/>
+    <copy todir="${dist.dir}/${project.war.finalName}/WEB-INF/classes" verbose="true">
+      <fileset dir="${src.resources.dir}">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+    <!-- Copy the instance property -->
+    <echo file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property">node=${NODE}</echo>
+    <loadresource property="message">
+       <file file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property"/>
+    </loadresource>
+    <echo message="${message}"/>
+    <!-- Copy any customizations -->
+    <!-- JSPs -->
+    <copy todir="${dist.dir}/${project.war.finalName}" overwrite="true" failonerror="false">
+      <fileset dir="${CUSTOMIZATIONS.PATH}/src/web/jsp">
+        <include name="**" />
+      </fileset>
+    </copy>
+    <!-- Resources -->
+    <copy todir="${dist.dir}/${project.war.finalName}/WEB-INF/classes" overwrite="true" failonerror="false">
+      <fileset dir="${CUSTOMIZATIONS.PATH}/src/resources">
+        <include name="**" />
+      </fileset>
+    </copy>
+    <!-- Images, Javascript, CSS, WEB-INF -->
+    <copy todir="${dist.dir}/${project.war.finalName}" overwrite="true" failonerror="false">
+      <fileset dir="${CUSTOMIZATIONS.PATH}/src/web">
+        <include name="images/**" />
+        <include name="css/**" />
+        <include name="flash/**" />
+        <include name="javascript/**" />
+        <include name="themes/**" />
+        <include name="WEB-INF/**" />
+      </fileset>
+    </copy>
+    <!-- Compile the JSPs -->
+    <mkdir dir="${dist.dir}/${project.war.finalName}/WEB-INF/compiled"/>
+    <jasper2
+       validateXml="false"
+       uriroot="${dist.dir}/${project.war.finalName}"
+       webXmlFragment="${dist.dir}/${project.war.finalName}/WEB-INF/generated_web.xml"
+       addWebXmlMappings="true"
+       outputDir="${dist.dir}/${project.war.finalName}/WEB-INF/src" />
+    <javac srcdir="${dist.dir}/${project.war.finalName}/WEB-INF/src" excludes="**/*.smap"
+           destdir="${dist.dir}/${project.war.finalName}/WEB-INF/compiled"
+           debug="off" failonerror="true"
+           source="1.5" target="1.5"
+           optimize="on">
+      <classpath>
+        <pathelement location="${dist.dir}/${project.war.finalName}/WEB-INF/compiled"/>
+        <fileset dir="${dist.dir}/${project.war.finalName}/WEB-INF/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/common/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/shared/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/bin">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+      <include name="**" />
+      <exclude name="tags/**" />
+    </javac>
+    <!-- JAR the JSPs -->
+    <jar jarfile="${dist.dir}/${project.war.finalName}/WEB-INF/lib/${project.build.finalName}-jsp.jar"
+         basedir="${dist.dir}/${project.war.finalName}/WEB-INF/compiled" includes="**/*.class" />
+    <!-- Cleanup temp files -->
+    <delete>
+      <fileset dir="${dist.dir}/${project.war.finalName}">
+        <include name="**/*.jsp"/>
+        <include name="**/*.jspf"/>
+      </fileset>
+  	</delete>
+    <delete dir="${dist.dir}/${project.war.finalName}/WEB-INF/src"/>
+    <delete dir="${dist.dir}/${project.war.finalName}/WEB-INF/compiled"/>
+    <!-- Compile the reports -->
+    <compileJasperReport
+      srcdir="${dist.dir}/${project.war.finalName}/WEB-INF/reports"
+      destdir="${dist.dir}/${project.war.finalName}/WEB-INF/reports"/>
+    <!-- Archive the folder -->
+    <war destfile="${dist.dir}/${project.war.finalName}.war"
+         webxml="${dist.dir}/${project.war.finalName}/WEB-INF/web.xml"
+         basedir="${dist.dir}/${project.war.finalName}"
+         compress="true"
+         manifest="${src.web.dir}/META-INF/MANIFEST.MF"
+         />
+    <copy file="${basedir}/README.txt" todir="${dist.dir}/" verbose="true"/>
+    <copy file="${basedir}/CHANGES.txt" todir="${dist.dir}/" verbose="true"/>
+    <copy file="${basedir}/LICENSE.txt" todir="${dist.dir}/" verbose="true"/>
+    <!-- Create the distributable .zip file -->
+    <zip destfile="${dist.dir}/${project.build.finalName}.zip">
+      <zipfileset dir="${basedir}" includes="README.txt" prefix="${project.build.finalName}"/>
+      <zipfileset dir="${basedir}" includes="CHANGES.txt" prefix="${project.build.finalName}"/>
+      <zipfileset dir="${basedir}" includes="LICENSE.txt" prefix="${project.build.finalName}"/>
+      <zipfileset dir="${dist.dir}" includes="${project.war.finalName}.war" prefix="${project.build.finalName}"/>
+    </zip>
+    <!-- Cleanup files -->
+    <delete dir="${dist.dir}/${project.war.finalName}"/>
+  </target>
+
+  <target name="package"
+          description="Compile, build jars and generate web archive"
+          depends="compile,prepare-jspc,war.instance,war.archive">
+  </target>
+
+
+
+
+  <!-- Generate the documentation for the site -->
+  <target name="site" description="Install documentation and site files" depends="compile">
+    <delete dir="${build.docs.dir}"/>
+    <mkdir dir="${build.docs.dir}"/>
+    <javadoc sourcepath="${src.classes.dir}"
+        packagenames="com.concursive.*"
+        destdir="${build.docs.dir}">
+      <header>Copyright 2009 Concursive Corporation</header>
+      <footer>Copyright 2009 Concursive Corporation</footer>
+      <classpath>
+        <path refid="web.classpath"/>
+      </classpath>
+    </javadoc>
+  </target>
+
+
+
+
+  <!-- Deploy to an Exploded Webapp Directory -->
+  <target name="deploy.initialize" depends="initialize">
+    <fail unless="WEBAPP_EXPLODED_HOME">WEBAPP_EXPLODED_HOME is a required property in build.properties</fail>
+    <fail unless="FILE_LIBRARY_HOME">FILE_LIBRARY_HOME is a required property in build.properties</fail>
+    <mkdir dir="${WEBAPP_EXPLODED_HOME}/WEB-INF"/>
+    <copy file="${src.config.dir}/master.properties" tofile="${FILE_LIBRARY_HOME}/build.properties" overwrite="false"/>
+    <echo message="Exploded webapp path: ${WEBAPP_EXPLODED_HOME}" />
+    <echo message="File library path: ${FILE_LIBRARY_HOME}" />
+    <uptodate property="FAIL_ON_OUTDATED_PROPERTIES"
+            srcfile="${src.config.dir}/master.properties"
+            targetfile="${FILE_LIBRARY_HOME}/build.properties"/>
+    <fail unless="FAIL_ON_OUTDATED_PROPERTIES">Initialization aborted${lf}${lf}The build.properties file might be out of date.  Compare and update the site copy with the source template, making any necessary changes.${lf}${lf}Site File: ${FILE_LIBRARY_HOME}/build.properties${lf}Source Template: ${src.config.dir}/master.properties</fail>
+  </target>
+
+  <target name="deploy.jasper.check" depends="init.classpath">
+    <uptodate property="deploy.jasper.uptodate">
+      <srcfiles dir="${src.web.dir}/WEB-INF/reports" includes="*.xml"/>
+      <mapper type="merge" to="${WEBAPP_EXPLODED_HOME}/WEB-INF/reports/project_ticket_trend.jasper"/>
+    </uptodate>
+  </target>
+
+  <target name="deploy.jasper" depends="deploy.jasper.check,taskdef.jasper" unless="deploy.jasper.uptodate">
+    <!-- Copy the jasperreports, only if new -->
+    <copy todir="${WEBAPP_EXPLODED_HOME}/WEB-INF/reports" verbose="true">
+      <fileset dir="${src.web.dir}/WEB-INF/reports">
+        <include name="*.xml"/>
+      </fileset>
+    </copy>
+    <!-- The old .jasper file must be removed when a new .xml is copied -->
+    <delete>
+      <fileset dir="${WEBAPP_EXPLODED_HOME}/WEB-INF/reports" includes="*.jasper"/>
+    </delete>
+    <!-- Compile the reports -->
+    <compileJasperReport
+      srcdir="${WEBAPP_EXPLODED_HOME}/WEB-INF/reports"
+      destdir="${WEBAPP_EXPLODED_HOME}/WEB-INF/reports"/>
+  </target>
+
+  <!-- Delete outdated files -->
+  <target name="deploy.delete" description="Removes outdated files from web application">
+    <delete verbose="true">
+      <fileset dir="${WEBAPP_EXPLODED_HOME}" includesfile="build.cleanup"/>
+    </delete>
+  </target>
+
+  <target name="deploy.copy" description="Copies all files to the deployment directory">
+    <!-- Copy the jars -->
+    <copy todir="${WEBAPP_EXPLODED_HOME}/WEB-INF/lib" verbose="true">
+      <fileset dir="${lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${WEBAPP_EXPLODED_HOME}/WEB-INF/lib" verbose="true">
+      <fileset dir="${project.build.directory}/lib">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+    <!-- Copy the resources -->
+    <copy todir="${WEBAPP_EXPLODED_HOME}/WEB-INF/classes" verbose="true">
+      <fileset dir="${src.resources.dir}">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+    <!-- Copy the web data -->
+    <copy todir="${WEBAPP_EXPLODED_HOME}" verbose="true">
+      <fileset dir="${src.web.dir}">
+        <include name="**"/>
+      </fileset>
+    </copy>
+    <!-- Custom email templates can go in the fileLibrary -->
+    <mkdir dir="${FILE_LIBRARY_HOME}/1/email"/>
+  </target>
+
+  <!-- See if there is an updated file to merge -->
+  <target name="deploy.merge.prepare" depends="compile">
+    <!-- Generate a new ITEAM_HOME web.xml if any of the following: -->
+    <!-- 1. cvs web.xml is newer than ITEAM_HOME web.xml -->
+    <!-- 2. ITEAM_HOME build.properties is newer than ITEAM_HOME web.xml -->
+    <!-- 3. Any of the CFS_HOME xml or tld files are newer than CFS_HOME web.xml -->
+    <condition property="deploy.merge.uptodate">
+      <and>
+        <available file="${WEBAPP_EXPLODED_HOME}/WEB-INF/web.xml"/>
+        <available file="build.properties"/>
+        <uptodate srcfile="${src.web.dir}/WEB-INF/web.xml" targetfile="${WEBAPP_EXPLODED_HOME}/WEB-INF/web.xml"/>
+        <uptodate srcfile="${project.build.directory}/lib/${project.build.finalName}.jar" targetfile="${WEBAPP_EXPLODED_HOME}/WEB-INF/web.xml"/>
+        <uptodate targetfile="${WEBAPP_EXPLODED_HOME}/WEB-INF/web.xml">
+          <srcfiles dir="${WEBAPP_EXPLODED_HOME}/WEB-INF" includes="*.xml,*.tld,*.properties" excludes="web.xml"/>
+        </uptodate>
+      </and>
+    </condition>
+  </target>
+
+  <!-- Merge meta-data with build.properties, only if changed so reload doesn't kick in -->
+  <target name="deploy.merge" depends="deploy.merge.prepare" unless="deploy.merge.uptodate">
+    <copy file="${src.web.dir}/WEB-INF/web.xml" todir="${WEBAPP_EXPLODED_HOME}/WEB-INF" overwrite="true" verbose="true"/>
+  </target>
+
+  <!-- See if there are any customizations -->
+  <target name="deploy.customizations.prepare" depends="prepare" if="CUSTOMIZATIONS.PATH">
+    <condition property="deploy.customizations.exists">
+      <available file="${CUSTOMIZATIONS.PATH}/README.txt"/>
+    </condition>
+  </target>
+
+  <target name="deploy.customizations" depends="deploy.customizations.prepare" if="deploy.customizations.exists">
+    <echo message="Customizations path: ${CUSTOMIZATIONS.PATH}"/>
+    <!-- JSPs -->
+    <copy todir="${WEBAPP_EXPLODED_HOME}" verbose="true" overwrite="true">
+      <fileset dir="${CUSTOMIZATIONS.PATH}/src/web/jsp">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <!-- Resources -->
+    <copy todir="${WEBAPP_EXPLODED_HOME}/WEB-INF/classes" verbose="true" overwrite="true">
+      <fileset dir="${CUSTOMIZATIONS.PATH}/src/resources">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    <!-- Images, Javascript, CSS, and WEB-INF -->
+    <copy todir="${WEBAPP_EXPLODED_HOME}" verbose="true" overwrite="true">
+      <fileset dir="${CUSTOMIZATIONS.PATH}/src/web">
+        <include name="images/**" />
+        <include name="javascript/**" />
+        <include name="css/**" />
+        <include name="flash/**" />
+        <include name="themes/**" />
+        <include name="WEB-INF/**" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="deploy-webapp" depends="deploy.initialize,compile,deploy.delete,deploy.merge,deploy.jasper,deploy.copy,deploy.customizations" />
+
+
+
+
+  <!-- Run Database Scripts -->
+  <target name="install.prepare">
+    <fail unless="SITE.DBTYPE">build.properties requires SITE.DBTYPE</fail>
+    <fail unless="SITE.DRIVER">build.properties requires SITE.DRIVER</fail>
+    <fail unless="SITE.URL">build.properties requires SITE.URL</fail>
+    <fail unless="SITE.USER">build.properties requires SITE.USER</fail>
+    <fail unless="SITE.PASSWORD">build.properties requires SITE.PASSWORD</fail>
+  </target>
+
+  <target name="install.prepare.init" depends="install.prepare">
+    <!-- Copy template files to be used -->
+    <delete dir="${build.sql.dir}" failonerror="false"/>
+    <mkdir dir="${build.sql.dir}"/>
+    <copy todir="${build.sql.dir}">
+      <fileset dir="${src.web.dir}/WEB-INF/database/init">
+        <include name="*.sql" />
+      </fileset>
+    </copy>
+    <!-- Determine the database to execute the compatible tasks -->
+    <condition property="DBTYPE.POSTGRESQL">
+      <equals arg1="${SITE.DBTYPE}" arg2="${POSTGRESQL}" casesensitive="false" trim="true"/>
+    </condition>
+    <condition property="DBTYPE.MSSQL">
+      <equals arg1="${SITE.DBTYPE}" arg2="${MSSQL}" casesensitive="false" trim="true"/>
+    </condition>
+  </target>
+
+  <!-- Prepare the PostgreSQL files -->
+  <target name="install.check.postgresql" depends="install.prepare.init" if="DBTYPE.POSTGRESQL">
+    <echo message="SQL files prepared for database type: PostgreSQL"/>
+    <replace dir="${build.sql.dir}" token="@TRUE@" value="true">
+      <include name="*.sql"/>
+    </replace>
+    <replace dir="${build.sql.dir}" token="@FALSE@" value="false">
+      <include name="*.sql"/>
+    </replace>
+  </target>
+
+  <!-- Prepare the MicrosoftSQL files -->
+  <target name="install.check.mssql" depends="install.prepare.init" if="DBTYPE.MSSQL">
+    <echo message="SQL files prepared for database type: MSSQL"/>
+    <replace dir="${build.sql.dir}" token="@TRUE@" value="1">
+      <include name="*.sql"/>
+    </replace>
+    <replace dir="${build.sql.dir}" token="@FALSE@" value="0">
+      <include name="*.sql"/>
+    </replace>
+  </target>
+
+  <target name="installschema" depends="prepare,install.prepare.init,install.check.postgresql,install.check.mssql">
+    <!-- Create database and initialize data -->
+    <sql
+        driver="${SITE.DRIVER}"
+        url="${SITE.URL}"
+        userid="${SITE.USER}"
+        password="${SITE.PASSWORD}">
+      <classpath>
+        <path refid="web.classpath"/>
+      </classpath>
+      <!-- base data -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_db.sql"/>
+      <!-- project management -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project.sql"/>
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_blog.sql"/>
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_wiki.sql"/>
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_ads.sql"/>
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_badges.sql"/>
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_classifieds.sql"/>
+      <transaction src="${build.sql.dir}/project.sql"/>
+      <!-- task management -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_task.sql"/>
+      <transaction src="${build.sql.dir}/task.sql"/>
+      <!-- ticket management -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_ticket.sql"/>
+      <transaction src="${build.sql.dir}/ticket.sql"/>
+      <!-- orders/requests -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_order.sql"/>
+      <!-- timesheet -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_timesheet.sql"/>
+      <!-- translation -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_translation.sql"/>
+      <!-- reports -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_reports.sql"/>
+      <!-- XML/API -->
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_service.sql"/>
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_dashboard.sql"/>
+    </sql>
+    <delete dir="${build.sql.dir}" failonerror="false"/>
+  </target>
+
+  <target name="install.prepare.fileLibrary">
+    <fail unless="FILE_LIBRARY_HOME">build.properties requires a FILE_LIBRARY_HOME path</fail>
+  </target>
+
+  <target name="taskdef.upgradeDb" depends="install.prepare.fileLibrary,compile">
+    <taskdef name="upgradeDatabase"
+        classname="com.concursive.connect.ant.tasks.UpgradeDatabaseTask">
+        <classpath>
+          <pathelement location="${src.resources.dir}"/>
+          <pathelement location="${servletJar}"/>
+          <fileset dir="${build.lib.dir}">
+            <include name="*.jar"/>
+          </fileset>
+          <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+          </fileset>
+        </classpath>
+    </taskdef>
+  </target>
+
+  <!-- Insert required default data -->
+  <target name="installscripts" depends="taskdef.upgradeDb,install.prepare">
+    <upgradeDatabase
+        driver="${SITE.DRIVER}"
+        url="${SITE.URL}"
+        user="${SITE.USER}"
+        password="${SITE.PASSWORD}"
+        servletJar="${servletJar}"
+        webPath="${web.dir}"
+        baseFile="${src.database.dir}${fs}common${fs}install.bsh"
+        specificDatabase="${DATABASE.NAME}">
+    </upgradeDatabase>
+  </target>
+
+  <target name="installdefaults-userfirst" unless="userfirst">
+    <input message="First Name: " addproperty="userfirst"/>
+  </target>
+
+  <target name="installdefaults-userlast" unless="userlast">
+    <input message="Last Name: " addproperty="userlast"/>
+  </target>
+
+  <target name="installdefaults-useremail" unless="useremail">
+    <input message="Email address: " addproperty="useremail"/>
+  </target>
+
+  <target name="installdefaults-userpass" unless="userpass">
+    <input message="Temporary password (change it later): " addproperty="userpass"/>
+  </target>
+
+  <!-- Insert required default data -->
+  <!-- Needs a java process because of complex xml classloading -->
+  <target name="installdefaults" depends="taskdef.upgradeDb,install.prepare,installdefaults-userfirst,installdefaults-userlast,installdefaults-useremail,installdefaults-userpass">
+    <path id="upgradeDatabaseTask.classpath">
+      <pathelement location="${src.resources.dir}"/>
+      <pathelement location="${servletJar}"/>
+      <fileset dir="${lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${build.lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
+    <fail unless="TITLE">build.properties requires TITLE</fail>
+    <fail unless="DESCRIPTION">build.properties requires DESCRIPTION</fail>
+    <fail unless="KEYWORDS">build.properties requires KEYWORDS</fail>
+    <fail unless="PURPOSE">build.properties requires PURPOSE</fail>
+    <java failOnError="true" dir="${basedir}"
+          classname="com.concursive.connect.web.modules.setup.utils.SetupUtils"
+          classpathref="upgradeDatabaseTask.classpath" fork="true">
+      <arg value="${SITE.DRIVER}"/>
+      <arg value="${SITE.URL}"/>
+      <arg value="${SITE.USER}"/>
+      <arg value="${SITE.PASSWORD}"/>
+      <arg value="${FILE_LIBRARY_HOME}/1/"/>
+      <arg value="${TITLE}"/>
+      <arg value="${DESCRIPTION}"/>
+      <arg value="${KEYWORDS}"/>
+      <arg value="${PURPOSE}"/>
+      <arg value="${userfirst}"/>
+      <arg value="${userlast}"/>
+      <arg value="${useremail}"/>
+      <arg value="${userpass}"/>
+    </java>
+  </target>
+
+  <target name="installdb" depends="installschema,installscripts,installdefaults"/>
+
+  <target name="dbparam" unless="arg1">
+    <input message="Enter file date to process, include the file extension (or use 'all' to auto-upgrade) : " addproperty="arg1"/>
+  </target>
+
+  <target name="upgradedb" depends="taskdef.upgradeDb,dbparam,install.prepare"
+    description="Upgrades the database with a specified script file">
+    <!-- TODO: Handle the web.dir -->
+    <upgradeDatabase
+        driver="${SITE.DRIVER}"
+        url="${SITE.URL}"
+        user="${SITE.USER}"
+        password="${SITE.PASSWORD}"
+        servletJar="${servletJar}"
+        webPath="${web.dir}"
+        libPath="${lib.dir}"
+        baseFilePath="${src.database.dir}${fs}"
+        baseFile="${arg1}"
+        specificDatabase="${DATABASE.NAME}">
+    </upgradeDatabase>
+  </target>
+
+
+
+
+  <!-- Deploy to Tomcat -->
+  <target name="tomcat.tasks" depends="initialize" if="TYPE.CATALINA">
+    <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
+      <classpath>
+        <fileset dir="${CATALINA_HOME}/server/lib">
+          <include name="catalina-ant.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+    <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask">
+      <classpath>
+        <fileset dir="${CATALINA_HOME}/server/lib">
+          <include name="catalina-ant.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+  </target>
+
+  <!-- Remotely deploy a Tomcat web application -->
+  <target name="deploy-tomcat" description="Deploys or redeploys the application to Apache Tomcat" depends="tomcat.tasks,package">
+    <fail unless="DEPLOY.URL">Initialization aborted, DEPLOY.URL is a required property</fail>
+    <fail unless="DEPLOY.USER">Initialization aborted, DEPLOY.USER is a required property</fail>
+    <fail unless="DEPLOY.PASS">Initialization aborted, DEPLOY.PASS is a required property</fail>
+    <fail unless="DEPLOY.CONTEXT">Initialization aborted, DEPLOY.CONTEXT is a required property</fail>
+    <undeploy url="${DEPLOY.URL}" failOnError="false" username="${DEPLOY.USER}" password="${DEPLOY.PASS}" path="${DEPLOY.CONTEXT}"/>
+    <deploy url="${DEPLOY.URL}" username="${DEPLOY.USER}" password="${DEPLOY.PASS}" path="${DEPLOY.CONTEXT}" war="file:${dist.dir}/${project.war.finalName}.war"/>
+  </target>
+
+
+
+
+  <!-- Create tools distribution -->
+  <target name="package-tools" description="Package the Client Tools archive" depends="compile,tools.archive">
+  </target>
+
+  <target name="tools.archive">
+    <property name="tools.name" value="concourseconnect-tools" />
+    <property name="tools.version" value="${DSTAMP}" />
+    <property name="tools.dist.dir" value="${project.build.directory}/${tools.name}"/>
+    <delete dir="${tools.dist.dir}" />
+    <!-- Create the distributable .zip file -->
+    <zip destfile="${tools.dist.dir}/${tools.name}.zip">
+      <!-- main directory -->
+      <zipfileset dir="${basedir}/support/api" includes="README.txt" prefix="${tools.name}" />
+      <zipfileset dir="${basedir}/src/main/resources" includes="object_map.xml" prefix="${tools.name}" />
+      <zipfileset dir="${basedir}/lib" includes="concursive-commons*.jar" prefix="${tools.name}" />
+      <zipfileset dir="${basedir}/lib" includes="sjsxp-*.jar" prefix="${tools.name}" />
+      <zipfileset dir="${basedir}/lib" includes="jsr173_*.jar" prefix="${tools.name}" />
+      <zipfileset dir="${tools.dist.dir}" includes="${tools.name}-${tools.version}.jar" prefix="${tools.name}" />
+    </zip>
+  </target>
+
+</project>

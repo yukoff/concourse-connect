@@ -1,0 +1,67 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/lib/servlet-api.jar:lib/bliki-3.0.1.jar:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar:lib/postgresql-8.3-603.jdbc3.jar bsh.Interpreter "$0" "$@"
+
+import com.zeroio.iteam.utils.*;
+import com.zeroio.iteam.beans.*;
+import com.zeroio.iteam.base.*;
+
+import org.aspcfs.utils.DatabaseUtils;
+import com.zeroio.controller.ConnectionPool;
+import com.zeroio.controller.ConnectionElement;
+
+import java.sql.*;
+
+String CRLF = System.getProperty("line.separator");
+String fs = System.getProperty("file.separator");
+
+//String url = "jdbc:postgresql://127.0.0.1:5432/iteam-sprints";
+String url = "jdbc:postgresql://192.168.11.212:5432/iteam-community";
+String user = "postgres";
+String password = "";
+String driver = "org.postgresql.Driver";
+
+// Create a Connection Pool
+ConnectionPool sqlDriver = new ConnectionPool();
+sqlDriver.setDebug(false);
+sqlDriver.setTestConnections(false);
+sqlDriver.setAllowShrinking(true);
+sqlDriver.setMaxConnections(2);
+sqlDriver.setMaxIdleTime(60000);
+sqlDriver.setMaxDeadTime(300000);
+
+// Create a connection
+ConnectionElement ce = new ConnectionElement(url, user, password);
+ce.setDriver(driver);
+Connection db = sqlDriver.getConnection(ce);
+
+void cloneProject(int id) {
+  CloneBean bean = new CloneBean();
+  bean.setProjectId(id);
+  bean.setCloneNews(true);
+  bean.setCloneNewsCategories(true);
+
+  // Need to retrieve project admin
+  int USER_ID = 2;
+
+  Project clonedProject = ProjectCopier.clone(bean, db, 1, USER_ID);
+
+  if (clonedProject.getId() > id) {
+    PreparedStatement pst = db.prepareStatement(
+      "UPDATE projects SET language_id = 2, approvaldate = CURRENT_TIMESTAMP WHERE project_id = ?");
+    pst.setInt(1, clonedProject.getId());
+    pst.execute();
+    pst.close();
+  }
+}
+
+cloneProject(163);
+cloneProject(164);
+cloneProject(165);
+cloneProject(166);
+cloneProject(167);
+cloneProject(168);
+cloneProject(169);
+
+sqlDriver.free(db);
+print("");
+System.exit(0);

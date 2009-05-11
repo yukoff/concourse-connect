@@ -1,0 +1,54 @@
+import java.sql.*;
+import java.util.*;
+import com.zeroio.iteam.base.*;
+import org.aspcfs.utils.web.PagedListInfo;
+import com.zeroio.utils.*;
+
+// Get the permissions to be added to projects
+PermissionLookupList permissionList = new PermissionLookupList();
+permissionList.setPermission("project-profile-images-add");
+permissionList.buildList(db);
+
+PermissionLookup thisPermission = (PermissionLookup) permissionList.get(0);
+
+// Page through the updates just in case there are lots of projects do 100 at a time...
+PagedListInfo pagedListInfo = new PagedListInfo();
+pagedListInfo.setItemsPerPage(100);
+pagedListInfo.setDefaultSort("project_id", null);
+
+// Use the paged list to populate it with the list criteria
+ProjectList projects = new ProjectList();
+projects.setPortalState(Constants.FALSE);
+projects.setPagedListInfo(pagedListInfo);
+projects.setBuildPermissions(true);
+projects.buildList(db);
+
+System.out.println("Total projects to process: " + pagedListInfo.getMaxRecords());
+
+int count = 0;
+while (projects.size() > 0) {
+  System.out.println(" Page: " + pagedListInfo.getPage() + " of " + pagedListInfo.getNumberOfPages());
+
+  for (Project project : projects) {
+    if (project.getPermissions().get(permissionList.getPermission()) != null) {
+      continue;
+    }
+
+    // Insert the permission
+    Permission permission = new Permission();
+    permission.setProjectId(project.getId());
+    permission.setPermissionId(thisPermission.getId());
+    permission.setUserLevel(thisPermission.getDefaultRole());
+    permission.insert(db);
+    ++count;
+  }
+
+  // Always reset the project list or else they are included on buildList again
+  projects.clear();
+  if (pagedListInfo.getPage() < pagedListInfo.getNumberOfPages()) {
+      pagedListInfo.setCurrentPage(pagedListInfo.getPage() + 1);
+      projects.buildList(db);
+  }
+}
+
+System.out.println("   Total projects updated: " + count);

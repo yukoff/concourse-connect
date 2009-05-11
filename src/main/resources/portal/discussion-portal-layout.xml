@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<module>
+  <navigation>
+    <!-- Discussion Forums -->
+    <page name="forum-list">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Create a Forum</content>
+                  <title>Create a forum for ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/forum</href>
+                  <permission>project-discussion-forums-add</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DiscussionPortlet" viewer="forum-list" class="basic-list ">
+            <title>${project.features.labelDiscussion}</title>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to use discussions</h3>
+                <ol>
+                  <li>Select the forum topic or create a new one for your own business or group.</li>
+                  <li>Reply to a question or comment someone has posted.</li>
+                  <li>Press Save.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or respond to discussions?</h3>
+                <ol>
+                  <li>Anyone can respond to a forum topic.</li>
+                  <li>A manager can make a new forum.</li>
+                  <li>Everyone can read discussion messages.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why use discussions?</h3>
+                <p>The discussion area is a great place for networking, getting advice, sharing an opinion or answering questions.  The site is populated with topics, called forums, that help visitors ask questions or make comments in an organized manner.   Anyone can ask questions or share insights and views about your business or organization.    Not only can you answer questions, but this area allows others to answer or comment.   This area is the place where people are actively engaged with each other.</p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <!-- Form -->
+    <page name="forum-form">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Create a Forum</content>
+                  <title>Create a forum for ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/forum</href>
+                  <permission>project-discussion-forums-add</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DiscussionPortlet" viewer="forum-form" class="basic-list ">
+            <title>${project.features.labelDiscussion}</title>
+          </portlet>
+        </column>
+        <!--
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              Average rating and last reviewed date goes here...
+            </content>
+          </portlet>
+        </column>
+        -->
+      </row>
+    </page>
+
+    <!-- Discussion -->
+    <page name="topic-list">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Add a Topic</content>
+                  <title>Add a topic for ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/topic?forum=${forum.id}</href>
+                  <permission>project-discussion-topics-add</permission>
+                ]]>
+              </value>
+            </urls>
+            <portlet-events>
+              <consumes-data>forum</consumes-data>
+            </portlet-events>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DiscussionPortlet" viewer="topic-list" class="basic-list ">
+            <title>${project.features.labelDiscussion}</title>
+            <portlet-events>
+              <generates-data>forum</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to use the Discussion</h3>
+                <ol>
+                  <li>Select the forum topic or create a new one for your own business or group.</li>
+                  <li>Reply to a question or comment someone has posted.</li>
+                  <li>Press Save.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can add or respond to the Discussion?</h3>
+                <ol>
+                  <li>Anyone can respond to a forum topic.</li>
+                  <li>A manager can make a new forum.</li>
+                  <li>Everyone can read the discussion.</li>
+                </ol>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why use the Discussion?</h3>
+                <p>The Discussion area is a great place for networking, getting advice, sharing an opinion or answering questions.  The site is populated with topics, called forums, that help visitors ask questions or make comments in an organized manner.   Anyone can ask questions or share insights and views about your business or organization.    Not only can you answer questions, but this area allows others to answer or comment.   This area is the place where people are actively engaged with each other.</p>
+              ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <page name="topic-form">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Add a Topic</content>
+                  <title>Add a topic for ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/topic</href>
+                  <permission>project-discussion-topics-add</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DiscussionPortlet" viewer="topic-form" class="basic-list ">
+            <title>${project.features.labelDiscussion}</title>
+          </portlet>
+        </column>
+        <!--<column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              Average rating and last reviewed date goes here...
+            </content>
+          </portlet>
+        </column>-->
+      </row>
+    </page>
+    <!-- Discussion -->
+    <page name="reply-list">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Post a Reply</content>
+                  <title>Add a reply for ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/reply?topic=${topic.id}</href>
+                  <permission>project-discussion-replies-add</permission>
+                ]]>
+              </value>
+            </urls>
+            <portlet-events>
+              <consumes-data>topic</consumes-data>
+            </portlet-events>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DiscussionPortlet" viewer="reply-list">
+            <title>${project.features.labelDiscussion}</title>
+            <portlet-events>
+              <generates-data>topic</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[<div class="portletWrapper marketingInfo">
+                <h3>How to use the Discussion</h3>
+                <ol>
+                  <li>Select the forum topic or create a new one for your own business or group.</li>
+                  <li>Reply to a question or comment someone has posted.</li>
+                  <li>Press Save.</li>
+                </ol>
+              </div>]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[<div class="portletWrapper marketingInfo">
+                <h3>Who can add or respond to the Discussion?</h3>
+                <ol>
+                  <li>Anyone can respond to a forum topic.</li>
+                  <li>A manager can make a new forum.</li>
+                  <li>Everyone can read the discussion.</li>
+                </ol>
+              </div>]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[<div class="portletWrapper marketingInfo">
+                <h3>Why use the Discussion?</h3>
+                <p>The Discussion area is a great place for networking, getting advice, sharing an opinion or answering questions.  The site is populated with topics, called forums, that help visitors ask questions or make comments in an organized manner.   Anyone can ask questions or share insights and views about your business or organization.    Not only can you answer questions, but this area allows others to answer or comment.   This area is the place where people are actively engaged with each other.</p>
+              </div>]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <page name="reply-form">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Post a Reply</content>
+                  <title>Add a reply for ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/reply</href>
+                  <permission>project-discussion-replies-add</permission>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DiscussionPortlet" viewer="reply-form">
+            <title>${project.features.labelDiscussion}</title>
+          </portlet>
+        </column>
+        <!--<column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              Average rating and last reviewed date goes here...
+            </content>
+          </portlet>
+        </column>-->
+      </row>
+    </page>
+  </navigation>
+</module>

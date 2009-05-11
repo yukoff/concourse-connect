@@ -1,0 +1,9 @@
+import java.sql.*;
+
+PreparedStatement pst = db.prepareStatement(
+ "INSERT INTO lookup_project_language (language_name, language_locale, default_item) VALUES " +
+ "('United States - English', 'en_US', ?);"
+);
+pst.setBoolean(1, true);
+pst.execute();
+pst.close();

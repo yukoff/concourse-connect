@@ -1,0 +1,73 @@
+/*
+ * file information
+ * style type: concoursconnect color scheme : purple
+ * version:    1
+ * date:       20090301
+ * author:     concursive.com
+ * notes:      purple site color theme
+ *
+ */
+
+ body {
+   background:#ddd;
+ }
+
+.ccp-container {
+
+}
+
+.ccp-header {
+  background:#612b8d url(../images/1x40_purple.jpg) 0 0 repeat-x;
+  border-left:2px solid #aaa;
+  border-right:2px solid #aaa;
+}
+
+  .ccp-header h1,
+  .ccp-search-form {
+    color:#fff;
+  }
+
+.ccp-body {
+  background:#fff;
+  border-width:0 2px 2px 2px;
+  border-color:#aaa;
+  border-style:solid;
+}
+
+  .ccp-navigation {
+    background:#000;
+  }
+
+    .ccp-navigation ul li a {
+      color:#ddd;
+    }
+
+    .ccp-navigation ul li em {
+     
+    }
+
+    .ccp-navigation ul li a.active,
+    .ccp-navigation ul li a:hover {
+      background:#dedede;
+      -moz-border-radius:5px;
+      -webkit-border-radius:5px;
+      color:#000;
+    }
+
+      .ccp-navigation ul li a.active em {
+        color:#000;
+      }
+
+.ccp-footer {
+	background: none;
+	border-bottom: none;
+}
+
+.ccp-alert,
+.ccp-alert a {
+  color:#eee
+}
+
+.ccp-alert a:hover {
+  color:#fff
+}

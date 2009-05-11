@@ -1,0 +1,5 @@
+# 2008-08-12.txt
+# This script upgrades the 3.3 production database to 4.0
+
+2008-08-12-script01-kailash.sql
+2008-08-12-script01-matt.sql

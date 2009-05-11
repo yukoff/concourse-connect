@@ -1,0 +1,175 @@
+/*
+ * FILE INFORMATION
+ * Style Type: Typography
+ * Version:    1
+ * Date:       20090301
+ * Author:     concursive.com
+ * Notes:
+ *
+ */
+
+/* Universal Font Stacks
+*/
+
+body {
+  /* Set default body color */
+    color:#333;
+
+  /* Set default body text-size */
+    /* Default to 10px
+      font-size:62.3%;
+    */
+    /* Default to 11px */
+      font-size:72%;
+      _font-size:68%;
+    /* Default to 12px
+      font-size:83.4%;
+    */
+
+  /* Standard Sans Font-Stack */
+    font-family: Helvetica, Verdana, Arial, sans-serif;
+  /* Fancy Sans Font-Stack
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family:Trebuchet, Lucida Sans Unicode, Lucida Grande, Lucida Sans, Arial, sans-serif;
+    font-family: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
+  */
+  /* Serif Font-Stack
+    font-family:Georgia, Garamond, serif;
+    /* Reset Spacing for serif font-families
+      letter-spacing:.025em;
+  */
+  /* Make font-weight lighter*/
+    font-weight:normal;
+  /* Increase line-heights for better-spacing and easier reading */
+    line-height:150%;
+  /* Letter Spacing : make it glanceable */
+    letter-spacing:.005em;
+}
+
+/* Reset bold types
+*/
+
+b, em, dt {
+  font-weight:bold;
+
+}
+
+/* Reset line-height for pre and code
+*/
+
+pre, code {
+  line-height:125%;
+}
+
+
+/* Optional Header Reset
+*/
+
+h1 {
+  font-size:150%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* Font Family */
+    /* Fancy Sans Font-Stack*/ 
+      font-family: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
+    
+    /* Serif Family */
+      /* font-family:Georgia, Garamond, serif;
+      Make Serif's readable
+      font-size: 120%;*/ 
+      /* Reset Spacing for serif font-families 
+      letter-spacing:.035em;*/
+      font-weight:900;
+      _font-size:130%;
+      _line-height:200%;
+      
+}
+
+h1#ccp-header-title-item-id,
+h2.fn  {
+    font-weight:300;
+    /* Fancy Sans Font-Stack 
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif; */
+    /* Reset Spacing for serif font-families
+     letter-spacing:.05em; */
+}
+
+.profile-header .portlet-section-body .vcard h2.fn span {
+  font-size:67%;
+}
+
+h1#ccp-header-title-item-id a {
+  text-decoration:none;
+}
+
+h1#ccp-header-title-item-id {
+  _padding:10px;
+  _font-size:225%;
+}
+
+  
+  /* reset child headings */
+  ol h3,
+  ul h3,
+  ol h4,
+  ul h4,
+  ol h5,
+  ul h5,
+  ol h6,
+  ul h6 {
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+	font-size:110%;
+	font-weight: 300;
+}
+  
+
+/* Tag Cloud Font Sizes and Dim */
+
+.portlet-text-1,
+.tagClound1 {
+  font-size:100%;
+  opacity:.70;
+}
+
+.portlet-text-2,
+.tagClound2 {
+  font-size:110%;
+  opacity:.8;
+}
+
+.portlet-text-3,
+.tagClound3 {
+  font-size:125%;
+  opacity:.85;
+}
+
+.portlet-text-4,
+.tagClound4 {
+  font-size:150%;
+  opacity:.9;
+}
+
+.portlet-text-5,
+.tagClound5 {
+  font-size:175%;
+  opacity:.95;
+}
+
+.portlet-text-6,
+.tagClound6 {
+  font-size:200%;
+}
+
+.portlet-text-dim {
+  opacity:.5;
+}
+
+
+/* Tincy MCE Editor Support */
+
+.articleBody h2 {
+  font-family:Verdana,Arial,Helvetica,sans-serif;
+  font-size: 130%;
+}
+

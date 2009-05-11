@@ -1,0 +1,863 @@
+<?xml version="1.0" ?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<workflow>
+  <!-- Hooks decide which items can be triggered, so if there is code
+  that executes the WorkflowManager when a ticket is updated or inserted,
+  the corresponding process is activated -->
+  <hooks>
+    <hook class="com.concursive.connect.web.modules.profile.dao.Project">
+      <actions>
+        <action type="select" process="concursive.project.recordview"/>
+        <action type="insert" process="concursive.project.geocode"/>
+        <action type="insert" process="concursive.project.attachWikiFromTemplate"/>
+        <action type="insert" process="concursive.project.attachDiscussionForums"/>
+        <action type="insert" process="concursive.project.attachDocumentFolders"/>
+        <action type="insert" process="concursive.project.attachLists"/>
+        <!--
+        <action type="insert" process="concursive.project.saveProjectInSuite"/>
+        -->
+        <action type="update" process="concursive.project.geocode"/>
+        <!--
+        <action type="delete" process="concursive.project.deleteProjectFromSuite"/>
+        -->
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.issues.dao.Ticket">
+      <actions>
+        <action type="select" process="concursive.ticket.recordview"/>
+        <action type="insert" process="concursive.ticket.insert"/>
+        <action type="update" process="concursive.ticket.update"/>
+        <action type="delete" process="concursive.ticket.delete"/>
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.blog.dao.BlogPost">
+      <actions>
+        <action type="select" process="concursive.newsArticle.recordview"/>
+        <action type="insert" process="concursive.newsArticle.notify"/>
+        <action type="update" process="concursive.newsArticle.notify"/>
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.blog.dao.BlogPostList">
+      <actions>
+        <action type="select" process="concursive.newsArticleList.recordview"/>
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.wiki.dao.Wiki">
+      <actions>
+        <action type="select" process="concursive.wiki.recordview"/>
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.register.beans.RegisterBean" module="Register">
+      <actions>
+        <action type="insert" process="concursive.register.insert"/>
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.discussion.dao.Topic">
+      <actions>
+        <action type="select" process="concursive.issue.recordview"/>
+        <action type="insert" process="concursive.issue.insert"/>
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.discussion.dao.Reply">
+      <actions>
+        <action type="insert" process="concursive.issueReply.insert"/>
+      </actions>
+    </hook>
+    <!--
+    <hook class="com.concursive.connect.web.modules.profile.beans.ProjectFormBean">
+      <actions>
+        <action type="insert" process="concursive.project.claimed.updateAsAccountInSuite"/>
+      </actions>
+    </hook>
+    -->
+    <hook class="com.concursive.connect.web.modules.members.dao.TeamMember">
+      <actions>
+        <!--
+        Add this to notify the teamMember.enteredBy that someone accepted/rejected
+        an invitation.
+        <action type="update" process="concursive.teamMember.statusChanged"/>
+        -->
+        <!--
+        <action type="insert" process="concursive.teamMember.saveAsLeadInSuite"/>
+        -->
+        <action type="insert" process="concursive.teamMember.sendRequestToBecomeMember"/>
+        <action type="update" process="concursive.teamMember.sendReplyToRequestToBecomeMember"/>
+        <action type="insert" process="concursive.teamMember.sendInvitationToUser"/>
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.messages.dao.PrivateMessage">
+      <actions>
+        <action type="insert" process="concursive.privateMessage.sendMessageToMembers"/>
+      </actions>
+     </hook>
+    <hook class="com.concursive.connect.web.modules.contactus.dao.ContactUsBean" module="Contact Us">
+      <actions>
+        <action type="insert" process="connect.contactus.insert"/>
+      </actions>
+    </hook>
+  </hooks>
+  <!-- Each process describes the workflow for the various object and action
+    that is being hooked-->
+  <processes>
+    <process name="concursive.ticket.insert" description="New ticket process" startId="1" type="OBJECT_EVENT" module="Project Management">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.issues.workflow.LoadTicketDetails" enabled="true"/>
+        <!-- Notify about a new closed ticket -->
+        <component id="2" parent="1" class="com.concursive.connect.web.modules.issues.workflow.QueryTicketJustClosed"/>
+        <component id="3" parent="2" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.excludeUsers" value="${this.enteredBy}"/>
+            <parameter name="notification.subject">Ticket Closed: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has been added and closed:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html}<br />
+Severity: ${ticketSeverityLookup.description:html}<br />
+Issue: ${this.problem:html}<br />
+<br />
+Comment: ${this.comment:html}<br />
+<br />
+Closed by: ${ticketModifiedByContact:html}<br />
+<br />
+Solution: ${this.solution:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+        <!-- Notify about a new assigned ticket -->
+        <component id="4" parent="2" if="false" class="com.concursive.connect.web.modules.issues.workflow.QueryTicketJustAssigned"/>
+        <component id="5" parent="4" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.userToNotify" value="${this.assignedTo}"/>
+            <parameter name="notification.excludeUsers" value="${this.enteredBy}"/>
+            <parameter name="notification.subject">Ticket Assigned: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has been assigned:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Assigned To: ${ticketAssignedToContact:html}<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html}<br />
+Severity: ${ticketSeverityLookup.description:html}<br />
+Issue: ${this.problem:html}<br />
+<br />
+Assigned By: ${ticketModifiedByContact:html}<br />
+Comment: ${this.comment:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+        <!-- Notify about a new unassigned ticket -->
+        <component id="6" parent="4" if="false" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.excludeUsers" value="${this.enteredBy}"/>
+            <parameter name="notification.subject">Unassigned Ticket Added: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has been added, but not assigned:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html}<br />
+Severity: ${ticketSeverityLookup.description:html}<br />
+Issue: ${this.problem:html}<br />
+<br />
+Entered By: ${ticketEnteredByContact:html}<br />
+Comment: ${this.comment:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <!-- Updated tickets -->
+    <process name="concursive.ticket.update" description="Updated ticket process" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.issues.workflow.LoadTicketDetails"/>
+        <!-- Notify about a closed ticket -->
+        <component id="3" parent="1" if="true" class="com.concursive.connect.web.modules.issues.workflow.QueryTicketJustClosed"/>
+        <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.users.to" value="${previous.enteredBy}, ${this.assignedTo}, ${previous.assignedTo}"/>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.excludeUsers" value="${this.modifiedBy}"/>
+            <parameter name="notification.subject">Ticket Closed: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has been updated and closed:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html}<br />
+Severity: ${ticketSeverityLookup.description:html}<br />
+Issue: ${this.problem:html}<br />
+<br />
+Comment: ${this.comment:html}<br />
+<br />
+Assigned to: ${ticketAssignedToContact:html}<br />
+Closed by: ${ticketModifiedByContact:html}<br />
+<br />
+Solution: ${this.solution:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+        <!-- Notify about a reassigned ticket -->
+        <component id="5" parent="3" if="false" class="com.concursive.connect.web.modules.issues.workflow.QueryTicketJustAssigned"/>
+        <component id="6" parent="5" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.users.to" value="${this.assignedTo}, ${previous.assignedTo}"/>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.excludeUsers" value="${this.modifiedBy}"/>
+            <parameter name="notification.subject">Ticket Reassigned: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has been reassigned:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Assigned To: ${ticketAssignedToContact:html}<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html}<br />
+Severity: ${ticketSeverityLookup.description:html}<br />
+Issue: ${this.problem:html}<br />
+<br />
+Assigned By: ${ticketModifiedByContact:html}<br />
+Comment: ${this.comment:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+        <!-- Notify about an unassigned ticket -->
+        <component id="7" parent="5" if="false" class="com.concursive.connect.web.modules.issues.workflow.QueryTicketJustUnassigned"/>
+        <component id="8" parent="7" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.users.to" value="${previous.assignedTo}"/>
+            <parameter name="notification.excludeUsers" value="${this.modifiedBy}"/>
+            <parameter name="notification.subject">Unassigned Ticket: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has been unassigned:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html}<br />
+Severity: ${ticketSeverityLookup.description:html}<br />
+Issue: ${this.problem:html}<br />
+<br />
+Modified By: ${ticketModifiedByContact:html}<br />
+Comment: ${this.comment:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+
+
+        <component id="9" parent="7" if="false" class="com.concursive.connect.web.modules.issues.workflow.QueryTicketJustUpdated"/>
+        <component id="10" parent="9" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.users.to" value="${previous.assignedTo}"/>
+            <parameter name="notification.excludeUsers" value="${this.modifiedBy}"/>
+            <parameter name="notification.subject">Updated Ticket: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has been updated:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html} ${ticketPriorityIsNew}<br />
+Severity: ${ticketSeverityLookup.description:html} ${ticketSeverityIsNew}<br />
+Issue: ${this.problem:html} ${ticketProblemIsNew}<br />
+<br />
+Modified By: ${ticketModifiedByContact:html}<br />
+Comment: ${this.comment:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+
+        <component id="11" parent="9" if="false" class="com.concursive.connect.web.modules.issues.workflow.QueryTicketHasNewComments"/>
+        <component id="12" parent="11" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.addTicketContactList" value="true"/>
+            <parameter name="notification.users.to" value="${previous.assignedTo}"/>
+            <parameter name="notification.excludeUsers" value="${this.modifiedBy}"/>
+            <parameter name="notification.subject">Comments for Ticket: #${this.projectTicketCount} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following project ticket has new comments:<br />
+<br />
+--- Ticket Details ---<br />
+<br />
+Project: ${project.title:html}<br />
+Ticket # ${this.projectTicketCount} (<a href="${secureUrl}/ProjectManagementTickets.do?command=Details&pid=${project.id}&id=${this.id}">view online</a>)<br />
+Priority: ${ticketPriorityLookup.description:html}<br />
+Severity: ${ticketSeverityLookup.description:html}<br />
+Issue: ${this.problem:html}<br />
+<br />
+Comments By: ${ticketModifiedByContact:html}<br />
+Comment: ${this.comment:html}<br />
+]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <!-- News Notification -->
+    <process name="concursive.newsArticle.notify" description="News notification" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.zeroio.iteam.components.LoadNewsDetails"/>
+        <!-- Add component to make sure article is new and released -->
+
+        <!-- Send to team members -->
+        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addMembersWithNotification" value="true"/>
+            <parameter name="notification.subject">${this.subject} [${project.title}]</parameter>
+            <parameter name="notification.body"><![CDATA[The following blog was posted:<br />
+<br />
+${this.subject:html} [${project.title:html}]<br />
+Submitted By: ${newsModifiedByContact:html}<br />
+<br />
+${this.intro:html}<br />
+<br />
+${this.message:html}<br />
+
+
+]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <!-- Project views -->
+    <process name="concursive.project.recordview" description="Project viewed" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.SaveProjectViewing"/>
+      </components>
+    </process>
+
+    <!-- Project Geocode -->
+    <process name="concursive.project.geocode" description="Set geocode value" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.SetProjectGeocode"/>
+      </components>
+    </process>
+
+    <!-- Project Wiki -->
+    <process name="concursive.project.attachWikiFromTemplate" description="Add a wiki from template" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.wiki.workflow.AttachWikiFromTemplate">
+          <parameters>
+            <parameter name="source" value="categoryId" />
+            <parameter name="template" value="Home" />
+            <parameter name="wiki" value="" />
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <!-- Project Discussion Forum -->
+    <process name="concursive.project.attachDiscussionForums" description="Add discussion forums" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.AttachDiscussionForumsFromTemplate">
+        </component>
+      </components>
+    </process>
+
+    <!-- Project Document Folder -->
+    <process name="concursive.project.attachDocumentFolders" description="Add document folders" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.documents.workflow.AttachDocumentFoldersFromTemplate">
+        </component>
+      </components>
+    </process>
+
+    <!-- Project Lists -->
+    <process name="concursive.project.attachLists" description="Add lists" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.lists.workflow.AttachListsFromTemplate">
+        </component>
+      </components>
+    </process>
+    
+    <process name="concursive.privateMessage.sendMessageToMembers" description="Send private message to team members" startId="1">
+      <components>
+          <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.LoadTeamMembersWithPermission">
+            <parameters>
+              <parameter name="project.permission" value="project-private-messages-view" />
+              <parameter name="projectId" value="${this.projectId}" />
+            </parameters>
+          </component>
+          <component id="2" parent="1"  if="true" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
+            <parameters>
+              <parameter name="projectId" value="${this.projectId}" />
+            </parameters>
+          </component>
+          <component id="3" parent="2" if="true" class="com.concursive.connect.web.modules.messages.workflow.SendPrivateMessageNotification">
+            <parameter name="url" value="${secureUrl}" />
+          </component>
+      </components>
+    </process>
+    <process name="concursive.project.deleteProjectFromSuite"
+             description="Update Concourse Suite to remove the account associated with a project" startId="1" >
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.workflow.components.crm.DeleteAsAccount">
+          <parameters>
+            <parameter name="lead.custom1" value="${previous.id}"/>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <process name="concursive.teamMember.sendRequestToBecomeMember" description="Send email to members with 'team member edit' permission when a user requests to become a member" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
+          <parameters>
+            <parameter name="teammember.status" value="6" />
+          </parameters>
+        </component>
+        <component id="2" parent="1"  if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+          <parameters>
+            <parameter name="userId" value="${this.userId}" />
+          </parameters>
+        </component>
+      	<component id="3" parent="2" class="com.concursive.connect.web.modules.members.workflow.LoadTeamMembersWithPermission">
+          <parameters>
+            <parameter name="project.permission" value="project-team-edit" />
+            <parameter name="projectId" value="${this.projectId}" />
+          </parameters>
+      	</component>
+        <component id="4" parent="3"  if="true" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
+          <parameters>
+            <parameter name="projectId" value="${this.projectId}" />
+          </parameters>
+        </component>
+        <component id="5" parent="4" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.subject">Request to become member from ${userInfo.nameFirstLast}</parameter>
+            <parameter name="notification.body"><![CDATA[
+              <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#ddd">
+                <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
+                  <tr>
+                    <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
+                      Hello,<br />
+                      <br />
+                      <p>${userInfo.nameFirstLast} has requested to be added to ${project.title}.</p>
+                      <p>You can view the status of all users, including those whose membership is pending <a href="${secureUrl}/show/${project.uniqueId}/members">here</a>.</p>
+                      <p>You may approve or deny their request for membership by clicking on the edit link by their name.</p>
+                    </td>
+                  </tr>
+                </table>
+                </body>]]>
+            </parameter>
+          </parameters>
+        </component>
+      </components>
+	</process>
+
+	<process name="concursive.teamMember.sendReplyToRequestToBecomeMember" description="Send email to user if he has been accepted or denied membership to a project" startId="1">
+     <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
+          <parameters>
+            <parameter name="projectId" value="${this.projectId}" />
+          </parameters>
+        </component>
+        <component id="2" parent="1"  class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+          <parameters>
+            <parameter name="userId" value="${this.userId}" />
+          </parameters>
+        </component>
+        <component id="3" parent="2" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatusChanged">
+          <parameters>
+            <parameter name="teammember.oldstatus" value="6" />
+            <parameter name="teammember.newstatus" value="-1" />
+          </parameters>
+        </component>
+        <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.userToNotify" value="${this.userId}"/>
+            <parameter name="notification.subject">Request to become member from ${project.title}</parameter>
+            <parameter name="notification.body">
+              <![CDATA[
+                <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
+                  <tr>
+                    <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
+                      Hello ${userInfo.nameFirstLast:html},<br />
+                      <br />
+                      <p>Your request to become a member of ${project.title:html} has been approved.</p>
+                      <p>You can visit the listing at:<br />
+                      <a href="${secureUrl}/show/${project.uniqueId:html}" target="_blank">${secureUrl}/show/${project.uniqueId:html}</a></p>
+                      </td>
+                    </tr>
+                </table>
+              ]]>
+            </parameter>
+          </parameters>
+        </component>
+        <component id="5" parent="3" if="false" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatusChanged">
+          <parameters>
+            <parameter name="teammember.oldstatus" value="6" />
+            <parameter name="teammember.newstatus" value="4" />
+          </parameters>
+        </component>
+        <component id="6" parent="5" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.userToNotify" value="${this.userId}"/>
+            <parameter name="notification.subject">Request to become a member of ${project.title}</parameter>
+            <parameter name="notification.body"><![CDATA[
+              <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
+                <tr>
+                  <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
+                    Hello ${userInfo.nameFirstLast:html},<br />
+                    <br />
+                    <p>Your request to become a member of ${project.title:html} has been denied.
+                    This means that the authorized individual chose not to approve your request.</p>
+                  </td>
+                </tr>
+              </table>
+            ]]></parameter>
+          </parameters>
+        </component>
+     </components>
+	</process>
+    <process name="concursive.teamMember.sendInvitationToUser" description="Send Invitation To user" startId="1">
+	    <components>
+	        <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
+	          <parameters>
+	            <parameter name="teammember.status" value="3" />
+	          </parameters>
+	        </component>
+		    <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.members.workflow.SendInvitationMessageToTeamMember">
+	          <parameters>
+	            <parameter name="url" value="${secureUrl}"/>
+	          </parameters>
+	        </component>
+	        <component id="3" parent="1" if="false" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
+	          <parameters>
+	            <parameter name="teammember.status" value="1" />
+	          </parameters>
+	        </component>
+		    <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.members.workflow.SendInvitationMessageToTeamMember">
+	          <parameters>
+	            <parameter name="url" value="${secureUrl}"/>
+	          </parameters>
+	        </component>
+	    </components>
+	</process>
+    <process name="concursive.teamMember.saveAsLeadInSuite" description="Update Concourse Suite" startId="1">
+      <components>
+      	<component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberNotificationEnabled" />
+        <component id="2" parent="1" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
+          <parameters>
+            <parameter name="teammember.status" value="6" />
+          </parameters>
+        </component>
+        <component id="3" parent="2" if="true" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberProjectCategory">
+          <parameters>
+            <parameter name="project.category" value="Businesses, Organizations, Groups" />
+          </parameters>
+        </component>
+        <component id="4" parent="3"  if="true" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
+          <parameters>
+            <parameter name="projectId" value="${this.projectId}" />
+          </parameters>
+        </component>
+        <component id="5" parent="4"  if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+          <parameters>
+            <parameter name="userId" value="${this.userId}" />
+          </parameters>
+        </component>
+        <component id="6" parent="5"  if="true" class="com.concursive.connect.workflow.components.crm.SaveAsLead">
+          <parameters>
+        	<parameter name="suite.url" value="${project.concursiveCRMUrl}" />
+        	<parameter name="suite.domainName" value="${project.concursiveCRMDomain}" />
+        	<parameter name="suite.code" value="${project.concursiveCRMCode}" />
+        	<parameter name="lead.source" value="connect321" />
+        	<parameter name="lead.custom1" value="${this.id}" />
+        	<parameter name="lead.firstName" value="${userInfo.firstName}" />
+        	<parameter name="lead.lastName" value="${userInfo.lastName}" />
+        	<parameter name="lead.company" value="${userInfo.company}" />
+        	<parameter name="lead.businessEmail" value="${userInfo.email}" />
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <process name="concursive.project.claimed.updateAsAccountInSuite" description="Update Concourse Suite" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.workflow.components.crm.UpdateAsAccount">
+          <parameters>
+            <parameter name="lead.source" value="connect321"/>
+            <parameter name="lead.custom1" value="${this.projectId}"/>
+            <parameter name="lead.stageName" value="Requested"/>
+            <parameter name="lead.firstName" value="${this.firstName}"/>
+            <parameter name="lead.lastName" value="${this.lastName}"/>
+            <parameter name="lead.company" value="${this.projectTitle}"/>
+            <parameter name="lead.businessEmail" value="${this.email}"/>
+            <parameter name="lead.addressline1" value="${this.addressLine1}"/>
+            <parameter name="lead.addressline2" value="${this.addressLine2}"/>
+            <parameter name="lead.addressline3" value="${this.addressLine3}"/>
+            <parameter name="lead.city" value="${this.city}"/>
+            <parameter name="lead.state" value="${this.state}"/>
+            <parameter name="lead.postalCode" value="${this.postalCode}"/>
+            <parameter name="lead.country" value="${this.country}"/>
+            <parameter name="lead.webPage" value="${this.webPage}"/>
+            <parameter name="lead.businessPhone" value="${this.phone}"/>
+            <parameter name="lead.businessFax" value="${this.fax}"/>
+        	  <parameter name="lead.notes"><![CDATA[More Information
+UserId: ${this.userId}
+Unique Id: ${this.uniqueId}
+User Notes: ${this.comments}]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <!-- Ticket views -->
+    <process name="concursive.ticket.recordview" description="Ticket viewed" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.issues.workflow.SaveTicketViewing"/>
+      </components>
+    </process>
+
+    <!-- News Article views -->
+    <process name="concursive.newsArticle.recordview" description="News article viewed" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.blog.workflow.SaveNewsArticleViewing"/>
+      </components>
+    </process>
+    <process name="concursive.newsArticleList.recordview" description="News article list viewed" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.blog.workflow.SaveNewsArticleListViewing"/>
+      </components>
+    </process>
+
+    <!-- Wiki views -->
+    <process name="concursive.wiki.recordview" description="Wiki viewed" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.wiki.workflow.SaveWikiViewing"/>
+      </components>
+    </process>
+
+    <!-- Forum views -->
+    <process name="concursive.issue.recordview" description="Issue viewed" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.SaveTopicViewing"/>
+      </components>
+    </process>
+
+    <!-- Forum subscriptions -->
+    <process name="concursive.issue.insert" description="New forum post" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.LoadTopicDetails"/>
+        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addForumContacts" value="true"/>
+            <!--
+            <parameter name="notification.excludeUsers" value="${this.enteredBy}"/>
+            -->
+            <parameter name="notification.subject">[${project.title}] ${this.subject}</parameter>
+            <parameter name="notification.body"><![CDATA[The following message was posted in the forums and sent at your request:<br />
+<br />
+<b>--- Message Posted ---</b><br />
+<br />
+<b>Project:</b> ${project.title:html}<br />
+<b>Forum:</b> ${issueCategory.subject:html}<br />
+<b>Topic:</b> ${this.subject:html}<br />
+<b>Posted By:</b> ${issueEnteredByContact:html}<br />
+<br />
+${this.body:html}<br />
+<br />
+--- RESOURCES FOR THIS POST ---<br />
+<a href="${secureUrl}/show/${project.uniqueId}/topic/${this.id}"><b>View this topic online</b></a><br />
+<br />
+<a href="${secureUrl}/create/${project.uniqueId}/reply?topic=${this.id}"><b>Reply to this post online</b></a><br />
+<br />
+<a href="${secureUrl}/settings"><b>Manage your email settings</b></a><br />
+<br />
+]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <process name="concursive.issueReply.insert" description="New forum post reply" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.LoadReplyDetails"/>
+        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addForumContacts" value="true"/>
+            <!--
+            <parameter name="notification.excludeUsers" value="${this.enteredBy}"/>
+            -->
+            <parameter name="notification.subject">Re: [${project.title}] ${this.subject}</parameter>
+            <parameter name="notification.body"><![CDATA[The following message was posted in the forums and sent at your request:<br />
+<br />
+<strong>--- Message Reply Posted ---</strong><br />
+<br />
+<b>Project:</b> ${project.title:html}<br />
+<b>Forum:</b> ${issueCategory.subject:html}<br />
+<b>Topic:</b> ${this.subject:html}<br />
+<b>Posted By:</b> ${issueReplyEnteredByContact:html}<br />
+<br />
+${this.body:html}<br />
+<br />
+<b>--- Original Message ---</b><br />
+<b>Posted By:</b> ${issueEnteredByContact:html}<br />
+<b>Posted On:</b> ${issue.enteredDateTimeString:html}<br />
+<b>Topic:</b> ${issue.subject:html}<br />
+<br />
+${issue.body:html}<br />
+<br />
+--- RESOURCES FOR THIS POST ---<br />
+<a href="${secureUrl}/show/${project.uniqueId}/topic/${issue.id}"><b>View this topic online</b></a><br />
+<br />
+<a href="${secureUrl}/create/${project.uniqueId}/reply?replyTo=${this.id}"><b>Reply to this post online</b></a><br />
+<br />
+<a href="${secureUrl}/settings"><b>Manage your email settings</b></a><br />
+<br />
+]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <!-- User Registration -->
+    <process name="concursive.register.insert" description="Send email notification" startId="1" module="Register">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.to" value="${this.email}"/>
+            <parameter name="notification.subject">Registration Information</parameter>
+            <parameter name="notification.body"><![CDATA[
+              <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
+                <tr>
+                  <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
+                    Hello ${this.nameFirst:html}, <br />
+                    <br />
+                    Thank you for signing up.<br />
+                    <br />
+                    You are now ready to fully enjoy everything the site has to offer. Rate your favorite content, join or start a group, check out the latest happenings and more.<br />
+                    <br />
+                    If you follow this link you will automatically login with your temporary password.<br />
+                    <br />
+                    <a href="${secureUrl}/login/auto?username=${this.email:html}&password=${this.password:html}&auto-populate=true" target="_blank">${secureUrl}/login/auto?username=${this.email:html}&password=${this.password:html}&auto-populate=true</a><br />
+                    <br />
+                    Once logged in, please take a moment to change your password to something you can easily remember. Just click on "Settings" link at the top of the page, then select the "Change my password" link.<br />
+                    <br />
+                    User name: ${this.email:html}<br />
+                    Temporary Password: ${this.password:html}<br />
+                    <br />
+                    For additional help or to find out more about all of the things you can do at Concursive.com, click the "Learn More" link at the top right of any page.<br />
+                    <br />
+                    Thanks again, and welcome to the community!<br />
+                    <br/>
+                  </td>
+                </tr>
+              </table>
+            ]]></parameter>
+          </parameters>
+        </component>
+        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addAdmins" value="true"/>
+            <parameter name="notification.subject">User # ${this.user.id} registered with the site</parameter>
+            <parameter name="notification.body"><![CDATA[The following user has just registered: <br />
+<br />
+First Name: ${this.user.firstName:html}<br />
+Last Name: ${this.user.lastName:html}<br />
+Email Address: ${this.user.email:html}<br />
+Organization: ${this.user.company:html}<br />
+Profile:
+<a href="${secureUrl}/show/${this.project.uniqueId:html}" target="_blank">${secureUrl}/show/${this.project.uniqueId:html}</a><br />
+<br />
+]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <process name="connect.contactus.insert" description="Contact Us" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addAdmins" value="true"/>
+            <parameter name="notification.subject">Web site inquiry</parameter>
+            <parameter name="notification.body"><![CDATA[The following information was filled out:<br />
+<br />--- Contact Us Inquiry ---<br />
+<br />
+First Name: ${this.nameFirst:html}<br />
+Last Name: ${this.nameLast:html}<br />
+Email: ${this.email:html}<br />
+Company: ${this.organization:html}<br />
+Business Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br /><br />
+Address: ${this.addressLine1:html} &nbsp; ${this.addressLine2:html}<br />
+City: ${this.city:html}<br />
+State: ${this.state:html}<br />
+Country: ${this.country:html}<br />
+Postal Code: ${this.postalCode:html}<br /><br />
+Other: ${this.formDataString:html}<br /><br />
+Comments: ${this.description:html}<br />
+                        ]]></parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+  </processes>
+</workflow>

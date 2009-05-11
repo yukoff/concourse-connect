@@ -1,0 +1,2276 @@
+/*
+ * FILE INFORMATION
+ * Style Type: ConcoursConnect Profile Styles
+ * Version:    1
+ * Date:       20090301
+ * Author:     concursive.com
+ * Notes:      Includes legacy class names
+ *
+ */
+
+/* Table of Contents
+
+   1. Profile Stuff
+	   $_profile-header
+	     - profile-header Container
+	     - Main Information
+	     - Logged In Profile Actions
+	     - Star Rating
+	     - Badges
+	     - Profile / Project Category Icons 
+	   $_profile-menu
+	     - profile-menu Container
+	     - Profile Menu Items
+	   $_profile-portlet-body
+	     - profile-portlet Container
+	     - Profile Star Rating
+	     - Profile Photos
+	     - Featured Profile Body
+
+   2. Profile Sections
+      $_profile-portlet-tickets
+*/
+
+
+/* Defaults */
+.imageContainer {
+  float: left;
+  display: block;
+  margin: 0 5px 2px 0;
+  _display: inline-block; /* IE Fix */
+  padding: 2px;
+  border:#aaa solid 1px;
+}
+
+.imageContainer img {
+  width: 45px;
+  height: 45px;
+  background:#f0f0f0;
+  padding: 2px;
+  display:block;
+  _display:inline-block;
+}
+
+
+img.default-photo {
+  background:#999;
+}
+
+/* @group Profile Layout */
+
+/* @group $_profile-header */
+
+/* $_profile-header : Around profile header region */
+
+/* @group profile-header Container */
+
+/* Around the portlet */
+
+.profile-header-portletWindowBackground,
+  .projectCenterContainer {
+  margin-top: 0;
+  background: #fff;
+  border: none;
+  padding: 5px;
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-top-left-radius:5px;
+  -webkit-border-top-right-radius:5px;
+  height: 1%;
+  top: 0;
+/*
+
+IE fix
+
+  */
+}
+
+.profile-header.portletWindowBackground:after,
+  .projectCenterContainer:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+.profile-header .portlet1,
+  .projectCenterContainer .portlet1 {
+  
+}
+
+.profile-header .portlet2,
+  .projectCenterContainer .portlet2 {
+  
+}
+
+.profile-header .portlet3,
+  .projectCenterContainer .portlet4 {
+  
+}
+
+.profile-header .portlet4,
+  .projectCenterContainer .portlet4 {
+  
+}
+
+.profile-header .portletWrapper,
+  .projectCenterContainer .portletWrapper {
+  padding: 5px;
+}
+
+/* @end */
+
+/* @group Main Information */
+
+/* portlet-section-body : profile vcard info */
+
+.profile-header .portlet-section-body,
+  projectCenterHeaderContainer {
+  width: auto;
+  min-width: 300px;
+  margin: 0px;
+  float: left;
+}
+
+.profile-header .portlet-section-body .vcard,
+  .projectCenterHeaderContainer .leftColumn {
+  float: left;
+}
+
+.profile-header .portlet-section-body .vcard address.adr,
+  .projectCenterHeaderContainer address {
+  
+}
+
+.profile-header .portlet-section-body .vcard h2,
+  h2.projectCenterHeader {
+  margin: 2px 0 5px 0;
+}
+
+.profile-header .portlet-section-body .vcard address.adr .tel,
+  .projectCenterHeaderContainer address span.phone {
+  font-size: larger;
+  display: block;
+}
+
+.profile-header .portlet-section-body .vcard address.adr .street-address,
+  .projectCenterHeaderContainer address span.addressTo {
+  
+}
+
+.profile-header .portlet-section-body .vcard address.adr .locality,
+  .projectCenterHeaderContainer address span.city {
+  
+}
+
+.profile-header .portlet-section-body .vcard address.adr .region,
+  .projectCenterHeaderContainer address span.state {
+  
+}
+
+.profile-header .portlet-section-body .vcard address.adr .postal-code,
+  .projectCenterHeaderContainer address span.zip {
+  
+}
+
+.profile-header .portlet-section-body .vcard address.adr .country-name,
+  .projectCenterHeaderContainer address span.country {
+  
+}
+
+/* @end */
+
+/* @group Logged In Profile Actions */
+
+/* portlet-section-menu : edit, details and setup for profiles */
+
+.profile-header .portlet-menu {
+  display: block;
+  float: right;
+}
+
+/* If parent item is a rating, clear right */
+
+.profile-header .portlet-table + .portlet-menu {
+  clear: right;
+}
+
+.profile-header .portlet-menu ul {
+  margin: 0;
+}
+
+.profile-header .portlet-menu ul li {
+  display: inline;
+}
+
+.profile-header .portlet-menu p {
+  float: right;
+  margin: 0;
+}
+
+/* @end */
+
+/* @group Star Rating */
+
+/* portlet-table : star ratings */
+
+.profile-header .portlet-table {
+  float: right;
+}
+
+/* Fail Safe for clearing star-ratings - just incase */
+
+.profile-header .portlet-table:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+/* @end */
+
+/* @group Badges */
+
+/* portlet-section-header : badges */
+
+.profile-header .portlet-section-header,
+  .projectCenterHeaderContainer .leftColumn .rightColumn {
+  margin: 0;
+  width: auto;
+  max-width: 500px;
+  float: right;
+  padding: 0 0 0 5px;
+}
+
+.profile-header .portlet-section-header ul,
+  .projectCenterHeaderContainer .leftColumn ul.badges {
+  float: right;
+  margin: 0;
+  padding: 0
+}
+
+.profile-header .portlet-section-header ul li,
+  .projectCenterHeaderContainer .leftColumn ul.badges li {
+  float: left;
+  list-style: none;
+  margin-left:5px;
+}
+
+.profile-header .portlet-section-header ul li a,
+  .projectCenterHeaderContainer .leftColumn ul.badges li a {
+  display: block;
+}
+
+/* @end */
+
+/* @group Profile / Project Category Icons */
+
+/* portlet-section-footer : profile category icon */
+
+.profile-header .portlet-section-footer,
+  .projectCenterHeaderContainer .rightColumn {
+  width: 50px;
+  height: 50px;
+  float: left;
+  padding: 0 10px 0 0;/* Spacing around icon for profile info / vCard */
+}
+
+/* If Icon Excists in profile-header */
+
+.profile-header .portlet-section-footer .icon,
+  .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImage {
+  
+}
+
+.profile-header .portlet-section-footer .icon img,
+  .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImage img.profileImgage {
+  background:none;
+}
+
+/* If no icon excists in profile-header */
+
+.profile-header .portlet-section-footer .no-photo,
+  .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImageText {
+  
+}
+
+.profile-header .portlet-section-footer .no-photo p,
+  .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImageText p {
+  margin:0;
+}
+
+.profile-header .portlet-section-footer .no-photo p span,
+  .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImageText p span {
+  
+}
+
+/* @end */
+
+/* @end */
+
+/* @group $_profile-menu */
+
+/* @group profile-menu Container */
+
+/* $_profile-menu */
+
+.profile-menu-portletWindowBackground,
+  .projectCenterPortletLinksBackground {
+  padding: 5px;
+  -moz-border-radius: 0 0 5px 5px!important;
+  -webkit-border-bottom-left-radius:5px;
+  -webkit-border-bottom-right-radius:5px;
+  background-image: none;
+  border: none;
+  background-color: #efefef;
+}
+
+.profile-menu.portlet1,
+  .projectCenterPortletLinksBackground .portlet1 {
+  
+}
+
+.profile-menu.portlet2,
+  .projectCenterPortletLinksBackground .portlet2 {
+  
+}
+
+.profile-menu.portlet3,
+  .projectCenterPortletLinksBackground .portlet3 {
+  
+}
+
+.profile-menu.portlet4,
+  .projectCenterPortletLinksBackground .portlet4 {
+  
+}
+
+.profile-menu .portletWrapper,
+  .projectCenterLinksContainer {
+  display: block;
+}
+
+/* @end */
+
+/* @group Profile Menu Items */
+
+.profile-menu ul,
+  .projectCenterLinksContainer ul {
+  padding: 5px;
+  margin: 0;
+}
+
+.profile-menu ul li,
+  .projectCenterLinksContainer ul li {
+  display: inline;
+}
+
+.profile-menu ul li a,
+  .projectCenterLinksContainer ul li a {
+  text-decoration: none;
+  color: #000;
+  margin: 0 6px 0 0;
+  padding: 5px;
+}
+
+.profile-menu ul li a em,
+  .projectCenterLinksContainer ul li a em {
+  font-style: normal;
+}
+
+.profile-menu ul li a.active,
+  .profile-menu ul li a:hover,
+  .projectCenterLinksContainer ul li a.active,
+  .projectCenterLinksContainer ul li a:hover {
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  background: #fff;
+  color: #000;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group $_profile-portlet-body */
+
+/* @group profile-portlet-body Container */
+
+/* $_profile-body */
+
+.profile-portlet-body,
+  .projectCenterProfileContainer {
+  margin: 0;
+  position: relative
+}
+
+.profile-portlet-body.portletWindowBackground {
+  
+}
+
+.profile-portlet-body .portlet1,
+  .profile-portlet-body .portlet2,
+  .profile-portlet-body .portlet3,
+  .profile-portlet-body .portlet4 {
+  
+}
+
+.profile-portlet-body .portletWrapper {
+  
+}
+
+/* @end */
+
+/* @group Profile Star Rating */
+
+.profile-portlet-body .portlet-table,
+  .projectCenterProfileContainer .rightColumn .ratings {
+  float: right;
+  margin: 0 15px 0 0;
+}
+
+/* @end */
+
+/* @group Profile Photos */
+
+.profile-portlet-body .portlet-menu,
+  .projectCenterProfileContainer .rightColumn {
+  width: 245px;
+  float: right;
+  clear: right;
+  padding:0 0 5px 5px;
+}
+
+.profile-portlet-body .portlet-section-body > p {
+  margin-top: 0;
+}
+
+/* Associated actions for the portlet-menu-item which is selected */
+
+.profile-portlet-body .portlet-menu .portlet-menu-cascade,
+  .projectCenterProfileContainer .rightColumn .profileImageActions {
+  clear: both;
+}
+
+.profile-portlet-body .portlet-menu .portlet-menu-cascade p,
+  .profileImageActions p {
+  float: left;
+  margin: 2px 8px 2px 6px;
+  padding: 0;
+}
+
+.profile-portlet-body .portlet-menu .portlet-menu-cascade p a,
+  .profileImageActions p a {
+  float: left;
+  margin: 2px 8px 2px 6px;
+}
+
+.profile-portlet-body .portlet-menu .portlet-menu-cascade ul,
+  .profileImageActions ul {
+  float: right;
+  background: #ddd;
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  margin: 0 15px 0 0;
+  padding: 0;
+}
+
+.profile-portlet-body .portlet-menu .portlet-menu-cascade ul li,
+  .profileImageActions ul li {
+  float: left;
+  margin: 2px;
+  list-style: none;
+  padding: 2px 4px;
+}
+
+.profile-portlet-body .portlet-menu .portlet-menu-cascade ul li a,
+  .profileImageActions ul li a {
+  opacity: .6;
+}
+
+.profile-portlet-body .portlet-menu .portlet-menu-cascade ul li a:hover,
+  .profileImageActions ul li a:hover {
+  opacity: 1
+}
+
+.profile-portlet-body .portlet-menu-item-selected,
+  .projectCenterProfileContainer .rightColumn .profileImageBackground {
+  clear: both;
+  padding: 5px 0 0 0;
+  border-width: 2px 2px 0 2px;
+  border-style: solid solid none solid;
+  border-color: #ddd;
+  -moz-border-radius: 5px 0 0 0;
+  -webkit-border-top-left-radius: 5px;
+  text-align: center;
+  margin: 0 15px;/*Make room for tabs on the carousel below */
+  height:150px;
+}
+
+.profile-portlet-body .portlet-menu-item-selected div,
+  .profile-portlet-body .portlet-menu-item-selected a {
+  display: block;
+}
+
+/* @group YUI Carousel Items */
+
+.carousel-component {
+  background: #fff;
+  position: relative;
+  padding: 0 15px!important;
+  width: auto!important;
+}
+
+.carousel-component button {
+  border: none;
+  background: none;
+  font-size: small;
+  color: #eee
+}
+
+.carousel-component .enabled {
+  color: #333;
+  cursor: pointer;
+}
+
+.carousel-clip-region {
+  width: auto!important;
+  margin: 0 auto;
+  border-width: 0 2px 2px 2px;
+  border-color: #ddd;
+  border-style: solid;
+  -moz-border-radius: 0 0 5px 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  _overflow:hidden;
+}
+
+.carousel-component UL.carousel-list,
+.carousel-list.carousel-horizontal{
+  *width: 212px!important;
+}
+
+.carousel-component .carousel-next .enabled:hover,
+  .carousel-component .carousel-previous .enabled:hover {
+  color: #000;
+  cursor: pointer;
+}
+
+.carousel-component .carousel-list li {
+  margin: 4px 12px 4px 5px;
+  width: 55px;
+  height: 56px;
+}
+
+.carousel-component .carousel-list li a {
+  display: block;
+  border: 1px solid
+  #dedede;
+  outline: none;
+}
+
+.carousel-component .carousel-list li a:hover {
+  border: 1px solid #ddd;
+}
+
+.carousel-component .carousel-list li img {
+  border: 1px solid #fff;
+  display: block;
+}
+
+.carousel-component .carousel-prev {
+  left: 0;
+  position: absolute;
+  top: 20px;
+  cursor: pointer;
+}
+
+.carousel-component .carousel-next {
+  position: absolute;
+  top: 20px;
+  cursor: pointer;
+  right: 0px;
+}
+
+/* @end */
+
+/* If there is no item that is selected, show empty */
+
+.profile-portlet-body .portlet-menu-item-selected-empty,
+  .profileImageBackgroundEmpty {
+  clear: both;
+  padding: 5px;
+  border-width: 2px 2px 2px 2px;
+  border-style: solid;
+  border-color: #ddd;
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius-top-left-radius: 5px;
+  text-align: center
+}
+
+.profile-portlet-body .portlet-menu-item-selected-empty .portlet-menu-caption,
+  .profileImageBackgroundEmpty .noPhoto {
+  margin: 0 auto;
+  position: relative;
+  height: 150px;
+  width: 100%;
+  background: #ddd;
+}
+
+.profile-portlet-body .portlet-menu-item-selected-empty .portlet-menu-caption p,
+  .profileImageBackgroundEmpty .noPhoto p,
+  .profile-portlet-body .portlet-menu-item-selected-empty .portlet-menu-caption img,
+  .profileImageBackgroundEmpty .noPhoto img {
+  font-weight: 300;
+  font-size: x-small;
+  vertical-align: middle;
+  position: relative;
+  top: 25px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* @end */
+
+/* @group Featured Profile Body */
+
+/* Profile Body Region */
+
+.profile-portlet-body .portlet-section-body,
+  .projectCenterProfileContainer .leftColumn {
+  width: auto;
+}
+
+.profile-portlet-body .portlet-section-body h1,
+  .projectCenterProfileContainer .leftColumn h1 {
+  _font-size:medium;
+}
+
+.profile-portlet-body .portlet-section-body .vcard {
+  margin: 0 0 10px 0;
+}
+
+.profile-portlet-body .portlet-section-body .vcard p {
+  margin: 0;
+}
+
+.profile-portlet-body .portlet-section-body p,
+  .projectCenterProfileContainer .leftColumn p {
+  
+}
+
+.profile-portlet-body .portlet-section-body p span,
+  .projectCenterProfileContainer .leftColumn p span,
+  .profile-portlet-body .portlet-section-body li span,
+  .projectCenterProfileContainer .leftColumn li span {
+  font-weight: bold;
+}
+
+.profile-portlet-body .portlet-section-body ul,
+  .projectCenterProfileContainer .leftColumn ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.profile-portlet-body .portlet-section-body dl,
+  .projectCenterProfileContainer .leftColumn dl {
+  float: none;
+  clear: none;
+  padding: 0;
+  margin: 0;
+  display: block;
+  margin: 0 0 10px 0;
+}
+
+.profile-portlet-body .portlet-section-body dl dd,
+  .projectCenterProfileContainer .leftColumn dl dd {
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.profile-portlet-body .portlet-section-body dl.portlet-menu dd,
+  .projectCenterProfileContainer .leftColumn dl.portlet-menu dd {
+  display: inline;
+  margin: 0; /*reset parent */
+}
+
+.profile-portlet-body .portlet-section-body dl ul,
+  .projectCenterProfileContainer .leftColumn dl ul {
+  
+}
+
+.profile-portlet-body .portlet-section-footer h4,
+  .projectCenterProfileContainer .leftColumn h3 {
+  margin: 0;
+}
+
+.profile-portlet-body .portlet-section-footer ul,
+  .projectCenterProfileContainer .leftColumn ul {
+  padding: 0;
+  margin: 0;
+  float: left;
+  list-style: none;
+}
+
+.profile-portlet-body .portlet-section-footer ul:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+.profile-portlet-body .portlet-section-footer ul li,
+  .projectCenterProfileContainer .leftColumn ul li {
+  float: left;
+  width: 50%;
+}
+
+/* @end */
+
+/* @end */
+
+.profile-portlet-menu ul {
+  margin:0 0 15px 0;
+  list-style:none;
+  padding:0;
+}
+
+.profile-portlet-menu ul:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+.profile-portlet-menu ul li {
+  float:left;
+  margin:0 15px 0 0;
+  clear:none;
+  border-right:1px solid #666;
+  padding:0 15px 0 0;
+  height:15px;
+}
+
+.profile-portlet-menu ul li.last {
+  border-right:none;
+}
+
+
+.profile-portlet-menu ul li img {
+  vertical-align:middle;
+}
+
+/* @group $_account-info */
+
+/* Account Info*/
+
+.accountInfo h1,
+  .accountInfo h2,
+  .accountInfo h3,
+  .accountInfo h4 {
+  display: block;
+  clear: both;
+}
+
+.accountInfo .submit {
+  float: none;
+  height: 27px;
+  padding: 4px!important;
+  clear: both;
+  margin: 0!important;
+}
+
+.accountInfo ul {
+  margin: 5px;
+  list-style:none;
+  padding:0;
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Profile View Specific */
+
+/* @group Teams */
+
+.lWrapper {
+  clear: both;
+}
+
+.teams-list {
+  
+}
+
+.team-list-portletWindowBackground .portlet-section-header {
+  clear: both;
+}
+
+.team-list-portletWindowBackground .portlet-section-body {
+  float: left;
+}
+
+.teams-list-portletWindowBackground .portlet-setion-body {
+  clear: both;
+}
+
+/* @group Image List */
+
+.dList {
+  display: block;
+  padding: 10px;
+  margin: 5px;
+  list-style: none;
+  float: left;
+}
+
+.dList ol {
+  position: relative;
+}
+
+.dList li {
+  position: relative;
+  float: left;
+  margin: 0 15px 15px 0;
+  width: 150px; /* Permissions position fix */
+}
+
+.dList .profileImageBackground {
+  margin: 0 auto;
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #ccc;
+}
+
+.dList .noPhoto {
+  width: 100px;
+  height: 100px;
+  background: #ddd;
+  float: left;
+  display: block;
+}
+
+.dList .noPhoto p {
+  font-size: 100%;
+  top: 40px;
+  position:relative;
+  text-align:center;
+  margin:0;
+}
+
+.dList .portlet-section-footer {
+  text-align:center;
+}
+
+.dList .tooltip {
+  float: none
+}
+
+.dList .permissions,
+  .team-list-portletWindowBackground .dList .portlet-menu {
+  position: absolute;
+  right: -14px;
+  top: 10px;
+  background: #f9b757;
+  padding: 4px;
+  border-left: 2px #c1840f solid
+}
+
+.dList .leftColumn,
+  .teams-list-portletWindowBackground .dList .portlet-section-footer {
+  text-align: center;
+  width: 100%;
+
+}
+
+/* @end */
+
+/* @group No Image List */
+
+.sList .leftColumn {
+  line-height: 19px
+}
+
+.sList .rightColumn {
+  width: auto
+}
+
+.sList {
+  display: block;
+  margin: 5px 0;
+  float: left;
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sList li {
+  position: relative;
+  border: 1px dotted #ccc;
+  float: left;
+  display: block;
+  margin: 0 5px 5px 0;
+  width: 200px;
+  max-width: 50%;
+  padding: 2px;
+}
+
+.sList li:hover {
+  border: 1px dotted #ccc;
+  background: #e2ecf9;
+}
+
+.sList .profileImageContainer {
+  width: auto;
+  margin: 0;
+  padding: 2px 0 0;
+}
+
+.sList .profileImageBackground {
+  width: auto;
+  height: auto;
+  float: left;
+  padding: 0;
+  margin: 0 5px 0 0;
+  border: none !important;
+}
+
+.sList .profileImageBackground img {
+  width: 15px;
+  height: 15px;
+}
+
+.sList .noPhoto {
+  display: none;
+}
+
+.sList .noPhoto p {
+  font-size: 8px;
+  top: 0
+}
+
+.sList .pNameContainer,
+  .team-list-portletWindowBackground .sList .portlet-section-footer {
+  float: left;
+  padding: 3px 0 0 0;
+}
+
+.sList .permissions,
+  .team-list-portletWindowBackground .sList .portlet-menu {
+  padding: 4px;
+  position: relative;
+  width: auto;
+  float: right;
+}
+
+.sList .permissions:hover,
+  .team-list-portletWindowBackground .sList .portlet-menu {
+  background: #eee
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Documents */
+
+/* @end */
+
+/* @group Private Messages */
+
+/* @group Private Messages */
+
+.privateMessages {  }
+
+.privateMessagesNavigation { padding:5px 2px; }
+
+.privateMessagesNavigation ul { margin:5px; display:block; }
+
+.privateMessagesNavigation ul li, .privateMessagesNavigation ul li a { display:inline;  }
+
+.privateMessagesNavigation ul li a em, .privateMessagesNavigation ul li em { font-style:normal; padding:5px; margin:0 5px 0 0; font-style:none  }
+
+.privateMessagesNavigation ul li:hover,
+.privateMessagesNavigation ul li.active {  }
+
+.privateMessagesContainer {  }
+
+.privateMessagesContainer .status { position:absolute; left:3px; top:20px }
+
+.privateMessagesContainer dl { position:relative; clear:both; border-bottom:1px solid #ddd; margin:0 }
+
+.privateMessagesContainer dl.new { background:#eefeff }
+
+.privateMessagesContainer dl dt { float:left; width:180px; clear:left; height:55px  }
+
+.privateMessagesContainer dl dt ul { margin:0 0 0 5px; padding:0; /* float:left - breaks concursive.com */ }
+
+.privateMessagesContainer dl dt ul li { margin:0!important; padding:0!important }
+
+.privateMessagesContainer dl dd { margin:0 0 0 190px; width:auto; clear:none; min-height:55px; padding:0!important }
+
+.privateMessages a.reply { float:right; border-top:1px solid #ddd; padding:5px 15px; display:block; background:#e2ecf3; -moz-border-radius:0 0 3px 3px; -webkit-border-radius:0 0 3px 3px; margin:0 5px; }
+
+.privateMessages a.reply:hover { background:#0070B1; color:#fff }
+
+.privateMessages a.reply img { float:left; margin:0 3px 0 0 }
+
+/*
+ *    Pending Private Messages
+ */
+
+.pendingPrivateMessages p { background:url(../images/icons/inbox_plus.png) no-repeat top left; padding:0 0 0 20px!important }
+
+/* @end */
+
+.privateMessagesNavigation {
+  padding: 5px 2px;
+}
+
+.privateMessagesNavigation ul {
+  margin: 5px;
+  display: block;
+}
+
+.privateMessagesNavigation ul li, .privateMessagesNavigation ul li a {
+  display: inline;
+}
+
+.privateMessagesNavigation ul li a em, .privateMessagesNavigation ul li em {
+  font-style: normal;
+  padding: 5px;
+  margin: 0 5px 0 0;
+}
+
+.privateMessagesNavigation ul li:hover,
+  .privateMessagesNavigation ul li.active {
+  
+}
+
+/* rename to private-messages */
+
+.privateMessagesNavigation {
+  background: #ddd;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.privateMessagesNavigation ul {
+  margin: 0;
+  padding: 5px;
+}
+
+.privateMessagesNavigation li {
+  font-size: small;
+}
+
+.privateMessagesNavigation li:hover a em,
+  .privateMessagesNavigation li.active em {
+  background: #fff;
+  -moz-border-radius: 5px;
+  -webit-border-radius: 5px;
+}
+
+.privateMessagesNavigation li a:hover {
+  text-decoration: none;
+}
+
+.privateMessagesContainer dl {
+  clear: both;
+  padding: 5px 10px 5px 25px
+}
+
+.privateMessagesContainer dl dt {
+  font-weight: 300 !important;
+}
+
+.privateMessagesContainer ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+
+.privateMessagesContainer .details ul li {
+  margin: 0 !important;
+  padding: 0 !important
+}
+
+.privateMessagesContainer .projectCenterProfileImage {
+  margin: 0 5px 0 0;
+  padding: 0;
+  float:left;
+}
+
+.privateMessagesContainer .message {
+  display: block
+}
+
+.privateMessagesHeader {
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 15px 0;
+  padding: 0 0 0 10px
+}
+
+.privateMessagesHeader ul {
+  margin:5px 0;
+  padding:0;
+  list-style:none;
+}
+
+.privateMessagesHeader ul li span {
+  font-weight: 900 !important
+}
+
+.privateMessagesHeader ul li.date {
+  font-weight: 300 !important;
+  font-size: 12px;
+  color: #222 !important
+}
+
+.privateMessagesBody {
+  padding: 0 0 0 10px
+}
+
+/* @end */
+
+/* @group Calendar */
+
+/* @group Calendar View */
+
+.calendar {
+  margin: 0 auto
+}
+
+.calendarContainer {
+  width:100%;
+}
+
+.calendar th {
+  padding: 0
+}
+
+.calendar th a img {
+  vertical-align: bottom;
+}
+
+.calendar td {
+  padding: 0;
+}
+
+.monthName {
+  
+}
+
+.monthName a {
+  margin: 0 5px;
+}
+
+.monthArrowPrev {
+  
+}
+
+.monthArrowNext {
+  
+}
+
+.dayName {
+  
+}
+
+.eventName {
+  
+}
+
+.weekName {
+  font-size: xx-small;
+  padding: 3px
+}
+
+.selectedWeek {
+  background: #0070B1
+}
+
+.weekSelector {
+  padding: 0 15px 0 0!important
+}
+
+.selectedDay {
+  background: #fff;
+  -moz-border-radius: 2px;
+  border: 1px solid #0070B1;
+}
+
+.selectedDay a {
+  
+}
+
+.day {
+  font-size: xx-small;
+  margin: 1px;
+  background: #eee;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-top: 1px solid #efefef;
+  border-right: 1px solid #dfdfdf;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #e9e9e9
+}
+
+.highlightday {
+  
+}
+
+.noday {
+  
+}
+
+.today {
+  
+}
+
+.dayIcon td {
+  
+}
+
+.smallcalendar {
+  margin: 10px auto 2px 15px;
+  background: #fff;
+  padding: 10px;
+  border-style: solid;
+  border-color: #eee #888 #777 #bbb;
+  border-width: 0 1px 1px 0
+}
+
+.smallcalendar th {
+  
+}
+
+.smallcalendar td {
+  
+}
+
+.smallmonthName {
+  font-size: x-small;
+  color: #999;
+  padding: 3px;
+}
+
+.smallmonthArrowPrev {
+  
+}
+
+.smallmonthArrowNext {
+  
+}
+
+.smallweekName {
+  font-size: xx-small;
+}
+
+.smallday {
+  font-size: xx-small;
+}
+
+.smallhighlightday {
+  background: #fff;
+  -moz-border-radius: 2px;
+  border: 1px solid #0070B1;
+}
+
+.smallnoday {
+  font-size: xx-small;
+}
+
+.smalltoday {
+  font-size: xx-small;
+}
+
+.smallfooter {
+  background: #222;
+  color: #fff!important;
+  padding:4px 0 4px 40px;
+}
+
+/* @end */
+
+/* @group Calendar List */
+
+.calendarListContainer {
+  position: relative;
+  display: block;
+  margin: 0 0 20px 0;
+  clear: both
+}
+
+h3.eventName {
+  font-size: medium;
+  display: block!important;
+  border-bottom: #ddd solid 1px;
+  margin: 3px 0 0 0!important;
+  padding: 3px!important;
+  color: #777!important
+}
+
+h3.eventName span em {
+  font-size: x-small;
+}
+
+.calendarListContainer table {
+  margin: 0 0 10px 0
+}
+
+.calendarListContainer .permissions {
+  display: inline
+}
+
+.eventsContainer {
+  position: relative;
+  margin: 0 0 0 60px;
+  min-height: 70px;
+  padding: 3px;
+}
+
+.eventsContainer-empty {
+  position: relative;
+  margin:0;
+  min-height: 70px;
+  padding: 3px;
+}
+
+.dateContainer {
+  position: absolute;
+  float: left;
+  top: 5px;
+  left: 0;
+  display: block;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius-topleft: 10px;
+  -webkit-border-top-left-radius: 10px;
+  -moz-border-radius-topright: 10px;
+  -webkit-border-top-right-radius: 10px;
+  border: 2px solid #f3f3f3;
+  display: block;
+  width: 55px;
+  background: #ccc;
+}
+
+.dateWrapper {
+  clear: both;
+  margin: 1px;
+  background: #fff;
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-radius-top-left: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-radius-top-right: 5px
+}
+
+.dateCurrent {
+  position: absolute;
+  margin: 0 0 0 7px
+}
+
+.dateWrapper .year {
+  float: right;
+  padding: 3px;
+  color: #fff
+}
+
+.dateWrapper .dateCurrent .year {
+  
+}
+
+.dateWrapper .month {
+  border: 1px solid #990000;
+  border-top: none;
+  background: #990000 url(../themes/default/images/graphics/calendar_background_red.png) repeat-x top left;
+  display: block;
+  padding: 3px;
+  color: #fff;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px
+}
+
+.dateCurrent .month {
+  
+}
+
+.dateWrapper .date {
+  border: none;
+  border-bottom: none;
+  margin: 2px;
+  display: block;
+  text-align: center;
+  font-size: medium;
+  color: #444;
+  padding: 3px;
+  background: #fff url(../themes/default/images/graphics/calendar_background_blue.png) top left repeat-x
+}
+
+.dateCurrent .date {
+  
+}
+
+.dateWrapper .day {
+  text-align: center;
+  font-size: xx-small;
+  color: #bbb;
+  background: none;
+  border: none;
+  display: block;
+  -moz-border-radius: none;
+  -webkit-border-radius: none
+}
+
+.dateWrapper .dateCurrent .day {
+  
+}
+
+.dateCurrent .today {
+  text-align: center;
+  display: block;
+  color: #999;
+}
+
+.eventsListContainer {
+  clear: both;
+}
+
+.eventsListContainer ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.eventsListContainer ol li {
+  clear: both;
+  margin: 5px 0;
+  float: left;
+  width: 100%;
+  border-bottom: 1px dotted #ddd
+}
+
+.timeContainer {
+  float: left;
+  margin: 0 5px 0 0;
+  display: block;
+  width: 58px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-color: #666666 #555 #404040 #5D5D5D;
+  border-width: 1px;
+  border-style: solid;
+  color: #333!important;
+  background: #666;
+  padding: 1px
+}
+
+.timeWrapper {
+  font-size: small;
+  position: relative;
+  font-family: impact;
+  padding: 3px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-color: #444 #6d6d6d #444 #777;
+  border-width: 1px;
+  border-style: solid;
+  background: #222;
+  color: #fff
+}
+
+.timeWrapper span {
+  border: 0!important;
+  margin: 0!important;
+  padding: 0!important
+}
+
+.ampm {
+  font-size: xx-small;
+  position: absolute;
+  top: 3px;
+  right: 1px;
+  font-family: arial
+}
+
+.eventsListItemContainer {
+  
+}
+
+.eventsListItemContainer .title {
+  background: none;
+  font-size: larger;
+  display: block;
+  color: #222
+}
+
+.eventsListItemContainer .permissions {
+  float: right;
+}
+
+.eventsListItemContainer .description {
+  display: block;
+}
+
+.eventsListItemContainer .activity {
+  display: block
+}
+
+/* @end */
+
+.ticketNumber {
+  font-size: smaller;
+}
+
+.severity {
+  font-style: italic;
+  margin: 0 0 0 15px;
+}
+
+.watchSpan2,
+.cancelSpan2 {
+  margin-top:10px;
+}
+
+/* @end */
+
+/* @group Reviews */
+
+/* @group $_userInputContainer */
+
+.userInputContainer {
+  position: relative;
+  margin: 35px 15px 10px 0;
+  padding: 0 0 5px;
+}
+
+.userInputContainer h3 {
+  display: inline;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 12px
+}
+
+.userInputHeader {
+  padding: 5px;
+  margin: 0 0 10px;
+}
+
+.userInputDetails {
+  float: right;
+  width: 27%;
+  margin: 5px 0 0 0;
+  background: url(../themes/default/images/graphics/userInput_callout_D6E0EE.png) no-repeat 100% 10px;
+  position: relative
+}
+
+.userInputDetails .details,
+.userInputDetails .details h5,
+.userInputDetails .details p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.userInputContainer .header {
+  display: inline;
+}
+
+.userInputContainer .rating {
+  top: 0 !important;
+  position: relative !important;
+  right: 0 !important;
+  margin: 2px
+}
+
+.userInputDetails .details ul {
+  clear: left;
+  margin: 2px 0 0 0 !important;
+  padding: 0 !important;
+  list-style: none;
+}
+
+.userInputDetails li {
+  margin: 0;
+  padding: 0
+}
+
+.userInputBody .permissions {
+  position: absolute;
+  right: -26px;
+  top: 10px;
+}
+
+.userInputBody .permissions a {
+  display: block;
+  background: #f9b757;
+  padding: 4px;
+  border-left: 1px #c1840f solid
+}
+
+.userInputBody {
+  float: right;
+  width: 65%;
+  background: #fff;
+  position: relative;
+  left: -2px;
+  min-height: 80px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border: 2px #D6E0EE solid;
+  padding: 10px;
+  margin: 0;
+}
+
+.userInputBody p {
+  color: #333;
+  position: relative
+}
+
+.userInputFooter {
+  clear: both;
+  clear: both;
+  margin: 0 0 0 27%;
+  text-align: right;
+  width: 68%;
+  background: url(../themes/default/images/box/userInput_callout_D6E0EE.png) repeat-x top left;
+  position: relative;
+  top: -2px;
+  padding: 10px 0 0 0
+}
+
+.userInputFooter p {
+ display:inline; 
+}
+
+.modifiedName, .modifiedName span {
+  font-size: 11px
+}
+
+.modifiedName span {
+  display: block
+}
+
+/* @end */
+
+/* @end */
+
+/* @group Wiki and Blog Article Styles */
+
+/* @group $_articleContainer (needs to be article-portlet) */
+
+.articleContainer .actions {
+  clear: both;
+  margin: 0 15px 0
+}
+
+.articleContainer .details {
+  margin: 0;
+  padding: 0
+}
+
+/* @group article header */
+
+.articleHeader {
+  -moz-border-radius: 0 5px 5px 0;
+  -webkit-border-radius: 0 5px 5px 0;
+  position: relative;
+  border-bottom: 1px dotted #ddd;
+  border-right: 1px solid #ddd;
+  margin: 0;
+}
+
+.articleHeader:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+.articleHeader h1,
+.articleHeader h2 {
+  margin: 2px 0 5px 0;
+}
+
+.articleHeader.admin {
+  margin: 0 25px 0 0
+}
+
+.articleHeader .header {
+  display: block;
+}
+
+.articleHeader .header p {
+  display: inline!important;
+}
+
+.articleHeader .permissions {
+  position: absolute;
+  right: -25px;
+  top: 0;
+  background:none;
+  padding:0;
+}
+
+.articleHeader .permissions a {
+  display: block;
+  margin: 5px 0;
+  border-left: 1px #c1840f solid;
+  background:#F9B757;
+  padding:4px;
+  margin:0;
+}
+
+.articleHeader h3, .articleHeader h2 {
+  display: block!important;
+  margin: 0 90px 0 0!important;
+  font-family: "Times New Roman", Times, serif!important;
+  font-size: x-Large;
+  font-weight: 300;
+}
+
+.articleHeader h3 a, .articleHeader h3 {
+  font-family: "Times New Roman", Times, serif!important;
+  font-weight: 300;
+  font-size: x-Large;
+}
+
+.articleHeader h3 a span, .articleHeader h3 span {
+  font-size: small!important;
+  font-family: Verdana,Helvetica,Arial,sans-serif;
+}
+
+.articleHeader .rating {
+  top: 0!important;
+  right: 10px;
+  position: absolute;
+}
+
+/* @group actions */
+
+.articleHeader .actions a em {
+  font-style: normal;
+  padding: 5px 5px 3px;
+  background: #E2ECF3;
+  border: #ddd 1px solid;
+  border-bottom: none;
+  -moz-border-radius-topleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-right-radius: 5px;
+  margin: 0 5px 0 0;
+}
+
+.articleHeader .actions a:hover {
+  text-decoration: none
+}
+
+.articleHeader .actions a:hover em {
+  background: #ccc;
+}
+
+.articleContainer .articleHeader .actions {
+  margin: 10px 0 0;
+}
+
+/* @end */
+
+/* @group details */
+
+.articleHeader .details {
+  margin: 10px 0 0 0;
+  padding: 5px 0 0;
+}
+
+.articleHeader .details .projectCenterProfileImage {
+  float: left;
+  margin-right: 10px;
+}
+
+.articleHeader .details ul {
+  list-style: none;
+  margin:0;
+}
+
+.articleHeader .details ul li {
+  list-style: none;
+}
+
+.articleHeader .details ul li span {
+  font-weight: 900
+}
+
+/* @end */
+
+/* @end */
+
+/* @group article body */
+
+.articleBody {
+  padding: 5px 0;
+}
+
+.articleBody h2,
+  .articleBody.admin h3,
+  .articleBody.admin h4,
+  .articleBody.admin h5,
+  .articleBody.admin h6 {
+  border-bottom: #ddd 1px solid
+}
+
+.articleBody .editsection {
+  font-size: smaller;
+  font-weight:300;
+}
+
+/* The following is breaking paragraphs in the wiki, when images are floated
+.articleBody p { overflow:auto }
+*/
+
+.editsection {
+  float: right;
+}
+
+.articleBody table {
+  empty-cells: show;
+  padding: 0 0 1em 0;
+  margin: 0;
+}
+
+.articleBody pre {
+  max-width: 475px;
+  border-left: 5px #ddd solid;
+  margin: 15px
+}
+
+/* Wiki Info Box */
+
+.articleBody .infobox th {
+  padding: 7px;
+  margin: 0!important;
+  border: none
+}
+
+/* @group TinyMCE Support */
+
+.articleBody ol ol li { list-style-type: lower-latin!important; margin: 0; }
+
+.articleBody ol ol ol li { list-style-type: lower-roman!important; }
+
+.articleBody ol ol ol ol li  { list-style-type: decimal!important; }
+
+.articleBody ol ol ol ol ol li { list-style-type: lower-latin!important; }
+
+.articleBody ol ol ol ol ol ol li { list-style-type: lower-roman!important; }
+
+.articleBody ol ol ol ol ol ol ol li { list-style-type: decimal!important; }
+
+.articleBody ol ol ol ol ol ol ol ol li { list-style-type: lower-latin!important; }
+
+.articleBody ol ol ol ol ol ol ol ol ol li { list-style-type: lower-roman!important; }
+
+.articleBody ol ol ol ol ol ol ol ol ol ol li { list-style-type: decimal!important; }
+
+.articleBody ol ol ol ol ol ol ol ol ol ol ol li { list-style-type: lower-latin!important; }
+
+.articleBody ol ol ol ol ol ol ol ol ol ol ol ol li { list-style-type: lower-roman!important; }
+
+/* @end */
+
+.wikiTitle {
+  position: relative !important;
+}
+
+.wikiLink {
+  
+}
+
+.wikiLink:active {
+  
+}
+
+.wikiLink:visited {
+  
+}
+
+.wikiLink:hover {
+  
+}
+
+.wikiLink:visited:hover {
+  
+}
+
+.wikiTab {
+  
+}
+
+.wikiTab td {
+  padding-top: 5px;
+}
+
+/* @group Wiki Stuff */
+.articleBody img {
+  max-width: 475px!important
+}
+
+.external {
+  background: url(../images/external.gif) center right no-repeat;
+  padding-right: 13px;
+}
+
+.denied {
+  background: url(../images/wiki_denied.png) center right no-repeat;
+  padding-right: 13px;
+}
+
+.newWiki {
+  background: url(../images/wiki_start.png) center right no-repeat;
+  padding-right: 13px;
+}
+
+
+ul.wikiExtras {
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none
+}
+
+ul.wikiExtras li {
+  display: inline
+}
+
+ul.wikiExtras li a {
+  text-decoration: none;
+  color: #F7931E;
+}
+
+/* @end */
+
+.infobox {
+  margin:0;
+  float: right;
+  padding: 2px;
+  clear: right;
+  width: 250px;
+  background:#fff;
+}
+
+.infobox table {
+  width: 240px;
+  float: right;
+}
+
+.article-portlet {
+  clear: both;
+}
+
+/* @end */
+
+.articleFooter {
+  text-align: right;
+  margin: 5px 20px 5px 0;
+  min-height: 20px
+}
+
+.articleFooter {
+  text-align: right;
+  margin: 5px 20px 5px 0;
+  min-height: 20px
+}
+
+/* The following is breaking paragraphs in the wiki, when images are floated
+.articleBody p { overflow:auto }*/
+
+/* Reset Lists */
+
+/* @group article actions */
+
+.articleContainer .portlet-menu {
+  clear: both;
+  margin: 0 15px 0
+}
+
+.articleContainer .portlet-menu ul {
+  float: right;
+  border-top: 1px dotted #ddd;
+  padding: 0 15px;
+  list-style: none!important
+}
+
+.articleContainer .portlet-menu ul {
+  float: right;
+  border-top: 1px dotted #ddd;
+  padding: 0 15px;
+  list-style: none!important
+}
+
+.articleContainer .portlet-menu ul li {
+  float: left;
+  margin: 0;
+  padding: 0;
+  list-style: none!important
+}
+
+.articleContainer .portlet-menu ul li a {
+  display: block;
+  padding: 5px;
+  background: #e2ecf3;
+  -moz-border-radius: 0 0 3px 3px;
+  -webkit-border-radius: 0 0 3px 3px;
+  margin: 0 0 0 5px;
+}
+
+.articleContainer .portlet-menu ul li a:hover {
+  background: #ccc;
+  text-decoration: none
+}
+
+/* @end */
+
+/* @end */
+
+/* @end */
+
+/* @group Classifieds and Ads */
+
+.listingContainer {
+  position: relative;
+  background: #eee;
+  border: 1px dotted #ccc;
+  padding: 5px;
+  margin: 5px 30px 5px 0
+}
+
+.listingHeaderContainer .permissions {
+  position: absolute;
+  right: -26px;
+  top: 10px;
+}
+
+.listingHeaderContainer .permissions a {
+  display: block;
+  margin: 5px 0;
+  background: #f9b757;
+  padding: 4px;
+  border-left: 1px #c1840f solid
+}
+
+.listingHeaderContainer {
+  background: #d5dffc;
+  padding: 5px;
+  border: 1px solid #c3d1fc
+}
+
+.listingHeaderContainer h3 {
+  margin: 0 80px 0 0
+}
+
+.listingHeaderContainer .header {
+  margin-right: 80px
+}
+
+.listingHeaderContainer .details {
+  
+}
+
+.listingHeaderContainer .ratings {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 80px
+}
+
+.listingBodyContainer {
+  background: #fff;
+  padding: 5px;
+  border: 1px solid #ddd
+}
+
+.listingBodyContainer .attachments {
+  text-align: center;
+  float: left;
+}
+
+.listingBodyContainer .attachments img {
+  margin: 5px;
+}
+
+.listingBodyContainer:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+/* @end */
+
+/* @group Discussions */
+
+.postContainer { display:block; clear:both; width:auto; margin:0 0 10px 5px;  padding:5px 10px 5px 35px; position:relative }
+
+.postContainer:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+.postContainer h3 { color:#333!important; display:block!important; margin:0!important; }
+
+.postContainer h3 span {  }
+
+/* @group postHeader */
+
+.postContainer .postHeader { border-bottom:1px dotted #aaa }
+
+.postHeader .accordian li fieldset, .accordian li ul { border:1px solid #425b85; right: 0 }
+
+.postHeader .accordian li fieldset, .accordian li ul { border:1px solid #425b85; }
+
+.postHeader .accordian li:hover fieldset,
+  .accordian li:hover fieldset:hover,
+  .accordian li:hover ul,
+  .accordian li:hover ul:hover { border:#c2e5f5 1px solid; left:-56px; background:#fff; top:23px }
+
+.postHeader .accordian fieldset fieldset, .accordian ul ul { background:#fff; position:absolute; width:75px; clear:both }
+
+.postHeader .accordian ul ul li { padding:10px; width:100%; float:left }
+
+.postHeader .count { position:absolute; left:0px; font-size:medium; color:#999 }
+
+.postHeader .date { color:#444 }
+
+.postHeader .time { color:#555; font-size:smaller }
+
+.postHeader .portlet-menu ul {
+  float:right;
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+
+.postHeader .portlet-menu ul li {
+  float:left;
+  margin:0 0 0 5px
+}
+
+.postHeader .portlet-menu ul li a:hover img {
+  border:none;
+  text-decoration:none;
+}
+
+/* @end */
+
+.postFirst { position:relative; background:#eef3f7; border:2px solid #e2ecf3; -moz-border-radius:10px 0; -webkit-border-radius:5px; padding:5px 10px; margin:0 0 20px 0 }
+
+.postContainer.postFirst .actions { position:absolute; right:25px; bottom:-30px }
+
+.postContainer.postFirst .postFooterFiles { background:#fefefe }
+
+.postContainer.postFirst .actions ul { border:none; margin: 0; list-style:none; padding: 0 }
+
+.postBody { padding:5px 0 }
+
+.postContainer .noPhoto { height:75px!important  }
+
+.postContainer .noPhoto p { top:30px }
+
+.postContainer .profileImageBackground { border-bottom:2px solid #ddd; margin-bottom:10px }
+
+.postContainer .profileImageContainer { display:block; margin:0 5px 0 0 }
+
+.postContainer .imageContainer {  }
+
+.postContainer .imageContainer img { border:1px solid #ddd; background:#eee; padding:3px }
+
+.postContainer .actions { float:right; position:relative; }
+
+.postContainer .actions ul { border-top:1px solid #ddd; padding:0 10px 0 5px; list-style:none  }
+
+.postContainer .actions ul li { float:left; padding:0; margin:0 }
+
+.postContainer .actions ul li a { border:1px solid #fff; border-top:none; display:block; padding:5px; background:#e2ecf3;-moz-border-radius:0 0 3px 3px; -webkit-border-radius:0 0 3px 3px; margin:0 0 0 5px;  }
+
+.postContainer .actions ul li a:hover { background:#e7edf9; border-color:#e2ecf3 }
+
+.postUser { text-align:center; background:#fff; padding:10px; width:120px; display:block; float:left; margin:0 10px 10px 0; border:#ddd 1px solid; -moz-border-radius:5px }
+
+.postUser p { clear:both; text:align:left }
+
+.postFooter { clear:both; margin:4px 0; }
+
+.postFooterFiles { position:relative; clear:both; top:10px; margin:5px 0; border:1px dotted #e2ecf3; background:#eef3f7; padding:10px }
+
+.postFooterFiles p.files { position:absolute; font-size:medium; opacity:.5; top:-21px  }
+
+/* @end */
+
+/* @end */
+
+/* @group Globals */
+
+/* @group $_permissions */
+
+.permissions a {
+  color:#fff;
+}
+
+.projectWikiContainer .permissions {
+  font-size: 12px;
+  padding: 10px;
+  margin: 0 0 0 10px
+}
+
+.projectWikiContainer .permissions a {
+  font-size: 12px
+}
+
+/* @end */
+
+/* @end */
+
+
+/* 2. Profile Sections */
+
+/* Tickets Layout */
+
+.profile-portlet-tickets { }
+
+.profile-portlet-tickets .profile-portlet-body .portlet-table {
+  float:none;
+}
+
+.profile-portlet-tickets .profile-portlet-body .portlet-table th,
+.profile-portlet-tickets .profile-portlet-body .portlet-table td
+{
+  
+}
+
+.profile-portlet-tickets .portlet-table-body .portlet-table-text dl dt,
+.profile-portlet-tickets .portlet-table-body .portlet-table-text dl dd {
+  float:left;
+  margin:0 5px 0 0;
+}
+
+.profile-portlet-tickets .portlet-table-body .portlet-table-text dl dt {
+  clear:left;
+}
+
+.profile-portlet-tickets .portlet-table-body .portlet-table-text dl:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}

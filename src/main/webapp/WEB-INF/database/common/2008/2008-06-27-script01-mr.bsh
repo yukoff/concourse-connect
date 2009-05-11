@@ -1,0 +1,41 @@
+import java.sql.*;
+import java.util.*;
+import com.zeroio.iteam.base.*;
+import com.zeroio.utils.*;
+
+String categoryName = "Profile";
+
+print("Checking " + categoryName + " permission category");
+
+PermissionCategoryLookupList list = new PermissionCategoryLookupList();
+list.setDescription(categoryName);
+list.buildList(db);
+
+if (list.size() == 0) {
+  print("Adding " + categoryName + " permission category");
+
+  PermissionCategoryLookup category = new PermissionCategoryLookup();
+  category.setDescription(categoryName);
+  category.setLevel(5);
+  category.insert(db);
+
+  {
+  PermissionLookup permission = new PermissionLookup();
+  permission.setCategoryId(category.getId());
+  permission.setPermission("project-profile-view");
+  permission.setDescription("View profile");
+  permission.setLevel(10);
+  permission.setDefaultRole(4);
+  permission.insert(db);
+  }
+
+  {
+  PermissionLookup permission = new PermissionLookup();
+  permission.setCategoryId(category.getId());
+  permission.setPermission("project-profile-admin");
+  permission.setDescription("Configure the profile");
+  permission.setLevel(20);
+  permission.setDefaultRole(1);
+  permission.insert(db);
+  }
+}

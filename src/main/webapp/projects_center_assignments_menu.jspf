@@ -1,0 +1,329 @@
+<%--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  --%>
+<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<script type="text/javascript">
+  var menu_init = false;
+  var thisProjectId = <%= project.getId() %>
+  var thisActivityId = -1;
+  var thisFolderId = -1;
+  var thisRequirementId = -1;
+  var thisMapId = -1;
+  var thisIndent = -1;
+  //Set the action parameters for clicked item
+  function displayMenu(loc, id, pId, rId, fId, aId, map, indent) {
+    thisProject = pId;
+    thisRequirementId = rId;
+    thisFolderId = fId;
+    thisActivityId = aId;
+    thisMapId = map;
+    thisIndent = indent;
+    if (!menu_init) {
+      menu_init = true;
+      new ypSlideOutMenu("menuActivity", "down", 0, 0, 170, getHeight("menuActivityTable"));
+      new ypSlideOutMenu("menuFolder", "down", 0, 0, 170, getHeight("menuFolderTable"));
+      new ypSlideOutMenu("menuRequirement", "down", 0, 0, 170, getHeight("menuRequirementTable"));
+    }
+    return ypSlideOutMenu.displayDropMenu(id, loc);
+  }
+  function viewOutline() {
+    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&popup=true','Outline_Details','650','375','yes','yes');
+  }
+  function editOutline() {
+    document.location.href='<%= ctx %>/ProjectManagementRequirements.do?command=Modify&rid=' + thisRequirementId + '&pid=' + thisProjectId;
+  }
+  function importAssignments() {
+    document.location.href='<%= ctx %>/ProjectManagementRequirements.do?command=PrepareImport&rid=' + thisRequirementId + '&pid=' + thisProjectId;
+  }
+  function deleteActivity() {
+    if (confirm('Are you sure?')) {
+      scrollReload('<%= ctx %>/ProjectManagementAssignments.do?command=Delete&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId);
+    }
+  }
+  function deleteFolder() {
+    if (confirm('Are you sure?')) {
+      scrollReload('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=DeleteFolder&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&folderId=' + thisFolderId);
+    }
+  }
+  function addFolder() {
+    popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=AddFolder&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&parentId=' + thisFolderId + '&prevMapId=' + thisMapId + '&prevIndent=' + thisIndent + '&popup=true&return=ProjectAssignments&param=' + thisProjectId + '','Assignment_Folder','650','375','yes','yes');
+  }
+  function updateFolder() {
+    popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=ModifyFolder&pid=' + thisProjectId + '&folderId=' + thisFolderId + '&popup=true&return=ProjectAssignments','Folder_Modify','650','375','yes','yes');
+  }
+  function addActivity() {
+    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Add&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&folderId=' + thisFolderId + '&prevMapId=' + thisMapId + '&prevIndent=' + thisIndent + '&popup=true&return=ProjectAssignments&param=' + thisProjectId,'Assignment','650','560','yes','yes');
+  }
+  function updateActivity() {
+    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Modify&pid=' + thisProjectId + '&aid=' + thisActivityId + '&popup=true&return=ProjectAssignments','Assignment_Modify','650','600','yes','yes');
+  }
+  function moveActivity() {
+    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Move&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&popup=true&return=ProjectAssignments&param=' + thisProjectId,'Assignment_Move','400','475','yes','yes');
+  }
+  function moveItemRight() {
+    scrollReload('<%= ctx %>/ProjectManagementAssignments.do?command=MoveItem&dir=r&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&folderId=' + thisFolderId);
+  }
+  function moveItemLeft() {
+    scrollReload('<%= ctx %>/ProjectManagementAssignments.do?command=MoveItem&dir=l&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&folderId=' + thisFolderId);
+  }
+  function moveItemUp() {
+    scrollReload('<%= ctx %>/ProjectManagementAssignments.do?command=MoveItem&dir=u&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&folderId=' + thisFolderId);
+  }
+  function moveItemDown() {
+    scrollReload('<%= ctx %>/ProjectManagementAssignments.do?command=MoveItem&dir=d&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&folderId=' + thisFolderId);
+  }
+</script>
+<%-- Activity Pop-up Menu --%>
+<div id="menuActivityContainer" class="menu">
+  <div id="menuActivityContent">
+    <table id="menuActivityTable" class="pulldown" width="170" cellspacing="0">
+      <ccp:permission name="project-plan-outline-modify">
+      <tr>
+        <td valign="top" colspan="2" width="100%" nowrap>
+          <a href="javascript:moveItemLeft()"><img alt="Unindent" src="<%= ctx %>/images/icons/stock_left-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+          <a href="javascript:moveItemRight()"><img alt="Indent" src="<%= ctx %>/images/icons/stock_right-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+          <a href="javascript:moveItemUp()"><img alt="Move Up" src="<%= ctx %>/images/icons/stock_up-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+          <a href="javascript:moveItemDown()"><img alt="Move Down" src="<%= ctx %>/images/icons/stock_down-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="addFolder()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_new-dir-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td>
+          <ccp:label name="projectsCenterAssignments.menu.addActivityFolder">Add Activity Folder</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="addActivity()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_live-mode-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td>
+          <ccp:label name="projectsCenterActivities.menu.addActivity">Add Activity</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-view,project-plan-outline-modify" if="any">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="updateActivity()">
+        <th valign="top">
+          <img src="<%= ctx %>/images/icons/stock_live-mode-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td width="100%">
+          <ccp:label name="projectsCenterAssignments.menu.viewUpdateActivity">View/Update this Activity</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+<%--
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="moveActivity()">
+        <th valign="top">
+          <img src="<%= ctx %>/images/icons/stock_drag-mode-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td width="100%">
+          Move Activity to Another Folder
+        </td>
+      </tr>
+      </ccp:permission>
+--%>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="deleteActivity()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_delete-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td width="100%">
+          <ccp:label name="projectsCenterActivities.menu.deleteActivity">Delete Activity</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+    </table>
+  </div>
+</div>
+<%-- Activity Folder Pop-up Menu --%>
+<div id="menuFolderContainer" class="menu">
+  <div id="menuFolderContent">
+    <table id="menuFolderTable" class="pulldown" width="170" cellspacing="0">
+      <ccp:permission name="project-plan-outline-modify">
+      <tr>
+        <td valign="top" colspan="2" width="100%" nowrap>
+          <a href="javascript:moveItemLeft()"><img alt="Unindent" src="<%= ctx %>/images/icons/stock_left-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+          <a href="javascript:moveItemRight()"><img alt="Indent" src="<%= ctx %>/images/icons/stock_right-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+          <a href="javascript:moveItemUp()"><img alt="Move Up" src="<%= ctx %>/images/icons/stock_up-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+          <a href="javascript:moveItemDown()"><img alt="Move Down" src="<%= ctx %>/images/icons/stock_down-16.gif" border="0" align="absmiddle" height="16" width="16"/></a>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="addFolder()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_new-dir-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td>
+          <ccp:label name="projectsCenterActivites.menu.addActivityFolder">Add Activity Folder</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="addActivity()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_live-mode-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td>
+          <ccp:label name="projectsCenterActivities.menu.addActivity">Add Activity</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="updateFolder()">
+        <th valign="top">
+          <img src="<%= ctx %>/images/icons/stock_live-mode-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td width="100%">
+          <ccp:label name="projectsCenterActivities.menu.updateThisFolder">Update this Folder</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+<%--
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="moveFolder()">
+        <th valign="top">
+          <img src="<%= ctx %>/images/icons/stock_drag-mode-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td width="100%">
+          Move Folder to Another Folder
+        </td>
+      </tr>
+      </ccp:permission>
+--%>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="deleteFolder()">
+        <th valign="top">
+          <img src="<%= ctx %>/images/icons/stock_delete-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td>
+          <ccp:label name="projectsCenterActivities.menu.deleteFolderAndShiftContentsLeft">Delete Folder and Shift Contents Left</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+    </table>
+  </div>
+</div>
+<%-- Requirement Pop-up Menu --%>
+<div id="menuRequirementContainer" class="menu">
+  <div id="menuRequirementContent">
+    <table id="menuRequirementTable" class="pulldown" width="170" cellspacing="0">
+      <ccp:permission name="project-plan-outline-view">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="viewOutline()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_zoom-page-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td>
+          <ccp:label name="projectsCenterActivities.menu.viewOutlineDetails">View Outline Details</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-edit">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="editOutline()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
+        </th>
+        <td>
+          <ccp:label name="projectsCenterAssignments.menu.editOutlineDetails">Edit Outline Details</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-edit">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="importAssignments()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_help-pane-off-16.gif" border="0" align="absmiddle" height="16" width="16" />
+        </th>
+        <td>
+          <ccp:label name="projectsCenterAssignments.menu.importPlanFromFile">Import plan from file</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:evaluate if="<%= !requirement.getReadOnly() %>">
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="addFolder()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_new-dir-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td>
+          <ccp:label name="projectsCenterAssignments.menu.addActivityFolder">Add Activity Folder</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      <ccp:permission name="project-plan-outline-modify">
+      <tr onmouseover="cmOver(this)" onmouseout="cmOut(this)"
+          onclick="addActivity()">
+        <th>
+          <img src="<%= ctx %>/images/icons/stock_live-mode-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+        </th>
+        <td width="100%">
+          <ccp:label name="projectsCenterAssignments.menu.addActivity">Add Activity</ccp:label>
+        </td>
+      </tr>
+      </ccp:permission>
+      </ccp:evaluate>
+    </table>
+  </div>
+</div>

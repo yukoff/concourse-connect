@@ -1,0 +1,69 @@
+import java.sql.*;
+import com.concursive.connect.web.modules.contribution.dao.*;
+
+LookupContributionList lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForReviewsLiked
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForReviewsLiked") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForReviewsLiked");
+	lookupContribution.setDescription("Calculate the number of users who liked your review");
+	lookupContribution.setLevel(110);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForCommentsOnBlog
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForCommentsOnBlog") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForCommentsOnBlog");
+	lookupContribution.setDescription("Calculate the number of comments added to a users blog");
+	lookupContribution.setLevel(120);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForMessagesToPromotions
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForMessagesToPromotions") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForMessagesToPromotions");
+	lookupContribution.setDescription("Calculate the number of private messages inquiring a promotion");
+	lookupContribution.setLevel(130);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForMessagesToClassifieds
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForMessagesToClassifieds") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForMessagesToClassifieds");
+	lookupContribution.setDescription("Calculate the number of private messages inquiring a classified");
+	lookupContribution.setLevel(140);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForFilesDownloaded
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForFilesDownloaded") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForFilesDownloaded");
+	lookupContribution.setDescription("Calculate the number of times a file was downloaded");
+	lookupContribution.setLevel(150);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}

@@ -1,0 +1,46 @@
+/* TinyMCE Editor Styles */
+
+#tinymce pre { max-width:475px; border-left:5px #ddd solid; margin:15px; display:block; line-height:1.1em; overflow:auto; padding:1em; width:auto; background:#f9f9f9 }
+
+#tinymce li { display:list-item; }
+
+#tinymce ul,
+#tinymce ol { padding: 0 2em 0 3em; margin: 5px 25px!important; }
+
+#tinymce ul { list-style-type:disc!important }
+
+#tinymce ul li { margin-bottom: .1em; list-style:disc!important;  }
+
+#tinymce ol li { list-style-type: decimal!important; }
+
+#tinymce ol ol li { list-style-type: lower-latin!important; margin: 0; }
+
+#tinymce ol ol ol li { list-style-type: lower-roman!important; }
+
+#tinymce ol ol ol ol li  { list-style-type: decimal!important; }
+
+#tinymce ol ol ol ol ol li { list-style-type: lower-latin!important; }
+
+#tinymce ol ol ol ol ol ol li { list-style-type: lower-roman!important; }
+
+#tinymce ol ol ol ol ol ol ol li { list-style-type: decimal!important; }
+
+#tinymce ol ol ol ol ol ol ol ol li { list-style-type: lower-latin!important; }
+
+#tinymce ol ol ol ol ol ol ol ol ol li { list-style-type: lower-roman!important; }
+
+#tinymce ol ol ol ol ol ol ol ol ol ol li { list-style-type: decimal!important; }
+
+#tinymce ol ol ol ol ol ol ol ol ol ol ol li { list-style-type: lower-latin!important; }
+
+#tinymce ol ol ol ol ol ol ol ol ol ol ol ol li { list-style-type: lower-roman!important; }
+
+#tinymce ul ul li, #tinymce ol ul li { list-style:circle!important; }
+
+#tinymce ul ul ul li { list-style:square!important; }
+
+#tinymce ul ul ul ul li { list-style:disc!important; }
+
+#tinymce ul ul ul ul ul li { list-style:circle!important; }
+
+#tinymce ul ul ul ul ul ul li { list-style:square!important; }

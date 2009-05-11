@@ -1,0 +1,51 @@
+import java.sql.*;
+import java.util.*;
+import com.zeroio.iteam.base.*;
+import com.zeroio.utils.*;
+
+String categoryName = "Reviews";
+
+print("Checking " + categoryName + " permission category");
+
+PermissionCategoryLookupList list = new PermissionCategoryLookupList();
+list.setDescription(categoryName);
+list.buildList(db);
+
+if (list.size() == 0) {
+  print("Adding " + categoryName + " permission category");
+
+  PermissionCategoryLookup category = new PermissionCategoryLookup();
+  category.setDescription(categoryName);
+  category.setLevel(88);
+  category.insert(db);
+
+  {
+  PermissionLookup permission = new PermissionLookup();
+  permission.setCategoryId(category.getId());
+  permission.setPermission("project-reviews-view");
+  permission.setDescription("View reviews");
+  permission.setLevel(10);
+  permission.setDefaultRole(4);
+  permission.insert(db);
+  }
+
+  {
+  PermissionLookup permission = new PermissionLookup();
+  permission.setCategoryId(category.getId());
+  permission.setPermission("project-reviews-add");
+  permission.setDescription("Add reviews");
+  permission.setLevel(20);
+  permission.setDefaultRole(2);
+  permission.insert(db);
+  }
+
+  {
+  PermissionLookup permission = new PermissionLookup();
+  permission.setCategoryId(category.getId());
+  permission.setPermission("project-reviews-admin");
+  permission.setDescription("Administrate the reviews");
+  permission.setLevel(30);
+  permission.setDefaultRole(1);
+  permission.insert(db);
+  }
+}

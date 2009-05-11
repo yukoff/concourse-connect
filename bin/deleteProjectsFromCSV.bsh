@@ -1,0 +1,295 @@
+#!/bin/sh
+//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/opencsv-1.8.jar:lib/log4j-1.2.11.jar:lib/commons-logging-1.0.4.jar:lib/spring-2.0.3.jar:lib/spring-context-2.0.3.jar:lib/spring-beans-2.0.3.jar:lib/spring-core-2.0.3.jar:lib/spring-support-2.0.3.jar:lib/managementConsolePersistence-common-1.0.jar:lib/managementConsoleBusinessService-1.0.jar bsh.Interpreter "$0" "$@"
+
+
+import com.zeroio.utils.APIConnection;
+import com.zeroio.utils.PhoneNumberUtils;
+import com.zeroio.transfer.DataRecord;
+import au.com.bytecode.opencsv.CSVReader;
+import com.zeroio.iteam.base.Project;
+import com.zeroio.iteam.base.ProjectCategory;
+import com.zeroio.utils.StringUtils;
+import java.util.Date;
+com.zeroio.controller.UserList;
+com.zeroio.controller.User;
+
+if (bsh.args.length == 0) {
+  print("Usage:");
+  print("  deleteProjectsFromCSV.bsh [filename] <url> <code> <offset> <limit>");
+  print("");
+  print("The specified file will be used as a basis to delete the associated projects from either 127.0.0.1 or the specified url");
+  System.exit(0);
+}
+String filename = bsh.args[0].trim();
+
+String url = "http://127.0.0.1";
+String code = "";
+if (bsh.args.length > 1) {
+  url = bsh.args[1].trim();
+  code = bsh.args[2].trim();
+}
+
+int skip = 0;
+if (bsh.args.length > 3) {
+  skip = Integer.parseInt(bsh.args[3].trim());
+  print("Skipping " + skip);
+}
+
+int limit = 0;
+if (bsh.args.length > 4) {
+  limit = Integer.parseInt(bsh.args[4].trim());
+  print("Limit " + limit);
+}
+
+
+print("Starting transaction...");
+
+APIConnection conn = new APIConnection();
+conn.setUrl(url);
+//conn.setCode("098f6bcd4621d373cade4e832627b4f6");
+conn.setCode(code);
+
+// Example which adds a project and a team member in one transaction
+File csvFile = new File(filename);
+HashMap categoryNameIdMap = new HashMap();
+HashMap subCategory1NameIdMap = new HashMap();
+
+if (csvFile.exists()) {
+  System.out.println("sendCSVProjects-> loadFile... " + csvFile.toURL());
+  CSVReader reader = new CSVReader(new FileReader(csvFile));
+  String[] nextLine = reader.readNext();
+
+ // Sort out the headers
+  int projectNameColumn = -1;
+  int projectAddressColumn = -1;
+  int projectCityColumn = -1;
+  int projectStateColumn = -1;
+  int projectZipColumn = -1;
+  int projectLatitudeColumn = -1;
+  int projectLongitudeColumn = -1;
+  int projectPhoneColumn = -1;
+  int projectCategoryColumn = -1;
+  int projectSubCategory1Column = -1;
+  int projectSubCategory2Column = -1;
+  int projectWebsiteColumn = -1;
+  int projectIDColumn = -1;
+
+  for (int i = 0; i < nextLine.length; i++) {
+    if (nextLine[i].equals("COMPANY_NAME")) {
+      projectNameColumn = i;
+    } else if (nextLine[i].equals("LATITUDE")) {
+      projectLatitudeColumn = i;
+    } else if (nextLine[i].equals("LONGITUDE")) {
+      projectLongitudeColumn = i;
+    } else if (nextLine[i].equals("PRIMARY_PHONE")) {
+      projectPhoneColumn = i;
+    } else if (nextLine[i].equals("PRIMARY_ADDRESS")) {                        
+      projectAddressColumn = i;
+    } else if (nextLine[i].equals("PRIMARY_CITY")) {
+      projectCityColumn = i;
+    } else if (nextLine[i].equals("PRIMARY_STATE")) {
+      projectStateColumn = i;
+    } else if (nextLine[i].equals("PRIMARY_ZIP_CODE")) {
+      projectZipColumn = i;
+    } else if (nextLine[i].equals("PROJECT_CATEGORY")){
+      projectCategoryColumn = i;
+    } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY1")){
+      projectSubCategory1Column = i;
+    } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY2")){
+      projectSubCategory2Column = i;
+    } else if (nextLine[i].equals("PROJECT_WEB_SITE")){
+      projectWebsiteColumn = i;
+    } else if (nextLine[i].equals("PROJECT_ID")) {
+      projectIDColumn = i;
+    }
+  }
+
+  print("Set AutoConnect...");
+  conn.setAutoCommit(true);
+
+  // Insert the projects
+  int count = 0;
+  print("parse file...");
+  while ((nextLine = reader.readNext()) != null &&
+         (limit == 0 || (limit != 0 && count < limit))) {
+
+    if (skip > 0) {
+      --skip;
+      continue;
+    }
+
+    ++count;
+    if (count % 100 == 0) {
+      System.out.println(count + "...");
+    }
+
+    print("Get values...");
+
+    print("Get project name...");
+    String projectNameValue = nextLine[projectNameColumn].trim();
+    print("Get latitude...");
+    String projectLatitudeValue = "";
+    if (projectLatitudeColumn != -1){
+      projectLatitudeValue = nextLine[projectLatitudeColumn].trim();
+    }
+
+    print("get longitude...");
+    String projectLongitudeValue = "";
+    if (projectLongitudeColumn != -1){
+      projectLongitudeValue = nextLine[projectLongitudeColumn].trim();
+    }
+
+    print("get phone...");
+    String projectPhoneValue = nextLine[projectPhoneColumn].trim();
+    print("get Address...");
+    String projectAddressValue = nextLine[projectAddressColumn].trim();
+    print("get City...");
+    String projectCityValue = nextLine[projectCityColumn].trim();
+    print("Get Satte...");
+    String projectStateValue = nextLine[projectStateColumn].trim();
+    print("Get Zip...");
+    String projectZipValue = nextLine[projectZipColumn].trim();
+    print("Get Website...");
+    String projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
+
+    // normalizing phone numbers
+    print("Normalize phone...");
+    if (StringUtils.hasText(projectPhoneValue)){
+      if (projectPhoneValue.trim().length() == 8){
+        String projectPhoneValue = "757-" + projectPhoneValue;
+      }
+    }
+
+    // normalizing website addresses
+    print("normalize Website...");
+    if (StringUtils.hasText(projectWebsiteValue)){
+      projectWebsiteValue = projectWebsiteValue.toLowerCase().trim();
+    }
+
+    // Fetching listing category (Businesses, Organizations, Groups, Events, etc.)
+    print("Get Category...");
+    String projectCategoryValue = "Businesses";
+    if (projectCategoryColumn != -1){
+      projectCategoryValue = nextLine[projectCategoryColumn].trim();
+    }
+
+    // Use the subcategory to further define the category
+    print("Get SubCat1...");
+    String projectSubCategory1Value = "";
+    if (projectSubCategory1Column != -1){
+      projectSubCategory1Value = nextLine[projectSubCategory1Column].trim();
+    }
+
+    // Use the subcategory2 to further define the category, for now use as description
+    print("Get SubCat2...");
+    String projectSubCategory2Value = "";
+    if (projectSubCategory2Column != -1){
+      projectSubCategory2Value = nextLine[projectSubCategory2Column].trim();
+    }
+
+    // Use the ProjectID to get a clean identifier for the record...
+    print("Get Id...");
+    String projectIDValue = ""; 
+    if (projectIDColumn != -1){
+      projectIDValue = nextLine[projectIDColumn].trim();
+    }
+
+
+    print("Delete project...");
+
+    // If the project Id is provided, we will attempt a delete.
+    // If it is not, we use the phone number for deletion...
+    if ("".equals(projectIDValue.trim())) {
+      System.out.println("Project " + projectNameValue + " does not have a project Id; Using phone number for deletion.");
+      if (!"".equals(projectNameValue.trim())) {
+        boolean exists = false;
+        int existingId = -1;
+        Project partialProject = null;
+
+        conn.setAutoCommit(true);
+        {
+          // See if the project exists and update it
+          ArrayList meta = new ArrayList();
+          meta.add("id");
+          meta.add("title");
+          meta.add("latitude");
+          meta.add("longitude");
+          meta.add("businessPhone");
+          conn.setTransactionMeta(meta);
+
+          DataRecord record = new DataRecord();
+          record.setName("projectList");
+          record.setAction(DataRecord.SELECT);
+          // Set the filters to query by
+          record.addField("title", projectNameValue);
+          conn.save(record);
+
+          // In the meta section only a few properties were specified and will exist
+          ArrayList projectObjects = conn.getRecords("com.zeroio.iteam.base.Project");
+          for (Object projectObject : projectObjects) {
+            partialProject = (Project) projectObject;
+            System.out.println("Checking Project : " + partialProject.getTitle());
+            System.out.println("Phone            : " + partialProject.getBusinessPhone() + "::" + PhoneNumberUtils.format(projectPhoneValue));
+            if ((partialProject.getBusinessPhone() != null) &&
+               (partialProject.getBusinessPhone().equals(PhoneNumberUtils.format(projectPhoneValue)))){
+                System.out.println("found a phone match: " +  partialProject.getBusinessPhone() + "::" + projectPhoneValue);
+                System.out.println("Business Name: " +  partialProject.getTitle());
+                existingId = partialProject.getId();
+                break;
+            }
+          }
+        }
+        // and now delete the item if the project has been found...
+        if(existingId != -1) {
+          conn.setAutoCommit(true);
+          {
+            // Delete the project...
+            ArrayList meta = new ArrayList();
+            meta.add("id");
+            conn.setTransactionMeta(meta);
+
+            DataRecord record = new DataRecord();
+            record.setName("project");
+            record.setAction(DataRecord.DELETE);
+            // Set the filters to query by
+            record.addField("id", existingId);
+            conn.save(record);
+
+            // check the results...
+            boolean success = conn.commit();
+            if (!success) {
+              System.out.println("Delete Project-> Commit message: " + conn.getLastResponse());
+            } else {
+              System.out.println("Delete Project-> Deleted Project: " + projectNameValue + "(id:" + existingId + ")");
+            }
+          }  
+        }
+      }
+    } else {
+      conn.setAutoCommit(true);
+      {
+        // Delete the project...
+        ArrayList meta = new ArrayList();
+        meta.add("id");
+        conn.setTransactionMeta(meta);
+
+        DataRecord record = new DataRecord();
+        record.setName("project");
+        record.setAction(DataRecord.DELETE);
+        // Set the filters to query by
+        record.addField("id", projectIDValue);
+        conn.save(record);
+
+        // check the results...
+        boolean success = conn.commit();
+        if (!success) {
+          System.out.println("Delete Project-> Commit message: " + conn.getLastResponse());
+        } else {
+          System.out.println("Delete Project-> Deleted Project: " + projectNameValue + "(id:" + projectIDValue + ")");
+        }
+      }
+    }
+  }
+} else {
+  System.out.println("sendCSVProjects-> file does not exist: " + filename);
+}

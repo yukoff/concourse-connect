@@ -1,0 +1,17 @@
+import java.sql.*;
+import java.util.*;
+import org.aspcfs.modules.tasks.base.*;
+
+TaskList taskList = new TaskList();
+taskList.buildList(db);
+
+System.out.println("Tasks found: " + taskList.size());
+
+for (Task task : taskList) {
+  TaskLog taskLog = new TaskLog(task);
+  taskLog.setInsertCreationDates(true);
+  taskLog.setEntered(task.getModified());
+  taskLog.insert(db);
+}
+
+System.out.println("TaskLog entries added: " + taskList.size());

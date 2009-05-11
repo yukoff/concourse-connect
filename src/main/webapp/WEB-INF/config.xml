@@ -1,0 +1,651 @@
+<?xml version="1.0" ?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<mvc-app>
+  <action name="GlobalActions">
+    <forward name="PermissionError" resource="/Login.do?command=Permission"/>
+    <forward name="SecurityCheck" resource="/Login.do?command=Security"/>
+    <forward name="UserPermissionError" resource="/error_permission.jsp"/>
+    <forward name="SystemError" resource="/error_system.jsp"/>
+    <forward name="ToolsError" resource="/error_tools.jsp"/>
+    <forward name="UserError" resource="/error_user.jsp"/>
+    <forward name="NotSetupError" resource="/Setup.do" redirect="true"/>
+    <forward name="UpgradeCheck" resource="/Upgrade.do?command=Default&amp;style=true" redirect="true" />
+    <forward name="PopupCloseOK" resource="/closepopup.jsp"/>
+    <forward name="ProjectCenterOK" resource="/projects_center.jsp"/>
+    <forward name="ProjectCenterPortalOK" resource="/projects_center_portal.jsp"/>
+    <forward name="RatingOK" resource="/star_rating.jsp" />
+    <forward name="SetOK" resource="/message_true.jsp" />
+    <forward name="BucketMoveOK" resource="/bucket_item_xml.jsp" />
+    <forward name="BucketAddOK" resource="/bucket_item_xml.jsp" />
+    <forward name="BucketDeleteOK" resource="/bucket_item_xml.jsp" />
+    <forward name="BucketTooltipOK" resource="/bucket_tooltip.jsp" />
+    <forward name="Redirect301" resource="/redirect301.jsp"/>
+    <forward name="Redirect302" resource="/redirect302.jsp"/>
+    <forward name="404Error" resource="/redirect404.jsp"/>
+    <forward name="SaveItemListPopupOK" resource="/util_edit_list_closepopup_refresh.jsp"/>
+  </action>
+  <action name="Service" class="com.concursive.connect.web.modules.api.actions.Service" controller="api">
+    <forward name="ServiceOK" resource="/service.jsp" />
+  </action>
+  <action name="Setup" class="com.concursive.connect.web.modules.setup.actions.Setup" controller="setup">
+    <forward name="AlreadySetupOK" resource="/setup_already.jsp"/>
+    <forward name="SetupOK" resource="/setup.jsp"/>
+    <forward name="ReloadOK" resource="/Setup.do?command=Default"/>
+    <forward name="SetupConfigureLibraryOK" resource="/setup_library.jsp"/>
+    <forward name="SetupSaveLibraryOK" resource="/setup_library_ok.jsp"/>
+    <forward name="SetupSaveLibraryCONFIRM" resource="/setup_library_confirm.jsp"/>
+    <forward name="SetupSaveLibraryDUPLICATE" resource="/setup_library_duplicate.jsp"/>
+    <forward name="SetupSaveLibraryERROR" resource="/Setup.do?command=ConfigureLibrary"/>
+    <forward name="SetupCompleteOK" resource="/setup_complete.jsp"/>
+  </action>
+  <action name="SetupRegistration" class="com.concursive.connect.web.modules.setup.actions.Setup" controller="setup/register">
+    <bean name="registrationBean" class="com.concursive.connect.web.modules.setup.beans.SetupRegistrationBean" scope="request"/>
+    <forward name="SetupRegistrationFormOK" resource="/setup_register.jsp"/>
+    <forward name="SaveRegistrationOK" resource="/setup_register_ok.jsp"/>
+    <forward name="SaveRegistrationERROR" resource="/SetupRegistration.do?command=RegistrationForm"/>
+  </action>
+  <action name="SetupDatabase" class="com.concursive.connect.web.modules.setup.actions.Setup" controller="setup/database">
+    <bean name="databaseBean" class="com.concursive.connect.web.modules.setup.beans.SetupDatabaseBean" scope="request"/>
+    <forward name="AlreadySetupOK" resource="/setup_already.jsp"/>
+    <forward name="SetupConfigureDatabaseOK" resource="/setup_database.jsp"/>
+    <forward name="SetupSaveDatabaseOK" resource="/setup_database_ok.jsp"/>
+    <forward name="SetupSaveDatabaseERROR" resource="/SetupDatabase.do?command=ConfigureDatabase"/>
+    <forward name="SetupInstallDatabaseOK" resource="/setup_database_install_ok.jsp"/>
+    <forward name="SetupInstallDatabaseERROR" resource="/SetupDatabase.do?command=ConfigureDatabase"/>
+  </action>
+  <action name="SetupDetails" class="com.concursive.connect.web.modules.setup.actions.Setup" controller="setup/details">
+    <bean name="detailsBean" class="com.concursive.connect.web.modules.setup.beans.SetupDetailsBean" scope="request"/>
+    <forward name="AlreadySetupOK" resource="/setup_already.jsp"/>
+    <forward name="SetupConfigureDetailsOK" resource="/setup_details.jsp"/>
+    <forward name="SetupSaveDetailsOK" resource="/setup_details_ok.jsp"/>
+    <forward name="SetupSaveDetailsERROR" resource="/SetupDetails.do?command=ConfigureDetails"/>
+  </action>
+  <action name="SetupAdmin" class="com.concursive.connect.web.modules.setup.actions.Setup" controller="setup/admin">
+    <bean name="adminBean" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
+    <forward name="AlreadySetupOK" resource="/setup_already.jsp"/>
+    <forward name="SetupConfigureAdminOK" resource="/setup_admin.jsp"/>
+    <forward name="SetupConfigureAdminERROR" resource="/setup_admin.jsp"/>
+    <forward name="SetupSaveAdminOK" resource="/setup_admin_ok.jsp"/>
+    <forward name="SetupSaveAdminERROR" resource="/SetupAdmin.do?command=ConfigureAdmin"/>
+    <forward name="SetupAdminCompleteOK" resource="/SetupSite.do?command=ConfigureSite"/>
+    <forward name="NeedConnectionERROR" resource="/SetupDatabase.do?command=ConfigureDatabase"/>
+  </action>
+  <action name="SetupSite" class="com.concursive.connect.web.modules.setup.actions.Setup" controller="setup/site">
+    <bean name="siteBean" class="com.concursive.connect.web.modules.setup.beans.SetupSiteBean" scope="request"/>
+    <forward name="AlreadySetupOK" resource="/setup_already.jsp"/>
+    <forward name="SetupConfigureSiteOK" resource="/setup_site.jsp"/>
+    <forward name="SetupConfigureSiteERROR" resource="/setup_site.jsp"/>
+    <forward name="SetupSaveSiteOK" resource="/setup_site_ok.jsp"/>
+    <forward name="SetupSaveSiteERROR" resource="/SetupSite.do?command=ConfigureSite"/>
+    <forward name="SetupSiteCompleteOK" resource="/Setup.do?command=Complete"/>
+    <forward name="NeedConnectionERROR" resource="/SetupDatabase.do?command=ConfigureDatabase"/>
+  </action>
+  <action name="Upgrade" class="com.concursive.connect.web.modules.upgrade.actions.Upgrade" controller="upgrade">
+    <forward name="NeedUpgradeOK" resource="/upgrade_needed.jsp"/>
+    <forward name="CheckOK" resource="/upgrade_check.jsp"/>
+    <forward name="UpgradeOK" resource="/upgrade_complete.jsp"/>
+    <forward name="UpgradeERROR" resource="/upgrade_error.jsp"/>
+  </action>
+  <action name="Login" class="com.concursive.connect.web.modules.login.actions.Login">
+    <bean name="LoginBean" class="com.concursive.connect.web.modules.login.beans.LoginBean" scope="request"/>
+    <forward name="LoginFormOK" resource="/login.jsp"/>
+    <forward name="LoginOK" resource="/settings" redirect="true"/>
+    <forward name="LoginHasInvitationsOK" resource="/invites" redirect="true"/>
+    <forward name="LoginRetry" resource="/login.jsp"/>
+    <forward name="LogoutOK" resource="/" redirect="true"/>
+    <forward name="LogoutPortalOK" resource="/" redirect="true"/>
+    <forward name="PerformUpgradeOK" resource="/Upgrade.do?command=Check&amp;style=true" />
+    <forward name="RedirectURL" resource="/redirect302.jsp" />
+    <forward name="DetectMobileOK" resource="/mobile.jsp" />
+    <forward name="LoginNeedsRegistrationOK" resource="/register" redirect="true" />
+  </action>
+  <action name="LoginAccept" class="com.concursive.connect.web.modules.login.actions.LoginAccept">
+    <forward name="DefaultOK" resource="/invitation_accept.jsp"/>
+    <forward name="InvitationError" resource="/invitation_accept_error.jsp"/>
+  </action>
+  <action name="LoginReject" class="com.concursive.connect.web.modules.login.actions.LoginReject">
+    <forward name="DefaultOK" resource="/invitation_reject.jsp"/>
+    <forward name="RejectOK" resource="/invitation_reject_confirmation.jsp"/>
+    <forward name="InvitationError" resource="/invitation_reject_error.jsp"/>
+  </action>
+  
+  <action name="ContactUs" class="com.concursive.connect.web.modules.contactus.actions.ContactUs">
+    <bean name="contactUs" class="com.concursive.connect.web.modules.contactus.dao.ContactUsBean" scope="request"/>
+    <forward name="ContactUsOK" resource="/contactus_form_all.jsp"/>
+    <forward name="ContactUsERROR" resource="/contactus_form_all.jsp"/>
+    <forward name="SendOK" resource="/contactus_confirmation.jsp"/>
+  </action>
+  
+  <action name="PortalPrivacy" class="com.concursive.connect.web.controller.actions.GenericAction">
+    <forward name="DefaultOK" resource="/privacy_statement.jsp"/>
+  </action>
+  <action name="PortalSecurity" class="com.concursive.connect.web.controller.actions.GenericAction">
+    <forward name="DefaultOK" resource="/security_statement.jsp"/>
+  </action>
+  <action name="PortalTerms" class="com.concursive.connect.web.controller.actions.GenericAction">
+    <forward name="DefaultOK" resource="/terms_html.jsp"/>
+  </action>
+
+  <action name="ResetPassword" class="com.concursive.connect.web.modules.login.actions.ResetPassword">
+    <forward name="FormOK" resource="/password_reset_form.jsp"/>
+    <forward name="ResetOK" resource="/password_reset_sent.jsp"/>
+    <forward name="ResetError" resource="/password_reset_form.jsp"/>
+    <forward name="CloseFormOK" resource="/password_reset_refresh.jsp"/>
+  </action>
+  
+  <action name="Admin" class="com.concursive.connect.web.modules.admin.actions.Admin">
+    <forward name="DefaultOK" resource="/admin.jsp"/>
+    <forward name="OverviewOK" resource="/admin_overview.jsp"/>
+    <forward name="AddUserOK" resource="/admin_adduser.jsp"/>
+    <forward name="InsertUserOK" resource="/Admin.do?command=Overview"/>
+    <forward name="InsertUserError" resource="/admin_adduser.jsp"/>
+    <forward name="PrecompileOK" resource="/precompile_complete.jsp"/>
+  </action>
+  <action name="AdminUsage" class="com.concursive.connect.web.modules.admin.actions.AdminUsage">
+    <forward name="DefaultOK" resource="/admin_usage.jsp"/>
+    <forward name="ReloadWorkflowsOK" resource="/AdminUsage.do" redirect="true" />
+  </action>
+  <action name="AdminUsers" class="com.concursive.connect.web.modules.admin.actions.AdminUsers">
+    <bean name="adminSearchUserForm" class="com.concursive.connect.web.modules.admin.beans.UserSearchBean" scope="session"/>
+    <forward name="DefaultOK" resource="/admin_users_search_form.jsp"/>
+    <forward name="SearchOK" resource="/admin_users_search_results.jsp"/>
+  </action>
+  <action name="AdminCustomize" class="com.concursive.connect.web.modules.admin.actions.AdminCustomize">
+    <forward name="DefaultOK" resource="/admin_customize_form.jsp"/>
+    <forward name="ColorSchemesOK" resource="/admin_customize_color_schemes.jsp"/>
+    <forward name="SaveOK" resource="/admin" redirect="true"/>
+  </action>
+  <action name="AdminUserDetails" class="com.concursive.connect.web.modules.admin.actions.AdminUsers">
+    <bean name="User" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
+    <forward name="DetailsOK" resource="/admin_users_details.jsp"/>
+    <forward name="ModifyOK" resource="/admin_users_modify.jsp"/>
+    <forward name="SaveOK" resource="/AdminUserDetails.do?command=Details" />
+    <forward name="LoginsOK" resource="/admin_users_logins.jsp"/>
+    <forward name="ProjectsOK" resource="/admin_users_projects.jsp"/>
+    <forward name="LanguagesOK" resource="/admin_users_languages.jsp"/>
+    <forward name="WebSitesOK" resource="/admin_users_web-sites.jsp"/>
+  </action>
+  <action name="AdminSettings" class="com.concursive.connect.web.modules.admin.actions.AdminSettings">
+    <forward name="DefaultOK" resource="/admin_settings.jsp"/>
+  </action>
+  <action name="AdminApplication" class="com.concursive.connect.web.modules.admin.actions.AdminApplication">
+    <forward name="DefaultOK" resource="/admin_application.jsp"/>
+    <forward name="EditCategoryListOK" resource="/admin_application_categories.jsp"/>
+    <forward name="SaveCategoryListOK" resource="/AdminApplication.do?command=Default" />
+  </action>
+  <action name="AdminProjectCategories" class="com.concursive.connect.web.modules.admin.actions.AdminProjectCategories">
+    <bean name="ProjectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
+    <forward name="ListOK" resource="/admin_project_category_list.jsp"/>
+    <forward name="AddOK" resource="/admin_project_category_modify.jsp"/>
+    <forward name="DetailsOK" resource="/admin_project_category_details.jsp"/>
+    <forward name="SaveOK" resource="/admin_project_category_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_project_category_refresh.jsp"/>
+  </action>
+  <action name="AdminBadges" class="com.concursive.connect.web.modules.admin.actions.AdminBadges">
+    <bean name="Badge" class="com.concursive.connect.web.modules.badges.dao.Badge" scope="request"/>
+    <forward name="ListAllOK" resource="/admin_badgecategory_badge_list.jsp"/>
+    <forward name="ListOK" resource="/admin_badge_list.jsp"/>
+    <forward name="AddOK" resource="/admin_badge_add.jsp"/>
+    <forward name="DetailsOK" resource="/admin_badge_details.jsp"/>
+    <forward name="SaveOK" resource="/admin_badge_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_badge_refresh.jsp"/>
+  </action>
+  <action name="AdminBadgeCategories" class="com.concursive.connect.web.modules.admin.actions.AdminBadgeCategories">
+    <bean name="BadgeCategory" class="com.concursive.connect.web.modules.badges.dao.BadgeCategory" scope="request"/>
+    <forward name="ListOK" resource="/admin_badge_category_list.jsp"/>
+    <forward name="AddOK" resource="/admin_badge_category_modify.jsp"/>
+    <forward name="DetailsOK" resource="/admin_badge_category_details.jsp"/>
+    <forward name="SaveOK" resource="/admin_badge_category_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_badge_category_refresh.jsp"/>
+  </action>
+  <action name="AdminClassifiedCategories" class="com.concursive.connect.web.modules.admin.actions.AdminClassifiedCategories">
+    <bean name="ClassifiedCategory" class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategory" scope="request"/>
+    <forward name="ListOK" resource="/admin_classified_category_list.jsp"/>
+    <forward name="AddOK" resource="/admin_classified_category_modify.jsp"/>
+    <forward name="SaveOK" resource="/admin_classified_category_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_classified_category_refresh.jsp"/>
+  </action>
+  <action name="AdminAdCategories" class="com.concursive.connect.web.modules.admin.actions.AdminAdCategories">
+    <bean name="AdCategory" class="com.concursive.connect.web.modules.promotions.dao.AdCategory" scope="request"/>
+    <forward name="ListOK" resource="/admin_ad_category_list.jsp"/>
+    <forward name="AddOK" resource="/admin_ad_category_modify.jsp"/>
+    <forward name="DetailsOK" resource="/admin_ad_category_details.jsp"/>
+    <forward name="SaveOK" resource="/admin_ad_category_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_ad_category_refresh.jsp"/>
+  </action>
+  <action name="AdminWikiTemplates" class="com.concursive.connect.web.modules.admin.actions.AdminWikiTemplates">
+    <bean name="wikiTemplate" class="com.concursive.connect.web.modules.wiki.dao.WikiTemplate" scope="request"/>
+    <forward name="ListOK" resource="/admin_wiki_template_list.jsp"/>
+    <forward name="ModifyOK" resource="/admin_wiki_template_modify.jsp"/>
+    <forward name="DetailsOK" resource="/admin_wiki_template_details.jsp"/>
+    <forward name="SaveOK" resource="/admin_wiki_template_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_wiki_template_refresh.jsp"/>
+  </action>
+  <action name="AdminDiscussionForumTemplates" class="com.concursive.connect.web.modules.admin.actions.AdminDiscussionForumTemplates">
+    <bean name="discussionForumTemplate" class="com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplate" scope="request"/>
+    <forward name="ListOK" resource="/admin_discussion_forum_template_list.jsp"/>
+    <forward name="ModifyOK" resource="/admin_discussion_forum_template_modify.jsp"/>
+    <forward name="SaveOK" resource="/admin_discussion_forum_template_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_discussion_forum_template_refresh.jsp"/>
+  </action>
+  <action name="AdminDocumentFolderTemplates" class="com.concursive.connect.web.modules.admin.actions.AdminDocumentFolderTemplates">
+    <bean name="documentFolderTemplate" class="com.concursive.connect.web.modules.documents.dao.DocumentFolderTemplate" scope="request"/>
+    <forward name="ListOK" resource="/admin_document_folder_template_list.jsp"/>
+    <forward name="ModifyOK" resource="/admin_document_folder_template_modify.jsp"/>
+    <forward name="SaveOK" resource="/admin_document_folder_template_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_document_folder_template_refresh.jsp"/>
+  </action>
+  <action name="AdminListsTemplates" class="com.concursive.connect.web.modules.admin.actions.AdminListsTemplates">
+    <bean name="listsTemplate" class="com.concursive.connect.web.modules.lists.dao.ListsTemplate" scope="request"/>
+    <forward name="ListOK" resource="/admin_lists_template_list.jsp"/>
+    <forward name="ModifyOK" resource="/admin_lists_template_modify.jsp"/>
+    <forward name="SaveOK" resource="/admin_lists_template_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_lists_template_refresh.jsp"/>
+  </action>
+  <action name="AdminProjectMessageTemplates" class="com.concursive.connect.web.modules.admin.actions.AdminProjectMessageTemplates">
+    <bean name="messageTemplate" class="com.concursive.connect.web.modules.communications.dao.MessageTemplate" scope="request"/>
+    <forward name="ListOK" resource="/admin_project_message_template_list.jsp"/>
+    <forward name="ModifyOK" resource="/admin_project_message_template_modify.jsp"/>
+    <forward name="DetailsOK" resource="/admin_project_message_template_details.jsp"/>
+    <forward name="SaveOK" resource="/admin_project_message_template_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_project_message_template_refresh.jsp"/>
+  </action>
+  <action name="AdminTicketCategoryTemplates" class="com.concursive.connect.web.modules.admin.actions.AdminTicketCategoryTemplates">
+    <bean name="ticketCategoryTemplate" class="com.concursive.connect.web.modules.issues.dao.TicketCategoryTemplate" scope="request"/>
+    <forward name="ListOK" resource="/admin_ticket_category_template_list.jsp"/>
+    <forward name="ModifyOK" resource="/admin_ticket_category_template_modify.jsp"/>
+    <forward name="SaveOK" resource="/admin_ticket_category_template_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/admin_ticket_category_template_refresh.jsp"/>
+  </action>
+  <action name="AdminReports" class="com.concursive.connect.web.modules.admin.actions.AdminReports">
+    <forward name="ListOK" resource="/admin_reports.jsp"/>
+    <forward name="DetailsOK" resource="/admin_reports_details.jsp"/>
+    <forward name="AddOK" resource="/admin_reports_upload.jsp"/>
+    <forward name="UploadOK" resource="/AdminReports.do?command=Details" />
+    <forward name="UploadERROR" resource="/admin_reports_upload.jsp"/>
+    <forward name="ActivateOK" resource="/AdminReports.do?command=List" />
+    <forward name="DisableOK" resource="/AdminReports.do?command=List" />
+    <forward name="DeleteOK" resource="/AdminReports.do?command=List" />
+    <forward name="OK" resource="/AdminReports.do?command=List" />
+    <forward name="SetAsUserOK" resource="/AdminReports.do?command=Details" />
+    <forward name="SetAsAdminOK" resource="/AdminReports.do?command=Details" />
+  </action>
+  <action name="AdminSettingsLook" class="com.concursive.connect.web.modules.admin.actions.AdminSettings">
+    <forward name="LookOK" resource="/admin_settings_look.jsp"/>
+    <forward name="PreviewLookOK" resource="/AdminSettingsLook.do?command=Look"/>
+    <forward name="SaveLookOK" resource="/AdminSettings.do?command=Default"/>
+    <forward name="CancelOK" resource="/AdminSettings.do?command=Default"/>
+  </action>
+  <action name="AdminSettingsSite" class="com.concursive.connect.web.modules.admin.actions.AdminSettings">
+    <bean name="siteSettings" class="com.concursive.connect.web.modules.setup.beans.SiteSettingsBean" scope="request"/>
+    <forward name="SiteOK" resource="/admin_settings_site.jsp"/>
+  </action>
+  <action name="AdminSettingsEmail" class="com.concursive.connect.web.modules.admin.actions.AdminSettings">
+    <bean name="emailSettings" class="com.concursive.connect.web.modules.admin.beans.EmailSettingsBean" scope="request"/>
+    <forward name="EmailOK" resource="/admin_settings_email.jsp"/>
+  </action>
+  <action name="AdminSettingsDatabase" class="com.concursive.connect.web.modules.admin.actions.AdminSettings">
+    <bean name="databaseSettings" class="com.concursive.connect.web.modules.admin.beans.DatabaseSettingsBean" scope="request"/>
+    <forward name="DatabaseOK" resource="/admin_settings_database.jsp"/>
+  </action>
+  <action name="AdminImageLibrary" class="com.concursive.connect.web.modules.admin.actions.AdminImageLibrary">
+    <forward name="ImageListOK" resource="/admin_image_list.jsp"/>
+    <forward name="ImageAddOK" resource="/admin_image_add.jsp"/>
+    <forward name="ImageUploadOK" resource="/AdminImageLibrary.do?command=Default" />
+    <forward name="DeleteImageERROR" resource="/AdminImageLibrary.do?command=Default" />
+    <forward name="DeleteImageOK" resource="/AdminImageLibrary.do?command=Default" />
+  </action>
+  <action name="AdminMembers" class="com.concursive.connect.web.modules.admin.actions.AdminMembers">
+    <forward name="DefaultOK" resource="/admin_members_list.jsp"/>
+  </action>
+  <action name="Profile" class="com.concursive.connect.web.modules.userprofile.actions.Profile">
+    <bean name="User" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
+    <forward name="UpdateOK" resource="/Profile.do?command=Default"/>
+    <forward name="DefaultOK" resource="/user_profile.jsp"/>
+    <forward name="ModifyContactInformationOK" resource="/user_profile_contact_information.jsp"/>
+    <forward name="SaveContactInformationOK" resource="/Profile.do?command=Default"/>
+    <forward name="SaveContactInformationError" resource="/user_profile_contact_information.jsp"/>
+    <forward name="ModifyLocationOK" resource="/user_profile_location.jsp"/>
+    <forward name="SaveLocationOK" resource="/Profile.do?command=Default"/>
+    <forward name="ViewTimeOK" resource="/user_profile_show_time.jsp"/>
+  </action>
+  <action name="Password" class="com.concursive.connect.web.modules.userprofile.actions.Profile">
+    <bean name="password" class="com.concursive.connect.web.modules.login.beans.Password" scope="request"/>
+    <forward name="ChangePasswordOK" resource="/user_profile_password.jsp"/>
+    <forward name="SavePasswordOK" resource="/Profile.do?command=Default"/>
+    <forward name="SavePasswordError" resource="/user_profile_password.jsp"/>
+  </action>
+  <action name="Search" class="com.concursive.connect.web.modules.search.actions.Search">
+    <bean name="searchBean" class="com.concursive.connect.web.modules.search.beans.SearchBean" scope="session" />
+    <forward name="IndexOK" resource="/search_index_ok.jsp"/>
+    <forward name="SearchResultsOK" resource="/search_results.jsp"/>
+    <forward name="SearchResultsPortalOK" resource="/search_results_portal.jsp"/>
+    <forward name="SearchResultsERROR" resource="/search_results_error.jsp"/>
+    <forward name="TipsOK" resource="/search_tips.jsp"/>
+  </action>
+  <action name="Portal" class="com.concursive.connect.cms.portal.actions.Portal">
+    <forward name="PortalOK" resource="/portal.jsp"/>
+    <forward name="ContactOK" resource="/contact.jsp"/>
+    <forward name="ImageListOK" resource="/images.jsp" />
+    <forward name="ImageSelectTINYMCEOK" resource="/images_select_tinymce.jsp" />
+    <forward name="ListItemOK" resource="/templates/templateListItem.jsp" />
+    <forward name="NewsDetailsPopupOK" resource="/projects_center_news_details.jsp"/>
+    <forward name="UploadImageTINYMCEOK" resource="/images_select_tinymce.jsp"/>
+    <forward name="ShowPortalPageOK" resource="/portal_page.jsp"/>
+  </action>
+  <action name="ProjectManagement" class="com.concursive.connect.cms.portal.actions.ProjectManagement">
+    <bean name="Project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request" />
+    <forward name="DashboardOK" resource="/projects_dashboard.jsp"/>
+    <forward name="ProjectListOK" resource="/projects_list.jsp"/>
+    <forward name="RSVPOK" resource="/projects_invitations.jsp"/>
+    <forward name="OverviewOK" resource="/projects_overview.jsp"/>
+    <forward name="MobileOverviewOK" resource="/projects_overview_mobile.jsp"/>
+    <forward name="AssignmentsOK" resource="/projects_assignments.jsp"/>
+    <forward name="AddProjectOK" resource="/projects_addproject.jsp"/>
+    <forward name="ModifyProjectOK" resource="/projects_modifyproject.jsp"/>
+    <forward name="InsertProjectOK" resource="/projects_center_details_refresh.jsp"/>
+    <forward name="UpdateProjectOK" resource="/projects_center_details_refresh.jsp"/>
+    <forward name="DeleteProjectOK" resource="/ProjectManagement.do?command=ProjectList"/>
+    <forward name="DeleteProjectERROR" resource="/projects_center_details_refresh.jsp"/>
+    <forward name="CustomizeProjectOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;command=CustomizeProject"/>
+    <forward name="UpdateFeaturesOK" resource="/projects_center_setup_refresh.jsp"/>
+    <forward name="UpdatePermissionsOK" resource="/projects_center_setup_refresh.jsp"/>
+    <forward name="AcceptProjectOK" resource="/invites" redirect="true"/>
+    <forward name="RejectProjectOK" resource="/invites" redirect="true"/>
+    <forward name="ResizeOK" resource="/projects_center_resize.jsp"/>
+    <forward name="RSSOK" resource="/rss.jsp"/>
+    <forward name="MakeWatchOK" resource="/projects_make_watch.jsp"/>
+    <forward name="UploadStyleImageOK" resource="/projects_center_style_refresh.jsp"/>
+    <forward name="DeleteStyleImageOK" resource="/projects_center_style_refresh.jsp"/>
+    <forward name="UpdateOwnerOK" resource="/projects_center_team_refresh.jsp"/>    
+  </action>
+  <action name="ProjectManagementProfile" class="com.concursive.connect.web.modules.profile.actions.ProjectManagementProfile">
+    <forward name="DeleteImageOK" resource="/projects_center_details_refresh.jsp"/>
+    <forward name="SetImageOK" resource="/projects_center_details_refresh.jsp"/>
+  </action>
+  <action name="WikiHelp" class="com.concursive.connect.web.controller.actions.GenericAction">
+    <forward name="DefaultOK" resource="/wiki_tips.jsp"/>
+  </action>
+  <action name="ProjectManagementWiki" class="com.concursive.connect.web.modules.wiki.actions.ProjectManagementWiki">
+    <bean name="wiki" class="com.concursive.connect.web.modules.wiki.dao.Wiki" scope="request" />
+    <forward name="ImageSelectOK" resource="/projects_center_wiki_images.jsp"/>
+    <forward name="UploadImageOK" resource="/ProjectManagementWiki.do?command=ImageSelect"/>
+    <forward name="LinkSelectOK" resource="/projects_center_wiki_links.jsp"/>
+  </action>
+  <!-- These actions support capabilities not available in portlets -->
+  <action name="WikiExports" class="com.concursive.connect.web.modules.wiki.actions.WikiExportActions" />
+  <action name="DiscussionActions" class="com.concursive.connect.web.modules.discussion.actions.DiscussionActions" />
+  <action name="BlogActions" class="com.concursive.connect.web.modules.blog.actions.BlogActions">
+    <bean name="newsArticle" class="com.concursive.connect.web.modules.blog.dao.BlogPost" scope="request" />
+    <forward name="EditListPopupOK" resource="/util_edit_list.jsp"/>
+    <forward name="EditListPopupCloseOK" resource="/util_edit_list_closepopup.jsp"/>
+    <forward name="EmailMeOK" resource="/projects_center.jsp"/>
+    <forward name="EmailTeamOK" resource="/projects_center.jsp"/>
+    <forward name="ArchiveOK" resource="/projects_center_news_refresh.jsp"/>
+    <forward name="ArchiveERROR" resource="/projects_center_news_refresh.jsp"/>
+    <forward name="ImageSelectOK" resource="/projects_center_wiki_images.jsp"/>
+    <forward name="UploadImageOK" resource="/BlogActions.do?command=ImageSelect"/>
+  </action>
+  <action name="ProjectManagementClassifieds" class="com.concursive.connect.web.modules.classifieds.actions.ProjectManagementClassifieds">
+    <bean name="classified" class="com.concursive.connect.web.modules.classifieds.dao.Classified" scope="request" />
+    <forward name="FileDeleteOK" resource="/projects_center_classifieds_refresh.jsp"/>
+  </action>
+  <action name="ProjectManagementRequirements" class="com.concursive.connect.web.modules.plans.actions.ProjectManagementRequirements">
+    <bean name="Requirement" class="com.concursive.connect.web.modules.plans.dao.Requirement" scope="request" />
+    <forward name="PopupOK" resource="/projects_center_requirements_details.jsp"/>
+    <forward name="AddOK" resource="/projects_center_assignments_refresh.jsp"/>
+    <forward name="UpdateOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;section=Requirements"/>
+    <forward name="DeleteOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;section=Requirements"/>
+    <forward name="PrepareImportOK" resource="/projects_center_requirements_import.jsp"/>
+    <forward name="ShowTemplatesOK" resource="/projects_center_requirements_templates.jsp"/>
+    <forward name="ImportOK" resource="/projects_center_assignments_refresh.jsp"/>
+    <forward name="ImportERROR" resource="/projects_center_requirements_import.jsp"/>
+  </action>
+  <action name="ProjectManagementTeam" class="com.concursive.connect.web.modules.members.actions.ProjectManagementTeam">
+    <bean name="TeamMemberList" class="com.concursive.connect.web.modules.members.dao.TeamMemberList" scope="request" />
+    <forward name="MakeUserListOK" resource="/projects_makeuserlist.jsp"/>
+    <forward name="ModifyOK" resource="/projects_center_team_refresh.jsp"/>
+    <forward name="JoinOK" resource="/projects_center_team_refresh.jsp"/>
+    <forward name="TeamERROR" resource="/ProjectManagementTeam.do?command=ProjectCenter&amp;section=Team"/>      
+    <forward name="LeaveOK" resource="/projects_center_team_refresh.jsp"/>
+    <forward name="ModifyERROR" resource="/ProjectManagementTeam.do?command=Modify"/>
+    <forward name="ChangeRoleOK" resource="/projects_center_team_refresh.jsp"/>
+    <forward name="ChangeRoleERROR" resource="/projects_center_changerole_error.jsp"/>
+    <forward name="InvitationsOK" resource="/projects_center.jsp"/>
+    <forward name="ResendInvitationOK" resource="/projects_center.jsp"/>
+    <forward name="ConfirmJoinOK" resource="/project_join_form.jsp"/>
+    <forward name="ConfirmAskToBecomeMemberOK" resource="/project_ask_to_become_member.jsp"/>
+    <forward name="AskToBecomeMemberOK" resource="/projects_center_team_refresh.jsp"/>
+    <forward name="UpdateToolsOK" resource="/projects_center_team_refresh.jsp"/>
+    <forward name="TooltipOK" resource="/projects_center_team_tooltip.jsp"/>
+    <forward name="DeleteOK" resource="/projects_center_team_refresh.jsp"/>
+    <forward name="DeleteError" resource="/projects_center_delete_error.jsp"/>
+  </action>
+  <action name="ProjectManagementTeamList" class="com.concursive.connect.web.modules.members.actions.ProjectManagementTeamList">
+    <forward name="ProjectsOK" resource="/projects_makeprojectlist.jsp"/>
+    <forward name="MakeUserListOK" resource="/projects_makeuserlist.jsp"/>
+    <forward name="MakeTeamMemberListOK" resource="/projects_maketeamlist.jsp"/>
+    <forward name="MakeDepartmentListOK" resource="/projects_makedepartmentlist.jsp"/>
+  </action>
+  <action name="ProjectManagementAssignments" class="com.concursive.connect.web.modules.plans.actions.ProjectManagementAssignments">
+    <bean name="Assignment" class="com.concursive.connect.web.modules.plans.dao.Assignment" scope="request" />
+    <forward name="SaveOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;section=Assignments"/>
+    <forward name="PopupOK" resource="/projects_center_assignments_add.jsp"/>
+    <forward name="PopupDetailsOK" resource="/projects_center_assignments_details.jsp"/>
+    <forward name="DetailsREDIRECT" resource="/ProjectManagementAssignments.do?command=Details"/>
+    <forward name="DeleteOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;section=Assignments"/>
+    <forward name="MoveOK" resource="/projects_center_hierarchy.jsp"/>
+    <forward name="MoveItemOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;section=Assignments"/>
+    <forward name="ShowNotesOK" resource="/projects_center_assignments_notes.jsp"/>
+    <forward name="MakeUserListOK" resource="/projects_center_assignments_list.jsp"/>
+  </action>
+  <action name="ProjectManagementAssignmentsFolder" class="com.concursive.connect.web.modules.plans.actions.ProjectManagementAssignments">
+    <bean name="assignmentFolder" class="com.concursive.connect.web.modules.plans.dao.AssignmentFolder" scope="request" />
+    <forward name="SaveOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;section=Assignments"/>
+    <forward name="PopupOK" resource="/projects_center_assignments_folder_add.jsp"/>
+    <forward name="PopupDetailsOK" resource="/projects_center_assignments_folder_details.jsp"/>
+    <forward name="DeleteOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;section=Assignments"/>
+  </action>
+  <action name="ProjectManagementFiles" class="com.concursive.connect.web.modules.documents.actions.ProjectManagementFiles">
+    <bean name="FileItem" class="com.concursive.connect.web.modules.documents.dao.FileItem" scope="request" />
+    <forward name="AddOK" resource="/projects_center_file_folder_refresh.jsp"/>
+  </action>
+  <action name="ProjectManagementLists" class="com.concursive.connect.web.modules.lists.actions.ProjectManagementLists">
+    <bean name="Task" class="com.concursive.connect.web.modules.lists.dao.Task" scope="request" />
+    <forward name="SaveOK" resource="/projects_center_lists_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/projects_center_lists_delete_xml.jsp" />
+    <forward name="MoveOK" resource="/projects_center_lists_hierarchy.jsp"/>
+    <forward name="SaveMoveOK" resource="/projects_center_lists_refresh.jsp"/>
+    <forward name="DetailsOK" resource="/projects_center_lists_details.jsp"/>
+  </action>
+  <action name="ProjectManagementListsCategory" class="com.concursive.connect.web.modules.lists.actions.ProjectManagementLists">
+    <bean name="category" class="com.concursive.connect.web.modules.lists.dao.TaskCategory" scope="request" />
+    <forward name="SaveOK" resource="/projects_center_lists_categories_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/projects_center_lists_categories_refresh.jsp"/>
+  </action>
+  <action name="ProjectManagementListsConfig" class="com.concursive.connect.web.modules.lists.actions.ProjectManagementListsConfig">
+    <forward name="EditListPopupOK" resource="/util_edit_list.jsp"/>
+    <forward name="EditListPopupCloseOK" resource="/util_edit_list_closepopup.jsp"/>
+    <forward name="SaveItemListOK" resource="/ProjectManagementListsConfig.do?command=Options" />
+  </action>
+  <action name="ProjectManagementListsBuckets" class="com.concursive.connect.web.modules.lists.actions.ProjectManagementListsBuckets">
+    <forward name="EditListPopupOK" resource="/util_edit_list.jsp"/>
+    <forward name="EditListPopupCloseOK" resource="/util_edit_list_closepopup.jsp"/>
+    <forward name="SaveItemListOK" resource="/ProjectManagementListsConfig.do?command=Options" />
+  </action>
+  <action name="ProjectManagementTickets" class="com.concursive.connect.web.modules.issues.actions.ProjectManagementTickets">
+    <bean name="ticket" class="com.concursive.connect.web.modules.issues.dao.Ticket" scope="request" />
+    <forward name="SaveOK" resource="/projects_center_tickets_refresh.jsp"/>
+    <forward name="SaveDetailsOK" resource="/projects_center_tickets_details_refresh.jsp"/>
+    <forward name="ClosedOK" resource="/projects_center_tickets_details_refresh.jsp"/>
+    <forward name="ReopenOK" resource="/ProjectManagementTickets.do?command=Modify"/>
+    <forward name="DeleteOK" resource="/projects_center_tickets_refresh.jsp"/>
+    <forward name="SaveCommentsOK" resource="/projects_center_tickets_details_refresh.jsp"/>
+    <forward name="DeleteDetailsOK" resource="/projects_center_tickets_details_refresh.jsp"/>
+    <forward name="CategoryJSListOK" resource="/projects_center_tickets_viewcategories_jslist.jsp" />
+    <forward name="ProjectsOK" resource="/projects_makeprojectlist.jsp"/>
+    <forward name="MakeUserListOK" resource="/projects_makeuserlist.jsp"/>
+    <forward name="MakeTeamMemberListOK" resource="/projects_maketeamlist.jsp"/>
+    <forward name="MakeDepartmentListOK" resource="/projects_makedepartmentlist.jsp"/>
+    <forward name="MakeContactListOK" resource="/projects_makecontactlist.jsp"/>
+    <forward name="MakeWatchOK" resource="/projects_make_watch.jsp"/>
+    <forward name="FileDeleteOK" resource="/projects_center_tickets_details_refresh.jsp"/>
+  </action>
+  <action name="ProjectManagementTicketsConfig" class="com.concursive.connect.web.modules.issues.actions.ProjectManagementTicketsConfig">
+    <forward name="EditTicketCategoryListOK" resource="/admin_viewcategories.jsp"/>
+    <forward name="TicketCategoryJSListOK" resource="/admin_viewcategories_jslist.jsp" />
+    <forward name="SaveTicketCategoryListOK" resource="/AdminApplication.do?command=Default" />
+    <forward name="EditTicketListPopupOK" resource="/util_edit_list.jsp"/>
+    <forward name="EditTicketListPopupCloseOK" resource="/util_edit_list_closepopup.jsp"/>
+    <forward name="SaveItemListOK" resource="/ProjectManagementTicketsConfig.do?command=Options" />
+  </action>
+  <action name="ProjectManagementDashboard" class="com.concursive.connect.web.modules.dashboard.actions.ProjectManagementDashboard">
+    <bean name="dashboard" class="com.concursive.connect.cms.portal.dao.Dashboard" scope="request" />
+    <forward name="SaveOK" resource="/projects_center_dashboard_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/projects_center_dashboard_refresh.jsp"/>
+    <forward name="ImportOK" resource="/projects_center_dashboard_refresh.jsp"/>
+  </action>
+  <action name="ProjectManagementPage" class="com.concursive.connect.cms.portal.actions.ProjectManagementPage">
+    <forward name="ShowPortalPageOK" resource="/projects_center_portal_page.jsp"/>
+  </action>
+  <action name="ProjectManagementTools" class="com.concursive.connect.web.modules.tools.actions.ProjectManagementTools"/>
+  <action name="Timesheet" class="com.concursive.connect.web.modules.timesheet.actions.Timesheet">
+    <forward name="TimesheetOK" resource="/projects_timesheet.jsp"/>
+    <forward name="SliderOK" resource="/projects_timesheet_slider.jsp"/>
+    <forward name="WeekOK" resource="/projects_timesheet_week.jsp"/>
+    <forward name="SaveOK" resource="/projects_timesheet_refresh.jsp"/>
+  </action>
+  <action name="Resources" class="com.concursive.connect.web.modules.projectresources.actions.Resources">
+    <forward name="UsersOK" resource="/projects_resources_users.jsp"/>
+    <forward name="UsersProjectsOK" resource="/projects_resources_users_projects.jsp"/>
+    <forward name="ProjectsOK" resource="/projects_resources_projects.jsp"/>
+    <forward name="ProjectsUsersOK" resource="/projects_resources_projects_users.jsp"/>
+  </action>
+  <action name="Badges" class="com.concursive.connect.web.modules.badges.actions.Badges">
+    <forward name="BadgeOK" resource="/badge_detail_include.jsp"/>
+  </action>
+  <action name="Activation" class="com.concursive.connect.web.modules.demo.actions.Demo">
+    <bean name="demoBean" class="com.concursive.connect.web.modules.demo.beans.DemoBean" scope="request"/>
+    <forward name="DemoOfflineOK" resource="/centric/demo_offline.jsp"/>
+    <forward name="DemoFormOK" resource="/centric/demo_form.jsp"/>
+    <forward name="DemoFormError" resource="/Activation.do?command=Default"/>
+    <forward name="DemoSaveOK" resource="/centric/demo_save_ok.jsp"/>
+    <forward name="DemoSaveError" resource="/centric/demo_save_error.jsp"/>
+  </action>
+  <action name="Order" class="com.concursive.connect.web.modules.productcatalog.actions.Order">
+    <bean name="orderBean" class="com.concursive.connect.web.modules.productcatalog.beans.OrderBean" scope="session"/>
+    <forward name="OrderCatalogOK" resource="/order_catalog.jsp"/>
+    <forward name="OrderProductDetailsOK" resource="/order_catalog_details.jsp"/>
+    <forward name="OrderProductConfigError" resource="/Order.do?command=Details"/>
+    <forward name="OrderCatalogError" resource="/order_catalog_error.jsp"/>
+    <forward name="OrderListOK" resource="/order_list.jsp"/>
+    <forward name="OrderContactInformationFormOK" resource="/order_form_contact.jsp"/>
+    <forward name="OrderBillingFormOK" resource="/order_form_billing.jsp"/>
+    <forward name="OrderShippingFormOK" resource="/order_form_shipping.jsp"/>
+    <forward name="OrderPaymentFormOK" resource="/order_form_payment.jsp"/>
+    <forward name="CreditCardError" resource="/order_form_payment_error.jsp"/>
+    <forward name="OrderCompleteOK" resource="/order_form_complete.jsp"/>
+    <forward name="OrderSystemError" resource="/order_list.jsp"/>
+    <forward name="AttachmentUnavailableError" resource="/order_attachment_unavailable.jsp"/>
+    <forward name="AttachmentExpiredError" resource="/order_attachment_expired.jsp"/>
+    <forward name="AttachmentDownloadError" resource="/order_attachment_error.jsp"/>
+  </action>
+  <action name="Translation" class="com.concursive.connect.web.modules.translation.actions.Translation">
+    <bean name="translationSearchForm" class="com.concursive.connect.web.modules.translation.beans.TranslationSearchBean" scope="session"/>
+    <forward name="DefaultOK" resource="/translation/language_list.jsp"/>
+    <forward name="DetailsOK" resource="/translation/language_details.jsp"/>
+    <forward name="TranslateOK" resource="/translation/language_translate.jsp"/>
+    <forward name="ContextOK" resource="/translation/language_context.jsp"/>
+    <forward name="SearchFormOK" resource="/translation/language_search_form.jsp"/>
+  </action>
+  <action name="TranslationApplication" class="com.concursive.connect.web.modules.translation.actions.Translation">
+    <bean name="contactUs" class="com.concursive.connect.web.modules.contactus.dao.ContactUsBean" scope="request"/>
+    <forward name="ApplicationFormOK" resource="/translation/language_application.jsp"/>
+    <forward name="SendApplicationOK" resource="/translation/language_application_sent.jsp"/>
+    <forward name="SendApplicationERROR" resource="/translation/language_application.jsp"/>
+  </action>
+  <action name="Reports" class="com.concursive.connect.web.modules.reports.actions.Reports">
+    <bean name="reportQueue" class="com.concursive.connect.web.modules.reports.dao.ReportQueue" scope="request"/>
+    <forward name="ListOK" resource="/reports_list.jsp"/>
+    <forward name="SetupStep1OK" resource="/reports_setup_step1.jsp"/>
+    <forward name="SetupStep2OK" resource="/reports_setup_step2.jsp"/>
+    <forward name="DetailsOK" resource="/reports_details.jsp"/>
+    <forward name="GenerateOK" resource="/reports_refresh.jsp"/>
+    <forward name="UpdateOK" resource="/reports_refresh.jsp"/>
+    <forward name="DeleteOK" resource="/reports_refresh.jsp"/>
+  </action>
+  <action name="CloneProject" class="com.concursive.connect.web.modules.profile.actions.ProjectManagementClone">
+    <bean name="cloneBean" class="com.concursive.connect.web.modules.profile.beans.CloneBean" scope="request" />
+    <forward name="CloneWizardOK" resource="/projects_clone.jsp" />
+    <forward name="SaveOK" resource="/projects_clone_close.jsp" />
+  </action>
+  <action name="CloneProjectRequirement" class="com.concursive.connect.web.modules.plans.actions.ProjectManagementCloneRequirement">
+    <bean name="cloneBean" class="com.concursive.connect.web.modules.profile.beans.CloneBean" scope="request" />
+    <forward name="CloneWizardOK" resource="/projects_clone_requirement.jsp" />
+    <forward name="SaveOK" resource="/projects_clone_requirement_close.jsp" />
+  </action>
+  <action name="ContactsSearch" class="com.concursive.connect.web.modules.contacts.actions.ContactsSearch">
+    <bean name="searchBean" class="com.concursive.connect.web.modules.contacts.beans.ContactSearchBean" scope="request" />
+    <forward name="FormOK" resource="/contacts_search_form.jsp"/>
+    <forward name="SearchOK" resource="/contacts_list.jsp"/>
+  </action>
+  <action name="Contacts" class="com.concursive.connect.web.modules.contacts.actions.Contacts">
+    <bean name="contact" class="com.concursive.connect.web.modules.contacts.dao.Contact" scope="request" />
+    <forward name="FormOK" resource="/contacts_add.jsp"/>
+    <forward name="SaveOK" resource="/contacts_details_refresh.jsp"/>
+    <forward name="DetailsOK" resource="/contacts_details.jsp"/>
+    <forward name="DeleteOK" resource="/contacts_list_refresh.jsp"/>
+  </action>
+  <action name="FileAttachments" class="com.concursive.connect.web.modules.fileattachments.actions.FileAttachments">
+    <forward name="FormOK" resource="/file_attachments_form.jsp"/>
+    <forward name="AttachOK" resource="/file_attachments_refresh.jsp"/>
+    <forward name="AttachProjectImageFilesOK" resource="/FileAttachments.do?command=AttachProjectImageFiles"/>
+    <forward name="Attach201OK" resource="/file_attachments_201_refresh.jsp"/>
+    <forward name="RemoveOK" resource="/file_attachments_refresh.jsp"/>
+  </action>
+
+</mvc-app>

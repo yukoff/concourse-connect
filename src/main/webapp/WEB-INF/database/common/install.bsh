@@ -1,0 +1,109 @@
+import java.io.*;
+import java.sql.*;
+import java.util.*;
+import com.concursive.connect.web.modules.login.dao.*;
+import com.concursive.connect.web.modules.reports.dao.*;
+import com.concursive.connect.web.modules.translation.dao.*;
+import com.concursive.connect.web.modules.upgrade.utils.UpgradeUtils;
+
+// System Defaults
+int groupId = Group.insert(db, "Default Group", true);
+int departmentId = Department.insert(db, groupId, "Default Department", true);
+
+// Insert 1st user for relational data
+User user1 = new User();
+user1.setGroupId(groupId);
+user1.setDepartmentId(departmentId);
+user1.setFirstName("ConcourseConnect");
+user1.setLastName("System");
+user1.setUsername("ConcourseConnect");
+user1.setPassword("---");
+user1.setCompany("---");
+user1.setEmail("---");
+user1.setApiRestore(true);
+user1.insert(db);
+
+// Auto-number table for complex queries
+if (1 == 1) {
+  PreparedStatement pst = db.prepareStatement(
+    "INSERT INTO lookup_number " +
+    "(id) VALUES (?)");
+  for (int i = 0; i < 3661; i++) {
+    pst.setInt(1, i);
+    pst.execute();
+  }
+  pst.close();
+  print("lookup_number inserted");
+}
+
+// Sample reports
+if (1 == 1) {
+  Report report = new Report();
+  report.setFilename("project_open_tickets.xml");
+  report.setType(-1);
+  report.setTitle("Open Issues");
+  report.setDescription("");
+  report.setEnteredBy(user1.getId());
+  report.setModifiedBy(user1.getId());
+  report.setEnabled(true);
+  report.setCustom(false);
+  report.setUserReport(true);
+  report.setAdminReport(false);
+  report.insert(db);
+  print("report inserted");
+}
+
+if (1 == 1) {
+  Report report = new Report();
+  report.setFilename("project_team_members.xml");
+  report.setType(-1);
+  report.setTitle("Members");
+  report.setDescription("");
+  report.setEnteredBy(user1.getId());
+  report.setModifiedBy(user1.getId());
+  report.setEnabled(true);
+  report.setCustom(false);
+  report.setUserReport(true);
+  report.setAdminReport(false);
+  report.insert(db);
+  print("report inserted");
+}
+
+/*
+if (1 == 1) {
+  Report report = new Report();
+  report.setFilename("project_ticket_trend.xml");
+  report.setType(-1);
+  report.setTitle("Project Ticket Trend");
+  report.setDescription("");
+  report.setEnteredBy(user1.getId());
+  report.setModifiedBy(user1.getId());
+  report.setEnabled(true);
+  report.setCustom(false);
+  report.setUserReport(true);
+  report.setAdminReport(false);
+  report.insert(db);
+  print("report inserted");
+}
+*/
+
+// Website project language list
+WebSiteLanguage webSiteLanguage = new WebSiteLanguage();
+webSiteLanguage.setLanguageName("US - English");
+webSiteLanguage.setLanguageLocale("en_US");
+webSiteLanguage.setDefaultItem(true);
+webSiteLanguage.insert(db);
+print("webSiteLanguage inserted");
+
+// Executes only for source code version, .war has this logic elsewhere
+File databaseVersionsFile = new File("src/main/webapp/WEB-INF/database/database_versions.txt");
+if (databaseVersionsFile.exists()) {
+  InputStream is = databaseVersionsFile.toURL().openStream();
+  ArrayList versionList = UpgradeUtils.retrieveDatabaseVersions(is);
+  for (String version : versionList) {
+    if (!UpgradeUtils.isInstalled(db, version)) {
+      UpgradeUtils.addVersion(db, version);
+      print(" Added " + version);
+    }
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE project_history ADD event_type INTEGER;

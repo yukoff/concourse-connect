@@ -1,0 +1,74 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/bcprov-jdk15-141.jar:target/lib/aspcfs.jar:lib/postgresql-8.3-603.jdbc3.jar:target/lib/zeroio-iteam.jar:src/lib/theseus.jar bsh.Interpreter "$0" "$@"
+
+import org.aspcfs.utils.HTTPUtils;
+import org.aspcfs.utils.StringUtils;
+import org.aspcfs.utils.FileUtils;
+import org.aspcfs.utils.StringHelper;
+import org.aspcfs.utils.XMLUtils;
+import org.aspcfs.utils.DatabaseUtils;
+import org.w3c.dom.*;
+import com.zeroio.controller.ConnectionPool;
+import com.zeroio.controller.ConnectionElement;
+import java.sql.*;
+import org.aspcfs.modules.translation.base.*;
+
+String CRLF = System.getProperty("line.separator");
+String fs = System.getProperty("file.separator");
+
+String url = "jdbc:postgresql://127.0.0.1:5432/iteam";
+String user = "postgres";
+String password = "";
+String driver = "org.postgresql.Driver";
+
+// Create a Connection Pool
+ConnectionPool sqlDriver = new ConnectionPool();
+sqlDriver.setDebug(false);
+sqlDriver.setTestConnections(false);
+sqlDriver.setAllowShrinking(true);
+sqlDriver.setMaxConnections(2);
+sqlDriver.setMaxIdleTime(60000);
+sqlDriver.setMaxDeadTime(300000);
+
+
+// Create a connection
+ConnectionElement ce = new ConnectionElement(url, user, password);
+ce.setDriver(driver);
+Connection db = sqlDriver.getConnection(ce);
+
+void updatePercent() {
+
+    print("Updating completion...");
+
+    // Get a list of all language packs
+    LanguagePackList packList = new LanguagePackList();
+    packList.buildList(db);
+
+    PreparedStatement pst = db.prepareStatement(
+      "UPDATE language_pack " +
+      "SET percent_complete = ? " +
+      "WHERE id = ? ");
+
+    // For each one, build the statistics
+    Iterator i = packList.iterator();
+    while (i.hasNext()) {
+      LanguagePack thisPack = (LanguagePack) i.next();
+      if (thisPack.getLanguageLocale() != LanguagePack.DEFAULT_LOCALE) {
+        // Update the percent_complete field
+        thisPack.buildStatistics(db);
+        String percentComplete = thisPack.getPercentageComplete();
+        print(thisPack.getLanguageLocale() + ": " + percentComplete);
+        pst.setInt(1, Integer.parseInt(percentComplete.substring(0, percentComplete.length() - 1)));
+        pst.setInt(2, thisPack.getId());
+        pst.executeUpdate();
+      }
+    }
+    pst.close();
+}
+
+
+updatePercent();
+
+sqlDriver.free(db);
+print("");
+System.exit(0);

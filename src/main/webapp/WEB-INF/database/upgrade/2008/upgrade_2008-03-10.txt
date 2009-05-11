@@ -1,0 +1,23 @@
+# This script upgrades the 3.3 production database to 4.0
+
+2007-02-11-script01.sql
+2007-07-29-script02.sql
+2007-08-07-script01.sql
+2007-08-07-script02.sql
+2007-11-15-script01-mr.sql
+2007-12-03-script01-mr.sql
+2007-12-07-script01-mr.sql
+2007-12-09-script01-mr.sql
+2007-12-27-script01-mr.sql
+2008-01-08-script01-wli.sql
+2008-01-09-script01-mr.sql
+2008-01-20-script01-mr.sql
+2008-01-23-script01-mr.sql
+
+# Production upgrade
+2008-01-27-script01-mr.sql
+2008-02-16-script01.bsh
+# for teamelements.com
+#2008-02-16-script02-mr.sql
+2008-02-19-script01-mr.sql
+2008-02-27-script01.bsh

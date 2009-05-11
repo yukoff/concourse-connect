@@ -1,0 +1,51 @@
+## The following property or environment variable is required for compiling
+## with the Servlet, JSP, and Naming Resources API
+#CATALINA_HOME=/path/to/apache-tomcat
+
+## The following properties allow ConcourseConnect to be deployed to a
+## properly configured remote Tomcat instance.
+## "ant deploy-tomcat"
+#DEPLOY.URL=http://127.0.0.1/manager
+#DEPLOY.USER=admin
+#DEPLOY.PASS=admin
+#DEPLOY.CONTEXT=/connect
+
+## Command-line testing can use a separate database
+## "ant test"
+#TEST.SITE.DRIVER=org.postgresql.Driver
+#TEST.SITE.URL=jdbc:postgresql://127.0.0.1:5432/connect-test
+#TEST.SITE.USER=postgres
+#TEST.SITE.PASSWORD=
+
+## Database information for installing and upgrading the database
+## "ant installdb"
+## "ant upgradedb"
+#DATABASE.NAME=connect
+#SITE.DBTYPE=postgresql
+#SITE.DRIVER=org.postgresql.Driver
+#SITE.URL=jdbc:postgresql://127.0.0.1:5432/connect
+#SITE.USER=postgres
+#SITE.PASSWORD=
+
+## Some install and upgrade scripts manipulate the fileLibrary
+## "ant installdb"
+## "ant upgradedb"
+## "ant deploy-webapp"
+#WEBAPP_EXPLODED_HOME=/path/to/exploded/directory
+#FILE_LIBRARY_HOME=/path/to/fileLibrary
+
+## During the build process, extra customizations can be combined
+## "ant package"
+## "ant deploy-webapp"
+## "ant deploy-tomcat"
+#CUSTOMIZATIONS.PATH=/path/to/customizations
+
+## Site defaults
+## "ant installdb"
+## "ant upgradedb"
+#TITLE=ConcourseConnect
+#DESCRIPTION=A social networking community
+#KEYWORDS=concourseconnect, community, collaboration, intranet
+#MAIN_PROFILE=main-profile
+## Purpose can be: social, directory, community, intranet, projects, web
+#PURPOSE=intranet

@@ -1,0 +1,2946 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<team_elements>
+    <config name="system.fields.label" enabled="true">
+        <param name="button.add">
+            <value><![CDATA[Hinzufügen]]></value>
+        </param>
+        <param name="button.addComments">
+            <value><![CDATA[Kommentar hinzufügen]]></value>
+        </param>
+        <param name="button.addgt">
+            <value><![CDATA[Hinzufügen >]]></value>
+        </param>
+        <param name="button.cancel">
+            <value><![CDATA[Abbrechen]]></value>
+        </param>
+        <param name="button.cancelChanges">
+            <value><![CDATA[Änderungen abbrechen]]></value>
+        </param>
+        <param name="button.close">
+            <value><![CDATA[Schliessen]]></value>
+        </param>
+        <param name="button.delete">
+            <value><![CDATA[Löschen]]></value>
+        </param>
+        <param name="button.deleteThisPage">
+            <value><![CDATA[Diese Seite löschen]]></value>
+        </param>
+        <param name="button.down">
+            <value><![CDATA[Tiefer]]></value>
+        </param>
+        <param name="button.edit">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="button.invite">
+            <value><![CDATA[Einladen!]]></value>
+        </param>
+        <param name="button.ok">
+            <value><![CDATA[OK]]></value>
+        </param>
+        <param name="button.rename">
+            <value><![CDATA[Umbenennen]]></value>
+        </param>
+        <param name="button.reopen">
+            <value><![CDATA[Erneut öffnen]]></value>
+        </param>
+        <param name="button.remove">
+            <value><![CDATA[Entfernen]]></value>
+        </param>
+        <param name="button.save">
+            <value><![CDATA[Speichern]]></value>
+        </param>
+        <param name="button.saveAndAddPage">
+            <value><![CDATA[Speichern und Seite hinzufügen]]></value>
+        </param>
+        <param name="button.saveAndNew">
+            <value><![CDATA[Speichern und Neu]]></value>
+        </param>
+        <param name="button.saveAndModifyNextPage">
+            <value><![CDATA[Speichern und nächste Seite bearbeiten]]></value>
+        </param>
+        <param name="button.saveChanges">
+            <value><![CDATA[Änderungen speichern]]></value>
+        </param>
+        <param name="button.savePage">
+            <value><![CDATA[Seite speichern]]></value>
+        </param>
+        <param name="button.sort">
+            <value><![CDATA[Sortieren]]></value>
+        </param>
+        <param name="button.up">
+            <value><![CDATA[Höher]]></value>
+        </param>
+        <param name="button.update">
+            <value><![CDATA[Aktualisieren]]></value>
+        </param>
+        <param name="button.updateTeam">
+            <value><![CDATA[Team aktualisieren]]></value>
+        </param>
+        <param name="button.upload">
+            <value><![CDATA[Hochladen]]></value>
+        </param>
+        
+        <param name="folderHierarchyHandler.topFolder">
+            <value><![CDATA[Ordner]]></value>
+        </param>
+        
+        <param name="siteNavigation.title">
+            <value><![CDATA[Navigation]]></value>
+        </param>
+        <param name="siteNavigation.whatsNew">
+            <value><![CDATA[Neuheiten]]></value>
+        </param>
+        <param name="siteNavigation.whatsAssigned">
+            <value><![CDATA[Zugewiesen]]></value>
+        </param>
+        <param name="siteNavigation.projectList">
+            <value><![CDATA[Projektliste]]></value>
+        </param>
+        <param name="siteNavigation.discussionForums">
+            <value><![CDATA[Diskussionsforen]]></value>
+        </param>
+        <param name="siteNavigation.invitations">
+            <value><![CDATA[Einladungen]]></value>
+        </param>
+        <param name="siteNavigation.timesheet">
+            <value><![CDATA[Zeitmitschreibung]]></value>
+        </param>
+        <param name="siteNavigation.userGraph">
+            <value><![CDATA[Benutzerzeiten]]></value>
+        </param>
+        <param name="siteNavigation.projectGraph">
+            <value><![CDATA[Projektzeiten]]></value>
+        </param>
+        <param name="siteNavigation.reports">
+            <value><![CDATA[Reports]]></value>
+        </param>
+        <param name="siteNavigation.contacts">
+            <value><![CDATA[Kontakte]]></value>
+        </param>
+        <param name="siteNavigation.personalSettings">
+            <value><![CDATA[Eigenen Einstellungen]]></value>
+        </param>
+        <param name="siteNavigation.administrations">
+            <value><![CDATA[Administration]]></value>
+        </param>
+        <param name="siteNavigation.login">
+            <value><![CDATA[Anmelden]]></value>
+        </param>
+        
+        <param name="login.signIn">
+            <value><![CDATA[Anmeldung]]></value>
+        </param>
+        <param name="login.userName">
+            <value><![CDATA[Benutzername<br>(Email-Adresse)]]></value>
+        </param>
+        <param name="login.password">
+            <value><![CDATA[Kennwort]]></value>
+        </param>
+        <param name="login.redirectAfterLogin">
+            <value><![CDATA[Nach dem Login wirst Du weitergeleitet zu:]]></value>
+        </param>
+        <param name="login.forgotPassword">
+            <value><![CDATA[Passwort vergessen?]]></value>
+        </param>
+        
+        <param name="userInfo.loggedIn">
+            <value><![CDATA[Angemeldet]]></value>
+        </param>
+        <param name="userInfo.hello">
+            <value><![CDATA[Hallo]]></value>
+        </param>
+        <param name="userInfo.logout">
+            <value><![CDATA[Abmelden]]></value>
+        </param>
+        
+        <param name="search.search">
+            <value><![CDATA[Suche]]></value>
+        </param>
+        <param name="search.item.all">
+            <value><![CDATA[Alles durchsuchen]]></value>
+        </param>
+        <param name="search.item.projects">
+            <value><![CDATA[Projekte]]></value>
+        </param>
+        <param name="search.item.projectDetails">
+            <value><![CDATA[Projektdetails]]></value>
+        </param>
+        <param name="search.item.news">
+            <value><![CDATA[News]]></value>
+        </param>
+        <param name="search.item.wiki">
+            <value><![CDATA[Wiki]]></value>
+        </param>
+        <param name="search.item.discussion">
+            <value><![CDATA[Diskussionen]]></value>
+        </param>
+        <param name="search.item.documents">
+            <value><![CDATA[Dokumente]]></value>
+        </param>
+        <param name="search.item.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="search.item.plans">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="search.item.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="search.allProjects">
+            <value><![CDATA[Alle Projekte]]></value>
+        </param>
+        <param name="search.thisProject">
+            <value><![CDATA[Dieses Projekt]]></value>
+        </param>
+        
+        <param name="getconnected.title">
+            <value><![CDATA[Get Connected]]></value>
+        </param>
+        <param name="getconnected.rss">
+            <value><![CDATA[RSS Feeds]]></value>
+        </param>
+        
+        <param name="tracker.title">
+            <value><![CDATA[Statistik]]></value>
+        </param>
+        <param name="tracker.usersOnline">
+            <value><![CDATA[Derzeit sind ${usersOnline} Gäste und <a href="javascript:popURL('AdminMembers.do?popup=true','ITEAM_Members','400','500','yes','yes');">${membersOnline} Mitglieder</a> online.]]></value>
+        </param>
+        <param name="tracker.usersRegistered">
+            <value><![CDATA[Insgesamt sind ${members} Mitglieder registriert.]]></value>
+        </param>
+        
+        <param name="projectManagementNews.subtitle">
+            <value><![CDATA[Kategorien dieses Projektartikels bearbeiten]]></value>
+        </param>
+        
+        <param name="projectsOverview.title">
+            <value><![CDATA[Die aktuellsten Punkte Deiner Projekte.]]></value>
+        </param>
+        <param name="projectsOverview.item.today">
+            <value><![CDATA[Heute]]></value>
+        </param>
+        <param name="projectsOverview.item.last24h">
+            <value><![CDATA[letzte 24 Stunden]]></value>
+        </param>
+        <param name="projectsOverview.item.last48h">
+            <value><![CDATA[letzte 48 Stunden]]></value>
+        </param>
+        <param name="projectsOverview.item.last7Days">
+            <value><![CDATA[letzte 7 Tage]]></value>
+        </param>
+        <param name="projectsOverview.item.last14Days">
+            <value><![CDATA[letzte 14 Tage]]></value>
+        </param>
+        <param name="projectsOverview.item.last30Days">
+            <value><![CDATA[letzte 30 Tage]]></value>
+        </param>
+        <param name="projectsOverview.noNewsFound">
+            <value><![CDATA[Keine News gefunden.]]></value>
+        </param>
+        <param name="projectsOverview.noTopicsFound">
+            <value><![CDATA[Keine Diskussionsthemen gefunden.]]></value>
+        </param>
+        <param name="projectsOverview.noDocumentsFound">
+            <value><![CDATA[Keine Dokumente gefunden.]]></value>
+        </param>
+        <param name="projectsOverview.noWikisFound">
+            <value><![CDATA[Keine Wiki-Einträge gefunden.]]></value>
+        </param>
+        <param name="projectsOverview.emailReceiveAllMessages">
+            <value><![CDATA[Alle Diskussionsnachrichten per Mail empfangen.]]></value>
+        </param>
+        <param name="projectsOverview.emailCancelReceiveAllMessages">
+            <value><![CDATA[Keine Diskussionsnachrichten per Mail empfangen.]]></value>
+        </param>
+        
+        <param name="projectsAssignments.title">
+            <value><![CDATA[Die folgenden Einträge sind Dir aus den Projekten zugewiesen.]]></value>
+        </param>
+        <param name="projectsAssignments.noActivitiesFound">
+            <value><![CDATA[Keine Aktivitäten gefunden.]]></value>
+        </param>
+        <param name="projectsAssignments.noTicketsFound">
+            <value><![CDATA[Keine Tickets gefunden.]]></value>
+        </param>
+        
+        <param name="projectsList.filter.allOpenProjects">
+            <value><![CDATA[Alle offenen Projekte]]></value>
+        </param>
+        <param name="projectsList.filter.allClosedProjects">
+            <value><![CDATA[Alle geschlossenen Projekte]]></value>
+        </param>
+        <param name="projectsList.filter.recentlyAccessedProjects">
+            <value><![CDATA[Kürzlich bearbeitete Projekte]]></value>
+        </param>
+        <param name="projectsList.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsList.projectTitle">
+            <value><![CDATA[Projektname]]></value>
+        </param>
+        <param name="projectsList.overallProgress">
+            <value><![CDATA[Fortschritt]]></value>
+        </param>
+        <param name="projectsList.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsList.closeDate">
+            <value><![CDATA[Ende]]></value>
+        </param>
+        <param name="projectsList.noProjects">
+            <value><![CDATA[Keine Projekte vorhanden]]></value>
+        </param>
+        
+        <param name="projectsList.menu.goToProjectCenter">
+            <value><![CDATA[Gehe zu: Projektcenter]]></value>
+        </param>
+        <param name="projectsList.menu.goToNews">
+            <value><![CDATA[Gehe zu: News]]></value>
+        </param>
+        <param name="projectsList.menu.goToDiscussion">
+            <value><![CDATA[Gehe zu: Discussion]]></value>
+        </param>
+        <param name="projectsList.menu.goToDocuments">
+            <value><![CDATA[Gehe zu: Dokumente]]></value>
+        </param>
+        <param name="projectsList.menu.goToLists">
+            <value><![CDATA[Gehe zu: Listen]]></value>
+        </param>
+        <param name="projectsList.menu.goToPlan">
+            <value><![CDATA[Gehe zu: Projektplan]]></value>
+        </param>
+        <param name="projectsList.menu.goToTickets">
+            <value><![CDATA[Gehe zu: Tickets]]></value>
+        </param>
+        <param name="projectsList.menu.goToTeam">
+            <value><![CDATA[Gehe zu: Team]]></value>
+        </param>
+        <param name="projectsList.menu.goToDetails">
+            <value><![CDATA[Gehe zu: Details]]></value>
+        </param>
+        <param name="projectsList.menu.goToPermissions">
+            <value><![CDATA[Gehe zu: Berechtigungen]]></value>
+        </param>
+        <param name="projectsList.menu.cloneProject">
+            <value><![CDATA[Projekt klonen]]></value>
+        </param>
+        
+        <param name="projectsList.progress">
+            <value><![CDATA[Fortschritt]]></value>
+        </param>
+        <param name="projectsList.activities">
+            <value><![CDATA[Aktivitäten]]></value>
+        </param>
+        
+        <param name="projectsDiscussionList.discussionForums">
+            <value><![CDATA[Diskussionsforen]]></value>
+        </param>
+        <param name="projectsDiscussionList.receiveAll">
+            <value><![CDATA[Alle Diskussionsnachrichten per Mail empfangen]]></value>
+        </param>
+        <param name="projectsDiscussionList.receiveNone">
+            <value><![CDATA[Keine Diskussionsnachrichten per Mail empfangen]]></value>
+        </param>
+        <param name="projectsDiscussionList.topics">
+            <value><![CDATA[Themen]]></value>
+        </param>
+        <param name="projectsDiscussionList.posts">
+            <value><![CDATA[Postings]]></value>
+        </param>
+        <param name="projectsDiscussionList.lastPost">
+            <value><![CDATA[aktuellstes Posting]]></value>
+        </param>
+        <param name="projectsDiscussionList.noForums">
+            <value><![CDATA[Keine Foren vorhanden.]]></value>
+        </param>
+        
+        <param name="projectsInvitations.description">
+            <value><![CDATA[Du wurdest zu den folgenden Projektion eingeladen.
+            und kannst diese entwerder <b>ANNEHMEN</b> oder <b>Ablehnen</b>.<br/>
+            Annehmen einer Projekteinladung wird dieses zu Deiner Projektliste
+            hinzufügen und erlaubt Dir den Zugriff auf das Projekt.]]></value>
+        </param>
+        <param name="projectsInvitations.title">
+            <value><![CDATA[Dies ist die Liste Deiner Projekteinladungen]]></value>
+        </param>
+        <param name="projectsInvitations.noInvitations">
+            <value><![CDATA[Derzeit sind keine Projekteinladungen vorhanden.]]></value>
+        </param>
+        <param name="projectsInvitations.listHint">
+            <value><![CDATA[Du kannst Deine Projekte über die ${listLink} einsehen.]]></value>
+        </param>
+        <param name="projectsInvitations.projectList">
+            <value><![CDATA[Projektliste]]></value>
+        </param>
+        
+        <param name="projectsAddProject.header">
+            <value><![CDATA[Neues Projekt anlegen]]></value>
+        </param>
+        <param name="projectsAddProject.title">
+            <value><![CDATA[Projektname]]></value>
+        </param>
+        <param name="projectsAddProject.shortDescription">
+            <value><![CDATA[Kurzbeschreibung]]></value>
+        </param>
+        <param name="projectsAddProject.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsAddProject.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsAddProject.at">
+            <value><![CDATA[um]]></value>
+        </param>
+        <param name="projectsAddProject.estimatedCloseDate">
+            <value><![CDATA[Geschätztes Enddatum]]></value>
+        </param>
+        <param name="projectsAddProject.requestedBy">
+            <value><![CDATA[Angefragt von]]></value>
+        </param>
+        <param name="projectsAddProject.organisation">
+            <value><![CDATA[Organisation]]></value>
+        </param>
+        <param name="projectsAddProject.budget">
+            <value><![CDATA[Budget]]></value>
+        </param>
+        <param name="projectsAddProject.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsAddProject.approved">
+            <value><![CDATA[Bewilligt]]></value>
+        </param>
+        <param name="projectsAddProject.closed">
+            <value><![CDATA[Geschlossen]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.add.add">
+            <value><![CDATA[Hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.update">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.assignment">
+            <value><![CDATA[Zuweisung]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.indentLevel">
+            <value><![CDATA[Tiefe]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.levelOfEffort">
+            <value><![CDATA[Aufwandsabschätzung]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.estimated">
+            <value><![CDATA[Geschätzt:]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.actual">
+            <value><![CDATA[Aktuell:]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.dueDate">
+            <value><![CDATA[Abgabe]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.keywords">
+            <value><![CDATA[Schlüsselworte]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.progress">
+            <value><![CDATA[Fortschritt]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.additionalNote">
+            <value><![CDATA[Zusätzliche Notitz]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.assignment">
+            <value><![CDATA[Zuweisung]]></value>
+        </param>
+        <param name="projectsCenterAssignments.add.assignTo">
+            <value><![CDATA[Zuweisen an]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.details.activityDetails">
+            <value><![CDATA[Details]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.keywords">
+            <value><![CDATA[Schlüsselworte]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.assignment">
+            <value><![CDATA[Zuweisung]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.assignedTo">
+            <value><![CDATA[Zugewiesen an]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.levelOfEffort">
+            <value><![CDATA[Aufwandsabschätzung]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.estimated">
+            <value><![CDATA[Geschätzt:]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.actual">
+            <value><![CDATA[Altuell:]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.dueDate">
+            <value><![CDATA[Abgabe]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.progress">
+            <value><![CDATA[Fortschritt]]></value>
+        </param>
+        <param name="projectsCenterAssignments.details.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.folderAdd.addFolder">
+            <value><![CDATA[Aktivitäten Ordner hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.folderAdd.updateFolder">
+            <value><![CDATA[Aktivitäten Ordner bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.folderAdd.name">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="projectsCenterAssignments.folderAdd.indentLevel">
+            <value><![CDATA[Einrücktiefe]]></value>
+        </param>
+        <param name="projectsCenterAssignments.folderAdd.details">
+            <value><![CDATA[Details]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.folderDetails.activityFolder">
+            <value><![CDATA[Ordner]]></value>
+        </param>
+        <param name="projectsCenterAssignments.folderDetails.name">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="projectsCenterAssignments.folderDetails.details">
+            <value><![CDATA[Details]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.listMenu.removeUser">
+            <value><![CDATA[Nutzer entfernen]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.list.user">
+            <value><![CDATA[Nutzer]]></value>
+        </param>
+        <param name="projectsCenterAssignments.list.role">
+            <value><![CDATA[Rolle]]></value>
+        </param>
+        <param name="projectsCenterAssignments.list.noUsersAssigned">
+            <value><![CDATA[Keine Nutzer zugewiesen.]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.menu.addActivityFolder">
+            <value><![CDATA[Ordner hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.addActivity">
+            <value><![CDATA[Aktivität hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.viewUpdateActivity">
+            <value><![CDATA[Akitvität anzeigen/bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.deleteActivity">
+            <value><![CDATA[Aktivität löschen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.updateThisFolder">
+            <value><![CDATA[Diesen Ordner bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.deleteFolderAndShiftContentsLeft">
+            <value><![CDATA[Ordner löschen und Inhalte nach links verschieben]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.viewOutlineDetails">
+            <value><![CDATA[Entwurfsdetails darstellen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.editOutlineDetails">
+            <value><![CDATA[Entwurfsdetails bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.menu.importPlanFromFiles">
+            <value><![CDATA[Plan von Datei importieren]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.notes.message">
+            <value><![CDATA[Die folgenden Notizen wurden zur dieser Aktivität eingegeben:]]></value>
+        </param>
+        <param name="projectsCenterAssignments.notes.note">
+            <value><![CDATA[Notiz]]></value>
+        </param>
+        <param name="projectsCenterAssignments.notes.date">
+            <value><![CDATA[Datum]]></value>
+        </param>
+        <param name="projectsCenterAssignments.notes.enteredBy">
+            <value><![CDATA[Eingegeben von]]></value>
+        </param>
+        <param name="projectsCenterAssignments.notes.noNotesToDisplay">
+            <value><![CDATA[Keine Notizen vorhanden.]]></value>
+        </param>
+        
+        <param name="projectsCenterAssignments.outlines">
+            <value><![CDATA[Gliederungen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.allAcitvities">
+            <value><![CDATA[Alle Aktivitäten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.openAcitvities">
+            <value><![CDATA[Offenen Aktivitäten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.closedActivities">
+            <value><![CDATA[Geschlossene Aktivitäten]]></value>
+        </param>
+        <param name="projectsCenterAssignments.planOutlines">
+            <value><![CDATA[Gliederungen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.pri">
+            <value><![CDATA[Prio.]]></value>
+        </param>
+        <param name="projectsCenterAssignments.assignedTo">
+            <value><![CDATA[Zugewiesen an]]></value>
+        </param>
+        <param name="projectsCenterAssignments.estimated">
+            <value><![CDATA[Erwartet]]></value>
+        </param>
+        <param name="projectsCenterAssignments.actual">
+            <value><![CDATA[Aktuell]]></value>
+        </param>
+        <param name="projectsCenterAssignments.progress">
+            <value><![CDATA[Fortschritt]]></value>
+        </param>
+        <param name="projectsCenterAssignments.start">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsCenterAssignments.end">
+            <value><![CDATA[Ende]]></value>
+        </param>
+        <param name="projectsCenterAssignments.itemIncomplete">
+            <value><![CDATA[unvollständig]]></value>
+        </param>
+        <param name="projectsCenterAssignments.itemCompleted">
+            <value><![CDATA[vollständig]]></value>
+        </param>
+        <param name="projectsCenterAssignments.itemClosed">
+            <value><![CDATA[geschlossen]]></value>
+        </param>
+        <param name="projectsCenterAssignments.itemOnHold">
+            <value><![CDATA[pausiert]]></value>
+        </param>
+        
+        <param name="projectsCenterCalendar.add.addEvent">
+            <value><![CDATA[Ereignis hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.updateEvent">
+            <value><![CDATA[Ereignis bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.indentLevel">
+            <value><![CDATA[Einrücktiefe]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.levelOfEffort">
+            <value><![CDATA[Aufwandsabschätzung]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.estimated">
+            <value><![CDATA[Geschätzt:]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.actual">
+            <value><![CDATA[Aktuell:]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.dueDate">
+            <value><![CDATA[Fälligkeitsdatum]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.keywords">
+            <value><![CDATA[Schlüsselworte]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.progress">
+            <value><![CDATA[Fortschritt]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.additionalNote">
+            <value><![CDATA[Notiz]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.assignments">
+            <value><![CDATA[Zuweisungen]]></value>
+        </param>
+        <param name="projectsCenterCalendar.add.assignedTo">
+            <value><![CDATA[Zugewiesen an]]></value>
+        </param>
+        
+        <param name="projectsCenterCalendar.addEvent">
+            <value><![CDATA[Ereignis hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterCalendar.calendars">
+            <value><![CDATA[Kalender]]></value>
+        </param>
+        <param name="projectsCenterCalendar.events">
+            <value><![CDATA[Ereignisse]]></value>
+        </param>
+        <param name="projectsCenterCalendar.outlines">
+            <value><![CDATA[Entwürfe]]></value>
+        </param>
+        <param name="projectsCenterCalendar.assignments">
+            <value><![CDATA[Zuweisungen]]></value>
+        </param>
+        <param name="projectsCenterCalendar.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterCalendar.holidays">
+            <value><![CDATA[Feiertage]]></value>
+        </param>
+        <param name="projectsCenterCalendar.calendarEvents">
+            <value><![CDATA[Kalenderereignisse]]></value>
+        </param>
+        <param name="projectsCenterCalendar.specificEvents">
+            <value><![CDATA[Besondere Ereignisse]]></value>
+        </param>
+        <param name="projectsCenterCalendar.outlineStartDate">
+            <value><![CDATA[Anfangsdaten]]></value>
+        </param>
+        <param name="projectsCenterCalendar.outlineEndDate">
+            <value><![CDATA[Enddaten]]></value>
+        </param>
+        
+        <param name="projectsCenter.role">
+            <value><![CDATA[Rolle]]></value>
+        </param>
+        <param name="projectsCenter.admin">
+            <value><![CDATA[Admin]]></value>
+        </param>
+        
+        <param name="projectsCenter.details.overview">
+            <value><![CDATA[Übersicht]]></value>
+        </param>
+        <param name="projectsCenter.details.modifyProject">
+            <value><![CDATA[Projekt bearbeiten]]></value>
+        </param>
+        <param name="projectsCenter.details.deleteProject">
+            <value><![CDATA[Projekt löschen]]></value>
+        </param>
+        <param name="projectsCenter.details.generalInformation">
+            <value><![CDATA[Allgemeine Informationen]]></value>
+        </param>
+        <param name="projectsCenter.details.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenter.details.projectClosedOn">
+            <value><![CDATA[Dieses Projekt wurde geschlossen am]]></value>
+        </param>
+        <param name="projectsCenter.details.projectUnderReview">
+            <value><![CDATA[Dieses Projekt wird derzeit geprüft und ist noch nicht freigegeben]]></value>
+        </param>
+        <param name="projectsCenter.details.projectApprovedOn">
+            <value><![CDATA[Dieses Projekt wurde freigegeben am]]></value>
+        </param>
+        <param name="projectsCenter.details.title">
+            <value><![CDATA[Titel]]></value>
+        </param>
+        <param name="projectsCenter.details.shortDescription">
+            <value><![CDATA[Kurzbeschreibung]]></value>
+        </param>
+        <param name="projectsCenter.details.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsCenter.details.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsCenter.details.estimatedCloseDate">
+            <value><![CDATA[Erwartetes Abschlussdatum]]></value>
+        </param>
+        <param name="projectsCenter.details.requestedBy">
+            <value><![CDATA[Angefragt von]]></value>
+        </param>
+        <param name="projectsCenter.details.organization">
+            <value><![CDATA[Organisation]]></value>
+        </param>
+        <param name="projectsCenter.details.budget">
+            <value><![CDATA[Budget]]></value>
+        </param>
+        <param name="projectsCenter.details.entered">
+            <value><![CDATA[Eingegeben]]></value>
+        </param>
+        <param name="projectsCenter.details.modified">
+            <value><![CDATA[Verändert]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.details.needLogin">
+            <value><![CDATA[Du musst angemeldet sein, um Datein herunterladen zu können.]]></value>
+        </param>
+        <param name="projectsCenterFile.details.addVersion">
+            <value><![CDATA[Version hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterFile.details.fileVersions">
+            <value><![CDATA[Dateiversionen]]></value>
+        </param>
+        <param name="projectsCenterFile.details.actions">
+            <value><![CDATA[Aktionen]]></value>
+        </param>
+        <param name="projectsCenterFile.details.file">
+            <value><![CDATA[Datei]]></value>
+        </param>
+        <param name="projectsCenterFile.details.size">
+            <value><![CDATA[Grösse]]></value>
+        </param>
+        <param name="projectsCenterFile.details.version">
+            <value><![CDATA[Version]]></value>
+        </param>
+        <param name="projectsCenterFile.details.submitted">
+            <value><![CDATA[vorgeschlagen]]></value>
+        </param>
+        <param name="projectsCenterFile.details.sentBy">
+            <value><![CDATA[Gesendet von]]></value>
+        </param>
+        <param name="projectsCenterFile.details.dl">
+            <value><![CDATA[D/L]]></value>
+        </param>
+        <param name="projectsCenterFile.details.download">
+            <value><![CDATA[Download]]></value>
+        </param>
+        <param name="projectsCenterFile.details.openInNewWindow">
+            <value><![CDATA[In neuem Fenster öffnen]]></value>
+        </param>
+        <param name="projectsCenterFile.details.deleteVersion">
+            <value><![CDATA[Version löschen]]></value>
+        </param>
+        <param name="projectsCenterFile.details.changes">
+            <value><![CDATA[Änderungen]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.folder.folder">
+            <value><![CDATA[Ordner]]></value>
+        </param>
+        <param name="projectsCenterFile.folder.name">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="projectsCenterFile.folder.displayType">
+            <value><![CDATA[Anzeige]]></value>
+        </param>
+        <param name="projectsCenterFile.folder.type.iconLayout">
+            <value><![CDATA[Icon Layout]]></value>
+        </param>
+        <param name="projectsCenterFile.folder.type.listView">
+            <value><![CDATA[Liste]]></value>
+        </param>
+        <param name="projectsCenterFile.folder.type.imageView">
+            <value><![CDATA[Bilder]]></value>
+        </param>
+        <param name="projectsCenterFile.folder.type.slideshow">
+            <value><![CDATA[Diashow]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.gallery.newFolder">
+            <value><![CDATA[Neuer Ordner]]></value>
+        </param>
+        <param name="projectsCenterFile.gallery.submitFile">
+            <value><![CDATA[Datei hochladen]]></value>
+        </param>
+        <param name="projectsCenterFile.gallery.renameFolder">
+            <value><![CDATA[Ordner umbenennen]]></value>
+        </param>
+        <param name="projectsCenterFile.gallery.deleteFolder">
+            <value><![CDATA[Ordner löschen]]></value>
+        </param>
+        <param name="projectsCenterFile.gallery.noFiles">
+            <value><![CDATA[Keine Dateien vorhanden.]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.hierarchy.selectFolder">
+            <value><![CDATA[Wähle einen Zielordner zum Verschieben:]]></value>
+        </param>
+        <param name="projectsCenterFile.hierarchy.home">
+            <value><![CDATA[Home]]></value>
+        </param>
+        <param name="projectsCenterFile.hierarchy.currentFolder">
+            <value><![CDATA[(aktueller Ordner)]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.library.needLogin">
+            <value><![CDATA[Du musst angemeldet sein, um Datein zu laden.]]></value>
+        </param>
+        <param name="projectsCenterFile.library.newFolder">
+            <value><![CDATA[Neuer Ordner]]></value>
+        </param>
+        <param name="projectsCenterFile.library.submitFile">
+            <value><![CDATA[Datei hochladen]]></value>
+        </param>
+        <param name="projectsCenterFile.library.renameFolder">
+            <value><![CDATA[Ordner umbenennen]]></value>
+        </param>
+        <param name="projectsCenterFile.library.deleteFolder">
+            <value><![CDATA[Ordner löschen]]></value>
+        </param>
+        <param name="projectsCenterFile.library.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterFile.library.File">
+            <value><![CDATA[Datei]]></value>
+        </param>
+        <param name="projectsCenterFile.library.Type">
+            <value><![CDATA[Typ]]></value>
+        </param>
+        <param name="projectsCenterFile.library.size">
+            <value><![CDATA[Grösse]]></value>
+        </param>
+        <param name="projectsCenterFile.library.version">
+            <value><![CDATA[Version]]></value>
+        </param>
+        <param name="projectsCenterFile.library.dateModified">
+            <value><![CDATA[Änderungsdatum]]></value>
+        </param>
+        <param name="projectsCenterFile.library.noFiles">
+            <value><![CDATA[Keine Dateien vorhanden.]]></value>
+        </param>
+        <param name="projectsCenterFile.library.folder">
+            <value><![CDATA[Ordner]]></value>
+        </param>
+        <param name="projectsCenterFile.library.images">
+            <value><![CDATA[Bilder]]></value>
+        </param>
+        <param name="projectsCenterFile.library.slideshow">
+            <value><![CDATA[Diashow]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.limit.accountExeeded">
+            <value><![CDATA[Die Dateigrössenbeschränkung dieses accounts ist überschritten.]]></value>
+        </param>
+        <param name="projectsCenterFile.limit.message">
+            <value><![CDATA[Verwalte Deine Dateien, indem Du alte Versionen
+            einer Datei oder ungenutzte Dateien löschst.<br/>
+            Dein Account ist begrenzt auf ${accountLimit}MB.<br/>
+            Du verbrauchst derzeit ${accountUsage}MB.]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.modify.modifyFileInformation">
+            <value><![CDATA[Dateiinformationen bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterFile.modify.subject">
+            <value><![CDATA[Subject]]></value>
+        </param>
+        <param name="projectsCenterFile.modify.fileName">
+            <value><![CDATA[Dateiname]]></value>
+        </param>
+        <param name="projectsCenterFile.modify.currentVersion">
+            <value><![CDATA[Aktuelle<br/>Version]]></value>
+        </param>
+        <param name="projectsCenterFile.modify.summaryOfChanges">
+            <value><![CDATA[Zusammenfassung der Änderungen]]></value>
+        </param>
+        
+        <param name="projectsCenterFile.upload.uploadFile">
+            <value><![CDATA[Datei hochladen]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.addFileRevision">
+            <value><![CDATA[Dateirevision hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.subject">
+            <value><![CDATA[Subject]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.version">
+            <value><![CDATA[Version]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.currentVersion">
+            <value><![CDATA[Aktuelle Version]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.majorUpdate">
+            <value><![CDATA[grosses Update]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.minorUpdate">
+            <value><![CDATA[kleines Update]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.changes">
+            <value><![CDATA[Änderungen]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.summaryOfChanges">
+            <value><![CDATA[Zusammenfassung der Änderungen]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.file">
+            <value><![CDATA[Datei]]></value>
+        </param>
+        <param name="projectsCenterFile.upload.bigFileHint">
+            <value><![CDATA[* Grosse Dateien können ein wenig Zeit zum Upload
+            benötigen.<br/>
+            Warte bitte auf die Bestätigung des Dateiuploads.]]></value>
+        </param>
+        
+        <param name="projectsCenterFiles.menu.viewFolder">
+            <value><![CDATA[Ordner anzeigen]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.renameFolder">
+            <value><![CDATA[Ordner umbenennen]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.moveFolder">
+            <value><![CDATA[Ordner verschieben]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.deleteAndMoveFolder">
+            <value><![CDATA[Lösche Ordner und Inhalte in den aktuellen Ordner verschieben]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.downloadFile">
+            <value><![CDATA[Datei downloaden]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.openInNewWindow">
+            <value><![CDATA[Datei in neuem Fenster öffnen]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.viewFileHistory">
+            <value><![CDATA[Dateihistorie anzeigen]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.renameFile">
+            <value><![CDATA[Datei umbenennen]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.addVersion">
+            <value><![CDATA[Version hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.moveFile">
+            <value><![CDATA[Datei verschieben]]></value>
+        </param>
+        <param name="projectsCenterFiles.menu.deleteFile">
+            <value><![CDATA[Datei löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterFolder.hierarchy.selectMessage">
+            <value><![CDATA[Wähle einen Zielordner aus:]]></value>
+        </param>
+        <param name="projectsCenterFolder.hierarchy.home">
+            <value><![CDATA[Home]]></value>
+        </param>
+        <param name="projectsCenterFolder.hierarchy.currentFolder">
+            <value><![CDATA[(aktueller Ordner)]]></value>
+        </param>
+        
+        <param name="projectsCenterHierarchy.message">
+            <value><![CDATA[Wähle einen Zielordner zum verschieben:]]></value>
+        </param>
+        <param name="projectsCenterHierarchy.currentFolder">
+            <value><![CDATA[(aktueller Ordner)]]></value>
+        </param>
+        
+        <param name="projectsCenterIssues.add.forums">
+            <value><![CDATA[Foren]]></value>
+        </param>
+        <param name="projectsCenterIssues.add.topic">
+            <value><![CDATA[Thema]]></value>
+        </param>
+        <param name="projectsCenterIssues.add.subject">
+            <value><![CDATA[Subject]]></value>
+        </param>
+        <param name="projectsCenterIssues.add.message">
+            <value><![CDATA[Nachricht]]></value>
+        </param>
+        <param name="projectsCenterIssues.add.fileAttachments">
+            <value><![CDATA[Dateianhänge]]></value>
+        </param>
+        <param name="projectsCenterIssues.add.attachFile">
+            <value><![CDATA[Datei anhängen]]></value>
+        </param>
+        
+        <param name="projectsCenterIssues.categories.forums">
+            <value><![CDATA[Foren]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.add">
+            <value><![CDATA[Hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.modify">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.forum">
+            <value><![CDATA[Forum]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.name">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.options">
+            <value><![CDATA[Optionen]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.option.allowFiles">
+            <value><![CDATA[Dateianhänge in Nachrichten erlauben]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.needLogin">
+            <value><![CDATA[Du musst angemeldet sein, um Nachrichten zu posten.]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.newForum">
+            <value><![CDATA[Forum anlegen]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.topics">
+            <value><![CDATA[Themen]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.posts">
+            <value><![CDATA[Postings]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.lastPost">
+            <value><![CDATA[letztes Posting]]></value>
+        </param>
+        <param name="projectsCenterIssues.categories.noForums">
+            <value><![CDATA[Keine Foren vorhanden.]]></value>
+        </param>
+        
+        <param name="projectsCenterIssues.details.forums">
+            <value><![CDATA[Foren]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.postReply">
+            <value><![CDATA[Antwort schreiben]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.by">
+            <value><![CDATA[Von]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.postedOn">
+            <value><![CDATA[Geposted am]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.edited">
+            <value><![CDATA[(bearbeitet)]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.quoteMessage">
+            <value><![CDATA[Nachricht zitieren]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.editTopic">
+            <value><![CDATA[Thema bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.deleteTopic">
+            <value><![CDATA[Thema löschen]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.reply">
+            <value><![CDATA[Antwort]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.of">
+            <value><![CDATA[von]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.editMessage">
+            <value><![CDATA[Nachricht bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.deleteMessage">
+            <value><![CDATA[Nachricht löschen]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.closeWindow">
+            <value><![CDATA[Fenster schliessen]]></value>
+        </param>
+        <param name="projectsCenterIssues.details.backToForum">
+            <value><![CDATA[zurück zum Forum]]></value>
+        </param>
+        
+        <param name="projectsCenterIssues.menu.viewTopic">
+            <value><![CDATA[Thema anzeigen]]></value>
+        </param>
+        <param name="projectsCenterIssues.menu.modifyTopic">
+            <value><![CDATA[Thema bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterIssues.menu.deleteTopic">
+            <value><![CDATA[Thema löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterIssues.reply.forums">
+            <value><![CDATA[Foren]]></value>
+        </param>
+        <param name="projectsCenterIssues.reply.reply">
+            <value><![CDATA[Antwort]]></value>
+        </param>
+        <param name="projectsCenterIssues.reply.replyToMessage">
+            <value><![CDATA[Auf Nachricht antworten]]></value>
+        </param>
+        <param name="projectsCenterIssues.reply.subject">
+            <value><![CDATA[Betreff]]></value>
+        </param>
+        <param name="projectsCenterIssues.reply.message">
+            <value><![CDATA[Nachricht]]></value>
+        </param>
+        <param name="projectsCenterIssues.reply.fileAttachments">
+            <value><![CDATA[Dateianhänge]]></value>
+        </param>
+        <param name="projectsCenterIssues.reply.attachFile">
+            <value><![CDATA[Datei anhägen]]></value>
+        </param>
+        
+        <param name="projectsCenterIssues.forums">
+            <value><![CDATA[Foren]]></value>
+        </param>
+        <param name="projectsCenterIssues.needLogin">
+            <value><![CDATA[Du musst angemeldet sein, um Nachrichten zu posten.]]></value>
+        </param>
+        <param name="projectsCenterIssues.newTopic">
+            <value><![CDATA[Neues Thema]]></value>
+        </param>
+        <param name="projectsCenterIssues.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterIssues.topic">
+            <value><![CDATA[Thema]]></value>
+        </param>
+        <param name="projectsCenterIssues.author">
+            <value><![CDATA[Author]]></value>
+        </param>
+        <param name="projectsCenterIssues.replies">
+            <value><![CDATA[Antworten]]></value>
+        </param>
+        <param name="projectsCenterIssues.lastPost">
+            <value><![CDATA[Letzes Posting]]></value>
+        </param>
+        
+        <param name="projectsCenterIssues.categoriesMenu.viewForum">
+            <value><![CDATA[Forum anzeigen]]></value>
+        </param>
+        <param name="projectsCenterIssues.categoriesMenu.modifyForum">
+            <value><![CDATA[Forum bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterIssues.categoriesMenu.deleteForum">
+            <value><![CDATA[Forum löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterLists.add.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="projectsCenterLists.add.add">
+            <value><![CDATA[Hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterLists.add.update">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterLists.add.item">
+            <value><![CDATA[Item]]></value>
+        </param>
+        <param name="projectsCenterLists.add.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+        <param name="projectsCenterLists.add.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterLists.add.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterLists.add.complete">
+            <value><![CDATA[Vollständig]]></value>
+        </param>
+        <param name="projectsCenterLists.add.notes">
+            <value><![CDATA[Bemerkungen]]></value>
+        </param>
+        
+        <param name="projectsCenterLists.categories.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.add">
+            <value><![CDATA[Hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.update">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.name">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.newList">
+            <value><![CDATA[Neue Liste]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.list">
+            <value><![CDATA[Liste]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.items">
+            <value><![CDATA[Items]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.lastPost">
+            <value><![CDATA[Letztes Posting]]></value>
+        </param>
+        <param name="projectsCenterLists.categories.noLists">
+            <value><![CDATA[Keine Listen vorhanden.]]></value>
+        </param>
+        
+        <param name="projectsCenterLists.categoriesMenu.viewList">
+            <value><![CDATA[Liste anzeigen]]></value>
+        </param>
+        <param name="projectsCenterLists.categoriesMenu.modifyList">
+            <value><![CDATA[Liste bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterLists.categoriesMenu.deleteList">
+            <value><![CDATA[Liste löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterLists.details.listItem">
+            <value><![CDATA[Listeneintrag]]></value>
+        </param>
+        <param name="projectsCenterLists.details.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+        <param name="projectsCenterLists.details.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterLists.details.notes">
+            <value><![CDATA[Notizen]]></value>
+        </param>
+        <param name="projectsCenterLists.details.entered">
+            <value><![CDATA[Eingetragen]]></value>
+        </param>
+        <param name="projectsCenterLists.details.modified">
+            <value><![CDATA[Bearbeitet]]></value>
+        </param>
+        
+        <param name="projectsCenterLists.hierarchy.moveMessage">
+            <value><![CDATA[Wähle eine Zielliste zum Verschieben aus:]]></value>
+        </param>
+        <param name="projectsCenterLists.hierarchy.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="projectsCenterLists.hierarchy.currentFolder">
+            <value><![CDATA[(aktueller Ordner)]]></value>
+        </param>
+        
+        <param name="projectsCenterLists.menu.viewItem">
+            <value><![CDATA[Item anzeigen]]></value>
+        </param>
+        <param name="projectsCenterLists.menu.editItem">
+            <value><![CDATA[Item bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterLists.menu.moveToAnotherList">
+            <value><![CDATA[In eine andere Liste verschieben]]></value>
+        </param>
+        <param name="projectsCenterLists.menu.deleteItem">
+            <value><![CDATA[Item löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterLists.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="projectsCenterLists.addItem">
+            <value><![CDATA[Item zur Liste hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterLists.item.incompleteItems">
+            <value><![CDATA[unvollständige Items]]></value>
+        </param>
+        <param name="projectsCenterLists.item.completeItems">
+            <value><![CDATA[vollständige Items]]></value>
+        </param>
+        <param name="projectsCenterLists.item.allItems">
+            <value><![CDATA[alle Items]]></value>
+        </param>
+        <param name="projectsCenterLists.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterLists.count">
+            <value><![CDATA[#]]></value>
+        </param>
+        <param name="projectsCenterLists.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterLists.item">
+            <value><![CDATA[Item]]></value>
+        </param>
+        <param name="projectsCenterLists.modifiedBy">
+            <value><![CDATA[Verändert von]]></value>
+        </param>
+        <param name="projectsCenterLists.modified">
+            <value><![CDATA[Bearbeitet]]></value>
+        </param>
+        
+        <param name="projectsCenterModifyProject.overview">
+            <value><![CDATA[Übersicht]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.modifyProject">
+            <value><![CDATA[Projekt bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.updateProjectInformation">
+            <value><![CDATA[Projektinformation aktualisieren]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.approved">
+            <value><![CDATA[Bestätigt]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.closed">
+            <value><![CDATA[Geschlossen]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.title">
+            <value><![CDATA[Titel]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.shortDescription">
+            <value><![CDATA[Kurzbeschreibung]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.at">
+            <value><![CDATA[um]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.estimatedCloseDate">
+            <value><![CDATA[Geschätztes Abschlussdatum]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.requestedBy">
+            <value><![CDATA[Angefragt von]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.organization">
+            <value><![CDATA[Organisation]]></value>
+        </param>
+        <param name="projectsCenterModifyProject.budget">
+            <value><![CDATA[]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.addNewsArticle">
+            <value><![CDATA[Newsartikel hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterNews.item.currentNews">
+            <value><![CDATA[Aktuelle News]]></value>
+        </param>
+        <param name="projectsCenterNews.item.archivedNews">
+            <value><![CDATA[Archivierte News]]></value>
+        </param>
+        <param name="projectsCenterNews.item.unreleasedNews">
+            <value><![CDATA[Unveröffentlichte News]]></value>
+        </param>
+        <param name="projectsCenterNews.item.newsDrafts">
+            <value><![CDATA[Entwürfe]]></value>
+        </param>
+        <param name="projectsCenterNews.title">
+            <value><![CDATA[News]]></value>
+        </param>
+        <param name="projectsCenterNews.noNews">
+            <value><![CDATA[Keine News vorhanden.]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.add.add">
+            <value><![CDATA[Newsartikel Anlegen]]></value>
+        </param>
+        <param name="projectsCenterNews.add.update">
+            <value><![CDATA[Newsartikel Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterNews.add.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterNews.add.status.draft">
+            <value><![CDATA[Entwurf]]></value>
+        </param>
+        <param name="projectsCenterNews.add.status.unapproved">
+            <value><![CDATA[Unbestätigt]]></value>
+        </param>
+        <param name="projectsCenterNews.add.status.published">
+            <value><![CDATA[Veröffentlicht]]></value>
+        </param>
+        <param name="projectsCenterNews.add.onePage">
+            <value><![CDATA[(1 Seite)]]></value>
+        </param>
+        <param name="projectsCenterNews.add.twoPages">
+            <value><![CDATA[(2 Seiten)]]></value>
+        </param>
+        <param name="projectsCenterNews.add.subject">
+            <value><![CDATA[Thema]]></value>
+        </param>
+        <param name="projectsCenterNews.add.pageTitle">
+            <value><![CDATA[Page Title]]></value>
+        </param>
+         <param name="projectsCenterNews.add.keywords">
+            <value><![CDATA[Keywords]]></value>
+        </param>
+        <param name="projectsCenterNews.add.description">
+            <value><![CDATA[Description]]></value>
+        </param>
+        <param name="projectsCenterNews.add.metaName">
+            <value><![CDATA[Meta Tag Name]]></value>
+        </param>
+        <param name="projectsCenterNews.add.metaContent">
+            <value><![CDATA[Meta Tag Content]]></value>
+        </param>
+        <param name="projectsCenterNews.add.intro">
+            <value><![CDATA[Intro (Seite 1)]]></value>
+        </param>
+        <param name="projectsCenterNews.add.classification">
+            <value><![CDATA[Klassifikation]]></value>
+        </param>
+        <param name="projectsCenterNews.add.position">
+            <value><![CDATA[Position]]></value>
+        </param>
+        <param name="projectsCenterNews.add.positionDescription">
+            <value><![CDATA[Niedrigere Positionen werden vor höheren angezeigt.]]></value>
+        </param>
+        <param name="projectsCenterNews.add.startDate">
+            <value><![CDATA[Startdatum/-zeit]]></value>
+        </param>
+        <param name="projectsCenterNews.add.at">
+            <value><![CDATA[um]]></value>
+        </param>
+        <param name="projectsCenterNews.add.archiveTime">
+            <value><![CDATA[Archivdatum/-zeit]]></value>
+        </param>
+        <param name="projectsCenterNews.add.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsCenterNews.add.linkToList">
+            <value><![CDATA[Angebundenen Liste]]></value>
+        </param>
+        <param name="projectsCenterNews.add.editList">
+            <value><![CDATA[Liste bearbeiten]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.menu.viewArticle">
+            <value><![CDATA[Artikel anzeigen]]></value>
+        </param>
+        <param name="projectsCenterNews.menu.editArticle">
+            <value><![CDATA[Artikel bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterNews.menu.cloneArticle">
+            <value><![CDATA[Artikel klonen]]></value>
+        </param>
+        <param name="projectsCenterNews.menu.send">
+            <value><![CDATA[Allen Mitgliedern schicken]]></value>
+        </param>
+        <param name="projectsCenterNews.menu.sendMe">
+            <value><![CDATA[An meine EMail-Adresse schicken]]></value>
+        </param>
+        <param name="projectsCenterNews.menu.delete">
+            <value><![CDATA[Artikel löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.addPage.edit">
+            <value><![CDATA[Artikel bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterNews.addPage.addPage">
+            <value><![CDATA[Seite hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterNews.addPage.subject">
+            <value><![CDATA[Thema]]></value>
+        </param>
+        <param name="projectsCenterNews.addPage.pageTwo">
+            <value><![CDATA[Seite 2]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.byArticle.draft">
+            <value><![CDATA[(Entwurf)]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.unapproved">
+            <value><![CDATA[(Unbestätigt)]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.by">
+            <value><![CDATA[Von]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.postedOn">
+            <value><![CDATA[geposted am]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.email">
+            <value><![CDATA[Email]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.edit">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.clone">
+            <value><![CDATA[Klonen]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.archive">
+            <value><![CDATA[Archivieren]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.delete">
+            <value><![CDATA[Löschen]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.category">
+            <value><![CDATA[Kategorie:]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.readMore">
+            <value><![CDATA[mehr...]]></value>
+        </param>
+        <param name="projectsCenterNews.byArticle.linkedList">
+            <value><![CDATA[Angebundene Liste:]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.details.details">
+            <value><![CDATA[Artikeldetails]]></value>
+        </param>
+        <param name="projectsCenterNews.details.edit">
+            <value><![CDATA[Diesen Artikel bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterNews.details.delete">
+            <value><![CDATA[Diesen Artikel löschen]]></value>
+        </param>
+        <param name="projectsCenterNews.details.back">
+            <value><![CDATA[zurück zur Liste]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.mailMenu.sendToAll">
+            <value><![CDATA[An alle Mitglieder schicken]]></value>
+        </param>
+        <param name="projectsCenterNews.mailMenu.sendToMe">
+            <value><![CDATA[Mir schicken]]></value>
+        </param>
+        
+        <param name="projectsCenterNews.mailOk">
+            <value><![CDATA[Email verschickt]]></value>
+        </param>
+        
+        <param name="projectsCenterRequirements.add.outlines">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.add">
+            <value><![CDATA[Hiinzufügen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.modify">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.update">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.outline">
+            <value><![CDATA[Plan]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.title">
+            <value><![CDATA[Titel]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.details">
+            <value><![CDATA[Details]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.requestedBy">
+            <value><![CDATA[angefragt von]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.deptOrCompany">
+            <value><![CDATA[Abteilung oder <br/> Firma]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.expectedDates">
+            <value><![CDATA[Erwartete Zeiten]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.start">
+            <value><![CDATA[Beginn:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.finish">
+            <value><![CDATA[Ende:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.levelOfEffort">
+            <value><![CDATA[Arbeitsumfang]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.estimated">
+            <value><![CDATA[Geschätzt:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.actual">
+            <value><![CDATA[Aktuell:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.outlineApproved">
+            <value><![CDATA[Plan bestätigt]]></value>
+        </param>
+        <param name="projectsCenterRequirements.add.outlineClosed">
+            <value><![CDATA[Plan geschlossen]]></value>
+        </param>
+        
+        <param name="projectsCenterRequirements.details.outline">
+            <value><![CDATA[Plan:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.details">
+            <value><![CDATA[Details]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.requestedBy">
+            <value><![CDATA[Angefragt von]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.deptOrCompany">
+            <value><![CDATA[Abteilung oder <br/>Firma]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.expectedDates">
+            <value><![CDATA[Erwartete Zeiten]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.start">
+            <value><![CDATA[Beginn:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.finish">
+            <value><![CDATA[Ende:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.levelOfEffort">
+            <value><![CDATA[Auffwandsabschätzung]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.estimated">
+            <value><![CDATA[Geschätzt:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.actual">
+            <value><![CDATA[Aktuell:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.not">
+            <value><![CDATA[nicht]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.approved">
+            <value><![CDATA[bestätigt]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.closed">
+            <value><![CDATA[geschlossen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.details.open">
+            <value><![CDATA[offen]]></value>
+        </param>
+        
+        <param name="projectsCenterRequirements.importOk.fileReceived">
+            <value><![CDATA[Datei empfangen.]]></value>
+        </param>
+        
+        <param name="projectsCenterRequirements.import.message">
+            <value><![CDATA[Ein Projektplan kann als MS Excel Tabelle oder
+            als Omni Outliner Template importiert werden.]]></value>
+        </param>
+        <param name="projectsCenterRequirements.import.uploadFile">
+            <value><![CDATA[Datei hochladen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.import.file">
+            <value><![CDATA[Datei]]></value>
+        </param>
+        <param name="projectsCenterRequirements.import.largeFileMessage">
+            <value><![CDATA[* Grosse Dateien können etwas Zeit zum Upload
+            benötigen.<br/>
+            Bitte warte auf die Bestätigungsnachricht zum Upload.]]></value>
+        </param>
+        
+        <param name="projectsCenterRequirements.menu.viewOutline">
+            <value><![CDATA[Plan anzeigen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.menu.editOutlineDetails">
+            <value><![CDATA[Details bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterRequirements.menu.importPlan">
+            <value><![CDATA[Plan importieren]]></value>
+        </param>
+        <param name="projectsCenterRequirements.menu.cloneOutline">
+            <value><![CDATA[Plan klonen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.menu.deleteOutline">
+            <value><![CDATA[Plan löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterRequirements.templates.outlines">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.templates">
+            <value><![CDATA[Vorlagen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.message">
+            <value><![CDATA[Diese Vorlagen sind dazu vorgesehen, um an
+            Projektplänen offline arbeiten zu können. <br/><br/>
+            Sobald ein Projektplan fertiggestellt ist, kann dieser importiert
+            werden.]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.download">
+            <value><![CDATA[Download]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.excelPlanDescription">
+            <value><![CDATA[Plan Vorlage (Excel) - 19KB<br/><br/>
+            Verwendung: Vorlage herunterladen, in MS Excel öffnen, Zuweisungen
+            hinzufügen und im Excel-Format mit .xls-Erweiterung speichern.<br/>
+            Danach kann der Plan wieder importiert werden.
+            ]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.omniOutliner30PlanDescription">
+            <value><![CDATA[Plan-Vorlage (OmniOutliner 3.0) - 1KB<br/><br/>
+            Verwendung: Vorlage herunterladen und in OmniOutliner 3.0 öffnen.
+            Zuweisungen hinzufügen und im OmniOutliner-Standartformat oo3
+            speicher.<br/>
+            Danach kann der Plan wieder importiert werden.]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates.omniOutliner20PlanDescription">
+            <value><![CDATA[Plan-Vorlage (OmniOutliner 2.0) - 13KB<br/><br/>
+            Verwendung: Vorlage herunterladen und in OmniOutliner 2.0 öffnen.
+            Zuweisungen hinzufügen und im OmniOutliner-Standartformat oo3
+            speicher.<br/>
+            Danach kann der Plan wieder importiert werden.]]></value>
+        </param>
+        
+        <param name="projectsCenterRequirements.outlines">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="projectsCenterRequirements.newOutline">
+            <value><![CDATA[Neuen Plan anlegen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.templates">
+            <value><![CDATA[Vorlagen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.allOutlines">
+            <value><![CDATA[Alle Pläne]]></value>
+        </param>
+        <param name="projectsCenterRequirements.openOutlines">
+            <value><![CDATA[Offene Pläne]]></value>
+        </param>
+        <param name="projectsCenterRequirements.closedOutlines">
+            <value><![CDATA[Geschlossene Pläne]]></value>
+        </param>
+        <param name="projectsCenterRequirements.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterRequirements.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsCenterRequirements.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+        <param name="projectsCenterRequirements.progress">
+            <value><![CDATA[Fortschritt]]></value>
+        </param>
+        <param name="projectsCenterRequirements.effort">
+            <value><![CDATA[Aufwand]]></value>
+        </param>
+        <param name="projectsCenterRequirements.noOutlines">
+            <value><![CDATA[Keine Pläne vorhanden.]]></value>
+        </param>
+        <param name="projectsCenterRequirements.requestedBy">
+            <value><![CDATA[Angefragt von]]></value>
+        </param>
+        <param name="projectsCenterRequirements.zeroActivities">
+            <value><![CDATA[(0 Aktivitäten)]]></value>
+        </param>
+        <param name="projectsCenterRequirements.due">
+            <value><![CDATA[Fällig:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.loe">
+            <value><![CDATA[LOE:]]></value>
+        </param>
+        <param name="projectsCenterRequirements.itemIsComplete">
+            <value><![CDATA[Punkt unvollständig]]></value>
+        </param>
+        <param name="projectsCenterRequirements.itemCompletedOrClosed">
+            <value><![CDATA[Punkt vollständig oder geschlossen]]></value>
+        </param>
+        <param name="projectsCenterRequirements.itemNotApproved">
+            <value><![CDATA[Punkt nicht bestätigt]]></value>
+        </param>
+        
+        <param name="projectsCenterSetup.customize.setup">
+            <value><![CDATA[Einstellungen]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.customizeTabs">
+            <value><![CDATA[Tabs bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.updateProjectFeatures">
+            <value><![CDATA[Projekteinstellungen aktualisieren]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.projectTabs">
+            <value><![CDATA[Projekt Tabs]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.enabled">
+            <value><![CDATA[Aktiviert]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.order">
+            <value><![CDATA[Reihenfolge]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.tab">
+            <value><![CDATA[Tab]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.label">
+            <value><![CDATA[Label]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.news">
+            <value><![CDATA[News]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.wiki">
+            <value><![CDATA[Wiki]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.discussion">
+            <value><![CDATA[Diskussionen]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.documents">
+            <value><![CDATA[Dokumente]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.plan">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.team">
+            <value><![CDATA[Team]]></value>
+        </param>
+        <param name="projectsCenterSetup.customize.details">
+            <value><![CDATA[Details]]></value>
+        </param>
+        
+        <param name="projectsCenterSetup.permissions.setup">
+            <value><![CDATA[Einstellungen]]></value>
+        </param>
+        <param name="projectsCenterSetup.permissions.configurePermissions">
+            <value><![CDATA[Berechtigungen bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterSetup.permissions.permissions">
+            <value><![CDATA[Berechtigungen]]></value>
+        </param>
+        <param name="projectsCenterSetup.permissions.lowestRole">
+            <value><![CDATA[Niedrigste Rolle]]></value>
+        </param>
+        
+        <param name="projectsCenterSetup.ticketCategories.setup">
+            <value><![CDATA[Einstellungen]]></value>
+        </param>
+        <param name="projectsCenterSetup.permissions.configureTicketCategories">
+            <value><![CDATA[Ticketkategorien bearbeiten]]></value>
+        </param>
+        
+        <param name="projectsCenterSetup.setup">
+            <value><![CDATA[Einstellungen]]></value>
+        </param>
+        <param name="projectsCenterSetup.customizeTabs">
+            <value><![CDATA[Projekttabs einstellen]]></value>
+        </param>
+        <param name="projectsCenterSetup.configurePermissions">
+            <value><![CDATA[Berechtigungen bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterSetup.message">
+            <value><![CDATA[
+            Projekttabs können einzeln aktiviert/deaktiviert und umbenannt
+            werden.<br/><br/>
+            Projektberechtigungen der Teilnehmen können nach Benutzerrollen
+            angepasst werden. Jedem Projektbenutzer kann eine Rolle zugewiesen
+            werden.
+            ]]></value>
+        </param>
+        
+        <param name="projectsCenterTeam.inviteStatus.team">
+            <value><![CDATA[Team]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.modify">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.invitationResults">
+            <value><![CDATA[Einladungsergebnisse]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.name">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.email">
+            <value><![CDATA[Email]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.invitationSent">
+            <value><![CDATA[Einladung gesendet]]></value>
+        </param>
+        <param name="projectsCenterTeam.inviteStatus.emailError">
+            <value><![CDATA[Email-Fehler]]></value>
+        </param>
+        
+        <param name="projectsCenterTeam.invite.team">
+            <value><![CDATA[Team]]></value>
+        </param>
+        <param name="projectsCenterTeam.invite.modify">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterTeam.invite.invite">
+            <value><![CDATA[Einladen]]></value>
+        </param>
+        <param name="projectsCenterTeam.invite.errorMessage">
+            <value><![CDATA[Die folgenden Nutzer konnten nicht zum Projekt
+            hinzugefügt werden, da ein Account vorhanden sein muss.<br/>
+            Du kannst eine Einladung verschicken, indem Du die folgenden
+            Formularfelder ausfüllst. Eine Einladungs-Email wird an das
+            neue Mitglied verschickt. Nach einer Bestätigung der Email
+            erscheint der Nutzer im Projektteam.]]></value>
+        </param>
+        <param name="projectsCenterTeam.invite.invite">
+            <value><![CDATA[Einladen]]></value>
+        </param>
+        <param name="projectsCenterTeam.invite.email">
+            <value><![CDATA[Email]]></value>
+        </param>
+        <param name="projectsCenterTeam.invite.firstName">
+            <value><![CDATA[Vorname]]></value>
+        </param>
+        <param name="projectsCenterTeam.invite.lastName">
+            <value><![CDATA[Nachname]]></value>
+        </param>
+        
+        <param name="projectsCenterTeam.modify.team">
+            <value><![CDATA[Team]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.modify">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.modifyTeamMembers">
+            <value><![CDATA[Teammitglieder bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.addContactFrom">
+            <value><![CDATA[Kontakt hinzufügen aus:]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.selectAProject">
+            <value><![CDATA[Pojekt auswählen:]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.selectADepartment">
+            <value><![CDATA[Abteilung auswählen:]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.selectAContact">
+            <value><![CDATA[Kontakt auswählen:]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.teamMembers">
+            <value><![CDATA[Teammitglieder]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.openProjects">
+            <value><![CDATA[Offene Projekte]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.closedProjects">
+            <value><![CDATA[Geschlossene Projekte]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.departmentList">
+            <value><![CDATA[Abteilungen]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.email">
+            <value><![CDATA[Email]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.emailToAdd">
+            <value><![CDATA[Email des Kontakts:]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.emailNotFoundMessage">
+            <value><![CDATA[Wenn die Email des neuen Kontakt nicht
+            gefunden wird, erscheint ein weiteres Fenster mit zusätzlichen
+            Informationen, um den Kontakt hinzuzufügen.]]></value>
+        </param>
+        <param name="projectsCenterTeam.modify.clickToRemove">
+            <value><![CDATA[(zum Entfernen anklicken)]]></value>
+        </param>
+        
+        <param name="projectsCenterTeam.team">
+            <value><![CDATA[Team]]></value>
+        </param>
+        <param name="projectsCenterTeam.modifyTeam">
+            <value><![CDATA[Team bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterTeam.immediatelyChangeMemberRole">
+            <value><![CDATA[* Die Rolle eines Teammitglieds kann direkt
+            über die Auswahlboxen geändert werden.]]></value>
+        </param>
+        <param name="projectsCenterTeam.role">
+            <value><![CDATA[Rolle]]></value>
+        </param>
+        <param name="projectsCenterTeam.id">
+            <value><![CDATA[ID]]></value>
+        </param>
+        <param name="projectsCenterTeam.nameOrganisation">
+            <value><![CDATA[Name / Organisation]]></value>
+        </param>
+        <param name="projectsCenterTeam.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterTeam.lastAccessed">
+            <value><![CDATA[zuletzt zugegriffen]]></value>
+        </param>
+        <param name="projectsCenterTeam.teamNotDefined">
+            <value><![CDATA[Ein Team wurde nicht definiert.]]></value>
+        </param>
+        <param name="projectsCenterTeam.added">
+            <value><![CDATA[Hinzugefügt]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.add.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.ticketClosedOn">
+            <value><![CDATA[Ticket geschlossen am]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.open">
+            <value><![CDATA[offen]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.forReview">
+            <value><![CDATA[zur Überprüfung]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.classification">
+            <value><![CDATA[Klassifikation]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.issue">
+            <value><![CDATA[Problem]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.subcat1">
+            <value><![CDATA[Unterkategorie 1]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.subcat2">
+            <value><![CDATA[Unterkategorie 2]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.subcat3">
+            <value><![CDATA[Unterkategorie 3]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.severity">
+            <value><![CDATA[Schwere]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.supportingFiles">
+            <value><![CDATA[Dateien]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.attachFile">
+            <value><![CDATA[Datei anhängen]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.evaluations">
+            <value><![CDATA[Bewertung]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.state">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.cause">
+            <value><![CDATA[Grund]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.knownIssue">
+            <value><![CDATA[Bekanntes Problem]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.relatedTo">
+            <value><![CDATA[Verwandt mit]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.assigned">
+            <value><![CDATA[Zugewiesen]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.escalationLevel">
+            <value><![CDATA[Eskalation]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.assignedTo">
+            <value><![CDATA[Zugewiesen an]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.reassignedTo">
+            <value><![CDATA[Neuzugewiesen an]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.estimatedResoutionDate">
+            <value><![CDATA[Geschätztes Lösungsdatum]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.at">
+            <value><![CDATA[um]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.communication">
+            <value><![CDATA[Kommunikation]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.addComments">
+            <value><![CDATA[Kommentare Hinzufügen]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.resolution">
+            <value><![CDATA[Auflösung]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.solution">
+            <value><![CDATA[Lösung]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.ticketReadyToClose">
+            <value><![CDATA[Das Ticket kann geschlossen werden]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.distributionList">
+            <value><![CDATA[Verteilerliste]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.addContactFrom">
+            <value><![CDATA[Kontakt hinzufügen aus:]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.selectProject">
+            <value><![CDATA[Projekt auswählen:]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.selectDepartment">
+            <value><![CDATA[Abteilung auswählen:]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.searchContacts">
+            <value><![CDATA[Kontakte durchsuchen:]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.selectContact">
+            <value><![CDATA[Kontakt auswählen:]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.thisProject">
+            <value><![CDATA[Dieses Projekt]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.openProjects">
+            <value><![CDATA[Offene Projekte]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.closedProjects">
+            <value><![CDATA[Geschlossene Projekte]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.contacts">
+            <value><![CDATA[Kontakte]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.email">
+            <value><![CDATA[Email]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.emailOfContactToAdd">
+            <value><![CDATA[Email des neuen Kontakts:]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.clickToRemove">
+            <value><![CDATA[(zum Entfernen anklicken)]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.emailOnChange">
+            <value><![CDATA[Email-Nachricht, sobald das Ticket akualisiert wird.]]></value>
+        </param>
+        <param name="projectsCenterTickets.add.noEmailOnChange">
+            <value><![CDATA[Keine Email-Nachricht, wenn das Ticket aktualisiert wird.]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.comments.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.comments.ticketDetails">
+            <value><![CDATA[Ticket Details]]></value>
+        </param>
+        <param name="projectsCenterTickets.comments.comments">
+            <value><![CDATA[Kommentare]]></value>
+        </param>
+        <param name="projectsCenterTickets.comments.ticketClosedOn">
+            <value><![CDATA[Ticket geschlossen am]]></value>
+        </param>
+        <param name="projectsCenterTickets.comments.open">
+            <value><![CDATA[Offen]]></value>
+        </param>
+        <param name="projectsCenterTickets.comments.userComments">
+            <value><![CDATA[Nutzerkommentare]]></value>
+        </param>
+        <param name="projectsCenterTickets.comments.supportingFiles">
+            <value><![CDATA[Dateien]]></value>
+        </param>
+        <param name="projectsCenterTickets.comments.attachFiles">
+            <value><![CDATA[Dateien anhängen]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.configList.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.configList.configuration">
+            <value><![CDATA[Konfiguration]]></value>
+        </param>
+        <param name="projectsCenterTickets.configList.editList">
+            <value><![CDATA[Liste bearbeiten]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.config.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.config.configuration">
+            <value><![CDATA[Konfiguration]]></value>
+        </param>
+        <param name="projectsCenterTickets.config.ticketStates">
+            <value><![CDATA[Ticket Stadien]]></value>
+        </param>
+        <param name="projectsCenterTickets.config.ticketCategories">
+            <value><![CDATA[Ticket Kategorien]]></value>
+        </param>
+        <param name="projectsCenterTickets.config.ticketDefects">
+            <value><![CDATA[Ticket Mängel]]></value>
+        </param>
+        <param name="projectsCenterTickets.config.ticketCauses">
+            <value><![CDATA[Ticket Gründe]]></value>
+        </param>
+        <param name="projectsCenterTickets.config.ticketEscalationLevels">
+            <value><![CDATA[Ticket Eskalationslevel]]></value>
+        </param>
+        <param name="projectsCenterTickets.config.ticketResolutionCategories">
+            <value><![CDATA[Ticket Auflösungskategorien]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.details.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.details">
+            <value><![CDATA[Details]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.watchByEmail">
+            <value><![CDATA[Ticket per Email beobachten]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.cancelWatchByEmail">
+            <value><![CDATA[Ticket per Email beobachten beenden]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.ticket">
+            <value><![CDATA[Ticket]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.ticketClosedOn">
+            <value><![CDATA[Ticket geschlossen am]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.open">
+            <value><![CDATA[Offen]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.readyForReview">
+            <value><![CDATA[Bereit zur Prüfung]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.ticketInformation">
+            <value><![CDATA[Ticket Information]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.entered">
+            <value><![CDATA[Hinzugefügt]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.lastModified">
+            <value><![CDATA[Zuletzt geändert]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.closedDate">
+            <value><![CDATA[Geschlossen am]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.attachments">
+            <value><![CDATA[Anhänge]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.classification">
+            <value><![CDATA[Klassifikation]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.issue">
+            <value><![CDATA[Problem]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.severity">
+            <value><![CDATA[Schwere]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.assignment">
+            <value><![CDATA[Zuweisung]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.assignedTo">
+            <value><![CDATA[Zugewiesen an]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.estimatedResolutionDate">
+            <value><![CDATA[Erwartetes Lösungsdatum]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.resolution">
+            <value><![CDATA[Auflösung]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.solution">
+            <value><![CDATA[Lösung]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.fileAttachments">
+            <value><![CDATA[Dateianhänge]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.noFilesAttached">
+            <value><![CDATA[Keine Dateianhänge vorhanden.]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.file">
+            <value><![CDATA[Datei]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.type">
+            <value><![CDATA[Typ]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.size">
+            <value><![CDATA[Grösse]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.dateAdded">
+            <value><![CDATA[Datum]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.ticketLogHistory">
+            <value><![CDATA[Ticket Historie]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.distributionList">
+            <value><![CDATA[Verteilerliste]]></value>
+        </param>
+        <param name="projectsCenterTickets.details.noRecipients">
+            <value><![CDATA[Keine Empfänger.]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.filesMenu.openInNewWindow">
+            <value><![CDATA[In neuem Fenster öffnen]]></value>
+        </param>
+        <param name="projectsCenterTickets.filesMenu.downloadFile">
+            <value><![CDATA[Datei herunterladen]]></value>
+        </param>
+        <param name="projectsCenterTickets.filesMenu.deleteFile">
+            <value><![CDATA[Datei löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.menu.viewTicket">
+            <value><![CDATA[Ticket anzeigen]]></value>
+        </param>
+        <param name="projectsCenterTickets.menu.editTicket">
+            <value><![CDATA[Ticket bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterTickets.menu.deleteTicket">
+            <value><![CDATA[Ticket löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.ticketCategories.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.ticketCategories.configuration">
+            <value><![CDATA[Konfiguration]]></value>
+        </param>
+        <param name="projectsCenterTickets.ticketCategories.categories">
+            <value><![CDATA[Kategorien]]></value>
+        </param>
+        
+        <param name="projectsCenterTickets.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.newTicket">
+            <value><![CDATA[Neues Ticket]]></value>
+        </param>
+        <param name="projectsCenterTickets.configuration">
+            <value><![CDATA[Konfiguration]]></value>
+        </param>
+        <param name="projectsCenterTickets.openTickets">
+            <value><![CDATA[Offene Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.ticketsForReview">
+            <value><![CDATA[Tickets zur Überprüfung]]></value>
+        </param>
+        <param name="projectsCenterTickets.closedTickets">
+            <value><![CDATA[Geschlossene Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.allTickets">
+            <value><![CDATA[Alle Tickets]]></value>
+        </param>
+        <param name="projectsCenterTickets.action">
+            <value><![CDATA[Aktion]]></value>
+        </param>
+        <param name="projectsCenterTickets.id">
+            <value><![CDATA[ID]]></value>
+        </param>
+        <param name="projectsCenterTickets.status">
+            <value><![CDATA[Status]]></value>
+        </param>
+        <param name="projectsCenterTickets.category">
+            <value><![CDATA[Kategorie]]></value>
+        </param>
+        <param name="projectsCenterTickets.issue">
+            <value><![CDATA[Problem]]></value>
+        </param>
+        <param name="projectsCenterTickets.priority">
+            <value><![CDATA[Priorität]]></value>
+        </param>
+        <param name="projectsCenterTickets.assignedTo">
+            <value><![CDATA[Zugewiesen an]]></value>
+        </param>
+        <param name="projectsCenterTickets.noTickets">
+            <value><![CDATA[Keine Tickets vorhanden.]]></value>
+        </param>
+        <param name="projectsCenterTickets.open">
+            <value><![CDATA[offen]]></value>
+        </param>
+        <param name="projectsCenterTickets.forReview">
+            <value><![CDATA[zur Überprüfung]]></value>
+        </param>
+        <param name="projectsCenterTickets.closed">
+            <value><![CDATA[geschlossen]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.add.editing">
+            <value><![CDATA[Bearbeite]]></value>
+        </param>
+        <param name="projectsCenterWiki.add.images">
+            <value><![CDATA[Bilder]]></value>
+        </param>
+        <param name="projectsCenterWiki.add.help">
+            <value><![CDATA[Hilfe]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.configList.wiki">
+            <value><![CDATA[Wiki]]></value>
+        </param>
+        <param name="projectsCenterWiki.configList.configuration">
+            <value><![CDATA[Einstellungen]]></value>
+        </param>
+        <param name="projectsCenterWiki.configList.editList">
+            <value><![CDATA[Liste bearbeiten]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.config.wikiCategories">
+            <value><![CDATA[Wiki Kategorien]]></value>
+        </param>
+        <param name="projectsCenterWiki.config.wikiStates">
+            <value><![CDATA[Wiki Stadien]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.conflict.editing">
+            <value><![CDATA[Bearbeite]]></value>
+        </param>
+        <param name="projectsCenterWiki.conflict.home">
+            <value><![CDATA[Home]]></value>
+        </param>
+        <param name="projectsCenterWiki.conflict.title">
+            <value><![CDATA[Ein Konflikt ist aufgetreten und muß aufgelöst werden!]]></value>
+        </param>
+        <param name="projectsCenterWiki.conflict.description">
+            <value><![CDATA[Die Änderungen, die zuerst von ${userName} vorgenommen wurden
+            werden im oberen Teil angezeigt. <br/>
+            Bitte löse die Konflike der beiden Versionen auf und aktualisiere das
+            obere Eingabefeld.<br/>
+            Wenn Du das obere Feld nicht aktualisierst, gehen Deine Änderungen
+            verloren!]]></value>
+        </param>
+        <param name="projectsCenterWiki.conflict.finalVersion">
+            <value><![CDATA[Endgültige Version:]]></value>
+        </param>
+        <param name="projectsCenterWiki.conflict.conflictingVersion">
+            <value><![CDATA[Konflikt:]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.list.name">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="projectsCenterWiki.list.modified">
+            <value><![CDATA[Bearbeitet am]]></value>
+        </param>
+        <param name="projectsCenterWiki.list.modifiedBy">
+            <value><![CDATA[Bearbeitet von]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.menu.editComment">
+            <value><![CDATA[Kommentar bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterWiki.menu.archiveComment">
+            <value><![CDATA[Kommentar archivieren]]></value>
+        </param>
+        <param name="projectsCenterWiki.menu.deleteComment">
+            <value><![CDATA[Kommentar löschen]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.versionList.home">
+            <value><![CDATA[Home]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.versions">
+            <value><![CDATA[Versionen]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.date">
+            <value><![CDATA[Datum]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.modifiedBy">
+            <value><![CDATA[Bearbeitet von]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.totalLines">
+            <value><![CDATA[Gesamtzeilen]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.linesAdded">
+            <value><![CDATA[Zeilen hinzugefügt]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.linesChanged">
+            <value><![CDATA[Zeilen geändert]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.linesDeleted">
+            <value><![CDATA[Zeilen gelöscht]]></value>
+        </param>
+        <param name="projectsCenterWiki.versionList.contentSize">
+            <value><![CDATA[Grösse]]></value>
+        </param>
+        
+        <param name="projectsCenterWiki.home">
+            <value><![CDATA[Home]]></value>
+        </param>
+        <param name="projectsCenterWiki.index">
+            <value><![CDATA[Index]]></value>
+        </param>
+        <param name="projectsCenterWiki.versions">
+            <value><![CDATA[Versionen]]></value>
+        </param>
+        <param name="projectsCenterWiki.lock">
+            <value><![CDATA[Sperren]]></value>
+        </param>
+        <param name="projectsCenterWiki.edit">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="projectsCenterWiki.noContent">
+            <value><![CDATA[Diese Seite hat keinen Inhalt.]]></value>
+        </param>
+        <param name="projectsCenterWiki.lastEdited">
+            <value><![CDATA[Zuletzt geändert am:]]></value>
+        </param>
+        
+        <param name="projectsClone.projectCloned">
+            <value><![CDATA[Projekt geklont.]]></value>
+        </param>
+        
+        <param name="projectsClone.requirementClose.requirementClosed">
+            <value><![CDATA[Anforderung geschlossen.]]></value>
+        </param>
+        
+        <param name="projectsClone.requirement.outlineToClone">
+            <value><![CDATA[Zu klonender Entwurf]]></value>
+        </param>
+        <param name="projectsClone.requirement.cloneData">
+            <value><![CDATA[Klone die folgenden Daten:]]></value>
+        </param>
+        <param name="projectsClone.requirement.activitiesAndFolders">
+            <value><![CDATA[Aktivitäten und Ordner]]></value>
+        </param>
+        <param name="projectsClone.requirement.resetOutline">
+            <value><![CDATA[Entwurf und Aktivitäten auf "unvollständig" zurücksetzen]]></value>
+        </param>
+        
+        <param name="projectsClone.projectToClone">
+            <value><![CDATA[Zu klonendes Projekt]]></value>
+        </param>
+        <param name="projectsClone.newProjectDetails">
+            <value><![CDATA[Neue Projektdetails]]></value>
+        </param>
+        <param name="projectsClone.startDate">
+            <value><![CDATA[Beginn]]></value>
+        </param>
+        <param name="projectsClone.at">
+            <value><![CDATA[um]]></value>
+        </param>
+        <param name="projectsClone.cloneData">
+            <value><![CDATA[Klone die folgenden Daten:]]></value>
+        </param>
+        <param name="projectsClone.newsCategories">
+            <value><![CDATA[Newskategorien]]></value>
+        </param>
+        <param name="projectsClone.newArticles">
+            <value><![CDATA[Newsartikel]]></value>
+        </param>
+        <param name="projectsClone.wiki">
+            <value><![CDATA[Wiki]]></value>
+        </param>
+        <param name="projectsClone.discussionForums">
+            <value><![CDATA[Diskussionsforen]]></value>
+        </param>
+        <param name="projectsClone.documentFolders">
+            <value><![CDATA[Dokumentenordner]]></value>
+        </param>
+        <param name="projectsClone.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="projectsClone.listItems">
+            <value><![CDATA[Listeneinträge]]></value>
+        </param>
+        
+        <param name="projectsClone.planOutlines">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="projectsClone.outlineActivities">
+            <value><![CDATA[Aktivitäten]]></value>
+        </param>
+        <param name="projectsClone.adjustOutlineDates">
+            <value><![CDATA[Plan- und Aktivitätendaten auf neues Startdatum anpassen]]></value>
+        </param>
+        <param name="projectsClone.resetOutlineToIncomplete">
+            <value><![CDATA[Plan und Aktivitäten auf "unvollständig" zurücksetzen]]></value>
+        </param>
+        <param name="projectsClone.ticketConfiguration">
+            <value><![CDATA[Ticketkonfiguration]]></value>
+        </param>
+        <param name="projectsClone.teamMembers">
+            <value><![CDATA[Teammitglieder]]></value>
+        </param>
+        
+        <param name="projectsDiscussion.add.discussionForums">
+            <value><![CDATA[Diskussionsforen]]></value>
+        </param>
+        <param name="projectsDiscussion.add.topic">
+            <value><![CDATA[Thema]]></value>
+        </param>
+        <param name="projectsDiscussion.add.message">
+            <value><![CDATA[Nachricht]]></value>
+        </param>
+        <param name="projectsDiscussion.add.fileAttachments">
+            <value><![CDATA[Dateianhänge]]></value>
+        </param>
+        
+        <param name="projectsDiscussion.details.postReply">
+            <value><![CDATA[Antwort erstellen]]></value>
+        </param>
+        <param name="projectsDiscussion.details.by">
+            <value><![CDATA[Von]]></value>
+        </param>
+        <param name="projectsDiscussion.details.postedOn">
+            <value><![CDATA[geposted am]]></value>
+        </param>
+        <param name="projectsDiscussion.details.edited">
+            <value><![CDATA[(bearbeitet)]]></value>
+        </param>
+        <param name="projectsDiscussion.details.quoteMessage">
+            <value><![CDATA[Nachricht zitieren]]></value>
+        </param>
+        <param name="projectsDiscussion.details.editTopic">
+            <value><![CDATA[Thema bearbeiten]]></value>
+        </param>
+        <param name="projectsDiscussion.details.deleteTopic">
+            <value><![CDATA[Thema löschen]]></value>
+        </param>
+        <param name="projectsDiscussion.details.reply">
+            <value><![CDATA[Antwort]]></value>
+        </param>
+        <param name="projectsDiscussion.details.of">
+            <value><![CDATA[von]]></value>
+        </param>
+        <param name="projectsDiscussion.details.closeWindow">
+            <value><![CDATA[Fenster schliessen]]></value>
+        </param>
+        <param name="projectsDiscussion.details.backToForum">
+            <value><![CDATA[zurück zum Forum]]></value>
+        </param>
+        <param name="projectsDiscussion.details.postReply">
+            <value><![CDATA[Antwort erstellen]]></value>
+        </param>
+        
+        <param name="projectsDiscussion.forum.discussionForums">
+            <value><![CDATA[Diskussionsforen]]></value>
+        </param>
+        <param name="projectsDiscussion.forum.needLogin">
+            <value><![CDATA[Du musst angemeldet sein, um Nachrichten zu posten.]]></value>
+        </param>
+        <param name="projectsDiscussion.forum.newTopic">
+            <value><![CDATA[Neus Thema]]></value>
+        </param>
+        <param name="projectsDiscussion.forum.topic">
+            <value><![CDATA[Thema]]></value>
+        </param>
+        <param name="projectsDiscussion.forum.author">
+            <value><![CDATA[Author]]></value>
+        </param>
+        <param name="projectsDiscussion.forum.replies">
+            <value><![CDATA[Antworten]]></value>
+        </param>
+        <param name="projectsDiscussion.forum.lastPost">
+            <value><![CDATA[letztes Posting]]></value>
+        </param>
+        <param name="projectsDiscussion.forum.noMessages">
+            <value><![CDATA[Keine Nachrichten vorhanden.]]></value>
+        </param>
+        
+        <param name="projectsDiscussion.reply.discussionForums">
+            <value><![CDATA[Diskussionsforen]]></value>
+        </param>
+        <param name="projectsDiscussion.reply.reply">
+            <value><![CDATA[Antwort]]></value>
+        </param>
+        <param name="projectsDiscussion.reply.replyToMessages">
+            <value><![CDATA[Auf Nachricht antworten]]></value>
+        </param>
+        <param name="projectsDiscussion.reply.subject">
+            <value><![CDATA[Subject]]></value>
+        </param>
+        <param name="projectsDiscussion.reply.message">
+            <value><![CDATA[Nachricht]]></value>
+        </param>
+        <param name="projectsDiscussion.reply.fileAttachments">
+            <value><![CDATA[Dateianhänge]]></value>
+        </param>
+        <param name="projectsDiscussion.reply.attachFiles">
+            <value><![CDATA[Dateien anhängen]]></value>
+        </param>
+        
+        <param name="projectsResources.projects.projects">
+            <value><![CDATA[Projekte]]></value>
+        </param>
+        <param name="projectsResources.projects.noProjects">
+            <value><![CDATA[Keine Projekte im angegebenen Zeitraum vorhanden.]]></value>
+        </param>
+        <param name="projectsResources.projects.noViewInBrowser">
+            <value><![CDATA[Die Anzeige wird in diesem Browser nicht unterstützt.]]></value>
+        </param>
+        
+        <param name="projectsResources.users.users">
+            <value><![CDATA[Nutzer]]></value>
+        </param>
+        <param name="projectsResources.users.noUsers">
+            <value><![CDATA[Keine Nutzer im angegebenen Zeitraum vorhanden.]]></value>
+        </param>
+        <param name="projectsResources.users.noViewInBrowser">
+            <value><![CDATA[Die Anzeige wird in diesem Browser nicht unterstützt.]]></value>
+        </param>
+        
+        <param name="projectsResources.users">
+            <value><![CDATA[Benutzer]]></value>
+        </param>
+        <param name="projectsResources.projects">
+            <value><![CDATA[Projekte]]></value>
+        </param>
+        
+        <param name="projectsTimesheets.Timesheet">
+            <value><![CDATA[Zeitplan:]]></value>
+        </param>
+        <param name="projectsTimesheets.weekOf">
+            <value><![CDATA[Wocke]]></value>
+        </param>
+        <param name="projectsTimesheets.viewNotSupported">
+            <value><![CDATA[Die Anzeige wird in diesem Browser nicht unterstützt.]]></value>
+        </param>
+        
+        <param name="pagedListInfo.expandLink">
+            <value><![CDATA[Mehr...]]></value>
+        </param>
+        <param name="pagedListInfo.returnLink">
+            <value><![CDATA[zurück zur Übersicht...]]></value>
+        </param>
+        
+        <param name="pagedListInfo.pagedListStatus.Discussion">
+            <value><![CDATA[Diskussionen]]></value>
+        </param>
+        <param name="pagedListInfo.pagedListStatus.Documents">
+            <value><![CDATA[Dokumente]]></value>
+        </param>
+        <param name="pagedListInfo.pagedListStatus.Activities">
+            <value><![CDATA[Aktivitäten]]></value>
+        </param>
+        
+        <param name="search.results.noResultMessage">
+            <value><![CDATA[Ungültige Suchanfrage <br/><br/>
+            Es waren entweder die Suchkriterien fehlerhaft oder der angegebene
+            Suchbegriff ist derzeit nicht indexiert.<br/><br/>
+            Bitte prüfen Sie die Suchkriterien für eine erneute Suche.]]></value>
+        </param>
+        <param name="search.results.search">
+            <value><![CDATA[Suche:]]></value>
+        </param>
+        <param name="search.results.search.allInformation">
+            <value><![CDATA[Alles durchsuchen]]></value>
+        </param>
+        <param name="search.results.search.projectDetails">
+            <value><![CDATA[Projektdetails]]></value>
+        </param>
+        <param name="search.results.search.news">
+            <value><![CDATA[News]]></value>
+        </param>
+        <param name="search.results.search.wiki">
+            <value><![CDATA[Wiki]]></value>
+        </param>
+        <param name="search.results.search.discussion">
+            <value><![CDATA[Diskussionen]]></value>
+        </param>
+        <param name="search.results.search.documents">
+            <value><![CDATA[Dokumente]]></value>
+        </param>
+        <param name="search.results.search.lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="search.results.search.plans">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="search.results.search.tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        
+        <param name="tabbedMenu.tab.News">
+            <value><![CDATA[News]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Wiki">
+            <value><![CDATA[Wiki]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Discussion">
+            <value><![CDATA[Diskussionen]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Documents">
+            <value><![CDATA[Dokumente]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Lists">
+            <value><![CDATA[Listen]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Plan">
+            <value><![CDATA[Pläne]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Tickets">
+            <value><![CDATA[Tickets]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Team">
+            <value><![CDATA[Team]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Details">
+            <value><![CDATA[Details]]></value>
+        </param>
+        <param name="tabbedMenu.tab.Setup">
+            <value><![CDATA[Einstellungen]]></value>
+        </param>
+        
+        <param name="userProfile.contactInformation.contactInformation">
+            <value><![CDATA[Kontaktdaten]]></value>
+        </param>
+        <param name="userProfile.contactInformation.firstName">
+            <value><![CDATA[Vorname]]></value>
+        </param>
+        <param name="userProfile.contactInformation.lastName">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="userProfile.contactInformation.organisation">
+            <value><![CDATA[Organisation]]></value>
+        </param>
+        
+        <param name="userProfile.location.locationInformation">
+            <value><![CDATA[Standortinformationen]]></value>
+        </param>
+        <param name="userProfile.location.timeZone">
+            <value><![CDATA[Zeitzone]]></value>
+        </param>
+        <param name="userProfile.location.defaultLanguage">
+            <value><![CDATA[Sprache]]></value>
+        </param>
+        <param name="userProfile.location.defaultCurrency">
+            <value><![CDATA[Währung]]></value>
+        </param>
+        
+        <param name="userProfile.password.changePassword">
+            <value><![CDATA[Passwort ändern]]></value>
+        </param>
+        <param name="userProfile.password.currentPassword">
+            <value><![CDATA[Aktuelles Passwort]]></value>
+        </param>
+        <param name="userProfile.password.newPassword">
+            <value><![CDATA[Neues Passwort]]></value>
+        </param>
+        <param name="userProfile.password.verifyNewPassword">
+            <value><![CDATA[Passwort bestätigen]]></value>
+        </param>
+        
+        <param name="userProfile.accountInformation">
+            <value><![CDATA[Konteninformationen]]></value>
+        </param>
+        <param name="userProfile.memberSince">
+            <value><![CDATA[Mitglied seit]]></value>
+        </param>
+        <param name="userProfile.accountActive">
+            <value><![CDATA[Konto aktiv]]></value>
+        </param>
+        <param name="userProfile.contactInformation">
+            <value><![CDATA[Kontaktinformation]]></value>
+        </param>
+        <param name="userProfile.modify">
+            <value><![CDATA[Bearbeiten]]></value>
+        </param>
+        <param name="userProfile.firstName">
+            <value><![CDATA[Vorname]]></value>
+        </param>
+        <param name="userProfile.lastName">
+            <value><![CDATA[Name]]></value>
+        </param>
+        <param name="userProfile.organization">
+            <value><![CDATA[Organisation]]></value>
+        </param>
+        <param name="userProfile.locationInformation">
+            <value><![CDATA[Standortinformation]]></value>
+        </param>
+        <param name="userProfile.currentTime">
+            <value><![CDATA[Aktuelle Zeit]]></value>
+        </param>
+        <param name="userProfile.defaultLanguage">
+            <value><![CDATA[Sprache]]></value>
+        </param>
+        <param name="userProfile.defaultCurrency">
+            <value><![CDATA[Währung]]></value>
+        </param>
+        <param name="userProfile.additionalActions">
+            <value><![CDATA[Zusätzliche Aktionen]]></value>
+        </param>
+        <param name="userProfile.changeMyPassword">
+            <value><![CDATA[Mein Passwort ändern]]></value>
+        </param>
+        
+        <param name="utilEditList.closePoup.changesSuccessful">
+            <value><![CDATA[Änderungen erfolgreich.]]></value>
+        </param>
+        <param name="utilEditList.description">
+            <value><![CDATA[Beschreibung]]></value>
+        </param>
+    </config>
+    
+</team_elements>

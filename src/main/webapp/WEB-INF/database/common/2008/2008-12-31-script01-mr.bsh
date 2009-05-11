@@ -1,0 +1,28 @@
+import java.sql.*;
+import java.util.*;
+import org.aspcfs.utils.web.*;
+import com.zeroio.iteam.base.*;
+import com.zeroio.utils.*;
+
+// Load the categories
+BadgeCategoryList badgeCategoryList = new BadgeCategoryList();
+badgeCategoryList.buildList(db);
+
+// Load the badges to be updated
+BadgeList badgeList = new BadgeList();
+badgeList.buildList(db);
+
+System.out.println("Badges to check: " + badgeList.size());
+
+// Update the badges
+int count = 0;
+for (Badge badge : badgeList) {
+  if (badge.getProjectCategoryId() == -1) {
+    BadgeCategory badgeCategory = badgeCategoryList.getFromId(badge.getCategoryId());
+    badge.setProjectCategoryId(badgeCategory.getProjectCategoryId());
+    badge.update(db);
+    ++count;
+  }
+}
+
+System.out.println("Badges updated: " + count);

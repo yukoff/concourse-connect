@@ -1,0 +1,63 @@
+import java.sql.*;
+import com.concursive.connect.web.modules.login.dao.*;
+import com.concursive.connect.web.modules.profile.dao.*;
+import com.concursive.connect.web.utils.*;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
+
+// This script adds the People category if it doesn't exist
+// This script updates all user's with a project profile if one doesn't exist
+
+// Determine the People category id
+ProjectCategoryList projectCategoryList = new ProjectCategoryList();
+projectCategoryList.setCategoryName("People");
+projectCategoryList.buildList(db);
+ProjectCategory people = projectCategoryList.getFromValue("People");
+if (people == null) {
+  // Create a People category if it doesn't exist
+  people = new ProjectCategory();
+  people.setDescription("People");
+  people.setLevel(100);
+  people.insert(db);
+  System.out.println("People category inserted");
+}
+
+// Page through the updates just in case there are lots of users do 100 at a time...
+PagedListInfo pagedListInfo = new PagedListInfo();
+pagedListInfo.setItemsPerPage(100);
+pagedListInfo.setDefaultSort("user_id", null);
+
+// Use the paged list to paged through all users
+UserList users = new UserList();
+users.setPagedListInfo(pagedListInfo);
+users.buildList(db);
+
+System.out.println("Total users to process: " + pagedListInfo.getMaxRecords());
+
+int count = 0;
+while (users.size() > 0) {
+ System.out.println(" Page: " + pagedListInfo.getPage() + " of " + pagedListInfo.getNumberOfPages());
+
+ for (User user : users) {
+   // Check to see if the user has a profile, skip if they do
+   if (user.getProfileProjectId() > -1) {
+     continue;
+   }
+   ++count;
+   try {
+     // User doesn't have a profile, so create one
+     UserUtils.addUserProfile(db, user, prefs);
+   } catch (Exception e) {
+     e.printStackTrace(System.out);
+     throw new Exception(e.getMessage());
+   }
+ }
+
+ // Always reset the list or else the records are included on buildList again
+ users.clear();
+ if (pagedListInfo.getPage() < pagedListInfo.getNumberOfPages()) {
+     pagedListInfo.setCurrentPage(pagedListInfo.getPage() + 1);
+     users.buildList(db);
+ }
+}
+
+System.out.println("   Total users updated: " + count);

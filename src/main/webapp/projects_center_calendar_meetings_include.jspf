@@ -1,0 +1,167 @@
+<%--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  --%>
+<%@ page import="java.sql.Timestamp" %>
+<%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
+<%@ page import="com.concursive.connect.web.modules.calendar.dao.Meeting" %>
+<%@ page
+    import="com.concursive.connect.web.modules.calendar.utils.MeetingEventList" %>
+<%-- draws the Meeting events for a specific day --%>
+<%
+  MeetingEventList meetingEventList = (MeetingEventList) thisDay.get(category);
+%>
+
+<%-- include Meetings --%>
+  <div id="message" class="menu">
+    <p>Thank you for your valuable feedback.</p>
+  </div>
+<ccp:evaluate if="<%= meetingEventList.getMeetingList().size() > 0 %>">
+  <div id="projectMeetingDetails<%= StringUtils.toFullDateString(thisDay.getDate()) %>" class="eventsListContainer">
+      <%-- title row --%>
+    <h3 class="eventName">
+        <%-- <img border="0" src="<%= ctx %>/images/box.gif" align="absmiddle" title="Events" />  --%>
+      Events
+      <span><em>(<%= meetingEventList.getMeetingList().size() %>)</em></span>
+    </h3>
+
+    <ol>
+        <%-- include Meeting details --%>
+      <%
+        Iterator itr = meetingEventList.getMeetingList().iterator();
+        if (itr.hasNext()) {
+      %>
+      <% while (itr.hasNext()) {
+        Meeting thisMeeting = (Meeting) itr.next();
+        request.setAttribute("thisMeeting", thisMeeting);
+        menuCount++;
+      %>
+      <li>
+        <div class="timeContainer">
+          <div class="timeWrapper">
+           <span class="hour">
+             <ccp:tz timestamp="<%= thisMeeting.getStartDate() %>" pattern="hh" timeOnly="true"/>
+           </span>
+            :
+           <span class="hour">
+             <ccp:tz timestamp="<%= thisMeeting.getStartDate() %>" pattern="mm" timeOnly="true"/>
+           </span>
+           <span class="ampm">
+             <ccp:tz timestamp="<%= thisMeeting.getStartDate() %>" pattern="a" timeOnly="true"/>
+           </span>
+          </div>
+        </div>
+        <div class="eventsListItemContainer">
+          <ccp:permission name="project-calendar-add">
+            <span class="permissions">
+             <%-- Use the unique id for opening the menu, and toggling the graphics --%>
+             <a
+               href="javascript:displayProjectMeetingMenu('select-arrow<%= menuCount %>','menuProjectMeeting','<%=  thisMeeting.getId() %>', '<%= thisMeeting.getProjectId() %>');"
+               onMouseOver="over(0, <%= menuCount %>)"
+               onmouseout="out(0, <%= menuCount %>);hideMenu('menuProjectMeeting');"><img
+               src="<%= ctx %>/images/calendar/calendar__pencil.png" name="select-arrow<%= menuCount %>"
+               id="select-arrow<%= menuCount %>" align="absmiddle" border="0" alt="Edit" title="Edit"/></a>
+            </span>
+          </ccp:permission>
+          <span class="title">
+            <%=toHtml(thisMeeting.getTitle())%>
+          </span>
+          <c:if test="${!empty thisMeeting.location}">
+            <span class="location">
+              <span class="at">&#64;</span>
+              <%= toHtml(thisMeeting.getLocation()) %>
+            </span>
+          </c:if>
+          <c:if test="${!empty thisMeeting.duration}">
+            <span class="duration">
+              for <%=toHtml(thisMeeting.getDuration())%>
+            </span>
+          </c:if>
+          <c:if test="${!empty thisMeeting.description}">
+            <span class="description">
+              <%=toHtml(thisMeeting.getDescription()) %>
+            </span>
+          </c:if>
+        </div>
+	    <div class="userInputFooter">
+	      <ccp:evaluate if="<%= thisMeeting.getRatingCount() > 0 %>">
+	        <p>(<%= thisMeeting.getRatingValue() %> out of <%= thisMeeting.getRatingCount() %> <%= thisMeeting.getRatingCount() == 1 ? " person" : " people"%> found this event useful.)</p>
+	      </ccp:evaluate>
+	      <ccp:evaluate if="<%= thisMeeting.getInappropriateCount() > 0 && ProjectUtils.hasAccess(project.getId(), User, \"project-calendar-add\")%>">
+	        <p>(<%= thisMeeting.getInappropriateCount() %><%= thisMeeting.getInappropriateCount() == 1? " person" : " people"%> found this event inappropriate.)</p>
+	      </ccp:evaluate>
+	        <%-- any user who is not the author of the event can mark the event as useful  --%>
+	       <ccp:permission name="project-calendar-view">
+	        <ccp:evaluate if="<%= (thisMeeting.getEnteredBy() != User.getId())  && User.isLoggedIn() %>">
+	          <p>Are you interested in this event?</p>
+	          <p>
+	          <portlet:renderURL var="ratingUrl" windowState="maximized">
+	            <portlet:param name="portlet-command" value="event-setRating"/>
+	            <portlet:param name="id" value="${thisMeeting.id}"/>
+	            <portlet:param name="v" value="1"/>
+	            <portlet:param name="out" value="text"/>
+	          </portlet:renderURL>
+	          <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisMeeting.getId() %>','message');">Yes</a>&nbsp;
+	          <portlet:renderURL var="ratingUrl" windowState="maximized">
+	            <portlet:param name="portlet-command" value="event-setRating"/>
+	            <portlet:param name="id" value="${thisMeeting.id}"/>
+	            <portlet:param name="v" value="0"/>
+	            <portlet:param name="out" value="text"/>
+	          </portlet:renderURL>
+	          <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisMeeting.getId() %>','message');">No</a>&nbsp;
+	     	  <ccp:evaluate if="<%= thisMeeting.getId() > -1 && User.isLoggedIn() %>">
+	 			<a href="javascript:showPanel('Mark this document post as Inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=calendarevent&pid=${project.id}&id=${thisMeeting.id}',700)">Report this as inappropriate</a>
+	 		  </ccp:evaluate>
+	 		  </p>
+	          <div id="message_<%= thisMeeting.getId() %>"></div>
+	        </ccp:evaluate>
+	        </ccp:permission>
+	    </div>
+      </li>
+      <% }
+      } %>
+    </ol>
+  </div>
+</ccp:evaluate>
+

@@ -1,0 +1,48 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/postgresql-8.3-604.jdbc3.jar:lib/itext-1.3.1.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar bsh.Interpreter "$0" "$@"
+
+
+
+import java.io.*;
+import java.sql.*;
+import com.zeroio.controller.ConnectionPool;
+import com.zeroio.controller.ConnectionElement;
+import com.zeroio.iteam.base.*;
+import com.zeroio.utils.*;
+
+String url = "jdbc:postgresql://127.0.0.1:5432/iteam-community";
+String user = "postgres";
+String password = "";
+String driver = "org.postgresql.Driver";
+
+// Create a Connection Pool
+ConnectionPool sqlDriver = new ConnectionPool();
+sqlDriver.setDebug(false);
+sqlDriver.setTestConnections(false);
+sqlDriver.setAllowShrinking(true);
+sqlDriver.setMaxConnections(2);
+sqlDriver.setMaxIdleTime(60000);
+sqlDriver.setMaxDeadTime(1000000);
+
+// Create a connection
+ConnectionElement ce = new ConnectionElement(url, user, password);
+ce.setDriver(driver);
+Connection db = sqlDriver.getConnection(ce);
+print(sqlDriver.toString());
+
+print(System.getProperty("file.encoding"));
+
+// Load some content
+String sql = "";
+String fileLibrary = "/Users/matt/Source/apache-tomcat-5.5.12/webapps/team/WEB-INF/fileLibrary";
+
+Project project = new Project(db, 58);
+
+Wiki wiki = WikiList.queryBySubject(db, "Implementation Guide", project.getId());
+WikiPDFUtils.exportToFile(project, wiki, new File("Implementation Guide.pdf"), new HashMap(), db, fileLibrary);
+
+// Close everything
+sqlDriver.free(db);
+print("");
+System.exit(0);
+

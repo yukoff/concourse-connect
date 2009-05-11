@@ -1,0 +1,68 @@
+import java.sql.*;
+import java.util.*;
+import com.zeroio.iteam.base.*;
+import org.aspcfs.utils.web.PagedListInfo;
+import com.zeroio.utils.*;
+
+// Get the categoryId for the permissions
+PermissionCategoryLookupList categoryList = new PermissionCategoryLookupList();
+categoryList.setDescription("Profile");
+categoryList.buildList(db);
+
+System.out.println("Updating project permissions: " + categoryList.get(0).getDescription());
+
+// Get the permissions to be added to projects
+PermissionLookupList permissionList = new PermissionLookupList();
+permissionList.setCategoryId(categoryList.get(0).getId());
+permissionList.buildList(db);
+
+// Page through the updates just in case there are lots of projects do 100 at a time...
+PagedListInfo pagedListInfo = new PagedListInfo();
+pagedListInfo.setItemsPerPage(100);
+pagedListInfo.setDefaultSort("project_id", null);
+
+// Use the paged list to populate it with the list criteria
+ProjectList projects = new ProjectList();
+projects.setPortalState(Constants.FALSE);
+projects.setPagedListInfo(pagedListInfo);
+projects.setBuildPermissions(true);
+projects.buildList(db);
+
+System.out.println("Total projects to process: " + pagedListInfo.getMaxRecords());
+
+int count = 0;
+while (projects.size() > 0) {
+ System.out.println(" Page: " + pagedListInfo.getPage() + " of " + pagedListInfo.getNumberOfPages());
+ // Insert the permissions
+ PreparedStatement pst = db.prepareStatement(
+   "INSERT INTO project_permissions " +
+       "(project_id, permission_id, userlevel) VALUES (?, ?, ?) ");
+ for (Project project : projects) {
+   if (project.getPermissions().get("project-profile-view") != null) {
+     continue;
+   }
+   ++count;
+   try {
+     for (PermissionLookup thisPermission : permissionList) {
+       pst.setInt(1, project.getId());
+       pst.setInt(2, thisPermission.getId());
+       pst.setInt(3, thisPermission.getDefaultRole());
+       pst.execute();
+     }
+   } catch (Exception e) {
+     e.printStackTrace(System.out);
+     throw new Exception(e.getMessage());
+   }
+   CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, project.getId());
+ }
+ pst.close();
+
+ // Always reset the project list or else they are included on buildList again
+ projects.clear();
+ if (pagedListInfo.getPage() < pagedListInfo.getNumberOfPages()) {
+     pagedListInfo.setCurrentPage(pagedListInfo.getPage() + 1);
+     projects.buildList(db);
+ }
+}
+
+System.out.println("   Total projects updated: " + count);

@@ -1,0 +1,7 @@
+# This script upgrades the 3.3 production database to 4.0
+
+2008-04-07-script01.sql
+2008-04-23-script01.sql
+2008-04-25-script01.sql
+2008-04-27-script01.sql
+2008-04-29-script01.sql

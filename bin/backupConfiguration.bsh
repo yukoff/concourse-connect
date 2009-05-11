@@ -1,0 +1,32 @@
+#!/bin/sh
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:lib/sjsxp-1.0.1.jar:lib/jsr173_1.0_api.jar:lib/log4j-1.2.15.jar bsh.Interpreter "$0" "$@"
+
+import com.concursive.commons.api.*;
+
+print("Starting backup...");
+
+APIConnection conn = new APIConnection();
+conn.setUrl("http://127.0.0.1:8080");
+conn.setClientId(1);
+conn.setCode("plaintext-code-in-database");
+
+// To stream the HTTP result to a file  and conserve memory set a filename!
+File file = new File("backup_configuration.xml");
+conn.setOutputFile(file);
+
+ArrayList meta = new ArrayList();
+//meta.add("descend=false");
+meta.add("stop=project");
+conn.setTransactionMeta(meta);
+
+// Save the configuration data started with the projectCategoryList
+DataRecord record = new DataRecord();
+record.setName("projectCategoryList");
+record.setAction("backup");
+boolean success = conn.save(record);
+
+if (!success) {
+  System.out.println("backupConfiguration.bsh-> Error message: " + conn.getLastResponse());
+} else {
+  System.out.println("done.");
+}

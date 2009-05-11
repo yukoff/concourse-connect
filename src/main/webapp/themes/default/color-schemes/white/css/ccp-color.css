@@ -1,0 +1,62 @@
+/*
+ * file information
+ * style type: concoursconnect color scheme : white
+ * version:    1
+ * date:       20090301
+ * author:     concursive.com
+ * notes:      white site color theme
+ *
+ */
+
+ body {
+   background:#ddd;
+ }
+
+.ccp-container {
+
+}
+
+.ccp-header,
+  .ccp-body {
+  background:#fff url(../images/1x40_white.jpg) 0 0 repeat-x;
+  border-width:0 2px 2px 2px;
+  border-color:#aaa;
+  border-style:solid;
+}
+
+.ccp-footer {
+  border-bottom:2px solid #aaa;
+}
+
+  .ccp-header h1 {
+    color:#000;
+  }
+
+  .ccp-navigation {
+    background:#000;
+  }
+
+    .ccp-navigation ul li a {
+      color:#ddd;
+    }
+
+    .ccp-navigation ul li em {
+      
+    }
+
+    .ccp-navigation ul li a.active,
+    .ccp-navigation ul li a:hover {
+      background:#dedede;
+      -moz-border-radius:5px;
+      -webkit-border-radius:5px;
+      color:#000;
+    }
+
+      .ccp-navigation ul li a.active em {
+        color:#000;
+      }
+
+.ccp-footer {
+	background: none;
+	border-bottom: none;
+}

@@ -1,0 +1,25 @@
+#!/bin/sh
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar bsh.Interpreter "$0" "$@"
+
+import java.text.*;
+import java.util.*;
+
+//USD, CAD, CNY, JPY, EUR, KRW, GBP
+
+NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.US);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("en", "AU"));
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.CANADA);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.CHINA);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.JAPAN);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.FRANCE);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.ITALY);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.KOREA);
+//NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.UK);
+
+Currency c = nf.getCurrency();
+print (c.getCurrencyCode());
+
+print( nf.format(10500.5) );
+
+

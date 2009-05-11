@@ -1,0 +1,161 @@
+<%--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  --%>
+<%@ page import="com.concursive.connect.web.modules.members.dao.TeamMember" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" scope="request" />
+<c:set var="PROJECT_ADMIN"><%= TeamMember.PROJECT_ADMIN %></c:set>
+<c:set var="MANAGER"><%= TeamMember.MANAGER %></c:set>
+<c:set var="CHAMPION"><%= TeamMember.CHAMPION %></c:set>
+<c:set var="VIP"><%= TeamMember.VIP %></c:set>
+<c:set var="MEMBER"><%= TeamMember.MEMBER %></c:set>
+<c:set var="PARTICIPANT"><%= TeamMember.PARTICIPANT %></c:set>
+<c:set var="GUEST"><%= TeamMember.GUEST %></c:set>
+<script type="text/javascript" language="javascript">
+  var thisItemId = -1;
+  var thisUniqueId;
+  var thisShowResendInvite = false;
+  var thisNeedsApproval = false;
+  var thisHasTools = false;
+  function displayMenu(loc, userId, uniqueId, showResendInvite, needsApproval, hasTools, isOwner) {
+    // Set the action parameters for the clicked item
+    thisItemId = userId;
+    thisUniqueId = uniqueId;
+    thisShowResendInvite = (showResendInvite == true);
+    thisNeedsApproval = (needsApproval == true);
+    thisHasTools = (hasTools == true);
+
+    var oMenu = YAHOO.widget.MenuManager.getMenu(loc+"none");
+    if (!oMenu) {
+      oMenu = new YAHOO.widget.Menu(loc + "none", { position: "dynamic", context: [loc, "tl", "bl"], hidedelay: 1000 });
+      oMenu.addItem({ text: "View Profile", url: "${ctx}/show/" + thisUniqueId });
+  <c:choose>
+    <c:when test="${canUnsetOwner}">
+     if(isOwner) {
+      oMenu.addItem({ text: "Revoke Ownership", url: "${ctx}/ProjectManagement.do?command=RemoveOwner&pid=${project.id}" })
+     }
+    </c:when>
+    <c:when test="${canSetOwner}">
+      oMenu.addItem({ text: "Set as Owner", url: "${ctx}/ProjectManagement.do?command=SetOwner&pid=${project.id}&owner="+userId })
+    </c:when>
+  </c:choose>
+      <ccp:permission name="project-team-edit">
+        oMenu.addItem({ text: "Change Role",
+          submenu: {
+            id: loc + "submenu1",
+            itemdata: [
+              <c:if test="${currentMember.roleId <= PROJECT_ADMIN}">
+                { text: "Admin", onclick: { fn: changeRole, obj: "${PROJECT_ADMIN}" } },
+              </c:if>
+              <c:if test="${currentMember.roleId <= MANAGER}">
+                { text: "Manager", onclick: { fn: changeRole, obj: "${MANAGER}" } },
+              </c:if>
+              <c:if test="${currentMember.roleId <= CHAMPION}">
+                { text: "Champion", onclick: { fn: changeRole, obj: "${CHAMPION}" } },
+              </c:if>
+              <c:if test="${currentMember.roleId <= VIP}">
+                { text: "VIP", onclick: { fn: changeRole, obj: "${VIP}" } },
+              </c:if>
+              <c:if test="${currentMember.roleId <= MEMBER}">
+                { text: "Member", onclick: { fn: changeRole, obj: "${MEMBER}" } },
+              </c:if>
+              <c:if test="${currentMember.roleId <= PARTICIPANT}">
+                { text: "Participant", onclick: { fn: changeRole, obj: "${PARTICIPANT}" } },
+              </c:if>
+              { text: "Guest", onclick: { fn: changeRole, obj: "${GUEST}" } }
+            ]
+          }
+        });
+        if (thisShowResendInvite) {
+          oMenu.addItem({ text: "Resend Invitation", onclick: { fn: resendInvitation } });
+        }
+        <c:if test="${!empty project.concursiveCRMUrl}">
+          <ccp:permission name="project-team-tools">
+            if (!thisHasTools) {
+                oMenu.addItem({ text: "Add Access to Tools", onclick: { fn: addAccessToTools } });
+            } else {
+                oMenu.addItem({ text: "Revoke Access to Tools", onclick: { fn: revokeAccessToTools } });
+            }
+          </ccp:permission>
+        </c:if>
+        if (thisNeedsApproval) {
+          oMenu.addItem({ text: "Approve Membership", onclick: { fn: approveMembership } });
+          oMenu.addItem({ text: "Deny Membership", onclick: { fn: denyMembership } });
+        }
+        oMenu.addItem({ text: "Remove", onclick: { fn: removeFromProfile } });
+      </ccp:permission>
+      oMenu.render(document.getElementById("popupLayer"));
+    }
+    oMenu.show();
+  }
+  //Menu link functions
+  function addAccessToTools() {
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=UpdateTools&pid=${project.id}&id=' + thisItemId + '&enable=true';
+  }
+  function revokeAccessToTools() {
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=UpdateTools&pid=${project.id}&id=' + thisItemId + '&enable=false';
+  }
+  function approveMembership() {
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ApproveOrDenyRequestToBecomeMember&pid=${project.id}&id=' + thisItemId + '&approval=true';
+  }
+  function denyMembership() {
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ApproveOrDenyRequestToBecomeMember&pid=${project.id}&id=' + thisItemId + '&approval=false';
+  }
+  function resendInvitation() {
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ResendInvitation&pid=${project.id}&id=' + thisItemId;
+  }
+  function removeFromProfile() {
+    <portlet:actionURL var="deleteUrl">
+      <portlet:param name="portlet-command" value="delete"/>
+    </portlet:actionURL>
+    confirmDelete('${deleteUrl}&member=' + thisItemId);
+  }
+  function changeRole(p_sType, p_aArgs, p_oValue) {
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ChangeRole&pid=${project.id}&id=' + thisItemId + '&role=' + p_oValue;
+  }
+</script>
+
+

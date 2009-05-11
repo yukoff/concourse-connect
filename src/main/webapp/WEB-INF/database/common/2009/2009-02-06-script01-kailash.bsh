@@ -1,0 +1,16 @@
+import java.sql.*;
+import com.concursive.connect.web.modules.contribution.dao.*;
+
+LookupContributionList lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForTopicsAnswered
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForTopicsAnswered") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForTopicsAnswered");
+	lookupContribution.setDescription("Calculate the number of topics answered");
+	lookupContribution.setLevel(40);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}

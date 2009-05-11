@@ -1,0 +1,194 @@
+#!/bin/sh
+//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
+
+import com.zeroio.utils.APIConnection;
+import com.zeroio.utils.PhoneNumberUtils;
+import com.zeroio.transfer.DataRecord;
+import au.com.bytecode.opencsv.CSVWriter;
+import com.zeroio.iteam.base.Project;
+import com.zeroio.iteam.base.ProjectCategory;
+import com.zeroio.utils.StringUtils;
+import java.util.Date;
+import com.zeroio.controller.UserList;
+import com.zeroio.controller.User;
+
+if (bsh.args.length == 0) {
+  print("Usage:");
+  print("  exportProjectsToCSV [filename] <url> <code> <postal_code>");
+  print("");
+  print("The specified file will be created with data extracted from the specified url, ");
+  print("or 127.0.0.1 id no URL is specified. Specifying a postal code will limit the list to ");
+  print("projects containing only that postal code.");
+  System.exit(0);
+}
+String filename = bsh.args[0].trim();
+
+print("parsing arguments: " + bsh.args.length);
+String url = "http://127.0.0.1";
+String code = "";
+String postal_code = "";
+
+if (bsh.args.length > 1) {
+  url = bsh.args[1].trim();
+  code = bsh.args[2].trim();
+}
+
+if (bsh.args.length > 3) {
+  postal_code = bsh.args[3].trim();
+}
+
+print("Starting download...");
+
+APIConnection api = new APIConnection();
+api.setUrl(url);
+api.setCode(code);
+
+// Get the category ID for businesses...
+int businessCategoryId = 0;
+{
+  api.setAutoCommit(true);
+  //Get project category id
+  ArrayList meta1 = new ArrayList();
+  meta1.add("id");
+  meta1.add("categoryName");
+  api.setTransactionMeta(meta1);
+
+  DataRecord record = new DataRecord();
+  record.setName("projectCategoryList");
+  record.setAction(DataRecord.SELECT);
+  // Set the filters to query by
+  record.addField("categoryName", "Businesses");
+  api.save(record);
+
+  // In the meta section only a few properties were specified and will exist
+  ArrayList projectCategoryObjects = api.getRecords("com.zeroio.iteam.base.ProjectCategory");
+  for (Object projectCategoryObject : projectCategoryObjects) {
+    ProjectCategory partialProjectCategory = (ProjectCategory) projectCategoryObject;
+    businessCategoryId = partialProjectCategory.getId();
+    System.out.println("Category: " +  businessCategoryId);
+  }
+}
+
+
+// Create the file & set the headers...
+CSVWriter writer = new CSVWriter(new FileWriter(filename));
+
+String[] headerLine = new String[15];
+
+headerLine[0] = "PROJECT_CATEGORY";
+headerLine[1] = "PROJECT_SUB_CATEGORY1";
+headerLine[2] = "PROJECT_SUB_CATEGORY2";
+headerLine[3] = "COMPANY_NAME";
+headerLine[4] = "PRIMARY_PHONE";
+headerLine[5] = "PRIMARY_ADDRESS";
+headerLine[6] = "PRIMARY_CITY";
+headerLine[7] = "PRIMARY_STATE";
+headerLine[8] = "PRIMARY_ZIP_CODE";
+headerLine[9] = "PROJECT_WEB_SITE";
+headerLine[10] = "PRIMARY_EMAIL";
+headerLine[11] = "LATITUDE";
+headerLine[12] = "LONGITUDE";
+headerLine[13] = "OWNER";
+headerLine[14] = "PROJECT_ID";
+writer.writeNext(headerLine);
+writer.flush();
+
+// Get the records...
+int pageSize = 50;
+int recordCountProcessed = 0;
+int currentOffset = 0;
+int pageCount=0;
+int recordsThisPage = 0;
+boolean moreRecords = true;
+
+do {
+  // Retrieve records by paging through the resultset
+
+  {
+    // Add Meta Info with fields required
+    ArrayList meta = new ArrayList();
+    meta.add("id");
+    meta.add("title");
+    meta.add("keywords");
+    meta.add("categoryId");
+    meta.add("subCategory1Id");
+    meta.add("subCategory2Id");
+    meta.add("shortDescription");
+    meta.add("webPage");
+    meta.add("source");
+    meta.add("owner");
+    meta.add("addressLine1");
+    meta.add("city");
+    meta.add("postalCode");
+    meta.add("state");
+    meta.add("country");
+    meta.add("latitude");
+    meta.add("longitude");
+    meta.add("businessPhone");
+    meta.add("email1");
+    meta.add("webPage");
+    api.setTransactionMeta(meta);
+
+    System.out.println(currentOffset + "...");
+
+    DataRecord record = new DataRecord();
+    record.setName("projectList");
+    record.setAction(DataRecord.SELECT);
+    record.addField("categoryId", businessCategoryId.toString());
+    if(!postal_code.equals("")) {
+      record.addField("postalCode", postal_code);
+    }
+    // NOTE: Sort takes the actual database fields (instead of bean properties) comma separated
+    record.setSort("project_id");
+    record.setOffset(currentOffset);
+    record.setItems(pageSize);
+    api.save(record);
+
+    if(api.hasError()) {
+      System.out.println("API error : " + api.getLastResponse());
+    }
+  }
+
+// Write them...
+  ArrayList projectObjects = api.getRecords("com.zeroio.iteam.base.Project");
+  String[] projectLine = new String[15];
+  recordsThisPage=0;
+  for (Object projectObject : projectObjects) {
+    Project partialProject = (Project) projectObject;
+    if(partialProject.getId() != -1) {
+      projectLine[0] = partialProject.getCategoryId().toString();
+      projectLine[1] = partialProject.getSubCategory1Id().toString();
+      projectLine[2] = partialProject.getSubCategory2Id().toString();
+      projectLine[3] = partialProject.getTitle();
+      projectLine[4] = partialProject.getBusinessPhone();
+      projectLine[5] = partialProject.getAddressLine1();
+      projectLine[6] = partialProject.getCity();
+      projectLine[7] = partialProject.getState();
+      projectLine[8] = partialProject.getPostalCode();
+      projectLine[9] = partialProject.getWebPage();
+      projectLine[10] = partialProject.getEmail1();
+      projectLine[11] = partialProject.getLatitude().toString();
+      projectLine[12] = partialProject.getLongitude().toString();
+      projectLine[13] = partialProject.getOwner().toString();
+      projectLine[14] = partialProject.getId().toString();
+      writer.writeNext(projectLine);
+      writer.flush();
+      ++recordCountProcessed;
+      ++recordsThisPage;
+    }
+
+    if(api.getRecordCount() < pageSize){
+      moreRecords=false;
+    }
+
+  }
+  currentOffset += api.getRecordCount(); //recordsThisPage;
+
+} while(moreRecords);
+
+writer.close();
+
+System.out.println("Total records processed: " + recordCountProcessed);
+
+// And exit...
+

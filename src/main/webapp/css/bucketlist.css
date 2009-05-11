@@ -1,0 +1,252 @@
+div.workoptions {
+  padding: 10px 10px 0px 10px;
+  float: left;
+}
+
+div.workoptions li {
+  float: left;
+  display: inline;
+  padding-right: 20px;
+}
+
+div.workfilters {
+  padding: 0 10px 10px 10px;
+  clear: both;
+}
+
+div.workarea1 {
+  padding: 0 10px 10px 10px;
+  float: left;
+  width: 95%;
+  clear: left;
+}
+
+div.workarea2 {
+  padding: 0 10px 10px 10px;
+  float: left;
+  clear: left;
+}
+
+div.workarea {
+  padding: 0 10px 10px 10px;
+  float: left;
+}
+
+#workcenter {
+  padding: 0 15px 10px 10px;
+  clear: both;
+}
+
+#workform {
+  float: left;
+  display: inline;
+}
+
+div.workoptionseditor {
+  display: inline;
+  float: right;
+}
+
+#overlay1 {
+  background-color: #999;
+  width: 200px;
+  height: 100px;
+  z-index: 1000;
+  visibility: hidden;
+}
+
+div.columnheader {
+  float: left;
+}
+
+div.columntoggle {
+  float: right;
+}
+
+div.columnitems {
+  clear: left;
+}
+
+ul.draglist, ul.draglist1 {
+  clear: left;
+  height: auto;
+  background: #f7f7f7;
+  border: 1px solid gray;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.draglist1 {
+  min-height: 20px;
+  width: 100%;
+}
+
+ul.draglist1 li {
+  margin: 1px;
+  cursor: move;
+}
+
+ul.draglist1_alt {
+  width: 210px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+}
+
+ul.draglist1_alt li {
+  margin: 1px;
+  cursor: move;
+}
+
+ul.draglist {
+  width: 210px;
+  min-height: 10px;
+}
+
+ul.draglist li {
+  margin: 1px;
+}
+
+ul.draglist li.movable {
+  cursor: move;
+}
+
+ul.draglist_alt {
+  width: 210px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-bottom: 20px;
+}
+
+ul.draglist_alt li {
+  margin: 1px;
+  cursor: move;
+}
+
+li.list1 {
+  background-color: #D1E6EC;
+  border: 1px solid #7EA6B2;
+}
+
+li.list2 {
+  background-color: #D8D4E2;
+  border: 1px solid #6B4C86;
+}
+
+li.list3 {
+  background-color: #d0ebd1;
+  border: 1px solid #7EA6B2;
+}
+
+li.list4 {
+  background-color: #D1E6EC;
+  border: 1px solid #7EA6B2;
+}
+
+li.list5 {
+  background-color: #D8D4E2;
+  border: 1px solid #6B4C86;
+}
+
+li.list6 {
+  background-color: #d0ebd1;
+  border: 1px solid #7EA6B2;
+}
+
+li.list7 {
+  background-color: #D1E6EC;
+  border: 1px solid #7EA6B2;
+}
+
+li.list8 {
+  background-color: #D8D4E2;
+  border: 1px solid #6B4C86;
+}
+
+li.list9 {
+  background-color: #d0ebd1;
+  border: 1px solid #7EA6B2;
+}
+
+li.list10 {
+  background-color: #D1E6EC;
+  border: 1px solid #7EA6B2;
+}
+
+.bucketItemActionContainer {
+  display: inline;
+}
+
+.bucketItemTooltip {
+  display: inline;
+  cursor: default;
+}
+
+.bucketItemDeleteAction {
+  cursor: default;
+}
+
+ul.bucketlist {
+    padding: 2px;
+    list-style-type: none;
+    background-color: #ddd;
+    border: 1px #999 solid;
+    margin: 5px;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+
+}
+
+ul.bucketlist li {
+    display: inline;
+}
+
+div.bucket {
+    float: left;
+    margin: 10px;
+    padding: 3px;
+    width: 225px;
+    height: 100px;
+    border: 1px #bbb dashed;
+    background-color: #fff;
+}
+
+div.bucket div.content {
+    margin-left: 60px;
+}
+
+div.bucket img {
+    margin: 5px;
+    float: left;
+    max-height: 50px;
+    max-width: 50px;
+}
+
+ul.bucketlist li {
+    display: inline;
+}
+  
+div.bucket {
+    float: left;
+    margin: 10px;
+    padding: 3px;
+    width: 225px;
+    height: 100px;
+    border: 1px #bbb dashed;
+    background-color: #fff;
+}
+  
+div.bucket div.content {
+    margin-left: 60px; 
+}
+
+div.bucket img {
+    margin: 5px;
+    float: left;
+    max-height: 50px;
+    max-width: 50px;
+}

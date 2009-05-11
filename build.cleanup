@@ -1,0 +1,118 @@
+# 2008-01-28
+WEB-INF/lib/lucene-core-2.1.0.jar
+WEB-INF/lib/theseus-20071207.jar
+
+# 2008-02-05
+WEB-INF/lib/theseus-20080130.jar
+WEB-INF/lib/postgresql-8.2-506.jdbc3.jar
+
+# 2008-02-20
+WEB-INF/lib/nekohtml.jar
+WEB-INF/lib/bcprov-jdk14-124.jar
+
+# 2008-02-21
+WEB-INF/lib/castor-0.9.5.3.jar
+
+WEB-INF/lib/pluto-container-1.1.0-beta1.jar
+WEB-INF/lib/pluto-descriptor-impl-1.1.0-beta1.jar
+WEB-INF/lib/pluto-taglib-1.1.0-beta1.jar
+WEB-INF/lib/pluto-descriptor-api-1.1.0-beta1.jar
+WEB-INF/lib/pluto-portal-driver-1.1.0-beta1.jar
+WEB-INF/lib/xercesImpl-2.8.jar
+WEB-INF/lib/xml-apis-2.8.jar
+WEB-INF/lib/castor-0.9.6.jar
+
+# 2008-03-16
+WEB-INF/lib/mpxj-1.0.0.jar
+WEB-INF/lib/activation-1.1.jar
+WEB-INF/lib/poi-2.5.1-final-20040804.jar
+WEB-INF/lib/poi-contrib-2.5.1-final-20040804.jar
+WEB-INF/lib/poi-scratchpad-2.5.1-final-20040804.jar
+WEB-INF/lib/bsh-2.0b2.jar
+WEB-INF/lib/teamelements-resources.jar
+
+# 2008-03-27
+WEB-INF/lib/bliki-3.0.1.jar
+WEB-INF/lib/commons-jrcs.jar
+
+# 2008-04-09
+WEB-INF/lib/commons-logging-api.jar
+WEB-INF/lib/commons-logging.jar
+
+# 2008-05-07
+WEB-INF/lib/lucene-core-2.3.0.jar
+
+# 2008-06-05
+WEB-INF/lib/junit-4.1.jar
+
+# 2008-06-10
+WEB-INF/lib/theseus-20080205.jar
+
+# 2008-06-18
+WEB-INF/lib/darkhorseventures.jar
+
+# 2008-07-31
+WEB-INF/lib/theseus-20080610.jar
+
+# 2008-08-07
+WEB-INF/lib/htmlcleaner-1.6.jar
+
+# 2008-08-18
+WEB-INF/lib/commons-digester-1.7.jar
+
+# 2008-09-23
+WEB-INF/lib/concourse_tools-5.0.5.jar
+
+# 2008-10-24
+WEB-INF/lib/jasperreports-1.3.1.jar
+
+# 2008-10-31
+WEB-INF/lib/theseus-20080731.jar
+WEB-INF/lib/commons-logging-1.0.4.jar
+WEB-INF/lib/log4j-1.2.11.jar
+
+# 2009-01-16
+WEB-INF/lib/ehcache-1.4.1.jar
+
+# 2009-02-17
+WEB-INF/lib/quartz-1.6.0.jar
+
+# 2009-02-18
+WEB-INF/lib/bcprov-jdk15-138.jar
+
+# 2009-02-25
+WEB-INF/lib/sjsxp-1.0.jar
+WEB-INF/lib/packtag-3.4.jar
+
+# 2009-03-10
+WEB-INF/lib/rome-0.9.jar
+# 2009-03-19
+WEB-INF/lib/rome-1.0RC2.jar
+
+# 2009-03-26
+WEB-INF/lib/batik-all.jar
+WEB-INF/lib/postgresql-8.3-603.jdbc3.jar
+WEB-INF/lib/spring-2.0.6.jar
+
+# 2009-04-10
+WEB-INF/lib/lsimplecaptcha-0.3.jar
+
+# 2009-04-24
+WEB-INF/lib/zeroio-iteam.jar
+WEB-INF/lib/isavvix.jar
+WEB-INF/lib/team_elements-resources.jar
+WEB-INF/lib/team_elements-jsp.jar
+
+# 2009-04-28
+WEB-INF/lib/aspcfs.jar
+WEB-INF/lib/centriccrm.jar
+WEB-INF/lib/theseus-20081031.jar
+WEB-INF/lib/concursive-services-client-20090221
+WEB-INF/lib/packtag-3.5.jar
+
+# 2009-05-01
+WEB-INF/lib/concursive-services-client-20090428.jar
+
+# 2009-05-08
+WEB-INF/lib/concursive-commons-20090506.jar
+

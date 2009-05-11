@@ -1,0 +1,665 @@
+<?xml version="1.0" ?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+  "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+  <!-- Version number of this taglib -->
+  <tlib-version>1.0</tlib-version>
+  <!-- Minimum version of JSP spec required -->
+  <jsp-version>1.1</jsp-version>
+  <!-- taglib name of this tag library -->
+  <short-name>ccp</short-name>
+  <!-- URI of taglib -->
+  <uri>http://www.concursive.com/show/concourseconnect</uri>
+  <!-- The name to use in titles, etc. for the taglib -->
+  <display-name>Concursive ConcourseConnect Tag Library</display-name>
+  <tag>
+    <name>permission</name> 
+    <tag-class>com.concursive.connect.web.taglibs.PermissionHandler</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>
+      Access the team member and project permissions
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>if</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>object</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>username</name> 
+    <tag-class>com.concursive.connect.web.taglibs.UsernameHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Get the user's name from the user cache
+    </display-name>
+    <attribute>
+      <name>id</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showPresence</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showProfile</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>jsEscape</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>jsQuote</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showLinkTitle</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>idTag</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showCityState</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>project</name> 
+    <tag-class>com.concursive.connect.web.taglibs.ProjectNameHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Get the project's name from memory
+    </display-name>
+    <attribute>
+      <name>id</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showLink</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>tabbedMenu</name> 
+    <tag-class>com.concursive.connect.web.taglibs.TabbedMenuHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Display a tabbed menu table row
+    </display-name>
+    <attribute>
+      <name>text</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>key</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>url</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>type</name>
+      <required>no</required>
+      <rtexprvalue>no</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>folderHierarchy</name> 
+    <tag-class>com.concursive.connect.web.taglibs.FolderHierarchyHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Display the folder trails
+    </display-name>
+    <attribute>
+      <name>showLastLink</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>role</name> 
+    <tag-class>com.concursive.connect.web.taglibs.RoleHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Get the user's role from memory
+    </display-name>
+    <attribute>
+      <name>id</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>roleSelect</name> 
+    <tag-class>com.concursive.connect.web.taglibs.RoleSelectHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Get the role drop-down from memory
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>onChange</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>timeSelect</name> 
+    <tag-class>com.concursive.connect.web.taglibs.HtmlSelectTime</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Display HTML fields for entering time
+    </display-name>
+    <attribute>
+      <name>baseName</name>
+      <required>yes</required>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>yes</required>
+      <rtexprvalue>yes</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>timeZone</name>
+      <required>no</required>
+      <rtexprvalue>yes</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>spinner</name> 
+    <tag-class>com.concursive.connect.web.taglibs.HtmlSpinner</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Display an HTML text field with indent and unindent arrows to manipulate field
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>yes</required>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>no</required>
+      <rtexprvalue>yes</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>min</name>
+      <required>yes</required>
+      <rtexprvalue>yes</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>max</name>
+      <required>yes</required>
+      <rtexprvalue>yes</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>tabLabel</name> 
+    <tag-class>com.concursive.connect.web.taglibs.ProjectLabelHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Output the custom tab name for the specified project
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>yes</required>
+    </attribute>
+    <attribute>
+      <name>object</name>
+      <required>yes</required>
+    </attribute>
+  </tag>
+  <tag>
+    <name>tz</name> 
+    <tag-class>com.concursive.connect.web.taglibs.DateTimeHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Access the User's session and output the specified datetime according to their timezone
+    </display-name>
+    <attribute>
+      <name>timestamp</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.sql.Timestamp</type>
+    </attribute>
+    <attribute>
+      <name>dateOnly</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>timeOnly</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>dateFormat</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>timeFormat</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>default</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>pattern</name>
+      <required>no</required>
+    </attribute>
+  </tag>
+  <tag>
+    <name>currency</name> 
+    <tag-class>com.concursive.connect.web.taglibs.CurrencyHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Displays the supplied amount with the supplied currency code and locale
+    </display-name>
+    <attribute>
+      <name>value</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>code</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>default</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>locale</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>rating</name>
+    <tag-class>com.concursive.connect.web.taglibs.RatingHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Shows an interactive star-rating system
+    </display-name>
+    <attribute>
+      <name>id</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>count</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>value</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>url</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>vote</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showText</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>field</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>      
+    </attribute>
+  </tag>
+  <tag>
+    <name>number</name> 
+    <tag-class>com.concursive.connect.web.taglibs.NumberHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Displays the specified number in the supplied locale
+    </display-name>
+    <attribute>
+      <name>value</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>default</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>locale</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>debug</name> 
+    <tag-class>com.concursive.connect.web.taglibs.DebugHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Displays debug information if enabled in controller
+    </display-name>
+    <attribute>
+      <name>value</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>label</name>
+    <tag-class>com.concursive.connect.web.taglibs.LabelHandler</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>
+      Accesses session user for localization of the label
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>param</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>mainMenuItem</name>
+      <required>no</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>subMenuItem</name>
+      <required>no</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>include</name>
+    <tag-class>com.concursive.connect.web.taglibs.IncludeHandler</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>
+      Accesses the SystemSettings and determines if the block should be output.
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>yes</required>
+    </attribute>
+  </tag>
+  <tag>
+    <name>renderDashboard</name>
+    <tag-class>com.concursive.connect.web.taglibs.DashboardLayoutHandler</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>
+      Renders the dashboard page using the specified layout.
+    </display-name>
+    <attribute>
+      <name>css</name>
+      <required>no</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>paginationControl</name>
+    <tag-class>com.concursive.connect.web.taglibs.ULPagedListControlHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Displays a unordered list for pagination of the PagedListInfo specified.
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>object</name>
+      <required>yes</required>
+    </attribute>
+    <attribute>
+      <name>enableJScript</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>url</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>urlSuffix</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>evaluate</name>
+    <tag-class>com.concursive.connect.web.taglibs.EvaluateHandler</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>
+      Include if the supplied parameter evaluates to true
+    </display-name>
+    <attribute>
+      <name>exp</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>if</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>pagedListControl</name>
+    <tag-class>com.concursive.connect.web.taglibs.PagedListControlHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Displays a control panel(form) for the PagedListInfo specified.
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>object</name>
+      <required>yes</required>
+    </attribute>
+    <attribute>
+      <name>bgColor</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>fontColor</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>tdClass</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>showForm</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>resetList</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>abbreviate</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>enableJScript</name>
+      <required>no</required>
+    </attribute>
+  </tag>
+
+  <tag>
+    <name>pagedListStatus</name>
+    <tag-class>com.concursive.connect.web.taglibs.PagedListStatusHandler</tag-class>
+    <body-content>JSP</body-content>
+    <display-name>
+      Displays the status of the PagedListInfo specified.
+    </display-name>
+    <attribute>
+      <name>name</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>label</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>object</name>
+      <required>yes</required>
+    </attribute>
+    <attribute>
+      <name>bgColor</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>fontColor</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>tdClass</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>showHiddenParams</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>tableClass</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>showForm</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>showRefresh</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>title</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>showExpandLink</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>showControlOnly</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>enableJScript</name>
+      <required>no</required>
+    </attribute>
+    <attribute>
+      <name>scrollReload</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>rss</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+</taglib>

@@ -1,0 +1,15 @@
+----------------------------------------------------------------------------
+ConcourseConnect 1.0
+Copyright (C) 2009 Concursive Corporation.
+Change Log
+May 1, 2009
+----------------------------------------------------------------------------
+This is an early access release.
+
+This release is aimed towards those wishing to contribute to the final
+usability of the product.
+
+----------------------------------------------------------------------------
+For additional information, support, development or training, visit
+http://www.concursive.com for details. You can also find product FAQs and
+announcements.

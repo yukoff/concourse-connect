@@ -1,0 +1,2644 @@
+/*
+ * FILE INFORMATION
+ * Style Type: ConcoursConnect Portlet Styles
+ * Version:    1
+ * Date:       20090301
+ * Author:     concursive.com
+ * Notes:      Includes legacy class name
+ *
+ */
+
+/* Table of Contents
+
+   $_default
+   $_globals
+     Legacy Styles
+       -Menu
+       -Grid (leftColumn and rightColumn)
+       -toolTip
+     heights
+     pagination
+   $_modal
+   $_button-list-vertical
+   $_button-list-horizntal
+   $_portlet-form
+      $_portlet-form-button
+   $_tag-cloud
+   $_basic-list
+   $_search-list
+   $_detailed-list
+
+   Older items that have yet to be cleaned
+   $_admin-portlet
+   $_menu and pulldown : Actions Menu
+   $_table-layout
+   $_inline-lists
+   $_paged-list
+
+
+*/
+
+
+/* $_default : Around each portlet, within the portletColumn */
+
+/* @group $_default */
+
+/* @group portlet containers */
+
+.portletWindowBackground {
+  margin: 0 0 10px 0;
+  background:#fff url(../themes/default/images/background/portlet_window_background_20090301.png) 100% 100% repeat-x;
+  border-color:#e9e9e9 #e3e3e3 #ddd;
+  border-style:solid;
+  border-width:1px 2px 2px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  padding: 0;
+  display: block;
+}
+
+.portlet1, .portlet2, .portlet3, .portlet4 {
+  _filter: none; /* IE fix */
+}
+
+.portlet1 {
+  margin: 0;
+  padding: 0;
+  height: 1%;
+  position: relative;
+  top: -2px;
+  left: -2px;
+}
+
+.portlet2 {
+  margin: 0;
+  padding: 0;
+  height: 1%;
+  position: relative;
+  right: -4px;
+}
+
+.portlet3 {
+  margin: 0;
+  padding: 0;
+  height: 1%;
+  position: relative;
+  bottom: -4px;
+  left: -4px;
+}
+
+.portlet4 {
+  margin: 0;
+  height: 1%;
+  position: relative;
+  bottom: 0px;
+  right: -2px;
+  top: -2px
+}
+
+.portletWrapper {
+  width:auto!important; /* IE6 Fix */
+  padding:7px;
+  /*overflow:hidden;  google maps fix */
+  _display:inline-block; /* FIX IE render issue */
+}
+
+/* Default float clear for all portlets */
+
+.portletWrapper:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+/* Remove Margin from headings IF they are the first item */
+  /* Breaks Old portlets */
+  .portletWrapper > h1,
+  .portletWrapper > h2,
+  .portletWrapper > h3,
+  .portletWrapper > h4,
+  .portletWrapper > h5,
+  .portletWrapper > h6 {
+    margin-top:0;
+  }
+
+.portletConfigure {
+  clear: both;
+  margin-bottom: 5px;
+}
+
+.portletWindow {
+  clear: both;
+  display:block;
+}
+
+/* Around each portlet within the portletColumn */
+
+.portletWindow1 {
+  margin-bottom: 0;
+  display:block;
+}
+
+.portletWindowLast {
+  width: 100%;
+  display:block;
+}
+
+/* @end */
+
+/* Portlet Fonts are located in ccp-typography.css */
+
+/* @group portlet menus */
+
+.portlet-menu-edit {
+  float:right;
+}
+
+  .portlet-menu-edit:after  {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+/* @end */
+
+/* @group portlet messages */
+
+.portlet-message-status,
+.portlet-message-info,
+.portlet-message-error,
+.portlet-message-alert,
+.portlet-message-success {
+  padding:5px 10px;
+  font-size: larger;
+  -moz-border-radius:5px;
+  -webkit-boder-radius:5px;
+  margin:0 0 5px 0;
+}
+
+.portlet-message-status {
+  background: #fceedd;
+}
+
+.portlet-message-info {
+  background: #fceedd;
+}
+
+.portlet-message-error {
+  background: #ff6a6b;
+}
+
+.portlet-message-alert {
+  background: #ff8248;
+}
+
+.portlet-message-success {
+  background: #DEEBAD;
+}
+
+.portlet-message-status img,
+.portlet-message-info img,
+.portlet-message-error img,
+.portlet-message-alert img,
+.portlet-message-success img {
+  vertical-align:middle;
+}
+
+.portlet-message-status p,
+.portlet-message-info p,
+.portlet-message-error p,
+.portlet-message-alert p,
+.portlet-message-success p {
+  margin:0;
+  padding:0;
+}
+
+/* @end */
+
+/* @group portlet section */
+
+.portlet-section-header {
+
+}
+
+.portlet-section-body {
+  margin-bottom: 15px;
+}
+
+.portlet-section-alternate {
+
+}
+
+.portlet-section-selected {
+
+}
+
+.portlet-section-subheader {
+  font-size:smaller;
+}
+
+.portlet-section-footer {
+
+}
+
+.portlet-section-text {
+
+}
+
+/* @end */
+
+/* @group portlet table */
+
+.portlet-table-header {
+
+}
+
+.portlet-table-body {
+
+}
+
+.portlet-table-alternate {
+
+}
+
+.portlet-table-selected {
+
+}
+
+.portlet-table-subheader {
+
+}
+
+.portlet-table-footer {
+
+}
+
+.portlet-table-text {
+
+}
+
+/* @end */
+
+/* @group portlet form */
+
+.portlet-form-label {
+
+}
+
+.portlet-form-input-field {
+
+}
+
+.portlet-form-button {
+
+}
+
+
+/* Text that appears beside context dependant action icon*/
+.portlet-icon-label {
+
+}
+
+/* text that appear beside a standard icon*/
+.portlet-dlg-icon-label {
+
+}
+
+/* Text that appears beside a portlet-form-feild, IE checkboxes */
+.portlet-form-field-label {
+
+}
+
+/* Text for a field that is not input */
+.portlet-form-field {
+
+}
+
+/* $_portlet-form */
+
+/* Legacy Suuport : firefox yui dialog caret fix */
+.mask { overflow:visible; }
+
+.portlet-form,
+.formContainer {
+  clear:both; /* Just incase */
+}
+
+  /* Just incase, again */
+  .portlet-form,
+  .formContainer:after  {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+/*.formContainer .leftColumn,
+  .portlet-form .portlet-section-text {
+    width:45%;
+    float:left;
+  }
+
+  .formContainer .rightColumn,
+  .portlet-form .portlet-section-body {
+    width:45%;
+    float:left;
+    position:relative;
+    margin-left:20px;
+  }*/
+
+  /* Replaced with fieldset feilset label */
+
+	.formContainer h1,
+	.portlet-form h1,
+	  .formContainer h2,
+	  .portlet-form h2,
+	  .formContainer h3,
+	  .portlet-form h3,
+	  .formContainer h4,
+	  .portlet-form h4,
+	  .formContainer h5,
+	  .portlet-form h5,
+	  .formContainer h6,
+	  .portlet-form h6 {
+	    clear:both;
+	    display:block;
+	  }
+
+	/* TinyMCE Fix */
+	.formContainer span {
+	  display: block;
+	  margin:0 0 5px 0;
+}
+
+.formContainer .leftColumn ul li,
+  .formContainer .leftColumn ul li label {
+    display:inline;
+    margin:0 15px 0 0
+  }
+
+  .formContainer .leftColumn ul li label {
+    width:100px;
+  }
+
+  .formContainer fieldset {
+    display:block;
+    position:relative;
+    padding:10px;
+    overflow:auto;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    margin: 0 0 10px 0;
+	border-width: 2px;
+	border-style:solid;
+	border-color: #EAEAEA #E3E3E3 #DDDDDD;
+	background:#fcfcfc;
+}
+
+	  .formContainer legend,
+	  .universalFormLayout legend {
+	    font-size:larger;
+	    padding: 0 5px;
+	  }
+
+	  .formContainer fieldset fieldset {
+	    border:none;
+	    padding:0;
+	    margin-left:0
+	  }
+
+	  .formContainer fieldset fieldset legend {
+	    padding:0;
+	    margin:2px 0.5em 0 0;
+	    font-size: 100%;
+	  }
+
+	  	.formContainer fieldset fieldset input[type="text"] {
+	      width: 100px;
+	      display: inline;
+		}
+
+      .fomrContainer fieldset fieldset#supportingFiles input[type="text"] {
+        width:auto!important;
+      }
+
+		.formContainer fieldset fieldset input[type="checkbox"] {
+	      width: auto;
+	      display: inline;
+	      vertical-align:top;
+		}
+
+		.formContainer fieldset fieldset select {
+	      margin: 2px;
+		}
+
+	  .formContainer fieldset fieldset label {
+	    display:inline
+	  }
+
+	.formContainer label,
+	.formContainer em {
+	    margin: 2px 2px 0 0;
+	    padding: 0;
+	    display: block;
+	    clear: both;
+	  }
+
+	  	.formContainer label span {
+		  color: #ff0000;
+		  display: inline; /* reset TinyMCE fix */
+		  padding:0 0 0 2px;
+		}
+
+		.formContainer label input {
+		    margin: 0 5px 0 0;
+		    display: inline;
+		    width: auto;
+		    vertical-align:top;
+		  }
+
+.formContainer input[type="text"],
+	  /*.formContainer .input,*/
+	  .formContainer .label,
+	  .formContainer textarea,
+	  .formContainer fieldset input[type="password"]  {
+	    margin: 2px 6px 6px 0;
+	    vertical-align: middle;
+	    width: 95%;
+	  }
+
+	  .formContainer select {
+		width: auto;
+		margin: 0 0 5px 0;
+	  }
+
+.formContainer textarea {
+    width:100%;
+    height:100px;
+  }
+
+.formContainer.comments fieldset {
+	    width:90%;
+	    position:relative;
+	  }
+
+	  .formContainer li {
+	    clear: left;
+	    padding: 5px 0 0 0;
+	  }
+
+	  .formContainer td {
+	  }
+
+	  .formContainer td.formLabel {
+	    padding: 10px
+	  }
+
+	  .formContainer th {
+	    padding: 10px;
+	  }
+
+
+
+	  /*.formContainer span {
+	    display: block;
+	    clear: both;
+	    margin: 10px 0;
+	  }*/
+
+	  .formContainer legend span {
+	    display: inherit
+	  }
+
+	  .portlet{
+	    margin: 1px 0;
+	    width: auto
+	  }
+
+	  .formContainer .outline {
+	    padding: 5px;
+	    margin: 10px 0;
+	    border: 1px solid #edba74;
+	    background: #FCEEDD;
+	    width: 94%;
+	  }
+
+	.formContainer .characterCounter {
+	  width: 95%;
+	  text-align: right;
+	  color: #999;
+	  margin: 0;
+	  display:block;
+	}
+
+span.required {
+  color:#ff0000;
+  display:inline!important;
+}
+
+	/*For add a comment to blog or wiki */
+
+/* @end $_portlet form */
+
+
+/* @end $_default */
+
+/* @group $_globals */
+
+/* @group Legacy */
+
+/* @group menu */
+
+/* Old Drop-down menu : needs to be renamed to .drop-down .portlet-menu */
+
+.list {
+  background-color: #D4D4D4
+}
+
+.menu {
+  visibility: hidden;
+  left: 0;
+  top: 0;
+  position: absolute;
+  z-index: 1000;
+}
+
+.pulldown {
+  border: 1px solid #aca899;
+  padding: 2px;
+  background-color: #fff;
+  cursor: default;
+  z-index: 1000;
+}
+
+.pulldown tr {
+  padding: 0;
+  margin: 0;
+  color: #000;
+  background-color: #fff;
+  height: 20px;
+}
+
+.pulldown tr.hover {
+  padding: 0;
+  margin: 0;
+  background-color: #316ac5 !important;
+  color: #fff;
+  height: 20px;
+}
+
+.pulldown th.hover {
+  width: 20px;
+  height: 20px;
+  background-color: #619af5;
+  padding: 0 3px;
+}
+
+.pulldown th {
+  width: 20px;
+  height: 20px;
+  background-color: #cdf;
+  padding: 0 3px;
+}
+
+.pulldown td {
+  height: 20px;
+  padding: 0 3px;
+}
+
+
+/* @end */
+
+/* @group Grid */
+
+/* @group leftColumn */
+
+.projectList .leftColumn { width:65% }
+
+.newsContainer .leftColContainer { float:left; width:80%; margin:0 20px 0 0 }
+
+.projectCenterContainer .leftColumn { width:80%; position:relative; }
+
+.projectCenterHeaderContainer .leftColumn { width:80%; }
+
+.teamMemeberNameContainer .leftColumn { width:100px; display:inline }
+
+.projectsByUserContainer .leftColumn,
+.recentProjectReviewsContainer .leftColumn,
+.recentUserReviewsContainer .leftColumn { position:relative; display:block; margin-right:95px; width:auto; }
+
+.projectsByUserContainer .leftColumn h4,
+.recentProjectReviewsContainer .leftColumn h4,
+.recentUserReviewsContainer .leftColumn h4 { }
+
+.projectsByUserContainer .leftColumn .imageContainer,
+.recentProjectReviewsContainer .leftColumn .imageContainer,
+.recentUserReviewsContainer .leftColumn .imageContainer,
+.leftColumn .imageContainer { float:left; display:block; width:45px; margin:2px 5px 2px 0; height:45px }
+
+.projectsByUserContainer .leftColumn ul,
+.projectsByUserContainer .leftColumn ol,
+.recentProjectReviewsContainer .leftColumn ul,
+.recentProjectReviewsContainer .leftColumn ol,
+.recentUserReviewsContainer .leftColumn ul,
+.recentUserReviewsContainer .leftColumn ol { position:relative; vertical-align:top; width:auto; top:0; }
+
+.projectsByUserContainer .leftColumn ul li,
+.projectsByUserContainer .leftCoumn ol li,
+.recentProjectReviewsContainer .leftColumn ul li,
+.recentProjectReviewsContainer .leftCoumn ol li,
+.recentUserReviewsContainer .leftColumn ul li,
+.recentUserReviewsContainer .leftCoumn ol li { position:relative; vertical-align:top; clear:none; margin:0; padding:0; top:0 }
+
+.leftColumn {
+  width: 50%;
+  margin: 0;
+  position: relative;
+}
+
+.leftColumn img {
+  margin: 0 5px 0 0
+}
+
+.formContainer .leftColumn,
+  .projectCenterContainer .formContainer .leftColumn {
+  width: 45%;
+  float: left;
+}
+
+.formContainer .leftColumn ul li,
+  .formContainer .leftColumn ul li label {
+  display: inline;
+  margin: 0 15px 0 0
+}
+
+.formContainer .leftColumn ul li label {
+  width: 100px !important
+}
+
+.newsContainer .leftColContainer {
+  float: left;
+  width: 80%;
+  margin: 0 20px 0 0
+}
+
+.projectCenterHeaderContainer .leftColumn {
+  width: auto;
+  margin:0 0 0 85px;
+  position:relative;
+}
+
+.projectWikiCenterLeftColContainer {
+  width: 85%;
+  float: left
+}
+
+.projectsByUserContainer .leftColumn,
+  .recentProjectReviewsContainer .leftColumn,
+  .recentUserReviewsContainer .leftColumn {
+  position: relative;
+  display: block;
+  margin-right: 95px;
+  width: auto;
+}
+
+.projectsByUserContainer .leftColumn .imageContainer,
+  .recentProjectReviewsContainer .leftColumn .imageContainer,
+  .recentUserReviewsContainer .leftColumn .imageContainer,
+  .leftColumn .imageContainer {
+  float: left;
+  display: block;
+  width: 45px;
+  margin: 2px 5px 2px 0;
+  height: 45px
+}
+
+.projectsByUserContainer .leftColumn ul,
+  .projectsByUserContainer .leftColumn ol,
+  .recentProjectReviewsContainer .leftColumn ul,
+  .recentProjectReviewsContainer .leftColumn ol,
+  .recentUserReviewsContainer .leftColumn ul,
+  .recentUserReviewsContainer .leftColumn ol {
+  position: relative;
+  vertical-align: top;
+  width: auto;
+  top: 0;
+}
+
+ul li .leftColumn,
+  ol li .leftColumn {
+  clear: both
+}
+
+.projectsByUserContainer .leftColumn ul li,
+  .projectsByUserContainer .leftCoumn ol li,
+  .recentProjectReviewsContainer .leftColumn ul li,
+  .recentProjectReviewsContainer .leftCoumn ol li,
+  .recentUserReviewsContainer .leftColumn ul li,
+  .recentUserReviewsContainer .leftCoumn ol li {
+  position: relative;
+  vertical-align: top;
+  clear: none;
+  margin: 0;
+  padding: 0;
+  top: 0
+}
+
+.projectsCenterTeamTooltip .leftColumn {
+  width: 60px
+}
+
+.leftColumn { width:50%; margin: 0; position: relative; }
+ul li .leftColumn,
+ol li .leftColumn { clear:both }
+
+
+.leftColumn img { margin:0 5px 0 0 }
+
+/* @end */
+
+/* @group rightColumn */
+
+.rightColumn {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+}
+
+.rightColumn .submit { display:block; top:10px; }
+
+.newsContainer .rightColContainer { float:left; width:18% }
+
+.projectCenterContainer .rightColumn { width:15%; }
+
+.projectCenterHeaderContainer .rightColumn { width:20%; position:absolute; top:8px; right:8px; }
+
+.teamMemeberNameContainer .rightColumn { width:20px; position:relative; display:inline; }
+
+.recentProjectReviewsContainer .rightColumn,
+.projectsByUserContainer .rightColumn,
+.recentUserReviewsContainer .rightColumn { height:40px; width:80px }
+
+.adminBodyContainer .universalFormLayout .leftColumn,
+.adminBodyContainer .universalFormLayout .rightColumn { position:relative; text-align:left; display:block; /*width:240px; float:left; padding:0*/ width:500px; padding:0; margin:0; left:0 }
+
+.adminBodyContainer .universalFormLayout .leftColumn input,
+.adminBodyContainer .universalFormLayout .rightColumn input { width:100% }
+
+.rightColumn .starList { position:absolute; right:100%; }
+
+.profilePage .rightColumn {
+  margin: 0;
+  padding: 0;
+  top: 0;
+  right: 5px;
+}
+
+.formContainer .rightColumn,
+  .projectCenterContainer .formContainer .rightColumn {
+  width: 45%;
+  float: left;
+  position: relative;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.newsContainer .rightColContainer {
+  float: left;
+  width: 18%
+}
+
+.projectCenterHeaderContainer .leftColumn .rightColumn {
+  right:0;
+  top:0;
+  margin:0!important;
+  width:500px!important;
+  left:auto;
+}
+
+.projectCenterHeaderContainer .rightColumn {
+  width: 50px;
+  position: absolute;
+  left: 0px;
+  text-align: left;
+  right:auto;
+}
+
+.projectWikiCenterRightColContainer {
+  width: 15%;
+  float: left
+}
+
+.projectCenterReviewsContainer .rightColumn,
+  .projectCenterReviewsContainer .leftColumn {
+  float: left
+}
+
+.recentProjectReviewsContainer .rightColumn,
+  .projectsByUserContainer .rightColumn,
+  .recentUserReviewsContainer .rightColumn {
+  height: 40px;
+  width: 80px
+}
+
+.login .formContainer .rightColumn {
+  margin-top:15px
+}
+
+.login .formContainer .rightColumn h3 {
+  font-size:large;
+}
+
+.login .formContainer .rightColumn .submit {
+  margin:10px 0!important;
+}
+
+.rightColumn .starList {
+  position: absolute;
+  right: 100%;
+}
+
+.projectsCenterTeamTooltip .rightColumn {
+  position: relative;
+  top: -65px;
+  margin-left: 75px;
+  width: auto;
+  text-align: left
+}
+
+.projectsCenterTeamTooltip .rightColumn ul li {
+  display: block;
+}
+
+.profilePage .rightColumn { margin:0; padding:0; top:5px; right:10px; }
+
+/* @end */
+
+/* @end */
+
+/* @group tooltip */
+
+.toolTip {  }
+
+#tabWrapper .yui-nav .toolsTab a {
+  background: #EA9C46 url(../../../images/connect321/toolsTabBG.png) top left repeat-x;
+  border: 1px solid #EA9C46;
+}
+
+.projectsCenterTeamTooltip {
+  padding: 5px;
+}
+
+.projectsCenterTeamTooltip .noPhoto {
+  width: 50px;
+  height: 50px
+}
+
+.projectsCenterTeamTooltip .noPhoto p {
+  top: 6px;
+  font-size: 12px
+}
+
+.projectsCenterTeamTooltip .profileImageBackground {
+  width: 50px;
+  margin: 0 auto;
+  padding: 5px
+}
+
+/* @end */
+
+/* @end */
+
+/* @group heights */
+
+.height50 {
+  height: 50px !important
+}
+
+.height100 {
+  height: 100px !important
+}
+
+.height200 {
+  height: 200px !important
+}
+
+.height300 {
+  height: 300px !important
+}
+
+/* @end */
+
+/* @group pagination */
+
+div.pagination {
+  clear: both;
+  padding: 20px;
+  text-align: center
+}
+
+ol.pagination {
+  border: 0;
+  margin: 10px 0 0;
+  padding: 0;
+  display: block;
+}
+
+.pagination li {
+  margin: 2px;
+  padding: 0;
+  font-size: 11px;
+  list-style: none;
+  display:inline;
+}
+
+.pagination a {
+  border: solid 1px #DDDDDD;
+  margin-right: 2px;
+}
+
+.pagination .previous-off,
+  .pagination .next-off {
+  color: #666666;
+  font-weight: bold;
+  padding: 3px 4px !important;
+}
+
+.pagination .next a,
+  .pagination .previous a {
+  font-weight: bold;
+  border: solid 1px #FFFFFF;
+}
+
+.pagination .active {
+  font-weight: bold;
+  padding: 4px 6px !important;
+}
+
+.pagination a:link,
+  .pagination a:visited {
+  color: #0063e3;
+  padding: 3px 6px !important;
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  border: solid 1px #666666;
+}
+
+/* @end */
+
+/* @group Accordian */
+
+.accordian { float:right; }
+
+.accordian ul { display:block; margin: 0; padding: 0 }
+
+.accordian ul li  { padding: 2px; margin: 0 }
+
+.accordian li, .accordian li:hover { display:block; }
+
+.accordian li span {  margin:0; padding:5px;  }
+
+.accordian li fieldset, .accordian li ul { display:none; position:absolute; right:0px; margin: 0; padding: 0 }
+
+.accordian li:hover fieldset, .accordian li:hover fieldset:hover, .accordian li:hover ul, .accordian li:hover ul:hover { display:block; }
+
+.accordian fieldset fieldset, .accordian ul ul { position:absolute; border:0; }
+
+.accordian ul ul li { padding:10px; }
+
+/* @end */
+
+
+/* @end */
+
+/* @group $_modal */
+
+/* $_modal : Modal Portlets */
+
+.modalportletWindow {
+  clear: both;
+}
+
+  .modalportletWindowLast {
+  }
+
+  .modalportletWindow1 {
+    margin-bottom: 0;
+  }
+
+  /* Around each portlet, within the portletColumn */
+  .modalportletWindowBackground {
+    clear: both;
+    padding-bottom: 20px;
+    overflow: hidden;
+    margin: 5px;
+    display: block;
+  }
+
+  .modalportletWindowBackgroundLast {
+  }
+
+  .modalportletWindowBackground h1 {
+
+  }
+
+    .modalportlet1 {
+      margin: 0;
+      padding: 0;
+      height: 1%;
+      position: relative;
+      top: -2px;
+      left: -2px;
+    }
+
+    .modalportlet2 {
+      margin: 0;
+      padding: 0;
+      height: 1%;
+      position: relative;
+      right: -4px;
+    }
+
+    .modalportlet3 {
+      margin: 0;
+      padding: 0;
+      height: 1%;
+      position: relative;
+      bottom: -4px;
+      left: -4px;
+    }
+
+    .modalportlet4 {
+      margin: 0;
+      padding: 0;
+      height: 1%;
+      position: relative;
+      bottom: 0;
+      right: -4px;
+    }
+
+      /* Modal Forms */
+      .modalportletWindowBackground .formContainer fieldset {
+        clear: both;
+        padding-bottom: 20px;
+        overflow: hidden;
+        margin:0 10px 10px 0;
+        display: block;
+        background: #fff;
+        -moz-border-radius-top-left: 5px;
+        -moz-border-radius-top-right: 5px;
+      }
+
+    /* portlet styles */
+    .modalportletConfigure {
+      clear: both;
+      text-align: right;
+      cursor: move;
+      margin-bottom: 5px;
+    }
+
+/* @end */
+
+/* @group Project Cateogies */
+
+.products .portletWrapper,
+.services .portletWrapper,
+.solutions .portletWrapper,
+.partners .portletWrapper,
+.businesses .portletWrapper,
+.organizations .portletWrapper,
+.groups .portletWrapper,
+.people .portletWrapper,
+.places .portletWrapper,
+.events .portletWrapper,
+.sponsors .portletWrapper,
+.ideas .portletWrapper,
+.projects .portletWrapper {
+  background: #e4e4e5!important;
+  margin-top:0;
+  padding:0;
+  position:relative;
+}
+
+.home .portletWrapper {
+  background:#fff!important;
+  margin-top:0;
+  padding:0;
+  position:relative;
+}
+
+.home h2 {
+  font-size:150%;
+  line-height:120%
+}
+
+.products .articleBody,
+.services .articleBody,
+.solutions .articleBody,
+.partners .articleBody,
+.businesses .articleBody,
+.organizations .articleBody,
+.groups .articleBody,
+.people .articleBody,
+.places .articleBody,
+.events .articleBody,
+.sponsors .articleBody,
+.ideas .articleBody,
+.projects .articleBody {
+  margin:0;
+  padding:0 0 30px 30px!important;
+}
+
+.home .articleBody h2,
+.products .articleBody h2,
+.services .articleBody h2,
+.solutions .articleBody h2,
+.partners .articleBody h2,
+.businesses .articleBody h2,
+.organizations .articleBody h2,
+.groups .articleBody h2,
+.people .articleBody h2,
+.places .articleBody h2,
+.events .articleBody h2,
+.sponsors .articleBody h2,
+.ideas .articleBody h2,
+.projects .articleBody h2 {
+  padding:25px 0 0 0!important;
+  margin:0 0 10px 0;
+  border-bottom:none;
+}
+
+.home .articleBody img {
+  margin-right:15px;
+}
+
+.products .articleBody img,
+.services .articleBody img,
+.solutions .articleBody img,
+.partners .articleBody img,
+.businesses .articleBody img,
+.organizations .articleBody img,
+.groups .articleBody img,
+.people .articleBody img,
+.places .articleBody img,
+.events .articleBody img,
+.sponsors .articleBody img,
+.ideas .articleBody img,
+.projects .articleBody img {
+  margin-left:15px;
+}
+
+.home .articleBody ul,
+.products .articleBody ul,
+.services .articleBody ul,
+.solutions .articleBody ul,
+.partners .articleBody ul,
+.businesses .articleBody ul,
+.organizations .articleBody ul,
+.groups .articleBody ul,
+.people .articleBody ul,
+.places .articleBody ul,
+.events .articleBody ul,
+.sponsors .articleBody ul,
+.ideas .articleBody ul,
+.projects .articleBody ul,
+.home .articleBody ol,
+.products .articleBody ol,
+.services .articleBody ol,
+.solutions .articleBody ol,
+.partners .articleBody ol,
+.businesses .articleBody ol,
+.organizations .articleBody ol,
+.groups .articleBody ol,
+.people .articleBody ol,
+.places .articleBody ol,
+.events .articleBody ol,
+.sponsors .articleBody ol,
+.ideas .articleBody ol,
+.projects .articleBody ol {
+  padding-right:10px;
+}
+
+.products .articleBody h2 {
+
+}
+
+.services .articleBody h2,
+.solutions .articleBody h2 {
+  color:#444;
+}
+
+.partners .articleBody h2,
+.businesses .articleBody h2,
+.organizations .articleBody h2 {
+  color:#ff9f2a;
+}
+
+.groups .articleBody h2 {
+  color:#8ccb35;
+}
+
+.people .articleBody h2 {
+  color:#0461ac;
+}
+
+.places .articleBody h2 {
+  color:#efcf00;
+}
+
+.events .articleBody h2 {
+  color:#803082;
+}
+
+.sponsors .articleBody h2 {
+  color:#e91c0e;
+}
+
+.ideas .articleBody h2 {
+  color:#4bbbe0;
+}
+
+.projects .articleBody h2 {
+  color:#a57146;
+}
+
+/* @end */
+
+/* @group $_button-list-vertical-*/
+
+/* $_button-list-vertical-*/
+
+.button-list-vertical-portletWindowBackground,
+.actionsContainer {
+  margin: 0 0 10px 0;
+  background:#fff url(../themes/default/images/background/portlet_window_background_20090301.png) 100% 100% repeat-x;
+  border-color:#e9e9e9 #e3e3e3 #ddd;
+  border-style:solid;
+  border-width:1px 2px 2px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  padding: 0;
+  display: block;
+}
+
+  .button-list-vertical-portlet1,
+  .button-list-vertical-portlet1,
+  .button-list-vertical-portlet1,
+  .button-list-vertical-portlet1 {
+    _filter:none;
+  }
+
+    .button-list-vertical-portletWindowBackground .portletWrapper {
+
+    }
+
+      .button-list-vertical-portletWindowBackground h3 {
+
+      }
+
+      .button-list-vertical-portletWindowBackground ul,
+      .actionsContainer ul,
+      .projectActionsContainer ul {
+        margin:0;
+        padding:0;
+        width:90%;
+      }
+
+        .button-list-vertical-portletWindowBackground ul li,
+        .actionsContainer li,
+        .projectActionsContainer li,
+        .searchFilter li,
+        .buttonList li {
+          margin:0 0 4px 0;
+          padding:0;
+          list-style:none;
+          vertical-align:middle;
+          _display:inline-block; /* IE Fix */
+          height:30px;
+        }
+
+
+        .button-list-vertical-portletWindowBackground ul li a,
+        .button-list-vertical-portletWindowBackground ul li a:hover,
+        .searchFilter li a,
+        .searchFilter li a:hover,
+        .actionsContainer li a,
+        .actionsContainer li a:hover,
+        .projectActionsContainer li a,
+        .projectActionsContainer li a:hover {
+          color:#333;
+          position:relative;
+          width:auto;
+          margin:0;
+          display:block;
+          text-decoration:none;
+          line-height:30px;
+          height:30px;
+          background:#eee url(../themes/default/images/buttons/sprite_buttons_all-gray.png) 0 -60px no-repeat;
+          border:1px solid #ddd;
+          -moz-border-radius:7px;
+          -webkit-border-radius:7px;
+          font-weight:900;
+          padding:0 0 0 8px;
+        }
+
+        .button-list-vertical-portletWindowBackground ul li a em,
+        .actionsContainer ul li a em,
+        .projectActionsContainer ul li a em,
+        .searchFilter ul li a em {
+          font-style:normal;
+          position:relative;
+          background:url(../themes/default/images/buttons/sprite_buttons_all-gray.png) 100% -60px no-repeat;
+          height:30px;
+          display:block;
+        }
+
+        .button-list-vertical-portletWindowBackground ul li a:hover {
+          background-position:0 -30px;
+          background-color:#ddd;
+        }
+
+        .button-list-vertical-portletWindowBackground ul li a:hover em {
+          background-position:100% -30px;
+        }
+
+        .button-list-vertical-portletWindowBackground ul li a:active {
+          background-position:0 0;
+        }
+
+        .button-list-vertical-portletWindowBackground ul li a:active em {
+          background-position:100% 0;
+        }
+
+
+
+          .button-list-vertical-portletWindowBackground ul li a:hover em,
+          .actionsContainer ul li a:hover em,
+          .projectActionsContainer ul li a:hover em,
+          .searchFilter ul li a:hover em {
+
+          }
+
+            /* Legacy Support
+            span.gettingStarted_tl,
+            span.searchFilter_tl,
+            .topLeft {
+              position:absolute;
+              width:100%;
+              height:11px;
+              left:0;
+              _left:-8px;
+              _padding:0 5px;
+              top:0;
+              background:#fafafa;
+              -moz-border-radius:5px 5px 0 0;
+              -webkit-border-radius:5px 5px 0 0;
+              border-bottom:2px solid #eee;
+            }
+
+            a:hover span.gettingStarted_tl,
+            a:hover span.searchFilter_tl,
+            .topLeft {
+              background:#eee;
+              -moz-border-radius:5px 5px 0 0;
+              -webkit-border-radius:5px 5px 0 0;
+              border-bottom:2px solid #f7f7f7;
+            }
+
+            span.gettingStarted_tr,
+            span.searchFilter_tr,
+            .topRight {
+              position:absolute;
+              width:6px;
+              height:11px;
+              top:-1px;
+              right:-1px;
+            }
+
+            span.gettingStarted_bl,
+            span.searchFilter_bl,
+            .bottomLeft {
+              position:absolute;
+              width:6px;
+              height:6px;
+              bottom:-1px;
+              left:-1px;
+            }
+
+            span.gettingStarted_br,
+            span.searchFilter_br,
+            .bottomRight {
+              position:absolute;
+              width:6px;
+              height:6px;
+              bottom:-1px;
+              right:-1px;
+            }*/
+
+/* @end */
+
+/* @group $_ccp-search-menu- */
+
+.ccp-search-menu-portletColumn {
+  background:#ddd;
+  -moz-border-radius:0 0 5px 5px;
+  -webkit-border-radius:0 0 5px 5px;
+  position:relative;
+  top:-8px;
+  _top:-10px;
+  border-top:2px solid #bbb;
+  width:auto;
+  display:block;
+}
+
+/* @end */
+/* @group $_button-list-horizontal-*/
+
+/* $_button-list-horizntal  */
+.button-list-horizontal-portletWindowBackground {
+
+}
+
+  .button-list-horizontal-portletWindowBackground .portletWrapper {
+     display:block;
+  }
+
+    .button-list-horizontal-portletWindowBackground ul {
+      padding:0;
+      margin:0;
+    }
+
+      .button-list-horizontal-portletWindowBackground ul li {
+         display:inline;
+      }
+
+        .button-list-horizontal-portletWindowBackground ul li a {
+          padding:6px;
+          line-height:200%;
+        }
+
+          .button-list-horizontal-portletWindowBackground ul li a em {
+            font-style:normal;
+          }
+
+        .button-list-horizontal-portletWindowBackground ul li a.active,
+        .button-list-horizontal-portletWindowBackground ul li a:hover {
+            background:#fff;
+            -moz-border-radius:5px;
+            -webkit-border-radius:5px;
+            text-decoration:none;
+          }
+
+          .button-list-horizontal-portletWindowBackground ul li a.active em,
+          .button-list-horizontal-portletWindowBackground ul li a:hover em {
+              color:#000;
+            }
+
+/* @end */
+
+/* @group $_tag-cloud */
+
+/* $_tag-cloud  */
+
+.tag-cloud.portletWindowBackground {
+
+}
+
+    .tag-cloud .portletWrapper {
+
+    }
+
+    .tag-cloud ul {
+      padding:0;
+      margin:0 0 5px 0;
+    }
+
+      .tag-cloud ul li {
+        display:inline;
+      }
+
+    .tag-cloud p {
+      text-align:right;
+      margin:0;
+    }
+
+/* @end */
+
+/* @group $_basic-list*/
+
+.basic-list .portletWindowBackground {
+
+}
+
+.basic-list ul,
+.basic-list ol,
+.basic-list dl {
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.basic-list li,
+.basic-list dd,
+.basic-list h3,
+.basic-list h4 {
+  margin: 0;
+  padding: 5px 0;
+  _display:inline-block;
+}
+
+.basic-list dd {
+  list-style:none;
+  line-height:100%;
+}
+
+/* @end */
+
+/* @group $_search-list (deprcated) */
+
+/* $_search-list */
+
+.search-list.portletWindowBackground {
+
+}
+
+.search-list .portlet1,
+  .search-list .portlet2,
+  .search-list .portlet3,
+  .search-list .portlet4 {
+
+}
+
+
+.search-list .portletWrapper {
+  border-bottom: 1px dotted #ddd;
+  margin: 0 10px;
+  padding: 0;
+}
+
+.search-list ul,
+.search-list ol {
+  margin:0;
+  position: relative;
+  vertical-align: top;
+  width: auto;
+  top: 0;
+  padding: 0 10px 10px 0;
+  list-style: none;
+}
+
+.search-list li {
+  clear: left;
+  position:relative;
+  margin: 0 0 10px 0;
+}
+
+	.search-list li ol li {
+	  clear: none;
+	  margin: 0;
+	}
+
+.search-list-h3 {
+  margin: 0 0 2px 0;
+}
+
+.search-list .title {
+  background: none
+}
+
+.search-list .leftColumn {
+  position: relative;
+  display: block;
+  margin-right: 95px;
+  width: auto
+}
+
+.search-list .leftColumn .imageContainer  {
+  float: left;
+  display: block;
+  width: 45px;
+  height: 45px;
+  margin: 2px;
+  background:#aaa;
+  _display: inline-block; /* IE Fix */
+}
+
+.search-list .listContainer {
+  position: relative;
+  display: inline;
+  vertical-align: top;
+  width: 500px
+}
+.search-list p {
+  position: relative;
+  vertical-align: top;
+  clear: none;
+  margin: 0;
+  padding: 0;
+  top: 0
+}
+
+.search-list li .title {
+  margin: 0;
+  padding: 0
+}
+
+.search-list .rightColumn {
+  height: 40px;
+  text-align:left;
+  position:absolute;
+  right:0;
+  top:0;
+}
+
+.search-list .listContainer {
+  display: block;
+  left: 5px;
+  position: relative;
+  width: auto;
+  float: left;
+}
+
+.search-list h2 {
+
+}
+
+  .search-list h3,
+  .search-list h4,
+  .search-list p {
+    position: relative;
+    vertical-align: top;
+    clear: none;
+    margin: 0;
+    padding: 0;
+    top: 0
+  }
+
+/* @end */
+
+/* @group $_detailed-list */
+
+/* $_detailed-list */
+
+.detailed-list.portletWindowBackground {
+
+}
+
+.detailed-list ul,
+.detailed-list ol,
+.listContainer ul,
+.listContainer ol {
+  padding:0;
+  margin:0;
+  position: relative;
+  vertical-align: top;
+  width: auto;
+  top: 0;
+  list-style:none;
+}
+
+.detailed-list h2 {
+  margin-top:2px;
+}
+
+.detailed-list ol li,
+.detailed-list ul li {
+  clear: both;
+  _display:inline-block; /* IE Fix */
+  margin:2px 0 3px 0;
+  position:relative;
+}
+
+.detailed-list ol li:after,
+.detailed-list ul li:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+.detailed-list ol ul,
+  .detailed-list ol ol {
+  float: left;
+  display: block;
+  width: auto;
+}
+
+.detailed-list ol ul li,
+.detailed-list ol ol li {
+  clear: none;
+  margin:0;
+}
+
+.detailed-list ol ul li:after,
+.detailed-list ol ol li:after {
+  clear: none;
+}
+
+.detailed-list ol li .portlet-section-body,
+  .detailed-list ul li .portlet-section-body {
+  float:left;
+  width:80%;
+}
+
+.detailed-list li address {
+  position: relative;
+  display:block;
+  vertical-align: top;
+  clear: none;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  width: 100%;
+}
+
+.detailed-list .external,
+.detailed-list .denied {
+  padding: 0; /* Clear wiki styles */
+  background:none;
+}
+
+.detailed-list .leftColumn {
+  position: relative;
+  display: block;
+  margin-right: 95px;
+  width: auto
+}
+
+.detailed-list .portlet-section-alternate,
+  .detailed-list li img {
+  float: left;
+  display: block;
+  width: 45px;
+  height: 45px;
+  margin: 0 5px 2px 0;
+  _display: inline-block; /* IE Fix */
+  background:#f0f0f0;
+  padding: 2px;
+  border: 1px solid #bbb;
+  overflow:hidden;
+}
+
+  .detailed-list .portlet-section-alternate .default-photo,
+  .detailed-list li img.default-photo {
+    background:#999;
+    border:2px solid #fff;
+    outline:1px solid #bbb;
+  }
+
+.detailed-list .file-type {
+  background:none;
+  border:none;
+  outline:0;
+}
+
+  /* Clear online status imgage */
+  .detailed-list p img,
+  .detailed-list cite img,
+  .detailed-list h3 img,
+  .detailed-list h4 img,
+  .detailed-list h5 img {
+    float:none;
+    clear:none;
+    display:inline;
+    width:auto;
+    height:auto;
+    margin:0;
+    background:none;
+    vertical-align:text-top;
+    border:none;
+    padding: 0;
+  }
+
+
+ .detailed-list ol ul li img,
+ .detailed-list ol ol li img {
+    float: none;
+    width: auto;
+    height: auto;
+    border: none;
+    background:none;
+    margin: 0;
+    padding: 0;
+  }
+
+.detailed-list li h2,
+  .detailed-list li h3,
+  .detailed-list li h4,
+  .detailed-list li p {
+    vertical-align: top;
+    clear: none;
+    margin: 0;
+    padding: 0;
+    top: 0
+  }
+
+.rightColumn {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+}
+
+.detailed-list .star-rating,
+.detailed-list cite {
+      float: right;
+      clear: right;
+      white-space:nowrap;
+}
+
+/* @end */
+
+/* @group $_detailed-list */
+
+/* @group $_detailed-list */
+
+/* $_detailed-list */
+
+.file-list .portlet-section:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+.file-list .portlet-section-body {
+  float:left;
+  width:70%!important;
+  border-bottom:1px dotted #ccc;
+  padding:0 0 10px 0;
+}
+
+  .file-list .portlet-section-body:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+.file-list ul,
+.file-list ol {
+  padding:0;
+  margin:0;
+  position: relative;
+  vertical-align: top;
+  width: auto;
+  top: 0;
+  list-style:none;
+}
+
+.file-list .portlet-section-body h2,
+.file-list .portlet-section-body h3 {
+  margin:2px 0;
+  font-weight:900;
+}
+
+.file-list ol li,
+.file-list ul li {
+  clear: both;
+  _display:inline-block; /* IE Fix */
+  margin:5px 0;
+  position:relative;
+
+}
+
+.file-list ol .portlet-section-body li:after,
+.file-list ul .portlet-section-body li:after,
+.file-list ul li:after,
+.file-list ol li:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+.file-list ol ul .portlet-section-body,
+  .file-list ol ol .portlet-section-body {
+  float: left;
+  display: block;
+  width: auto;
+}
+
+.file-list .portlet-section-body dl {
+  clear:both;
+  margin:0 0 0 30px;
+}
+
+.file-list .portlet-section-body dl:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+.file-list .portlet-section-body dl dt
+{
+  float:left;
+  clear:left;
+}
+
+.file-list .portlet-section-body dl dd {
+  margin:0 0 0 2px;
+  padding:0;
+  float:left;
+}
+
+.file-list .portlet-section-body .portlet-section-body .external,
+.file-list .portlet-section-body .portlet-section-body .denied {
+  padding: 0; /* Clear wiki styles */
+  background:none;
+}
+
+.file-list .portlet-section-body .portlet-section-alternate,
+  .file-list li .portlet-section-body img {
+  float: left;
+  display: block;
+  margin: 0 5px 2px 0;
+  _display: inline-block; /* IE Fix */
+  overflow:hidden;
+}
+
+  /* Clear online status imgage */
+  .file-list .portlet-section-body p img,
+  .file-list .portlet-section-body cite img,
+  .file-list .portlet-section-body h3 img,
+  .file-list .portlet-section-body h4 img,
+  .file-list .portlet-section-body h5 img,
+  .file-list .portlet-section-body dd img,
+  .file-list ol .portlet-section-body ul li img,
+  .file-list ol .portlet-section-body ol li img,
+  .file-list .portlet-section-body h2 span img {
+    float:none;
+    clear:none;
+    display:inline;
+    width:auto;
+    height:auto;
+    margin:0;
+    background:none;
+    vertical-align:text-top;
+    border:none;
+    padding: 0;
+  }
+
+.file-list li .portlet-section-body h2,
+  .file-list li .portlet-section-body h3,
+  .file-list li .portlet-section-body h4,
+  .file-list li .portlet-section-body p {
+    vertical-align: top;
+    clear: none;
+    margin: 0;
+    padding: 0;
+    top: 0
+  }
+
+.file-list .portlet-section-body h2 span {
+  font-weight:300;
+}
+
+.file-list .portlet-section-body .star-rating,
+.file-list .portlet-section-body cite {
+      float: right;
+      clear: right;
+      white-space:nowrap;
+}
+
+.file-list .portlet-section-menu {
+  float:left;
+  margin:0 0 0 25px;
+}
+
+.file-list .portlet-section-menu ul li {
+  margin:5px 0;
+}
+
+.file-list li .portlet-section-body-menu p {
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  background:#ddd;
+  padding:5px;
+  margin:0 0 5px;
+  width:110px;
+  clear:both;
+}
+
+.file-list .portlet-section-body-menu p span {
+  display:block;
+  color:#333;
+}
+
+.file-list .portlet-section-body-menu p img {
+  float:left;
+}
+
+.file-list .portlet-section-body-menu img,
+.file-list .portlet-section-menu ul li img,
+.file-list .portlet-section-body p img {
+  vertical-align:middle;
+}
+
+
+/* @end */
+
+/* @group $_detailed-list */
+
+/* $_search-list */
+
+.search-list.portletWindowBackground {
+
+}
+
+.search-list ul,
+.search-list ol,
+.listContainer ul,
+.listContainer ol {
+  padding:0;
+  margin:0;
+  position: relative;
+  vertical-align: top;
+  width: auto;
+  top: 0;
+  list-style:none;
+}
+
+.search-list h2 {
+  margin-top:2px;
+}
+
+.search-list ol li,
+.search-list ul li {
+  clear: both;
+  _display:inline-block; /* IE Fix */
+  margin:2px 0 3px 0;
+  position:relative;
+}
+
+.search-list ol li:after,
+.search-list ul li:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+.search-list ol ul,
+  .search-list ol ol {
+  float: left;
+  display: block;
+  width: auto;
+}
+
+.search-list ol ul li,
+.search-list ol ol li {
+  clear: none;
+  margin:0;
+}
+
+.search-list ol ul li:after,
+.search-list ol ol li:after {
+  clear: none;
+}
+
+.search-list li address {
+  position: relative;
+  display:block;
+  vertical-align: top;
+  clear: none;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  width: 100%;
+}
+
+.search-list .external,
+.search-list .denied {
+  padding: 0; /* Clear wiki styles */
+  background:none;
+}
+
+.search-list .leftColumn {
+  position: relative;
+  display: block;
+  margin-right: 95px;
+  width: auto
+}
+
+.search-list .portlet-section-alternate,
+  .search-list li img {
+  float: left;
+  display: block;
+  width: 45px;
+  height: 45px;
+  margin: 0 5px 2px 0;
+  _display: inline-block; /* IE Fix */
+  background:#f0f0f0;
+  padding: 2px;
+  border: 1px solid #bbb;
+  overflow:hidden;
+}
+
+  .search-list .portlet-section-alternate .default-photo,
+  .search-list li img.default-photo {
+    background:#999;
+    border:2px solid #fff;
+    outline:1px solid #bbb;
+  }
+
+  /* Clear online status imgage */
+  .search-list p img,
+  .search-list cite img,
+  .search-list h3 img,
+  .search-list h4 img,
+  .search-list h5 img {
+    float:none;
+    clear:none;
+    display:inline;
+    width:auto;
+    height:auto;
+    margin:0;
+    background:none;
+    vertical-align:text-top;
+    border:none;
+    padding: 0;
+  }
+
+
+ .search-list ol ul li img,
+ .search-list ol ol li img {
+    float: none;
+    width: auto;
+    height: auto;
+    border: none;
+    background:none;
+    margin: 0;
+    padding: 0;
+  }
+
+.search-list li p {
+    vertical-align: top;
+    clear: none;
+    margin: 0;
+    padding: 0;
+    top: 0
+  }
+
+.rightColumn {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+}
+
+.search-list .star-rating,
+.search-list cite {
+      float: right;
+      clear: right;
+      white-space:nowrap;
+}
+
+/* @end */
+
+/* @group $_admin-portlet */
+
+.adminHeaderContainer,
+.adminHeader,
+.admin-portlet .portlet-section-header {
+  margin: 10px;
+  border-bottom:1px dotted #ddd;
+}
+
+.adminBodyContainer,
+.admin-portlet .portlet-section-body {
+  padding:0 0 40px 0;
+  display:block
+}
+
+.adminBodyContainer div {
+  padding: 15px;
+}
+
+.adminBodyContainer a {
+  padding: 15px 0
+}
+
+.adminBodyContainer button {
+  margin: 0 15px;
+}
+
+.adminBodyContainer table {
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+  border: none
+}
+
+/* Search Users */
+	.admin-portlet #search-users,
+	.admin-portlet #member-attributes {
+	  width: 45%;
+	  float: left;
+	  margin:0 10px 0 0;
+	}
+
+.adminBodyContainer th,
+  .adminBodyContainer td {
+  margin: 0;
+  padding: 5px
+}
+
+div.adminUsageContainer {
+  width: 75%
+}
+
+.adminBodyContainer .universalFormLayout .leftColumn,
+  .adminBodyContainer .universalFormLayout .rightColumn {
+  position: relative;
+  text-align: left;
+  display: block; /*width:240px; float:left; padding:0*/
+  width: 500px;
+  padding: 0;
+  margin: 0;
+  left: 0
+}
+
+.adminBodyContainer .universalFormLayout .leftColumn input,
+  .adminBodyContainer .universalFormLayout .rightColumn input {
+  width: 100%
+}
+
+.adminBodyContainer .universalFormLayout {
+  position: relative;
+  width: 500px
+}
+
+.adminBodyContainer .universalFormLayout .submit,
+  .adminBodyContainer .universalFormLayout .cancel {
+  text-align: right
+}
+
+.adminApplicationContainer ul, .adminSettingsContainer ul, ul.configuration {
+  font-size: 140%;
+  color: #2C4367
+}
+
+.adminApplicationContainer li, .adminSettingsContainer li, ul.configuration li {
+  margin: 10px;
+  position: relative;
+  display: block
+}
+
+.adminSettingsContainer li a, .adminSettingsContainer li a, ul.configuration li a {
+  padding: 10px;
+  display: block;
+  width: 150px;
+  border: 1px solid #fff
+}
+
+.adminSettingsContainer li a:hover, .adminSettingsContainer li a:hover, ul.configuration li a:hover {
+  background: #eee;
+  border: #ccc dotted 1px
+}
+
+/* Admin buttons */
+.admin-portlet .submit, .admin-portlet .cancel {
+	float: left;
+}
+
+#schemeList img {
+  border:2px solid #aaa;
+}
+
+
+/* @end */
+
+/* @group $_menu & $_pulldown : Actions Menu */
+
+/* Old Drop-down menu : needs to be renamed to .drop-down .portlet-menu */
+
+.list {
+  background-color: #D4D4D4
+}
+
+.menu {
+  visibility: hidden;
+  left: 0;
+  top: 0;
+  position: absolute;
+  z-index: 1000;
+}
+
+.pulldown {
+  border: 1px solid #aca899;
+  padding: 2px;
+  background-color: #fff;
+  cursor: default;
+  z-index: 1000;
+}
+
+.pulldown tr {
+  padding: 0;
+  margin: 0;
+  color: #000;
+  background-color: #fff;
+  height: 20px;
+}
+
+.pulldown tr.hover {
+  padding: 0;
+  margin: 0;
+  background-color: #316ac5 !important;
+  color: #fff;
+  height: 20px;
+}
+
+.pulldown th.hover {
+  width: 20px;
+  height: 20px;
+  background-color: #619af5;
+  padding: 0 3px;
+}
+
+.pulldown th {
+  width: 20px;
+  height: 20px;
+  background-color: #cdf;
+  padding: 0 3px;
+}
+
+.pulldown td {
+  height: 20px;
+  padding: 0 3px;
+}
+
+/* @end */
+
+/* @group $_table-layout */
+
+/* Table Layout */
+
+.tableLayout {
+  margin: 10px;
+  border: 1px solid #ddd
+}
+
+.tableContainer h3+dl:after {
+  content: "." !important;
+  display: block !important;
+  height: 0 !important;
+  clear: both !important;
+  visibility: hidden !important;
+}
+
+.tableContainer h3 {
+  background: #444;
+  color: #fff;
+  padding: 5px!important;
+  margin: 5px 0 0 0;
+}
+
+.tableContainer h3+dl {
+  margin: 0 0 10px 0;
+}
+
+.tableContainer h3+dl dt,
+  .tableContainer h3+dl dd {
+  width: auto;
+  float: left;
+  display: block;
+  padding: 3px;
+}
+
+.tableContainer h3+dl dt {
+  clear: left;
+}
+
+.tableContainer h3+dl dd {
+  clear: none;
+}
+
+.empty th {
+  color: #FFF;
+  border: none !important;
+  background: none !important;
+}
+
+.empty td {
+  color: #000;
+  border: none !important;
+}
+
+/* @group $_paged-list : Table Layout */
+
+.pagedList {
+  clear: both;
+  border: 1px solid #ddd;
+  border-spacing: 0;
+  width: 100%;
+  margin:0 0 10px 0;
+  clear: both;
+  width: 100%;
+  background:#fff;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+}
+
+div.pagedList {
+  padding:5px 10px;
+  width:auto;
+}
+.pagedListForm {
+  display: inline;
+}
+
+.pagedListForm { display: inline; }
+
+.pagedListForm div {
+  display: inline;
+}
+
+.pagedListForm div { display: inline; }
+
+.pagedListForm img {
+  vertical-align: middle;
+}
+
+.pagedListForm img { vertical-align: middle; }
+
+.pagedListForm form {
+  display: inline;
+}
+
+.pagedListForm form { display: inline; }
+
+.pagedListStatus {
+  display: inline;
+  float: right;
+}
+
+.pagedListStatus { display: inline; float: right; }
+
+.pagedListTab {
+  color: #FFF;
+  text-align: left;
+  background: #9c9a9c no-repeat top left;
+  border-right: 1px solid #41413a;
+}
+
+.pagedListTab th {
+  font-weight: bold;
+}
+
+.pagedListTab a,
+  .pagedListTab a:active,
+  pagedListTab a:visited {
+  color: #EDEDED;
+}
+
+.pagedListTab a:hover,
+  .pagedListTab a:visited:hover {
+  color: #FFFFFF;
+}
+
+div.pagedList {
+  border-top: 6px solid #D6E0EE;
+}
+
+.pagedList th {
+  background:#ededed url(../themes/default/images/graphics/pagedList_bg.png) repeat-x scroll 0 bottom;
+  border-bottom:1px solid #DDDDDD;
+  padding:10px;
+  text-align:center;
+  border-right:1px solid #DDDDDD;
+}
+
+.pagedList tbody th {
+  background:none;
+}
+
+.pagedList th a:link,
+  .pagedList th a:visited {
+  font-weight: 300
+}
+
+.pagedList td {
+  border-bottom:1px solid #DDDDDD;
+  border-right:1px solid #D3D3D3;
+  padding:10px;
+}
+
+.pagedList td h2 {
+  margin:0 0 5px 0;
+}
+
+.pagedList td a > a {
+  margin:0 0 5px 0;
+  border-right: 1px solid #eee
+}
+
+/* @end */
+
+/* @end */
+
+/* @group $_inline-lists */
+
+.inline-items ul {
+  float: left;
+  display: block;
+  margin:0;
+  padding: 0;
+  list-style: none;
+}
+
+/* @end */
+
+/* @group $_gList  */
+
+/* @end */
+
+/* @group $_g_tabsList  */
+
+ul.g_tabsList {
+  margin: 0;
+  padding:0;
+}
+
+.g_tabsList a em {
+  font-style: normal;
+}
+
+.g_tabsList li {
+  display: block;
+  margin: 5px 5px 0 0;
+  float: left;
+  background: url(../themes/default/images/background/portlet_window_background_20090301.png) repeat-x scroll right bottom;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-radius-top-left: 5px;
+  -webkit-border-radius-top-right: 5px;
+  border: 1px solid #D6E0EE;
+  border-bottom: none;
+  padding: 5px
+}
+
+.g_tabsList li:hover {
+  background: url(../themes/default/images/background/portlet_window_background_20090301.png) repeat-x scroll right bottom;
+}
+
+/* @end */
+
+/* @group Ads Portlet */
+
+.adsportletWindowBackground {
+  margin:0 0 10px 0;
+}
+
+.adsportletWindowBackground .portletWrapper {
+  padding:0;
+  text-align:center;
+  border:none;
+  margin:0;
+}
+
+.adsportletWindowBackground a,
+.adsportletWindowBackground img {
+  border:none;
+}
+
+/* @group g_list */
+
+.g_menuList {
+  list-style:none;
+  padding:0;
+}
+
+.g_menuList li {
+  float:left;
+  margin-right:5px;
+}
+
+.g_menuList:after  {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }

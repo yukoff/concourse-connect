@@ -1,0 +1,164 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/opencsv-1.8.jar:lib/googlemaps-0.98c.jar bsh.Interpreter "$0" "$@"
+
+import javax.servlet.ServletContext;
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+import com.lamatek.tags.google.beans.USAddressGeocoder;
+
+boolean hasText(String in) {
+  return (in != null && !(("".equals(in.trim()) || "null".equals(in))));
+}
+
+if (bsh.args.length == 0) {
+  print("Usage:");
+  print("  geocodeAddresses [input_filename] [output_filename]");
+  print("");
+  print("The file specified by input_filename will be geocoded and placed in output_filename.");
+  System.exit(0);
+}
+String filename = bsh.args[0].trim();
+
+// Takes a CSV file and outputs a copy with geocoded addresses
+File csvFile = new File(bsh.args[0].trim());
+File csvFile2 = new File(bsh.args[1].trim());
+
+System.out.println("Geocoding " + bsh.args[0].trim() + " to " + bsh.args[1].trim());
+
+    if (csvFile.exists()) {
+      System.out.println("geocodeAddresses-> loadFile... " + csvFile.toURL());
+      CSVReader reader = new CSVReader(new FileReader(csvFile));
+
+      CSVWriter writer = new CSVWriter(new FileWriter(csvFile2));
+
+      String[] nextLine = reader.readNext();
+
+      //"Business","Address","City","State","ZIP"
+      int projectNameColumn = -1;
+      int projectAddressColumn = -1;
+      int projectCityColumn = -1;
+      int projectStateColumn = -1;
+      int projectZipColumn = -1;
+      int projectLatitudeColumn = -1;
+      int projectLongitudeColumn = -1;
+      int projectPhoneColumn = -1;
+      int projectCategoryColumn = -1;
+      int projectSubCategory1Column = -1;
+      int projectSubCategory2Column = -1;
+      int projectWebsiteColumn = -1;
+      int projectSICColumn = -1;
+
+      for (int i = 0; i < nextLine.length; i++) {
+         if (nextLine[i].equals("COMPANY_NAME")) {
+           projectNameColumn = i;
+         } else if (nextLine[i].equals("LATITUDE")) {
+           projectLatitudeColumn = i;
+         } else if (nextLine[i].equals("LONGITUDE")) {
+           projectLongitudeColumn = i;
+         } else if (nextLine[i].equals("PRIMARY_PHONE")) {
+           projectPhoneColumn = i;
+         } else if (nextLine[i].equals("PRIMARY_ADDRESS")) {
+           projectAddressColumn = i;
+         } else if (nextLine[i].equals("PRIMARY_CITY")) {
+           projectCityColumn = i;
+         } else if (nextLine[i].equals("PRIMARY_STATE")) {
+           projectStateColumn = i;
+         } else if (nextLine[i].equals("PRIMARY_ZIP_CODE")) {
+           projectZipColumn = i;
+         } else if (nextLine[i].equals("PROJECT_CATEGORY")){
+           projectCategoryColumn = i;
+         } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY1")){
+           projectSubCategory1Column = i;
+         } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY2")){
+           projectSubCategory2Column = i;
+         } else if (nextLine[i].equals("PROJECT_WEB_SITE")){
+           projectWebsiteColumn = i;
+         } else if (nextLine[i].equals("SIC Code")) {
+           projectSICColumn = i;
+         }
+       }
+
+      if (projectNameColumn == -1) {
+        throw new Exception("CSV columns not found ()");
+      }
+
+      String[] headerLine = new String[13];
+
+      headerLine[0] = "PROJECT_CATEGORY";
+      headerLine[1] = "PROJECT_SUB_CATEGORY1";
+      headerLine[2] = "PROJECT_SUB_CATEGORY2";
+      headerLine[3] = "SIC Code";
+      headerLine[4] = "COMPANY_NAME";
+      headerLine[5] = "PRIMARY_PHONE";
+      headerLine[6] = "PRIMARY_ADDRESS";
+      headerLine[7] = "PRIMARY_CITY";
+      headerLine[8] = "PRIMARY_STATE";
+      headerLine[9] = "PRIMARY_ZIP_CODE";
+      headerLine[10] = "PROJECT_WEB_SITE";
+      headerLine[11] = "LATITUDE";
+      headerLine[12] = "LONGITUDE";
+      writer.writeNext(headerLine);
+      writer.flush();
+
+
+      // Geocode the addresses
+      int count = 0;
+      while ((nextLine = reader.readNext()) != null) {
+        ++count;
+
+        String  projectNameValue = nextLine[projectNameColumn].trim();
+        String  projectAddressValue  = nextLine[projectAddressColumn].trim();
+        String  projectCityValue = nextLine[projectCityColumn].trim();
+        String  projectStateValue = nextLine[projectStateColumn].trim();
+        String  projectZipValue = nextLine[projectZipColumn].trim();
+        String  projectLatitudeValue = nextLine[projectLatitudeColumn].trim();
+        String  projectLongitudeValue = nextLine[projectLongitudeColumn].trim();
+        String  projectPhoneValue = nextLine[projectPhoneColumn].trim();
+        String  projectCategoryValue = nextLine[projectCategoryColumn].trim();
+        String  projectSubCategory1Value = nextLine[projectSubCategory1Column].trim();
+        String  projectSubCategory2Value = nextLine[projectSubCategory2Column].trim();
+        String  projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
+        String  projectSICValue = nextLine[projectSICColumn].trim();
+
+        if (!hasText(projectLatitudeValue) && !hasText(projectLongitudeValue) &&
+            hasText(projectAddressValue) && hasText(projectZipValue)) {
+          // Give yahoo a break
+          long timer = System.currentTimeMillis();
+          while ((timer + 1000) > System.currentTimeMillis()) {
+
+          }
+          // External geocode
+          USAddressGeocoder geo = new USAddressGeocoder();
+          geo.setAddress(projectAddressValue);
+          geo.setCity(projectCityValue);
+          geo.setState(projectStateValue);
+          geo.setZip(projectZipValue);
+          geo.geocode();
+          // Results
+          projectLatitudeValue = String.valueOf(geo.getLatitude());
+          projectLongitudeValue = String.valueOf(geo.getLongitude());
+        }
+
+        String[] geoLine = new String[13];
+        geoLine[0] = projectCategoryValue;
+        geoLine[1] = projectSubCategory1Value;
+        geoLine[2] = projectSubCategory2Value;
+        geoLine[3] = projectSICValue;
+        geoLine[4] = projectNameValue;
+        geoLine[5] = projectPhoneValue;
+        geoLine[6] = projectAddressValue;
+        geoLine[7] = projectCityValue;
+        geoLine[8] = projectStateValue;
+        geoLine[9] = projectZipValue;
+        geoLine[10] = projectWebsiteValue;
+        geoLine[11] = projectLatitudeValue;
+        geoLine[12] = projectLongitudeValue;
+        writer.writeNext(geoLine);
+        writer.flush();
+
+      }
+      writer.close();
+
+    } else {
+      System.out.println("geocodeAddresses-> file does not exist");
+    }

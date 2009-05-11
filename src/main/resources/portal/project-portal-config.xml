@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<portal-app>
+  <portal type="navigation">
+    <module name="profile" layout="profile-portal-layout.xml" permission="project-profile-view">
+      <url name="/show" object="/" page="project profile"/>
+      <url name="/modify" object="/profile" page="form"/>
+    </module>
+    <module name="reviews" layout="reviews-portal-layout.xml" permission="project-reviews-view">
+      <url name="/show" object="/reviews" page="list"/>
+      <url name="/show" object="/review" page="details"/>
+      <url name="/create" object="/review" page="form"/>
+      <url name="/modify" object="/review" page="form"/>
+    </module>
+    <module name="blog" layout="blog-portal-layout.xml" permission="project-news-view">
+      <url name="/show" object="/blog" page="list"/>
+      <url name="/show" object="/post" page="details"/>
+      <url name="/create" object="/post" page="form"/>
+      <url name="/modify" object="/post" page="form"/>
+    </module>
+    <module name="calendar" layout="calendar-portal-layout.xml" permission="project-calendar-view">
+      <url name="/show" object="/calendar" page="agenda"/>
+      <url name="/show" object="/event" page="details"/>
+      <url name="/create" object="/event" page="form"/>
+      <url name="/modify" object="/event" page="form"/>
+    </module>
+    <module name="wiki" layout="wiki-portal-layout.xml" permission="project-wiki-view">
+      <url name="/show" object="/wiki" page="details"/>
+      <url name="/create" object="/wiki" page="editor"/>
+      <url name="/modify" object="/wiki" page="editor"/>
+      <url name="/show" object="/wiki-index" page="index"/>
+      <url name="/show" object="/wiki-versions" page="versions"/>
+      <url name="/export" object="/wiki" page="export"/>
+      <url name="/show" object="/wiki-exports" page="queue"/>
+      <url name="/configure" object="/wiki" page="configure"/>
+    </module>
+    <module name="discussion" layout="discussion-portal-layout.xml" permission="project-discussion-forums-view">
+      <url name="/show" object="/discussion" page="forum-list"/>
+      <url name="/create" object="/forum" page="forum-form"/>
+      <url name="/modify" object="/forum" page="forum-form"/>
+      <url name="/show" object="/forum" page="topic-list"/>
+      <url name="/create" object="/topic" page="topic-form"/>
+      <url name="/modify" object="/topic" page="topic-form"/>
+      <url name="/show" object="/topic" page="reply-list"/>
+      <url name="/create" object="/reply" page="reply-form"/>
+      <url name="/modify" object="/reply" page="reply-form"/>
+    </module>
+    <module name="promotions" layout="promotions-portal-layout.xml" permission="project-ads-view">
+      <url name="/show" object="/promotions" page="list"/>
+      <url name="/show" object="/promotion" page="details"/>
+      <url name="/create" object="/promotion" page="form"/>
+      <url name="/modify" object="/promotion" page="form"/>
+    </module>
+    <module name="classifieds" layout="classifieds-portal-layout.xml" permission="project-classifieds-view">
+      <url name="/show" object="/classifieds" page="list"/>
+      <url name="/show" object="/classified-ad" page="details"/>
+      <url name="/create" object="/classified-ad" page="form"/>
+      <url name="/modify" object="/classified-ad" page="form"/>
+    </module>
+    <module name="documents" layout="documents-portal-layout.xml" permission="project-documents-view">
+      <url name="/show"   object="/documents" page="list"/>
+      <url name="/show"   object="/folder" page="list"/>
+      <url name="/show"   object="/file" page="details"/>
+      <url name="/create" object="/folder" page="folder-form"/>
+      <url name="/modify" object="/folder" page="folder-form"/>
+      <url name="/set" object="/folder" page="folder-move"/>
+      <url name="/create" object="/file" page="file-form"/>
+      <url name="/modify" object="/file" page="file-form"/>
+      <url name="/set" object="/file" page="file-move"/>
+      <url name="/create" object="/file-version" page="file-form"/>
+    </module>
+    <module name="lists" layout="lists-portal-layout.xml">
+      <url name="/show" object="/lists" page="list"/>
+    </module>
+    <module name="badges" layout="badges-portal-layout.xml" permission="project-badges-view">
+      <url name="/show" object="/badges" page="list"/>
+      <url name="/modify" object="/badges" page="modify"/>
+    </module>
+    <module name="issues" layout="issues-portal-layout.xml" permission="project-tickets-view">
+      <url name="/show" object="/issues" page="list"/>
+      <url name="/show" object="/issue" page="details"/>
+      <url name="/create" object="/issue" page="form"/>
+      <url name="/modify" object="/issue" page="form"/>
+    </module>
+    <module name="members" layout="team-members-portal-layout.xml" permission="project-team-view">
+      <url name="/show" object="/members" page="list"/>
+    </module>
+    <module name="details" layout="details-portal-layout.xml">
+      <url name="/show" object="/details" page="details"/>
+      <url name="/modify" object="/details" page="form"/>
+    </module>
+    <module name="setup" layout="setup-portal-layout.xml">
+      <url name="/show" object="/setup" page="overview"/>
+      <url name="/modify" object="/tabs" page="tabs-form"/>
+      <url name="/modify" object="/permissions" page="permissions-form"/>
+      <url name="/modify" object="/style" page="style-form"/>
+    </module>
+    <module name="messages" layout="messages-portal-layout.xml" permission="project-private-messages-view">
+      <url name="/show" object="/messages" page="list"/>
+      <url name="/show" object="/message" page="details"/>
+    </module>
+  </portal>
+</portal-app>

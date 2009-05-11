@@ -1,0 +1,3897 @@
+<?xml version="1.0" ?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<team_elements>
+  <dataRecord name="projectCategory" id="1">
+    <id>1</id>
+    <description>Products</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>1</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#878787!important; }
+
+.profile-menu-portletWindowBackground { background:#c1c1c1!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="1">
+    <id>1</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>1</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Products-100x100.png</subject>
+    <clientFilename>Icons-Products-100x100.png</clientFilename>
+    <filename>20090317113009-2</filename>
+    <directory>null</directory>
+    <size>1283</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1237303809498</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1237303809498</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAABKVJREFUeNrs3EtPE1EYBuBTKGIwxarFQDGhYAJCwsWI0WhCiJroTha6
+BlZeNuIv8CeoGy8r5R/ASlemG40GSNCFhphISaReWrTSlFiQ4PeNM3UYW6hzOTNT3jc5Oen0NjNP
+z8w5becENjY2BOKdVGEXAAQBCEAQgAAEAQhAEIAABAEIAhCAIAABCAIQgCAyEzT7xEAg4OqK33vw
+MkxVH5XM9asnZ9VlfJuXJ2hZws31M/tLbMD0E10AURGGqFzkOpXOifDe3aKmpvox37+2tj6S+fFT
+NET28E1GGqcy4QZOxYIYEZLJrEh+WhZcEwBjiHNnD1NdJZ48fV9YFo2GRLSpXqkpcR1OBiA2IxjT
+1XlQ1NXViOmZxX/uK4IzQWXSaRzfgxgR+NCzsJBRSjEEIwjn7buvWz5OJo4vQUohJJPLYmVlrezX
+KRdEJo6vQAhixCqCVZBiOC0tYa1DYBnH8yCEoG8JYasIdoLow+eiaLReweEenFkcT4I4ieAUiF04
+ngGRhSADZBscHvtMEsyE50AIYZCqYZkIskG2wMmoLWeccOKugxDGbeqWjmldVD5Jy45skGI4XZ0N
+yjcGhDJqBcTSl4uEMUbVWI5aApfVbcYLlZxUaoWrEf6AWnkd0y3k/sNXPIaYb43tC/MnJL20IhLz
+38SXVE7ssEOWoH0gItRdXs7mxdxcih/Seu3KCVPfnwUtrNdg5EBd+ML5dt2SNjGf+K6sFNd2jDG8
+EuNYhRG4xFr3i9pd1YXHZQmFtpc7Nndkg/S10soYo61ofnVdaTEM41cc42i+FII+zdRyaBvDZt8z
+6NTG8Ap3dDQoxU84ZhDsTFDGRm6Fs903uTsBQTqIF3GMCHySPtIecQXBVRA3cYwI1ClR3ptbQyhU
+64lDZlB4JE7h+AHBkyBb4XA3mguPdcrF0RC4m+p1BM+DGHF6uhuVwn18bZzDONxTe/3m86bW0NvT
+qGA0NYZ8g+ArEH14x+pxpmYWlZ2vtZaBgZg42tskTp9q8RWCb0GMOGcG2wotg8MtQlvm1/j+n4sM
+wDh8aOOW4fcERQWEzxN8CHNz/AAQ/Ym/NqiUSgj+bA0QBCAAQQACEAQgAEEAAhAEIAhAAIIABCAI
+QACCAAQgCEAQgAAEkQuSSadz2IOG5PO/XAOJ8yVp/O905G/4z+Diz4RpckF4nkPCiD9/sQAFNTyB
+Wjabn9XP6CD7HDI6N5fKPIt/2NEthbedMaamP/I0G6NWXsuOqTX4EuBHVIbculhSm9qv/1izVAT9
+VV7qYeqmNkOq67MB6WaHuyH4GnaJODJBNAB1xoaSM596ar4swompOMMycJwG0RC4RVDLKGv6Wc/O
+KCcDxwkQMwi+ACmFQxh9jKIBeQHEKoLvQJzCsQJiJ4KvQezE+V8QAwLveG1GuFm7tqliZrY2g1MO
+iAyEigQpgjOi4sRK4fDAdCmdE5cvdW9azteya5MOyECoeBADTp/aUxvS4yzRTldHyOJ4/6FwtClU
+aA3ZbF4qwo4CKYHDNe/0u1QY5RaVmDZgk43gKgjiTPADFUAQgAAEAQhAEIAABAEIQBCAIAABCAIQ
+gCAAqfT8FmAA+fXG99JpC0wAAAAASUVORK5CYII=
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="1">
+    <id>1</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Awards and Recognition</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176347983</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="2">
+    <id>2</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Industry and Trade Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176327246</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="3">
+    <id>3</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Technical Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176318305</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="1">
+    <id>1</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175023297</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="2">
+    <id>2</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Discount</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175026835</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="3">
+    <id>3</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Free</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175036157</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="4">
+    <id>4</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175032974</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="5">
+    <id>5</id>
+    <projectCategoryId>1</projectCategoryId>
+    <itemName>Special Offer</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175019128</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="1">
+    <id>1</id>
+    <projectCategoryId>1</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Product Information"}]
+---
+[{group value="Product Information" display="false"}]
+---
+[{label value="Logo" display="false"}]
+[{field type="image" name="logo"}]
+[{description value="The filename of a wiki image (defaults to logo.png)"}]
+---
+[{label value="Photo" display="false"}]
+[{field type="image" name="photo"}]
+[{description value="The filename of a wiki image (defaults to photo.png)"}]
+---
+[{label value="Manufactured by"}]
+[{field type="text" name="manufacturer" maxlength="50" size="30"}]
+[{description value="Who manufactures the product?"}]
+---
+[{label value="Year available"}]
+[{field type="text" name="yearAvailable" maxlength="4" size="30"}]
+[{description value="What year was the product made available?"}]
++++
+== Introduction ==
+What is the product?
+
+== Features ==
+List the key features that add value to the product.
+
+== Benefits ==
+List how this product is beneficial.
+
+== History ==
+]]></content>
+    <entered>1233170454918</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="1">
+    <id>1</id>
+    <projectCategoryId>1</projectCategoryId>
+    <forumNames><![CDATA[Discuss this product's features
+Discuss using this product
+Success stories
+General discussion]]></forumNames>
+    <entered>1233173082727</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="1">
+    <id>1</id>
+    <projectCategoryId>1</projectCategoryId>
+    <folderNames><![CDATA[Product Information
+Technical Information
+Support Documents]]></folderNames>
+    <entered>1233173750847</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="1">
+    <id>1</id>
+    <projectCategoryId>1</projectCategoryId>
+    <listNames><![CDATA[Related Groups
+Related Partners
+Related Ideas]]></listNames>
+    <entered>1233174585995</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="2">
+    <id>2</id>
+    <description>Services</description>
+    <enabled>true</enabled>
+    <level>20</level>
+    <logoId>2</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#878787!important; }
+
+.profile-menu-portletWindowBackground { background:#c1c1c1!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="2">
+    <id>2</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>2</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Service-100x100.png</subject>
+    <clientFilename>Icons-Service-100x100.png</clientFilename>
+    <filename>20090312131943-2</filename>
+    <directory>null</directory>
+    <size>741</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878383618</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878383618</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAAodJREFUeNrs3bGL2lAcwPFfSh1FCuLkcC4RwUEX11b9B9rNRcx/4M06
+tPcXXAf3dhInaf8B29lJcFAD4i0uTiI6idj34BRPjqtcnkei3y+EkJwJms9dnrnlWdvtVsg/veMS
+AEKAAEKAAEJn6L2pE1mWdfY3OxgMbtSqqpbMiYfM1fI7lUr9fIuLaeIRwjL1HHJuEIXhqNWPVx7e
+U0tewcz9DhKIW9bjX8a9h1NkPB4fvFvWLtu2bx9vKzemztlqtaRUKnk9jZPNZp3VamXy4/5Sy53r
+uj1jt36TtyyFoW8pzkuvi8ViUiwWJZ1On3xufYxevDaZTORUkNlsJv1+XzqdzinjVF6j+GoMSSaT
+n9Tqz0uvKRQKUq1WA/WtRyPW6/X/Qf5VIHm/gXxTq6+7bTWASjgc3v88Ho9LpVIJ5FdRjdJsNp/s
+Gw6HslgsDnclRqPRg5/GkI+HG7VaTXK53H57PB7Ler0OJEgikZBGoyGRSGS/r1wuS7fbPXyZHjM9
+g7zJtywNEVSMXcvl8nKe1IOOodtsNvzr5BoD5NIfDJ8rFApJNBoN9IXSnwEQblkECAECCAECCAEC
+CAECCAFCgABCgABCgABCgABCgBAggBAggBAggBAggBAgBAggBAggBAggBAggBAgBAggBAggBAggB
+AggBAggBQoAAQoAAQoAAQoAAQoAQIIAQIIAQIIAQIIAQIPRcJuegejjcaLfbxzNhXlTT6fR4l5G5
+2k3OhevI6yegD3pz13U/+G2Cez23eO9KQe58N4ao3xD9J/vlClH0BPffTZ3M6AT3u2zbzqjV5wuH
+0GOmnkd9P3aauJbGBvWjN9O74tsXX3sBIUAAIUAIEN/1T4ABAJVJuYZ9KZvLAAAAAElFTkSuQmCC
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="4">
+    <id>4</id>
+    <projectCategoryId>2</projectCategoryId>
+    <itemName>Awards and Recognition</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191711247</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="5">
+    <id>5</id>
+    <projectCategoryId>2</projectCategoryId>
+    <itemName>Industry and Trade Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191687499</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="6">
+    <id>6</id>
+    <projectCategoryId>2</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191884814</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="7">
+    <id>7</id>
+    <projectCategoryId>2</projectCategoryId>
+    <itemName>Discounts</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191889927</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="8">
+    <id>8</id>
+    <projectCategoryId>2</projectCategoryId>
+    <itemName>Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191961855</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="9">
+    <id>9</id>
+    <projectCategoryId>2</projectCategoryId>
+    <itemName>Special Offer</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191966053</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="2">
+    <id>2</id>
+    <projectCategoryId>2</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Service Information"}]
+---
+[{group value="Service Information" display="false"}]
+---
+[{label value="Logo" display="false"}]
+[{field type="image" name="logo"}]
+[{description value="The filename of a wiki image (defaults to logo.png)"}]
+---
+[{label value="Photo" display="false"}]
+[{field type="image" name="photo"}]
+[{description value="The filename of a wiki image (defaults to photo.png)"}]
+---
+[{label value="Date service began"}]
+[{field type="text" name="serviceDate" maxlength="4" size="30"}]
+[{description value="What year was the service first offered?"}]
++++
+== Introduction ==
+
+== Benefits ==
+
+== History ==
+]]></content>
+    <entered>1236192732277</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="2">
+    <id>2</id>
+    <projectCategoryId>2</projectCategoryId>
+    <forumNames><![CDATA[Discuss this service's features
+Discuss using this service
+Success stories
+General discussion]]></forumNames>
+    <entered>1236193890230</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="2">
+    <id>2</id>
+    <projectCategoryId>2</projectCategoryId>
+    <folderNames><![CDATA[Services Information
+Technical Information
+Support Documents]]></folderNames>
+    <entered>1236193274872</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="3">
+    <id>3</id>
+    <description>Solutions</description>
+    <enabled>true</enabled>
+    <level>30</level>
+    <logoId>3</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#878787!important; }
+
+.profile-menu-portletWindowBackground { background:#c1c1c1!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="3">
+    <id>3</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>3</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Solution-100x100.png</subject>
+    <clientFilename>Icons-Solution-100x100.png</clientFilename>
+    <filename>20090312132006-2</filename>
+    <directory>null</directory>
+    <size>2327</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878406009</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878406009</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="6">
+    <id>6</id>
+    <projectCategoryId>3</projectCategoryId>
+    <itemName>Industry and Trade Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176385064</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="10">
+    <id>10</id>
+    <projectCategoryId>3</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175058106</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="11">
+    <id>11</id>
+    <projectCategoryId>3</projectCategoryId>
+    <itemName>Discount</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175052686</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="12">
+    <id>12</id>
+    <projectCategoryId>3</projectCategoryId>
+    <itemName>Free</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175062825</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="13">
+    <id>13</id>
+    <projectCategoryId>3</projectCategoryId>
+    <itemName>Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175073057</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="14">
+    <id>14</id>
+    <projectCategoryId>3</projectCategoryId>
+    <itemName>Special Offer</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175046376</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="3">
+    <id>3</id>
+    <projectCategoryId>3</projectCategoryId>
+    <forumNames><![CDATA[Success stories
+Suggestions
+General discussion]]></forumNames>
+    <entered>1233173140176</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="2">
+    <id>2</id>
+    <projectCategoryId>3</projectCategoryId>
+    <listNames><![CDATA[Related Groups
+Related Partners
+Related Ideas]]></listNames>
+    <entered>1233174592475</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="4">
+    <id>4</id>
+    <description>Partners</description>
+    <enabled>true</enabled>
+    <level>40</level>
+    <logoId>4</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ff9f2a!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#ffdba8!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="4">
+    <id>4</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>4</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Partner-100x100.png</subject>
+    <clientFilename>Icons-Partner-100x100.png</clientFilename>
+    <filename>20090312131121-2</filename>
+    <directory>null</directory>
+    <size>1936</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236877881327</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236877881327</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="7">
+    <id>7</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Awards and Recognition</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191761232</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="8">
+    <id>8</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Certification</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176880056</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="15">
+    <id>15</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175097617</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="16">
+    <id>16</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Discount</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175102336</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="17">
+    <id>17</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Free</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175113666</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="18">
+    <id>18</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175106709</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="19">
+    <id>19</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Special Offer</itemName>
+    <logoId>-1</logoId>
+    <entered>1233175086215</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="1">
+    <id>1</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>For Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174757539</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="2">
+    <id>2</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Jobs</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174747248</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="3">
+    <id>3</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Other</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174777022</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="4">
+    <id>4</id>
+    <projectCategoryId>4</projectCategoryId>
+    <itemName>Services</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174765355</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="3">
+    <id>3</id>
+    <projectCategoryId>4</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Partner Information"}]
+---
+[{group value="Partner Information" display="false"}]
+---
+[{label value="Logo" display="false"}]
+[{field type="image" name="logo"}]
+[{description value="The filename of a wiki image (defaults to logo.png)"}]
+---
+[{label value="Partner Information"}]
+[{field type="text" name="contactInformation" maxlength="50" size="30"}]
+[{description value="Provide information on how this partner can be contacted"}]
+[{entry value="Please update this sample form"}]
+---
+[{label value="Founded"}]
+[{field type="text" name="yearFounded" maxlength="4" size="4"}]
+[{description value="The year the partner was founded"}]
+---
+[{label value="Founder"}]
+[{field type="text" name="founder" maxlength="50" size="30"}]
+[{description value="The name of the founder(s)"}]
+---
+[{label value="Headquarters"}]
+[{field type="text" name="headquarters" maxlength="50" size="30"}]
+[{description value="Where the partner's headquarters is"}]
+---
+[{label value="Services"}]
+[{field type="text" name="services" maxlength="50" size="30"}]
+[{description value="Service type(s)"}]
+---
+[{label value="Products"}]
+[{field type="text" name="products" maxlength="100" size="30"}]
+[{description value="Product type(s)"}]
+---
+[{label value="No. of Employees"}]
+[{field type="number" name="noEmployees" maxlength="8" size="8"}]
+---
+[{label value="Key People"}]
+[{field type="text" name="keyPeople" maxlength="100" size="30"}]
+---
+[{label value="Area(s) Served"}]
+[{field type="text" name="areaServed" maxlength="100" size="30"}]
+[{description value="Country/City/Region"}]
++++
+== Partner Overview ==
+
+Provide information about what this partner does.
+
+== Background & History ==
+
+Provide information on the background and history of the partner.
+
+== Management Team ==
+
+Provide information on the partner's management team.
+
+== Newsroom ==
+
+Provide links to press releases and news about the partner.
+
+== Philosophy & Culture ==
+
+Provide information about the partner's philosophy and culture.
+
+]]></content>
+    <entered>1233172063192</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="4">
+    <id>4</id>
+    <projectCategoryId>4</projectCategoryId>
+    <forumNames><![CDATA[Company topics
+Products discussion
+Services discussion
+Suggestions
+General discussion]]></forumNames>
+    <entered>1233172410200</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="3">
+    <id>3</id>
+    <projectCategoryId>4</projectCategoryId>
+    <folderNames><![CDATA[Company Information
+Product Information
+Support Documents
+Other]]></folderNames>
+    <entered>1233173567904</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="3">
+    <id>3</id>
+    <projectCategoryId>4</projectCategoryId>
+    <listNames><![CDATA[Related Groups
+Our Partners
+Supported Products
+Solutions Provided
+
+]]></listNames>
+    <entered>1233174483752</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="5">
+    <id>5</id>
+    <description>Businesses</description>
+    <enabled>true</enabled>
+    <level>50</level>
+    <logoId>5</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ff9f2a!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#ffdba8!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="6">
+    <id>6</id>
+    <description>Other</description>
+    <enabled>true</enabled>
+    <level>5</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="7">
+    <id>7</id>
+    <description>Alternative Medicine</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="8">
+    <id>8</id>
+    <description>Automotive</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="9">
+    <id>9</id>
+    <description>Business Services</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="10">
+    <id>10</id>
+    <description>Dining</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="11">
+    <id>11</id>
+    <description>Education</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="12">
+    <id>12</id>
+    <description>Employment Services</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="13">
+    <id>13</id>
+    <description>Entertainment</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="14">
+    <id>14</id>
+    <description>Facilities</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="15">
+    <id>15</id>
+    <description>Fitness</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="16">
+    <id>16</id>
+    <description>Garden</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="17">
+    <id>17</id>
+    <description>Government</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="18">
+    <id>18</id>
+    <description>Hobbies</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="19">
+    <id>19</id>
+    <description>Home Entertainment</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="20">
+    <id>20</id>
+    <description>Insurance</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="21">
+    <id>21</id>
+    <description>Internet</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="22">
+    <id>22</id>
+    <description>Legal Services</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="23">
+    <id>23</id>
+    <description>Medical Specialists</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="24">
+    <id>24</id>
+    <description>Personal Services</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="25">
+    <id>25</id>
+    <description>Pets</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="26">
+    <id>26</id>
+    <description>Professional</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="27">
+    <id>27</id>
+    <description>Real Estate</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="28">
+    <id>28</id>
+    <description>Recreation</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="29">
+    <id>29</id>
+    <description>Religion</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="30">
+    <id>30</id>
+    <description>Shopping</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="31">
+    <id>31</id>
+    <description>Social Services</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="32">
+    <id>32</id>
+    <description>Special Occasions</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="33">
+    <id>33</id>
+    <description>Travel</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="34">
+    <id>34</id>
+    <description>Utilities</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="35">
+    <id>35</id>
+    <description>Wholesale Goods</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>5</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="5">
+    <id>5</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>5</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Business-100x100.png</subject>
+    <clientFilename>Icons-Business-100x100.png</clientFilename>
+    <filename>20090312131013-2</filename>
+    <directory>null</directory>
+    <size>1116</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236877813672</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236877813672</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAA/5JREFUeNrsnEtME1EUhs+dlrbIo8UEIo+GiY9E3QBuDNGEmrgRY4BE
+3ZmgWxeoiW6FpXHD1o26cKUucOPKhLoQEhdGFxgSl6glYsQoUKltxzNtIVj6mCedzvxfMsyCO9Pb
++9/7n3PuDBABAAAAAAAAAAAAgDIIDEFp/jzs7uWTrPOyn6FrXz5AEHsEmeVTzMCl/WZEkTD0lhMx
+czEEcRgQBIIACAJBAARBYejKQvC92bS1iGmuSW5ihRhDtliMXJEIy0IMARAEQd3VgTxO+nd1jTDK
+Af4FVkj1QC7v0Wfd0NLI78BZ+0jDIE1rmW31iN+BfRrX2M6VgiCoY4XUhvTik6GCj28Xf8rf9Qht
+LJe9RtlcpezSKyI+QxDrmaSiR7KioYkofKhyCrolCiwLllWV1MuLat7+WEPT6cDwc81BlzOrET7N
+6OhKjK9RKP+WR5uXY4hM2t7EiOvMgvoN9j9SJW5M7GhjqN4QrQdJip7Nx5T1r6T8+IgYYjCI96kr
+1fRWBscYUYgzSjpJmbeTtvZb09YJW9WEwS83w9Y1VsGqwoX7xkxUzOpqjLN1TZXIquLGo2uAR2d3
+iM0sPNB9KyW5QpRcUft4xqoVErHDUgpp6LjJSRUrHFPWpToBEi09pQfspP6PUTa+Ufr1dedYViYx
+N1IqTmQT8zFlbYl9ecF2b9bnG9Ymn2JfhzUxhK2qr5C/Gw26/XyPWS6wZBFs22VJUucg/xykzKen
+lgnCVrUlvkx1SLUVMlo4jBLJ2UlqjShof3bKYvTqTJ8dh9sKQ3OrwhfKT5xAi/UDfeyqzNZ9l48w
+tk40Gb2fRHOXbbf3ycPyDvsfq8kKEfuPk2/gFmcs0cqdPXKZGs49I9Edq6FX7NncjNTOsgJhfQI2
+tnt+odanZbHPi6IkIb14b8hENuhyQXim+45e0e+zbF2SfJ7Sb26rlW35docvbW9nFFXsdY89luUL
+Go87DU2eti48D6lXyxLtAyT1lN8byybmSVmet3f2yBdI6jqNFbJdNNW6VGjqxAqh5h6SDgxyCtta
+teYQ3Da78o4oswnvsWuFiOZorrATwco1hfr7XLvGDoyqK+sQzrT8p+7n3wwpQkl+J0r98pYgmcRc
+r7K5Oq43EctZV4VXa/RU7aXEyP/S58kVUvIZRtWBDIZNd8p34k55MdTPCHGVzofy+zOndynUIbZn
+UxXE+L+h+8qo+v5G6nMLB6TjeyWI4zfqhCpIqM0zgkQI2EHMvZblxcIQQBAIAiAIgCAQBEAQCAIg
+CARxNhlsvzsLJQtBAASBIACCAAgCQQAEgSAAgkAQAEEgCIAgAIJAEABBIAgwSqW/oIpT/t8JAQAA
+AAAAAAAAAHiUfwIMAEuf1Q18/FQuAAAAAElFTkSuQmCC
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="9">
+    <id>9</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>Awards and Recognition</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191811536</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="20">
+    <id>20</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1222462089091</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="21">
+    <id>21</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>Discounts</itemName>
+    <logoId>-1</logoId>
+    <entered>1222462078805</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="22">
+    <id>22</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>Free</itemName>
+    <logoId>-1</logoId>
+    <entered>1222462092829</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="23">
+    <id>23</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1222462083633</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="5">
+    <id>5</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>For Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720204963</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="6">
+    <id>6</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>Jobs</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720214786</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="7">
+    <id>7</id>
+    <projectCategoryId>5</projectCategoryId>
+    <itemName>Services</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720231202</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="4">
+    <id>4</id>
+    <projectCategoryId>5</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Business Information"}]
+---
+[{group value="Business Information" display="false"}]
+---
+[{label value="Logo" display="false"}]
+[{field type="image" name="logo"}]
+[{description value="The filename of a wiki image (defaults to logo.png)"}]
+---
+[{label value="Contact Information"}]
+[{field type="text" name="contactInformation" maxlength="50" size="30"}]
+[{description value="Provide information on how your business can be contacted"}]
+---
+[{label value="Founded"}]
+[{field type="text" name="yearFounded" maxlength="4" size="4"}]
+[{description value="The year the business was founded"}]
+---
+[{label value="Founder"}]
+[{field type="text" name="founder" maxlength="50" size="30"}]
+[{description value="The name of the founder(s)"}]
+---
+[{label value="Headquarters"}]
+[{field type="text" name="headquarters" maxlength="50" size="30"}]
+[{description value="Where the business headquarters is"}]
+---
+[{label value="Products"}]
+[{field type="text" name="products" maxlength="50" size="30"}]
+[{description value="Product type(s)"}]
+---
+[{label value="No. of Employees"}]
+[{field type="number" name="noEmployees" maxlength="8" size="8"}]
+---
+[{label value="Revenue"}]
+[{field type="currency" name="revenue" maxlength="20" size="20"}]
+---
+[{label value="Key People"}]
+[{field type="text" name="keyPeople" maxlength="100" size="30"}]
+---
+[{label value="Area(s) Served"}]
+[{field type="text" name="areaServed" maxlength="100" size="30"}]
+[{description value="City/Region"}]
+---
+[{label value="Type"}]
+[{field type="select" name="type" options="-- None --|Public|Private"}]
+[{entry value="-- None --"}]
+---
+[{label value="Exchange/Symbol"}]
+[{field type="text" name="stockSymbol" maxlength="10" size="10"}]
++++
+== Company Overview ==
+
+Provide information about what the company does.
+
+== Background & History ==
+
+Provide information on the background and history of the company.
+
+== Management Team ==
+
+Provide information on the company's management team.
+
+== Newsroom ==
+
+Provide links to press releases and news about the business.
+
+== Philosophy & Culture ==
+
+Provide information about the company's philosophy and culture.
+
+== Investor Relations ==
+
+Provide information about investor relations.
+
+]]></content>
+    <entered>1222080005714</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="5">
+    <id>5</id>
+    <projectCategoryId>5</projectCategoryId>
+    <forumNames><![CDATA[What do you like most about us?
+What new things might we offer?
+Ideas for improvement
+General discussion]]></forumNames>
+    <entered>1222080084199</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="4">
+    <id>4</id>
+    <projectCategoryId>5</projectCategoryId>
+    <folderNames>Public Materials</folderNames>
+    <entered>1222719132264</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="4">
+    <id>4</id>
+    <projectCategoryId>5</projectCategoryId>
+    <listNames><![CDATA[Our Customers
+Our Partners
+Our Vendors
+Our Events
+Interesting Events
+Interesting Groups]]></listNames>
+    <entered>1222718898690</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="36">
+    <id>36</id>
+    <description>Organizations</description>
+    <enabled>true</enabled>
+    <level>60</level>
+    <logoId>6</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ff9f2a!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#ffdba8!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="6">
+    <id>6</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>36</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Organization-100x100.png</subject>
+    <clientFilename>Icons-Organization-100x100.png</clientFilename>
+    <filename>20090312131103-2</filename>
+    <directory>null</directory>
+    <size>3185</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236877863831</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236877863831</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="10">
+    <id>10</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>Awards and Recognition</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191816821</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="24">
+    <id>24</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720733451</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="25">
+    <id>25</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>Discounts</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720714768</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="26">
+    <id>26</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>Free</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720739897</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="27">
+    <id>27</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720723867</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="8">
+    <id>8</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>For Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720327825</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="9">
+    <id>9</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>Jobs</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720334513</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="10">
+    <id>10</id>
+    <projectCategoryId>36</projectCategoryId>
+    <itemName>Services</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720345434</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="5">
+    <id>5</id>
+    <projectCategoryId>36</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Organization Information"}]
+---
+[{group value="Organization Information" display="false"}]
+---
+[{label value="Logo" display="false"}]
+[{field type="image" name="logo"}]
+[{description value="The filename of a wiki image (defaults to logo.png)"}]
+---
+[{label value="Contact Information"}]
+[{field type="text" name="contactInformation" maxlength="50" size="30"}]
+[{description value="Provide information on how the organization can be contacted"}]
+[{entry value="Please update this sample form"}]
+---
+[{label value="Founded"}]
+[{field type="text" name="yearFounded" maxlength="4" size="4"}]
+[{description value="The year the organization was founded"}]
+---
+[{label value="Founder"}]
+[{field type="text" name="founder" maxlength="50" size="30"}]
+[{description value="The name of the founder(s)"}]
+---
+[{label value="Headquarters"}]
+[{field type="text" name="headquarters" maxlength="50" size="30"}]
+[{description value="Where the organization headquarters is"}]
+---
+[{label value="Services"}]
+[{field type="text" name="services" maxlength="50" size="30"}]
+[{description value="Service type(s)"}]
+---
+[{label value="Products"}]
+[{field type="text" name="products" maxlength="50" size="30"}]
+[{description value="Product type(s)"}]
+---
+[{label value="No. of Employees"}]
+[{field type="number" name="noEmployees" maxlength="8" size="8"}]
+---
+[{label value="Revenue"}]
+[{field type="currency" name="revenue" maxlength="20" size="20"}]
+---
+[{label value="Key People"}]
+[{field type="text" name="keyPeople" maxlength="100" size="30"}]
+---
+[{label value="Area(s) Served"}]
+[{field type="text" name="areaServed" maxlength="100" size="30"}]
+[{description value="City/Region"}]
+---
+[{label value="Type"}]
+[{field type="select" name="type" options="-- None --|Public|Private"}]
+[{entry value="-- None --"}]
++++
+== Organization Overview ==
+
+Provide information about what the organization does.
+
+== Background & History ==
+
+Provide information on the background and history of the organization.
+
+== Management Team ==
+
+Provide information on the organization management team.
+
+== Newsroom ==
+
+Provide links to press releases and news about the organization.
+
+== Philosophy & Culture ==
+
+Provide information about the organization's philosophy and culture.
+
+== Fundraising ==
+
+Provide information about fundraising.
+
+]]></content>
+    <entered>1222079986129</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="6">
+    <id>6</id>
+    <projectCategoryId>36</projectCategoryId>
+    <forumNames><![CDATA[What do you like most about us?
+What new things might we offer?
+Ideas for improvement
+General discussion]]></forumNames>
+    <entered>1222080135173</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="5">
+    <id>5</id>
+    <projectCategoryId>36</projectCategoryId>
+    <listNames><![CDATA[Our Partners
+Our Events
+Interesting Events
+Interesting Groups]]></listNames>
+    <entered>1222718933726</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="37">
+    <id>37</id>
+    <description>Groups</description>
+    <enabled>true</enabled>
+    <level>70</level>
+    <logoId>7</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#a7cf52!important; color: #fff }
+
+.profile-menu-portletWindowBackground { background:#d2e7a7!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="38">
+    <id>38</id>
+    <description>Other</description>
+    <enabled>true</enabled>
+    <level>10</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="39">
+    <id>39</id>
+    <description>Education</description>
+    <enabled>true</enabled>
+    <level>20</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="40">
+    <id>40</id>
+    <description>Just For Fun</description>
+    <enabled>true</enabled>
+    <level>30</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="41">
+    <id>41</id>
+    <description>Networking</description>
+    <enabled>true</enabled>
+    <level>40</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="42">
+    <id>42</id>
+    <description>Outdoor</description>
+    <enabled>true</enabled>
+    <level>50</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="43">
+    <id>43</id>
+    <description>Professional</description>
+    <enabled>true</enabled>
+    <level>55</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="44">
+    <id>44</id>
+    <description>Sports</description>
+    <enabled>true</enabled>
+    <level>60</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="45">
+    <id>45</id>
+    <description>Support</description>
+    <enabled>true</enabled>
+    <level>70</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="46">
+    <id>46</id>
+    <description>Technical</description>
+    <enabled>true</enabled>
+    <level>80</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>37</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="7">
+    <id>7</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>37</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Group-100x100.png</subject>
+    <clientFilename>Icons-Group-100x100.png</clientFilename>
+    <filename>20090312131218-2</filename>
+    <directory>null</directory>
+    <size>1799</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236877938658</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236877938658</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="11">
+    <id>11</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>Certification</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176253791</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badge" id="1">
+    <id>1</id>
+    <categoryId>11</categoryId>
+    <title>Corporate</title>
+    <description>Concursive Corporate Groups are run by the folks at Concursive.</description>
+    <logoId>-1</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage>http://www.concursive.com</webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1234542177154</modified>
+    <entered>1233684046669</entered>
+    <systemAssigned>true</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="12">
+    <id>12</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>Investor Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176300916</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="13">
+    <id>13</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>Partner Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1233177096844</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="11">
+    <id>11</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>For Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174720387</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="12">
+    <id>12</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>Jobs</itemName>
+    <logoId>-1</logoId>
+    <entered>1233762017020</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="13">
+    <id>13</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>Other</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174731212</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="14">
+    <id>14</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>Services</itemName>
+    <logoId>-1</logoId>
+    <entered>1233762024462</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="15">
+    <id>15</id>
+    <projectCategoryId>37</projectCategoryId>
+    <itemName>Wanted</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174726354</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="6">
+    <id>6</id>
+    <projectCategoryId>37</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Group Information"}]
+---
+[{group value="Group Information" display="false"}]
+---
+[{label value="Logo" display="false"}]
+[{field type="image" name="logo"}]
+[{description value="The filename of a wiki image (defaults to logo.png)"}]
+---
+[{label value="Group Information"}]
+[{field type="text" name="contactInformation" maxlength="50" size="30"}]
+[{description value="Provide information on how this group can be contacted"}]
+[{entry value="Please update this sample form"}]
+---
+[{label value="Founded"}]
+[{field type="text" name="yearFounded" maxlength="4" size="4"}]
+[{description value="The year the group was founded"}]
+---
+[{label value="Founder"}]
+[{field type="text" name="founder" maxlength="50" size="30"}]
+[{description value="The name of the founder(s)"}]
+---
+[{label value="Headquarters"}]
+[{field type="text" name="headquarters" maxlength="50" size="30"}]
+[{description value="Where the group's headquarters is"}]
+---
+[{label value="Services"}]
+[{field type="text" name="services" maxlength="50" size="30"}]
+[{description value="Service type(s)"}]
+---
+[{label value="Products"}]
+[{field type="text" name="products" maxlength="100" size="30"}]
+[{description value="Product type(s)"}]
+---
+[{label value="No. of Employees"}]
+[{field type="number" name="noEmployees" maxlength="8" size="8"}]
+---
+[{label value="Key People"}]
+[{field type="text" name="keyPeople" maxlength="100" size="30"}]
+---
+[{label value="Area(s) Served"}]
+[{field type="text" name="areaServed" maxlength="100" size="30"}]
+[{description value="Country/City/Region"}]
++++
+== Group Overview ==
+
+Provide information about what this group does.
+
+== Background & History ==
+
+Provide information on the background and history of the group.
+
+== Management Team ==
+
+Provide information on the group's management team.
+
+== Newsroom ==
+
+Provide links to press releases and news about the group.
+
+== Philosophy & Culture ==
+
+Provide information about the group's philosophy and culture.
+
+]]></content>
+    <entered>1233171942596</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="7">
+    <id>7</id>
+    <projectCategoryId>37</projectCategoryId>
+    <forumNames><![CDATA[Thoughts about our group
+Suggestions
+General discussion]]></forumNames>
+    <entered>1233172331956</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="5">
+    <id>5</id>
+    <projectCategoryId>37</projectCategoryId>
+    <folderNames><![CDATA[Information
+Pictures
+Other]]></folderNames>
+    <entered>1233173539838</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="6">
+    <id>6</id>
+    <projectCategoryId>37</projectCategoryId>
+    <listNames><![CDATA[Related Groups
+Interesting Ideas
+Recommended Businesses]]></listNames>
+    <entered>1233174423206</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="47">
+    <id>47</id>
+    <description>People</description>
+    <enabled>true</enabled>
+    <level>80</level>
+    <logoId>8</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#0461ac!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#9cc0df!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="8">
+    <id>8</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>47</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-People-100x100.png</subject>
+    <clientFilename>Icons-People-100x100.png</clientFilename>
+    <filename>20090312131301-2</filename>
+    <directory>null</directory>
+    <size>855</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236877981944</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236877981944</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAAvlJREFUeNrsne112jAUQK0sAJ0gbACdIGxAOwF0AtIJYIO0E7gbQCaw
+O0HoBKQTQCdwpVbpAY7rOLZkPaN7z9HhD4nxuzx98QRJAgAAAAAAAAAA0A/UtdxIURRj/TD8c1NK
+fUdtt8Ef6DbXLdVtX5Rz0C3TbanbLVHzJ2Jlg/1WUsS4lTFrKOKSB6LZXkZauOXJZBuRlSHjhb2d
+CIAAGWRKAxnLohsyov26jFtHA3hdlkS9Wsim6JYDXVd1doRgRfTDDOT/nXWxl1Uu5PCyJxWAiVLq
+R8j7v5G6QRiID6FjcCMsQaaRX1+ckGHg648YQ867rCz0u1SPIYoMAYQgpB67wNc/IkRWQHYIOSdH
+CF2WKCESt042AVfMQz3r/UWGnLMNdN1voWWIzBCbJfsAq+aRFvKTiXe5kFnHW+8pUa8xlvBpoSwh
+g4oyUZfcEe36Usaeix3mRLmZlD0y5HVfGRWL8sTMW2TLwVbOM4B7ElN3FvZkqyB7IULi1ok5wzGx
+2ydmcfhFL9geK55/Z59/+fFvrttz2WLP/s06+bu7bHYGchaF54P28pXTUJmLwza2CC+t6NI29rWM
+Y5MwsDf+1vHABGzWUHraYPB/6PrUlepahH64t61Nhcm/rsZ0S7rtTjcGbZc0uuj62mCus76qw6QO
+j6SFJPU9OVAdyTCbd4sreW+Z7FxUTTREC7kyGaeY2d/nvnVTq+K6SXuTIXZgzSOYNN7rTPnaByHB
+y0I7ZOpqBqbIDieYafd7F//IV5HDIomLiavtfF8ZEvIUVCi2Oks+ihMSYXd1Suu6Lh9d1iSJl9b3
+7kPIKGIha4lCYs4QsbMsQIgIjggRtkBECF0WIAQhgBBACEIAIQgBhCAEEIIQQAggBCGAEISALCF5
+xPFsfe8+KhfNCdZdhDKOSql34jLE/rrANkIhayfx8/HK7MFIk76xFM2Zrwf8JHZQtwXHU/NCY8gM
+VzK8ZchFtpiD94uk/Osv+sqzHSdFfHEmAAAAAAAAAPjitwADAELZ8I2FE/i3AAAAAElFTkSuQmCC
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="14">
+    <id>14</id>
+    <projectCategoryId>47</projectCategoryId>
+    <itemName>About Me</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176412200</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="15">
+    <id>15</id>
+    <projectCategoryId>47</projectCategoryId>
+    <itemName>Certification</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176424252</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badge" id="2">
+    <id>2</id>
+    <categoryId>15</categoryId>
+    <title>Employee</title>
+    <description>A Concursive employee</description>
+    <logoId>-1</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1234544566073</modified>
+    <entered>1233942685540</entered>
+    <systemAssigned>true</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="16">
+    <id>16</id>
+    <projectCategoryId>47</projectCategoryId>
+    <itemName>Contribution Awards</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176445108</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="17">
+    <id>17</id>
+    <projectCategoryId>47</projectCategoryId>
+    <itemName>Industry and Trade Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176437249</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="16">
+    <id>16</id>
+    <projectCategoryId>47</projectCategoryId>
+    <itemName>For Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174680509</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="17">
+    <id>17</id>
+    <projectCategoryId>47</projectCategoryId>
+    <itemName>Personal/Other</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174705375</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="18">
+    <id>18</id>
+    <projectCategoryId>47</projectCategoryId>
+    <itemName>Wanted</itemName>
+    <logoId>-1</logoId>
+    <entered>1233174690345</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="7">
+    <id>7</id>
+    <projectCategoryId>47</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="My Information"}]
+---
+[{group value="My Information" display="false"}]
+---
+[{label value="Hometown"}]
+[{field type="text" name="hometown" maxlength="50" size="30"}]
+[{description value="City, State"}]
+---
+[{label value="Occupation"}]
+[{field type="select" name="occupation" options="-- None --|Business Applications User|Developer|Designer|Executive|Student|Curious Observer" value="" required="false"}]
+---
+[{label value="Occupation Title"}]
+[{field type="text" name="title" maxlength="50" size="30"}]
+---
+[{label value="Interested in Collaboration"}]
+[{field type="checkbox" name="collaborationInterest" value="Yes"}]
+---
+[{label value="Interested in Communities"}]
+[{field type="checkbox" name="communitiesInterest" value="Yes"}]
+---
+[{label value="Interested in CRM"}]
+[{field type="checkbox" name="crmInterest" value="Yes"}]
+---
+[{label value="Favorite website"}]
+[{field type="text" name="favoriteWebsite" maxlength="50" size="30"}]
+---
+[{label value="Most recent discovery"}]
+[{field type="text" name="recentDiscovery" maxlength="50" size="30"}]
+---
+[{label value="When I'm not online..."}]
+[{field type="text" name="hobbies" maxlength="255" size="50"}]
+[{description value="Some of your hobbies"}]
+---
+[{label value="What's interesting about me?"}]
+[{field type="text" name="about" maxlength="255" size="30"}]
+---
+[{label value="Favorite quote"}]
+[{field type="text" name="favoriteQuote" maxlength="255" size="45"}]
+---
+[{label value="Favorite movie"}]
+[{field type="text" name="favoriteMovie" maxlength="50" size="30"}]
+---
+[{label value="Favorite book"}]
+[{field type="text" name="favoriteBook" maxlength="50" size="30"}]
+---
+[{label value="Favorite song"}]
+[{field type="text" name="favoriteSong" maxlength="50" size="30"}]
+---
+[{label value="Favorite sport"}]
+[{field type="text" name="favoriteSport" maxlength="50" size="30"}]
+---
+[{label value="Favorite sports team"}]
+[{field type="text" name="favoriteSportsTeam" maxlength="50" size="30"}]
+---
+[{label value="Favorite restaurant"}]
+[{field type="text" name="favorite restaurant" maxlength="50" size="30"}]
+---
+[{label value="Favorite club"}]
+[{field type="text" name="favoriteClub" maxlength="50" size="30"}]
+---
+[{label value="Favorite color"}]
+[{field type="text" name="favoriteColor" maxlength="50" size="30"}]
+---
+[{label value="Favorite food"}]
+[{field type="text" name="favoriteFood" maxlength="50" size="30"}]
+---
+[{label value="Favorite animal"}]
+[{field type="text" name="favoriteAnimal" maxlength="50" size="30"}]
+---
+[{label value="Astrological sign"}]
+[{field type="text" name="astrologicalSign" maxlength="50" size="30"}]
++++
+== Background & History ==
+
+Tell everyone about yourself.
+]]></content>
+    <entered>1233169679286</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="8">
+    <id>8</id>
+    <projectCategoryId>47</projectCategoryId>
+    <forumNames><![CDATA[General discussion
+Ask me a question]]></forumNames>
+    <entered>1233172305409</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="6">
+    <id>6</id>
+    <projectCategoryId>47</projectCategoryId>
+    <folderNames><![CDATA[My Documents
+My Pictures
+]]></folderNames>
+    <entered>1233173505708</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="7">
+    <id>7</id>
+    <projectCategoryId>47</projectCategoryId>
+    <listNames><![CDATA[Favorites
+Products I Use
+Solutions I'm Interested In
+Interesting Groups
+Good Ideas
+Things to Explore
+]]></listNames>
+    <entered>1233174338831</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="48">
+    <id>48</id>
+    <description>Places</description>
+    <enabled>true</enabled>
+    <level>90</level>
+    <logoId>9</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ffcf00!important; }
+
+.profile-menu-portletWindowBackground { background:#fff29e!important; margin:0 0 10px 0 }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="9">
+    <id>9</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>48</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Places-100x100.png</subject>
+    <clientFilename>Icons-Places-100x100.png</clientFilename>
+    <filename>20090312132121-2</filename>
+    <directory>null</directory>
+    <size>1254</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878481013</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878481013</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAABIhJREFUeNrsnftR4zAQxmUm/5MOzlSAqYBQAaEDUwFQAbkKcleB6QCo
+IKYCfBUkVwG5CnxasgJH+BVs2evk+2Y0GYLxQz/vQzJae2maKkiOjtAFAAIBCIBAAAIgEIAACAQg
+h62Rqx17ntfJBaRpOtUfgW4P+pirvju08cwH7cBF6+DCx7q9ptsKJQBp0obsskK2jKzmiCH9aVzz
+OwCBBAZ1Ab7c1x8U8E918/lrCvovOvg/SD7xoQb1WZqviW6LtFxL2g5BvRstdKvqbLKYhYSsDDFk
+W5E0KAjqGyi3ACJLcw3lkQabACJHlJEtOVkYA4icweY9gyGrCQBEDhiKK6+cIr8H/6pUuQ2AI/R9
+pShFDrlVjbES3c5gIXJ0B5clR0+e58UAIkPrNqwDQNrTz7aeVgJIc8Uaxi+kvXJc1RXGIXJgXGjr
+WAOIkBRXw0gwUpeha1dPHfd5pJ6wWzGatJXeunwEvI9ArnmQ9sW381zUpdpMg+w6o0tp7ZULN7XX
+Lovu3qJASyNp3WgAd0JjB8uCykRp7ZlrGAcbQwiYbrMMmKTAIgjECUFsO5s6xBhSC4z+mHEzLk21
+MScFIO0Aivs+B6S9wgQgAAIBCIBAAAIgEIAACAQgAAIBCAQgAAIBCIBAAAIgEIAACAQgEIAACAQg
+AAIBCIAIVVzzOwDpQvx/uNnVrytlrRWnOlgSSi7tFRAqZsk1FGc5UGiZgNFJzvqNc7Wp7BMOhoj0
+IphcjccUrpzW/JuAC5J9yIYstT9Hwm4Oci9BwbIA6kTqZFrTkXD7l/n9sdpUuqZmu6kH6+d7LqX0
+W1zJWCkWwpXc3mz3wi4rSr+n1zx3RZZmlYwNYCHbVrFQn3XcfStOULC+1ttRwJ7wdj/s7TKB/a+x
+oLz6I3y8e8vyKEadSXi7Qu8WYvt61rzt7IjfphCyFeZpltku6Ks/j3q0CqO8QH3L2VHE7mX8zeP4
+DCGi/ekWqeLl0Gu2SPq8YVc2d5kA5KbzrsqC573QhRdV3pBr4eXJijurTlq64mYHc1un3OmTHU6X
+9vlRt4QhLK2koFYJpkG80IXT0Gw9dt9yJYu0P31xj2xZeQpd96dzIOwybE1zLiTMeWOOK5W6o4K4
+thVrBgmkAIbpEL9kUDdr2WrezGi/LGCztT7W2J/vCojn8NUSth/OC6KVhVy4A7Mx4Vh9fdVRVi9W
+zFlV+X52Wbcc3+okEHdFVeTExhCe2KvrPsI+JgE5g4tKUuF011gieWC43sGSKNOijon5Do95YLdu
+sfPHbFkTzsSmDa7raXBpL5v+UjV7UZed6pp5rKrjGpdmRvSBau+FYVSi6clV2ut0HMKmHan90Jph
+xC7HIU5H6hywL/guH7JMmabY9YGcT53wRVCB+l0KhkmxiM7rZXU9dTLmYHrZIKi6hkDx4bksTrh0
+WZ0CKYBzrj4fLHUtkzC8Z3ZtlPAbLJCCi5lkMqJz/rpphmQyNbr7/2QytcSFG9orIDUuti6cVV8P
+m5r250jqiRUo6fn4zoX/XAQQCEAABAIQAIEABEAgADlw/RdgAPVjDwTrTyeAAAAAAElFTkSuQmCC
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="18">
+    <id>18</id>
+    <projectCategoryId>48</projectCategoryId>
+    <itemName>Awards and Recognition</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191731385</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="28">
+    <id>28</id>
+    <projectCategoryId>48</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191916333</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="29">
+    <id>29</id>
+    <projectCategoryId>48</projectCategoryId>
+    <itemName>Discounts</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191922387</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="19">
+    <id>19</id>
+    <projectCategoryId>48</projectCategoryId>
+    <itemName>For Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1236192049502</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="20">
+    <id>20</id>
+    <projectCategoryId>48</projectCategoryId>
+    <itemName>Jobs</itemName>
+    <logoId>-1</logoId>
+    <entered>1236192042652</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="21">
+    <id>21</id>
+    <projectCategoryId>48</projectCategoryId>
+    <itemName>Services</itemName>
+    <logoId>-1</logoId>
+    <entered>1236192058888</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="8">
+    <id>8</id>
+    <projectCategoryId>48</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Place Information"}]
+---
+[{group value="Place Information" display="false"}]
+---
+[{label value="Photo" display="false"}]
+[{field type="image" name="photo"}]
+[{description value="The filename of a wiki image (defaults to photo.png)"}]
+---
+[{label value="Established"}]
+[{field type="text" name="yearOpened" maxlength="4" size="4"}]
+[{description value="The year the place opened"}]
+---
+[{label value="Land area"}]
+[{field type="text" name="landArea" maxlength="50" size="30"}]
+[{description value="The area the place occupies, indicate unit of measure"}]
+---
+[{label value="Visitors each year"}]
+[{field type="text" name="numberOfVisitors" maxlength="50" size="30"}]
+[{description value="The number of visitors each year"}]
+---
+[{label value="Budget"}]
+[{field type="currency" name="budget" maxlength="100" size="30"}]
+[{description value="The yearly budget"}]
+---
+[{label value="Staff"}]
+[{field type="number" name="staff" maxlength="8" size="8"}]
+[{description value="The number of staff members"}]
+---
+[{label value="Director"}]
+[{field type="text" name="director" maxlength="100" size="30"}]
+[{description value="The name of the place's director"}]
+---
+[{label value="Area(s) Served"}]
+[{field type="text" name="areaServed" maxlength="100" size="30"}]
+[{description value="Country/City/Region"}]
++++
+== Place Overview ==
+
+Provide current information about this place.
+
+== Using This Place ==
+Provide information about who can use this place.
+
+== Annual Events ==
+
+List any annual events this place is known for.
+
+== Background & History ==
+
+Provide information on the background and history of the place.
+
+== Newsroom ==
+
+Provide links to press releases and news about the place.
+]]></content>
+    <entered>1236194436268</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="9">
+    <id>9</id>
+    <projectCategoryId>48</projectCategoryId>
+    <forumNames><![CDATA[What did you like most about this place?
+What new things would you like to see here?
+General discussion]]></forumNames>
+    <entered>1236193953531</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="49">
+    <id>49</id>
+    <description>Events</description>
+    <enabled>true</enabled>
+    <level>100</level>
+    <logoId>11</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#803082!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#cfaacd!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="10">
+    <id>10</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>49</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Event-100x100.png</subject>
+    <clientFilename>Icons-Event-100x100.png</clientFilename>
+    <filename>20090312131452-2</filename>
+    <directory>null</directory>
+    <size>678</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878092678</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878092678</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAAkhJREFUeNrs3TtOw0AUheHYG2ErVFCxEkSLxAqQaFFWQgUVW2ElRk4F
+UZx4nHmcM/c/Ujojjf1x5xnMME3TjuhkAAQQAgggVfN08/LvJt5/XgdARDDcYcZeMVwz7jqOI5ht
+l5XysJ26rpHffCqkCYZLlViBXFsZDig2ILm6KXUUC5DcY4YyijxIyQFcEUYapMZsSg1FEqT2tFYJ
+RQ6k1RpDBUUKRGHB1xpGAkRt5d0SpTmI6jZIK5SmIA57UrVhmoC4bQ7WRKkK4r5LWwOmCkhv2+Ul
+YYqD9Hx2UQKmGEjPECVhsoJEQigFkwUkOkROnM0gIJSBSQIBoTzQWRAA6sMAIgYz8ki0AohYLg7q
+dFt1x5Gxo5s7fKgQknWWNW79wePcPd4ePi2vXRvltq5aGH68fR4u+tp/n2zEqZS49tR1WzBqtPXS
+tQ/P98PVIApJQcldWTmzBGI1qKdWSI6KYh3S0cNlYQgI1REOJBKGPEg0DMYQQKgOS5CoGHRZgFAd
+ViDRMaRAwGAMAYTqMAABgy4LEKrDAAQMIRAwGEMAoToMQMCgywKE6jAAAYMuCxACCCCkExDlPwsI
+WyGgCHZZoAiOIaAIDuqgCM6yQBGc9oIiuA4BRXBhCIrgSh0UMRBQBEFAEd1cjIwiu9sbFUV6+z0i
+ivx5SDQUiwOqSCg2J4ZbUBwhrY5wUx6w0z+1twVZi+KKMWf1y/iVXvM3Z+nLd8cYau2es/R6vyQQ
+1Zv7C7NUGUrtPoeRDEKEuiwCCCAEEAIIICQhvwIMAKXDf19WPbSxAAAAAElFTkSuQmCC
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="11">
+    <id>11</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>49</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Event-100x100.png</subject>
+    <clientFilename>Icons-Event-100x100.png</clientFilename>
+    <filename>20090312131515-2</filename>
+    <directory>null</directory>
+    <size>678</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878115235</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878115235</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAAkhJREFUeNrs3TtOw0AUheHYG2ErVFCxEkSLxAqQaFFWQgUVW2ElRk4F
+UZx4nHmcM/c/Ujojjf1x5xnMME3TjuhkAAQQAgggVfN08/LvJt5/XgdARDDcYcZeMVwz7jqOI5ht
+l5XysJ26rpHffCqkCYZLlViBXFsZDig2ILm6KXUUC5DcY4YyijxIyQFcEUYapMZsSg1FEqT2tFYJ
+RQ6k1RpDBUUKRGHB1xpGAkRt5d0SpTmI6jZIK5SmIA57UrVhmoC4bQ7WRKkK4r5LWwOmCkhv2+Ul
+YYqD9Hx2UQKmGEjPECVhsoJEQigFkwUkOkROnM0gIJSBSQIBoTzQWRAA6sMAIgYz8ki0AohYLg7q
+dFt1x5Gxo5s7fKgQknWWNW79wePcPd4ePi2vXRvltq5aGH68fR4u+tp/n2zEqZS49tR1WzBqtPXS
+tQ/P98PVIApJQcldWTmzBGI1qKdWSI6KYh3S0cNlYQgI1REOJBKGPEg0DMYQQKgOS5CoGHRZgFAd
+ViDRMaRAwGAMAYTqMAABgy4LEKrDAAQMIRAwGEMAoToMQMCgywKE6jAAAYMuCxACCCCkExDlPwsI
+WyGgCHZZoAiOIaAIDuqgCM6yQBGc9oIiuA4BRXBhCIrgSh0UMRBQBEFAEd1cjIwiu9sbFUV6+z0i
+ivx5SDQUiwOqSCg2J4ZbUBwhrY5wUx6w0z+1twVZi+KKMWf1y/iVXvM3Z+nLd8cYau2es/R6vyQQ
+1Zv7C7NUGUrtPoeRDEKEuiwCCCAEEAIIICQhvwIMAKXDf19WPbSxAAAAAElFTkSuQmCC
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="19">
+    <id>19</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>Awards and Recognition</itemName>
+    <logoId>-1</logoId>
+    <entered>1236191739185</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="30">
+    <id>30</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>Coupon</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720637746</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="31">
+    <id>31</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>Discounts</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720616612</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="32">
+    <id>32</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>Free</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720645047</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="adCategory" id="33">
+    <id>33</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720624808</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="22">
+    <id>22</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>For Sale</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720263616</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="23">
+    <id>23</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>Jobs</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720274945</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="classifiedCategory" id="24">
+    <id>24</id>
+    <projectCategoryId>49</projectCategoryId>
+    <itemName>Services</itemName>
+    <logoId>-1</logoId>
+    <entered>1222720288421</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="10">
+    <id>10</id>
+    <projectCategoryId>49</projectCategoryId>
+    <forumNames><![CDATA[What are you looking forward to?
+What did you like most about the event(s)?
+What new things might we do next time?
+What might we do better next time?
+General discussion]]></forumNames>
+    <entered>1222080157092</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="7">
+    <id>7</id>
+    <projectCategoryId>49</projectCategoryId>
+    <folderNames><![CDATA[Setup
+Operations
+Organizations
+Participants
+Donors
+]]></folderNames>
+    <entered>1222719119229</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="8">
+    <id>8</id>
+    <projectCategoryId>49</projectCategoryId>
+    <listNames><![CDATA[Similar Events
+Participating Organizations
+Participating Businesses
+Participating People]]></listNames>
+    <entered>1222718980735</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="50">
+    <id>50</id>
+    <description>Sponsors</description>
+    <enabled>true</enabled>
+    <level>110</level>
+    <logoId>12</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#e91c0e!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#fcb7ad!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="12">
+    <id>12</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>50</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Sponsor-100x100.png</subject>
+    <clientFilename>Icons-Sponsor-100x100.png</clientFilename>
+    <filename>20090312132052-2</filename>
+    <directory>null</directory>
+    <size>1616</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878452557</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878452557</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+WmkDGWYc7TIAAAAASUVORK5CYII=
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="wikiTemplate" id="9">
+    <id>9</id>
+    <projectCategoryId>50</projectCategoryId>
+    <title>Home</title>
+    <content><![CDATA[[{form name="Sponsor Information"}]
+---
+[{group value="Sponsor Information" display="false"}]
+---
+[{label value="Logo" display="false"}]
+[{field type="image" name="logo"}]
+[{description value="The filename of a wiki image (defaults to logo.png)"}]
+---
+[{label value="Photo" display="false"}]
+[{field type="image" name="photo"}]
+[{description value="The filename of a wiki image (defaults to photo.png)"}]
+---
+[{label value="Contact Information"}]
+[{field type="text" name="contactInformation" maxlength="50" size="30"}]
+[{description value="Provide information on how the sponsor can be contacted"}]
+[{entry value="Please update this sample form"}]
+---
+[{label value="Products"}]
+[{field type="text" name="products" maxlength="50" size="30"}]
+[{description value="Product type(s)"}]
+---
+[{label value="Services"}]
+[{field type="text" name="services" maxlength="50" size="30"}]
+[{description value="Service type(s)"}]
++++
+== Sponsor Overview ==
+
+Provide information about what the sponsor does.
+
+== Background & History ==
+
+Provide information on the background and history of the sponsor.
+]]></content>
+    <entered>1236194553894</entered>
+    <enabled>true</enabled>
+    <level>-1</level>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="51">
+    <id>51</id>
+    <description>Ideas</description>
+    <enabled>true</enabled>
+    <level>120</level>
+    <logoId>14</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#4bbbe0!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#b8e5f4!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="52">
+    <id>52</id>
+    <description>New Features</description>
+    <enabled>true</enabled>
+    <level>-1</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>51</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="53">
+    <id>53</id>
+    <description>Other</description>
+    <enabled>true</enabled>
+    <level>-1</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>51</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="54">
+    <id>54</id>
+    <description>Product Improvements</description>
+    <enabled>true</enabled>
+    <level>-1</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>51</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="13">
+    <id>13</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>51</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Ideas-100x100.png</subject>
+    <clientFilename>Icons-Ideas-100x100.png</clientFilename>
+    <filename>20090312131402-2</filename>
+    <directory>null</directory>
+    <size>2570</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878042199</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878042199</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+RK5CYII=
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="14">
+    <id>14</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>51</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Ideas-100x100.png</subject>
+    <clientFilename>Icons-Ideas-100x100.png</clientFilename>
+    <filename>20090312131421-2</filename>
+    <directory>null</directory>
+    <size>2570</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878061766</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878061766</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+RK5CYII=
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="20">
+    <id>20</id>
+    <projectCategoryId>51</projectCategoryId>
+    <itemName>Status</itemName>
+    <logoId>-1</logoId>
+    <entered>1233176215245</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badge" id="3">
+    <id>3</id>
+    <categoryId>20</categoryId>
+    <title>Coming Soon</title>
+    <description>There is an implementation coming soon.</description>
+    <logoId>-1</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1234552861615</modified>
+    <entered>1234552861615</entered>
+    <systemAssigned>true</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badge" id="4">
+    <id>4</id>
+    <categoryId>20</categoryId>
+    <title>Completed</title>
+    <description>This idea is complete or already available.</description>
+    <logoId>15</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1236972015031</modified>
+    <entered>1234552932837</entered>
+    <systemAssigned>true</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badgeLogoFile" id="15">
+    <id>15</id>
+    <linkModuleId>2008051215</linkModuleId>
+    <linkItemId>4</linkItemId>
+    <folderId>-1</folderId>
+    <subject>badge-ideas-approved.png</subject>
+    <clientFilename>badge-ideas-approved.png</clientFilename>
+    <filename>20090313152012-2</filename>
+    <directory>null</directory>
+    <size>5332</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236972012251</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236972012251</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badge" id="5">
+    <id>5</id>
+    <categoryId>20</categoryId>
+    <title>Partially Completed</title>
+    <description>This idea is partially complete.</description>
+    <logoId>-1</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1234552908890</modified>
+    <entered>1234552908890</entered>
+    <systemAssigned>true</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badge" id="6">
+    <id>6</id>
+    <categoryId>20</categoryId>
+    <title>Reviewed</title>
+    <description>The idea has been reviewed by Concursive staff.</description>
+    <logoId>-1</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1234552836633</modified>
+    <entered>1234552836633</entered>
+    <systemAssigned>true</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badge" id="7">
+    <id>7</id>
+    <categoryId>20</categoryId>
+    <title>Under Review</title>
+    <description>The idea is under review by Concursive staff.</description>
+    <logoId>-1</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1234552816092</modified>
+    <entered>1234552816092</entered>
+    <systemAssigned>true</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="11">
+    <id>11</id>
+    <projectCategoryId>51</projectCategoryId>
+    <forumNames><![CDATA[Thoughts on this idea
+General discussion]]></forumNames>
+    <entered>1233172975863</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="9">
+    <id>9</id>
+    <projectCategoryId>51</projectCategoryId>
+    <listNames><![CDATA[Related Products
+Related Solutions
+Related Groups
+Related Partners
+Related Ideas]]></listNames>
+    <entered>1233174548215</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="55">
+    <id>55</id>
+    <description>Projects</description>
+    <enabled>true</enabled>
+    <level>130</level>
+    <logoId>16</logoId>
+    <parentCategoryId>-1</parentCategoryId>
+    <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#a57146!important; color:#fff }
+
+.profile-menu-portletWindowBackground { background:#dfd0c0!important; margin:0 0 10px 0 }
+
+.profile-header a { color: #fff!important; }]]></style>
+    <styleEnabled>true</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="56">
+    <id>56</id>
+    <description>Customer Sponsored</description>
+    <enabled>true</enabled>
+    <level>-1</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>55</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="57">
+    <id>57</id>
+    <description>Partner Sponsored</description>
+    <enabled>true</enabled>
+    <level>-1</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>55</parentCategoryId>
+    <style></style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="58">
+    <id>58</id>
+    <description>Core Development</description>
+    <enabled>true</enabled>
+    <level>0</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>55</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="59">
+    <id>59</id>
+    <description>Core Team</description>
+    <enabled>true</enabled>
+    <level>1</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>55</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="60">
+    <id>60</id>
+    <description>Community Sponsored</description>
+    <enabled>true</enabled>
+    <level>2</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>55</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategory" id="61">
+    <id>61</id>
+    <description>Customer Supported</description>
+    <enabled>true</enabled>
+    <level>3</level>
+    <logoId>-1</logoId>
+    <parentCategoryId>55</parentCategoryId>
+    <style>null</style>
+    <styleEnabled>false</styleEnabled>
+  </dataRecord>
+  <dataRecord name="projectCategoryLogoFile" id="16">
+    <id>16</id>
+    <linkModuleId>2008051912</linkModuleId>
+    <linkItemId>55</linkItemId>
+    <folderId>-1</folderId>
+    <subject>Icons-Project-100x100.png</subject>
+    <clientFilename>Icons-Project-100x100.png</clientFilename>
+    <filename>20090312131548-2</filename>
+    <directory>null</directory>
+    <size>1816</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236878148980</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236878148980</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAABrpJREFUeNrsnEtPG1cUx68f2GAbe4J5GBqCk6aRmj5itaqqdoO766JS
+kbrtwll01Q1dd5NN1+EjEKnbSo6UDzCoC1ZVnLSN1LQqhiDABodx/MDGQHLOZK5KHBo8M3de9vlJ
+I15mHvd/zz2Pe+cyRhAEQRAEQRAEQRAEQRAEQRAEQRAEQbgEHzXBm/nlp28T8GUBjiwcae3XChx5
+PL758ecqCWK9CPOaAAsj8WRmOJpgeIRGYurfjw5brL5fYrXKlnJyfJQDUe6SIGIFmOMCBEPD2ZHR
+MQkFiCTG3/h/IAbb+fch67QaKMqdvhNE65kKPNwDG671NYrgDwSz4WgiE4knVSsAQXSdB0XZ/ue+
+AlaTgfte97QgZ/VMfMCGUi7g70WOz9q1VF8wNBxdUC0ARYhJps/dqiustPb7MtzvTbPnCjogAu+Z
+C9Az02f1TGikTGXz8RJ8e9PEdRJcbLQCEDuNjY/Xg5+FPhOeF+5/wcz92iYINMwNrWF67pmxC1Os
+Wt7ImrgWip3l1+LO2ErCkbiEVmh22ApaIICQnhkYCqf1hKTYQ7FRuNiireDchnxp4XjPzgui9Uy1
+YUT1zNBwVHXy0ONW9ISkToH3UH15Xyu2C2JHz9R6nGQ0JLUb7blNRwhBA2LcBitY5M7Yqp6JFgIP
+uQzXkoyGpHaitUPGVkFQjAvTVxbj429ZPwSAtc1e/0xiHgI6jGlB/Ho+DFGSLWJ4FQhETHcgnw7r
+mE9MXpKlqTlq+a6ksNWosucnx9CafnZycsR8Pp9S29uS4c/LeutcegRJQFSjTM5dH2gBsJLQfFZR
+hQhFRll84iIbTU5DHjL6yueOOm1WLKywaml9CUT5wZLSyb2l75+nrnw4cCIcHtRVK+i0miwijasC
+SKl0T//71+o9Vq9sp3tNGHU59XajKmshaN/TrO6pIiCJqUssNZ2BUDup+zzJi9dQEGyzO8IFAYo4
+F+Dm8NMo+FwoQLtZg+EnxmLJGTbz7icsOBQ2WVKJ8QyekSA9DEXoD447h+pQlJx9B4ajGSsuVbBM
+kMNWQ0jJ2imHjM4YRUCHHJUm2Oz7n7/mkC1AsUwQfCivDUUoAIalgaGQ6oxFDEWWJZd6PoyFPoi0
+PJEboAhILJliqavGHLKY4KBinSAI9DQ0P1eNWTw36LQPVCvA3GDi8nt2DEXncnx0aK0g4AgLbgh9
+UQRc+cFzAyk113Nu4GaM1MqLGJ04Pf+A9xCfnGXjs9f6Kvz2GxHELY5di/EHXpACz2AdddwuuAey
+kC4fEgiGSRBcxIbJodP+w+cPOBbKus2ps+NOu8h01GdER1bM52OXP/qiL4csQ4JA9mubIN31JieT
+PKN0r5wRLojq2OtK1oqa1ul609BwhMXGUnbVm7xrIYAi0rHzehNm2hjKur3e5KrSiYaMjt3M2ihu
+BbieKRyNe3IockXphIe+2Kv1DkXdc9FuqTd5fsjC+eFeqr58LhqiMtUf4FAkpeap1S2wEHxrCIuM
+mfMcstG5aBJEfzSkOvbTa3nRInBd0tVPv+wLh+yV0sl/jh0E6Ab9A4nhjCBFXAxGnNPA/kDRPkF0
+RlqDSLO6Z5sghX4tgYuiVtnCpDdviyD4hqw2v078D9t/38f2WbbLQvj8+isEgiFSAnjy5yqr7W3l
+9L7a7Td53df8COUcjG09/o2V1/4wtOVGUIQgfGkp+pTEAAuBUefGw1+V/e21RaNbbZgVREYRvLq0
+VKQQYBFst/hIhg6aM/OuullBFK8tLRUFrpJXdors2e5mEQ6MpJZF7NFieq+T0y/xKKV1NvX2B1at
+IHccFKBW2WbV8pNCu1HF6EkWvVGO6ZfKO60GJj7pfh2KlJ119qy8odQqOzAcHViyaZlQQWDI6itB
+cIZPKRXRCopNZZcLsGLX9UVsuyBbNb9u51CER0PZxWfhIqw7cS8iBPGcY+cOubFfwhBVFUDzB47X
+gkQIUjg9vx4aceeULNaV0B+AFRRACFlUVORaQThumSPnDrkOQlTLm3nNIctODUW2CYJmzufXnV5i
+ig4ZLUHLDWTNF9xlHkLIXkr8/XUnfIkduYHnBGE2TlahQ0YBMDeoPy3lO+2mbHVu4EVB5Pp+Kdev
+uYEXBcnjLs8itifiDrkOVoDDEYiRP6g9lZ3MDexE2L692vav+Y+/+q7vcgNPCqKJcnvuxvxiry9i
+duUGfCh6wAYY0Xup3tp8tJoLR2LSWRVfr+YGnrUQzUpwy7lbI/GxHH9vHF+2adUVPm8gey036Btw
+P19tn12CIAiCIAiCIAiCIAiCIAiCIAiCUHkhwACXVKPgCj3ffAAAAABJRU5ErkJggg==
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="21">
+    <id>21</id>
+    <projectCategoryId>55</projectCategoryId>
+    <itemName>Industry and Trade Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1234562953283</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="22">
+    <id>22</id>
+    <projectCategoryId>55</projectCategoryId>
+    <itemName>Sponsorship</itemName>
+    <logoId>-1</logoId>
+    <entered>1233177198657</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="23">
+    <id>23</id>
+    <projectCategoryId>55</projectCategoryId>
+    <itemName>Status</itemName>
+    <logoId>-1</logoId>
+    <entered>1233177204642</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="badge" id="8">
+    <id>8</id>
+    <categoryId>23</categoryId>
+    <title>Status: Caution</title>
+    <description>Something is not ok or borderline not ok.  Check the listing's blog for updates.</description>
+    <logoId>17</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1236972069528</modified>
+    <entered>1233943088635</entered>
+    <systemAssigned>false</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badgeLogoFile" id="17">
+    <id>17</id>
+    <linkModuleId>2008051215</linkModuleId>
+    <linkItemId>8</linkItemId>
+    <folderId>-1</folderId>
+    <subject>badge-caution.png</subject>
+    <clientFilename>badge-caution.png</clientFilename>
+    <filename>20090313152106-2</filename>
+    <directory>null</directory>
+    <size>4442</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236972066804</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236972066804</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAEPxJREFUeNrsXVtsHGcVPmf24vU6dlw3blKS1olKIeSlQYKUSJVapL4U
+JIpAQuIFVX1A9AVVCCGBxBNSy0NVFUFAUKAhPJRLK1oubQUVSqGtQ3oLcuvYjhPHl02c2LEd27ET
+Ozs//5mdy3+b2dvM2DR7osmuZ2ZnZ84353zfOf/MLEKI9ff338tfHuLTfXzaDZvQWMh8hE1rZ/l0
+lE+HDx48+FpN+86B6KMPuEBAb28vdHV1QVtbG2QyGVhfX4O1tXVoWXXr6OhwXsvlMly7dg0WFxdh
+ZmbGW0zAPMSBGQ8FhIPxoAtG965du2DHjh0wNTUJpVLJ2dD6+mYBAis7HhEKjEXFULqWy+WcE3vn
+zp2wa9dt3KdTMD09TYsWXFBe1ABxwXiBomDfvn2wsLAAJ0685yDb0dHJN5qHQqEAaCFYaDmfsfh7
+wMrfSFvi/6E4ObMq63jvnb+F98HkzgPUtgNoWN/bNgjbE77Pnem/JWy8t+gvF94HMAOagBbXU1aI
+SpG07tzcHCwuLcL4+Dj3mQX7938Suru7YXBw0Ikebl/0QEEhTZ3gYHQTGKdOjcDo6Ch0dm6FYrFD
+dkTCgDhusehvS9uOBp7iJHke6o6l5cw7anRQSgMQ0SjbDA0PwZ49e+DOOz/mgUKRsp/SV9Zdz0lT
+HhhnzoxBT882yGZzqaYh8KIDPBDcCbBmQMRo8bYnfgWim8m0nJeOFKC01dPTA+/x7ENGPh8YGOh2
+MfgsumrqKPEF5br+/jfhpptu5gSedcJLO5PjjBDL+ywG6znbCwegMlkCCPKZKKYs1KLEFAGocQ1C
+chHi2erqKrzJfX3gwN0ON7ucst9ypS0QiRNndGzpBIvzSLLBEESCHwqCgz2wAgDVSYkeEDkFBPBB
++pyeJgOAZc6yEo+Y9vZ22PvxvY7PyfeuPUrffB8pAFJTV69e5fK2kHhmCtIRBmexD4bl+8J3usmJ
+EAgAEKNCiEjwgRXB9mNHizCNzzxgMLn0Zdu243vCgLCgb9xNdQaRTaFQTCUqUIgOn8hVxSQ4GhW/
+oxwiIBOOAEZItKAYlcJ368pOVnJJWF9fn+N7woCwcJIxFX1UZ2Sy2firaT+tgPEs930rLpf+Cc4W
+iV9LWcI/VQJrwAbRWOExkFKjJBqU93FbV2eX43vCgMxHgIilY0s29qhAkFOGyAPeme3XHqL4ESJA
+VV2BY4LlQboCKc2gtj8CuXuU7s8HRTIzeQuscoLFaZ2dnVLBLSFgIcZIFYazFAw1Bwr+Q0X2iilF
+UHGgFHaiO4MUBBI3iUIKNUCD3pj/njG5lnEXogcKi6cLQMpWtGwSrB2EuiBPQSBVQeICGCIEdAkd
+KS9RLuzkeRCoOYMcpVfmVfGOt4Vj4AuYi6RzKEws+9EFLV7Lxp6iUDggpU0BguOlOgJBIXHUne8T
+sbnaN0eIOe+L1bwYMZxRpJTE/Fhl/nrMneu/MmasZTYeEP8MR6m6lh0XpCa5xYGVIlOhB9Aq8mhi
+xbDUiVHyW+YI9M5+cN97ysSNFX99J3WxILnG1MzMxpSlBL4QzkxUK1XUKl5NVqp1RkiLRa5PZOYK
+orS+6pkUF3Od75G9kM8q8wRuoQxnIwP/EzGA0hQgzA1zBKUwU8BBsTIHUx8KBCdHpUM9RWmxIfWo
+xPVZ4FvlhCAnS0LAjQ1kLNghFnAHzbEreh4sBn6DLA5Qss1EhVSYSa0L1EgWwZSCFLUl1ZAoF4jm
+ViRgSIsQ0SQ2zMswZPte6gIBGA8kywE44ByMCZRsk5lKKsZAUDRBOYDi+apkL9QcEwoA6gDg+jJY
+i8Ngzb4Ddu+nALr3ch3ZKTnem0yCyBMPTAHGA0FdzlhwbJXahXmVrxBlHihpAiK1xJUIEWsKUOsH
++fNyI1A+18UiUMPn+jLkB56A7ORfgnlDP68Ml/Z9Aey7vgOQ79K2Z0xyBkWHCopBWhNAIUmMnt4K
+1gnUWGM1ndX4uIUaJ3qrGqUSEYwtE1AkqPiOGcZKrMURaP/752UwBMuM/xmyr34FcGHYkNyUtGZu
+txlTmcgxYq8MDINu8phMA4CwuiJDcLQSEaiAISkgLT3pLgmgNTOEtXoOCm98HZBHSORurpyDzGsP
+85S2FHIyWcpJIy+3QBnuVWsqUI4ZzKBAHZ0PJkVILfkOZTLX1KzSYdVG6vRhIv38RUUsKGdu2/Fv
+VwXD/wwHw3rzm3qnGHUJrvVzTftrHACTi2E5RYbzoRkRVm/KQgBjbWCYFza0qlTPqDK2FH+yA3Nn
+noUMT1d1JdeZtwHGXggbCdCYH5V6yRQRKigithgaSXFziBiB4iCPSOomLgg5IIlz1DaGaf/52Z4f
+/kVj+uODnwKsLYU2QE1pQ619okCRGFQBRa2/TEYDVDqHsBo6t9pwqAkzfYw7VOZo5C8DwYTvanv/
+yZpTlYlPYOS3IVULaA1NQ5Gig6LwC4J8YYUmBiJS14WLFyXWsELODZM+VFI7yipKaWFU0WiRYIhj
+IVRn5Kb+2lxn54NDHJhSGAzm7zd0niPVF8jZw1xoyvPoSsb5+XkpPmsjdTQrLRbSL0JUG7Ro6NpC
+REc3YKzCB0/G0/x893GFO4JKnIVFS42gBM1IVJqiqlILPnNtbQ2mSiUzqbMITFCqO1Avm9VWEpr7
+SmiSuqiFjVy1Th+FzKV34wGk9E+Ai8dlDSFEI6shpYaBIot0qeQ1prv169dhbGxMwqI22SsW2yAP
+fxppGDFU2kpj4qCoHKUC8awtrujwo+SH1fv11URRWMHnR4meulAY77G5rycnJzUy1yIkMumhIu9M
+cKC5Wq89F8rWNvI0LwTPxwvIwhDA8BGDaFcvpohIXQZZLxI7A9Au3vD+JxDOnj3rXG7VQGGIcsqq
+w7UYAQaqZ4+BYq2V85AfexYSsfcPAVtbrC8uUM8NGEbc2ghAAM7ExIQRjJoixMTFYsSgiUuqa6va
+ouPU0w3L3KpG7ZSBQ1UEZfgYvqkpqbZXJIJ3bWqqBFeuXGm0dRIhnZRqOrLDErpVlOlDbA5yEs+X
+/gaJ2sgRYFdK9YESJSdDj59zhl12bkMI5G106yRrihDUhbWh7xQCUEhBWOvlyYXRX9bWYthxd9V1
+7On/hC889j2A+49UD2wmXMLgtuSDzjz64+4oDGZ5R0f3foyOng5PU4YIyQbohEcJYvWUGwlGjVdj
+UmRk52qTuW0P/K7qOqvP7AlfyCUwu3AccPvd1b1URXWZ5l3n0pbusakFjMoVEwKH2FLKMgGBoF90
+2EC3X5GCane21uiIzY59t6a0ZUxlCCG9O4TVlRU4efJkjWC40cyiKnWsklyUdopx57FOmTv+ey5z
+p9MFhPMIG/hx/bVIxLqX5i7BKR4Z7q1qtZukslitu4N1xHQE8SszCYjC6K9gI4wN/SZEBkdEifFQ
+KwUfSVut6KsdD0/2Ml0loElcqyoJa8+rEYuKw0/BhhlPleydx+qLEuUgVlZWeYoaEm95rh8QsbnI
+bAbh3b6oc72OojzEcnPvQf7iv2FDbexPAPMnof4DZHDhwgUYHh52blFrKlJtidTtIG1hNADY8E0S
+5s8Vh38Em8HskCgJM7pdfGRkBEqlqYZSlE7qtlCHsMb6Tc2CURj/A2SXRjcFII4MnnwV8Lb7TaWI
+b2UuZykq3Js0YzL0MXABsaMGUBMxkrnFM8/AZjKKksz2A1zybTWWJJdmZ+HcuXOxP9ECXQxYoLKY
+uVuSYOAQGFYT/Sp7aSoRGWxz1SWrH+Y8ieH9gQGnBZLI40UQ/IvsnAixbWYSUYkZtdWLk39sjgSX
+OSCdu5KRwXd8CaBjJ8zyiKD0VE+B12iEODzEQclW+i92qqmhc/Cx5h03Nwhw62dCl5fPH2tYBq++
+9QSM3vxwug/bUVsndfN6g1fc5+a5zJ0/0fz+RxVzZNWWR1i+9BLkF/6bHhaAcuuEObIN64+zBqxr
+8PF4CJgipInl1WzH7HPpdgxc6Wx5HJKGbRk7DJmrMcnFKhHAmogQZ19XTsJNC6+lp/BsqZdlR+eg
+GPCiEcDiVHxnXeRYh8cxTdrOC0fAKl9JiUKkCLHrB6BOkLpGf9KUzI2dY2qwjL0CvXMvp8IiHgYW
+uqQeOJjV5HNWByK55VEoTr8S+2FEKSk2dzKW79gx+zzk1maSxkMldZbITfBidCRiIVEQd9FIqSvZ
+dMUqpI7opayyCwirGguszpRVmH0D2i4nIyHDlJRTNMZoW5ffho4rg4kCYosqi4l1iJ+9WAhp6CnN
++bw48Y3TF1Ae33r6UOo8ETcgZLef/1mSGatyD2PQOqmgk8/nhIe9oHDZledscjT9vQ76E3cql7yI
+tn3mOcheu5DcgaQUIY5v1mdh29xLMNvzuUSqdDlC3D9y2SxksxnIZCzIWN6zD72wCSYPHPqcFw0q
+GESESSuUMMcnAYhD8DPPJyKDmV4Y2hD3Q4ep0iXZmCwgpVQBoeMhUBKVvQEHxLd5IsCey/9Kp8I1
+KCp7LjkC7p1/OXYZXEk8LKIwjCE6UisATdEQck/hZiZ4D4MKqcfYfqf+D/WB0rLrg78Ge/pYrBV6
+NaPj61p6CxY7Px0fIIQBWi4g5XgAIcJLuojSDmTiH86UttFxxgoIx8DKWuKlpM2TCKmqpIl8sxjJ
+YJL1sZG6PIRrN03qRHTU90nLcge+D9izL7qz8spXE90HOgFneh4AO9PRNKnLHBIDqaedqgiMTMQQ
+bhpG2YCOe/Ijj8RG6lYcHEIyl/o9N6KRvC9cPRsLhwiyt1xXOz3NPs//gzWbHZhTGJbjqUNI5hLB
+3chGMrjZbrCttU4aDJB0RtQ2vzXlB2YCpEFl1X5tvIUGVMZMmmk8xqKy8uszG+YAar2XNxko7VfH
+4UrHvngAaWQId8vK4IYd/PrxH3xooksbMWw0QtZyva1cFVfrRASEblBshNNXC30tT8ZwgjIXgwAQ
+98rreu1qYTffiW0tJLgtFz8B6/kGMwb3fTmuSn3i1kdaaHArbf9afJV6uYnCkFTFxK3fgLJVvCGB
+oOMe2/UtJ1s0tR1ZZZWb+gmf+e57ecjuc0YKty69fUO04AmIua33wnTvl5vu9lauOikrdUiTvz9F
++ZO6npP8PTXbMuUVXjRWXj9MpE1TOVNsOiJUUmdihBDDx/mTed7ONlok3ZCpr6w1F1nLKxtXGhrq
+kBYeG1ipGyOkZZumUm+0l9WyuCJES1ktDtloDimLhSFmrJZPNlpliRFCT7ahjJX0EwtaZigRuM8d
+UhfH1CmHEcu3ANkYQCoqV7jYulgswsrqauSDfluWjJHPyfeEgQfI2W3btsHy8jJcvnwZ1tbWWl5K
+ycjX5HPyPWFAWBAgR/tuv915RB09bIWeftOydIx8TT4n3xMGhAUB4jyBcu/evXDx4gwsLS1BqVRq
+eSthIx+Tr8nn5HvXDlsHDx6ke5aPfvSOOyCTzcDc/LwTRi1QEpK3nMDJt+Rj8jX5nHxPGHAsXvMK
+kIf4tHDPPfc4ec0D5dSpU7CwsNDyYkxGvjxz5owPBvmafE6LXAyChyz19/c/yF9eWOM57fXXX4fy
+9TLccksv5HI58JQYvc/n86keBCo/LKM+FdX07GC1DRT8zVJvopLTiSdWVirjQvSe0hRFBoGRr/j3
+izw6XpQAEUA5zKfu0dOnYWhoCNrb22HLli1Q5K+ZTGbDzq7g16dB+61d/cdzmf8L2sx9EgLb4DRF
+0pbUFBE4cYabppzI8MDQAHFB6XNBuY/+Hp+YcJ496CG8Cdo+DSC58UYZhqStq6YcznDBGK9pdzkw
+d/GXR11gdm+WPBwEAasl120WPDw76wLxlCumNPufAAMApoH7Zhzrwz4AAAAASUVORK5CYII=
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badge" id="9">
+    <id>9</id>
+    <categoryId>23</categoryId>
+    <title>Status: Ok</title>
+    <description>Everything seems to be running smoothly.</description>
+    <logoId>18</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1236972083682</modified>
+    <entered>1233943026837</entered>
+    <systemAssigned>false</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badgeLogoFile" id="18">
+    <id>18</id>
+    <linkModuleId>2008051215</linkModuleId>
+    <linkItemId>9</linkItemId>
+    <folderId>-1</folderId>
+    <subject>badge-ok.png</subject>
+    <clientFilename>badge-ok.png</clientFilename>
+    <filename>20090313152120-2</filename>
+    <directory>null</directory>
+    <size>4544</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236972080806</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236972080806</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badge" id="10">
+    <id>10</id>
+    <categoryId>23</categoryId>
+    <title>Status: Warning</title>
+    <description>There are circumstances which have caused a significant problem.  Check the listing's blog for more information.</description>
+    <logoId>19</logoId>
+    <email1></email1>
+    <email2></email2>
+    <email3></email3>
+    <businessPhone></businessPhone>
+    <businessPhoneExt></businessPhoneExt>
+    <webPage></webPage>
+    <addrline1></addrline1>
+    <addrline2></addrline2>
+    <addrline3></addrline3>
+    <state></state>
+    <city></city>
+    <country></country>
+    <postalCode></postalCode>
+    <latitude>0.0</latitude>
+    <longitude>0.0</longitude>
+    <enabled>true</enabled>
+    <readCount>0</readCount>
+    <readDate>null</readDate>
+    <ratingCount>0</ratingCount>
+    <ratingValue>0</ratingValue>
+    <ratingAvg>0.0</ratingAvg>
+    <modifiedBy>1</modifiedBy>
+    <enteredBy>1</enteredBy>
+    <modified>1236972109644</modified>
+    <entered>1233943154163</entered>
+    <systemAssigned>false</systemAssigned>
+    <systemConstant>-1</systemConstant>
+  </dataRecord>
+  <dataRecord name="badgeLogoFile" id="19">
+    <id>19</id>
+    <linkModuleId>2008051215</linkModuleId>
+    <linkItemId>10</linkItemId>
+    <folderId>-1</folderId>
+    <subject>badge-problem.png</subject>
+    <clientFilename>badge-problem.png</clientFilename>
+    <filename>20090313152147-2</filename>
+    <directory>null</directory>
+    <size>4194</size>
+    <version>1.0</version>
+    <image>null</image>
+    <enabled>false</enabled>
+    <defaultFile>false</defaultFile>
+    <downloads>0</downloads>
+    <entered>1236972107146</entered>
+    <enteredBy>1</enteredBy>
+    <modified>1236972107146</modified>
+    <modifiedBy>1</modifiedBy>
+    <thumbnailFilename>null</thumbnailFilename>
+    <imageWidth>0</imageWidth>
+    <imageHeight>0</imageHeight>
+    <comment>null</comment>
+    <featuredFile>false</featuredFile>
+    <fileAttachment><![CDATA[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
+]]></fileAttachment>
+  </dataRecord>
+  <dataRecord name="badgeCategory" id="24">
+    <id>24</id>
+    <projectCategoryId>55</projectCategoryId>
+    <itemName>Technical Affiliation</itemName>
+    <logoId>-1</logoId>
+    <entered>1234562969399</entered>
+    <enabled>true</enabled>
+    <level>0</level>
+  </dataRecord>
+  <dataRecord name="discussionForumTemplate" id="12">
+    <id>12</id>
+    <projectCategoryId>55</projectCategoryId>
+    <forumNames><![CDATA[Discuss project scope
+Discuss planning and design
+Discuss tasks
+Resource status reports
+Discuss lessons learned
+General discussion
+]]></forumNames>
+    <entered>1233173467994</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="documentFolderTemplate" id="8">
+    <id>8</id>
+    <projectCategoryId>55</projectCategoryId>
+    <folderNames><![CDATA[Concept
+Planning
+Design
+Deliverables
+]]></folderNames>
+    <entered>1233174182557</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+  <dataRecord name="listsTemplate" id="10">
+    <id>10</id>
+    <projectCategoryId>55</projectCategoryId>
+    <listNames><![CDATA[Related Groups
+Related Partners
+Related Ideas
+Related Products
+Related Services
+Related Solutions
+Related Projects]]></listNames>
+    <entered>1233174645851</entered>
+    <enabled>true</enabled>
+  </dataRecord>
+</team_elements>

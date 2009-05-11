@@ -1,0 +1,16 @@
+CREATE TABLE lookup_service (
+  code INT IDENTITY PRIMARY KEY,
+  description VARCHAR(300) NOT NULL,
+  default_item BIT DEFAULT 0,
+  level INTEGER DEFAULT 0,
+  enabled BIT DEFAULT 1,
+  entered DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE project_service (
+  id INT IDENTITY PRIMARY KEY,
+  project_id INTEGER REFERENCES projects(project_id) NOT NULL,
+  service_id INTEGER REFERENCES lookup_service(code) NOT NULL,
+  entered DATETIME DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <!-- Hidden fields will hide sections of UI when enabled and uncommented -->
+  <hiddenFields enabled="true">
+    <!--
+    <field name="projects-projectcenter-header" />
+    <field name="projects-projectcenter-header-logo" />
+    <field name="projects-projectcenter-header-project" />
+    <field name="projects-projectcenter-header-project-title" />
+    <field name="projects-projectcenter-header-project-badges" />
+    <field name="projects-projectcenter-header-role" />
+    <field name="projects-projectcenter-header-sizing" />
+    <field name="projects-projectcenter-tabs" />
+    -->
+  </hiddenFields>
+</settings>

@@ -1,0 +1,6 @@
+# 2008-07-29.txt
+# This script upgrades the 3.3 production database to 4.0 (tags)
+
+2008-06-30-script01-jjf.sql
+2008-07-25-script01-ananth.sql
+2008-07-29-script01-ananth.sql

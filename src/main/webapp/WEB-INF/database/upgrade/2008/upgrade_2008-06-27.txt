@@ -1,0 +1,6 @@
+# 2008-06-27.txt
+# This script upgrades the 3.3 production database to 4.0
+
+2008-06-16-script01.bsh
+2008-06-27-script01-mr.bsh
+2008-06-27-script02-mr.bsh

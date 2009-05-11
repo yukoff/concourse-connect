@@ -1,0 +1,42 @@
+import java.sql.*;
+import com.concursive.connect.web.modules.contribution.dao.*;
+
+LookupContributionList lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForProjectsAdded
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForProjectsAdded") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForProjectsAdded");
+	lookupContribution.setDescription("Calculate the number of projects added");
+	lookupContribution.setLevel(10);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForBlogsPublished
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForBlogsPublished") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForBlogsPublished");
+	lookupContribution.setDescription("Calculate the number of blogs published");
+	lookupContribution.setLevel(20);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}
+
+lookupContributionList = new LookupContributionList();
+lookupContributionList.buildList(db);
+// inserting constant com.zeroio.iteam.contribution.ContributionCalculationForTopicsAdded
+if (lookupContributionList.getIdFromConstant("com.zeroio.iteam.contribution.ContributionCalculationForTopicsAdded") == -1){
+	LookupContribution lookupContribution = new LookupContribution();
+	lookupContribution.setEnabled(true);
+	lookupContribution.setConstant("com.zeroio.iteam.contribution.ContributionCalculationForTopicsAdded");
+	lookupContribution.setDescription("Calculate the number of discussion topics added");
+	lookupContribution.setLevel(30);
+	lookupContribution.setPointsAwarded(1);
+	lookupContribution.insert(db);
+}

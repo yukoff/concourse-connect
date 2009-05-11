@@ -1,0 +1,47 @@
+import java.sql.*;
+import com.concursive.connect.web.modules.profile.dao.*;
+
+// This script adds the Projects category if it doesn't exist
+// This script moves existing categories to sub-categories of Projects
+
+// Determine the Projects category id
+ProjectCategoryList projectCategoryList = new ProjectCategoryList();
+projectCategoryList.buildList(db);
+
+ProjectCategory projectCategory = projectCategoryList.getFromValue("Projects");
+
+if (projectCategory == null) {
+  // Create a Projects category and associate all existing categories
+  projectCategory = new ProjectCategory();
+  projectCategory.setDescription("Projects");
+  projectCategory.setLevel(100);
+  projectCategory.insert(db);
+
+  System.out.println(projectCategory.getDescription() + " category inserted");
+
+  PreparedStatement pst = db.prepareStatement(
+    "UPDATE lookup_project_category " +
+      "SET parent_category = ? " +
+      "WHERE code <> ? AND description <> ? "
+  );
+  pst.setInt(1, projectCategory.getId());
+  pst.setInt(2, projectCategory.getId());
+  pst.setString(3, "People");
+  int count = pst.executeUpdate();
+  pst.close();
+
+  System.out.println("Re-parented existing categories: " + count);
+}
+
+// Update the project records with new parents and subs
+PreparedStatement pst = db.prepareStatement(
+  "UPDATE projects " +
+    "SET category_id = ?, subcategory1_id = category_id " +
+    "WHERE category_id IN (SELECT code FROM lookup_project_category WHERE parent_category = ?) "
+);
+pst.setInt(1, projectCategory.getId());
+pst.setInt(2, projectCategory.getId());
+int count = pst.executeUpdate();
+pst.close();
+
+System.out.println("Re-parented existing projects: " + count);

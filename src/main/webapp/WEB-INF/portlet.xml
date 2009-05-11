@@ -1,0 +1,889 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright(c) 2009 Concursive Corporation. All rights reserved.
+  ~ http://www.concursive.com
+  ~
+  ~ This software is released by the Concursive Corporation under more than
+  ~ one license and cannot be redistributed outside of the original license
+  ~ agreement terms that accompanied the software.
+  ~
+  ~ The default license agreement is the Concursive commercial license.  To
+  ~ anyone in doubt, we recommend the commercial license. Our commercial
+  ~ license is competitively priced and will eliminate any confusion about how
+  ~ the software can be used and distributed.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<portlet-app
+    xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+    version="1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
+  <portlet>
+    <portlet-name>AboutPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.debug.portlets.AboutPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>config</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>About</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>RegisterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.register.portlets.RegisterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Register</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ContentPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.cms.portal.portlets.ContentPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>config</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Content</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ScrumReleasePortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.scrum.portlets.ScrumReleasePortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>config</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Scrum Release</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ScrumReleaseProgressPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.scrum.portlets.ScrumReleaseProgressPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>config</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Scrum Release Progress</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ScrumReleaseBurnDownPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.scrum.portlets.ScrumReleaseBurnDownPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>config</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Scrum Release Progress</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectMultiPaneListPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ProjectMultiPaneListPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Multi-pane project list</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectListByCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ProjectListByCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project list by category</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectSubCategoryListByProjectCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ProjectSubCategoryListByProjectCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project SubCategory List By Project Category</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>AddProjectByCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.AddProjectByCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Add Project By Category</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>PopularProjectsByCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.popularity.portlets.PopularProjectsByCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Popular Project Category</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>BlogMultiPaneListPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.blog.portlets.BlogMultiPaneListPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Multi-pane blog list</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>RecentProjectReviewsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.reviews.portlets.RecentProjectReviewsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Recent Project Reviews</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectPromotionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.ProjectPromotionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Promotions</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>GoogleMapsFromSearchHitsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.GoogleMapsFromSearchHitsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Google map from search hits</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SearchResultsByProjectPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.SearchResultsByProjectPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search Results by Project</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SearchResultsProjectCategoryCountsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.SearchResultsProjectCategoryCountsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search Results by Project Category</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SearchResultsByWikiPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.wiki.portlets.SearchResultsByWikiPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search Results by Wiki</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SearchResultsByRecentBlogPostsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.blog.portlets.SearchResultsByRecentBlogPostsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search Results by Blog</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SearchResultsByRecentDiscussionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.discussion.portlets.SearchResultsByRecentDiscussionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search Results by Discussion</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SearchFilterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.search.portlets.SearchFilterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search Filter</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectProfilePortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ProjectProfilePortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Profile</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ReviewsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.reviews.portlets.main.ReviewsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Reviews</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>BlogPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.blog.portlets.main.BlogPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Blog</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>BlogListCounterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.blog.portlets.main.BlogListCounterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Blog List Counter</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>CalendarPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.calendar.portlets.main.CalendarPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Calendar</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>WikiPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.wiki.portlets.main.WikiPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Wiki</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>DiscussionPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.discussion.portlets.main.DiscussionPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Discussion</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>PromotionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.main.PromotionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Promotions</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>PromotionsListCounterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.main.PromotionsListCounterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Promotions List Counter</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ClassifiedsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.classifieds.portlets.main.ClassifiedsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Classifieds</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>DocumentsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.documents.portlets.main.DocumentsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Documents</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>DocumentsFolderCounterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.documents.portlets.main.DocumentsFolderCounterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Documents Folder Counter</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ListsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.lists.portlets.projectLists.ListsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Lists</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>BadgesPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.badges.portlets.main.BadgesPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Badges</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>IssuesPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.issues.portlets.main.IssuesPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Issues</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>TeamMembersPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.members.portlets.main.TeamMembersPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Team Members</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>DetailsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.projectDetails.DetailsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Details</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SetupPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.setup.portlets.SetupPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Setup</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectGoogleMapsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.geotagging.portlets.ProjectGoogleMapsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project Google Maps</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ActionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.cms.portal.portlets.ActionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>URL Actions</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectActionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ProjectActionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project URL Actions</title>
+    </portlet-info>
+  </portlet>
+  <!-- User portlets -->
+  <portlet>
+    <portlet-name>RecentUserReviewsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.reviews.portlets.RecentUserReviewsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Recent Reviews by a User</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ProjectListByUserPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ProjectListByUserPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>List of projects that a user is a team member in</title>
+    </portlet-info>
+  </portlet>
+  <!-- WSRP -->
+  <portlet>
+    <portlet-name>ProxyPortlet</portlet-name>
+    <description>Proxy Portlet</description>
+    <display-name>Proxy Portlet</display-name>
+    <portlet-class>org.apache.wsrp4j.consumer.proxyportlet.impl.ProxyPortlet</portlet-class>
+    <expiration-cache>-1</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+      <portlet-mode>help</portlet-mode>
+    </supports>
+    <supported-locale>en</supported-locale>
+    <portlet-info>
+      <title>Proxy Portlet</title>
+      <short-title>Proxy Portlet</short-title>
+      <keywords>WSRP, WSRP4J, Consumer</keywords>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>UpcomingEventListPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.calendar.portlets.UpcomingEventListPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Upcoming Event List</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ClaimProjectPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ClaimProjectPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Claim Unowned Project</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>SendProjectToFriendPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.SendProjectToFriendPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Send Project Information to Friend</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>AddProjectToListPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.lists.portlets.AddProjectToListPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Add Project To List</title>
+    </portlet-info>
+  </portlet>
+    <portlet>
+    <portlet-name>ListsByProjectPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.lists.portlets.ListsByProjectPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Lists By Project</title>
+    </portlet-info>
+  </portlet>
+    <portlet>
+    <portlet-name>EditProjectByCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.EditProjectByCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Edit Project Profile</title>
+    </portlet-info>
+  </portlet>
+    <portlet>
+    <portlet-name>EditProjectWikiPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.wiki.portlets.EditProjectWikiPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Edit wiki in Project Profile</title>
+    </portlet-info>
+  </portlet>
+    <portlet>
+    <portlet-name>InviteMembersPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.members.portlets.InviteMembersPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Invite members to project and tools</title>
+    </portlet-info>
+  </portlet>
+    <portlet>
+    <portlet-name>PendingInvitationsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.members.portlets.PendingInvitationsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View pending project invitations</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>TagCloudByProjectPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.tagging.portlets.tagCloud.TagCloudByProjectPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View tags</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ProjectListByTagPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.tagging.portlets.projectListByTag.ProjectListByTagPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View projects by tag</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>TagCloudResultsFilterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.tagging.portlets.tagCloudResultsFilter.TagCloudResultsFilterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Sort projects based on various criteria and by tag</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>TagCloudProjectCategoryCountsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.tagging.portlets.tagCloudProjectCategoryCounts.TagCloudProjectCategoryCountsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View tag counts by project category</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>TagCloudActionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.tagging.portlets.tagCloudActions.TagCloudActionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Sort tags of projects from various category</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>TagCloudResultsCategoryCountsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.tagging.portlets.tagCloudResultsCategoryCounts.TagCloudResultsCategoryCountsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Sort project counts by tag by category</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>PrivateMessagesPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.messages.portlets.privateMessages.PrivateMessagesPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View pending messages</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>PendingPrivateMessagesPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.messages.portlets.pendingPrivateMessages.PendingPrivateMessagesPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View status of private messages</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ComposePrivateMessagePortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.messages.portlets.composePrivateMessage.ComposePrivateMessagePortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Compose private message</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>NewProjectsByCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.newProjectsByCategory.NewProjectsByCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>New projects by category</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>RecentBlogPostsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.blog.portlets.recentBlogPosts.RecentBlogPostsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Recent blog posts</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>RecentDiscussionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.discussion.portlets.recentDiscussions.RecentDiscussionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Recent discussions</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ProjectWikiContentPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.wiki.portlets.projectWikiContent.ProjectWikiContentPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Wikis</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ProjectDownloadsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.documents.portlets.projectDownloads.ProjectDownloadsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Project file downloads</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>TopContributionsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.contribution.portlets.topContributions.TopContributionsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Show top contributors</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ReportAsInappropriatePortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.rating.portlets.reportAsInappropriate.ReportAsInappropriatePortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Report an item as inappropriate</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ActivityStreamPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.activity.portlets.activityStream.ActivityStreamPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View activity stream</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ActivityInputPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.activity.portlets.activityInput.ActivityInputPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View activity stream</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ClassifiedListPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.classifieds.portlets.classifiedList.ClassifiedListPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View list of classifieds</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ClassifiedListByClassifiedCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.classifieds.portlets.classifiedListByClassifiedCategory.ClassifiedListByClassifiedCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>View list of classifieds by category</title>
+    </portlet-info>
+  </portlet>
+   <portlet>
+    <portlet-name>ClassifiedResultsSorterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.classifieds.portlets.classifiedResultsSorter.ClassifiedResultsSorterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Sort classifieds</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ClassifiedResultsCategoryCountsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.classifieds.portlets.classifiedResultsCategoryCounts.ClassifiedResultsCategoryCountsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Count of classifieds by project category</title>
+    </portlet-info>
+  </portlet>
+  <custom-portlet-mode>
+    <description>Provides administration functions</description>
+    <name>config</name>
+  </custom-portlet-mode>
+</portlet-app>

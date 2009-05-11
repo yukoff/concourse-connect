@@ -1,0 +1,69 @@
+import com.zeroio.utils.CacheUtils;
+import java.sql.*;
+import org.aspcfs.utils.web.*;
+
+LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
+
+//rename description to "Admin" where level = 10;
+//insert description "Manager" set level = 14;
+//insert description "Champion" set level = 17;
+//rename description to "VIP" where level = 20;
+//insert description "Member" set level = 25;
+//rename description to "Participant" where level = 30;
+
+LookupElement role;
+
+role = roleList.getObjectFromLevel(10);
+if (!role.getDescription().equals("Admin")) {
+  role.setDescription("Admin");
+  role.update(db);
+  System.out.println("Role updated: " + role.getDescription());
+}
+
+role = roleList.getObjectFromLevel(20);
+if (!role.getDescription().equals("VIP")) {
+  role.setDescription("VIP");
+  role.update(db);
+  System.out.println("Role updated: " + role.getDescription());
+}
+
+role = roleList.getObjectFromLevel(30);
+if (!role.getDescription().equals("Participant")) {
+  role.setDescription("Participant");
+  role.update(db);
+  System.out.println("Role updated: " + role.getDescription());
+}
+
+role = roleList.getObjectFromLevel(14);
+if (role == null) {
+  role = new LookupElement();
+  role.setTableName(roleList.getTableName());
+  role.setGroupId(1);
+  role.setDescription("Manager");
+  role.setLevel(14);
+  role.insert(db);
+  System.out.println("Role inserted: " + role.getDescription());
+}
+
+role = roleList.getObjectFromLevel(17);
+if (role == null) {
+  role = new LookupElement();
+  role.setTableName(roleList.getTableName());
+  role.setGroupId(1);
+  role.setDescription("Champion");
+  role.setLevel(17);
+  role.insert(db);
+  System.out.println("Role inserted: " + role.getDescription());
+}
+
+role = roleList.getObjectFromLevel(25);
+if (role == null) {
+  role = new LookupElement();
+  role.setTableName(roleList.getTableName());
+  role.setGroupId(1);
+  role.setDescription("Member");
+  role.setLevel(25);
+  role.insert(db);
+  System.out.println("Role inserted: " + role.getDescription());
+}
+

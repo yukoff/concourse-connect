@@ -1,0 +1,1 @@
+ALTER TABLE user_contribution_log ADD project_id INTEGER REFERENCES projects(project_id);

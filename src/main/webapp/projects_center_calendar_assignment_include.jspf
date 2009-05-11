@@ -1,0 +1,114 @@
+<%--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  --%>
+<%@ page import="com.concursive.connect.web.modules.plans.dao.Assignment" %>
+<%@ page
+    import="com.concursive.connect.web.modules.plans.calendar.ProjectEventList" %>
+<%-- draws the project assignment events for a specific day --%>
+<%
+  ProjectEventList projectEventList = (ProjectEventList) thisDay.get(category);
+%>
+<%-- include project pending activity events --%>
+<ccp:evaluate if="<%= projectEventList.getPendingAssignments().size() > 0 %>">
+<div id="alertprojectdetails<%=StringUtils.toFullDateString(thisDay.getDate()) %>" class="eventsListContainer">
+  <%-- title row --%>
+  <h3 class="eventName">
+    <%-- <img border="0" src="<%= ctx %>/images/alertassignment.gif" align="absmiddle" title="Projects" /> --%>
+      Project Assignment Alerts
+      <span><em>(<%= projectEventList.getPendingAssignments().size() %>)</em></span>
+  </h3>
+  <table class="assignmentsTable">
+  <%-- include project pending activity details --%>
+  <%
+    Iterator itr = projectEventList.getPendingAssignments().iterator();
+    if (itr.hasNext()) {
+  %>
+    <tr>
+      <th>
+        &nbsp;
+      </th>
+      <th class="weekSelector">
+       <strong>Activity</strong>
+      </th>
+      <th class="weekSelector" >
+       <strong>Number of EstimatedTotalHours</strong>
+      </th>
+      <th class="weekSelector" >
+       <strong>ActualHours</strong>
+      </th>
+      <th class="weekSelector">
+       <strong>StartDate</strong>
+      </th>
+    </tr>
+   <%
+      while(itr.hasNext()){
+      Assignment thisAssignment = (Assignment) itr.next();
+      menuCount++;
+    %>
+    <tr>
+     <td valign="top">
+       <%-- Use the unique id for opening the menu, and toggling the graphics --%>
+       <a href="javascript:displayProjectMenu('select-arrow<%= menuCount %>','menuProject', '<%= thisAssignment.getId() %>', '<%= thisAssignment.getProjectId() %>');"
+         onMouseOver="over(0, <%= menuCount %>)" onmouseout="out(0, <%= menuCount %>);hideMenu('menuProject');"><img
+         src="<%= ctx %>/images/calendar/calendar__pencil.png" name="select-arrow<%= menuCount %>" id="select-arrow<%= menuCount %>" align="absmiddle" border="0"></a>
+     </td>
+     <td width="100%" valign="top">
+       <%= thisAssignment.getRole()%>
+     </td>
+     <td nowrap valign="top">
+       <%= thisAssignment.getEstimatedLoe() %>
+     </td>
+     <td nowrap valign="top">
+       <%=thisAssignment.getActualLoe() %>
+     </td>
+     <td nowrap valign="top">
+       <ccp:tz timestamp="<%= thisAssignment.getStartDate() %>" dateOnly="true"/>
+     </td>
+    </tr>
+   <% }
+   } %>
+   </table>
+</div>
+</ccp:evaluate>

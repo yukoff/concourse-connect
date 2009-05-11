@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<module>
+  <navigation>
+    <!-- Documents -->
+    <page name="list">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Upload a File</content>
+                  <title>Upload a file to ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/file?folder=${currentFolder.id}</href>
+                  <permission>project-documents-files-upload</permission>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Create a Folder</content>
+                  <title>Create a document folder for ${project.title:html}</title>
+                  <href>/create/${project.uniqueId}/folder?parent=${currentFolder.id}</href>
+                  <permission>project-documents-folders-add</permission>
+                ]]>
+              </value>
+            </urls>
+            <portlet-events>
+              <consumes-data>currentFolder</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DocumentsPortlet" viewer="list" class="file-list ">
+            <portlet-events>
+              <generates-data>currentFolder</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="DocumentsFolderCounterPortlet" class="basic-list ">
+            <portlet-events>
+              <consumes-data>currentFolder</consumes-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+
+    <!-- File Form -->
+    <page name="file-form">
+      <row>
+        <column width="250">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DocumentsPortlet" viewer="fileForm" class="file-list ">
+            <portlet-events>
+              <generates-data>currentFolder</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="DocumentsFolderCounterPortlet" class="basic-list ">
+            <portlet-events>
+              <consumes-data>currentFolder</consumes-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Move Folder -->
+    <page name="file-move">
+      <row>
+        <column width="250">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DocumentsPortlet" viewer="moveFile">
+            <portlet-events>
+              <generates-data>currentFolder</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" class="basic-list ">
+            <content>Organize your files by moving them into other folders.</content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Folder Form -->
+    <page name="folder-form">
+      <row>
+        <column width="250">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DocumentsPortlet" viewer="folderForm">
+            <portlet-events>
+              <generates-data>currentFolder</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="DocumentsFolderCounterPortlet" class="basic-list ">
+            <portlet-events>
+              <consumes-data>currentFolder</consumes-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Move Folder -->
+    <page name="folder-move">
+      <row>
+        <column width="250">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DocumentsPortlet" viewer="moveFolder">
+            <portlet-events>
+              <generates-data>currentFolder</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" class="basic-list ">
+            <content>Move folders to create a complex hierarchy.</content>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- File Details and History -->
+    <page name="details">
+      <row>
+        <column width="250">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="DocumentsPortlet" viewer="details" class="file-list "/>
+        </column>
+        <column width="300">
+          <portlet name="DocumentsFolderCounterPortlet" class="basic-list ">
+            <portlet-events>
+              <consumes-data>currentFolder</consumes-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+    </page>
+  </navigation>
+</module>

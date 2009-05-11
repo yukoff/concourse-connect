@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Created-By: Concursive Corporation
+Comment: ConcourseConnect Web Application Thu April 16 15:37:00 EST 2009
+Implementation-Title: ConcourseConnect
+Implementation-Version: 1.0
+Implementation-Vendor: Concursive Corporation
+Implementation-URL: http://www.concursive.com

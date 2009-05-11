@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlets>
+  <category name="General Applications">
+    <portlet name="Content" servlet="ContentPortlet"><![CDATA[Create and display HTML content.]]></portlet>
+  </category>
+  <category name="Scrum Project Managment">
+    <portlet name="Releases and stories" servlet="ScrumReleasePortlet"><![CDATA[Displays a list of upcoming releases, and a list of the associated stories with the related status.]]></portlet>
+    <portlet name="Release progress" servlet="ScrumReleaseProgressPortlet"><![CDATA[Displays a list of upcoming releases and a progress bar based on status of each story. Users can select a release which navigates over to the list's bucket view.]]></portlet>
+  </category>
+  <category name="Debugging Tools">
+    <portlet name="About" servlet="AboutPortlet"><![CDATA[An application for testing various functionality of the dashboard container.]]></portlet>
+  </category>
+</portlets>

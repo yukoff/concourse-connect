@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+
+Name: META-INF/application.xml
+
+Name: team.war
+

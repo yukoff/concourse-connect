@@ -1,0 +1,124 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/bcprov-jdk15-141.jar:lib/postgresql-8.3-603.jdbc3.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar bsh.Interpreter "$0" "$@"
+
+import org.aspcfs.utils.HTTPUtils;
+import org.aspcfs.utils.StringUtils;
+import org.aspcfs.utils.FileUtils;
+import org.aspcfs.utils.StringHelper;
+import org.aspcfs.utils.XMLUtils;
+import org.aspcfs.utils.DatabaseUtils;
+import org.w3c.dom.*;
+import com.zeroio.controller.ConnectionPool;
+import com.zeroio.controller.ConnectionElement;
+import java.sql.*;
+import org.aspcfs.modules.translation.base.*;
+
+String CRLF = System.getProperty("line.separator");
+String fs = System.getProperty("file.separator");
+Map preferences = new LinkedHashMap();
+Map defaultPrefs = new LinkedHashMap();
+
+String url = "jdbc:postgresql://127.0.0.1:5432/iteam";
+String user = "postgres";
+String password = "";
+String driver = "org.postgresql.Driver";
+
+// Create a Connection Pool
+ConnectionPool sqlDriver = new ConnectionPool();
+sqlDriver.setDebug(false);
+sqlDriver.setTestConnections(false);
+sqlDriver.setAllowShrinking(true);
+sqlDriver.setMaxConnections(2);
+sqlDriver.setMaxIdleTime(60000);
+sqlDriver.setMaxDeadTime(300000);
+
+
+// Create a connection
+ConnectionElement ce = new ConnectionElement(url, user, password);
+ce.setDriver(driver);
+Connection db = sqlDriver.getConnection(ce);
+
+PreparedStatement pstConfig = db.prepareStatement(
+  "INSERT INTO language_config " +
+  "(language_id, config_name) VALUES (?, ?) ");
+  
+PreparedStatement pstParam = db.prepareStatement(
+  "INSERT INTO language_dictionary " +
+  "(config_id, param_name, param_value1, param_value2, enteredby) VALUES (?, ?, ?, ?, 1) ");
+  
+void updateDictionary(String localeName) {
+    print("");
+
+    print("Processing: " + localeName);
+
+    // Retrieve target language pack id
+    int languageId = LanguagePack.getLanguagePackId(db, localeName);
+    if (languageId == -1) {
+      // Insert the language pack
+      LanguagePack languagePack = new LanguagePack();
+      languagePack.setLanguageName(localeName);
+      languagePack.setLanguageLocale(localeName);
+      languagePack.insert(db);
+      languageId = languagePack.getId();
+    }
+
+    // Load any missing terms in the target language pack from the base language pack
+    LanguageDictionaryList dictionaryList = new LanguageDictionaryList();
+    dictionaryList.setLanguagePackId(LanguagePack.getLanguagePackId(db, LanguagePack.DEFAULT_LOCALE));
+    dictionaryList.setIgnoreFromLanguagePackId(languageId);
+    dictionaryList.buildList(db);
+
+    Iterator i = dictionaryList.iterator();
+    while (i.hasNext()) {
+      LanguageDictionary thisItem = (LanguageDictionary) i.next();
+
+      print("param: " + thisItem.getConfigName() + " - " + thisItem.getParamName());
+
+      int configId = LanguagePackConfig.queryIdByName(db, languageId, thisItem.getConfigName());
+      if (configId == -1) {
+        // Insert a new config and get id
+        pstConfig.setInt(1, languageId);
+        pstConfig.setString(2, thisItem.getConfigName());
+        pstConfig.execute();
+        configId = DatabaseUtils.getCurrVal(db, "language_config_id_seq", -1);
+      }
+
+      // Insert the dictionary item
+      LanguageDictionary newItem = new LanguageDictionary();
+      newItem.setConfigId(configId);
+      newItem.setParamName(thisItem.getParamName());
+      newItem.setEnteredBy(1);
+      newItem.setModifiedBy(1);
+      newItem.insert(db);
+    }
+}
+
+if (bsh.args.length == 0 || bsh.args[0] == null || "".equals(bsh.args[0].trim())) {
+  print("");
+  print("    [updating ALL locales... except en_US]");
+  print("");
+  exportAll = true;
+}
+
+if (!exportAll) {
+  String localeName = bsh.args[0].trim();
+  updateDictionary(localeName);
+} else {
+  LanguagePackList languagePackList = new LanguagePackList();
+  languagePackList.buildList(db);
+  Iterator i = languagePackList.iterator();
+  while (i.hasNext()) {
+    LanguagePack thisPack = (LanguagePack) i.next();
+    if (!thisPack.getLanguageLocale().equals("en_US")) {
+      updateDictionary(thisPack.getLanguageLocale());
+    }
+  }
+}
+
+
+pstParam.close();
+pstConfig.close();
+
+sqlDriver.free(db);
+print("");
+System.exit(0);

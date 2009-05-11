@@ -1,0 +1,1017 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<api>
+  <mappings>
+
+    <!-- User -->
+    <map class="com.concursive.connect.web.modules.login.dao.User" id="user" shareKey="true" cached="true">
+      <property alias="guid">id</property>
+      <property>groupId</property>
+      <property>departmentId</property>
+      <property>firstName</property>
+      <property>lastName</property>
+      <property>username</property>
+      <property>password</property>
+      <property>temporaryPassword</property>
+      <property>company</property>
+      <property>email</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>enabled</property>
+      <property>startPage</property>
+      <property>accessPersonal</property>
+      <property>accessEnterprise</property>
+      <property>accessAdmin</property>
+      <property>accessInvite</property>
+      <property>accessSettings</property>
+      <property>accessGuest</property>
+      <property>accessInbox</property>
+      <property>accessResources</property>
+      <property>lastLogin</property>
+      <property>expiration</property>
+      <property>registered</property>
+      <property>accountSize</property>
+      <property>terms</property>
+      <property>timezone</property>
+      <property>currency</property>
+      <property>language</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>accountType</property>
+      <property>accountTypeStarts</property>
+      <property>accountTypeEnds</property>
+      <property>accessAddProjects</property>
+      <property>webdavAccess</property>
+      <property>webdavPassword</property>
+      <property>htPasswdAccess</property>
+      <property>htPasswdDate</property>
+      <property>accessContactsViewAll</property>
+      <property>accessContactsEditAll</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.login.dao.UserList" id="userList"/>
+
+    <!-- Lookup Lists -->
+    <map class="com.concursive.connect.web.utils.CustomLookupList" id="lookupRole" />
+    <map class="com.concursive.connect.web.utils.CustomLookupList" id="lookupRoleList"
+         table="lookup_project_role" uniqueField="code" sortBy="level, description">
+      <property alias="guid" field="code">id</property>
+      <property field="description">description</property>
+      <property field="default_item">defaultItem</property>
+      <property field="level">level</property>
+      <property field="enabled">enabled</property>
+      <property field="group_id">groupId</property>
+    </map>
+
+    <map class="com.concursive.connect.web.modules.profile.dao.PermissionCategoryLookup" id="lookupPermissionCategory">
+      <property alias="guid">id</property>
+      <property>description</property>
+      <property>defaultItem</property>
+      <property>level</property>
+      <property>enabled</property>
+      <property>groupId</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.profile.dao.PermissionCategoryLookupList" id="lookupPermissionCategoryList" />
+
+    <map class="com.concursive.connect.web.modules.profile.dao.PermissionLookup" id="lookupPermission">
+      <property alias="guid">id</property>
+      <property lookup="lookupPermissionCategory">categoryId</property>
+      <property>permission</property>
+      <property>description</property>
+      <property>defaultItem</property>
+      <property lookup="lookupRole">defaultRole</property>
+      <property>level</property>
+      <property>enabled</property>
+      <property>groupId</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.profile.dao.PermissionLookupList" id="lookupPermissionList" />
+
+    <map class="com.concursive.connect.web.utils.CustomLookupList" id="lookupService" />
+    <map class="com.concursive.connect.web.utils.CustomLookupList" id="lookupServiceList"
+         table="lookup_service" uniqueField="code" sortBy="level, description">
+      <property alias="guid" field="code">id</property>
+      <property field="description">description</property>
+      <property field="default_item">defaultItem</property>
+      <property field="level">level</property>
+      <property field="enabled">enabled</property>
+    </map>
+
+    <!-- Project Category -->
+    <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" id="projectCategoryList">
+      <property>categoryId</property>
+      <property>categoryName</property>
+      <property>parentCategoryId</property>
+      <property>topLevelOnly</property>
+      <property>enabled</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" id="projectCategory" shareKey="true">
+      <property alias="guid">id</property>
+      <property>description</property>
+      <property>enabled</property>
+      <property>level</property>
+      <property>logoId</property>
+      <property lookup="projectCategory">parentCategoryId</property>
+      <property>style</property>
+      <property>styleEnabled</property>
+	  </map>
+    <!-- Project Category File Item List -->
+    <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryLogoFile" id="projectCategoryLogoFile" shareKey="true">
+      <property alias="guid">id</property>
+      <property>linkModuleId</property>
+      <property lookup="projectCategory">linkItemId</property>
+      <property>folderId</property>
+      <property>subject</property>
+      <property>clientFilename</property>
+      <property>filename</property>
+      <property>directory</property>
+      <property>size</property>
+      <property>version</property>
+      <property>image</property>
+      <property>enabled</property>
+      <property>defaultFile</property>
+      <property>downloads</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>thumbnailFilename</property>
+      <property>imageWidth</property>
+      <property>imageHeight</property>
+      <property>comment</property>
+      <property>featuredFile</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryLogoFileList" id="projectCategoryLogoFileList">
+      <property value="2008051912">linkModuleId</property>
+    </map>
+
+    <!-- Badge Category -->
+    <map class="com.concursive.connect.web.modules.badges.dao.BadgeCategoryList" id="badgeCategoryList">
+      <property>code</property>
+      <property>projectCategoryId</property>
+      <property>onlyWithoutProjectCategory</property>
+      <property>enabled</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.badges.dao.BadgeCategory" id="badgeCategory" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>itemName</property>
+      <property lookup="badgeCategoryLogoFile">logoId</property>
+      <property>entered</property>
+      <property>enabled</property>
+      <property>level</property>
+	  </map>
+    <!-- Badge Category File Item List -->
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItem" id="badgeCategoryLogoFile" shareKey="true">
+      <property alias="guid">id</property>
+      <property>linkModuleId</property>
+      <property lookup="badgeCategory">linkItemId</property>
+      <property>folderId</property>
+      <property>subject</property>
+      <property>clientFilename</property>
+      <property>filename</property>
+      <property>directory</property>
+      <property>size</property>
+      <property>version</property>
+      <property>image</property>
+      <property>enabled</property>
+      <property>defaultFile</property>
+      <property>downloads</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>thumbnailFilename</property>
+      <property>imageWidth</property>
+      <property>imageHeight</property>
+      <property>comment</property>
+      <property>featuredFile</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItemList" id="badgeCategoryLogoFileList">
+      <property value="2008051315">linkModuleId</property>
+    </map>
+
+    <!-- Badge -->
+    <map class="com.concursive.connect.web.modules.badges.dao.BadgeList" id="badgeList">
+      <property>badgeId</property>
+      <property>categoryId</property>
+      <property>onlyWithoutProjectCategory</property>
+      <property>onlyWithoutBadgeCategory</property>
+      <property>enabled</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.badges.dao.Badge" id="badge" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="badgeCategory">categoryId</property>
+      <property>title</property>
+      <property>description</property>
+      <property>logoId</property>
+      <property>email1</property>
+      <property>email2</property>
+      <property>email3</property>
+      <property>businessPhone</property>
+      <property>businessPhoneExt</property>
+      <property>webPage</property>
+      <property>addrline1</property>
+      <property>addrline2</property>
+      <property>addrline3</property>
+      <property>state</property>
+      <property>city</property>
+      <property>country</property>
+      <property>postalCode</property>
+      <property>latitude</property>
+      <property>longitude</property>
+      <property>enabled</property>
+      <property>readCount</property>
+      <property>readDate</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAvg</property>
+      <property lookup="user">modifiedBy</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property>entered</property>
+      <property>systemAssigned</property>
+      <property>systemConstant</property>
+	  </map>
+    <!-- Badge File Item List -->
+    <map class="com.concursive.connect.web.modules.badges.dao.BadgeLogoFile" id="badgeLogoFile" shareKey="true">
+      <property alias="guid">id</property>
+      <property>linkModuleId</property>
+      <property lookup="badge">linkItemId</property>
+      <property>folderId</property>
+      <property>subject</property>
+      <property>clientFilename</property>
+      <property>filename</property>
+      <property>directory</property>
+      <property>size</property>
+      <property>version</property>
+      <property>image</property>
+      <property>enabled</property>
+      <property>defaultFile</property>
+      <property>downloads</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>thumbnailFilename</property>
+      <property>imageWidth</property>
+      <property>imageHeight</property>
+      <property>comment</property>
+      <property>featuredFile</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.badges.dao.BadgeLogoFileList" id="badgeLogoFileList">
+      <property value="2008051215">linkModuleId</property>
+    </map>
+
+    <!-- Ad Category -->
+    <map class="com.concursive.connect.web.modules.promotions.dao.AdCategoryList" id="adCategoryList">
+      <property>code</property>
+      <property>projectCategoryId</property>
+      <property>onlyWithoutProjectCategory</property>
+      <property>enabled</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.promotions.dao.AdCategory" id="adCategory" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>itemName</property>
+      <property>logoId</property>
+      <property>entered</property>
+      <property>enabled</property>
+      <property>level</property>
+	  </map>
+    <!-- @todo Ad Category File Item List -->
+
+    <!-- Classified Category -->
+    <map class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategoryList" id="classifiedCategoryList">
+      <property>code</property>
+      <property>projectCategoryId</property>
+      <property>onlyWithoutProjectCategory</property>
+      <property>enabled</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategory" id="classifiedCategory" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>itemName</property>
+      <property>logoId</property>
+      <property>entered</property>
+      <property>enabled</property>
+      <property>level</property>
+	  </map>
+    <!-- @todo Classified Category File Item List -->
+
+    <!-- Wiki Template -->
+    <map class="com.concursive.connect.web.modules.wiki.dao.WikiTemplateList" id="wikiTemplateList">
+      <property>wikiTemplateId</property>
+      <property>projectCategoryId</property>
+      <property>enabled</property>
+      <property>title</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.wiki.dao.WikiTemplate" id="wikiTemplate" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>title</property>
+      <property>content</property>
+      <property>entered</property>
+      <property>enabled</property>
+      <property>level</property>
+	  </map>
+
+    <!-- Discussion Forum Template -->
+    <map class="com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplateList" id="discussionForumTemplateList">
+      <property>forumTemplateId</property>
+      <property>projectCategoryId</property>
+      <property>enabled</property>
+      <property>title</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplate" id="discussionForumTemplate">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>forumNames</property>
+      <property>entered</property>
+      <property>enabled</property>
+	  </map>
+
+    <!-- Document Folder Template -->
+    <map class="com.concursive.connect.web.modules.documents.dao.DocumentFolderTemplateList" id="documentFolderTemplateList">
+      <property>folderTemplateId</property>
+      <property>projectCategoryId</property>
+      <property>enabled</property>
+      <property>title</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.documents.dao.DocumentFolderTemplate" id="documentFolderTemplate">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>folderNames</property>
+      <property>entered</property>
+      <property>enabled</property>
+	  </map>
+
+    <!-- Lists Template -->
+    <map class="com.concursive.connect.web.modules.lists.dao.ListsTemplateList" id="listsTemplateList">
+      <property>listTemplateId</property>
+      <property>projectCategoryId</property>
+      <property>enabled</property>
+      <property>title</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.lists.dao.ListsTemplate" id="listsTemplate">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>listNames</property>
+      <property>entered</property>
+      <property>enabled</property>
+	  </map>
+
+    <!-- Message Template -->
+    <map class="com.concursive.connect.web.modules.communications.dao.MessageTemplateList" id="messageTemplateList">
+      <property>templateId</property>
+      <property>projectCategoryId</property>
+      <property>projectId</property>
+	  </map>
+    <map class="com.concursive.connect.web.modules.communications.dao.MessageTemplate" id="messageTemplate">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>title</property>
+      <property>subject</property>
+      <property>content</property>
+      <property>level</property>
+      <property>entered</property>
+      <property>enabled</property>
+	  </map>
+
+    <!-- Project -->
+    <map class="com.concursive.connect.web.modules.profile.dao.Project" id="project" shareKey="true" cached="true">
+      <property alias="guid">id</property>
+      <property>groupId</property>
+      <property>departmentId</property>
+      <property lookup="projectCategory">categoryId</property>
+      <property>templateId</property>
+      <property>template</property>
+      <property>clone</property>
+      <property>title</property>
+      <property>uniqueId</property>
+      <property>shortDescription</property>
+      <property>requestedBy</property>
+      <property>requestedByDept</property>
+      <property>requestDate</property>
+      <property>approved</property>
+      <property>approvalDate</property>
+      <property>closed</property>
+      <property>closeDate</property>
+      <property>estimatedCloseDate</property>
+      <property>budget</property>
+      <property>budgetCurrency</property>
+      <property>level</property>
+      <property lookup="user">owner</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+
+      <property>readCount</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAverage</property>
+      <property>logoId</property>
+      <property>keywords</property>
+      <property>profile</property>
+      <property>source</property>
+      <property>style</property>
+      <property>styleEnabled</property>
+      <property>description</property>
+      <property>systemDefault</property>
+
+      <property>portal</property>
+      <property>portalHeader</property>
+      <property>portalFormat</property>
+      <property>portalKey</property>
+      <property>portalBuildNewsBody</property>
+      <property>portalNewsMenu</property>
+      <property>portalPageType</property>
+      <property>portalDefault</property>
+      <property>portalLink</property>
+      <property>languageId</property>
+
+      <property>concursiveCRMUrl</property>
+      <property>concursiveCRMDomain</property>
+      <property>concursiveCRMCode</property>
+      <property>concursiveCRMClient</property>
+
+      <property>email1</property>
+      <property>email2</property>
+      <property>email3</property>
+      <property>homePhone</property>
+      <property>homePhoneExt</property>
+      <property>home2Phone</property>
+      <property>home2PhoneExt</property>
+      <property>homeFax</property>
+      <property>businessPhone</property>
+      <property>bussinessPhoneExt</property>
+      <property>business2Phone</property>
+      <property>business2PhoneExt</property>
+      <property>businessFax</property>
+      <property>mobilePhone</property>
+      <property>pagerNumber</property>
+      <property>carPhone</property>
+      <property>radioPhone</property>
+      <property>webPage</property>
+      <property>addressTo</property>
+      <property>addressLine1</property>
+      <property>addressLine2</property>
+      <property>addressLine3</property>
+      <property>city</property>
+      <property>state</property>
+      <property>country</property>
+      <property>postalCode</property>
+      <property>latitude</property>
+      <property>longitude</property>
+      <property>subCategory1Id</property>
+      <property>subCategory2Id</property>
+      <property>subCategory3Id</property>
+
+      <property>features.allowGuests</property>
+      <property>features.allowsUserObservers</property>
+      <property>features.membershipRequired</property>
+
+      <property>features.showDashboard</property>
+      <property>features.showWiki</property>
+      <property>features.showCalendar</property>
+      <property>features.showNews</property>
+      <property>features.showDetails</property>
+      <property>features.showTeam</property>
+      <property>features.showPlan</property>
+      <property>features.showLists</property>
+      <property>features.showDiscussion</property>
+      <property>features.showTickets</property>
+      <property>features.showDocuments</property>
+      <property>features.showBadges</property>
+      <property>features.showReviews</property>
+      <property>features.showClassifieds</property>
+      <property>features.showAds</property>
+      <property>features.showProfile</property>
+      <property>features.showMessages</property>
+
+      <property>features.labelDashboard</property>
+      <property>features.labelWiki</property>
+      <property>features.labelCalendar</property>
+      <property>features.labelNews</property>
+      <property>features.labelDetails</property>
+      <property>features.labelTeam</property>
+      <property>features.labelPlan</property>
+      <property>features.labelLists</property>
+      <property>features.labelDiscussion</property>
+      <property>features.labelTickets</property>
+      <property>features.labelDocuments</property>
+      <property>features.labelBadges</property>
+      <property>features.labelReviews</property>
+      <property>features.labelClassifieds</property>
+      <property>features.labelAds</property>
+      <property>features.labelProfile</property>
+      <property>features.labelMessages</property>
+
+      <property>features.orderDashboard</property>
+      <property>features.orderWiki</property>
+      <property>features.orderCalendar</property>
+      <property>features.orderNews</property>
+      <property>features.orderDetails</property>
+      <property>features.orderTeam</property>
+      <property>features.orderPlan</property>
+      <property>features.orderLists</property>
+      <property>features.orderDiscussion</property>
+      <property>features.orderTickets</property>
+      <property>features.orderDocuments</property>
+      <property>features.orderBadges</property>
+      <property>features.orderReviews</property>
+      <property>features.orderClassifieds</property>
+      <property>features.orderAds</property>
+      <property>features.orderProfile</property>
+      <property>features.orderMessages</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.profile.dao.ProjectFeatures" id="projectFeatures" note="updates only" />
+    <map class="com.concursive.connect.web.modules.tools.dao.ProjectCRM" id="projectCRM" note="updates only" />
+    <map class="com.concursive.connect.web.modules.profile.dao.ProjectList" id="projectList"/>
+
+    <!-- Permission List -->
+    <map class="com.concursive.connect.web.modules.profile.dao.Permission" id="projectPermission">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="lookupPermission">permissionId</property>
+      <property lookup="lookupRole">userLevel</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.profile.dao.PermissionList" id="projectPermissionList"/>
+
+    <!-- Team Member -->
+    <map class="com.concursive.connect.web.modules.members.dao.TeamMember" id="teamMember">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="user">userId</property>
+      <property lookup="lookupRole">userLevel</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>status</property>
+      <property>lastAccessed</property>
+      <property>notification</property>
+      <property>tools</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.members.dao.TeamMemberList" id="teamMemberList"/>
+
+    <map class="com.concursive.connect.web.modules.blog.dao.BlogPostCategory" id="blogPostCategory" shareKey="true">
+      <property alias="guid" field="category_id">id</property>
+      <property field="project_id" lookup="project">projectId</property>
+      <property field="category_name">categoryName</property>
+      <property field="entered">entered</property>
+      <property field="level">level</property>
+      <property field="enabled">enabled</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.blog.dao.BlogPostCategoryList" id="blogPostCategoryList"/>
+
+    <!-- News Article -->
+    <map class="com.concursive.connect.web.modules.blog.dao.BlogPost" id="blogPost" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="blogPostCategory">categoryId</property>
+      <property>subject</property>
+      <property>intro</property>
+      <property>message</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>startDate</property>
+      <property>endDate</property>
+      <property>allowReplies</property>
+      <property>allowRatings</property>
+      <property>ratingCount</property>
+      <property>avgRating</property>
+      <property>priorityId</property>
+      <property>readCount</property>
+      <property>enabled</property>
+      <property>status</property>
+      <property>html</property>
+      <property>classificationId</property>
+      <property lookup="lookupNewsTemplate">templateId</property>
+      <property>ratingValue</property>
+      <property>ratingAvg</property>
+      <property>portalKey</property>
+      <property>redirect</property>
+      <property>pageTitle</property>
+      <property>keywords</property>
+      <property>description</property>
+      <property>metaName</property>
+      <property>metaContent</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.blog.dao.BlogPostList" id="blogPostList"/>
+
+    <!-- Wiki -->
+    <map class="com.concursive.connect.web.modules.wiki.dao.Wiki" id="wiki" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property>subject</property>
+      <property>content</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>readCount</property>
+      <property>enabled</property>
+      <property>readOnly</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>stateId</property>
+      <property>ratingAvg</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.wiki.dao.WikiList" id="wikiList"/>
+
+    <!-- WikiVersion -->
+    <map class="com.concursive.connect.web.modules.wiki.dao.WikiVersion" id="wikiVersion" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="wiki">wikiId</property>
+      <property>content</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>enabled</property>
+      <property>readCount</property>
+      <property>summary</property>
+      <property>linesAdded</property>
+      <property>linesChanged</property>
+      <property>linesDeleted</property>
+      <property>size</property>
+      <property>linesTotal</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.wiki.dao.WikiVersionList" id="wikiVersionList"/>
+
+    <!-- Wiki File Item List -->
+    <map class="com.concursive.connect.web.modules.wiki.dao.WikiFile" id="wikiFile" shareKey="true">
+      <property alias="guid">id</property>
+      <property>linkModuleId</property>
+      <property lookup="project">linkItemId</property>
+      <property>folderId</property>
+      <property>subject</property>
+      <property>clientFilename</property>
+      <property>filename</property>
+      <property>directory</property>
+      <property>size</property>
+      <property>version</property>
+      <property>image</property>
+      <property>enabled</property>
+      <property>defaultFile</property>
+      <property>downloads</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>thumbnailFilename</property>
+      <property>imageWidth</property>
+      <property>imageHeight</property>
+      <property>comment</property>
+      <property>featuredFile</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.wiki.dao.WikiFileList" id="wikiFileList">
+      <property value="20060220">linkModuleId</property>
+    </map>
+
+    <map class="com.concursive.connect.web.modules.issues.dao.ProjectTicketCount" id="projectTicketCount">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property>keyCount</property>
+    </map>
+
+    <map class="com.concursive.connect.web.modules.issues.dao.TicketCategory" id="ticketCategory">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="ticketCategory">parentCode</property>
+      <property>categoryLevel</property>
+      <property>description</property>
+      <property>enabled</property>
+      <property>level</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.issues.dao.TicketCategoryList" id="ticketCategoryList"/>
+
+
+
+    <map class="com.concursive.connect.web.modules.communications.dao.MessageTemplate" id="messageTemplate">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>title</property>
+      <property>subject</property>
+      <property>content</property>
+      <property>level</property>
+      <property>enabled</property>
+      <property>entered</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.communications.dao.MessageTemplateList" id="messageTemplate"/>
+
+
+    <map class="com.concursive.connect.web.modules.issues.dao.TicketCategoryTemplate" id="ticketCategoryTemplate">
+      <property alias="guid">id</property>
+      <property lookup="projectCategory">projectCategoryId</property>
+      <property>ticketCategories</property>
+      <property>enabled</property>
+      <property>entered</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.issues.dao.TicketCategoryTemplateList" id="ticketCategoryTemplateList"/>
+
+    <map class="com.concursive.connect.web.modules.communications.dao.ProjectMessage" id="projectMessage" shareKey="true">
+      <property alias="guid">id</property>
+      <property>subject</property>
+      <property>body</property>
+      <property lookup="project">projectId</property>
+      <property lookup="user">enteredBy</property>
+      <property>entered</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.communications.dao.ProjectMessageList" id="projectMessageList"/>
+
+    <map class="com.concursive.connect.web.modules.issues.dao.ProjectTicketCountList" id="projectTicketCountList"/>
+
+    <map class="com.concursive.connect.web.modules.services.dao.Service" id="service">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="lookupService">serviceId</property>
+      <property>entered</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.services.dao.ServiceList" id="serviceList"/>
+
+    <map class="com.concursive.connect.web.modules.discussion.dao.Forum" id="forum" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property>subject</property>
+      <property>description</property>
+      <property>enabled</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>topicsCount</property>
+      <property>postsCount</property>
+      <property>readCount</property>
+      <property>lastPostDate</property>
+      <property>lastPostBy</property>
+      <property>allowFileAttachments</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.discussion.dao.ForumList" id="forumList"/>
+
+    <map class="com.concursive.connect.web.modules.discussion.dao.Topic" id="topic" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="forum">categoryId</property>
+      <property>projectId</property>
+      <property>subject</property>
+      <property>body</property>
+      <property>importance</property>
+      <property>enabled</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>question</property>
+      <property>solutionReplyId</property>
+      <property>readCount</property>
+      <property>replyCount</property>
+      <property>replyDate</property>
+      <property>replyBy</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.discussion.dao.TopicList" id="topicList"/>
+
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItem" id="topicFile" shareKey="true">
+      <property alias="guid">id</property>
+      <property>linkModuleId</property>
+      <property lookup="topic">linkItemId</property>
+      <property>folderId</property>
+      <property>subject</property>
+      <property>clientFilename</property>
+      <property>filename</property>
+      <property>directory</property>
+      <property>size</property>
+      <property>version</property>
+      <property>image</property>
+      <property>enabled</property>
+      <property>defaultFile</property>
+      <property>downloads</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>thumbnailFilename</property>
+      <property>imageWidth</property>
+      <property>imageHeight</property>
+      <property>comment</property>
+      <property>featuredFile</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItemList" id="topicFileList">
+      <property value="2005020616">linkModuleId</property>
+    </map>
+
+    <map class="com.concursive.connect.web.modules.discussion.dao.Reply" id="reply" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="topic">issueId</property>
+      <property>replyToId</property>
+      <property>subject</property>
+      <property>body</property>
+      <property>importance</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>helpful</property>
+      <property>solution</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAverage</property>
+      <property>inappropriateCount</property>
+      <property>answered</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.discussion.dao.ReplyList" id="replyList"/>
+
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItem" id="replyFile" shareKey="true">
+      <property alias="guid">id</property>
+      <property>linkModuleId</property>
+      <property lookup="reply">linkItemId</property>
+      <property>folderId</property>
+      <property>subject</property>
+      <property>clientFilename</property>
+      <property>filename</property>
+      <property>directory</property>
+      <property>size</property>
+      <property>version</property>
+      <property>image</property>
+      <property>enabled</property>
+      <property>defaultFile</property>
+      <property>downloads</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>thumbnailFilename</property>
+      <property>imageWidth</property>
+      <property>imageHeight</property>
+      <property>comment</property>
+      <property>featuredFile</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItemList" id="replyFileList">
+      <property value="20050201">linkModuleId</property>
+    </map>
+
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItem" id="projectFile" shareKey="true">
+      <property alias="guid">id</property>
+      <property>linkModuleId</property>
+      <property lookup="project">linkItemId</property>
+      <property>folderId</property>
+      <property>subject</property>
+      <property>clientFilename</property>
+      <property>filename</property>
+      <property>directory</property>
+      <property>size</property>
+      <property>version</property>
+      <property>image</property>
+      <property>enabled</property>
+      <property>defaultFile</property>
+      <property>downloads</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>thumbnailFilename</property>
+      <property>imageWidth</property>
+      <property>imageHeight</property>
+      <property>comment</property>
+      <property>featuredFile</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.documents.dao.FileItemList" id="projectFileList">
+      <property value="1">linkModuleId</property>
+    </map>
+
+    <!-- @todo Project Style File Item List -->
+
+    <!-- com.concursive.connect.web.modules.documents.dao.FileItemVersion -->
+    <!-- com.concursive.connect.web.modules.documents.dao.FileFolder -->
+    <!-- com.concursive.connect.web.modules.documents.dao.FileDownloadLog -->
+    <!-- com.concursive.connect.web.modules.lists.dao.TaskCategory -->
+    <!-- com.concursive.connect.web.modules.lists.dao.Task -->
+    <!-- taskcategory_project -->
+    <!-- taskcategorylink_news -->
+    <!-- com.concursive.connect.web.modules.plans.dao.Requirement -->
+    <!-- com.concursive.connect.web.modules.plans.dao.Assignment -->
+    <!-- com.concursive.connect.web.modules.plans.dao.AssignmentFolder -->
+    <!-- com.concursive.connect.web.modules.plans.dao.AssignmentNote -->
+    <!-- com.concursive.connect.web.modules.plans.dao.AssignmentRole -->
+    <!-- com.concursive.connect.web.modules.plans.dao.AssignedUser -->
+    <!-- com.concursive.connect.web.modules.plans.dao.RequirementMapItem -->
+    <!-- com.concursive.connect.web.modules.timesheet.dao.DailyTimesheet -->
+    <!-- com.concursive.connect.web.modules.timesheet.dao.ProjectTimesheet -->
+    <!-- com.concursive.connect.web.modules.contacts.dao.Contact -->
+
+    <map class="com.concursive.connect.web.modules.messages.dao.PrivateMessageList" id="privateMessageList">
+      <property>projectId</property>
+      <property>parentId</property>
+      <property>enteredBy</property>
+      <property>readBy</property>
+      <property>deletedByEnteredBy</property>
+      <property>deletedByUserId</property>
+      <property>linkProjectId</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.messages.dao.PrivateMessage" id="privateMessage">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="privateMessage">parentId</property>
+      <property>linkModuleId</property>
+      <property>linkItemId</property>
+      <property>body</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>read</property>
+      <property lookup="user">readBy</property>
+      <property>deletedByEnteredBy</property>
+      <property lookup="user">deletedByUserId</property>
+      <property>lastReplyDate</property>
+      <property lookup="project">linkProjectId</property>
+    </map>
+
+    <!-- IndexerQueryResult -->
+    <map class="com.concursive.connect.indexer.IndexerQueryResult" id="indexerQueryResult">
+      <property>queryString</property>
+      <property>queryIndexType</property>
+      <property>indexId</property>
+      <property>type</property>
+      <property>objectId</property>
+      <property>projectId</property>
+      <property>guests</property>
+      <property>membership</property>
+      <property>title</property>
+      <property>contents</property>
+      <property>modified</property>
+      <property>size</property>
+      <property>filename</property>
+      <property>newsPortal</property>
+      <property>newsStatus</property>
+    </map>
+    <map class="com.concursive.connect.indexer.IndexerQueryResultList" id="indexerQueryResultList">
+      <property>queryString</property>
+      <property>queryIndexType</property>
+      <property>indexId</property>
+      <property>type</property>
+      <property>objectId</property>
+      <property>projectId</property>
+      <property>guests</property>
+      <property>membership</property>
+      <property>title</property>
+      <property>contents</property>
+      <property>modified</property>
+      <property>size</property>
+      <property>filename</property>
+      <property>newsPortal</property>
+      <property>newsStatus</property>
+    </map>
+
+    <!-- HTPasswd -->
+    <map class="com.concursive.connect.web.modules.login.dao.HTPasswd" id="htpasswd"/>
+    <map class="com.concursive.connect.web.modules.login.dao.HTPasswdList" id="htpasswdList"/>
+
+    <!-- Backup and Restore Service -->
+    <map class="com.concursive.connect.web.modules.api.services.BackupService" id="backup" />
+    <map class="com.concursive.connect.web.modules.api.services.RestoreService" id="restore" />
+    <!-- CRM Integration -->
+    <map class="com.concursive.connect.web.modules.api.services.ProjectProfileInvitesService" id="projectInvites"/>
+  </mappings>
+</api>

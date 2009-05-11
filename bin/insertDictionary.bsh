@@ -1,0 +1,208 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/bcprov-jdk15-141.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar:lib/postgresql-8.3-604.jdbc3.jar bsh.Interpreter "$0" "$@"
+
+import org.aspcfs.utils.HTTPUtils;
+import org.aspcfs.utils.StringUtils;
+import org.aspcfs.utils.FileUtils;
+import org.aspcfs.utils.StringHelper;
+import org.aspcfs.utils.XMLUtils;
+import org.aspcfs.utils.DatabaseUtils;
+import org.w3c.dom.*;
+import com.zeroio.controller.ConnectionPool;
+import com.zeroio.controller.ConnectionElement;
+import java.sql.*;
+import org.aspcfs.modules.translation.base.*;
+
+String CRLF = System.getProperty("line.separator");
+String fs = System.getProperty("file.separator");
+Map preferences = new LinkedHashMap();
+Map defaultPrefs = new LinkedHashMap();
+
+String url = "jdbc:postgresql://127.0.0.1:5432/iteam";
+String user = "postgres";
+String password = "";
+String driver = "org.postgresql.Driver";
+
+// Create a Connection Pool
+ConnectionPool sqlDriver = new ConnectionPool();
+sqlDriver.setDebug(false);
+sqlDriver.setTestConnections(false);
+sqlDriver.setAllowShrinking(true);
+sqlDriver.setMaxConnections(2);
+sqlDriver.setMaxIdleTime(60000);
+sqlDriver.setMaxDeadTime(300000);
+
+// Create a connection
+ConnectionElement ce = new ConnectionElement(url, user, password);
+ce.setDriver(driver);
+Connection db = sqlDriver.getConnection(ce);
+
+PreparedStatement pstDictionary = db.prepareStatement(
+  "INSERT INTO language_pack " +
+  "(language_name, language_locale, maintainer_id) VALUES (?, ?, 1) ");
+
+
+PreparedStatement pstConfig = db.prepareStatement(
+  "INSERT INTO language_config " +
+  "(language_id, config_name) VALUES (?, ?) ");
+
+PreparedStatement pstParam = db.prepareStatement(
+  "INSERT INTO language_dictionary " +
+  "(config_id, param_name, param_value1, param_value2, enteredby) VALUES (?, ?, ?, ?, 1) ");
+
+PreparedStatement pstUpdate = db.prepareStatement(
+  "UPDATE language_dictionary " +
+  "SET param_value1 = ?, param_value2 = ? " +
+  "WHERE config_id = ? " +
+  "AND param_name = ? " +
+  "AND (param_value1 = '' OR param_value1 IS NULL) ");
+
+PreparedStatement pstUpdateExisting = db.prepareStatement(
+  "UPDATE language_dictionary " +
+  "SET param_value1 = ?, param_value2 = ? " +
+  "WHERE config_id = ? " +
+  "AND id = ? ");
+
+String localeName = null;
+int replaceCount = 0;
+int insertCount = 0;
+
+void insertDictionary() {
+    print("");
+
+    print("Processing: " + localeName);
+
+    // Load the check file XML into corresponding maps
+    File sourceFile = new File("src/languages/dictionary_" + localeName + ".xml");
+    if (!sourceFile.exists()) {
+      print("    Error-> dictionary file not found: " + sourceFile.toString());
+      return false;
+    }
+    XMLUtils xml = new XMLUtils(sourceFile);
+
+    // Use existing language pack
+    int languageId = LanguagePack.getLanguagePackId(db, localeName);
+
+    if (languageId == -1) {
+      // Insert the language pack
+      pstDictionary.setString(1, localeName);
+      pstDictionary.setString(2, localeName);
+      pstDictionary.execute();
+      languageId = DatabaseUtils.getCurrVal(db, "language_pack_id_seq", -1);
+    }
+
+    print("    Language Id: " + languageId);
+
+    // Traverse the prefs and add the config nodes to the LinkedHashMap,
+    // then for each config, add the param nodes into a child LinkedHashMap.
+    // This will provide quick access to the values, and will allow an
+    // editor to display the fields as ordered in the XML file
+    NodeList configNodes = xml.getDocumentElement().getElementsByTagName("config");
+    for (int i = 0; i < configNodes.getLength(); i++) {
+      Node configNode = configNodes.item(i);
+      if (configNode != null &&
+          configNode.getNodeType() == Node.ELEMENT_NODE &&
+          "config".equals(((Element) configNode).getTagName())) {
+        //For each config name, create a map for each of the params
+
+        String configName = ((Element) configNode).getAttribute("name");
+        Map preferenceGroup = null;
+        if (configName != null) {
+
+          // Using existing configId
+          int configId = LanguagePackConfig.queryIdByName(db, languageId, configName);
+
+          if (configId == -1) {
+            // Insert a new config and get id
+            pstConfig.setInt(1, languageId);
+            pstConfig.setString(2, configName);
+            pstConfig.execute();
+            configId = DatabaseUtils.getCurrVal(db, "language_config_id_seq", -1);
+          }
+
+          //Process the params for this config
+          NodeList paramNodes = ((Element) configNode).getElementsByTagName("param");
+          for (int j = 0; j < paramNodes.getLength(); j++) {
+            Node paramNode = paramNodes.item(j);
+            if (paramNode != null &&
+                paramNode.getNodeType() == Node.ELEMENT_NODE &&
+                "param".equals(((Element) paramNode).getTagName())) {
+              String paramName = ((Element) paramNode).getAttribute("name");
+              if (paramName != null) {
+                String value = XMLUtils.getNodeText(XMLUtils.getFirstChild((Element) paramNode, "value"));
+                String value2 = null;
+                if (value == null) {
+                  value = XMLUtils.getNodeText(XMLUtils.getFirstChild((Element) paramNode, "page_title"));
+                  value2 = XMLUtils.getNodeText(XMLUtils.getFirstChild((Element) paramNode, "menu_title"));
+                }
+                pstParam.setInt(1, configId);
+                pstParam.setString(2, paramName);
+                pstParam.setString(3, value);
+                pstParam.setString(4, value2);
+                try {
+                  pstParam.execute();
+                } catch (Exception e) {
+                  try {
+                    LanguageDictionaryList ldl = new LanguageDictionaryList();
+                    ldl.setConfigId(configId);
+                    ldl.setParamName(paramName);
+                    ldl.setBuildTranslatedPhrasesOnly(true);
+                    ldl.buildList(db);
+                    if (ldl.size() > 0) {
+                      LanguageDictionary ld = (LanguageDictionary) ldl.get(0);
+                      if (value != null && !"".equals(value.trim()) && !ld.getParamValue1().equals(value)) {
+                        // A different good value already exists, but now we have a new good value
+                        pstUpdateExisting.setString(1, value);
+                        pstUpdateExisting.setString(2, value2);
+                        pstUpdateExisting.setInt(3, configId);
+                        pstUpdateExisting.setInt(4, ld.getId());
+                        pstUpdateExisting.executeUpdate();
+                        ++replaceCount;
+                      }
+                    } else {
+                      // The existing is empty, so use this new good value
+                      pstUpdate.setString(1, value);
+                      pstUpdate.setString(2, value2);
+                      pstUpdate.setInt(3, configId);
+                      pstUpdate.setString(4, paramName);
+                      int count = pstUpdate.executeUpdate();
+                      if (count > 0) {
+                        print("Translation added: " + paramName);
+                        ++insertCount;
+                      }
+                    }
+                  } catch (Exception e) {
+                    print("Update error: " + e.getMessage());
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+if (bsh.args.length == 0 || bsh.args[0] == null || "".equals(bsh.args[0].trim())) {
+  print("");
+  print("    [locale not specified]");
+  print("");
+  System.exit(0);
+}
+
+localeName = bsh.args[0].trim();
+
+insertDictionary();
+
+pstParam.close();
+pstUpdate.close();
+pstUpdateExisting.close();
+pstConfig.close();
+pstDictionary.close();
+
+print("Existing values replaced: " + replaceCount);
+print("New values inserted: " + insertCount);
+
+sqlDriver.free(db);
+print("");
+System.exit(0);

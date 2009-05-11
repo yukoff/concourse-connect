@@ -1,0 +1,6 @@
+import java.sql.*;
+import com.zeroio.utils.UserUtils;
+
+print("Paging through People and attaching default data to profiles...");
+UserUtils.populateUserProfiles(db);
+print("Done.");

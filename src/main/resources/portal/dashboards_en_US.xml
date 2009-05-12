@@ -61,25 +61,6 @@
         </value>
         <value>
           <![CDATA[
-            <enabled>false</enabled>
-            <content>Write a review</content>
-            <title>Write a review</title>
-            <href>/write_review.shtml</href>
-            <rel>shadowbox;width=500</rel>
-          ]]>
-        </value>
-        <value>
-          <![CDATA[
-            <enabled>false</enabled>
-            <content>Join a group</content>
-            <title>Join a group</title>
-            <categoryEnabled>Groups</categoryEnabled>
-            <href>/join_group.shtml</href>
-            <rel>shadowbox;width=500</rel>
-          ]]>
-        </value>
-        <value>
-          <![CDATA[
             <content>Add a product</content>
             <title>Add a product</title>
             <href>/add_product.shtml</href>

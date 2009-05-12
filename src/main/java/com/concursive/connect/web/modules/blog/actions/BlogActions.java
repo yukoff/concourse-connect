@@ -272,7 +272,6 @@ public final class BlogActions extends GenericAction {
         ApplicationPrefs prefs = getApplicationPrefs(context);
         SMTPMessage mail = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
         mail.setFrom(this.getPref(context, "EMAILADDRESS"));
-        mail.addReplyTo(getUser(context).getEmail());
         mail.setType("text/html");
         mail.setSubject("[" + thisProject.getTitle() + "] Blog Post");
         // Populate the message template

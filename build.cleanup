@@ -116,3 +116,6 @@ WEB-INF/lib/concursive-services-client-20090428.jar
 # 2009-05-08
 WEB-INF/lib/concursive-commons-20090506.jar
 
+# 2009-05-12
+WEB-INF/lib/concursive-commons-20090508.jar
+

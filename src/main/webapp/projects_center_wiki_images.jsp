@@ -43,6 +43,7 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
 <%@ page import="com.concursive.connect.web.modules.documents.dao.FileItem" %>
@@ -59,12 +60,12 @@
     case Constants.PROJECT_BLOG_FILES:
       source = "blog";
       sourceText = "Blog";
-      projectAction = "News";
+      projectAction = "BlogActions.do";
       break;
     default:
       source = "wiki";
       sourceText = "Wiki";
-      projectAction = "Wiki";
+      projectAction = "ProjectManagementWiki.do";
       break;
   }
 %>
@@ -252,7 +253,7 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
 
       <fieldset>
         <legend>Upload an image</legend>
-        <form action="<%= ctx %>/ProjectManagement<%= projectAction %>.do?command=UploadImage&popup=true&pid=<%= project.getId() %>" name="inputForm" method="post" enctype="multipart/form-data" onSubmit="return checkFileForm(this);">
+        <form action="${ctx}/<%= projectAction %>?command=UploadImage&popup=true&pid=<%= project.getId() %>" name="inputForm" method="post" enctype="multipart/form-data" onSubmit="return checkFileForm(this);">
         <input type="file" name="id<%= project.getId() %>" size="45" />
         <input type="submit" name="Upload" value="Upload" >
         <input type="hidden" name="pid" id="pid" value="<%= project.getId() %>">

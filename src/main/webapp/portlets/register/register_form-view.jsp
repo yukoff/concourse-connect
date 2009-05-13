@@ -123,6 +123,7 @@
   <div class="rightColumn">
     <h3>Why is this information required?</h3>
     <ul>
+      <li>You must register with your actual name and a valid email address</li>
       <li>A valid email address is required so that we can send you your
         login account information</li>
       <li>A valid postal code is required so that we can tailor information to your account</li>

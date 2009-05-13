@@ -92,7 +92,7 @@
       <div id="pagecontent">
         <div class="formContainer">
         <div class="leftColumn">
-          <h4>Creating your free 100-user ConcourseSuite account is quick and easy.</h4>
+          <h4>ConcourseSuite account activation form.</h4>
           <h5>Just provide a few pieces of information, and you'll be using ConcourseSuite in no time.</h5>
           <%= showError(request, "actionError", false) %>
           <div>

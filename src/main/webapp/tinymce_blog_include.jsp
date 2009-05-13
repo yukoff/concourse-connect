@@ -47,7 +47,7 @@
 <%@ page import="com.concursive.connect.config.ApplicationVersion" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ include file="initPage.jsp" %>
-<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.1.1/tiny_mce.js?1"></script>
+<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.3.1/tiny_mce.js?1"></script>
 <script language="javascript" type="text/javascript">
   function initEditor(ta) {
 

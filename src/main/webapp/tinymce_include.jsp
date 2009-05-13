@@ -50,7 +50,7 @@
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
 <%@ include file="initPage.jsp" %>
 <script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce_image_library.js?1"></script>
-<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.1.1/tiny_mce.js?1"></script>
+<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.3.1/tiny_mce.js?1"></script>
 <script language="javascript" type="text/javascript">
   function initEditor(ta) {
 

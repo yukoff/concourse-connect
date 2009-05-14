@@ -732,6 +732,13 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Partner Information</wikiForm>
           </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Partners by Category</title>
+            <category>Partners</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/partners</hasMoreURL>
+          </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
             <title>Recent Activity</title>
             <category>Partners</category>
@@ -754,13 +761,6 @@
             	<value>wiki</value>
             </events>
             <limit>15</limit>
-          </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
-            <title>Browse Partners by Category</title>
-            <category>Partners</category>
-            <showSubcategories>true</showSubcategories>
-            <columns>3</columns>
-            <hasMoreURL>/page/categories/partners</hasMoreURL>
           </portlet>
         </column>
         <column width="300">
@@ -856,6 +856,13 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Business Information</wikiForm>
           </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Businesses by Category</title>
+            <category>Businesses</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/businesses</hasMoreURL>
+          </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
             <title>Recent Activity</title>
             <category>Businesses</category>
@@ -878,13 +885,6 @@
             	<value>wiki</value>
             </events>
             <limit>15</limit>
-          </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
-            <title>Browse Businesses by Category</title>
-            <category>Businesses</category>
-            <showSubcategories>true</showSubcategories>
-            <columns>3</columns>
-            <hasMoreURL>/page/categories/businesses</hasMoreURL>
           </portlet>
         </column>
         <column width="300">
@@ -979,6 +979,13 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Organization Information</wikiForm>
           </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Organizations by Category</title>
+            <category>Organizations</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/organizations</hasMoreURL>
+          </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
             <title>Recent Activity</title>
             <category>Organizations</category>
@@ -1001,13 +1008,6 @@
             	<value>wiki</value>
             </events>
             <limit>15</limit>
-          </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
-            <title>Browse Organizations by Category</title>
-            <category>Organizations</category>
-            <showSubcategories>true</showSubcategories>
-            <columns>3</columns>
-            <hasMoreURL>/page/categories/organizations</hasMoreURL>
           </portlet>
         </column>
         <column width="300">
@@ -1103,6 +1103,13 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Sponsor Information</wikiForm>
           </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Sponsors by Category</title>
+            <category>Sponsors</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/sponsors</hasMoreURL>
+          </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
             <title>Recent Activity</title>
             <category>Sponsors</category>
@@ -1125,13 +1132,6 @@
             	<value>wiki</value>
             </events>
             <limit>15</limit>
-          </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
-            <title>Browse Sponsors by Category</title>
-            <category>Sponsors</category>
-            <showSubcategories>true</showSubcategories>
-            <columns>3</columns>
-            <hasMoreURL>/page/categories/sponsors</hasMoreURL>
           </portlet>
         </column>
         <column width="300">
@@ -1227,6 +1227,13 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Group Information</wikiForm>
           </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Groups by Category</title>
+            <category>Groups</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/groups</hasMoreURL>
+          </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
             <title>Recent Activity</title>
             <category>Groups</category>
@@ -1249,13 +1256,6 @@
             	<value>wiki</value>
             </events>
             <limit>15</limit>
-          </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
-            <title>Browse Groups by Category</title>
-            <category>Groups</category>
-            <showSubcategories>true</showSubcategories>
-            <columns>3</columns>
-            <hasMoreURL>/page/categories/groups</hasMoreURL>
           </portlet>
         </column>
         <column width="300">
@@ -1468,6 +1468,13 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Place Information</wikiForm>
           </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Places by Category</title>
+            <category>Places</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/places</hasMoreURL>
+          </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
             <title>Recent Activity</title>
             <category>Places</category>
@@ -1490,13 +1497,6 @@
             	<value>wiki</value>
             </events>
             <limit>15</limit>
-          </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
-            <title>Browse Places by Category</title>
-            <category>Places</category>
-            <showSubcategories>true</showSubcategories>
-            <columns>3</columns>
-            <hasMoreURL>/page/categories/places</hasMoreURL>
           </portlet>
         </column>
         <column width="300">
@@ -1592,6 +1592,13 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Event Information</wikiForm>
           </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Events by Category</title>
+            <category>Events</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/events</hasMoreURL>
+          </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
             <title>Recent Activity</title>
             <category>Events</category>
@@ -1614,13 +1621,6 @@
             	<value>wiki</value>
             </events>
             <limit>15</limit>
-          </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
-            <title>Browse Events by Category</title>
-            <category>Events</category>
-            <showSubcategories>true</showSubcategories>
-            <columns>3</columns>
-            <hasMoreURL>/page/categories/events</hasMoreURL>
           </portlet>
         </column>
         <column width="300">

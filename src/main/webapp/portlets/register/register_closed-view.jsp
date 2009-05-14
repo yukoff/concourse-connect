@@ -50,4 +50,5 @@
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<p>Registration is currently closed.</p>
+<p>Registration for this website is by invitation only.</p>
+<p>Please <a href="${ctx}/contact-us">contact us</a> to be added and so that we can verify your information.</p>

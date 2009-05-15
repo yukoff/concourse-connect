@@ -149,6 +149,7 @@ public class ApplicationPrefs {
   public final static String WORKFLOW_FILE = "WORKFLOW";
   public final static String SYSTEM_SETTINGS_FILE = "SETTINGS";
   public final static String USERS_CAN_REGISTER = "REGISTER";
+  public final static String INFORMATION_IS_SENSITIVE = "SENSITIVE_INFORMATION";
   public final static String USERS_CAN_INVITE = "INVITE";
   public final static String USERS_CAN_START_PROJECTS = "START_PROJECTS";
   public final static String USERS_ARE_ANONYMOUS = "ANONYMOUS";
@@ -717,7 +718,7 @@ public class ApplicationPrefs {
       addParameter(context, Constants.TEMPLATE_COLOR_SCHEME, colorScheme);
       // Determine the layout (or use the default layout)
       String layout = "default";
-      Set<String> layoutFiles = context.getResourcePaths("/themes/" + this.get(THEME) + "/jsp");
+      Set<String> layoutFiles = context.getResourcePaths("/themes/" + this.get(THEME) + "/jsp/");
       if (layoutFiles != null && layoutFiles.size() > 0) {
         for (String thisFile : layoutFiles) {
           if (("/themes/" + this.get(THEME) + "/jsp/layout.jsp").equals(thisFile)) {
@@ -726,9 +727,9 @@ public class ApplicationPrefs {
         }
       }
       addParameter(context, Constants.TEMPLATE_LAYOUT, "/themes/" + layout + "/jsp/layout.jsp");
-      LOG.debug("THEME: " + get(THEME));
-      LOG.debug("  COLOR SCHEME: " + get(COLOR_SCHEME));
-      LOG.debug("  LAYOUT: " + "/themes/" + layout + "/jsp/layout.jsp");
+      LOG.info("THEME: " + get(THEME));
+      LOG.info("  COLOR SCHEME: " + get(COLOR_SCHEME));
+      LOG.info("  LAYOUT: " + "/themes/" + layout + "/jsp/layout.jsp");
     } else {
       // Use the specified template
       addParameter(context, Constants.TEMPLATE_LAYOUT, this.get(JSP_TEMPLATE));

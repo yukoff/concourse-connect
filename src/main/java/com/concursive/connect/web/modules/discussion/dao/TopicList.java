@@ -71,6 +71,7 @@ public class TopicList extends ArrayList<Topic> {
   private int forUser = -1;
   private int projectCategoryId = -1;
   private int publicProjectIssues = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
   //calendar
   protected Timestamp alertRangeStart = null;
   protected Timestamp alertRangeEnd = null;
@@ -325,6 +326,18 @@ public class TopicList extends ArrayList<Topic> {
     this.publicProjectIssues = Integer.parseInt(publicProjectIssues);
   }
 
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
 
   /**
    * Gets the alertRangeStart attribute of the IssueList object
@@ -483,6 +496,9 @@ public class TopicList extends ArrayList<Topic> {
     if (publicProjectIssues == Constants.TRUE) {
       sqlFilter.append("AND i.project_id IN ( SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL ) ");
     }
+    if (forParticipant == Constants.TRUE) {
+      sqlFilter.append("AND i.project_id IN ( SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ) ");
+    }
     if (projectCategoryId != -1) {
       sqlFilter.append(" AND i.project_id IN ( SELECT project_id FROM projects WHERE category_id = ? ) ");
     }
@@ -521,6 +537,10 @@ public class TopicList extends ArrayList<Topic> {
       pst.setBoolean(++i, true);
     }
     if (publicProjectIssues == Constants.TRUE) {
+      pst.setBoolean(++i, true);
+    }
+    if (forParticipant == Constants.TRUE) {
+      pst.setBoolean(++i, true);
       pst.setBoolean(++i, true);
     }
     if (projectCategoryId != -1) {

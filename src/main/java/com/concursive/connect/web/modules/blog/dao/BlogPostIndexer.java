@@ -136,6 +136,7 @@ public class BlogPostIndexer implements Indexer {
       // use the project's general access to speedup guest projects
       Project project = ProjectUtils.loadProject(article.getProjectId());
       document.add(new Field("guests", (project.getFeatures().getAllowGuests() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
+      document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
       // determine if membership is needed for this content based on a guest's access to the data
       int membership = project.getFeatures().getMembershipRequired() ? 1 : 0;
       if (membership == 1 && ProjectUtils.hasAccess(project.getId(), UserUtils.createGuestUser(), "project-news-view")) {

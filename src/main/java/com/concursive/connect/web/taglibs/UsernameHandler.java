@@ -63,7 +63,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import javax.servlet.jsp.tagext.TryCatchFinally;
 
 /**
- * Description of the Class
+ * Displays a link to the specified userId
  *
  * @author matt rajkowski
  * @version $Id$
@@ -172,7 +172,6 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
       String user = "";
       if ("false".equals(prefs.get(ApplicationPrefs.USERS_ARE_ANONYMOUS))) {
         user = userObject.getNameFirstLast();
-
       } else {
         user = userObject.getNameFirstLastInitial();
       }

@@ -100,6 +100,7 @@ public class ProjectList extends ArrayList<Project> {
   private String projectIdsString = null;
   private String excludeProjectIdsString = null;
   private double minimumAverageRating = -1;
+  private int forParticipant = Constants.UNDEFINED;
 
   // filters that go into sub-objects
   private boolean buildPermissions = false;
@@ -205,6 +206,18 @@ public class ProjectList extends ArrayList<Project> {
 
   public boolean getOpenProjectsOnly() {
     return openProjectsOnly;
+  }
+
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
   }
 
   /**
@@ -1170,6 +1183,9 @@ public class ProjectList extends ArrayList<Project> {
     if (publicOnly) {
       sqlFilter.append("AND allow_guests = ? ");
     }
+    if (forParticipant == Constants.TRUE) {
+      sqlFilter.append("AND (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ");
+    }
     if (approvedOnly) {
       sqlFilter.append("AND approvaldate IS NOT NULL ");
     }
@@ -1356,6 +1372,10 @@ public class ProjectList extends ArrayList<Project> {
       pst.setString(++i, portalKey);
     }
     if (publicOnly) {
+      pst.setBoolean(++i, true);
+    }
+    if (forParticipant == Constants.TRUE) {
+      pst.setBoolean(++i, true);
       pst.setBoolean(++i, true);
     }
     if (categoryId > -1) {

@@ -188,11 +188,13 @@ public class SearchResultsByProjectPortlet extends GenericPortlet {
           PortalUtils.setGeneratedData(request, event, hits);
         }
 
-        // JSP view
-        PortletContext context = getPortletContext();
-        PortletRequestDispatcher requestDispatcher =
-            context.getRequestDispatcher(defaultView);
-        requestDispatcher.include(request, response);
+        if (hits.size() > 0) {
+          // JSP view
+          PortletContext context = getPortletContext();
+          PortletRequestDispatcher requestDispatcher =
+              context.getRequestDispatcher(defaultView);
+          requestDispatcher.include(request, response);
+        }
       }
     } catch (Exception e) {
       e.printStackTrace(System.out);

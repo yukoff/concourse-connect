@@ -47,6 +47,7 @@ package com.concursive.connect.cms.portal.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
+import com.concursive.connect.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -80,6 +81,7 @@ public class DashboardPortlet extends GenericBean {
   private String viewer = null;
   private int cacheTime = 0;
   private int timeout = 0;
+  private int sensitive = Constants.UNDEFINED;
   // Portal properties
   private String windowConfigId = null;
   // Preference defaults
@@ -198,6 +200,22 @@ public class DashboardPortlet extends GenericBean {
 
   public void setTimeout(String timeout) {
     this.timeout = Integer.parseInt(timeout);
+  }
+
+  public int getSensitive() {
+    return sensitive;
+  }
+
+  public boolean isSensitive() {
+    return (sensitive == Constants.TRUE);
+  }
+
+  public void setSensitive(int sensitive) {
+    this.sensitive = sensitive;
+  }
+
+  public void setSensitive(String tmp) {
+    this.sensitive = DatabaseUtils.parseBooleanToConstant(tmp);
   }
 
   public boolean getLoaded() {

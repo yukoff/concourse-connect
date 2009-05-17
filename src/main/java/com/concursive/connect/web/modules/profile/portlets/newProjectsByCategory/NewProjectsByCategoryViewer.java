@@ -83,6 +83,7 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
 
     String defaultView = VIEW_PAGE1;
 
+    // Preferences
     String categoryName = request.getPreferences().getValue(PREF_CATEGORY, "");
     String title = request.getPreferences().getValue(PREF_TITLE, "");
     String limitString = request.getPreferences().getValue(PREF_LIMIT, "0");
@@ -106,7 +107,13 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
       projectListInfo.setItemsPerPage(Integer.parseInt(limitString));
       projectListInfo.setDefaultSort("entered", "DESC");
       projectList.setPagedListInfo(projectListInfo);
-      projectList.setPublicOnly(true);
+      if (PortalUtils.canShowSensitiveData(request)) {
+        // Use the most generic settings since this portlet is cached
+        projectList.setForParticipant(Constants.TRUE);
+      } else {
+        // Use the most generic settings since this portlet is cached
+        projectList.setPublicOnly(true);
+      }
       projectList.setProfileEnabled(Constants.TRUE);
       projectList.setBuildImages(true);
       projectList.buildList(db);

@@ -663,4 +663,11 @@ public class PortalUtils {
       return portlet.getPageName() + "|" + portlet.getWindowConfigId();
     }
   }
+
+  public static boolean canShowSensitiveData(PortletRequest request) {
+    // Use the application prefs
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+    return PortalUtils.getDashboardPortlet(request).isSensitive() &&
+        "true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE));
+  }
 }

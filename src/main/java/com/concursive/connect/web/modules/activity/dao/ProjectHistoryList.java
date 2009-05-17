@@ -48,6 +48,7 @@ package com.concursive.connect.web.modules.activity.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.*;
@@ -133,6 +134,8 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   private int projectCategoryId = -1;
   private int forUser = -1;
   private Timestamp untilLinkStartDate = null;
+  private int publicProjects = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
 
   public int getEventType() {
     return eventType;
@@ -250,6 +253,30 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
 
   public void setUntilLinkStartDate(String untilLinkStartDate) {
     this.untilLinkStartDate = DatabaseUtils.parseTimestamp(untilLinkStartDate);
+  }
+
+  public int getPublicProjects() {
+    return publicProjects;
+  }
+
+  public void setPublicProjects(int publicProjects) {
+    this.publicProjects = publicProjects;
+  }
+
+  public void setPublicProjects(String publicProjects) {
+    this.publicProjects = DatabaseUtils.parseBooleanToConstant(publicProjects);
+  }
+
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
   }
 
   public void select(Connection db) throws SQLException {
@@ -381,6 +408,16 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
       sqlFilter.append("AND (ph.project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
           "AND status IS NULL) OR ph.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
     }
+    if (publicProjects == Constants.TRUE || forParticipant == Constants.TRUE) {
+      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
+      if (publicProjects == Constants.TRUE) {
+        sqlFilter.append("AND allow_guests = ? AND approvaldate IS NOT NULL ");
+      }
+      if (forParticipant == Constants.TRUE) {
+        sqlFilter.append("AND (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ");
+      }
+      sqlFilter.append(") ");
+    }
   }
 
 
@@ -419,6 +456,13 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     }
     if (forUser != -1) {
       pst.setInt(++i, forUser);
+      pst.setBoolean(++i, true);
+    }
+    if (publicProjects == Constants.TRUE) {
+      pst.setBoolean(++i, true);
+    }
+    if (forParticipant == Constants.TRUE) {
+      pst.setBoolean(++i, true);
       pst.setBoolean(++i, true);
     }
     return i;

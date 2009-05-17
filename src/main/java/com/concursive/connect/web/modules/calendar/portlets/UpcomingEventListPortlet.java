@@ -175,10 +175,22 @@ public class UpcomingEventListPortlet extends GenericPortlet {
             projectByIdMap.put(p.getId(), p);
           }
         } else {
+          if (PortalUtils.getDashboardPortlet(request).isCached()) {
+            if (PortalUtils.canShowSensitiveData(request)) {
+              // Use the most generic settings since this portlet is cached
+              events.setForParticipant(Constants.TRUE);
+            } else {
+              // Use the most generic settings since this portlet is cached
+              events.setPublicOpenProjectsOnly(true);
+            }
+          } else {
+            // Use the current user's setting
+            thisUser = PortalUtils.getUser(request);
+            events.setForUser(thisUser.getId());
+          }
           // Show meetings that exist for the specified categories
           events.setAlertRangeStart(new Timestamp(System.currentTimeMillis()));
           events.setByInvitationOnly(Constants.FALSE);
-          events.setPublicOpenProjectsOnly(true);
           events.setProjectCategoryIdList(includeCategoryIdList);
           events.buildList(db);
           for (Meeting m : events) {

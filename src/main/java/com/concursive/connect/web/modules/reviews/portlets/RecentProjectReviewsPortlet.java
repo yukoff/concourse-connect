@@ -157,7 +157,17 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
         projectRatingList.setLoadProject(true);
         projectRatingList.setOpenProjectsOnly(true);
         if ("-1".equals(projectId)) {
-          projectRatingList.setPublicProjects(Constants.TRUE);
+          if (PortalUtils.getDashboardPortlet(request).isCached()) {
+            if (PortalUtils.canShowSensitiveData(request)) {
+              // Use the most generic settings since this portlet is cached
+              projectRatingList.setForParticipant(Constants.TRUE);
+            } else {
+              // Use the most generic settings since this portlet is cached
+              projectRatingList.setPublicProjects(Constants.TRUE);
+            }
+          } else {
+            projectRatingList.setPublicProjects(Constants.TRUE);
+          }
         }
         if (StringUtils.hasText(minimumRatingCount) && StringUtils.isNumber(minimumRatingCount)) {
           projectRatingList.setMinimumRatingCount(minimumRatingCount);

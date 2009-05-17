@@ -62,10 +62,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
- * Utilities to break of a search string
+ * Utilities to work with search strings and Lucene queries
  *
  * @author matt rajkowski
- * @version $Id$
  * @created June 11, 2004
  */
 public class SearchUtils {
@@ -211,7 +210,15 @@ public class SearchUtils {
     return IndexerFactory.getInstance().getIndexerService().getIndexerSearch(indexType);
   }
 
-  public static String generateProjectQueryString(SearchBean search) {
+  /**
+   * Generates the Lucene Query for finding public listings, user-public listings, and
+   * user-member listings
+   *
+   * @param search
+   * @param userId
+   * @return
+   */
+  public static String generateProjectQueryString(SearchBean search, int userId) {
     // The search portal is being used
     String locationTerm = search.getParsedLocation();
 
@@ -264,7 +271,10 @@ public class SearchUtils {
 
     return
         "(approved:1) " +
-            "AND (guests:1) " +
+            "AND (" +
+            "(guests:1)" +
+            (userId > 0 ? " OR (participants:1)" : "") +
+            ") " +
             "AND (closed:0) " +
             "AND (website:0) " +
             (search.getProjectId() > -1 ? "AND (projectId:" + search.getProjectId() + ") " : "") +
@@ -272,6 +282,17 @@ public class SearchUtils {
             (StringUtils.hasText(locationTerm) ? "AND (location:(" + locationTerm + ")) " : "");
   }
 
+  /**
+   * Generates the Lucene Query for finding public data, user-public data, and
+   * user-member data
+   *
+   * @param search
+   * @param db
+   * @param userId
+   * @param specificProjectId
+   * @return
+   * @throws SQLException
+   */
   public static String generateDataQueryString(SearchBean search, Connection db, int userId, int specificProjectId) throws SQLException {
     // @todo get ids from user cache
     // get the projects for the user
@@ -307,7 +328,10 @@ public class SearchUtils {
         (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") " : "") +
             "AND " +
             "(" +
+            "(" +
             "((guests:1) AND (membership:0)) " +
+            (userId > 0 ? " OR ((participants:1) AND (membership:0)) " : "") +
+            ") " +
             (StringUtils.hasText(projectList.toString()) ?
                 "OR " +
                     "(projectId:(" + projectList + "))"

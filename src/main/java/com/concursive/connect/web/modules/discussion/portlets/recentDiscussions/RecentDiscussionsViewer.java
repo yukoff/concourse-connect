@@ -112,6 +112,19 @@ public class RecentDiscussionsViewer implements IPortletViewer {
         recentTopicList.setProjectCategoryId(categories.get(0).getId());
       }
       recentTopicList.setPublicProjectIssues(Constants.TRUE);
+      if (PortalUtils.getDashboardPortlet(request).isCached()) {
+        if (PortalUtils.canShowSensitiveData(request)) {
+          // Use the most generic settings since this portlet is cached
+          recentTopicList.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          recentTopicList.setPublicProjectIssues(Constants.TRUE);
+        }
+      } else {
+        // Use the current user's setting
+        User thisUser = PortalUtils.getUser(request);
+        recentTopicList.setForUser(thisUser.getId());
+      }
       request.setAttribute(SHOW_PROJECT_TITLE, "true");
       request.setAttribute(SHOW_DISCUSSION_LINK, "true");
     } else {

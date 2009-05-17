@@ -109,7 +109,18 @@ public class PopularProjectsByCategoryPortlet extends GenericPortlet {
         startCal.add(Calendar.DATE, Integer.parseInt(request.getPreferences().getValue(PREF_DAYS_LIMIT, "0")) * -1);
         popularityCriteria.setStartDate(new java.sql.Timestamp(startCal.getTimeInMillis()));
 
-        popularityCriteria.setForPublic(Constants.TRUE);
+        if (PortalUtils.getDashboardPortlet(request).isCached()) {
+          if (PortalUtils.canShowSensitiveData(request)) {
+            // Use the most generic settings since this portlet is cached
+            popularityCriteria.setForParticipant(Constants.TRUE);
+          } else {
+            // Use the most generic settings since this portlet is cached
+            popularityCriteria.setForPublic(Constants.TRUE);
+          }
+        } else {
+          // Use the most generic settings since this portlet is cached
+          popularityCriteria.setForPublic(Constants.TRUE);
+        }
 
         request.setAttribute(PROJECT_LIST, ProjectPopularity.retrieveProjects(db, popularityCriteria, category.getId()));
 

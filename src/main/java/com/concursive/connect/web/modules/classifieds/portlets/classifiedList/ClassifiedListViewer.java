@@ -149,11 +149,22 @@ public class ClassifiedListViewer implements IPortletViewer {
     classifiedList.setGroupId(thisUser.getGroupId());
     if (categoryId > -1) {
       classifiedList.setProjectCategoryId(categoryId);
-      classifiedList.setPublicProjects(Constants.TRUE);
       classifiedList.setOpenProjectsOnly(true);
     } else if (project != null) {
       classifiedList.setProjectId(project.getId());
-
+    }
+    if (PortalUtils.getDashboardPortlet(request).isCached()) {
+      if (PortalUtils.canShowSensitiveData(request)) {
+        // Use the most generic settings since this portlet is cached
+        classifiedList.setForParticipant(Constants.TRUE);
+      } else {
+        // Use the most generic settings since this portlet is cached
+        classifiedList.setPublicProjects(Constants.TRUE);
+      }
+    } else {
+      // Use the current user's setting
+      thisUser = PortalUtils.getUser(request);
+      classifiedList.setForUser(thisUser.getId());
     }
     classifiedList.setCurrentClassifieds(Constants.TRUE);
     classifiedList.setPublished(Constants.TRUE);

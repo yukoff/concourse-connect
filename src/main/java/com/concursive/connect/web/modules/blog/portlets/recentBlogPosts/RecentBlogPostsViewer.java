@@ -118,7 +118,19 @@ public class RecentBlogPostsViewer implements IPortletViewer {
       if (categories.size() > 0) {
         blogPostList.setProjectCategoryId(categories.get(0).getId());
       }
-      blogPostList.setPublicProjectPosts(Constants.TRUE);
+      if (PortalUtils.getDashboardPortlet(request).isCached()) {
+        if (PortalUtils.canShowSensitiveData(request)) {
+          // Use the most generic settings since this portlet is cached
+          blogPostList.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          blogPostList.setPublicProjectPosts(Constants.TRUE);
+        }
+      } else {
+        // Use the current user's setting
+        User thisUser = PortalUtils.getUser(request);
+        blogPostList.setForUser(thisUser.getId());
+      }
       request.setAttribute(SHOW_PROJECT_TITLE, "true");
       request.setAttribute(SHOW_BLOG_LINK, "true");
     } else {

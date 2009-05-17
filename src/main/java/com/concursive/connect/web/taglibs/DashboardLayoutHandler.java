@@ -52,6 +52,7 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.dao.Dashboard;
 import com.concursive.connect.cms.portal.dao.DashboardPage;
 import com.concursive.connect.cms.portal.dao.DashboardPortlet;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.utils.PermissionUtils;
@@ -94,6 +95,8 @@ public class DashboardLayoutHandler extends TagSupport implements TryCatchFinall
     JspWriter out = pageContext.getOut();
 
     String ctx = ((HttpServletRequest) pageContext.getRequest()).getContextPath();
+
+    ApplicationPrefs prefs = (ApplicationPrefs) this.pageContext.getServletContext().getAttribute("applicationPrefs");
 
     // The project in which the dashboard is being displayed (if any)
     Project project = (Project) pageContext.getRequest().getAttribute("project");
@@ -262,21 +265,33 @@ public class DashboardLayoutHandler extends TagSupport implements TryCatchFinall
           while (k.hasNext()) {
             Element portletEl = (Element) k.next();
             ++falseIdCount;
-            // Check to see if the portlet is displayed based on whether a user or not
+            // Check to see if the portlet is displayed based on various user properties
+            User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
+            if (portletEl.hasAttribute("isSensitive")) {
+              // This portlet contains sensitive data, and the application has sensitivity enabled,
+              // so make sure the user is logged in
+              if ("true".equals(portletEl.getAttribute("isSensitive")) &&
+                  "true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE)) &&
+                  user.getId() < 1) {
+                continue;
+              }
+            }
             if (portletEl.hasAttribute("isUser")) {
-              User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
+              // This portlet requires the user to be logged in
               if ("true".equals(portletEl.getAttribute("isUser")) && user.getId() < 1) {
                 continue;
               }
+              // This portlet requires the user to be logged out
               if ("false".equals(portletEl.getAttribute("isUser")) && user.getId() > 0) {
                 continue;
               }
             }
             if (portletEl.hasAttribute("isAdmin")) {
-              User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
+              // This portlet requires the user to be an admin
               if ("true".equals(portletEl.getAttribute("isAdmin")) && !user.getAccessAdmin()) {
                 continue;
               }
+              // This portlet requires the user is not an admin
               if ("false".equals(portletEl.getAttribute("isAdmin")) && user.getAccessAdmin()) {
                 continue;
               }

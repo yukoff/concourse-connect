@@ -312,6 +312,11 @@ public class UserUtils {
       // Access rules will allow this profile to be searched and seen
       project.getFeatures().setUpdateAllowGuests(true);
       project.getFeatures().setAllowGuests(true);
+      if (prefs != null) {
+        if ("true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE))) {
+          project.getFeatures().setAllowGuests(false);
+        }
+      }
       // A join request can be made which requires approval by the profile owner
       project.getFeatures().setUpdateAllowParticipants(true);
       project.getFeatures().setAllowParticipants(true);

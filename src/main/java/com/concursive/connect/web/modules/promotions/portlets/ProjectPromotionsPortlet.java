@@ -138,10 +138,22 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
       adList.setGroupId(thisUser.getGroupId());
       if (categoryId > -1) {
         adList.setProjectCategoryId(categoryId);
-        adList.setPublicProjects(Constants.TRUE);
         adList.setOpenProjectsOnly(true);
       } else if (project != null) {
         adList.setProjectId(project.getId());
+      }
+      if (PortalUtils.getDashboardPortlet(request).isCached()) {
+        if (PortalUtils.canShowSensitiveData(request)) {
+          // Use the most generic settings since this portlet is cached
+          adList.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          adList.setPublicProjects(Constants.TRUE);
+        }
+      } else {
+        // Use the current user's setting
+        thisUser = PortalUtils.getUser(request);
+        adList.setForUser(thisUser.getId());
       }
       adList.setCurrentAds(Constants.TRUE);
       adList.setPublished(Constants.TRUE);

@@ -46,6 +46,7 @@
 
 package com.concursive.connect.web.modules.profile.dao;
 
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.common.social.popularity.beans.PopularityCriteria;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
@@ -83,22 +84,27 @@ public class ProjectPopularity {
     // TODO: Expand popularity to views, ratings, and depth of content
     sqlStatement.append(" count(*) as no, v.project_id " +
         " FROM projects_view v, projects " +
-        " where v.project_id  = projects.project_id " +
-        " and projects.category_id = ? " +
-        " and v.view_date <= ? " +
-        " and v.view_date > ? " +
-        " and projects.allow_guests = ? " +
-        " and projects.closedate IS NULL " +
-        " group by v.project_id ");
-
-
+        " WHERE v.project_id  = projects.project_id " +
+        " AND projects.category_id = ? " +
+        " AND v.view_date <= ? " +
+        " AND v.view_date > ? " +
+        (popularityCriteria.getForPublic() == Constants.TRUE ? " AND projects.allow_guests = ? " : "") +
+        (popularityCriteria.getForParticipant() == Constants.TRUE ? " AND (projects.allows_user_observers = ? OR projects.allow_guests = ?) " : "") +
+        " AND projects.closedate IS NULL " +
+        " GROUP BY v.project_id ");
     ResultSet rs = null;
     PreparedStatement pst = db.prepareStatement(sqlStatement.toString() + sqlOrder.toString());
     int i = 0;
     pst.setInt(++i, categoryId);
     pst.setTimestamp(++i, popularityCriteria.getEndDate());
     pst.setTimestamp(++i, popularityCriteria.getStartDate());
-    pst.setBoolean(++i, true);
+    if (popularityCriteria.getForPublic() == Constants.TRUE) {
+      pst.setBoolean(++i, true);
+    }
+    if (popularityCriteria.getForParticipant() == Constants.TRUE) {
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
+    }
     //System.out.println(pst);
     rs = pst.executeQuery();
     while (rs.next()) {

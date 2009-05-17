@@ -89,6 +89,8 @@ public class ClassifiedList extends ArrayList<Classified> {
   private int projectCategoryId = -1;
   private boolean openProjectsOnly = false;
   private int publicProjects = Constants.UNDEFINED;
+  private int forUser = -1;
+  private int forParticipant = Constants.UNDEFINED;
   private int groupId = -1;
 
   /**
@@ -175,23 +177,40 @@ public class ClassifiedList extends ArrayList<Classified> {
     this.openProjectsOnly = DatabaseUtils.parseBoolean(openProjectsOnly);
   }
 
-  /**
-   * @return the publicProjects
-   */
   public int getPublicProjects() {
     return publicProjects;
   }
 
-
-  /**
-   * @param publicProjects the publicProjects to set
-   */
   public void setPublicProjects(int publicProjects) {
     this.publicProjects = publicProjects;
   }
 
   public void setPublicProjects(String publicProjects) {
-    this.publicProjects = Integer.parseInt(publicProjects);
+    this.publicProjects = DatabaseUtils.parseBooleanToConstant(publicProjects);
+  }
+
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
+  public int getForUser() {
+    return forUser;
+  }
+
+  public void setForUser(int forUser) {
+    this.forUser = forUser;
+  }
+
+  public void setForUser(String tmp) {
+    this.forUser = Integer.parseInt(tmp);
   }
 
   /**
@@ -646,8 +665,10 @@ public class ClassifiedList extends ArrayList<Classified> {
     */
     if (projectCategoryId > -1 ||
         groupId > -1 ||
-        openProjectsOnly || publicProjects == Constants.TRUE) {
-      sqlFilter.append("AND project_id IN (select project_id from projects WHERE project_id > 0 ");
+        openProjectsOnly ||
+        publicProjects == Constants.TRUE ||
+        forParticipant == Constants.TRUE) {
+      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
       if (projectCategoryId > -1) {
         sqlFilter.append("AND category_id = ? ");
       }
@@ -660,9 +681,15 @@ public class ClassifiedList extends ArrayList<Classified> {
       if (publicProjects == Constants.TRUE) {
         sqlFilter.append("AND allow_guests = ? AND approvaldate IS NOT NULL ");
       }
+      if (forParticipant == Constants.TRUE) {
+        sqlFilter.append("AND (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ");
+      }
       sqlFilter.append(") ");
     }
-
+    if (forUser > -1) {
+      sqlFilter.append("AND (project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
+          "AND status IS NULL) OR project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
+    }
     if (categoryId > -1) {
       sqlFilter.append("AND classified_category_id = ? ");
     }
@@ -734,10 +761,11 @@ public class ClassifiedList extends ArrayList<Classified> {
       pst.setInt(++i, projectCategoryId);
     }
     */
-
     if (projectCategoryId > -1 ||
         groupId > -1 ||
-        openProjectsOnly || publicProjects == Constants.TRUE) {
+        openProjectsOnly ||
+        publicProjects == Constants.TRUE ||
+        forParticipant == Constants.TRUE) {
       if (projectCategoryId > -1) {
         pst.setInt(++i, projectCategoryId);
       }
@@ -747,8 +775,15 @@ public class ClassifiedList extends ArrayList<Classified> {
       if (publicProjects == Constants.TRUE) {
         pst.setBoolean(++i, true);
       }
+      if (forParticipant == Constants.TRUE) {
+        pst.setBoolean(++i, true);
+        pst.setBoolean(++i, true);
+      }
     }
-
+    if (forUser > -1) {
+      pst.setInt(++i, forUser);
+      pst.setBoolean(++i, true);
+    }
     if (categoryId > -1) {
       pst.setInt(++i, categoryId);
     }

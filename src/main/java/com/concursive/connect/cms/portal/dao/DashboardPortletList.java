@@ -165,6 +165,9 @@ public class DashboardPortletList extends ArrayList<DashboardPortlet> {
           if (portletEl.hasAttribute("timeout")) {
             portlet.setTimeout(Integer.parseInt(portletEl.getAttribute("timeout")));
           }
+          if (portletEl.hasAttribute("isSensitive")) {
+            portlet.setSensitive(portletEl.getAttribute("isSensitive"));
+          }
           // This portlet can temporarily be used
           DashboardPortletItem portletItem = new DashboardPortletItem();
           portletItem.setName(portlet.getName());

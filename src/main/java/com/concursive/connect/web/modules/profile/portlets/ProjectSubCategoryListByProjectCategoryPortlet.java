@@ -256,7 +256,13 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
             projects.setSubCategory1Id(subCategory.getId());
           }
           projects.setOpenProjectsOnly(true);
-          projects.setPublicOnly(true);
+          if (PortalUtils.canShowSensitiveData(request)) {
+            // Use the most generic settings since this portlet is cached
+            projects.setForParticipant(Constants.TRUE);
+          } else {
+            // Use the most generic settings since this portlet is cached
+            projects.setPublicOnly(true);
+          }
           projects.buildList(db);
           request.setAttribute(PROJECT_LIST, projects);
           defaultView = PROJECT_VIEW_PAGE;

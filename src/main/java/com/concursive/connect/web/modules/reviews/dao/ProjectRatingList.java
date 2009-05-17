@@ -78,6 +78,7 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
   private int categoryId = -1;
   private int portalState = Constants.UNDEFINED;
   private int publicProjects = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
   private boolean openProjectsOnly = false;
   private int groupId = -1;
   private int forUser = -1;
@@ -333,6 +334,18 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
     this.publicProjects = DatabaseUtils.parseBooleanToConstant(publicProjects);
   }
 
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
   /**
    * @return the openProjectsOnly
    */
@@ -517,7 +530,8 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
         portalState != Constants.UNDEFINED ||
         groupId > -1 ||
         openProjectsOnly ||
-        publicProjects != Constants.UNDEFINED) {
+        publicProjects != Constants.UNDEFINED ||
+        forParticipant != Constants.UNDEFINED) {
       sqlFilter.append("AND project_id IN (select project_id from projects WHERE project_id > 0 ");
       if (categoryId > -1) {
         sqlFilter.append("AND category_id = ? ");
@@ -533,6 +547,9 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
       }
       if (publicProjects != Constants.UNDEFINED) {
         sqlFilter.append("AND allow_guests = ? AND approvaldate IS NOT NULL ");
+      }
+      if (forParticipant != Constants.UNDEFINED) {
+        sqlFilter.append("AND (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ");
       }
       sqlFilter.append(") ");
     }
@@ -577,7 +594,8 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
         portalState != Constants.UNDEFINED ||
         groupId > -1 ||
         openProjectsOnly ||
-        publicProjects != Constants.UNDEFINED) {
+        publicProjects != Constants.UNDEFINED ||
+        forParticipant != Constants.UNDEFINED) {
       if (categoryId > -1) {
         pst.setInt(++i, categoryId);
       }
@@ -589,6 +607,10 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
       }
       if (publicProjects != Constants.UNDEFINED) {
         pst.setBoolean(++i, (publicProjects == Constants.TRUE));
+      }
+      if (forParticipant == Constants.TRUE) {
+        pst.setBoolean(++i, true);
+        pst.setBoolean(++i, true);
       }
     }
     if (forUser != -1) {

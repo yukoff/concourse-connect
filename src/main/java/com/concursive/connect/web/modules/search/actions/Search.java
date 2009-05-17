@@ -225,7 +225,7 @@ public final class Search extends GenericAction {
         }
 
         // Generate a valid project title query string
-        String queryString = SearchUtils.generateProjectQueryString(search);
+        String queryString = SearchUtils.generateProjectQueryString(search, getUserId(context));
 
         // Generate a valid data query string
         String dataQueryString = SearchUtils.generateDataQueryString(search, db, getUserId(context), -1);

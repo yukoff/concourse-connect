@@ -65,6 +65,7 @@ public class PopularityCriteria {
   private String order = null;
   private boolean forProject = false;
   private int forPublic = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
 
   /**
    * @return the endDate
@@ -157,4 +158,11 @@ public class PopularityCriteria {
     this.forPublic = forPublic;
   }
 
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
 }

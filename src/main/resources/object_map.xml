@@ -608,7 +608,7 @@
     </map>
     <map class="com.concursive.connect.web.modules.blog.dao.BlogPostCategoryList" id="blogPostCategoryList"/>
 
-    <!-- News Article -->
+    <!-- Blog Post -->
     <map class="com.concursive.connect.web.modules.blog.dao.BlogPost" id="blogPost" shareKey="true">
       <property alias="guid">id</property>
       <property lookup="project">projectId</property>
@@ -645,7 +645,49 @@
     </map>
     <map class="com.concursive.connect.web.modules.blog.dao.BlogPostList" id="blogPostList"/>
 
-    <!-- Wiki -->
+    <!-- Classified -->
+    <map class="com.concursive.connect.web.modules.classifieds.dao.Classified" id="classified" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="classifiedCategory">categoryId</property>
+      <property>title</property>
+      <property>description</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>amount</property>
+      <property>amountCurrency</property>
+      <property>publishDate</property>
+      <property>expirationDate</property>
+      <property>enabled</property>
+      <property>readCount</property>
+      <property>readDate</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAvg</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedList" id="classifiedList"/>
+
+    <!-- Review -->
+    <map class="com.concursive.connect.web.modules.reviews.dao.ProjectRating" id="review" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property>rating</property>
+      <property>title</property>
+      <property>comment</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAverage</property>
+      <property>inappropriateCount</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.reviews.dao.ProjectRatingList" id="reviewList"/>
+
+        <!-- Wiki -->
     <map class="com.concursive.connect.web.modules.wiki.dao.Wiki" id="wiki" shareKey="true">
       <property alias="guid">id</property>
       <property lookup="project">projectId</property>

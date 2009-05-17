@@ -78,6 +78,7 @@ public class MeetingList extends ArrayList<Meeting> {
   private int forUser = -1;
   private int byInvitationOnly = Constants.UNDEFINED;
   private boolean publicOpenProjectsOnly = false;
+  private int forParticipant = Constants.UNDEFINED;
   private int projectCategoryId = -1;
   private List<Integer> projectCategoryIdList = null; // set if multiple category ids are needed for filter
 
@@ -196,6 +197,18 @@ public class MeetingList extends ArrayList<Meeting> {
 
   public void setPublicOpenProjectsOnly(String publicOpenProjectsOnly) {
     this.publicOpenProjectsOnly = DatabaseUtils.parseBoolean(publicOpenProjectsOnly);
+  }
+
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String forParticipant) {
+    this.forParticipant = DatabaseUtils.parseBooleanToConstant(forParticipant);
   }
 
   public int getProjectCategoryId() {
@@ -326,7 +339,10 @@ public class MeetingList extends ArrayList<Meeting> {
       sqlFilter.append("AND by_invitation_only = ? ");
     }
     if (publicOpenProjectsOnly) {
-      sqlFilter.append("AND m.project_id IN (SELECT project_id FROM projects WHERE allow_guests = true AND approvaldate IS NOT NULL) ");
+      sqlFilter.append("AND m.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL) ");
+    }
+    if (forParticipant == Constants.TRUE) {
+      sqlFilter.append("AND m.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL) ");
     }
     if (projectCategoryId > 0) {
       sqlFilter.append("AND m.project_id IN (SELECT project_id FROM projects WHERE category_id = ?) ");
@@ -358,6 +374,13 @@ public class MeetingList extends ArrayList<Meeting> {
     }
     if (byInvitationOnly != Constants.UNDEFINED) {
       pst.setBoolean(++i, (byInvitationOnly == Constants.TRUE));
+    }
+    if (publicOpenProjectsOnly) {
+      pst.setBoolean(++i, true);
+    }
+    if (forParticipant == Constants.TRUE) {
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
     }
     if (projectCategoryId > 0) {
       pst.setInt(++i, projectCategoryId);

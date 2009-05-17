@@ -72,6 +72,7 @@ public class BlogPostList extends ArrayList<BlogPost> {
   private int unreleasedNews = Constants.UNDEFINED;
   private int incompleteNews = Constants.UNDEFINED;
   private int publicProjectPosts = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
   private PagedListInfo pagedListInfo = null;
   private int lastNews = -1;
   private int forUser = -1;
@@ -410,6 +411,18 @@ public class BlogPostList extends ArrayList<BlogPost> {
     this.publicProjectPosts = Integer.parseInt(publicProjectPosts);
   }
 
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
   /**
    * Gets the pagedListInfo attribute of the NewsArticleList object
    *
@@ -720,6 +733,9 @@ public class BlogPostList extends ArrayList<BlogPost> {
     if (publicProjectPosts == Constants.TRUE) {
       sqlFilter.append("AND n.project_id IN ( SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL ) ");
     }
+    if (forParticipant == Constants.TRUE) {
+      sqlFilter.append("AND n.project_id IN ( SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ) ");
+    }
     if (alertRangeStart != null) {
       sqlFilter.append("AND n.start_date >= ? ");
     }
@@ -798,6 +814,10 @@ public class BlogPostList extends ArrayList<BlogPost> {
       pst.setInt(++i, BlogPost.UNAPPROVED);
     }
     if (publicProjectPosts == Constants.TRUE) {
+      pst.setBoolean(++i, true);
+    }
+    if (forParticipant == Constants.TRUE) {
+      pst.setBoolean(++i, true);
       pst.setBoolean(++i, true);
     }
     if (alertRangeStart != null) {

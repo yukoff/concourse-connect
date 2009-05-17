@@ -51,7 +51,6 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
 import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
@@ -132,9 +131,13 @@ public class ActivityStreamViewer implements IPortletViewer {
     // Determine which data is returned
     User thisUser = null;
     if (PortalUtils.getDashboardPortlet(request).isCached()) {
-      // Use the most generic settings since this portlet is cached
-      thisUser = UserUtils.createGuestUser();
-      projectHistoryList.setForUser(thisUser.getId());
+      if (PortalUtils.canShowSensitiveData(request)) {
+        // Use the most generic settings since this portlet is cached
+        projectHistoryList.setForParticipant(Constants.TRUE);
+      } else {
+        // Use the most generic settings since this portlet is cached
+        projectHistoryList.setPublicProjects(Constants.TRUE);
+      }
     } else {
       // Use the current user's setting
       thisUser = PortalUtils.getUser(request);
@@ -171,7 +174,11 @@ public class ActivityStreamViewer implements IPortletViewer {
         dayList.add(eventList);
       }
       // Parse the wiki content
-      WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(db, thisUser.getId(), request.getContextPath());
+      int userId = -1;
+      if (thisUser != null) {
+        userId = thisUser.getId();
+      }
+      WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(db, userId, request.getContextPath());
       String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, projectHistory.getDescription());
       projectHistory.setHtmlLink(wikiLinkString);
       // Add the activity stream item to the person

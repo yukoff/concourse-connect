@@ -113,6 +113,15 @@
         </value>
         <value>
           <![CDATA[
+            <content>Add a committee</content>
+            <title>Add a committee</title>
+            <href>/add_committee.shtml</href>
+            <rule>isAdmin</rule>
+            <categoryEnabled>Committees</categoryEnabled>
+          ]]>
+        </value>
+        <value>
+          <![CDATA[
             <content>Start a group</content>
             <title>Start a group</title>
             <href>/start_group.shtml</href>
@@ -172,18 +181,18 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud " isSensitive="true">
             <title>Popular Tags</title>
             <limit>30</limit>
             <sortByTagCount>true</sortByTagCount>
             <hasMoreURL>/page/tags/all</hasMoreURL>
             <hasMoreTitle>see all tags</hasMoreTitle>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Classifieds</title>
             <limit>5</limit>
             <hasMoreURL>/page/classifieds/all</hasMoreURL>
@@ -226,12 +235,12 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Group Information</wikiForm>
           </portlet>
-          <portlet name="UpcomingEventListPortlet" cache="10" class="detailed-list ">
+          <portlet name="UpcomingEventListPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Upcoming Events</title>
             <limit>5</limit>
             <successMessage>You have successfully joined this event!</successMessage>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <events>
             	<value>badge</value>
@@ -273,19 +282,19 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list ">
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
             <title>Popular Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
             <daysLimit>7</daysLimit>
           </portlet>
-          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list ">
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
             <title>Popular Groups</title>
             <category>Groups</category>
             <limit>3</limit>
             <daysLimit>7</daysLimit>
           </portlet>
-          <portlet name="RecentProjectReviewsPortlet" cache="10" class="detailed-list ">
+          <portlet name="RecentProjectReviewsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Reviews</title>
             <limit>3</limit>
             <showProjectTitle>true</showProjectTitle>
@@ -296,32 +305,6 @@
             <minimumRatingAvg>0.66</minimumRatingAvg>
             <filterInappropriate>true</filterInappropriate>
              -->
-          </portlet>
-        </column>
-      </row>
-    </page>
-    <page name="join.shtml" title="Join">
-      <row>
-        <column width="240">
-          <!--Getting Started-->
-          <portlet name="ActionsPortlet" class="button-list-vertical-">
-            <xml-include fragment="portal-fragments-get-started"/>
-          </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
-            <title>Promotions</title>
-            <category>Products</category>
-            <limit>3</limit>
-          </portlet>
-        </column>
-        <column width="300">
-          <portlet name="ContentPortlet">
-            <content>
-              <![CDATA[<h3>Join Today!</h3>
-                <p>Concursive is an unique community that allows you to communicate with partners, organizations and groups both locally and across the country. It's easy to join now!</p>
-                <ul>
-                <li>Have your own profile for yourself, your business, your organization or even your local community group.</li>
-                </ul>]]>
-            </content>
           </portlet>
         </column>
       </row>
@@ -384,7 +367,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Product Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Products</category>
             <events>
@@ -500,7 +483,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Service Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Services</category>
             <events>
@@ -616,7 +599,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Solution Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Solutions</category>
             <events>
@@ -739,7 +722,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/partners</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Partners</category>
             <events>
@@ -805,7 +788,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
             <title>Popular Tags</title>
             <category>Businesses</category>
             <limit>30</limit>
@@ -863,7 +846,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/businesses</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Businesses</category>
             <events>
@@ -928,7 +911,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
             <title>Popular Tags</title>
             <category>Organizations</category>
             <limit>30</limit>
@@ -986,7 +969,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/organizations</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Organizations</category>
             <events>
@@ -1026,8 +1009,7 @@
             <category>Organizations</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentDiscussionsPortlet" cache="10"
-                   class="detailed-list ">
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list ">
             <title>Recent Discussions</title>
             <category>Organizations</category>
             <limit>5</limit>
@@ -1046,13 +1028,109 @@
         </column>
       </row>
     </page>
+    <page name="committees.shtml" title="Committees" description="" category="committees">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud " isSensitive="true">
+            <title>Popular Tags</title>
+            <category>Committees</category>
+            <limit>30</limit>
+            <sortByTagCount>true</sortByTagCount>
+            <hasMoreURL>/page/tags/committees</hasMoreURL>
+            <hasMoreTitle>see all tags</hasMoreTitle>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
+            <title>Promotions</title>
+            <category>Committees</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
+            <title>Classifieds</title>
+            <category>Committees</category>
+            <limit>5</limit>
+            <hasMoreURL>/page/classifieds/committees</hasMoreURL>
+            <hasMoreTitle>see more classifieds</hasMoreTitle>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
+            <project>main-profile</project>
+            <wiki>Welcome to committees</wiki>
+            <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="organizations " cache="10" isAdmin="false">
+            <project>main-profile</project>
+            <wiki>Welcome to committees</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items " isSensitive="true">
+            <title>Browse Committees by Category</title>
+            <category>Committees</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/committees</hasMoreURL>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+            <title>Recent Activity</title>
+            <category>Committees</category>
+            <events>
+            	<value>ad</value>
+            	<value>badge</value>
+            	<value>blog</value>
+              <value>classified</value>
+            	<value>document</value>
+            	<value>image</value>
+              <value>list</value>
+              <!--
+            	<value>meeting</value>
+            	-->
+            	<value>profile</value>
+            	<value>rating</value>
+            	<value>topic</value>
+            	<value>question</value>
+            	<value>reply</value>
+            	<value>wiki</value>
+            </events>
+            <limit>15</limit>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" cache="300" isSensitive="true">
+            <content><![CDATA[
+            <h4>Browse All Listings</h4>
+            View all <a title="View the complete list of committees" href="${ctx}/page/lists/committees">Committees</a>
+            ]]></content>
+          </portlet>
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list " isSensitive="true">
+            <title>Recent Blog Posts</title>
+            <category>Committees</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list " isSensitive="true">
+            <title>Recent Discussions</title>
+            <category>Committees</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
+            <title>Popular Committees</title>
+            <category>Committees</category>
+            <limit>10</limit>
+            <daysLimit>30</daysLimit>
+          </portlet>
+        </column>
+      </row>
+    </page>
     <page name="sponsors.shtml" title="Sponsors" description="" category="sponsors">
       <row>
         <column width="240">
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
             <title>Popular Tags</title>
             <category>Sponsors</category>
             <limit>30</limit>
@@ -1110,7 +1188,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/sponsors</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Sponsors</category>
             <events>
@@ -1176,7 +1254,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud " isSensitive="true">
             <title>Popular Tags</title>
             <category>Groups</category>
             <limit>30</limit>
@@ -1184,12 +1262,12 @@
             <hasMoreURL>/page/tags/groups</hasMoreURL>
             <hasMoreTitle>see all tags</hasMoreTitle>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Groups</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Classifieds</title>
             <category>Groups</category>
             <limit>5</limit>
@@ -1213,7 +1291,7 @@
             <wiki>Welcome to groups</wiki>
             <showTitle>false</showTitle>
           </portlet>
-          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300">
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300" isSensitive="true">
 			      <title>Featured Group</title>
           	<showGetInvolved>false</showGetInvolved>
             <randomProject>
@@ -1227,14 +1305,14 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Group Information</wikiForm>
           </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items " isSensitive="true">
             <title>Browse Groups by Category</title>
             <category>Groups</category>
             <showSubcategories>true</showSubcategories>
             <columns>3</columns>
             <hasMoreURL>/page/categories/groups</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Groups</category>
             <events>
@@ -1259,7 +1337,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ContentPortlet" cache="300">
+          <portlet name="ContentPortlet" cache="300" isSensitive="true">
             <content><![CDATA[
             <h4>Browse All Listings</h4>
             View all <a title="View the complete list of groups" href="${ctx}/page/lists/groups">Groups</a>
@@ -1269,23 +1347,23 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list ">
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Blog Posts</title>
             <category>Groups</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list ">
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Discussions</title>
             <category>Groups</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list ">
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
             <title>Popular Groups</title>
             <category>Groups</category>
             <limit>5</limit>
             <daysLimit>30</daysLimit>
           </portlet>
-          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list ">
+          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>New Groups</title>
             <category>Groups</category>
             <limit>5</limit>
@@ -1299,7 +1377,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud " isSensitive="true">
             <title>Popular Tags</title>
             <category>People</category>
             <limit>30</limit>
@@ -1307,12 +1385,12 @@
             <hasMoreURL>/page/tags/people</hasMoreURL>
             <hasMoreTitle>see all tags</hasMoreTitle>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>People</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Classifieds</title>
             <category>People</category>
             <limit>5</limit>
@@ -1336,7 +1414,7 @@
             <wiki>Welcome to people</wiki>
             <showTitle>false</showTitle>
           </portlet>
-          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300">
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300" isSensitive="true">
 			      <title>Featured Profile</title>
           	<showGetInvolved>false</showGetInvolved>
             <randomProject>
@@ -1350,7 +1428,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>My Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>People</category>
             <events>
@@ -1373,14 +1451,14 @@
             </events>
             <limit>15</limit>
           </portlet>
-          <portlet name="TopContributionsPortlet" class="detailed-list ">
+          <portlet name="TopContributionsPortlet" class="detailed-list " isSensitive="true">
             <title>Top Site Contributors</title>
             <limit>5</limit>
             <daysLimit>60</daysLimit>
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ContentPortlet" cache="300">
+          <portlet name="ContentPortlet" cache="300" isSensitive="true">
             <content><![CDATA[
             <h4>Browse All Listings</h4>
             View all <a title="View a list of site members" href="${ctx}/page/lists/people">People</a>
@@ -1391,19 +1469,19 @@
             <adContext>ad-280x250</adContext>
           </portlet>
           <portlet name="NewProjectsByCategoryPortlet" cache="10"
-                   class="detailed-list ">
+                   class="detailed-list " isSensitive="true">
             <title>Newest Members</title>
             <category>People</category>
             <limit>5</limit>
           </portlet>
           <portlet name="RecentBlogPostsPortlet" cache="10"
-                   class="detailed-list ">
+                   class="detailed-list " isSensitive="true">
             <title>Recent Blog Posts</title>
             <category>People</category>
             <limit>5</limit>
           </portlet>
           <portlet name="RecentDiscussionsPortlet" cache="10"
-                   class="detailed-list ">
+                   class="detailed-list " isSensitive="true">
             <title>Recent Discussions</title>
             <category>People</category>
             <limit>5</limit>
@@ -1475,7 +1553,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/places</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Places</category>
             <events>
@@ -1541,7 +1619,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud " isSensitive="true">
             <title>Popular Tags</title>
             <category>Events</category>
             <limit>30</limit>
@@ -1549,12 +1627,12 @@
             <hasMoreURL>/page/tags/events</hasMoreURL>
             <hasMoreTitle>see all tags</hasMoreTitle>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Events</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Classifieds</title>
             <category>Events</category>
             <limit>5</limit>
@@ -1578,7 +1656,7 @@
             <wiki>Welcome to events</wiki>
             <showTitle>false</showTitle>
           </portlet>
-          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300">
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300" isSensitive="true">
 			      <title>Featured Event</title>
           	<showGetInvolved>false</showGetInvolved>
             <randomProject>
@@ -1592,14 +1670,14 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Event Information</wikiForm>
           </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items " isSensitive="true">
             <title>Browse Events by Category</title>
             <category>Events</category>
             <showSubcategories>true</showSubcategories>
             <columns>3</columns>
             <hasMoreURL>/page/categories/events</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Events</category>
             <events>
@@ -1624,7 +1702,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ContentPortlet" cache="300">
+          <portlet name="ContentPortlet" cache="300" isSensitive="true">
             <content><![CDATA[
             <h4>Browse All Listings</h4>
             View all <a title="View the complete list of events" href="${ctx}/page/lists/events">Events</a>
@@ -1634,23 +1712,23 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="RecentBlogPostsPortlet" cache="10">
+          <portlet name="RecentBlogPostsPortlet" cache="10" isSensitive="true">
             <title>Recent Blog Posts</title>
             <category>Events</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list ">
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Discussions</title>
             <category>Events</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list ">
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
             <title>Popular Events</title>
             <category>Events</category>
             <limit>5</limit>
             <daysLimit>30</daysLimit>
           </portlet>
-          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list ">
+          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>New Events</title>
             <category>Events</category>
             <limit>5</limit>
@@ -1665,7 +1743,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud " isSensitive="true">
             <title>Popular Tags</title>
             <category>Ideas</category>
             <limit>30</limit>
@@ -1673,12 +1751,12 @@
             <hasMoreURL>/page/tags/ideas</hasMoreURL>
             <hasMoreTitle>see all tags</hasMoreTitle>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Ideas</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Classifieds</title>
             <category>Ideas</category>
             <limit>5</limit>
@@ -1702,7 +1780,7 @@
             <wiki>Welcome to ideas</wiki>
             <showTitle>false</showTitle>
           </portlet>
-          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300">
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300" isSensitive="true">
 			      <title>Featured Idea</title>
           	<showGetInvolved>false</showGetInvolved>
             <randomProject>
@@ -1716,21 +1794,21 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Idea Information</wikiForm>
           </portlet>
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items " isSensitive="true">
             <title>Browse Ideas by Category</title>
             <category>Ideas</category>
             <showSubcategories>true</showSubcategories>
             <columns>3</columns>
             <hasMoreURL>/page/categories/ideas</hasMoreURL>
           </portlet>
-          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list ">
+          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Most Recent Ideas</title>
             <category>Ideas</category>
             <limit>50</limit>
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ContentPortlet" cache="300">
+          <portlet name="ContentPortlet" cache="300" isSensitive="true">
             <content><![CDATA[
             <h4>Browse All Listings</h4>
             View all <a title="View the complete list of ideas" href="${ctx}/page/lists/ideas">Ideas</a>
@@ -1740,7 +1818,7 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Ideas</category>
             <events>
@@ -1763,13 +1841,13 @@
             </events>
             <limit>15</limit>
           </portlet>
-          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list ">
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
             <title>Popular Ideas</title>
             <category>Ideas</category>
             <limit>10</limit>
             <daysLimit>30</daysLimit>
           </portlet>
-          <portlet name="TopContributionsPortlet" class="detailed-list ">
+          <portlet name="TopContributionsPortlet" class="detailed-list " isSensitive="true">
             <title>Top Contributors</title>
             <category>Ideas</category>
             <limit>5</limit>
@@ -1821,7 +1899,7 @@
             <wiki>Welcome to projects</wiki>
             <showTitle>false</showTitle>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list ">
+          <portlet name="ActivityStreamPortlet" class="detailed-list " isSensitive="true">
             <title>Recent Activity</title>
             <category>Projects</category>
             <events>
@@ -1875,48 +1953,6 @@
           <portlet name="ProxyPortlet" cache="3650" timeout="3" class="ads">
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x60</adContext>
-          </portlet>
-        </column>
-      </row>
-    </page>
-
-    <page name="join_group.shtml" title="Join a Group"
-          description="Find others that share your interests" category="groups">
-      <row isUser="true">
-        <column>
-          <portlet name="ContentPortlet">
-            <content>
-              <![CDATA[<h3>Join a Group</h3>
-                <p>Enter a keyword and location to fnd a group to join</p>
-                <form method="GET" action="${ctx}/search" target="_parent">
-                <input type="hidden" name="categoryID" value="7">
-                <fieldset id="Search Items to add a Review">
-                <div class="rightSearchArea" style="width:40%; display:inline; position:relative">
-                <label for="query">Keywords</label>
-                <input type="text" value="" name="query" id="query" size="20"/>
-                </div>
-                <div class="leftSearchArea" style="width:40%; display:inline; position:relative">
-                <label for="location">Location</label>
-                <input type="text" value="" name="location" id="location" size="20"/>
-                </div>
-                <input border="0" align="absmiddle" type="image" value="Search" name="Search" alt="Search" systran="yes" src="/Concursive/images/search/go.png" />
-                <input type="hidden" value="null" name="scope"/>
-                <input type="hidden" value="all" name="type"/>
-                <input type="hidden" value="7" name="projectId"/>
-                <input type="hidden" value="true" name="openProjectsOnly"/>
-                <input type="hidden" value="true" name="auto-populate"/>
-                </form>]]>
-            </content>
-          </portlet>
-        </column>
-      </row>
-      <row isUser="false">
-        <column>
-          <portlet name="ContentPortlet">
-            <content>
-              <![CDATA[<h3>Join a Group</h3>
-                <p>You must be signed in to join a group.</p>]]>
-            </content>
           </portlet>
         </column>
       </row>
@@ -2507,6 +2543,75 @@
         </column>
       </row>
     </page>
+    <page name="add_committee.shtml" title="Add a Committee"
+          description="Add a committee" category="committees">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet" isAdmin="false">
+            <content>
+              <![CDATA[<h3>Add a Committee</h3>
+                <p>The site administrator can add a committee.</p>
+								]]>
+            </content>
+          </portlet>
+          <portlet name="AddProjectByCategoryPortlet" isAdmin="true">
+            <category>Committees</category>
+            <title>Add a Committee</title>
+            <introductionMessage>Please search to see if the committee already exists before requesting for it to be added. Next, enter listing information about the committee.</introductionMessage>
+            <showSubCategories>true</showSubCategories>
+            <showIsOwner>false</showIsOwner>
+			      <isOwnerMessage>By checking this box, you are verifying that you are affiliated with or employed by this organization. You must check this box if you would like tools to manage, modify, or enhance your listing information.</isOwnerMessage>
+            <addUserWithRole>Member</addUserWithRole>
+            <addOwnerUserWithRole>Manager</addOwnerUserWithRole>
+            <isApproved>true</isApproved>
+            <allowGuests>false</allowGuests>
+            <allowParticipants>true</allowParticipants>
+            <labels>
+              <value>title=Committee Name</value>
+            </labels>
+            <showAddress>false</showAddress>
+            <showContactInformation>false</showContactInformation>
+            <showShortDescription>true</showShortDescription>
+            <showKeywords>true</showKeywords>
+            <showWebsite>false</showWebsite>
+            <successMessage>
+              <![CDATA[Thank you for requesting an addition to the directory.]]>
+            </successMessage>
+            <failureMessage>The information could not be saved.</failureMessage>
+            <modules>
+              <value>Profile</value>
+              <value>News=Blog</value>
+              <value>Wiki</value>
+              <value>Discussion</value>
+              <value>Calendar</value>
+              <value>Reviews</value>
+              <value>Ads=Promotions</value>
+              <value>Classifieds</value>
+              <value>Documents</value>
+              <value>Lists</value>
+              <value>Badges</value>
+              <value>Team=Members</value>
+              <value>Messages</value>
+            </modules>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+								<h3>Who can add a committee?</h3>
+                <p>The site administrator can add a committee.</p>
+							]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
     <page name="add_sponsor.shtml" title="Add a Sponsor" description="Add a sponsor" category="sponsors">
       <row>
         <column width="240">
@@ -2624,7 +2729,8 @@
           <portlet name="AddProjectByCategoryPortlet" isUser="true">
             <category>Groups</category>
             <title>Start a Group</title>
-            <introductionMessage>Enter information below to start your own group
+            <introductionMessage>
+              Enter information below to start your own group
             </introductionMessage>
             <showSubCategories>true</showSubCategories>
             <labels>
@@ -2638,7 +2744,6 @@
             <showRequiresMembershipOption>false</showRequiresMembershipOption>
             <isApproved>true</isApproved>
             <showAddress>true</showAddress>
-            <introductionMessage>Enter information below to start your own group</introductionMessage>
             <showShortDescription>true</showShortDescription>
             <showKeywords>true</showKeywords>
             <showWebsite>true</showWebsite>
@@ -3115,7 +3220,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <limit>3</limit>
             <portlet-events>
@@ -3124,7 +3229,7 @@
           </portlet>
         </column>
         <column width="auto" class="main">
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list ">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list " isSensitive="true">
             <autoSetPageTitle>true</autoSetPageTitle>
             <title>Categories</title>
             <hasMoreURL>/page/categories/${category}</hasMoreURL>
@@ -3141,7 +3246,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="button-list-vertical-">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="button-list-vertical-" isSensitive="true">
             <title>Filter by Category</title>
             <showSubcategories>true</showSubcategories>
             <hasMoreURL>/page/categories/${category}</hasMoreURL>
@@ -3159,7 +3264,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <limit>3</limit>
             <portlet-events>
@@ -3168,7 +3273,7 @@
           </portlet>
         </column>
         <column width="80%" class="main">
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list ">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list " isSensitive="true">
             <autoSetPageTitle>true</autoSetPageTitle>
             <title>Browse ${category}</title>
             <showSubcategories>false</showSubcategories>
@@ -3189,14 +3294,14 @@
     <page name="tags" title="Tags">
       <row>
         <column width="auto" class="ccp-search-menu-">
-          <portlet name="TagCloudProjectCategoryCountsPortlet" class="button-list-horizontal-">
+          <portlet name="TagCloudProjectCategoryCountsPortlet" class="button-list-horizontal-" isSensitive="true">
             <pageURL>/page/tags</pageURL>
           </portlet>
         </column>
       </row>
       <row>
         <column width="240">
-          <portlet name="TagCloudActionsPortlet" class="button-list-vertical-">
+          <portlet name="TagCloudActionsPortlet" class="button-list-vertical-" isSensitive="true">
             <title>View Tags By</title>
             <pageURL>/page/tags</pageURL>
           </portlet>
@@ -3205,21 +3310,21 @@
           </portlet>
         </column>
         <column width="auto" class="main">
-          <portlet name="TagCloudByProjectPortlet" class="tag-cloud "/>
+          <portlet name="TagCloudByProjectPortlet" class="tag-cloud " isSensitive="true"/>
         </column>
       </row>
     </page>
     <page name="tag" title="Tags">
       <row>
         <column width="auto" class="ccp-search-menu-">
-          <portlet name="TagCloudResultsCategoryCountsPortlet" class="button-list-horizontal-">
+          <portlet name="TagCloudResultsCategoryCountsPortlet" class="button-list-horizontal-" isSensitive="true">
             <pageURL>/page/tag</pageURL>
           </portlet>
         </column>
       </row>
       <row>
         <column width="240">
-          <portlet name="TagCloudResultsFilterPortlet" class="button-list-vertical-">
+          <portlet name="TagCloudResultsFilterPortlet" class="button-list-vertical-" isSensitive="true">
             <pageURL>/page/tag</pageURL>
             <portlet-events>
               <generates-request-data>requestGeneratedTitle</generates-request-data>
@@ -3227,7 +3332,7 @@
           </portlet>
         </column>
         <column width="auto" class="main">
-          <portlet name="ProjectListByTagPortlet" class="detailed-list ">
+          <portlet name="ProjectListByTagPortlet" class="detailed-list " isSensitive="true">
             <limit>20</limit>
             <sortByTagCount>true</sortByTagCount>
             <hasMoreURL>/page/tag</hasMoreURL>
@@ -3238,22 +3343,22 @@
     <page name="classifieds" title="Classifieds">
       <row>
         <column width="auto" class="ccp-search-menu-">
-          <portlet name="ClassifiedResultsCategoryCountsPortlet" class="button-list-horizontal-">
+          <portlet name="ClassifiedResultsCategoryCountsPortlet" class="button-list-horizontal-" isSensitive="true">
             <pageURL>/page/classifieds</pageURL>
           </portlet>
         </column>
       </row>
       <row>
         <column width="240">
-          <portlet name="ClassifiedResultsSorterPortlet" class="button-list-vertical-">
+          <portlet name="ClassifiedResultsSorterPortlet" class="button-list-vertical-" isSensitive="true">
             <pageURL>/page/classifieds</pageURL>
           </portlet>
-          <portlet name="ActionsPortlet" class="button-list-vertical-">
+          <portlet name="ActionsPortlet" class="button-list-vertical-" isSensitive="true">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
         </column>
         <column width="auto" class="main">
-          <portlet name="ClassifiedListByClassifiedCategoryPortlet" class="basic-list ">
+          <portlet name="ClassifiedListByClassifiedCategoryPortlet" class="basic-list " isSensitive="true">
             <autoSetPageTitle>true</autoSetPageTitle>
             <title>Classifieds</title>
             <hasMoreURL>/page/classifieds/${category}</hasMoreURL>
@@ -3270,7 +3375,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ClassifiedListByClassifiedCategoryPortlet" class="button-list-vertical-">
+          <portlet name="ClassifiedListByClassifiedCategoryPortlet" class="button-list-vertical-" isSensitive="true">
             <title>Filter by Category</title>
             <showClassifiedCategories>true</showClassifiedCategories>
             <hasMoreURL>/page/classifieds/${category}</hasMoreURL>
@@ -3840,7 +3945,7 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-230x400</adContext>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -3856,8 +3961,11 @@
                 <li>Try a more general search.</li>
               </ul>
               ]]></content>
+            <portlet-events>
+              <consumes-data>hideIfEmpty</consumes-data>
+            </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
@@ -3870,7 +3978,7 @@
               <consumes-data>hideIfEmpty</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -3879,7 +3987,7 @@
             </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
@@ -3888,7 +3996,7 @@
             </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -3918,6 +4026,15 @@
             <limit>3</limit>
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
@@ -3977,15 +4094,15 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
@@ -4019,7 +4136,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -4056,12 +4173,12 @@
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -4069,7 +4186,7 @@
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
@@ -4077,7 +4194,7 @@
               <generates-data>eventResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -4098,13 +4215,22 @@
               <generates-data>businessesResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
             </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4138,15 +4264,15 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
@@ -4260,6 +4386,15 @@
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
             </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4407,6 +4542,15 @@
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
             </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4579,6 +4723,15 @@
               <generates-data>organizationResultsFound</generates-data>
             </portlet-events>
           </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
@@ -4668,13 +4821,22 @@
             </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
             </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4708,12 +4870,12 @@
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -4721,7 +4883,7 @@
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
@@ -4729,7 +4891,7 @@
               <generates-data>eventResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -4758,15 +4920,15 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
@@ -4854,12 +5016,12 @@
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -4867,7 +5029,7 @@
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
@@ -4875,7 +5037,7 @@
               <generates-data>eventResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -4896,6 +5058,15 @@
               <generates-data>businessesResultsFound</generates-data>
             </portlet-events>
           </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
@@ -4912,15 +5083,178 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Discussions</title>
+            <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <page name="Committees" title="Committees - Search">
+      <row>
+        <column class="ccp-search-menu-">
+          <portlet name="SearchResultsProjectCategoryCountsPortlet"
+                   class="button-list-horizontal-">
+            <portlet-events>
+              <generates-data>hideIfEmpty</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+      <row>
+        <column width="240">
+          <!--Search Filter-->
+          <portlet name="SearchFilterPortlet" class="button-list-vertical-"/>
+          <!--Getting Started-->
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
+            <title>Promotions</title>
+            <category>Committees</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet">
+            <content><![CDATA[
+              <h3>No results? Please try another search.</h3>
+              <ul>
+                <li>Try searching a different topic or location.</li>
+                <li>Check the spelling or try alternate spellings.</li>
+                <li>Try a more general search.</li>
+              </ul>
+              ]]></content>
+            <portlet-events>
+              <consumes-data>hideIfEmpty</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>10</limit>
+            <portlet-events>
+              <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Sponsors</title>
+            <category>Sponsors</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>sponsorResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Partners</title>
+            <category>Partners</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>partnerResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Products</title>
+            <category>Products</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>productResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Solutions</title>
+            <category>Solutions</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>solutionsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>People</title>
+            <category>People</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Groups</title>
+            <category>Groups</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>groupsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Events</title>
+            <category>Events</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>eventResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Ideas</title>
+            <category>Ideas</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Projects</title>
+            <category>Projects</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>projectsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Businesses</title>
+            <category>Businesses</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>businessesResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Organizations</title>
+            <category>Organizations</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="GoogleMapsFromSearchHitsPortlet">
+            <maxResults>3</maxResults>
+            <portlet-events>
+              <consumes-data>groupsResultsFound</consumes-data>
+              <consumes-data>eventResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>businessesResultsFound</consumes-data>
+              <consumes-data>organizationResultsFound</consumes-data>
+              <consumes-data>sponsorResultsFound</consumes-data>
+              <consumes-data>productResultsFound</consumes-data>
+              <consumes-data>solutionsResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Blogs</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
+            <title>Related Wikis</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
@@ -5102,7 +5436,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -5122,7 +5456,7 @@
               <consumes-data>hideIfEmpty</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>10</limit>
@@ -5131,7 +5465,7 @@
             </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
@@ -5139,7 +5473,7 @@
               <generates-data>eventResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -5160,7 +5494,7 @@
               <generates-data>businessesResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
@@ -5200,7 +5534,7 @@
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
@@ -5221,15 +5555,15 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
@@ -5256,7 +5590,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>People</category>
             <limit>3</limit>
@@ -5276,13 +5610,13 @@
               <consumes-data>hideIfEmpty</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>10</limit>
             <hasPaging>true</hasPaging>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -5290,7 +5624,7 @@
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
@@ -5298,7 +5632,7 @@
               <generates-data>eventResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -5390,7 +5724,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Events</category>
             <limit>3</limit>
@@ -5410,7 +5744,7 @@
               <consumes-data>hideIfEmpty</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>10</limit>
@@ -5419,12 +5753,12 @@
             </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
@@ -5446,6 +5780,14 @@
             <limit>3</limit>
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
@@ -5480,12 +5822,12 @@
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -5509,15 +5851,15 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
@@ -5544,7 +5886,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -5564,12 +5906,12 @@
               <consumes-data>hideIfEmpty</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
@@ -5591,6 +5933,14 @@
             <limit>3</limit>
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
@@ -5625,12 +5975,12 @@
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
@@ -5638,7 +5988,7 @@
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
@@ -5662,15 +6012,15 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>

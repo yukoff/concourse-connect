@@ -48,6 +48,7 @@ package com.concursive.connect.config;
 import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.db.ConnectionElement;
 import com.concursive.commons.db.ConnectionPool;
+import com.concursive.commons.jsp.JspUtils;
 import com.concursive.commons.workflow.ObjectHookManager;
 import com.concursive.commons.workflow.WorkflowManager;
 import com.concursive.commons.xml.XMLUtils;
@@ -724,6 +725,15 @@ public class ApplicationPrefs {
           if (("/themes/" + this.get(THEME) + "/jsp/layout.jsp").equals(thisFile)) {
             layout = this.get(THEME);
           }
+        }
+      }
+      if ("default".equals(layout) && !"default".equals(this.get(THEME))) {
+        try {
+          // Check for a compiled layout
+          Class.forName("org.apache.jsp.themes." + JspUtils.makeJavaIdentifier(this.get(THEME)) + ".jsp.layout_jsp");
+          layout = this.get(THEME);
+        } catch (Exception e) {
+          LOG.info("Using default theme: " + e.getMessage());
         }
       }
       addParameter(context, Constants.TEMPLATE_LAYOUT, "/themes/" + layout + "/jsp/layout.jsp");

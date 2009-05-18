@@ -222,16 +222,17 @@
                 <p><c:out value="${thisFile.comment}"/></p>
               </c:if>
               <%-- Download --%>
-              <div class="portlet-section-body-menu">
-                <p>
-                  <a href="${downloadUrl}/<c:out value="${thisFile.clientFilename}"/>">
-                    <img src="${ctx}/images/icons/get_32x32.png" alt="Download icon"/>
-                    download
-                    <span><%= toHtml(thisFile.getExtension()) %> (${thisFile.relativeSize}k)</span>
-                  </a>  
-                </p>
-
-              </div> 
+              <ccp:permission name="project-documents-files-download">
+                <div class="portlet-section-body-menu">
+                  <p>
+                    <a href="${downloadUrl}/<c:out value="${thisFile.clientFilename}"/>">
+                      <img src="${ctx}/images/icons/get_32x32.png" alt="Download icon"/>
+                      download
+                      <span><%= toHtml(thisFile.getExtension()) %> (${thisFile.relativeSize}k)</span>
+                    </a>
+                  </p>
+                </div>
+              </ccp:permission>
             </div>
             <div class="portlet-section-menu">
               <ul>

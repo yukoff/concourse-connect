@@ -132,7 +132,10 @@ public class ActivityStreamViewer implements IPortletViewer {
     User thisUser = null;
     if (PortalUtils.getDashboardPortlet(request).isCached()) {
       if (PortalUtils.canShowSensitiveData(request)) {
-        // Use the most generic settings since this portlet is cached
+        // Need to use a participant's setting here, this user is fine
+        // because this is for building the wiki links, not the data
+        thisUser = PortalUtils.getUser(request);
+        // Limit the data to a participant
         projectHistoryList.setForParticipant(Constants.TRUE);
       } else {
         // Use the most generic settings since this portlet is cached

@@ -75,8 +75,10 @@ public class SaveProjectViewing extends ObjectHookComponent implements Component
     Project thisProject = (Project) context.getThisObject();
     Connection db = null;
     try {
-      db = getConnection(context);
-      Viewing.save(db, userId, thisProject.getId(), Project.TABLE, Project.PRIMARY_KEY);
+      if (thisProject.getEnteredBy() != userId && thisProject.getModifiedBy() != userId) {
+        db = getConnection(context);
+        Viewing.saveNew(db, userId, thisProject.getId(), Project.TABLE, Project.PRIMARY_KEY, thisProject.getEntered());
+      }
       result = true;
     } catch (Exception e) {
       e.printStackTrace(System.out);

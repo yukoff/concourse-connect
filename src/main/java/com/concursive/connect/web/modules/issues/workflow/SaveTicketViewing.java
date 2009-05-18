@@ -72,8 +72,10 @@ public class SaveTicketViewing extends ObjectHookComponent implements ComponentI
     int userId = (Integer) context.getAttribute("userId");
     Connection db = null;
     try {
-      db = getConnection(context);
-      Viewing.save(db, userId, thisTicket.getId(), Ticket.TABLE, Ticket.PRIMARY_KEY);
+      if (thisTicket.getEnteredBy() != userId && thisTicket.getModifiedBy() != userId) {
+        db = getConnection(context);
+        Viewing.saveNew(db, userId, thisTicket.getId(), Ticket.TABLE, Ticket.PRIMARY_KEY, thisTicket.getEntered());
+      }
       result = true;
     } catch (Exception e) {
       e.printStackTrace(System.out);

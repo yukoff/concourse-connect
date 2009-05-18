@@ -65,36 +65,16 @@ public class Viewing {
     if (userId < -1) {
       userId = -1;
     }
-    boolean commit = false;
-    try {
-      commit = db.getAutoCommit();
-      if (commit) {
-        db.setAutoCommit(false);
-      }
-      PreparedStatement pst = null;
-      // Perform an insert (guests are allowed)
-      pst = db.prepareStatement(
-          "INSERT INTO " + table + "_view " +
-              "(" + uniqueField + ", user_id) VALUES (?, ?)");
-      pst.setInt(1, objectId);
-      DatabaseUtils.setInt(pst, 2, userId);
-      pst.execute();
-      pst.close();
-      // Update the object count and value
-      saveSummary(db, objectId, table, uniqueField);
-      if (commit) {
-        db.commit();
-      }
-    } catch (Exception e) {
-      if (commit) {
-        db.rollback();
-      }
-      throw new SQLException(e.getMessage());
-    } finally {
-      if (commit) {
-        db.setAutoCommit(true);
-      }
-    }
+    // Perform an insert (guests are allowed)
+    PreparedStatement pst = db.prepareStatement(
+        "INSERT INTO " + table + "_view " +
+            "(" + uniqueField + ", user_id) VALUES (?, ?)");
+    pst.setInt(1, objectId);
+    DatabaseUtils.setInt(pst, 2, userId);
+    pst.execute();
+    pst.close();
+    // Update the object count and value
+    saveSummary(db, objectId, table, uniqueField);
   }
 
   public static void saveSummary(Connection db, int objectId, String table, String uniqueField) throws SQLException {
@@ -112,7 +92,7 @@ public class Viewing {
     pst.close();
   }
 
-  public static void saveNew(Connection db, int userId, int objectId, String table, String uniqueField, Timestamp modified) throws SQLException {
+  public static boolean saveNew(Connection db, int userId, int objectId, String table, String uniqueField, Timestamp modified) throws SQLException {
     if (userId < -1) {
       userId = -1;
     }
@@ -135,6 +115,7 @@ public class Viewing {
     if (doSave) {
       save(db, userId, objectId, table, uniqueField);
     }
+    return doSave;
   }
 
   public static void delete(Connection db, int objectId, String table, String uniqueField) throws SQLException {

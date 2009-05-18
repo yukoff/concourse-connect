@@ -52,6 +52,7 @@ import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.common.social.viewing.utils.Viewing;
 import com.concursive.connect.web.modules.discussion.dao.Topic;
 import com.concursive.connect.web.modules.discussion.dao.Forum;
+import com.concursive.connect.web.modules.profile.dao.Project;
 
 import java.sql.Connection;
 
@@ -73,12 +74,12 @@ public class SaveTopicViewing extends ObjectHookComponent implements ComponentIn
     int userId = (Integer) context.getAttribute("userId");
     Connection db = null;
     try {
-      db = getConnection(context);
-      // Don't log the views for any of the authors, for now, to prevent inflation, but later
-      // track those views too
-      if (thisTopic.getEnteredBy() != userId || thisTopic.getReplyCount() > 0) {
-        Viewing.save(db, userId, thisTopic.getId(), Topic.TABLE, Topic.PRIMARY_KEY);
-        Viewing.saveSummary(db, thisTopic.getCategoryId(), Forum.TABLE, Forum.PRIMARY_KEY);
+      // Log once per user
+      if (thisTopic.getEnteredBy() != userId) {
+        db = getConnection(context);
+        if (Viewing.saveNew(db, userId, thisTopic.getId(), Topic.TABLE, Topic.PRIMARY_KEY, thisTopic.getEntered())) {
+          Viewing.saveSummary(db, thisTopic.getCategoryId(), Forum.TABLE, Forum.PRIMARY_KEY);
+        }
       }
       result = true;
     } catch (Exception e) {

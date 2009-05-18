@@ -112,7 +112,9 @@ public class PromotionsDetailsViewer implements IPortletViewer {
     processSelectHook(request, promotion);
 
     // Track that this promotion has been viewed
-    Viewing.save(db, user.getId(), promotion.getId(), Ad.TABLE, Ad.PRIMARY_KEY);
+    if (promotion.getEnteredBy() != user.getId() && promotion.getModifiedBy() != user.getId()) {
+      Viewing.saveNew(db, user.getId(), promotion.getId(), Ad.TABLE, Ad.PRIMARY_KEY, promotion.getEntered());
+    }
 
     // JSP view
     return defaultView;

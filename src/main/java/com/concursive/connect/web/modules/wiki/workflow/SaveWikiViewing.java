@@ -51,6 +51,7 @@ import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.common.social.viewing.utils.Viewing;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.profile.dao.Project;
 
 import java.sql.Connection;
 
@@ -78,11 +79,10 @@ public class SaveWikiViewing extends ObjectHookComponent implements ComponentInt
     }
     Connection db = null;
     try {
-      db = getConnection(context);
-      // Don't log the views for any of the authors, for now, to prevent inflation, but later
-      // track those views too
+      // Don't log the views for the recent author(s) to prevent inflation
       if (thisWiki.getModifiedBy() != userId) {
-        Viewing.save(db, userId, thisWiki.getId(), Wiki.TABLE, Wiki.PRIMARY_KEY);
+        db = getConnection(context);
+        Viewing.saveNew(db, userId, thisWiki.getId(), Wiki.TABLE, Wiki.PRIMARY_KEY, thisWiki.getEntered());
       }
       result = true;
     } catch (Exception e) {

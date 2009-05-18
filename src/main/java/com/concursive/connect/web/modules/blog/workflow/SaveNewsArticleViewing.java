@@ -72,12 +72,11 @@ public class SaveNewsArticleViewing extends ObjectHookComponent implements Compo
     int userId = (Integer) context.getAttribute("userId");
     Connection db = null;
     try {
-      db = getConnection(context);
       // Don't log the views for any of the authors, for now, to prevent inflation, but later
       // track those views too
-      if (thisArticle.getEnteredBy() != userId &&
-          thisArticle.getModifiedBy() != userId) {
-        Viewing.save(db, userId, thisArticle.getId(), BlogPost.TABLE, BlogPost.PRIMARY_KEY);
+      if (thisArticle.getEnteredBy() != userId && thisArticle.getModifiedBy() != userId) {
+        db = getConnection(context);
+        Viewing.saveNew(db, userId, thisArticle.getId(), BlogPost.TABLE, BlogPost.PRIMARY_KEY, thisArticle.getEntered());
       }
       result = true;
     } catch (Exception e) {

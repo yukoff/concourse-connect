@@ -130,7 +130,7 @@
               <ccp:permission name="project-documents-files-download">
                 <span>
                   <img src="${ctx}/images/icons/get_16x16.png" alt="download icon"/>
-                  <a href="${downloadUrl}">downlaod</a>
+                  <a href="${downloadUrl}">download</a>
                 </span>
               </ccp:permission>
             </h2>

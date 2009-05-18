@@ -69,8 +69,11 @@ public class SaveNewsArticleListViewing extends ObjectHookComponent implements C
 
   public boolean execute(ComponentContext context) {
     boolean result = false;
+    Integer userId = (Integer) context.getAttribute("userId");
+    if (userId == null) {
+      return result;
+    }
     BlogPostList newsList = (BlogPostList) context.getThisObject();
-    int userId = (Integer) context.getAttribute("userId");
     Connection db = null;
     try {
       db = getConnection(context);

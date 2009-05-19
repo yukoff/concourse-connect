@@ -1554,7 +1554,7 @@ ol.pagination {
 .basic-list h4 {
   margin: 0;
   padding: 5px 0;
-  _display:inline-block;
+  *display:inline-block;
 }
 
 .basic-list dd {
@@ -1714,7 +1714,7 @@ ol.pagination {
 .detailed-list ol li,
 .detailed-list ul li {
   clear: both;
-  _display:inline-block; /* IE Fix */
+  *display:inline-block; /* IE Fix */
   margin:2px 0 3px 0;
   position:relative;
 }
@@ -1911,7 +1911,7 @@ ol.pagination {
 .file-list ol li,
 .file-list ul li {
   clear: both;
-  _display:inline-block; /* IE Fix */
+  *display:inline-block; /* IE Fix */
   margin:5px 0;
   position:relative;
 
@@ -2084,7 +2084,7 @@ ol.pagination {
 .search-list ol li,
 .search-list ul li {
   clear: both;
-  _display:inline-block; /* IE Fix */
+  *display:inline-block; /* IE Fix */
   margin:2px 0 3px 0;
   position:relative;
 }

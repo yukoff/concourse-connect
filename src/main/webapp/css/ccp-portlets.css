@@ -1965,6 +1965,7 @@ ol.pagination {
   margin:0 0 0 2px;
   padding:0;
   float:left;
+  *float:none;
 }
 
 .file-list .portlet-section-body .portlet-section-body .external,

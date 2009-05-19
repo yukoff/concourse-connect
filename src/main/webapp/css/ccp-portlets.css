@@ -1906,6 +1906,13 @@ ol.pagination {
 .file-list .portlet-section-body h3 {
   margin:2px 0;
   font-weight:900;
+  *display:block;
+  *padding:0 0 5px 0;
+}
+
+.file-list .portlet-section-body h2 a,
+.file-list .portlet-section-body h3 a {
+  *display:block;
 }
 
 .file-list ol li,
@@ -2034,6 +2041,7 @@ ol.pagination {
   background:#ddd;
   padding:5px;
   margin:0 0 5px;
+  *margin:5px 0;
   width:110px;
   clear:both;
 }

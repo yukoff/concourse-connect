@@ -129,6 +129,12 @@
               <c:out value="${thisVersion.clientFilename}"/>
               <ccp:permission name="project-documents-files-download">
                 <span>
+                  <portlet:renderURL var="downloadUrl">
+                    <portlet:param name="portlet-action" value="download"/>
+                    <portlet:param name="portlet-object" value="file"/>
+                    <portlet:param name="portlet-value" value="${thisVersion.id}"/>
+                    <portlet:param name="portlet-params" value="${thisVersion.version}"/>
+                  </portlet:renderURL>
                   <img src="${ctx}/images/icons/get_16x16.png" alt="download icon"/>
                   <a href="${downloadUrl}">download</a>
                 </span>

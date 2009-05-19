@@ -2015,6 +2015,10 @@ ol.pagination {
     padding: 0;
     top: 0
   }
+  
+  .file-list li .portlet-section-body p {
+    *margin:10px 0 0;
+}
 
 .file-list .portlet-section-body h2 span {
   font-weight:300;

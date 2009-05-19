@@ -181,6 +181,11 @@
     <div class="articleBody">
       <%= thisArticle.getIntro() %>
     </div>
+    <c:if test="${!empty thisArticle.message}">
+      <div>
+        (more)
+      </div>
+    </c:if>
     <div class="articleFooter">
       <span class="comments">
         <c:set var="commentText">

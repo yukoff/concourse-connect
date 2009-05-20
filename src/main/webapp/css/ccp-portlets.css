@@ -1090,7 +1090,7 @@ ol.pagination {
       /* Modal Forms */
       .modalportletWindowBackground .formContainer fieldset {
         clear: both;
-        padding-bottom: 20px;
+        padding-bottom: 0;
         overflow: hidden;
         margin:0 10px 10px 0;
         display: block;

@@ -46,252 +46,184 @@
 
 package com.concursive.connect.scheduler;
 
+import com.concursive.commons.date.DateUtils;
+import com.concursive.commons.xml.XMLUtils;
 import com.concursive.connect.config.ApplicationPrefs;
-import com.concursive.connect.indexer.jobs.DirectoryIndexerJob;
-import com.concursive.connect.indexer.jobs.IndexerJob;
-import com.concursive.connect.web.modules.common.social.contribution.jobs.UserContributionJob;
-import com.concursive.connect.web.modules.common.social.images.jobs.ImageResizerJob;
-import com.concursive.connect.web.modules.fileattachments.jobs.CleanupTempFilesJob;
-import com.concursive.connect.web.modules.login.jobs.DeleteDisabledUsersJob;
-import com.concursive.connect.web.modules.reports.jobs.CleanupReportsJob;
-import com.concursive.connect.web.modules.reports.jobs.ReportsJob;
-import com.concursive.connect.web.modules.translation.jobs.UpdateTranslationPercentageJob;
-import com.concursive.connect.web.modules.wiki.jobs.WikiExporterJob;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleTrigger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.quartz.*;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.servlet.ServletContext;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.lang.reflect.Method;
+import java.net.URL;
 import java.util.Date;
+import java.util.Set;
 
 /**
- * These jobs are background tasks that get initialized during webapp startup
+ * Responsible for adding the webapplication jobs and triggers
  *
  * @author matt rajkowski
- * @version $Id$
- * @created Jun 20, 2005
+ * @created May 20, 2009
  */
 
 public class ScheduledJobs {
 
-  public static String CONTEXT_SCHEDULER_GROUP = "SCHEDULER_GROUP";
+  private static Log LOG = LogFactory.getLog(ScheduledJobs.class);
 
-  public static void addJobs(Scheduler scheduler) throws SchedulerException {
-    // Use the default group for this instance
-    String uniqueGroup = Scheduler.DEFAULT_GROUP;
-    // Share the group context by using the scheduler
-    scheduler.getContext().put(CONTEXT_SCHEDULER_GROUP, uniqueGroup);
-    // Get the Application prefs...
+  public static String CONTEXT_SCHEDULER_GROUP = "SCHEDULER_GROUP";
+  public static String UNIQUE_GROUP = "DEFAULT";
+
+  /**
+   * Scans the jobs path for the given ServletContext
+   *
+   * @param scheduler
+   * @param context
+   * @throws SchedulerException
+   */
+  public static void addJobs(Scheduler scheduler, ServletContext context) throws SchedulerException {
+    // Find job files in the jobs path
+    Set<String> jobFiles = context.getResourcePaths("/WEB-INF/jobs/");
+    if (jobFiles != null && jobFiles.size() > 0) {
+      for (String thisFile : jobFiles) {
+        if (thisFile.endsWith(".xml")) {
+          try {
+            LOG.debug("Adding jobs from... " + thisFile);
+            addJobs(scheduler, context.getResource(thisFile));
+          } catch (Exception e) {
+            LOG.error("addJobs exception", e);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Adds jobs from the specified URL
+   *
+   * @param scheduler
+   * @param jobFile
+   * @throws Exception
+   */
+  public static void addJobs(Scheduler scheduler, URL jobFile) throws Exception {
+    // Determine the ApplicationPrefs
     ApplicationPrefs prefs = (ApplicationPrefs) scheduler.getContext().get("ApplicationPrefs");
 
-    // Update Translating Percentages
-    boolean doTranslations = false;
-    if (prefs.has("BACKGROUND.TRANSLATION_UPDATE")) {
-      doTranslations = "true".equals(prefs.get("BACKGROUND.TRANSLATION_UPDATE"));
-    }
-    if (doTranslations) {
-      JobDetail job = new JobDetail(
-          "updateTranslationPercentage",
-          uniqueGroup,
-          UpdateTranslationPercentageJob.class);
-      // Update every 30 minutes, starting in 5 minutes
-      long startTime = System.currentTimeMillis() + (5L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "updateTranslationPercentage",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          30L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
-    }
+    // Read all jobs from XML
+    XMLUtils document = new XMLUtils(jobFile);
 
-    // Indexer (uses factory)
-    boolean doIndexer = true;
-    if (prefs.has("BACKGROUND.INDEXER")) {
-      doIndexer = "true".equals(prefs.get("BACKGROUND.INDEXER"));
-    }
-    if (doIndexer) {
-      {
-        // Main Indexer
-        JobDetail job = new JobDetail(
-            "indexer",
-            uniqueGroup,
-            IndexerJob.class);
-        // Update every 24 hours, starting in 5 minutes
-        long startTime = System.currentTimeMillis() + (5L * 60L * 1000L);
-        SimpleTrigger trigger = new SimpleTrigger(
-            "indexer",
-            uniqueGroup,
-            new Date(startTime),
-            null,
-            SimpleTrigger.REPEAT_INDEFINITELY,
-            24L * 60L * 60L * 1000L);
-        scheduler.scheduleJob(job, trigger);
+    // Use XPath for querying xml elements
+    XPath xpath = XPathFactory.newInstance().newXPath();
+
+    NodeList jobList = (NodeList) xpath.evaluate("job", document.getDocumentElement(), XPathConstants.NODESET);
+    LOG.debug("Jobs to process in this file: " + jobList.getLength());
+    for (int nodeIndex = 0; nodeIndex < jobList.getLength(); nodeIndex++) {
+      Node job = jobList.item(nodeIndex);
+      // Check to see if the job is disabled
+      String prefAttribute = ((Element) job).getAttribute("pref");
+      if (prefAttribute != null && "false".equals(prefs.get(prefAttribute))) {
+        continue;
       }
-
-      {
-        // Directory Indexer
-        JobDetail job = new JobDetail(
-            "directoryIndexer",
-            uniqueGroup,
-            DirectoryIndexerJob.class);
-        // Start in 10 seconds of startup and don't repeat
-        long startTime = System.currentTimeMillis() + (10L * 1000L);
-        SimpleTrigger trigger = new SimpleTrigger(
-            "directoryIndexer",
-            uniqueGroup,
-            new Date(startTime));
-        scheduler.scheduleJob(job, trigger);
+      JobDetail thisJob = null;
+      try {
+        thisJob = createJob(job, xpath, scheduler.getContext());
+      } catch (Exception e) {
+        LOG.error("Could not create job", e);
       }
+      if (thisJob == null) {
+        continue;
+      }
+      // Create any triggers
+      scheduleJob(scheduler, thisJob, job, xpath);
     }
+  }
 
-    // Wiki Exporter (uses local queue)
-    boolean doWikiExports = true;
-    if (prefs.has("BACKGROUND.WIKI_EXPORTER")) {
-      doWikiExports = "true".equals(prefs.get("BACKGROUND.WIKI_EXPORTER"));
+  /**
+   * Creates a job based on the job xml
+   *
+   * @param job
+   * @param xpath
+   * @param schedulerContext
+   * @return
+   * @throws Exception
+   */
+  private static JobDetail createJob(Node job, XPath xpath, SchedulerContext schedulerContext) throws Exception {
+    // Create the job
+    Node jobDetail = (Node) xpath.evaluate("job-detail", job, XPathConstants.NODE);
+    Node jobName = (Node) xpath.evaluate("name", jobDetail, XPathConstants.NODE);
+    Node jobGroup = (Node) xpath.evaluate("group", jobDetail, XPathConstants.NODE);
+    //Node jobDescription = (Node) xpath.evaluate("description", jobDetail, XPathConstants.NODE);
+    Node jobClass = (Node) xpath.evaluate("job-class", jobDetail, XPathConstants.NODE);
+    // Construct the job class
+    Class thisJobClass = Class.forName(jobClass.getTextContent());
+    JobDetail thisJob = new JobDetail(
+        jobName.getTextContent(),
+        jobGroup.getTextContent(),
+        thisJobClass);
+    try {
+      Method initMethod = thisJobClass.getDeclaredMethod("init", schedulerContext.getClass());
+      initMethod.invoke(null, schedulerContext);
+      LOG.debug("Job initialized... " + thisJob.getName());
+    } catch (Exception e) {
+      LOG.debug("Class does not have init method for additional initialization");
     }
-    if (doWikiExports) {
-      JobDetail job = new JobDetail(
-          "wikiExporter",
-          uniqueGroup,
-          WikiExporterJob.class);
-      // Update every 24 hours, starting in 6 minutes
-      long startTime = System.currentTimeMillis() + (6L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "wikiExporter",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          24L * 60L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
-    }
+    return thisJob;
+  }
 
-    // Report runner
-    boolean doReports = true;
-    if (prefs.has("BACKGROUND.REPORTS")) {
-      doReports = "true".equals(prefs.get("BACKGROUND.REPORTS"));
-    }
-    if (doReports) {
-      // Execute every 2 minutes, starting in 5 minutes
-      // This job is also executed immediately when a new report is added
-      JobDetail job = new JobDetail(
-          "reports", uniqueGroup, ReportsJob.class);
-      long startTime = System.currentTimeMillis() + (5L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "reports",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          2L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
-    }
-
-    // Report cleanup
-    boolean doReportsCleanUp = true;
-    if (prefs.has("BACKGROUND.REPORTS_CLEANUP")) {
-      doReportsCleanUp = "true".equals(prefs.get("BACKGROUND.REPORTS_CLEANUP"));
-    }
-    if (doReportsCleanUp) {
-      // Execute every 30 minutes, starting in 6 minutes
-      // This job is also executed immediately when a new report is added
-      JobDetail job = new JobDetail(
-          "cleanupReports", uniqueGroup, CleanupReportsJob.class);
-      long startTime = System.currentTimeMillis() + (6L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "cleanupReports",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          30L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
-    }
-
-    // Temporary file uploads cleanup
-    boolean doCleanupTempFiles = true;
-    if (prefs.has("BACKGROUND.TEMP_FILES_CLEANUP")) {
-      doCleanupTempFiles = "true".equals(prefs.get("BACKGROUND.TEMP_FILES_CLEANUP"));
-    }
-    if (doCleanupTempFiles) {
-      // Execute every 30 minutes, starting in 3 minutes
-      JobDetail job = new JobDetail(
-          "cleanupTempFiles", uniqueGroup, CleanupTempFilesJob.class);
-      long startTime = System.currentTimeMillis() + (3L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "cleanupTempFiles",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          30L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
-    }
-
-    // Delete disabled users when they are no longer referenced
-    boolean doDeleteDisabledUsers = false;
-    if (prefs.has("BACKGROUND.DELETE_DISABLED_USERS")) {
-      doDeleteDisabledUsers = "true".equals(prefs.get("BACKGROUND.DELETE_DISABLED_USERS"));
-    }
-    if (doDeleteDisabledUsers) {
-      // Execute every 6 hours, starting in 20 minutes
-      JobDetail job = new JobDetail(
-          "deleteDisabledUsers", uniqueGroup, DeleteDisabledUsersJob.class);
-      long startTime = System.currentTimeMillis() + (20L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "deleteDisabledUsers",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          6L * 60L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
-    }
-
-    // Image resizer (uses local queue)
-    boolean doImageResizing = true;
-    if (prefs.has("BACKGROUND.IMAGE_RESIZER")) {
-      doImageResizing = "true".equals(prefs.get("BACKGROUND.IMAGE_RESIZER"));
-    }
-    if (doImageResizing) {
-      JobDetail job = new JobDetail(
-          "imageResizer",
-          uniqueGroup,
-          ImageResizerJob.class);
-      // Update every 24 hours, starting in 7 minutes
-      long startTime = System.currentTimeMillis() + (7L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "imageResizer",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          24L * 60L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
-    }
-
-    // Top Contributions
-    boolean doCalculateTopContributors = true;
-    if (prefs.has("BACKGROUND.CALCULATE_TOP_CONTRIBUTORS")) {
-      doCalculateTopContributors = "true".equals(prefs.get("BACKGROUND.CALCULATE_TOP_CONTRIBUTORS"));
-    }
-    if (doCalculateTopContributors) {
-      JobDetail job = new JobDetail(
-          "userContribution",
-          uniqueGroup,
-          UserContributionJob.class);
-      // Update every 24 hours, starting in 5 minutes
-      long startTime = System.currentTimeMillis() + (5L * 60L * 1000L);
-      SimpleTrigger trigger = new SimpleTrigger(
-          "userContribution",
-          uniqueGroup,
-          new Date(startTime),
-          null,
-          SimpleTrigger.REPEAT_INDEFINITELY,
-          24L * 60L * 60L * 1000L);
-      scheduler.scheduleJob(job, trigger);
+  private static void scheduleJob(Scheduler scheduler, JobDetail thisJob, Node job, XPath xpath) throws Exception {
+    // Check for triggers
+    Node trigger = (Node) xpath.evaluate("trigger", job, XPathConstants.NODE);
+    if (trigger == null) {
+      // No triggers, so just add the job for manually triggering
+      scheduler.addJob(thisJob, true);
+    } else {
+      // Simple triggers
+      NodeList simpleList = (NodeList) xpath.evaluate("simple", trigger, XPathConstants.NODESET);
+      for (int nodeIndex = 0; nodeIndex < simpleList.getLength(); nodeIndex++) {
+        // Retrieve the XML values
+        Node simple = simpleList.item(nodeIndex);
+        Node name = (Node) xpath.evaluate("name", simple, XPathConstants.NODE);
+        Node group = (Node) xpath.evaluate("group", simple, XPathConstants.NODE);
+        Node startTime = (Node) xpath.evaluate("start-time", simple, XPathConstants.NODE);
+        Node endTime = (Node) xpath.evaluate("end-time", simple, XPathConstants.NODE);
+        Node repeatCount = (Node) xpath.evaluate("repeat-count", simple, XPathConstants.NODE);
+        Node repeatInterval = (Node) xpath.evaluate("repeat-interval", simple, XPathConstants.NODE);
+        // Convert the input
+        Date startTimeDate = (startTime != null ? DateUtils.createDate(startTime.getTextContent()) : null);
+        Date endTimeDate = (endTime != null ? DateUtils.createDate(endTime.getTextContent()) : null);
+        int repeatCountValue = (repeatCount != null ? Integer.parseInt(repeatCount.getTextContent()) : SimpleTrigger.REPEAT_INDEFINITELY);
+        long repeatIntervalValue = (repeatInterval != null ? DateUtils.createInterval(repeatInterval.getTextContent()) : 0);
+        // Instantiate the simple trigger
+        LOG.info("Scheduling a job with a SimpleTrigger: " + thisJob.getName());
+        SimpleTrigger simpleTrigger = new SimpleTrigger(
+            name.getTextContent(),
+            group.getTextContent(),
+            startTimeDate,
+            endTimeDate,
+            repeatCountValue,
+            repeatIntervalValue);
+        scheduler.scheduleJob(thisJob, simpleTrigger);
+      }
+      // Cron triggers
+      NodeList cronList = (NodeList) xpath.evaluate("cron", trigger, XPathConstants.NODESET);
+      for (int nodeIndex = 0; nodeIndex < cronList.getLength(); nodeIndex++) {
+        // Retrieve the XML values
+        Node cron = cronList.item(nodeIndex);
+        Node name = (Node) xpath.evaluate("name", cron, XPathConstants.NODE);
+        Node group = (Node) xpath.evaluate("group", cron, XPathConstants.NODE);
+        Node cronExpression = (Node) xpath.evaluate("cron-expression", cron, XPathConstants.NODE);
+        LOG.info("Scheduling a job with a CronTrigger: " + thisJob.getName());
+        CronTrigger cronTrigger = new CronTrigger(
+            name.getTextContent(),
+            group.getTextContent(),
+            cronExpression.getTextContent());
+        scheduler.scheduleJob(thisJob, cronTrigger);
+      }
     }
   }
 }

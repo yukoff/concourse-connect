@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Based on http://www.opensymphony.com/quartz/xml/job_scheduling_data_1_5.xsd
+    Quartz does not allow parsing jobs from a resource list as is needed for plugins
+-->
+<quartz>
+  <job pref="BACKGROUND.WIKI_EXPORTER">
+    <job-detail>
+      <name>wikiExporter</name>
+      <group>DEFAULT</group>
+      <description>Exports wikis from a queue</description>
+      <job-class>com.concursive.connect.web.modules.wiki.jobs.WikiExporterJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>wikiExporter</name>
+        <group>DEFAULT</group>
+        <start-time>1s</start-time>
+        <repeat-interval>24h</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+</quartz>

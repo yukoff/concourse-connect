@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Based on http://www.opensymphony.com/quartz/xml/job_scheduling_data_1_5.xsd
+  Quartz does not allow parsing jobs from a resource list as is needed for plugins
+
+  [pref] is optional and checks for the enabled pref before adding
+  each job-detail can have no triggers, any number of simple or cron triggers
+-->
+<quartz>
+  <job pref="BACKGROUND.TEMP_FILES_CLEANUP">
+    <job-detail>
+      <name>cleanupTempFiles</name>
+      <group>DEFAULT</group>
+      <description>Deletes files and database reference to unused temporary files, these are files abandoned by a user</description>
+      <job-class>com.concursive.connect.web.modules.fileattachments.jobs.CleanupTempFilesJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>cleanupTempFiles</name>
+        <group>DEFAULT</group>
+        <start-time>3m</start-time>
+        <repeat-interval>30m</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+  <job pref="BACKGROUND.IMAGE_RESIZER">
+    <job-detail>
+      <name>imageResizer</name>
+      <group>DEFAULT</group>
+      <description>Background image processing to generate thumbnails</description>
+      <job-class>com.concursive.connect.web.modules.common.social.images.jobs.ImageResizerJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>imageResizer</name>
+        <group>DEFAULT</group>
+        <start-time>30s</start-time>
+        <repeat-interval>24h</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+  <job pref="BACKGROUND.CALCULATE_TOP_CONTRIBUTORS">
+    <job-detail>
+      <name>userContribution</name>
+      <group>DEFAULT</group>
+      <description>Generates user contribution points</description>
+      <job-class>com.concursive.connect.web.modules.common.social.contribution.jobs.UserContributionJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>userContribution</name>
+        <group>DEFAULT</group>
+        <start-time>10m</start-time>
+        <repeat-interval>24h</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+</quartz>

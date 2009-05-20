@@ -71,6 +71,13 @@ public class IndexerJob implements StatefulJob {
 
   private static Log LOG = LogFactory.getLog(IndexerJob.class);
 
+  public static final String INDEX_ARRAY = "IndexArray";
+
+  public static void init(SchedulerContext schedulerContext) {
+    schedulerContext.put(INDEX_ARRAY, new Vector());
+    LOG.info("Indexer queue initialized");
+  }
+
   public void execute(JobExecutionContext context) throws JobExecutionException {
     SchedulerContext schedulerContext = null;
     try {
@@ -81,22 +88,15 @@ public class IndexerJob implements StatefulJob {
         throw (new JobExecutionException("Indexer Configuration error: No indexer defined."));
       }
       // Determine if the indexer job can run
-      boolean canExecute = false;
-      // @todo implement this
-//      if (indexer.isInitialized()) {
-//        canExecute = true;
-//      }
+      boolean canExecute = true;
       ServletContext servletContext = (ServletContext) schedulerContext.get("ServletContext");
       if (servletContext != null) {
         // If used in a servlet environment, make sure the indexer is initialized
         canExecute = "true".equals(servletContext.getAttribute(Constants.DIRECTORY_INDEX_INITIALIZED));
-      } else {
-        // If not used in a servlet environment, assume the indexer is already initialized
-        canExecute = true;
       }
       // Execute the indexer
       if (canExecute) {
-        Vector eventList = (Vector) schedulerContext.get("IndexArray");
+        Vector eventList = (Vector) schedulerContext.get(INDEX_ARRAY);
         if (eventList.size() > 0) {
           LOG.debug("Indexing data... " + eventList.size());
           indexer.obtainWriterLock();

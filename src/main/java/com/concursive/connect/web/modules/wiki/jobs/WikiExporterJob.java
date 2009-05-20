@@ -85,6 +85,12 @@ public class WikiExporterJob implements StatefulJob {
   public static final String WIKI_EXPORT_ARRAY = "WikiExportArray";
   public static final String WIKI_AVAILABLE_ARRAY = "WikiAvailableArray";
 
+  public static void init(SchedulerContext schedulerContext) {
+    schedulerContext.put(WIKI_EXPORT_ARRAY, new Vector());
+    schedulerContext.put(WIKI_AVAILABLE_ARRAY, new Vector());
+    LOG.info("Wiki export queues initialized");
+  }
+
   public void execute(JobExecutionContext context) throws JobExecutionException {
     LOG.debug("Starting job...");
     SchedulerContext schedulerContext = null;

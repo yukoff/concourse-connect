@@ -123,6 +123,11 @@ public class ImageResizerJob implements StatefulJob {
     }
   }
 
+  public static void init(SchedulerContext schedulerContext) {
+    schedulerContext.put(IMAGE_RESIZER_ARRAY, new Vector());
+    LOG.info("Image resizer queue initialized");
+  }
+
   public void execute(JobExecutionContext context) throws JobExecutionException {
     LOG.debug("Starting...");
     SchedulerContext schedulerContext = null;

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Based on http://www.opensymphony.com/quartz/xml/job_scheduling_data_1_5.xsd
+    Quartz does not allow parsing jobs from a resource list as is needed for plugins
+-->
+<quartz>
+  <!--
+  <job pref="BACKGROUND.DELETE_DISABLED_USERS">
+    <job-detail>
+      <name>deleteDisabledUsers</name>
+      <group>DEFAULT</group>
+      <description>Removes users that no longer have references to any data</description>
+      <job-class>com.concursive.connect.web.modules.login.jobs.DeleteDisabledUsersJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>deleteDisabledUsers</name>
+        <group>DEFAULT</group>
+        <start-time>20m</start-time>
+        <repeat-interval>6h</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+  <job pref="BACKGROUND.TRANSLATION_UPDATE">
+    <job-detail>
+      <name>updateTranslationPercentage</name>
+      <group>DEFAULT</group>
+      <description>Updates the completion percentage for language transations</description>
+      <job-class>com.concursive.connect.web.modules.translation.jobs.UpdateTranslationPercentageJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>updateTranslationPercentage</name>
+        <group>DEFAULT</group>
+        <start-time>5m</start-time>
+        <repeat-count>-1</repeat-count>
+        <repeat-interval>30m</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+  -->
+  <!--
+  <job pref="EXAMPLE">
+    <job-detail>
+      <name>job-name</name>
+      <group>DEFAULT</group>
+      <description>An example which demonstrates a cron expression</description>
+      <job-class>com.example.job</job-class>
+    </job-detail>
+    <trigger>
+      <cron>
+          <name>trigger-name</name>
+          <group>DEFAULT</group>
+          <cron-expression>0 30 4 * * ?</cron-expression>
+      </cron>
+    </trigger>
+  </job>
+  -->
+</quartz>

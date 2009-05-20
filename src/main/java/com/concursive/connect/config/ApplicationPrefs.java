@@ -629,13 +629,9 @@ public class ApplicationPrefs {
         ce.setPassword(this.get(CONNECTION_PASSWORD));
         scheduler.getContext().put("ConnectionElement", ce);
         scheduler.getContext().put("ApplicationPrefs", this);
-        scheduler.getContext().put("IndexArray", new Vector());
-        // Configure any items that are required before the jobs are added
-        scheduler.getContext().put(WikiExporterJob.WIKI_EXPORT_ARRAY, new Vector());
-        scheduler.getContext().put(WikiExporterJob.WIKI_AVAILABLE_ARRAY, new Vector());
-        scheduler.getContext().put(ImageResizerJob.IMAGE_RESIZER_ARRAY, new Vector());
         scheduler.start();
-        ScheduledJobs.addJobs(scheduler);
+        scheduler.getContext().put(ScheduledJobs.CONTEXT_SCHEDULER_GROUP, ScheduledJobs.UNIQUE_GROUP);
+        ScheduledJobs.addJobs(scheduler, context);
       } catch (Exception e) {
         e.printStackTrace(System.out);
         LOG.error("Scheduler Error: " + e.getMessage(), e);

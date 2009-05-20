@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Based on http://www.opensymphony.com/quartz/xml/job_scheduling_data_1_5.xsd
+    Quartz does not allow parsing jobs from a resource list as is needed for plugins
+-->
+<quartz>
+  <job pref="BACKGROUND.REPORTS">
+    <job-detail>
+      <name>reports</name>
+      <group>DEFAULT</group>
+      <description>Scans for scheduled reports and queued reports to run and processes them</description>
+      <job-class>com.concursive.connect.web.modules.reports.jobs.ReportsJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>reports</name>
+        <group>DEFAULT</group>
+        <start-time>5m</start-time>
+        <repeat-interval>2m</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+  <job pref="BACKGROUND.REPORTS_CLEANUP">
+    <job-detail>
+      <name>cleanupReports</name>
+      <group>DEFAULT</group>
+      <description>Reclaims space from outdated reports that have been generated</description>
+      <job-class>com.concursive.connect.web.modules.reports.jobs.CleanupReportsJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>cleanupReports</name>
+        <group>DEFAULT</group>
+        <start-time>6m</start-time>
+        <repeat-interval>30m</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
+</quartz>

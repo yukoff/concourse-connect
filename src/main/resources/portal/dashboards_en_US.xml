@@ -3570,11 +3570,6 @@
               <![CDATA[<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
                 <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                   <tr>
-                    <td style="padding:10px; border-bottom:2px solid #ccc; background:url(http://www.concursive.com/images/background/BackgroundHeader1px.png);" height="97"  bgcolor="ffffff">
-                      <a href="http://www.concursive.com" title="Concursive - Business Social Software Platform"><img src="http://www.concursive.com/images/logo/ConcursiveLogoPowerdbyConnect.png" border="0" /></a>
-                    </td>
-                  </tr>
-                  <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       Hello,<br />
                       ${bean.sentFromName:html} has sent you a link to the following profile:<br />

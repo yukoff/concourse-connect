@@ -82,7 +82,7 @@ public class SaveNewsArticleListViewing extends ObjectHookComponent implements C
         // record isn't new
         if (thisArticle.getEnteredBy() != userId &&
             thisArticle.getModifiedBy() != userId) {
-          Viewing.saveNew(db, userId, thisArticle.getId(), BlogPost.TABLE, BlogPost.PRIMARY_KEY, thisArticle.getModified());
+          Viewing.saveNew(db, userId, thisArticle.getId(), BlogPost.TABLE, BlogPost.PRIMARY_KEY, thisArticle.getEntered());
         }
       }
       result = true;

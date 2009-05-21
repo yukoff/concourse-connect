@@ -82,7 +82,7 @@ public class SaveWikiViewing extends ObjectHookComponent implements ComponentInt
       // Don't log the views for the recent author(s) to prevent inflation
       if (thisWiki.getModifiedBy() != userId) {
         db = getConnection(context);
-        Viewing.saveNew(db, userId, thisWiki.getId(), Wiki.TABLE, Wiki.PRIMARY_KEY, thisWiki.getEntered());
+        Viewing.saveNew(db, userId, thisWiki.getId(), Wiki.TABLE, Wiki.PRIMARY_KEY, thisWiki.getModified());
       }
       result = true;
     } catch (Exception e) {

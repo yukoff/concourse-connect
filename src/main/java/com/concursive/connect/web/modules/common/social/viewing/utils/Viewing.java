@@ -51,13 +51,23 @@ import com.concursive.commons.db.DatabaseUtils;
 import java.sql.*;
 
 /**
- * Handles viewing an object by a user
+ * Handles recording the viewing of an object by a user
  *
  * @author matt rajkowski
  * @created April 25, 2008
  */
 public class Viewing {
 
+  /**
+   * Save a viewing of the specified object by the specified user
+   *
+   * @param db
+   * @param userId
+   * @param objectId
+   * @param table
+   * @param uniqueField
+   * @throws SQLException
+   */
   public static void save(Connection db, int userId, int objectId, String table, String uniqueField) throws SQLException {
     if (objectId == -1) {
       throw new SQLException("objectId must be set and cannot be -1");
@@ -77,6 +87,15 @@ public class Viewing {
     saveSummary(db, objectId, table, uniqueField);
   }
 
+  /**
+   * Update the viewing pointer in the specified table of the specified object by the specified user
+   *
+   * @param db
+   * @param objectId
+   * @param table
+   * @param uniqueField
+   * @throws SQLException
+   */
   public static void saveSummary(Connection db, int objectId, String table, String uniqueField) throws SQLException {
     if (objectId == -1) {
       throw new SQLException("objectId must be set and cannot be -1");
@@ -92,10 +111,23 @@ public class Viewing {
     pst.close();
   }
 
+  /**
+   * Check to see if the viewing is new, then recommend saving the viewing of the specified object by the specified user
+   *
+   * @param db
+   * @param userId
+   * @param objectId
+   * @param table
+   * @param uniqueField
+   * @param modified
+   * @return
+   * @throws SQLException
+   */
   public static boolean saveNew(Connection db, int userId, int objectId, String table, String uniqueField, Timestamp modified) throws SQLException {
     if (userId < -1) {
       userId = -1;
     }
+    // Check to see if the user previously viewed the content
     PreparedStatement pst = db.prepareStatement(
         "SELECT 1 FROM " + table + "_view " +
             "WHERE " + uniqueField + " = ? " +
@@ -107,17 +139,28 @@ public class Viewing {
     pst.setTimestamp(3, modified);
     ResultSet rs = pst.executeQuery();
     boolean doSave = false;
-    if (rs.next()) {
+    if (!rs.next()) {
+      // The content was not viewed since the object was modified
       doSave = true;
     }
     rs.close();
     pst.close();
     if (doSave) {
+      // Save the viewing of the object
       save(db, userId, objectId, table, uniqueField);
     }
     return doSave;
   }
 
+  /**
+   * When an object is deleted, the referenced views are deleted by specifying the table and object id
+   *
+   * @param db
+   * @param objectId
+   * @param table
+   * @param uniqueField
+   * @throws SQLException
+   */
   public static void delete(Connection db, int objectId, String table, String uniqueField) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "DELETE FROM " + table + "_view WHERE " + uniqueField + " = ? ");
@@ -126,6 +169,15 @@ public class Viewing {
     pst.close();
   }
 
+  /**
+   * When a project is deleted, the referenced views are deleted by specifying the project id
+   *
+   * @param db
+   * @param projectId
+   * @param table
+   * @param uniqueField
+   * @throws SQLException
+   */
   public static void deleteByProject(Connection db, int projectId, String table, String uniqueField) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "DELETE FROM " + table + "_view " +
@@ -134,5 +186,4 @@ public class Viewing {
     pst.execute();
     pst.close();
   }
-
 }

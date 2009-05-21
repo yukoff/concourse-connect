@@ -17,9 +17,11 @@
           </blockquote>
           <p>To view your invitations, click on the following link:</p>
             <a href="${link.invitations}" target="_blank" style="color:#3f86f8" >${link.invitations}</a><br />
-          <blockquote>
-            ${optional.message}
-          </blockquote>
+          <#if optional.message?has_content>
+            <blockquote>
+              ${optional.message}
+            </blockquote>
+          </#if>
           <p>For more information, and to review our privacy and security policies, please visit <a style="color:#3f86f8" href="${link.info}" target="_blank">${link.info}</a></p>
         </td>
       </tr>

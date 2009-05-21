@@ -803,7 +803,7 @@ ${issue.body:html}<br />
                     User name: ${this.email:html}<br />
                     Temporary Password: ${this.password:html}<br />
                     <br />
-                    For additional help or to find out more about all of the things you can do at Concursive.com, click the "Learn More" link at the top right of any page.<br />
+                    For additional help or to find out more about all of the things you can do at our site, click the "Learn More" link at the top right of any page.<br />
                     <br />
                     Thanks again, and welcome to the community!<br />
                     <br/>

@@ -68,10 +68,7 @@ public class SaveProjectViewing extends ObjectHookComponent implements Component
 
   public boolean execute(ComponentContext context) {
     boolean result = false;
-    Integer userId = (Integer) context.getAttribute("userId");
-    if (userId == null) {
-      return result;
-    }
+    int userId = (Integer) context.getAttribute("userId");
     Project thisProject = (Project) context.getThisObject();
     Connection db = null;
     try {

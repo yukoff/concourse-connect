@@ -73,10 +73,7 @@ public class SaveWikiViewing extends ObjectHookComponent implements ComponentInt
     if (thisWiki.getId() == -1) {
       return false;
     }
-    Integer userId = (Integer) context.getAttribute("userId");
-    if (userId == null) {
-      return false;
-    }
+    int userId = (Integer) context.getAttribute("userId");
     Connection db = null;
     try {
       // Don't log the views for the recent author(s) to prevent inflation

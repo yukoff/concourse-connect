@@ -52,6 +52,7 @@ import com.concursive.commons.db.ConnectionPool;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.web.modules.upgrade.utils.UpgradeUtils;
+import com.concursive.connect.config.ApplicationPrefs;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -85,8 +86,9 @@ public class UpgradeDatabaseTask extends Task {
   private String baseFile = null;
   private String servletJar = null;
   private String libPath = null;
-  private String webPath = null;
+  private String fileLibrary = null;
   private String specificDatabase = null;
+  private ApplicationPrefs prefs = new ApplicationPrefs();
 
 
   /**
@@ -158,12 +160,12 @@ public class UpgradeDatabaseTask extends Task {
   }
 
   /**
-   * Sets the webPath attribute of the UpgradeDatabaseTask object
+   * Sets the fileLibrary attribute of the UpgradeDatabaseTask object
    *
-   * @param tmp The new webPath value
+   * @param tmp The new fileLibrary value
    */
-  public void setWebPath(String tmp) {
-    this.webPath = tmp;
+  public void setFileLibrary(String tmp) {
+    this.fileLibrary = tmp;
   }
 
 
@@ -187,10 +189,12 @@ public class UpgradeDatabaseTask extends Task {
     if ("\\".equals(fsEval)) {
       fsEval = "\\\\";
       servletJar = StringUtils.replace(servletJar, "\\", "\\\\");
-      webPath = StringUtils.replace(webPath, "\\", "\\\\");
+      fileLibrary = StringUtils.replace(fileLibrary, "\\", "\\\\");
     }
     System.out.println("Beginning database task...");
     try {
+      // Load the application prefs
+      prefs.loadProperties(fileLibrary);
       //Create a Connection Pool to facilitate connections
       ConnectionPool sqlDriver = new ConnectionPool();
       sqlDriver.setDebug(true);
@@ -338,13 +342,11 @@ public class UpgradeDatabaseTask extends Task {
           }
         }
       }
-      script.eval("addClassPath(bsh.cwd + \"" + fsEval + "build" + fsEval + "lib" + fsEval + "concursive-commons.jar\")");
-      script.eval("addClassPath(bsh.cwd + \"" + fsEval + "build" + fsEval + "lib" + fsEval + "concourseconnect.jar\")");
-      script.eval("addClassPath(bsh.cwd + \"" + fsEval + "src" + fsEval + "resources\")");
+      script.eval("addClassPath(bsh.cwd + \"" + fsEval + "src" + fsEval + "main" + fsEval + "resources\")");
       script.eval("addClassPath(\"" + servletJar + "\")");
+      script.set("prefs", prefs);
       script.set("db", db);
-      script.set("fileLibraryPath", webPath);
-      script.set("dbFileLibraryPath", webPath + fs + "WEB-INF" + fs + "fileLibrary" + fs + dbName);
+      script.set("fileLibraryPath", fileLibrary);
 
       // Some classes use the cache so make it available during upgrades
       System.out.println("\nAdding caches...");

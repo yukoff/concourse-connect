@@ -1,8 +1,8 @@
 import java.sql.*;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.login.dao.*;
 import com.concursive.connect.web.modules.profile.dao.*;
 import com.concursive.connect.web.utils.*;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 
 // This script adds the People category if it doesn't exist
 // This script updates all user's with a project profile if one doesn't exist

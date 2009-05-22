@@ -912,7 +912,7 @@
         user="${SITE.USER}"
         password="${SITE.PASSWORD}"
         servletJar="${servletJar}"
-        webPath="${web.dir}"
+        fileLibrary="${FILE_LIBRARY_HOME}/"
         baseFile="${src.database.dir}${fs}common${fs}install.bsh"
         specificDatabase="${DATABASE.NAME}">
     </upgradeDatabase>
@@ -978,14 +978,13 @@
 
   <target name="upgradedb" depends="taskdef.upgradeDb,dbparam,install.prepare"
     description="Upgrades the database with a specified script file">
-    <!-- TODO: Handle the web.dir -->
     <upgradeDatabase
         driver="${SITE.DRIVER}"
         url="${SITE.URL}"
         user="${SITE.USER}"
         password="${SITE.PASSWORD}"
         servletJar="${servletJar}"
-        webPath="${web.dir}"
+        fileLibrary="${FILE_LIBRARY_HOME}/"
         libPath="${lib.dir}"
         baseFilePath="${src.database.dir}${fs}"
         baseFile="${arg1}"

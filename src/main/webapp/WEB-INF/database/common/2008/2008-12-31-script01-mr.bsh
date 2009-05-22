@@ -1,8 +1,4 @@
-import java.sql.*;
-import java.util.*;
-import org.aspcfs.utils.web.*;
-import com.zeroio.iteam.base.*;
-import com.zeroio.utils.*;
+import com.concursive.connect.web.modules.badges.dao.*;
 
 // Load the categories
 BadgeCategoryList badgeCategoryList = new BadgeCategoryList();

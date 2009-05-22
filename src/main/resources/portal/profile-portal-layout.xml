@@ -1636,7 +1636,7 @@
                   <title>Receive ${project.title:xml} notifications</title>
                   <href>/ProjectManagementTeam.do?command=ConfirmJoin&amp;pid=${project.id}</href>
                   <rel>shadowbox;width=600</rel>
-                  <rule>projectAllowsGuests</rule>]]>
+                  <rule>userCanJoin</rule>]]>
               </value>
             </urls>
           </portlet>

@@ -1311,6 +1311,10 @@ AAAAAAAAAHiUfwIMAEuf1Q18/FQuAAAAAElFTkSuQmCC
 [{field type="text" name="areaServed" maxlength="100" size="30"}]
 [{description value="City/Region"}]
 ---
+[{label value="Hours of operation"}]
+[{field type="text" name="hoursOfOperation" maxlength="255" size="30"}]
+[{description value="When is the business open?"}]
+---
 [{label value="Type"}]
 [{field type="select" name="type" options="-- None --|Public|Private"}]
 [{entry value="-- None --"}]
@@ -1594,8 +1598,12 @@ a/LcuaNVzEkBAQEBAQEBAQEBAQEBAQEBR/B/AQYAslZYDEL9xBcAAAAASUVORK5CYII=
 [{field type="text" name="areaServed" maxlength="100" size="30"}]
 [{description value="City/Region"}]
 ---
+[{label value="Hours of operation"}]
+[{field type="text" name="hoursOfOperation" maxlength="255" size="30"}]
+[{description value="When is the organization open?"}]
+---
 [{label value="Type"}]
-[{field type="select" name="type" options="-- None --|Public|Private"}]
+[{field type="select" name="type" options="-- None --|Public|Private|Education|Government"}]
 [{entry value="-- None --"}]
 +++
 == Organization Overview ==

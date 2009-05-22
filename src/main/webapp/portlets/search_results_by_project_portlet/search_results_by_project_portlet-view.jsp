@@ -82,7 +82,7 @@
         </li>
       </c:forEach>
       <c:if test='${!empty hasMoreRecords && !empty hasMoreURL}'>
-          <li class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${ctx}${hasMoreTitle}"/>">more &#62;</a></li>
+          <li class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${ctx}${hasMoreTitle}"/>">more</a> &#62;</li>
       </c:if>
     </ol>
     <c:if test="${!empty hasPaging && !empty searchInfo && searchInfo.numberOfPages > 1}">

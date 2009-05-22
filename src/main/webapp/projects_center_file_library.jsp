@@ -108,6 +108,27 @@
         </ccp:permission>
       </c:if>
       <c:if test="${!empty fileItemList}">
+        <portlet:renderURL var="sortByRecentUrl">
+          <portlet:param name="portlet-action" value="show"/>
+          <c:if test="${!empty currentFolder}">
+            <portlet:param name="portlet-value" value="${currentFolder.id}"/>
+          </c:if>
+          <c:if test="${!empty currentDate}">
+            <portlet:param name="portlet-value" value="date"/>
+            <portlet:param name="portlet-params" value="${currentDate}"/>
+          </c:if>
+        </portlet:renderURL>
+        <portlet:renderURL var="sortByAlphabeticalUrl">
+          <portlet:param name="portlet-action" value="show"/>
+          <c:if test="${!empty currentFolder}">
+            <portlet:param name="portlet-value" value="${currentFolder.id}"/>
+          </c:if>
+          <c:if test="${!empty currentDate}">
+            <portlet:param name="portlet-value" value="date"/>
+            <portlet:param name="portlet-params" value="${currentDate}"/>
+          </c:if>
+          <portlet:param name="view" value="a-z"/>
+        </portlet:renderURL>
         <li class="last">
           sort by
           <a href="${sortByRecentUrl}">recent</a> or
@@ -131,29 +152,6 @@
         </c:choose>
       </c:when>
     </c:choose>
-    <%-- sorting bars
-    <portlet:renderURL var="sortByRecentUrl">
-      <portlet:param name="portlet-action" value="show"/>
-      <c:if test="${!empty currentFolder}">
-        <portlet:param name="portlet-value" value="${currentFolder.id}"/>
-      </c:if>
-      <c:if test="${!empty currentDate}">
-        <portlet:param name="portlet-value" value="date"/>
-        <portlet:param name="portlet-params" value="${currentDate}"/>
-      </c:if>
-    </portlet:renderURL>
-    <portlet:renderURL var="sortByAlphabeticalUrl">
-      <portlet:param name="portlet-action" value="show"/>
-      <c:if test="${!empty currentFolder}">
-        <portlet:param name="portlet-value" value="${currentFolder.id}"/>
-      </c:if>
-      <c:if test="${!empty currentDate}">
-        <portlet:param name="portlet-value" value="date"/>
-        <portlet:param name="portlet-params" value="${currentDate}"/>
-      </c:if>
-      <portlet:param name="view" value="a-z"/>
-    </portlet:renderURL>
-    --%>
   </div>
   <ccp:permission name="project-documents-files-download" if="none">
     <ccp:evaluate if="<%= !User.isLoggedIn() && project.getFeatures().getAllowGuests() %>">
@@ -164,13 +162,6 @@
   <c:if test="${!empty fileItemList}">
     <div class="portlet-section">
       <ol>
-      <%--
-        <ccp:label name="projectsCenterFile.library.file">File</ccp:label>
-        <ccp:label name="projectsCenterFile.library.type">Type</ccp:label>
-        <ccp:label name="projectsCenterFile.library.size">Size</ccp:label>
-        <ccp:label name="projectsCenterFile.library.version">Version</ccp:label>
-        <ccp:label name="projectsCenterFile.library.dateModified">Date Modified</ccp:label>
-      --%>
         <%
           int rowid = 0;
           for (FileItem thisFile : fileItemList) {
@@ -307,21 +298,14 @@
                     <portlet:param name="out" value="text"/>
                   </portlet:renderURL>
                   <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisFile.getId() %>','message');">No</a>&nbsp;
-              <ccp:evaluate if="<%= thisFile.getId() > -1 && User.isLoggedIn() %>">
-            <a href="javascript:showPanel('Mark this document post as Inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=documents&pid=${project.id}&id=${thisFile.id}',700)">Report this as inappropriate</a>
-            </ccp:evaluate>
-            </p>
-                <div id="message_<%= thisFile.getId() %>"></div>
-              </ccp:evaluate>
+                  <ccp:evaluate if="<%= thisFile.getId() > -1 && User.isLoggedIn() %>">
+                    <a href="javascript:showPanel('Mark this document post as Inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=documents&pid=${project.id}&id=${thisFile.id}',700)">Report this as inappropriate</a>
+                  </ccp:evaluate>
+                  </p>
+                  <div id="message_<%= thisFile.getId() %>"></div>
+                </ccp:evaluate>
               </ccp:permission>
           </div>
-
-          <%--
-            <%= thisFile.getRelativeSize() %>k&nbsp;
-            <%= thisFile.getVersion() %>&nbsp;
-            <ccp:tz timestamp="<%= thisFile.getModified() %>"/>
-            <ccp:username id="<%= thisFile.getModifiedBy() %>"/>
-          --%>
         </li>
         <%
           }

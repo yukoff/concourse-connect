@@ -106,7 +106,9 @@ public class SearchResultsByProjectPortlet extends GenericPortlet {
       int recordLimit = Integer.parseInt(request.getPreferences().getValue(PREF_RECORD_LIMIT, "10"));
       request.setAttribute(RECORD_LIMIT, recordLimit);
       boolean hasPaging = "true".equals(request.getPreferences().getValue(PREF_HAS_PAGING, null));
-      request.setAttribute(HAS_PAGING, hasPaging);
+      if (hasPaging) {
+        request.setAttribute(HAS_PAGING, hasPaging);
+      }
 
       if (category != null && categories.getIdFromValue(category) == -1) {
         // don't display anything because the category does not exist in the category list

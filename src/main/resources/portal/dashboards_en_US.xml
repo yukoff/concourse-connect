@@ -3964,7 +3964,6 @@
             <title>People</title>
             <category>People</category>
             <limit>3</limit>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="ProxyPortlet" cache="3600" timeout="3" class="ads">
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
@@ -3980,7 +3979,6 @@
             <portlet-events>
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
@@ -3989,13 +3987,11 @@
             <portlet-events>
               <generates-data>eventResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Projects</title>
@@ -4004,7 +4000,6 @@
             <portlet-events>
               <generates-data>projectsResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
@@ -4013,7 +4008,6 @@
             <portlet-events>
               <generates-data>businessesResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
@@ -4022,7 +4016,6 @@
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Committees</title>
@@ -4031,7 +4024,6 @@
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4040,7 +4032,6 @@
             <portlet-events>
               <generates-data>sponsorResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
@@ -4049,7 +4040,6 @@
             <portlet-events>
               <generates-data>partnerResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
@@ -4058,7 +4048,6 @@
             <portlet-events>
               <generates-data>productResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
@@ -4067,7 +4056,6 @@
             <portlet-events>
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
         </column>
         <column width="300">
@@ -4225,7 +4213,6 @@
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4389,7 +4376,6 @@
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4545,7 +4531,6 @@
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4725,7 +4710,6 @@
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -4831,7 +4815,6 @@
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
@@ -5060,7 +5043,6 @@
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
         </column>
         <column width="300">
@@ -5223,7 +5205,6 @@
             <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
             </portlet-events>
-            <hasPaging>true</hasPaging>
           </portlet>
         </column>
         <column width="300">
@@ -5905,6 +5886,7 @@
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>5</limit>
+            <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Projects</title>

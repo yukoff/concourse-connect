@@ -82,10 +82,10 @@
         </li>
       </c:forEach>
       <c:if test='${!empty hasMoreRecords && !empty hasMoreURL}'>
-          <li class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${ctx}${hasMoreTitle}"/>">more</a></li>
+          <li class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${ctx}${hasMoreTitle}"/>">more &#62;</a></li>
       </c:if>
     </ol>
-    <c:if test="${!empty searchInfo && searchInfo.numberOfPages > 1}">
+    <c:if test="${!empty hasPaging && !empty searchInfo && searchInfo.numberOfPages > 1}">
       <div class="pagination">
         <ccp:paginationControl object="searchInfo"/>
       </div>

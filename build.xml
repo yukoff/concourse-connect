@@ -407,7 +407,7 @@
 		<echo message="+-----------------------" />
 		<echo message="| Tests are running... See full-length results in '${test.reports.dir}'." />
 		<echo message="+---------------------" />
-		<junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="perBatch">
+		<junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="perBatch" dir="${basedir}">
       <jvmarg value="-DPropertyManager.file=${test.properties.file}"/>
       <classpath>
 				<fileset dir="${lib.dir}">
@@ -440,7 +440,7 @@
 		<echo message="+-----------------------" />
 		<echo message="| Tests are running... See full-length results in '${test.reports.dir}'." />
 		<echo message="+---------------------" />
-    <junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="perBatch">
+    <junit printsummary="yes" haltonfailure="yes" fork="true" forkmode="perBatch" dir="${basedir}">
       <jvmarg value="-DPropertyManager.file=${test.properties.file}"/>
 			<classpath>
 				<fileset dir="${lib.dir}">

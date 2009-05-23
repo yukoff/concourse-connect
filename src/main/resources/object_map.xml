@@ -1045,15 +1045,5 @@
       <property>newsPortal</property>
       <property>newsStatus</property>
     </map>
-
-    <!-- HTPasswd -->
-    <map class="com.concursive.connect.web.modules.login.dao.HTPasswd" id="htpasswd"/>
-    <map class="com.concursive.connect.web.modules.login.dao.HTPasswdList" id="htpasswdList"/>
-
-    <!-- Backup and Restore Service -->
-    <map class="com.concursive.connect.web.modules.api.services.BackupService" id="backup" />
-    <map class="com.concursive.connect.web.modules.api.services.RestoreService" id="restore" />
-    <!-- CRM Integration -->
-    <map class="com.concursive.connect.web.modules.api.services.ProjectProfileInvitesService" id="projectInvites"/>
   </mappings>
 </api>

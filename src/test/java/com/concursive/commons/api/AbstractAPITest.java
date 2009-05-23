@@ -45,15 +45,13 @@
  */
 package com.concursive.commons.api;
 
-import com.concursive.connect.web.modules.api.utils.TransactionUtils;
+import com.concursive.commons.db.AbstractConnectionPoolTest;
+import com.concursive.commons.xml.XMLUtils;
 import com.concursive.connect.indexer.jobs.IndexerJob;
 import com.concursive.connect.web.modules.api.beans.PacketContext;
 import com.concursive.connect.web.modules.api.dao.SyncClient;
 import com.concursive.connect.web.modules.api.dao.SyncTableList;
-import com.concursive.commons.api.TransactionStatusList;
-import com.concursive.commons.api.APIConnection;
-import com.concursive.commons.xml.XMLUtils;
-import com.concursive.commons.db.AbstractConnectionPoolTest;
+import com.concursive.connect.web.modules.api.utils.TransactionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.JobDetail;
@@ -61,6 +59,8 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.SimpleTrigger;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
@@ -109,7 +109,25 @@ public abstract class AbstractAPITest extends AbstractConnectionPoolTest {
     // Declare the server-side class instead of looking it up in the database
     SyncTableList syncTableList = new SyncTableList();
     syncTableList.setSystemId(SYSTEM_ID);
+    // Load the core object map
     syncTableList.loadObjectMap(SyncTableList.class.getResourceAsStream("/object_map.xml"));
+    assertFalse("Did not find any objects in object_map.xml", syncTableList.size() == 0);
+    // Load plug-in mappings in the services path
+    File[] serviceFiles = new File("src/main/webapp/WEB-INF/services").listFiles();
+    assertTrue("Services not found in working directory... " + "src/main/webapp/WEB-INF/services", serviceFiles != null && serviceFiles.length > 0);
+    if (serviceFiles != null && serviceFiles.length > 0) {
+      for (File thisFile : serviceFiles) {
+        if (thisFile.getAbsolutePath().endsWith(".xml")) {
+          try {
+            LOG.info("Adding services from... " + thisFile.getAbsolutePath());
+            syncTableList.loadObjectMap(new FileInputStream(thisFile));
+          } catch (Exception e) {
+            LOG.error("getObjectMap exception", e);
+          }
+        }
+      }
+    }
+    assertNotNull("Could not find 'backup' service", syncTableList.getSyncTableByName("backup"));
 
     // From the Service action method
     packetContext = new PacketContext();
@@ -153,7 +171,7 @@ public abstract class AbstractAPITest extends AbstractConnectionPoolTest {
   }
 
   protected void processTheTransactions(APIConnection api, PacketContext packetContext) throws SQLException {
-    assertNotNull("APIConnection must not be null",api);
+    assertNotNull("APIConnection must not be null", api);
     assertNotNull("PacketContext must not be null", packetContext);
     assertNotNull("Connection must not be null", db);
     XMLUtils xml = null;
@@ -173,10 +191,10 @@ public abstract class AbstractAPITest extends AbstractConnectionPoolTest {
     // Since commit is not called, must reset if being reused
     if (mockConnection) {
       TransactionStatusList statusMessages = TransactionUtils.processTransactions(db, xml, packetContext);
-      assertNotNull("Status Messages must not be null",statusMessages);
+      assertNotNull("Status Messages must not be null", statusMessages);
       String lastResponse = TransactionUtils.constructXMLResponse(statusMessages, "UTF-8");
       api.reset();
-      assertNotNull("Last Response must not be null",lastResponse);
+      assertNotNull("Last Response must not be null", lastResponse);
       api.setLastResponse(lastResponse);
     } else {
       // Process the transaction using an HTTP Connection to a running instance

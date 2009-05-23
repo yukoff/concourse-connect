@@ -68,6 +68,7 @@ import org.quartz.Scheduler;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * An HTTP connector for incoming XML packet requests.
@@ -182,8 +183,22 @@ public final class Service extends GenericAction {
           if (systemObjectMap.size() == 0) {
             try {
               systemObjectMap.setSystemId(systemId);
-              //systemObjectMap.loadObjectMap(context.getServletContext().getResourceAsStream("/WEB-INF/object_map.xml"));
+              // Load the core mappings
               systemObjectMap.loadObjectMap(SyncTableList.class.getResourceAsStream("/object_map.xml"));
+              // Load plug-in mappings in the services path
+              Set<String> serviceFiles = context.getServletContext().getResourcePaths("/WEB-INF/services/");
+              if (serviceFiles != null && serviceFiles.size() > 0) {
+                for (String thisFile : serviceFiles) {
+                  if (thisFile.endsWith(".xml")) {
+                    try {
+                      LOG.debug("Adding services from... " + thisFile);
+                      systemObjectMap.loadObjectMap(context.getServletContext().getResourceAsStream(thisFile));
+                    } catch (Exception e) {
+                      LOG.error("getObjectMap exception", e);
+                    }
+                  }
+                }
+              }
             } catch (Exception e) {
               e.printStackTrace(System.out);
             }

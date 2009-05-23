@@ -335,4 +335,13 @@ public class SyncTableList extends ArrayList<SyncTable> {
       this.add(thisTable);
     }
   }
+
+  public SyncTable getSyncTableByName(String name) {
+    for (SyncTable syncTable : this) {
+      if (name.equals(syncTable.getName())) {
+        return syncTable;
+      }
+    }
+    return null;
+  }
 }

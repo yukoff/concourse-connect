@@ -74,6 +74,10 @@ public class LocationUtils {
     // Get from cache
     Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_ZIP_CODE_CACHE);
     Element element = cache.get(zipCodeToFind);
-    return (LocationBean) element.getObjectValue();
+    if (element != null) {
+      return (LocationBean) element.getObjectValue();
+    } else {
+      return null;
+    }
   }
 }

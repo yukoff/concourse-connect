@@ -495,8 +495,9 @@
 	  .formContainer td {
 	  }
 
-	  .formContainer td.formLabel {
-	    padding: 10px
+	  td.formLabel {
+	    padding: 10px;
+      width: 150px;
 	  }
 
 	  .formContainer th {

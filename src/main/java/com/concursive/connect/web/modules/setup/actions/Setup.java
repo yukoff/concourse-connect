@@ -58,6 +58,7 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.config.ApplicationVersion;
 import com.concursive.connect.web.controller.actions.GenericAction;
+import com.concursive.connect.web.modules.api.dao.SyncTableList;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.dao.UserList;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -72,6 +73,7 @@ import java.io.File;
 import java.security.Key;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Set;
 
 /**
  * Actions for setting up an installation
@@ -464,10 +466,12 @@ public final class Setup extends GenericAction {
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_reports.sql"));
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_service.sql"));
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_dashboard.sql"));
+        // Load the objects and services
+        SyncTableList syncTableList = loadSyncTableList(context);
         // Add default data
         SetupUtils.insertDefaultData(db, context.getServletContext(), "/WEB-INF/database/");
         // Add the default categories
-        SetupUtils.insertDefaultCategories(db, prefs.get(ApplicationPrefs.FILE_LIBRARY_PATH) + "1" + fs + "projects" + fs);
+        SetupUtils.insertDefaultCategories(db, syncTableList, prefs.get(ApplicationPrefs.FILE_LIBRARY_PATH) + "1" + fs + "projects" + fs);
         // One last verify...
         if (!SetupUtils.isDatabaseInstalled(db)) {
           throw new Exception("Database installation error.");
@@ -720,6 +724,9 @@ public final class Setup extends GenericAction {
       LOG.debug("Site purpose: " + bean.getPurpose());
       prefs.add(ApplicationPrefs.PURPOSE, bean.getPurpose());
 
+      // Load the objects and services
+      SyncTableList syncTableList = loadSyncTableList(context);
+
       // Prepare a default project
       Project project = new Project();
       project.setTitle(bean.getTitle());
@@ -728,7 +735,7 @@ public final class Setup extends GenericAction {
       SetupUtils.insertDefaultSiteConfig(db, ApplicationPrefs.FILE_LIBRARY_PATH, project, bean.getPurpose());
 
       // The default profile content
-      SetupUtils.insertDefaultContent(db, prefs.get(ApplicationPrefs.FILE_LIBRARY_PATH) + "1" + fs + "projects" + fs, project);
+      SetupUtils.insertDefaultContent(db, syncTableList, prefs.get(ApplicationPrefs.FILE_LIBRARY_PATH) + "1" + fs + "projects" + fs, project);
 
       // Update the application prefs
       prefs.add(ApplicationPrefs.WEB_PAGE_TITLE, bean.getTitle());
@@ -807,4 +814,33 @@ public final class Setup extends GenericAction {
     return ce;
   }
 
+  public static SyncTableList loadSyncTableList(ActionContext context) {
+    try {
+      // Load the objects and services
+      int SYSTEM_ID = 1;
+      LOG.debug("Loading the object map...");
+      SyncTableList syncTableList = new SyncTableList();
+      syncTableList.setSystemId(SYSTEM_ID);
+      // Load the core mappings
+      syncTableList.loadObjectMap(SyncTableList.class.getResourceAsStream("/object_map.xml"));
+      // Load plug-in mappings in the services path
+      Set<String> serviceFiles = context.getServletContext().getResourcePaths("/WEB-INF/services/");
+      if (serviceFiles != null && serviceFiles.size() > 0) {
+        for (String thisFile : serviceFiles) {
+          if (thisFile.endsWith(".xml")) {
+            try {
+              LOG.debug("Adding services from... " + thisFile);
+              syncTableList.loadObjectMap(context.getServletContext().getResourceAsStream(thisFile));
+            } catch (Exception e) {
+              LOG.error("getObjectMap exception", e);
+            }
+          }
+        }
+      }
+      return syncTableList;
+    } catch (Exception e) {
+      LOG.error("Couldn't load syncTableList", e);
+    }
+    return null;
+  }
 }

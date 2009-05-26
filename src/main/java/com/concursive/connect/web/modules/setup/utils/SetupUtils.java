@@ -74,9 +74,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.ServletContext;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -104,8 +102,6 @@ public class SetupUtils {
    * @param args database connection settings: driver, url, user, password
    */
   public static void main(String[] args) {
-
-
     // Connection values
     String driver = args[0];
     String url = args[1];
@@ -132,8 +128,28 @@ public class SetupUtils {
       CacheContext cacheContext = new CacheContext();
       cacheContext.setUpgradeConnection(db);
       Caches.addCaches(cacheContext);
+      // Load the object map and services
+      int SYSTEM_ID = 1;
+      SyncTableList syncTableList = new SyncTableList();
+      syncTableList.setSystemId(SYSTEM_ID);
+      // Load the core object map
+      syncTableList.loadObjectMap(SyncTableList.class.getResourceAsStream("/object_map.xml"));
+      // Load plug-in mappings in the services path
+      File[] serviceFiles = new File("src/main/webapp/WEB-INF/services").listFiles();
+      if (serviceFiles != null && serviceFiles.length > 0) {
+        for (File thisFile : serviceFiles) {
+          if (thisFile.getAbsolutePath().endsWith(".xml")) {
+            try {
+              LOG.info("Adding services from... " + thisFile.getAbsolutePath());
+              syncTableList.loadObjectMap(new FileInputStream(thisFile));
+            } catch (Exception e) {
+              LOG.error("getObjectMap exception", e);
+            }
+          }
+        }
+      }
       // The default category information
-      insertDefaultCategories(db, fileLibraryPath);
+      insertDefaultCategories(db, syncTableList, fileLibraryPath);
       // Insert admin user
       if (useremail != null && userpass != null) {
         User adminUser = new User();
@@ -152,7 +168,7 @@ public class SetupUtils {
       project.setKeywords(keywords);
       insertDefaultSiteConfig(db, fileLibraryPath, project, purpose);
       // The default profile content
-      insertDefaultContent(db, fileLibraryPath, project);
+      insertDefaultContent(db, syncTableList, fileLibraryPath, project);
     } catch (Exception e) {
       e.printStackTrace(System.out);
       LOG.error(e);
@@ -314,17 +330,12 @@ public class SetupUtils {
    * Inserts additional default data
    *
    * @param db
+   * @param syncTableList   the mapping of objects and services
    * @param fileLibraryPath
    * @throws Exception
    */
-  public static void insertDefaultCategories(Connection db, String fileLibraryPath) throws Exception {
+  public static void insertDefaultCategories(Connection db, SyncTableList syncTableList, String fileLibraryPath) throws Exception {
     int SYSTEM_ID = 1;
-
-    // Declare the server-side class instead of looking it up in the database
-    LOG.debug("Loading the object map...");
-    SyncTableList syncTableList = new SyncTableList();
-    syncTableList.setSystemId(SYSTEM_ID);
-    syncTableList.loadObjectMap(SyncTableList.class.getResourceAsStream("/object_map.xml"));
 
     // From the Service action method
     PacketContext packetContext = new PacketContext();
@@ -516,16 +527,9 @@ public class SetupUtils {
     }
   }
 
-  public static void insertDefaultContent(Connection db, String fileLibraryPath, Project project) throws Exception {
+  public static void insertDefaultContent(Connection db, SyncTableList syncTableList, String fileLibraryPath, Project project) throws Exception {
     LOG.debug("insertDefaultContent");
-
     int SYSTEM_ID = 1;
-
-    // Declare the server-side class instead of looking it up in the database
-    LOG.debug("Loading the object map...");
-    SyncTableList syncTableList = new SyncTableList();
-    syncTableList.setSystemId(SYSTEM_ID);
-    syncTableList.loadObjectMap(SyncTableList.class.getResourceAsStream("/object_map.xml"));
 
     // From the Service action method
     PacketContext packetContext = new PacketContext();

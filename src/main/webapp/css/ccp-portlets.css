@@ -627,8 +627,6 @@ span.required {
 
 .projectCenterHeaderContainer .leftColumn { width:80%; }
 
-.teamMemeberNameContainer .leftColumn { width:100px; display:inline }
-
 .projectsByUserContainer .leftColumn,
 .recentProjectReviewsContainer .leftColumn,
 .recentUserReviewsContainer .leftColumn { position:relative; display:block; margin-right:95px; width:auto; }
@@ -781,8 +779,6 @@ ol li .leftColumn { clear:both }
 .projectCenterContainer .rightColumn { width:15%; }
 
 .projectCenterHeaderContainer .rightColumn { width:20%; position:absolute; top:8px; right:8px; }
-
-.teamMemeberNameContainer .rightColumn { width:20px; position:relative; display:inline; }
 
 .recentProjectReviewsContainer .rightColumn,
 .projectsByUserContainer .rightColumn,
@@ -2067,6 +2063,9 @@ ol.pagination {
   vertical-align:middle;
 }
 
+.selected {background:#1b88b1; color:#fff; -moz-border-radius:5px; -webkit-border-radius:5px}
+.selected a {color:#fff!important}
+.boxContent {text-indent:5px}
 
 /* @end */
 

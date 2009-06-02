@@ -63,6 +63,7 @@
 
   <!-- Look in the current directory for build.properties -->
   <property file="build.properties"/>
+  <property file="version.properties"/>
   <!-- Use an environment variable to read properties from -->
   <property file="${env.BUILD_PROPERTIES}"/>
   <!-- Setup path properties -->
@@ -622,7 +623,7 @@
     <copy file="${basedir}/CHANGES.txt" todir="${dist.dir}/" verbose="true"/>
     <copy file="${basedir}/LICENSE.txt" todir="${dist.dir}/" verbose="true"/>
     <!-- Create the distributable .zip file -->
-    <zip destfile="${dist.dir}/${project.build.finalName}.zip">
+    <zip destfile="${dist.dir}/${project.build.finalName}-${project.version}.zip">
       <zipfileset dir="${basedir}" includes="README.txt" prefix="${project.build.finalName}"/>
       <zipfileset dir="${basedir}" includes="CHANGES.txt" prefix="${project.build.finalName}"/>
       <zipfileset dir="${basedir}" includes="LICENSE.txt" prefix="${project.build.finalName}"/>
@@ -1036,7 +1037,7 @@
     <property name="tools.dist.dir" value="${project.build.directory}/${tools.name}"/>
     <delete dir="${tools.dist.dir}" />
     <!-- Create the distributable .zip file -->
-    <zip destfile="${tools.dist.dir}/${tools.name}.zip">
+    <zip destfile="${tools.dist.dir}/${tools.name}-${project.version}.zip">
       <!-- main directory -->
       <zipfileset dir="${basedir}/support/api" includes="README.txt" prefix="${tools.name}" />
       <zipfileset dir="${basedir}/src/main/resources" includes="object_map.xml" prefix="${tools.name}" />

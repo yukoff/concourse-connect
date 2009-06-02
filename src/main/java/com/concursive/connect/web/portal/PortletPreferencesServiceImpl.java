@@ -86,7 +86,7 @@ public class PortletPreferencesServiceImpl implements PortletPreferencesService 
   }
 
   public InternalPortletPreference[] getStoredPreferences(PortletWindow portletWindow, PortletRequest request) throws PortletContainerException {
-    String key = getFormattedKey(portletWindow, request);
+    String key = getFormattedKey(portletWindow);
     if (key.startsWith("T")) {
       // This is a temporary portlet so use the portlet defaults
       try {
@@ -230,7 +230,7 @@ public class PortletPreferencesServiceImpl implements PortletPreferencesService 
   }
 
   public void store(PortletWindow portletWindow, PortletRequest request, InternalPortletPreference[] preferences) throws PortletContainerException {
-    String key = getFormattedKey(portletWindow, request);
+    String key = getFormattedKey(portletWindow);
     if (key.startsWith("T")) {
       LOG.debug("Storing temporary portlet prefs");
       DashboardPortlet portlet = (DashboardPortlet) request.getAttribute("dashboardPortlet");
@@ -277,7 +277,7 @@ public class PortletPreferencesServiceImpl implements PortletPreferencesService 
     }
   }
 
-  private String getFormattedKey(PortletWindow portletWindow, PortletRequest request) {
+  private String getFormattedKey(PortletWindow portletWindow) {
     // TODO: Make user and project prefs
     //request.getAttribute("dashboardPage");
     // All users share the same prefs...

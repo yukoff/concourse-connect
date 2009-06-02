@@ -116,7 +116,7 @@
     </page>
 
     <!-- Details -->
-    <page name="form">
+    <page name="details">
       <row>
         <column width="250">
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">

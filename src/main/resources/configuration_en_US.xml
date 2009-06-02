@@ -54,7 +54,8 @@
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#878787!important; }
 
-.profile-menu-portletWindowBackground { background:#c1c1c1!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#c1c1c1; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -256,7 +257,8 @@ Related Ideas]]></listNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#878787!important; }
 
-.profile-menu-portletWindowBackground { background:#c1c1c1!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#c1c1c1; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -412,7 +414,8 @@ Support Documents]]></folderNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#878787!important; }
 
-.profile-menu-portletWindowBackground { background:#c1c1c1!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#c1c1c1; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -565,7 +568,8 @@ Related Ideas]]></listNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ff9f2a!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#ffdba8!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#ffdba8; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -843,7 +847,8 @@ Solutions Provided
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ff9f2a!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#ffdba8!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#ffdba8; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -1389,7 +1394,8 @@ Interesting Groups]]></listNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ff9f2a!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#ffdba8!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#ffdba8; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -1664,7 +1670,8 @@ Interesting Groups]]></listNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#a7cf52!important; color: #fff }
 
-.profile-menu-portletWindowBackground { background:#d2e7a7!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#d2e7a7; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -2031,7 +2038,8 @@ Recommended Businesses]]></listNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#0461ac!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#9cc0df!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#9cc0df; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -2297,7 +2305,8 @@ Things to Explore
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#ffcf00!important; }
 
-.profile-menu-portletWindowBackground { background:#fff29e!important; margin:0 0 10px 0 }]]></style>
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#fff29e; margin:0 0 10px 0 }]]></style>
     <styleEnabled>true</styleEnabled>
   </dataRecord>
   <dataRecord name="projectCategoryLogoFile" id="9">
@@ -2483,7 +2492,8 @@ General discussion]]></forumNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#803082!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#cfaacd!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#cfaacd; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -2678,7 +2688,8 @@ Participating People]]></listNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#e91c0e!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#fcb7ad!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#fcb7ad; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -2788,7 +2799,8 @@ Provide information on the background and history of the sponsor.
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#4bbbe0!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#b8e5f4!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#b8e5f4; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>
@@ -3294,7 +3306,8 @@ Related Ideas]]></listNames>
     <parentCategoryId>-1</parentCategoryId>
     <style><![CDATA[.profile-header-portletWindowBackground { margin:0 0 5px 0; background:#a57146!important; color:#fff }
 
-.profile-menu-portletWindowBackground { background:#dfd0c0!important; margin:0 0 10px 0 }
+.profile-menu-portletWindowBackground,
+ .profile-menu-portletWindowBackground ul li a { background:#dfd0c0; margin:0 0 10px 0 }
 
 .profile-header a { color: #fff!important; }]]></style>
     <styleEnabled>true</styleEnabled>

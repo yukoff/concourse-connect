@@ -1,19 +1,46 @@
 ----------------------------------------------------------------------------
-ConcourseConnect 1.0
+ConcourseConnect 1.0.1
 Copyright (C) 2009 Concursive Corporation.
 Change Log
-May 11, 2009
+June 2, 2009
 ----------------------------------------------------------------------------
 
-Welcome to the first public release of ConcourseConnect.  This version is
-considered stable and mature, and has been used in production for many
-months.
-
-The development team is aggresively adding features, and can certainly use
-your help in building out the functionality.  If you are interested in
-developing ConcourseConnect, adding themes, or providing improved portal
-layouts, please join the product community at:
+If you are interested in collaborating on various social networking topics
+and implementations, including customization and development, please join
+the ConcourseConnect community at:
 http://www.concursive.com/show/concourseconnect
+
+1.0.1 (June 2, 2009)
+
+  Important notes:
+    This release requires that the data be reindexed for search to work
+    correctly.  Reindexing is done by an Admin on the View Usage page.
+
+  Improvements:
+    In documents, the currently selected folder is highlighted
+    In documents, A-Z sorting now works
+    Forms and tables are now displayed uniformly throughout various modules
+    Removed an unintentional image that linked back to concursive in emails
+    Viewing of objects was not recorded correctly, the intent is to record
+      a viewing when the object has been viewed by the user, just once
+    Internet Explorer (IE) display fixed in documents module
+    Some wiki links failed for a Participant
+    Search results are now hidden when there are none
+    Blog images couldn't be uploaded
+    New Tabby theme
+
+  Developer Improvements:
+    FIX: Themes can be created without a layout.jsp (the default is
+      inherited, see the default theme for files and structure)
+    NEW: Plug-in directory structure for services and scheduled jobs
+    NEW: Added a SENSITIVE_INFORMATION mode that tells the portlet when to
+      display GUEST data, PARTICIPANT data, and USER data; also adds user
+      profiles in PARTICIPANT mode instead of GUEST
+
+
+1.0 (May 11, 2009)
+
+  Initial release -- Stable and mature
 
 
 ----------------------------------------------------------------------------

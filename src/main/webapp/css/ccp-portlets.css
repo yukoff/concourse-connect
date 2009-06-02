@@ -1537,6 +1537,11 @@ ol.pagination {
 
 }
 
+/* Clear floats for IE*/
+.basic-list .portletWrapper {
+  *display:inline-block;
+}
+
 .basic-list ul,
 .basic-list ol,
 .basic-list dl {

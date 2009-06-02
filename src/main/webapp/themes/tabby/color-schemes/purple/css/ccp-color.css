@@ -1,0 +1,247 @@
+/*
+ * file information
+ * style type: concoursconnect color scheme : black
+ * version:    1
+ * date:       20090301
+ * author:     concursive.com
+ * notes:      black site color theme
+ *
+ */
+
+ body {
+   background:#ddd;
+ }
+
+.ccp-container {
+
+}
+
+.ccp-header {
+  background:#fff;
+  border-left:2px solid #aaa;
+  border-right:2px solid #aaa;
+  overflow:hidden;
+}
+
+  .ccp-header h1,
+  .ccp-search-form {
+    color:#222;
+  }
+
+
+.ccp-body {
+  background:#fff;
+  border-width:0 2px 2px;
+  border-color:#aaa;
+  border-style:solid;
+}
+
+.ccp-header-menu {
+  position:absolute;
+  right:-15px;
+  top:0;
+}
+
+.ccp-user-menu {
+  background:none;
+  padding:5px;
+  background:transparent url(../images/SPRITE.gif) no-repeat scroll 0 -33px;
+  height: 17px; /* 5px top + 5px bottom + 17px high = 27px total */
+  color: #eee;
+  position:relative;
+  width:auto;
+}
+
+.ccp-search-form {
+  margin:0;
+  float:right;
+  clear:none;
+  background:transparent url(../images/SPRITE.gif) no-repeat scroll 0 -60px;
+  color: #eee;
+  height: 27px;
+  left:-10px;
+  position:relative;
+  width:auto;
+  z-index:1;
+}
+
+.ccp-search-form a,
+.ccp-user-menu a {
+  color: #eee;
+}
+
+.ccp-site-menu {
+  margin:5px;
+  padding:0;
+  background:none;
+  left:0;
+}
+
+.ccp-site-menu ul {
+  padding:0;
+  margin:0;
+}
+
+  .ccp-navigation {
+    border-collapse:collapse;
+    padding:0;
+    margin:0;
+    border-bottom:10px solid #000;
+  }
+
+    .ccp-navigation ul {
+      border-collapse:collapse;
+	  bottom:10px;
+	  display:table;
+	  float:right;
+	  position:absolute;
+	  right:5px;
+    }
+
+    .ccp-navigation ul li {
+      display:table-cell;
+      float:left; 
+      border-collapse:collapse;
+      padding:0;
+      margin:0 5px 0 0;
+    }
+
+    .ccp-navigation ul li a {
+      color:#eee;
+      padding:0;
+      background:#333;
+      -moz-border-radius:none;
+      -webkit-border-radius:none;
+      display:block;
+      line-height:100%;
+      padding:0;
+      background:url(../../../images/background/gray_bar.gif) 0 0 no-repeat; 
+    }
+
+    .ccp-navigation ul li a.active,
+    .ccp-navigation ul li a:hover {
+      background:#603484 url(../images/SPRITE.gif) 0 -141px no-repeat; 
+    }
+
+    .ccp-navigation ul li a em {
+      margin:0!important;
+      padding:10px!important; 
+      display:block;
+      position:relative;
+      right:-2px;
+      background:url(../../../images/background/gray_bar.gif) 100% 0 no-repeat;
+    }
+
+    .ccp-navigation ul li a.active em,
+    .ccp-navigation ul li a:hover em {
+      -moz-border-radius:none;
+      -webkit-border-radius:0;
+      color:#eee;
+      background:#603484 url(../images/SPRITE.gif) 100% -141px no-repeat;
+    }
+
+.ccp-footer {
+	background: none;
+	border-bottom: none;
+}
+
+.ccp-alert a:hover {
+  color:#fff
+}
+
+/* Profile Edits */
+
+.ccp-body .portletWindow {
+  position:relative;
+}
+
+.profile-header-portletWindowBackground {
+  padding:5px 5px 20px 5px;
+}
+
+.profile-menu-portletWindowBackground {
+  position:absolute;
+  top:-27px;
+  padding:0;
+  margin:0!important;
+  -moz-border-radius:0!important;
+  -webkit-border-radius:0!important;
+  white-space:nowrap;
+  border:none;
+  left:5px;
+  background: none!important;
+}
+
+.profile-menu-portletWindowBackground .portlet-menu ul {
+  padding:0;
+  margin:0;
+  display:table;
+  border-collapse:collapse;
+  white-space:nowrap;
+  position:relative;
+}
+
+.profile-menu-portletWindowBackground .portlet-menu ul li {
+  padding:0;
+  margin:0 5px 0 0;
+  line-height:100%;
+  float: left;
+}
+
+.profile-menu-portletWindowBackground .portlet-menu ul li a {
+  padding:7px 7px 3px;
+  -moz-border-radius:5px 5px 0 0;
+  -webkit-border-top-right-radius:5px;
+  -webkit-border-top-left-radius:5px;
+  -webkit-border-bottom-left-radius:0;
+  -webkit-border-bottom-right-radius:0;
+  line-height:100%;
+  display:block;
+}
+
+.profile-menu-portletWindowBackground .portlet-menu ul li a.active,
+.profile-menu-portletWindowBackground .portlet-menu ul li a:hover {
+  background:#fff;
+}
+
+/* Custom Buttons */
+
+.button-list-vertical-portletWindowBackground ul li a, 
+.actionsContainer ul li a, 
+.projectActionsContainer ul li a, 
+.searchFilter ul li a {
+  background: url(../images/SPRITE.gif) 0 -114px;
+  border: none;
+  height: 27px;
+  line-height: 27px;
+}
+
+.button-list-vertical-portletWindowBackground ul li a em, 
+.actionsContainer ul li a em, 
+.projectActionsContainer ul li a em, 
+.searchFilter ul li a em {
+  background: url(../images/SPRITE.gif) 100% -114px;
+  height: 27px;
+  color:#eee;
+  right: -5px;
+}
+
+.button-list-vertical-portletWindowBackground ul li a:hover, 
+.actionsContainer ul li a:hover, 
+.projectActionsContainer ul li a:hover, 
+.searchFilter ul li a:hover {
+  background: url(../images/SPRITE.gif) 0 -87px;
+  border: none;
+  height: 27px;
+  line-height: 27px;
+}
+
+.button-list-vertical-portletWindowBackground ul li a:hover em, 
+.actionsContainer ul li a:hover em, 
+.projectActionsContainer ul li a:hover em, 
+.searchFilter ul li a:hover em {
+  background: url(../images/SPRITE.gif) 100% -87px;
+  color: #fff;
+  height: 27px;
+  right: -5px;
+}

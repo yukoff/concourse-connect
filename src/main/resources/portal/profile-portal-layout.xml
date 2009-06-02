@@ -347,10 +347,6 @@
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary">
             <title>Inbox</title>
           </portlet>
-          <portlet name="ProxyPortlet" cache="3650" timeout="3" class="ads">
-            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
-            <adContext>ad-280x60</adContext>
-          </portlet>
           <portlet name="PendingInvitationsPortlet" isUser="true">
             <title>My Invites</title>
           </portlet>
@@ -367,10 +363,6 @@
             <title>My Recent Reviews</title>
             <limit>10</limit>
             <showProjectTitle>true</showProjectTitle>
-          </portlet>
-          <portlet name="ProxyPortlet" cache="3680" timeout="3" class="ads">
-            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
-            <adContext>ad-280x250</adContext>
           </portlet>
         </column>
       </row>
@@ -1919,6 +1911,12 @@
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </organizations>
+            <committees>
+              <value>pageTitle=Committee Information</value>
+              <value>title=Committee Name</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Description</value>
+            </committees>
             <groups>
               <value>pageTitle=Group Information</value>
               <value>title=Group Name</value>

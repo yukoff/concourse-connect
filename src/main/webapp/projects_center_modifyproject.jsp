@@ -104,7 +104,7 @@
           <input type="text" name="uniqueId" size="57" maxlength="100" value="<%= toHtmlValue(project.getUniqueId()) %>">
           <label><ccp:label name="projectsCenterModifyProject.shortDescription">Short Description</ccp:label></label>
           <%= showAttribute(request, "shortDescriptionError") %>
-          <input type="text" name="shortDescription" size="57" maxlength="200" value="<%= toHtmlValue(project.getShortDescription()) %>"><font color="red">*</font>
+          <input type="text" name="shortDescription" size="57" maxlength="1000" value="<%= toHtmlValue(project.getShortDescription()) %>"><font color="red">*</font>
           <label><ccp:label name="projectsCenterModifyProject.keywords">Keywords</ccp:label></label>
           <%= showAttribute(request, "keywordsError") %>
           <input type="text" name="keywords" size="57" maxlength="255" value="<%= toHtmlValue(project.getKeywords()) %>">

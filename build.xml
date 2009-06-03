@@ -193,6 +193,14 @@
         <available file="${env.GLASSFISH_HOME}" />
       </and>
     </condition>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+      <classpath>
+        <pathelement location="${lib.dir}/ant-contrib-20090603.jar"/>
+      </classpath>
+    </taskdef>
+    <condition property="test.contrib.file">
+      <available file="${basedir}/contrib"/>
+    </condition>
   </target>
 
   <!-- Tomcat 5.x -->
@@ -315,8 +323,29 @@
 		<echo message="Base path: ${basedir}" />
   </target>
 
+  <target name="init.contrib" if="test.contrib.file">
+    <!-- Look in the contrib/ path for .path files that contain a single path line to the contribution -->
+    <for param="contrib">
+      <path>
+        <fileset dir="${basedir}/contrib" includes="*.path"/>
+      </path>
+      <sequential>
+        <loadfile property="contrib.@{contrib}" srcFile="@{contrib}">
+          <filterchain>
+            <striplinebreaks/>
+          </filterchain>
+        </loadfile>
+        <echo>Found module: ${contrib.@{contrib}}</echo>
+      </sequential>
+    </for>
+    <propertyselector property="contrib.list" delimiter=","
+                      match="contrib\.([^\.]*)\.path"
+                      select="\0"
+                      casesensitive="false" />
+  </target>
+
   <!-- Creates build dir if it does not exist -->
-  <target name="prepare" depends="init.classpath">
+  <target name="prepare" depends="init.classpath,init.contrib">
     <mkdir dir="${project.build.directory}"/>
     <tstamp />
     <uptodate property="classes.uptodate">
@@ -348,6 +377,24 @@
         <path refid="web.classpath"/>
       </classpath>
     </javac>
+
+    <!-- Compile any contributed classes -->
+    <property name="contrib.list" value=""/>
+    <for list="${contrib.list}" param="contrib">
+      <sequential>
+        <echo>  Adding: ${@{contrib}}</echo>
+        <javac srcdir="${@{contrib}}"
+               destdir="${build.classes.dir}"
+               verbose="off"
+               optimize="on"
+               deprecation="off">
+          <classpath>
+            <path refid="web.classpath"/>
+          </classpath>
+        </javac>
+      </sequential>
+    </for>
+
     <!-- Prepare the target jars directory -->
     <delete dir="${build.lib.dir}"/>
     <mkdir dir="${build.lib.dir}"/>

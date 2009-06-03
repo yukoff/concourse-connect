@@ -139,6 +139,7 @@ according to the project license:
 
 Project Name                      License
 --------------------------------  -----------------------------------------
+Ant-Contrib                       Apache Software License
 backport-util-concurrent          Public Domain
 Batik                             Apache Software License
 Bean Shell                        Sun Public License

@@ -567,7 +567,11 @@ public final class ProjectManagementTeam extends GenericAction {
       if (member.getStatus() != TeamMember.STATUS_JOINED) {
         return "PermissionError";
       }
-      member.delete(db);
+      boolean deleted = false;
+      deleted = member.delete(db);
+      if (deleted){
+      	processDeleteHook(context, member);
+      }
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return "SystemError";

@@ -922,6 +922,12 @@ public class TeamMember extends GenericBean {
   public Project getProject() {
     return project;
   }
+  
+  public boolean isAddedOrJoinedOrApproved(){
+  	
+  	return (status == STATUS_ADDED || status == STATUS_JOINED || status == STATUS_JOINED_APPROVED);
+  	
+  }
 }
 
 

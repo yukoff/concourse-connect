@@ -50,7 +50,6 @@ import com.concursive.commons.db.ConnectionElement;
 import com.concursive.commons.db.ConnectionPool;
 import com.concursive.commons.jsp.JspUtils;
 import com.concursive.commons.workflow.ObjectHookManager;
-import com.concursive.commons.workflow.WorkflowManager;
 import com.concursive.commons.xml.XMLUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.CacheContext;
@@ -58,10 +57,9 @@ import com.concursive.connect.cache.Caches;
 import com.concursive.connect.indexer.IndexerContext;
 import com.concursive.connect.indexer.IndexerFactory;
 import com.concursive.connect.scheduler.ScheduledJobs;
-import com.concursive.connect.web.modules.common.social.images.jobs.ImageResizerJob;
 import com.concursive.connect.web.modules.upgrade.utils.UpgradeUtils;
-import com.concursive.connect.web.modules.wiki.jobs.WikiExporterJob;
 import com.concursive.connect.web.webdav.WebdavManager;
+import com.concursive.connect.workflow.utils.WorkflowUtils;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
@@ -536,7 +534,6 @@ public class ApplicationPrefs {
       if (ApplicationPrefs.getFreemarkerConfiguration(context) == null) {
         LOG.error("Free marker configuration is null");
       }
-
       hookManager.setFreemarkerConfiguration(ApplicationPrefs.getFreemarkerConfiguration(context));
       hookManager.setKey((Key) context.getAttribute(TEAM_KEY));
       try {
@@ -562,35 +559,7 @@ public class ApplicationPrefs {
         ce.setUsername(this.get(CONNECTION_USER));
         ce.setPassword(this.get(CONNECTION_PASSWORD));
         hookManager.setConnectionElement(ce);
-        // Load the settings
-        InputStream source = null;
-        // Reset the workflow for reloading
-        hookManager.reset();
-        // Look in build.properties, or use default
-        String workflowFile = this.get(WORKFLOW_FILE);
-        if (workflowFile != null) {
-          LOG.info("Workflow path: " + this.get(FILE_LIBRARY_PATH) + workflowFile);
-          source = new FileInputStream(this.get(FILE_LIBRARY_PATH) + workflowFile);
-        } else {
-          LOG.info("Workflow path: WEB-INF/workflow.xml");
-          source = context.getResourceAsStream("/WEB-INF/workflow.xml");
-        }
-        if (source != null) {
-          LOG.info("Loading workflow processes...");
-          XMLUtils xml = new XMLUtils(source);
-          hookManager.initializeBusinessProcessList(xml.getDocumentElement());
-          hookManager.initializeObjectHookList(xml.getDocumentElement());
-          source.close();
-        }
-        //Load the application workflow
-        source = WorkflowManager.class.getResourceAsStream("/application.xml");
-        if (source != null) {
-          LOG.info("Loading application workflow processes...");
-          XMLUtils xml = new XMLUtils(source);
-          hookManager.initializeBusinessProcessList(xml.getDocumentElement());
-          hookManager.initializeObjectHookList(xml.getDocumentElement());
-          source.close();
-        }
+        WorkflowUtils.addWorkflow(hookManager, context);
       } catch (Exception e) {
         e.printStackTrace(System.out);
         LOG.error("Workflow Error: " + e.getMessage(), e);

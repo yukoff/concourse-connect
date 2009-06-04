@@ -57,6 +57,7 @@
         <action type="insert" process="concursive.project.attachDiscussionForums"/>
         <action type="insert" process="concursive.project.attachDocumentFolders"/>
         <action type="insert" process="concursive.project.attachLists"/>
+        <action type="insert" process="concursive.project.attachTicketCategories"/>
         <!--
         <action type="insert" process="concursive.project.saveProjectInSuite"/>
         -->
@@ -434,6 +435,14 @@ ${this.message:html}<br />
         </component>
       </components>
     </process>
+
+    <!-- Attach Ticket Categories -->
+    <process name="concursive.project.attachTicketCategories" description="Add ticket categories" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.zeroio.iteam.components.AttachTicketCategoriesFromTemplate">
+        </component>
+      </components>
+    </process>
     
     <process name="concursive.privateMessage.sendMessageToMembers" description="Send private message to team members" startId="1">
       <components>
@@ -625,7 +634,6 @@ ${this.message:html}<br />
         <component id="6" parent="5"  if="true" class="com.concursive.connect.workflow.components.crm.SaveAsLead">
           <parameters>
         	<parameter name="suite.url" value="${project.concursiveCRMUrl}" />
-        	<parameter name="suite.domainName" value="${project.concursiveCRMDomain}" />
         	<parameter name="suite.code" value="${project.concursiveCRMCode}" />
         	<parameter name="lead.source" value="connect321" />
         	<parameter name="lead.custom1" value="${this.id}" />

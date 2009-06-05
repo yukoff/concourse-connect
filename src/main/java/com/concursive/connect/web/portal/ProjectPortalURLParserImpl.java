@@ -533,6 +533,7 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
           }
         } else {
           if ("portlet-command".equals(parameter)) {
+            LOG.debug("Made a parameter available to the portlet: " + parameter);
             portalURL.addParameter(new PortalURLParameter(portalURL.getRenderPath(), parameter, value));
           }
         }

@@ -125,15 +125,24 @@ public abstract class AbstractPortletModule extends GenericPortlet {
       if (!StringUtils.isEmpty(command)) {
         LOG.debug("using command from portlet: " + command);
       } else {
-        // Determine the command to execute, as set by the portal
-        command = (String) request.getAttribute(COMMAND);
-        if (!StringUtils.isEmpty(command)) {
-          LOG.debug("using command from portal: " + command);
+        // Determine the command to execute, as set by the portlet session
+        PortletSession session = request.getPortletSession(false);
+        if (session != null) {
+          command = (String) session.getAttribute(COMMAND);
         }
-        if (StringUtils.isEmpty(command)) {
-          // Use the default command
-          command = defaultCommand;
-          LOG.debug("using default command: " + command);
+        if (!StringUtils.isEmpty(command)) {
+          LOG.debug("using command from portlet action: " + command);
+          session.removeAttribute(COMMAND);
+        } else {
+          // Determine the command to execute, as set by the portal
+          command = (String) request.getAttribute(COMMAND);
+          if (!StringUtils.isEmpty(command)) {
+            LOG.debug("using command from portal: " + command);
+          } else {
+            // Use the default command
+            command = defaultCommand;
+            LOG.debug("using default command: " + command);
+          }
         }
       }
       request.setAttribute("portletCommand", command);
@@ -212,6 +221,9 @@ public abstract class AbstractPortletModule extends GenericPortlet {
         }
         if (request.getParameter("redirectTo") != null) {
           response.setRenderParameter("redirectTo", request.getParameter("redirectTo"));
+        }
+        if (request.getAttribute("portlet-command") != null) {
+          session.setAttribute(COMMAND, request.getAttribute("portlet-command"));
         }
       }
     } catch (Throwable t) {

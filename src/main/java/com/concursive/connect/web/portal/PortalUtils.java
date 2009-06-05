@@ -655,6 +655,22 @@ public class PortalUtils {
     return null;
   }
 
+  /**
+   * This method will redirect the browser to another portlet viewer and will
+   * reconstruct the generic bean in the request after the redirect
+   *
+   * @param request
+   * @param response
+   * @param viewer
+   * @param genericBean
+   * @return
+   * @throws java.io.IOException
+   */
+  public static GenericBean goToViewer(ActionRequest request, ActionResponse response, String viewer, GenericBean genericBean) throws java.io.IOException {
+    request.setAttribute("portlet-command", viewer);
+    return genericBean;
+  }
+
   public static String getPortletUniqueKey(PortletRequest request) {
     DashboardPortlet portlet = PortalUtils.getDashboardPortlet(request);
     if (portlet.getPortletId() > -1) {

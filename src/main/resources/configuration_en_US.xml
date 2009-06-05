@@ -895,7 +895,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="10">
     <id>10</id>
-    <description>Dining</description>
+    <description><![CDATA[Food & Dining]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -935,7 +935,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="14">
     <id>14</id>
-    <description>Facilities</description>
+    <description><![CDATA[Health Services & Facilities]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -945,7 +945,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="15">
     <id>15</id>
-    <description>Fitness</description>
+    <description><![CDATA[Beauty & Fitness]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -955,7 +955,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="16">
     <id>16</id>
-    <description>Garden</description>
+    <description><![CDATA[Home & Garden]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -975,7 +975,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="18">
     <id>18</id>
-    <description>Hobbies</description>
+    <description><![CDATA[Art & Collectibles & Hobbies]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -1005,7 +1005,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="21">
     <id>21</id>
-    <description>Internet</description>
+    <description><![CDATA[Computers & Internet]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -1015,7 +1015,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="22">
     <id>22</id>
-    <description>Legal Services</description>
+    <description><![CDATA[Attorneys & Legal Services]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -1055,7 +1055,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="26">
     <id>26</id>
-    <description>Professional</description>
+    <description><![CDATA[Finance & Professional]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -1075,7 +1075,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="28">
     <id>28</id>
-    <description>Recreation</description>
+    <description><![CDATA[Sports & Recreation]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -1105,7 +1105,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="31">
     <id>31</id>
-    <description>Social Services</description>
+    <description><![CDATA[Community & Social Services]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -1115,7 +1115,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="32">
     <id>32</id>
-    <description>Special Occasions</description>
+    <description><![CDATA[Weddings & Parties & Special Occasions]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>
@@ -1135,7 +1135,7 @@ Solutions Provided
   </dataRecord>
   <dataRecord name="projectCategory" id="34">
     <id>34</id>
-    <description>Utilities</description>
+    <description><![CDATA[Communications & Utilities]]></description>
     <enabled>true</enabled>
     <level>10</level>
     <logoId>-1</logoId>

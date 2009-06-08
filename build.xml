@@ -119,7 +119,7 @@
 
 
   <!-- Clean -->
-  <target name="clean">
+  <target name="clean" description="Delete the build files">
     <delete dir="${project.build.directory}"/>
   </target>
 
@@ -348,18 +348,33 @@
   <target name="prepare" depends="init.classpath,init.contrib">
     <mkdir dir="${project.build.directory}"/>
     <tstamp />
-    <uptodate property="classes.uptodate">
-      <srcfiles dir="${src.classes.dir}" includes="**/*.java"/>
-      <srcfiles dir="${src.resources.dir}" includes="**/*"/>
-      <mapper type="merge" to="${build.lib.dir}/${project.build.finalName}.jar"/>
-    </uptodate>
+    <!-- Check the application files -->
+    <outofdate property="classes.outofdate">
+      <sourcefiles>
+        <fileset dir="${src.classes.dir}" includes="**/*.java"/>
+        <fileset dir="${src.resources.dir}" includes="**/*"/>
+      </sourcefiles>
+      <targetfiles path="${build.lib.dir}/${project.build.finalName}.jar"/>
+    </outofdate>
+    <!-- Check the contrib files -->
+    <property name="contrib.list" value=""/>
+    <for list="${contrib.list}" param="contrib">
+      <sequential>
+        <outofdate property="classes.outofdate">
+          <sourcefiles>
+            <fileset dir="${@{contrib}}/src/main" includes="**/*"/>
+          </sourcefiles>
+          <targetfiles path="${build.lib.dir}/${project.build.finalName}.jar"/>
+        </outofdate>
+      </sequential>
+    </for>
   </target>
 
 
 
 
   <!-- Compile -->
-  <target name="compile" description="Compile source" depends="prepare" unless="classes.uptodate">
+  <target name="compile" description="Compile source" depends="prepare" if="classes.outofdate">
     <!-- Prepare the target compile directory -->
     <delete dir="${build.classes.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
@@ -841,10 +856,10 @@
 
   <!-- See if there is an updated file to merge -->
   <target name="deploy.merge.prepare" depends="compile">
-    <!-- Generate a new ITEAM_HOME web.xml if any of the following: -->
-    <!-- 1. cvs web.xml is newer than ITEAM_HOME web.xml -->
-    <!-- 2. ITEAM_HOME build.properties is newer than ITEAM_HOME web.xml -->
-    <!-- 3. Any of the CFS_HOME xml or tld files are newer than CFS_HOME web.xml -->
+    <!-- Generate a new web.xml if any of the following: -->
+    <!-- 1. source web.xml is newer than target web.xml -->
+    <!-- 2. source build.properties is newer than target web.xml -->
+    <!-- 3. Any of the xml or tld files are newer than target web.xml -->
     <condition property="deploy.merge.uptodate">
       <and>
         <available file="${WEBAPP_EXPLODED_HOME}/WEB-INF/web.xml"/>

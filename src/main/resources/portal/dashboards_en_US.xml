@@ -215,6 +215,11 @@
             <wiki>Welcome to the site</wiki>
             <showTitle>false</showTitle>
           </portlet>
+          <portlet name="UpcomingEventListPortlet" cache="10" class="detailed-list " isSensitive="true">
+            <title>Upcoming Events</title>
+            <limit>5</limit>
+            <successMessage>You have successfully joined this event!</successMessage>
+          </portlet>
           <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
             <showGetInvolved>true</showGetInvolved>
             <links>
@@ -234,11 +239,6 @@
             <project>main-profile</project>
             <linkTitle>true</linkTitle>
             <wikiForm>Group Information</wikiForm>
-          </portlet>
-          <portlet name="UpcomingEventListPortlet" cache="10" class="detailed-list " isSensitive="true">
-            <title>Upcoming Events</title>
-            <limit>5</limit>
-            <successMessage>You have successfully joined this event!</successMessage>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
@@ -432,7 +432,7 @@
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
-            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
             <title>Popular Tags</title>
             <category>Services</category>
             <limit>30</limit>
@@ -3507,6 +3507,9 @@
                 <br/>
                 If you have any questions about this process, please contact us.]]>
             </successMessage>
+            <labels>
+              <value>areYouTheOwner=I represent this listing and want more information on getting full access to its profile</value>
+            </labels>
           </portlet>
         </column>
       </row>
@@ -3625,12 +3628,18 @@
         <column>
           <portlet name="EditProjectWikiPortlet">
             <failureMessage>We could not send this information to your friend...</failureMessage>
+            <businesses>
+            	<value>pageTitle=Business Information</value>
+            </businesses>
+            <organizations>
+            	<value>pageTitle=Organization Information</value>
+            </organizations>
             <partners>
               <value>pageTitle=Partner Information</value>
             </partners>
-            <organizations>
-              <value>pageTitle=Organization Information</value>
-            </organizations>
+            <committees>
+              <value>pageTitle=Committee Information</value>
+            </committees>
             <groups>
               <value>pageTitle=Group Information</value>
             </groups>

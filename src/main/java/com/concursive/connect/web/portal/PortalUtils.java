@@ -686,4 +686,34 @@ public class PortalUtils {
     return PortalUtils.getDashboardPortlet(request).isSensitive() &&
         "true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE));
   }
+
+  /**
+   * Looks for portlet preferences named "labels" and adds them to the request
+   * as "labelMap"
+   *
+   * @param request
+   */
+  public static void populateDisplayLabels(PortletRequest request) {
+    String[] displayPreferences = request.getPreferences().getValues("labels", null);
+    if (displayPreferences != null) {
+      HashMap<String, String> preferenceMap = new HashMap<String, String>();
+      int numberOfEntries = displayPreferences.length;
+      int count = 0;
+      while (count < numberOfEntries) {
+        String label = null;
+        String value = null;
+        String displayPreference = displayPreferences[count];
+        if (displayPreference.indexOf("=") != -1) {
+          label = displayPreference.split("=")[0];
+          value = displayPreference.split("=")[1];
+        } else {
+          label = displayPreference;
+          value = displayPreference;
+        }
+        preferenceMap.put(label, value);
+        count++;
+      }
+      request.setAttribute("labelMap", preferenceMap);
+    }
+  }
 }

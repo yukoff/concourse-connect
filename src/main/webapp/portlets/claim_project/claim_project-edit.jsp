@@ -47,6 +47,7 @@
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%--@elvariable id="labelMap" type="java.util.HashMap"--%>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
@@ -75,7 +76,6 @@
     }
   }
 </script>
-
 <div class="claimProject">
   <div class="formContainer">
     <h2>Claim <c:out value="${claim.projectTitle}"/></h2>
@@ -102,8 +102,18 @@
           <%-- confirmation --%>
           <span>
             <%= showAttribute(request, "verifyError") %>
-            <label for="owner<portlet:namespace/>"> <input type="checkbox" class="checkbox" id="owner<portlet:namespace/>" name="owner" value="true" <c:if test="${claim.isOwner}">checked</c:if> />
-            <ccp:label name="project.claim.verify">I am the owner or an employee<span class="required">*</span></ccp:label></label>
+            <label for="owner<portlet:namespace/>">
+              <input type="checkbox" class="checkbox" id="owner<portlet:namespace/>" name="owner" value="true" <c:if test="${claim.isOwner}">checked</c:if> />
+              <c:choose>
+                <c:when test='${empty labelMap["areYouTheOwner"]}'>
+                  I represent this listing and want more information on getting full access to its profile
+                </c:when>
+                <c:otherwise>
+                  <c:out value='${labelMap["areYouTheOwner"]}'/>
+                </c:otherwise>
+              </c:choose>
+              <span class="required">*</span>
+            </label>
           </span>
         </fieldset>
         <input type="submit" value="Submit" class="submit" />

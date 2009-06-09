@@ -536,6 +536,10 @@ public class ApplicationPrefs {
       }
       hookManager.setFreemarkerConfiguration(ApplicationPrefs.getFreemarkerConfiguration(context));
       hookManager.setKey((Key) context.getAttribute(TEAM_KEY));
+
+      Scheduler scheduler = (Scheduler) context.getAttribute(Constants.SCHEDULER);
+      hookManager.setScheduler(scheduler);
+      
       try {
         // Configure a separate connection pool
         ConnectionPool commonCP = (ConnectionPool) context.getAttribute(Constants.CONNECTION_POOL);

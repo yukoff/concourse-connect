@@ -99,6 +99,9 @@ public class ClaimProjectPortlet extends GenericPortlet {
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
     request.setAttribute(INTRODUCTION_MESSAGE, request.getPreferences().getValue(PREF_INTRODUCTION_MESSAGE, null));
 
+    // Add custom labels to the request as "labelMap"
+    PortalUtils.populateDisplayLabels(request);
+
     // Retrieve objects from the page and populate in the request automatically
     Project project = PortalUtils.findProject(request);
     User user = PortalUtils.getUser(request);

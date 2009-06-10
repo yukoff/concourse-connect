@@ -112,7 +112,6 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
   private static final String PREF_SHOW_WEBSITE = "showWebsite"; // true (or) false
   private static final String PREF_SHOW_SINGLE_IMAGE_ATTACHMENT = "showSingleImageAttachment"; // true (or) false
   private static final String PREF_REQUIRES_LONG_DESCRIPTION = "requiresLongDescription"; // true (or) false
-  private static final String PREF_LABELS = "labels";
   private static final String PREF_ALLOW_ONLY_IF_USER_CAN_START_PROJECTS = "allowOnlyIfUserCanStartProjects";
 
   // Attribute names for objects available in the view
@@ -140,7 +139,6 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
   private static final String SHOW_KEYWORDS = "showKeywords"; // true (or) false
   private static final String SHOW_WEBSITE = "showWebsite"; // true (or) false
   private static final String SHOW_SINGLE_IMAGE_ATTACHMENT = "showSingleImageAttachment"; // true (or) false
-  private static final String LABEL_MAP = "labelMap";
 
   public void doView(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
@@ -188,9 +186,8 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
         defaultView = VIEW_PAGE2;
         request.setAttribute(MESSAGE, "You do not have access for adding projects, please contact an administrator.");
       } else {
-
-        HashMap<String, String> labelMap = getDisplayPreferences(request);
-        request.setAttribute(LABEL_MAP, labelMap);
+        // Add custom labels to the request as "labelMap"
+        PortalUtils.populateDisplayLabels(request);
 
         Project project = new Project();
         if ("saveFailure".equals(viewType)) {
@@ -581,30 +578,4 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
     }
     return true;
   }
-
-  private HashMap<String, String> getDisplayPreferences(PortletRequest request) {
-    String[] displayPreferences = request.getPreferences().getValues(PREF_LABELS, null);
-    HashMap<String, String> preferenceMap = new HashMap<String, String>();
-    if (displayPreferences != null) {
-      int numberOfEntries = displayPreferences.length;
-      int count = 0;
-      while (count < numberOfEntries) {
-        String label = null;
-        String value = null;
-        String displayPreference = displayPreferences[count];
-        if (displayPreference.indexOf("=") != -1) {
-          label = displayPreference.split("=")[0];
-          value = displayPreference.split("=")[1];
-        } else {
-          label = displayPreference;
-          value = displayPreference;
-        }
-        preferenceMap.put(label, value);
-        count++;
-      }
-    }
-    return preferenceMap;
-  }
-
-
 }

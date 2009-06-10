@@ -72,7 +72,7 @@
         <c:if test="<%= project.getStyleEnabled()%>"><c:set var="styleEnabledChecked">checked</c:set></c:if>
         <input type="hidden" name="id" value="<%= project.getId() %>">
         <input type="hidden" name="modified" value="<%= project.getModified() %>">
-        <textarea rows="30" cols="100" id="style" name="style"><c:if test="${!empty Project.style}"><%= project.getStyle() %></c:if></textarea>
+        <textarea rows="30" cols="100" id="style" name="style"><c:if test="${!empty project.style}"><%= project.getStyle() %></c:if></textarea>
         <label><input type="checkbox" name="styleEnabled" value="true" ${styleEnabledChecked}/><ccp:label name="projectsCenterSetup.style.styleEnabled">Enable Style</ccp:label></label>
       </fieldset>
       

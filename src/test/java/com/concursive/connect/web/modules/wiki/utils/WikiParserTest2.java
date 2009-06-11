@@ -45,9 +45,6 @@
  */
 package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import junit.framework.TestCase;
 
@@ -71,7 +68,7 @@ public class WikiParserTest2 extends TestCase {
       "<p>and something else</p>\n" +
       "<pre>pre2</pre>\n" +
       "<pre>Another pre3\n" +
-      "line 2 of pre3 </pre>\n" +
+      "line 2 of pre3</pre>\n" +
       "<p>Woah.  Round-trip!</p>\n";
 
   protected final static String wikiSample = "This is a new example.\n" +
@@ -91,9 +88,9 @@ public class WikiParserTest2 extends TestCase {
       "<pre>pre2</pre>\n" +
       "\n" +
       "<pre>Another pre3\n" +
-      "line 2 of pre3 </pre>\n" +
+      "line 2 of pre3</pre>\n" +
       "\n" +
-      "Woah.  Round-trip!";
+      "Woah.  Round-trip!\n";
 
   public void testHtmlToWikiParser() throws Exception {
     // Convert html to wiki

@@ -46,8 +46,6 @@
 package com.concursive.connect.web.modules.wiki.utils;
 
 import com.concursive.commons.db.AbstractConnectionPoolTest;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 
 /**
  * Tests wiki parser functions

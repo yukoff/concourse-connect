@@ -46,14 +46,11 @@
 package com.concursive.connect.web.modules.wiki.utils;
 
 import com.concursive.commons.db.AbstractConnectionPoolTest;
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
-import com.concursive.connect.web.modules.wiki.dao.Wiki;
-import com.concursive.connect.web.modules.wiki.utils.WikiLink;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.issues.dao.Ticket;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.wiki.dao.Wiki;
 
 import java.sql.Timestamp;
 import java.util.HashMap;

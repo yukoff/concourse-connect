@@ -46,13 +46,10 @@
 package com.concursive.connect.web.modules.wiki.utils;
 
 import com.concursive.commons.db.AbstractConnectionPoolTest;
-import com.concursive.connect.web.modules.wiki.dao.Wiki;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
-import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
-import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.wiki.dao.Wiki;
 
 import java.util.HashMap;
 
@@ -98,7 +95,7 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
         "\n" +
         "[[Technical Documentation]]\n" +
         "[[Frequently Asked Questions]] " +
-        "[[|9999999:topic|3353|info]] for you", wiki);
+        "[[|9999999:topic|3353|info]] for you\n", wiki);
   }
 
   public void testWikiLinksToHtml() throws Exception {

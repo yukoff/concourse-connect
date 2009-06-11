@@ -45,10 +45,9 @@
  */
 package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
 import junit.framework.TestCase;
-import org.suigeneris.jrcs.diff.Revision;
 import org.suigeneris.jrcs.diff.Diff;
+import org.suigeneris.jrcs.diff.Revision;
 import org.suigeneris.jrcs.util.ToString;
 
 /**
@@ -111,11 +110,11 @@ public class WikiParserTest4 extends TestCase {
                     "<strong>\n" +
                       "<ul>\n" +
                         "<li>Bullet A<br /></li>\n" +
-                        "<li> Bullet B</li>\n" +
+                        "<li>Bullet B</li>\n" +
                       "</ul>\n" +
                       "<ol>\n" +
-                        "<li> Number 1</li>\n" +
-                        "<li> Number 2</li>\n" +
+                        "<li>Number 1</li>\n" +
+                        "<li>Number 2</li>\n" +
                       "</ol>" +
                     "</strong>" +
           "       </p>\n" +
@@ -147,10 +146,10 @@ public class WikiParserTest4 extends TestCase {
           "\n" +
           "\n" +
           "* Bullet A\n" +
-          "*  Bullet B\n" +
+          "* Bullet B\n" +
           "\n" +
-          "#  Number 1\n" +
-          "#  Number 2" +
+          "# Number 1\n" +
+          "# Number 2" +
           "\n";
 
   public void testNestedParagraphs() throws Exception {

@@ -45,9 +45,6 @@
  */
 package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import junit.framework.TestCase;
 
@@ -63,23 +60,23 @@ public class WikiParserPreTest extends TestCase {
 
   protected final static String wikiSample =
       "* In cfs-modules.xml copy the section \n" +
-        "<pre>\n" +
-        "  <menu>\n" +
-        "    <action name=\"ExternalContacts\"/>\n" +
-        "    <action name=\"ExternalContactsOpps\"/>\n" +
-        "    <action name=\"ExternalContactsOppComponents\"/>\n" +
-        "    <action name=\"ExternalContactsCalls\"/>\n" +
-        "    <action name=\"ExternalContactsCallsForward\"/>\n" +
-        "    <action name=\"ExternalContactsPrototype\"/>\n" +
-        "    <action name=\"ExternalContactsImports\"/>\n" +
-        "    <action name=\"ExternalContactsHistory\"/>\n" +
-        "    <action name=\"ExternalContactsMessages\"/>\n" +
-        "    <page title=\"Contacts\"/>\n" +
-        "    ....\n" +
-        "  </menu>\n" +
-        "</pre>\n" +
-        "\n" +
-        "for the contacts module and paste it below the closing menu tag (or where ever else you want to position it.) Rename the title to \"Personnel\"";
+          "<pre>\n" +
+          "  <menu>\n" +
+          "    <action name=\"ExternalContacts\"/>\n" +
+          "    <action name=\"ExternalContactsOpps\"/>\n" +
+          "    <action name=\"ExternalContactsOppComponents\"/>\n" +
+          "    <action name=\"ExternalContactsCalls\"/>\n" +
+          "    <action name=\"ExternalContactsCallsForward\"/>\n" +
+          "    <action name=\"ExternalContactsPrototype\"/>\n" +
+          "    <action name=\"ExternalContactsImports\"/>\n" +
+          "    <action name=\"ExternalContactsHistory\"/>\n" +
+          "    <action name=\"ExternalContactsMessages\"/>\n" +
+          "    <page title=\"Contacts\"/>\n" +
+          "    ....\n" +
+          "  </menu>\n" +
+          "</pre>\n" +
+          "\n" +
+          "for the contacts module and paste it below the closing menu tag (or where ever else you want to position it.) Rename the title to \"Personnel\"";
 
   public void testWikiPreToHTML() throws Exception {
     System.setProperty("DEBUG", "2");
@@ -105,7 +102,6 @@ public class WikiParserPreTest extends TestCase {
         "  &lt;/menu&gt;</pre>\n" +
         "<p>for the contacts module and paste it below the closing menu tag (or where ever else you want to position it.) Rename the title to &quot;Personnel&quot;</p>\n", html);
   }
-
 
 
   protected final static String wikiSample2 =
@@ -150,9 +146,6 @@ public class WikiParserPreTest extends TestCase {
   }
 
 
-
-
-  
   protected final static String htmlSample =
       "<ul><li>In cfs-modules.xml copy the section </li>\n" +
           "</ul>\n" +
@@ -175,7 +168,7 @@ public class WikiParserPreTest extends TestCase {
   public void testHTMLPreToWiki() throws Exception {
     String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "");
     assertEquals("" +
-        "* In cfs-modules.xml copy the section \n" +
+        "* In cfs-modules.xml copy the section\n" +
         "\n" +
         "<pre>test\n" +
         "  <menu>\n" +
@@ -193,6 +186,6 @@ public class WikiParserPreTest extends TestCase {
         "</menu>\n" +
         "test</pre>\n" +
         "\n" +
-        "for the contacts module and paste it below the closing menu tag (or where ever else you want to position it.) Rename the title to \"Personnel\"", wiki);
+        "for the contacts module and paste it below the closing menu tag (or where ever else you want to position it.) Rename the title to \"Personnel\"\n", wiki);
   }
 }

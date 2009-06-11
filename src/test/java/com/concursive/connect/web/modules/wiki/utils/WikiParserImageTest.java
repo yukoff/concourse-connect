@@ -45,11 +45,10 @@
  */
 package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
-import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.commons.db.AbstractConnectionPoolTest;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
-import com.concursive.commons.db.AbstractConnectionPoolTest;
+import com.concursive.connect.web.modules.profile.dao.Project;
 
 /**
  * Tests common project database access
@@ -89,6 +88,6 @@ public class WikiParserImageTest extends AbstractConnectionPoolTest {
         "\n" +
         "credit: [[http://www.cnn.com]]\n" +
         "\n" +
-        "[[Image:Workflow - Ticket Example.png]]", wiki);
+        "[[Image:Workflow - Ticket Example.png]]\n", wiki);
   }
 }

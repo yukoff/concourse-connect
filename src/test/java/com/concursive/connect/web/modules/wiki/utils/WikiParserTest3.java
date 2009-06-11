@@ -45,9 +45,6 @@
  */
 package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import junit.framework.TestCase;
 import org.suigeneris.jrcs.diff.Diff;
@@ -119,7 +116,7 @@ public class WikiParserTest3 extends TestCase {
           "|Item 3|No\n" +
           "!* maybe|Yes|Yes|Yes|\n" +
           "\n" +
-          "That is a tough decision.";
+          "That is a tough decision.\n";
 
   protected final static String htmlOut =
       "<p>This is a table...</p>\n" +

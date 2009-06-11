@@ -45,11 +45,10 @@
  */
 package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
-import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.commons.db.AbstractConnectionPoolTest;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
-import com.concursive.commons.db.AbstractConnectionPoolTest;
+import com.concursive.connect.web.modules.profile.dao.Project;
 
 /**
  * Tests common project database access
@@ -100,7 +99,7 @@ public class WikiParserComplexTest extends AbstractConnectionPoolTest {
     project.setUniqueId("some-project");
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
-    
+
     String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "");
     assertEquals("" +
         "= Here's some logo. =\n" +
@@ -112,13 +111,14 @@ public class WikiParserComplexTest extends AbstractConnectionPoolTest {
         "# Line 1\n" +
         "# Line 2\n" +
         "# Line 3\n" +
+        "\n" +
         "[[Image:concursivelogo.png|thumb]]\n" +
         "\n" +
         "||||Here's some stuff||\n" +
         "|Left Side|Right Side|\n" +
         "|LS 2|RS 2|\n" +
         "\n" +
-        "[[http://www.cnn.com Anything else?]]" +
+        "[[http://www.cnn.com Anything else?]]\n" +
         "", wiki);
   }
 }

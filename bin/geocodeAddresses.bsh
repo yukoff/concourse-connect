@@ -1,5 +1,5 @@
 #!/bin/sh
-//usr/bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/opencsv-1.8.jar:lib/googlemaps-0.98c.jar bsh.Interpreter "$0" "$@"
+//usr/bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/opencsv-1.8.jar:lib/googlemaps-0.98c-20090610.jar bsh.Interpreter "$0" "$@"
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
@@ -11,13 +11,14 @@ boolean hasText(String in) {
 
 if (bsh.args.length == 0) {
   print("Usage:");
-  print("  geocodeAddresses [input_filename] [output_filename]");
+  print("  geocodeAddresses [input_filename] [output_filename] [retry] [google api key]");
   print("");
   print("The file specified by input_filename will be geocoded and placed in output_filename.");
   print("If output file exists, the process will resume the geocoding.");
+  print("");
+  print("Google API Key is optional, will use Yahoo if not specified.");
   System.exit(0);
 }
-String filename = bsh.args[0].trim();
 
 void geocodeEntry(USAddressGeocoder geo) {
   boolean tryAgain = false;
@@ -26,7 +27,24 @@ void geocodeEntry(USAddressGeocoder geo) {
     boolean result = geo.geocode();
     if (!result) {
       String message = geo.getWarning();
-      if (message.contains("response code: 503")) {
+      if (message.contains("601")) {
+        tryAgain = false;
+        System.out.println("skipping... an empty address was specified...");
+      } else if (message.contains("602")) {
+        tryAgain = false;
+        System.out.println("skipping... an unknown address was specified...");
+      } else if (message.contains("603")) {
+        tryAgain = false;
+        System.out.println("skipping... an unavailable address was specified...");
+      } else if (message.contains("610")) {
+        tryAgain = false;
+        System.out.println("abort (bad api key)...");
+        throw new Exception("Fatal Error");
+      } else if (message.contains("620")) {
+        tryAgain = false;
+        System.out.println("abort (over limit)...");
+        throw new Exception("Fatal Error");
+      } else if (message.contains("response code: 503")) {
         System.out.println("retry...");
         tryAgain = true;
       } else if (message.contains("response code: 400")) {
@@ -48,8 +66,20 @@ void geocodeEntry(USAddressGeocoder geo) {
 // Takes a CSV file and outputs a copy with geocoded addresses
 File csvFile = new File(bsh.args[0].trim());
 File csvFile2 = new File(bsh.args[1].trim());
-
 System.out.println("Geocoding " + bsh.args[0].trim() + " to " + bsh.args[1].trim());
+
+boolean retry = false;
+if (bsh.args.length > 2) {
+  retry = "true".equals(bsh.args[2].trim());
+  System.out.println("  retry: " + retry);
+}
+
+String googleApiKey = null;
+if (bsh.args.length > 3) {
+  System.out.println("  ...using Google");  
+  googleApiKey = bsh.args[3].trim();
+}
+
 
 if (csvFile.exists()) {
   System.out.println("loadFile... " + csvFile.toURL());
@@ -175,15 +205,20 @@ if (csvFile.exists()) {
     String  projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
     String  projectSICValue = nextLine[projectSICColumn].trim();
 
-    if (!hasText(projectLatitudeValue) && !hasText(projectLongitudeValue) &&
-        hasText(projectAddressValue) && hasText(projectZipValue)) {
-      // Give yahoo a break
+    if ((!hasText(projectLatitudeValue) && !hasText(projectLongitudeValue) &&
+        hasText(projectAddressValue) && hasText(projectZipValue)) ||
+        (retry && "0.0".equals(projectLatitudeValue) && "0.0".equals(projectLongitudeValue))) {
+      // Give geocoding a break
       long timer = System.currentTimeMillis();
-      while ((timer + 750) > System.currentTimeMillis()) {
+      while ((timer + 650) > System.currentTimeMillis()) {
 
       }
       // External geocode
       USAddressGeocoder geo = new USAddressGeocoder();
+      if (googleApiKey != null) {
+        geo.setApi("google");
+        geo.setApiKey(googleApiKey);
+      }
       geo.setAddress(projectAddressValue);
       geo.setCity(projectCityValue);
       geo.setState(projectStateValue);
@@ -194,6 +229,7 @@ if (csvFile.exists()) {
       projectLongitudeValue = String.valueOf(geo.getLongitude());
     }
 
+    // Copy the line
     String[] geoLine = new String[14];
     geoLine[0] = projectCategoryValue;
     geoLine[1] = projectSubCategory1Value;

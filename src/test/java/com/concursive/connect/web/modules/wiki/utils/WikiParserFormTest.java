@@ -46,8 +46,6 @@
 package com.concursive.connect.web.modules.wiki.utils;
 
 import com.concursive.connect.web.modules.wiki.dao.CustomForm;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import junit.framework.TestCase;
 

@@ -319,7 +319,7 @@ public class WikiUtils {
         if (editSectionId > 0) {
           if (editSectionId == sectionIdCount) {
             editSectionHeaderLevel = currentHeaderLevel;
-            sb.append(sectionMarkup).append(WikiToHTMLUtils.CRLF).append(WikiToHTMLUtils.CRLF);
+            sb.append(sectionMarkup).append(WikiToHTMLUtils.CRLF);
             canAppend = false;
           }
           if (sectionIdCount > editSectionId && currentHeaderLevel <= editSectionHeaderLevel) {

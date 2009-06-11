@@ -1171,7 +1171,7 @@
 			      <title>Featured Sponsor</title>
           	<showGetInvolved>false</showGetInvolved>
             <randomProject>
-              <value>category=services</value>
+              <value>category=sponsors</value>
               <value>publicOnly=true</value>
               <value>approvedOnly=true</value>
               <value>openProjectsOnly=true</value>

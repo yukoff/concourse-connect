@@ -15,13 +15,13 @@
             <b>Profile Name:</b> ${project.title?html}<br />
             <b>Description:</b> ${project.shortDescription?html}<br />
           </blockquote>
-          <p>To view your invitations, click on the following link:</p>
-            <a href="${link.invitations}" target="_blank" style="color:#3f86f8" >${link.invitations}</a><br />
           <#if optional.message?has_content>
             <blockquote>
               ${optional.message}
             </blockquote>
           </#if>
+          <p>To view your invitations, click on the following link:</p>
+          <p><a href="${link.invitations}" target="_blank" style="color:#3f86f8" >${link.invitations}</a></p>
           <p>For more information, and to review our privacy and security policies, please visit <a style="color:#3f86f8" href="${link.info}" target="_blank">${link.info}</a></p>
         </td>
       </tr>

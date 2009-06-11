@@ -6,7 +6,7 @@
       <tr>
         <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e3ebf8; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8 ">
           <p>Hello ${invite.name?html},</p>
-        <</td>
+        </td>
       </tr>
       <tr>
         <td style="padding:10px 20px; background:#fff; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8">
@@ -15,14 +15,16 @@
             <b>Profile Name:</b> ${project.title?html}<br />
             <b>Description:</b> ${project.shortDescription?html}<br />
           </blockquote>
-          <p>Using this web site, you will be able to review important project information.</p>
+          <#if optional.message?has_content>
+            <blockquote>
+              ${optional.message}
+            </blockquote>
+          </#if>
+          <p>Using this web site, you will be able to review important information.</p>
           <p>To accept the invitation, click on the following link for more information and to register:</p>
           <p><a href="${link.accept}" target="_blank">${link.accept}</a></p>
           <p>If you do not wish to join this profile, and would like to automatically notify ${user.nameFirstLast} with an automated message, click on the following link:</p>
-          <a style="color:#3f86f8" href="${link.reject}" target="_blank">${link.reject}</a>
-          <blockquote>
-          ${optional.message}
-          </blockquote>
+          <p><a style="color:#3f86f8" href="${link.reject}" target="_blank">${link.reject}</a></p>
           <p>For more information, and to review our privacy and security policies, please visit <a href="${link.info}" target="_blank">${link.info}</a></p>
         </td>
       </tr>

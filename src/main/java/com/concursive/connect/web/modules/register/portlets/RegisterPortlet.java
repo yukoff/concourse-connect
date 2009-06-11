@@ -46,6 +46,7 @@
 package com.concursive.connect.web.modules.register.portlets;
 
 import com.concursive.commons.codec.PrivateString;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
@@ -101,16 +102,19 @@ public class RegisterPortlet extends GenericPortlet {
       // Setup prefs
       ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
       boolean showLicense = "true".equals(prefs.get("LICENSE"));
+      boolean invitationOnly = false;
+      if ("false".equals(prefs.get("REGISTER"))) {
+        invitationOnly = true;
+      }
+
+      // Check Captcha status
       String captchaPassed = (String) request.getPortletSession().getAttribute("TE-REGISTER-CAPTCHA-PASSED");
       if (captchaPassed != null) {
         request.setAttribute(CAPTCHA_PASSED, captchaPassed);
       }
 
       // Step through the registration process
-      if (!"true".equals(prefs.get("REGISTER"))) {
-        // the application isn't allowing registrations
-        defaultView = VIEW_PAGE_CLOSED;
-      } else if (view == null) {
+      if (view == null) {
         // Show the form (user might have hit back button)
         RegisterBean bean = (RegisterBean) request.getPortletSession().getAttribute(REGISTER_BEAN);
         request.getPortletSession().removeAttribute(REGISTER_BEAN);
@@ -122,6 +126,9 @@ public class RegisterPortlet extends GenericPortlet {
         }
         request.setAttribute(REGISTER_BEAN, bean);
         request.setAttribute(SHOW_TERMS_AND_CONDITIONS, String.valueOf(showLicense));
+        if (invitationOnly && !StringUtils.hasText(bean.getData())) {
+          defaultView = VIEW_PAGE_CLOSED;
+        }
       } else if ("invited".equals(view)) {
         // Check for the coded data that was generated during the invite
         String codedData = PortalUtils.getPageParameter(request);
@@ -131,42 +138,40 @@ public class RegisterPortlet extends GenericPortlet {
           LOG.error("Key was not found.");
         }
         String data = PrivateString.decrypt(key, codedData);
-        // Process it into properties
-        int userId = -1;
-        int projectId = -1;
-        StringTokenizer st = new StringTokenizer(data, ",");
-        while (st.hasMoreTokens()) {
-          String pair = (st.nextToken());
-          StringTokenizer stPair = new StringTokenizer(pair, "=");
-          String param = stPair.nextToken();
-          String value = stPair.nextToken();
-          if ("id".equals(param)) {
-            userId = Integer.parseInt(value);
-          } else if ("pid".equals(param)) {
-            projectId = Integer.parseInt(value);
+        if (data != null) {
+          int userId = retrieveUserId(data);
+          // Auto-populate if user was invited
+          LOG.debug("Invited user: " + userId);
+          User thisUser = UserUtils.loadUser(userId);
+          RegisterBean bean = new RegisterBean();
+          bean.setEmail(thisUser.getEmail());
+          bean.setNameFirst(thisUser.getFirstName());
+          bean.setNameLast(thisUser.getLastName());
+          bean.setData(codedData);
+          request.setAttribute(REGISTER_BEAN, bean);
+        } else {
+          if (invitationOnly) {
+            defaultView = VIEW_PAGE_CLOSED;
           }
         }
-        // Auto-populate if user was invited
-        LOG.debug("Invited user: " + userId);
-        User thisUser = UserUtils.loadUser(userId);
-        RegisterBean bean = new RegisterBean();
-        bean.setEmail(thisUser.getEmail());
-        bean.setNameFirst(thisUser.getFirstName());
-        bean.setNameLast(thisUser.getLastName());
-        bean.setData(codedData);
-        request.setAttribute(REGISTER_BEAN, bean);
       } else if ("verify".equals(view)) {
         defaultView = VIEW_PAGE_VERIFY_DETAILS;
         // Process the bean for the request
         RegisterBean bean = (RegisterBean) request.getPortletSession().getAttribute(REGISTER_BEAN);
         request.getPortletSession().removeAttribute(REGISTER_BEAN);
         request.setAttribute(REGISTER_BEAN, bean);
+        if (invitationOnly && !StringUtils.hasText(bean.getData())) {
+          defaultView = VIEW_PAGE_CLOSED;
+        }
       } else if ("thanks".equals(view)) {
         defaultView = VIEW_PAGE_THANKS;
         RegisterBean bean = (RegisterBean) request.getPortletSession().getAttribute(REGISTER_BEAN);
         request.getPortletSession().removeAttribute(REGISTER_BEAN);
         request.getPortletSession().removeAttribute(CAPTCHA_PASSED);
         request.setAttribute(REGISTER_BEAN, bean);
+        if (invitationOnly && !StringUtils.hasText(bean.getData())) {
+          defaultView = VIEW_PAGE_CLOSED;
+        }
       }
 
       // JSP view
@@ -187,10 +192,11 @@ public class RegisterPortlet extends GenericPortlet {
 
     // Check to see if the application is allowing registration
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
-    if (!"true".equals(prefs.get("REGISTER"))) {
-      throw new PortletException("Registration is currently by invitation only");
-    }
     boolean showLicense = "true".equals(prefs.get("LICENSE"));
+    boolean invitationOnly = false;
+    if ("false".equals(prefs.get("REGISTER"))) {
+      invitationOnly = true;
+    }
 
     Connection db = PortalUtils.getConnection(request);
     String ctx = request.getContextPath();
@@ -202,6 +208,19 @@ public class RegisterPortlet extends GenericPortlet {
     RegisterBean bean = new RegisterBean();
     PortalUtils.populateObject(bean, request);
     request.getPortletSession().setAttribute(REGISTER_BEAN, bean);
+
+    // Check credentials
+    if (invitationOnly) {
+      if (!StringUtils.hasText(bean.getData())) {
+        throw new PortletException("Registration is currently by invitation only");
+      } else {
+        int userId = retrieveUserId(bean.getData());
+        User thisUser = UserUtils.loadUser(userId);
+        if (userId == -1 || thisUser == null) {
+          throw new PortletException("Registration is currently by invitation only");
+        }
+      }
+    }
 
     try {
       if ("form".equals(currentPage)) {
@@ -252,5 +271,24 @@ public class RegisterPortlet extends GenericPortlet {
     } catch (Exception e) {
       e.printStackTrace(System.out);
     }
+  }
+
+  private int retrieveUserId(String data) {
+    // Process it into properties
+    int userId = -1;
+    int projectId = -1;
+    StringTokenizer st = new StringTokenizer(data, ",");
+    while (st.hasMoreTokens()) {
+      String pair = (st.nextToken());
+      StringTokenizer stPair = new StringTokenizer(pair, "=");
+      String param = stPair.nextToken();
+      String value = stPair.nextToken();
+      if ("id".equals(param)) {
+        userId = Integer.parseInt(value);
+      } else if ("pid".equals(param)) {
+        projectId = Integer.parseInt(value);
+      }
+    }
+    return userId;
   }
 }

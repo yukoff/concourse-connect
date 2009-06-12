@@ -255,6 +255,7 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
           if (subCategory != null) {
             projects.setSubCategory1Id(subCategory.getId());
           }
+          projects.setApprovedOnly(true);
           projects.setOpenProjectsOnly(true);
           if (PortalUtils.canShowSensitiveData(request)) {
             // Use the most generic settings since this portlet is cached

@@ -107,6 +107,8 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
       projectListInfo.setItemsPerPage(Integer.parseInt(limitString));
       projectListInfo.setDefaultSort("entered", "DESC");
       projectList.setPagedListInfo(projectListInfo);
+      projectList.setApprovedOnly(true);
+      projectList.setOpenProjectsOnly(true);
       if (PortalUtils.canShowSensitiveData(request)) {
         // Use the most generic settings since this portlet is cached
         projectList.setForParticipant(Constants.TRUE);

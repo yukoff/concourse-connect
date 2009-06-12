@@ -50,8 +50,11 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.lamatek.tags.google.beans.USAddressGeocoder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 
@@ -62,6 +65,8 @@ import java.sql.Connection;
  * @created April 25, 2008
  */
 public class SetProjectGeocode extends ObjectHookComponent implements ComponentInterface {
+
+  private static Log LOG = LogFactory.getLog(SetProjectGeocode.class);
 
   public String getDescription() {
     return "Set the geocode value";
@@ -109,6 +114,11 @@ public class SetProjectGeocode extends ObjectHookComponent implements ComponentI
 
     boolean doUpdate = false;
     USAddressGeocoder geo = new USAddressGeocoder();
+    // Use Google if available
+    if (context.getApplicationPrefs().containsKey(ApplicationPrefs.GOOGLE_MAPS_API_KEY)) {
+      geo.setApi(USAddressGeocoder.GOOGLE);
+      geo.setApiKey(context.getApplicationPrefs().get(ApplicationPrefs.GOOGLE_MAPS_API_KEY));
+    }
     if (StringUtils.hasText(thisProject.getAddress())) {
       geo.setAddress(thisProject.getAddress());
     }
@@ -118,6 +128,9 @@ public class SetProjectGeocode extends ObjectHookComponent implements ComponentI
     if (StringUtils.hasText(thisProject.getState())) {
       geo.setState(thisProject.getState());
     }
+    if (StringUtils.hasText(thisProject.getCountry())) {
+      geo.setCountry(thisProject.getCountry());
+    }
     if (StringUtils.hasText(thisProject.getPostalCode())) {
       geo.setZip(thisProject.getPostalCode());
     }
@@ -126,12 +139,13 @@ public class SetProjectGeocode extends ObjectHookComponent implements ComponentI
       thisProject.setLatitude(geo.getLatitude());
       thisProject.setLongitude(geo.getLongitude());
       doUpdate = true;
+    } else {
+      LOG.warn(geo.getWarning());
     }
-
     if (!doUpdate) {
       return false;
     }
-
+    // Update the listing
     Connection db = null;
     try {
       db = getConnection(context);

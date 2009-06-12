@@ -119,6 +119,9 @@ user-specific.
    with a plain-text password in the [code] field.  This will be used in
    the client authentication code.
 
+INSERT INTO sync_client (type, version, enteredby, modifiedby, enabled, code)
+  VALUES ('API', '1.0', 1, 1, true, 'some-arbitrary-password');
+
 -[ sync_client record ]-----------------------------------------------------
 client_id  | 1
 type       | API
@@ -146,10 +149,9 @@ import com.concursive.commons.api.DataRecord;
 print("Starting transaction...");
 
 APIConnection conn = new APIConnection();
-conn.setUrl("http://127.0.0.1:8080");
+conn.setUrl("http://127.0.0.1:8080/connect");
 conn.setClientId(1);
-conn.setSystemId(1);
-conn.setCode("plaintext-code-in-database");
+conn.setCode("some-arbitrary-password");
 
 // Example which adds a project and a team member in one transaction
 

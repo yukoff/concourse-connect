@@ -164,7 +164,7 @@ public class ScheduledJobs {
     JobDetail thisJob = new JobDetail(
         jobName.getTextContent(),
         jobGroup.getTextContent(),
-        thisJobClass);
+        thisJobClass,false,true,false);
     try {
       Method initMethod = thisJobClass.getDeclaredMethod("init", schedulerContext.getClass());
       initMethod.invoke(null, schedulerContext);

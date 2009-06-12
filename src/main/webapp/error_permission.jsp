@@ -43,7 +43,11 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
-<font color='red'>An Error Has Occurred</font>
-<hr color="#BFBFBB" noshade>
-You do not have permission to perform the requested action.<br />
-You may need to login to perform the action.
+<h2>The action could not be performed.</h2>
+Not sure why, but it could be:<br />
+<ul>
+  <li>The information you are trying to access hasn't been approved yet
+or you do not have access to view it.</li>
+  <li>You do not have permission to perform the requested action.</li>
+  <li>If you are not logged in, then you may need to login to perform the action.</li>
+</ul>

@@ -115,7 +115,7 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
 
 
   /**
-   * Description of the Method
+   * This component sends email based on various notification parameters
    *
    * @param context Description of the Parameter
    * @return Description of the Return Value
@@ -143,6 +143,9 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
               LOG.error("A non-admin user was almost added to SendUserNotification");
             }
           }
+        }
+        if (LOG.isDebugEnabled() && userList.size() == 0) {
+          LOG.warn("No admins found");
         }
       }
 
@@ -194,6 +197,7 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
           }
         }
       }
+
       // Add user to notify
       int userToNotify = context.getParameterAsInt(USER_TO_NOTIFY);
       if (userToNotify > -1) {
@@ -201,6 +205,7 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
           users.add(userToNotify);
         }
       }
+
       // Go through users to
       String includeList = context.getParameter(NOTIFICATION_USERS_TO);
       if (includeList != null) {
@@ -246,6 +251,7 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
       }
       // Send the message(s)
       if (users.size() > 0 || emails.size() > 0) {
+        LOG.debug("Constructing mail object");
         SMTPMessage mail = SMTPMessageFactory.createSMTPMessageInstance(context.getApplicationPrefs());
         String from = StringUtils.toHtmlValue(context.getParameter(FROM));
         String fromId = StringUtils.toHtmlValue(context.getParameter(USERS_FROM));
@@ -268,9 +274,11 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
           if (email != null) {
             LOG.debug("Sending to user: " + email);
             mail.setTo(email);
-            mail.send();
+            int status = mail.send();
+            LOG.debug("Send status: " + status);
           }
         }
+
         // Send to each contact
         Iterator emailList = emails.iterator();
         while (emailList.hasNext()) {
@@ -278,9 +286,12 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
           if (email != null) {
             LOG.debug("Sending to contact: " + email);
             mail.setTo(email);
-            mail.send();
+            int status = mail.send();
+            LOG.debug("Send status: " + status);
           }
         }
+      } else {
+        LOG.warn("No users or emails to send notification to");
       }
       result = true;
     } catch (Exception e) {

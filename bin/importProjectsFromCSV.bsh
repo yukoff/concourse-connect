@@ -1,25 +1,28 @@
 #!/bin/sh                                                                                
-//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/log4j-1.2.15.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/concursive-commons-20090609.jar:target/lib/concourseconnect.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
 
-import com.zeroio.utils.APIConnection;
-import com.zeroio.utils.PhoneNumberUtils;
-import com.zeroio.transfer.DataRecord;
 import au.com.bytecode.opencsv.CSVReader;
-import com.zeroio.iteam.base.Project;
-import com.zeroio.iteam.base.ProjectCategory;
-import com.zeroio.utils.StringUtils;
+import com.concursive.commons.api.APIConnection;
+import com.concursive.commons.api.DataRecord;
+import com.concursive.commons.phone.PhoneNumberUtils;
+import com.concursive.commons.text.StringUtils;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import java.util.Date;
-com.zeroio.controller.UserList;
-com.zeroio.controller.User;
 
 if (bsh.args.length == 0) {
   print("Usage:");
-  print("  importProjects [filename] <url> <code> <offset> <limit>");
+  print("  importProjectsFromCSV [filename] <url> <code> <offset> <limit>");
   print("");
   print("The specified file will be sent to either 127.0.0.1 or the specified url");
   System.exit(0);
 }
 String filename = bsh.args[0].trim();
+File csvFile = new File(filename);
+if (!csvFile.exists()) {
+  print("File does not exist: " + filename);
+  System.exit(2);
+}
 
 String url = "http://127.0.0.1";
 String code = "";
@@ -40,301 +43,386 @@ if (bsh.args.length > 4) {
   print("Limit " + limit);
 }
 
-
 print("Starting transaction...");
 
 APIConnection conn = new APIConnection();
 conn.setUrl(url);
-//conn.setCode("098f6bcd4621d373cade4e832627b4f6");
+conn.setClientId(1);
 conn.setCode(code);
 
-
-// Example which adds a project and a team member in one transaction
-File csvFile = new File(filename);
 HashMap categoryNameIdMap = new HashMap();
 HashMap subCategory1NameIdMap = new HashMap();
+HashMap subCategory2NameIdMap = new HashMap();
 
-if (csvFile.exists()) {
-  System.out.println("sendCSVProjects-> loadFile... " + csvFile.toURL());
-  CSVReader reader = new CSVReader(new FileReader(csvFile));
-  String[] nextLine = reader.readNext();
-  //COMPANY_NAME, PRIMARY_ADDRESS, PRIMARY_CITY, PRIMARY_STATE, PRIMARY_ZIP_CODE, LATITUDE, LONGITUDE, PHONE
-  //"Some Project","23262 Meetinghouse Ln","Aldie","VA","20105","","20105","","","107","","","","","","","","","038973797","077643612"
-  // yahoo geo
-  //38.974462 -77.643201
-  // google map
-  //&sll=38.975225,-77.643363
-  //&latlng=38974431,-77643368
+System.out.println("Loading file... " + csvFile.toURL());
+CSVReader reader = new CSVReader(new FileReader(csvFile));
+String[] nextLine = reader.readNext();
+//COMPANY_NAME, PRIMARY_ADDRESS, PRIMARY_CITY, PRIMARY_STATE, PRIMARY_ZIP_CODE, LATITUDE, LONGITUDE, PHONE
+//"Some Project","23262 Meetinghouse Ln","Aldie","VA","20105","","20105","","","107","","","","","","","","","038973797","077643612"
+// yahoo geo
+//38.974462 -77.643201
+// google map
+//&sll=38.975225,-77.643363
+//&latlng=38974431,-77643368
 
-  int projectNameColumn = -1;
-  int projectAddressColumn = -1;
-  int projectCityColumn = -1;
-  int projectStateColumn = -1;
-  int projectZipColumn = -1;
-  int projectLatitudeColumn = -1;
-  int projectLongitudeColumn = -1;
-  int projectPhoneColumn = -1;
-  int projectCategoryColumn = -1;
-  int projectSubCategory1Column = -1;
-  int projectSubCategory2Column = -1;
-  int projectWebsiteColumn = -1;
+int projectNameColumn = -1;
+int projectAddressColumn = -1;
+int projectCityColumn = -1;
+int projectStateColumn = -1;
+int projectZipColumn = -1;
+int projectLatitudeColumn = -1;
+int projectLongitudeColumn = -1;
+int projectPhoneColumn = -1;
+int projectFaxColumn = -1;
+int projectCategoryColumn = -1;
+int projectSubCategory1Column = -1;
+int projectSubCategory2Column = -1;
+int projectWebsiteColumn = -1;
+int projectSICColumn = -1;
 
-  for (int i = 0; i < nextLine.length; i++) {
-    if (nextLine[i].equals("COMPANY_NAME")) {
-      projectNameColumn = i;
-    } else if (nextLine[i].equals("LATITUDE")) {
-      projectLatitudeColumn = i;
-    } else if (nextLine[i].equals("LONGITUDE")) {
-      projectLongitudeColumn = i;
-    } else if (nextLine[i].equals("PRIMARY_PHONE")) {
-      projectPhoneColumn = i;
-    } else if (nextLine[i].equals("PRIMARY_ADDRESS")) {
-      projectAddressColumn = i;
-    } else if (nextLine[i].equals("PRIMARY_CITY")) {
-      projectCityColumn = i;
-    } else if (nextLine[i].equals("PRIMARY_STATE")) {
-      projectStateColumn = i;
-    } else if (nextLine[i].equals("PRIMARY_ZIP_CODE")) {
-      projectZipColumn = i;
-    } else if (nextLine[i].equals("PROJECT_CATEGORY")){
-      projectCategoryColumn = i;
-    } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY1")){
-      projectSubCategory1Column = i;
-    } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY2")){
-      projectSubCategory2Column = i;
-    } else if (nextLine[i].equals("PROJECT_WEB_SITE")){
-      projectWebsiteColumn = i;
-    }
+for (int i = 0; i < nextLine.length; i++) {
+  if (nextLine[i].equals("COMPANY_NAME")) {
+    projectNameColumn = i;
+  } else if (nextLine[i].equals("LATITUDE")) {
+    projectLatitudeColumn = i;
+  } else if (nextLine[i].equals("LONGITUDE")) {
+    projectLongitudeColumn = i;
+  } else if (nextLine[i].equals("PRIMARY_PHONE")) {
+    projectPhoneColumn = i;
+  } else if (nextLine[i].equals("PRIMARY_FAX")) {
+    projectFaxColumn = i;
+  } else if (nextLine[i].equals("PRIMARY_ADDRESS")) {
+    projectAddressColumn = i;
+  } else if (nextLine[i].equals("PRIMARY_CITY")) {
+    projectCityColumn = i;
+  } else if (nextLine[i].equals("PRIMARY_STATE")) {
+    projectStateColumn = i;
+  } else if (nextLine[i].equals("PRIMARY_ZIP_CODE")) {
+    projectZipColumn = i;
+  } else if (nextLine[i].equals("PROJECT_CATEGORY")){
+    projectCategoryColumn = i;
+  } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY1")){
+    projectSubCategory1Column = i;
+  } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY2")){
+    projectSubCategory2Column = i;
+  } else if (nextLine[i].equals("PROJECT_WEB_SITE")){
+    projectWebsiteColumn = i;
+  } else if (nextLine[i].equals("SIC Code")) {
+     projectSICColumn = i;
+  }
+}
+
+if (projectNameColumn == -1) {
+  throw new Exception("CSV columns not found ()");
+}
+
+conn.setAutoCommit(true);
+// get the "modifiedBy" user...
+int primeUserId = -1;
+{
+  //Add Meta Info with fields required
+  ArrayList meta = new ArrayList();
+  meta.add("id");
+  conn.setTransactionMeta(meta);
+
+  // Find the user...
+  // Note that the user 'imports@connect321.com' must exist for this script to function...
+  DataRecord record = new DataRecord();
+  record.setName("userList");
+  record.setAction(DataRecord.SELECT);
+  record.addField("userId", "1");
+  conn.save(record);
+
+  if (conn.hasError()) {
+    System.out.println("Commit error: " + conn.getErrorText());
+    System.exit(2);
   }
 
-  if (projectNameColumn == -1) {
-    throw new Exception("CSV columns not found ()");
+  if (conn.getRecordCount() == 0) {
+    System.out.println("Could not find a valid user");
+    System.exit(2);
   }
 
-  conn.setAutoCommit(true);
-  // get the "modifiedBy" user...
-  int primeUserId = -1;
-  {
-    //Add Meta Info with fields required
-    ArrayList meta = new ArrayList();
-    meta.add("id");
-    conn.setTransactionMeta(meta);
+  int foundValue = Integer.parseInt(conn.getResponseValue("id"));
+  primeUserId=foundValue;
+  System.out.println("Using Prime UserId of : " + primeUserId);
+}
 
-    // Find the user...
-    // Note that the user 'imports@connect321.com' must exist for this script to function...
-    DataRecord record = new DataRecord();
-    record.setName("userList");
-    record.setAction(DataRecord.SELECT);
-    record.addField("username", "imports@connect321.com");
-    conn.save(record);
-
-    int foundValue = Integer.parseInt(conn.getResponseValue("id"));
-    primeUserId=foundValue;
-    System.out.println("Using Prime UserId of : " + primeUserId);
+// Insert the projects
+int count = skip;
+while ((nextLine = reader.readNext()) != null &&
+       (limit == 0 || (limit != 0 && count < limit))) {
+  if (skip > 0) {
+    --skip;
+    continue;
+  }
+  
+  ++count;
+  if (count % 100 == 0) {
+    System.out.println(count + "...");
   }
 
-  // Insert the projects
-  int count = 0;
-  while ((nextLine = reader.readNext()) != null &&
-         (limit == 0 || (limit != 0 && count < limit))) {
+  String projectNameValue = nextLine[projectNameColumn].trim();
+  String projectLatitudeValue = "";
+  if (projectLatitudeColumn != -1){
+    projectLatitudeValue = nextLine[projectLatitudeColumn].trim();
+  }
 
-    if (skip > 0) {
-      --skip;
-      continue;
+  String projectLongitudeValue = "";
+  if (projectLongitudeColumn != -1){
+    projectLongitudeValue = nextLine[projectLongitudeColumn].trim();
+  }
+
+  String projectPhoneValue = nextLine[projectPhoneColumn].trim();
+  String projectFaxValue = nextLine[projectFaxColumn].trim();
+  String projectAddressValue = nextLine[projectAddressColumn].trim();
+  String projectCityValue = nextLine[projectCityColumn].trim();
+  String projectStateValue = nextLine[projectStateColumn].trim();
+  String projectZipValue = nextLine[projectZipColumn].trim();
+  String projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
+
+  // normalizing website addresses
+  if (StringUtils.hasText(projectWebsiteValue)){
+    projectWebsiteValue = projectWebsiteValue.toLowerCase().trim();
+  }
+
+  // Fetching listing category (Businesses, Organizations, Groups, Events, etc.)
+  String projectCategoryValue = "Businesses";
+  if (projectCategoryColumn != -1){
+    projectCategoryValue = nextLine[projectCategoryColumn].trim();
+  }
+
+  // Use the subcategory to further define the category
+  String projectSubCategory1Value = null;
+  if (projectSubCategory1Column != -1){
+    projectSubCategory1Value = nextLine[projectSubCategory1Column].trim();
+  }
+
+  // Use the subcategory2 to further define the category, for now use as description
+  String projectSubCategory2Value = null;
+  if (projectSubCategory2Column != -1){
+    projectSubCategory2Value = nextLine[projectSubCategory2Column].trim();
+  }
+
+  // Determine if a business with the name, lat, long, phone already exists
+  if (!"".equals(projectNameValue.trim())) {
+    boolean exists = false;
+    int existingId = -1;
+    Project partialProject = null;
+
+    conn.setAutoCommit(true);
+
+    {
+      // See if the project exists and update it
+      ArrayList meta = new ArrayList();
+      meta.add("id");
+      meta.add("title");
+      meta.add("latitude");
+      meta.add("longitude");
+      meta.add("businessPhone");
+      conn.setTransactionMeta(meta);
+
+      DataRecord record = new DataRecord();
+      record.setName("projectList");
+      record.setAction(DataRecord.SELECT);
+      // Set the filters to query by
+      record.addField("title", projectNameValue);
+      conn.save(record);
+
+      // In the meta section only a few properties were specified and will exist
+      ArrayList projectObjects = conn.getRecords("com.concursive.connect.web.modules.profile.dao.Project");
+      for (Object projectObject : projectObjects) {
+        partialProject = (Project) projectObject;
+        if ((partialProject.getBusinessPhone() != null) &&
+           (partialProject.getBusinessPhone().equals(PhoneNumberUtils.format(projectPhoneValue)))){
+          existingId = partialProject.getId();
+          break;
+        }
+      }
     }
 
-    ++count;
-    if (count % 100 == 0) {
-      System.out.println(count + "...");
+    // Handle top-level category
+    if (!StringUtils.hasText(projectCategoryValue)) {
+      print("A category must be specified for all records");
+      System.exit(2);
     }
 
-    String projectNameValue = nextLine[projectNameColumn].trim();
-    String projectLatitudeValue = "";
-    if (projectLatitudeColumn != -1){
-	    projectLatitudeValue = nextLine[projectLatitudeColumn].trim();
-	  }
 
-	  String projectLongitudeValue = "";
-    if (projectLongitudeColumn != -1){
-	    projectLongitudeValue = nextLine[projectLongitudeColumn].trim();
-    }
-
-    String projectPhoneValue = nextLine[projectPhoneColumn].trim();
-    String projectAddressValue = nextLine[projectAddressColumn].trim();
-    String projectCityValue = nextLine[projectCityColumn].trim();
-    String projectStateValue = nextLine[projectStateColumn].trim();
-    String projectZipValue = nextLine[projectZipColumn].trim();
-    String projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
-    
-    // normalizing phone numbers
-    if (StringUtils.hasText(projectPhoneValue)){
-    	if (projectPhoneValue.trim().length() == 8){
-			  String projectPhoneValue = "757-" + projectPhoneValue;
-		  }
-    }
-
-	  // normalizing website addresses
-    if (StringUtils.hasText(projectWebsiteValue)){
-      projectWebsiteValue = projectWebsiteValue.toLowerCase().trim();
-    }
-
-    // Fetching listing category (Businesses, Organizations, Groups, Events, etc.)
-    String projectCategoryValue = "Businesses"; 
-    if (projectCategoryColumn != -1){
-    	projectCategoryValue = nextLine[projectCategoryColumn].trim();
-    }
-    
-    // Use the subcategory to further define the category
-    String projectSubCategory1Value = null;
-    if (projectSubCategory1Column != -1){
-    	projectSubCategory1Value = nextLine[projectSubCategory1Column].trim();
-    }
-
-    // Use the subcategory2 to further define the category, for now use as description
-    String projectSubCategory2Value = null;
-    if (projectSubCategory2Column != -1){
-    	projectSubCategory2Value = nextLine[projectSubCategory2Column].trim();
-    }
-
-    // Determine if a business with the name, lat, long, phone already exists
-    if (!"".equals(projectNameValue.trim())) {
-      boolean exists = false;
-      int existingId = -1;
-      Project partialProject = null;
-
+	  // fetch id for the category value only if it has not been fetched already.
+	  int existingCategoryId = -1;
+    if (!categoryNameIdMap.containsKey(projectCategoryValue)) {
       conn.setAutoCommit(true);
-      {
-        // See if the project exists and update it
+      //Get project category id
+      ArrayList meta = new ArrayList();
+      meta.add("id");
+      meta.add("categoryName");
+      conn.setTransactionMeta(meta);
+
+      DataRecord record = new DataRecord();
+      record.setName("projectCategoryList");
+      record.setAction(DataRecord.SELECT);
+      // Set the filters to query by
+      record.addField("categoryName", projectCategoryValue);
+      conn.save(record);
+
+      if (conn.getRecordCount() == 0) {
+        print("Category does not exist: " + projectCategoryValue);
+        System.exit(2);
+      }
+
+      // In the meta section only a few properties were specified and will exist
+      ArrayList projectCategoryObjects = conn.getRecords("com.concursive.connect.web.modules.profile.dao.ProjectCategory");
+      for (Object projectCategoryObject : projectCategoryObjects) {
+        ProjectCategory partialProjectCategory = (ProjectCategory) projectCategoryObject;
+        existingCategoryId = partialProjectCategory.getId();
+      }
+      categoryNameIdMap.put(projectCategoryValue, new Integer(existingCategoryId));
+      print("Cached: " + projectCategoryValue + " (" + existingCategoryId + ")");
+    }
+    existingCategoryId = ((Integer)categoryNameIdMap.get(projectCategoryValue)).intValue();
+
+
+    // Now that a valid parent category exists, get the subcategory id
+    int existingSubCategory1Id = -1;
+    if (StringUtils.hasText(projectSubCategory1Value)) {
+      if (!subCategory1NameIdMap.containsKey(existingCategoryId + projectSubCategory1Value)) {
+        conn.setAutoCommit(true);
+        //Get project category id
         ArrayList meta = new ArrayList();
         meta.add("id");
-        meta.add("title");
-        meta.add("latitude");
-        meta.add("longitude");
-        meta.add("businessPhone");
+        meta.add("categoryName");
         conn.setTransactionMeta(meta);
 
         DataRecord record = new DataRecord();
-        record.setName("projectList");
+        record.setName("projectCategoryList");
         record.setAction(DataRecord.SELECT);
         // Set the filters to query by
-        record.addField("title", projectNameValue);
+        record.addField("parentCategoryId", existingCategoryId);
+        record.addField("categoryName", projectSubCategory1Value);
+
         conn.save(record);
 
         // In the meta section only a few properties were specified and will exist
-        ArrayList projectObjects = conn.getRecords("com.zeroio.iteam.base.Project");
-        for (Object projectObject : projectObjects) {
-          partialProject = (Project) projectObject;
-          //System.out.println("Checking Project : " + partialProject.getTitle());
-          //System.out.println("Phone            : " + partialProject.getBusinessPhone() + "::" + PhoneNumberUtils.format(projectPhoneValue));
-          if ((partialProject.getBusinessPhone() != null) &&
-             (partialProject.getBusinessPhone().equals(PhoneNumberUtils.format(projectPhoneValue)))){
-            //System.out.println("found a phone match: " +  partialProject.getBusinessPhone() + "::" + projectPhoneValue);
-            //System.out.println("Business Name: " +  partialProject.getTitle());
-   	        existingId = partialProject.getId();
-          	break;
-          }
+        ArrayList projectCategoryObjects = conn.getRecords("com.concursive.connect.web.modules.profile.dao.ProjectCategory");
+        for (Object projectCategoryObject : projectCategoryObjects) {
+          ProjectCategory partialProjectCategory = (ProjectCategory) projectCategoryObject;
+          existingSubCategory1Id = partialProjectCategory.getId();
         }
-      }
-
-    // Handle top-level category
-	  int existingCategoryId = -1;
-	  int existingSubCategory1Id = -1;
-	  // fetch id for the category value only if it has not been fetched already.
-	  if (StringUtils.hasText(projectCategoryValue)) {
-	    if (!categoryNameIdMap.containsKey(projectCategoryValue)) {
-	      conn.setAutoCommit(true);
-        //Get project category id
-        //System.out.println("projectCategoryValue " + projectCategoryValue);
+        if (existingSubCategory1Id == -1) {
+          // Get the new id back
           ArrayList meta = new ArrayList();
           meta.add("id");
-          meta.add("categoryName");
           conn.setTransactionMeta(meta);
-
+          // Insert the new subcategory
           DataRecord record = new DataRecord();
-          record.setName("projectCategoryList");
-          record.setAction(DataRecord.SELECT);
-          // Set the filters to query by
-          record.addField("categoryName", projectCategoryValue);
-          conn.save(record);
-
-          // In the meta section only a few properties were specified and will exist
-          ArrayList projectCategoryObjects = conn.getRecords("com.zeroio.iteam.base.ProjectCategory");
-          for (Object projectCategoryObject : projectCategoryObjects) {
-            ProjectCategory partialProjectCategory = (ProjectCategory) projectCategoryObject;
-            existingCategoryId = partialProjectCategory.getId();
-          }
-          categoryNameIdMap.put(projectCategoryValue, new Integer(existingCategoryId));
-      }
-	    existingCategoryId = ((Integer)categoryNameIdMap.get(projectCategoryValue)).intValue();
-	    
-      // Now that a valid parent category exists, get the subcategory id
-	    if (StringUtils.hasText(projectSubCategory1Value)) {
-	      if (!subCategory1NameIdMap.containsKey(existingCategoryId + projectSubCategory1Value)) {
-          conn.setAutoCommit(true);
-        //Get project category id
-          ArrayList meta = new ArrayList();
-          meta.add("id");
-          meta.add("categoryName");
-          conn.setTransactionMeta(meta);
-
-          DataRecord record = new DataRecord();
-          record.setName("projectCategoryList");
-          record.setAction(DataRecord.SELECT);
-          // Set the filters to query by
+          record.setName("projectCategory");
+          record.setAction(DataRecord.INSERT);
           record.addField("parentCategoryId", existingCategoryId);
-          record.addField("categoryName", projectSubCategory1Value);
-
+          record.addField("description", projectSubCategory1Value);
+          record.addField("enabled", true);
+          record.addField("level", 10);
           conn.save(record);
-
-          // In the meta section only a few properties were specified and will exist
-          ArrayList projectCategoryObjects = conn.getRecords("com.zeroio.iteam.base.ProjectCategory");
-          for (Object projectCategoryObject : projectCategoryObjects) {
-            ProjectCategory partialProjectCategory = (ProjectCategory) projectCategoryObject;
-            existingSubCategory1Id = partialProjectCategory.getId();
+          if (conn.hasError()) {
+            System.out.println("Commit error: " + conn.getErrorText());
+            System.exit(2);
           }
-          subCategory1NameIdMap.put(existingCategoryId + projectSubCategory1Value, new Integer(existingSubCategory1Id));
+          existingSubCategory1Id = Integer.parseInt(conn.getResponseValue("id"));
+          print("  Cached: " + projectSubCategory1Value + " (" + existingSubCategory1Id + ")");
         }
-        existingSubCategory1Id = ((Integer)subCategory1NameIdMap.get(existingCategoryId + projectSubCategory1Value)).intValue();
+        subCategory1NameIdMap.put(existingCategoryId + projectSubCategory1Value, new Integer(existingSubCategory1Id));
       }
-	  }
+      existingSubCategory1Id = ((Integer)subCategory1NameIdMap.get(existingCategoryId + projectSubCategory1Value)).intValue();
+    }
 
-      if (existingId > -1) {
-        System.out.println("Updating record..." + count);
-        // Update project
+    // Now that a valid parent category exists, get the subcategory id
+    int existingSubCategory2Id = -1;
+    if (StringUtils.hasText(projectSubCategory2Value)) {
+      if (!subCategory2NameIdMap.containsKey(existingCategoryId + projectSubCategory1Value + projectSubCategory2Value)) {
+        conn.setAutoCommit(true);
+        //Get project category id
+        ArrayList meta = new ArrayList();
+        meta.add("id");
+        meta.add("categoryName");
+        conn.setTransactionMeta(meta);
+
         DataRecord record = new DataRecord();
-        record.setName("project");
-        record.setAction(DataRecord.UPDATE);
-        record.addField("id", existingId);
-        record.addField("categoryId", existingCategoryId);
-        if (existingSubCategory1Id > -1) {
-          record.addField("subCategory1Id", existingSubCategory1Id);
-        }
-        record.addField("title", projectNameValue);
-        if (StringUtils.hasText(projectSubCategory2Value)) {
-          record.addField("shortDescription", projectSubCategory2Value);
-        } else {
-          record.addField("shortDescription", projectNameValue);
-        }
-        //TODO: Get current date
-        //record.addField("requestDate", "2008-08-22 00:00:00 -0400");
-        record.addField("addressLine1", projectAddressValue);
-        record.addField("city", projectCityValue);
-        record.addField("state", projectStateValue);
-        record.addField("postalCode", projectZipValue);
-        record.addField("latitude", projectLatitudeValue);
-        record.addField("longitude", projectLongitudeValue);
-        record.addField("businessPhone", projectPhoneValue);
-        record.addField("enteredBy", primeUserId);
-        record.addField("modifiedBy", primeUserId);
-        record.addField("groupId", 1);
-        conn.save(record);
-      }
+        record.setName("projectCategoryList");
+        record.setAction(DataRecord.SELECT);
+        // Set the filters to query by
+        record.addField("parentCategoryId", existingSubCategory1Id);
+        record.addField("categoryName", projectSubCategory2Value);
 
-      if (existingId == -1) {
-        System.out.println("Inserting record..." + count);
-		//System.out.println(projectWebsiteValue);
-        conn.setAutoCommit(false);
-        {
+        conn.save(record);
+
+        // In the meta section only a few properties were specified and will exist
+        ArrayList projectCategoryObjects = conn.getRecords("com.concursive.connect.web.modules.profile.dao.ProjectCategory");
+        for (Object projectCategoryObject : projectCategoryObjects) {
+          ProjectCategory partialProjectCategory = (ProjectCategory) projectCategoryObject;
+          existingSubCategory2Id = partialProjectCategory.getId();
+        }
+        if (existingSubCategory2Id == -1) {
+          // Get the new id back
+          ArrayList meta = new ArrayList();
+          meta.add("id");
+          conn.setTransactionMeta(meta);
+          // Insert the new subcategory
+          DataRecord record = new DataRecord();
+          record.setName("projectCategory");
+          record.setAction(DataRecord.INSERT);
+          record.addField("parentCategoryId", projectSubCategory1Value);
+          record.addField("description", projectSubCategory2Value);
+          record.addField("enabled", true);
+          record.addField("level", 10);
+          conn.save(record);
+          if (conn.hasError()) {
+            System.out.println("Commit error: " + conn.getErrorText());
+            System.exit(2);
+          }
+          existingSubCategory2Id = Integer.parseInt(conn.getResponseValue("id"));
+          print("  Cached: " + projectSubCategory2Value + " (" + existingSubCategory2Id + ")");
+        }
+        subCategory2NameIdMap.put(existingCategoryId + projectSubCategory1Value + projectSubCategory2Value, new Integer(existingSubCategory2Id));
+      }
+      existingSubCategory2Id = ((Integer)subCategory2NameIdMap.get(existingCategoryId + projectSubCategory1Value + projectSubCategory2Value)).intValue();
+    }
+
+
+    if (existingId > -1) {
+      System.out.println("Updating record..." + count);
+      // Update project
+      DataRecord record = new DataRecord();
+      record.setName("project");
+      record.setAction(DataRecord.UPDATE);
+      record.addField("id", existingId);
+      record.addField("categoryId", existingCategoryId);
+      if (existingSubCategory1Id > -1) {
+        record.addField("subCategory1Id", existingSubCategory1Id);
+      }
+      record.addField("title", projectNameValue);
+      if (StringUtils.hasText(projectSubCategory2Value)) {
+        record.addField("shortDescription", projectSubCategory2Value);
+      } else {
+        record.addField("shortDescription", projectNameValue);
+      }
+      record.addField("addressLine1", projectAddressValue);
+      record.addField("city", projectCityValue);
+      record.addField("state", projectStateValue);
+      record.addField("postalCode", projectZipValue);
+      record.addField("country", "UNITED STATES");
+      record.addField("latitude", projectLatitudeValue);
+      record.addField("longitude", projectLongitudeValue);
+      record.addField("businessPhone", projectPhoneValue);
+      record.addField("businessFax", projectFaxValue);
+      record.addField("enteredBy", primeUserId);
+      record.addField("modifiedBy", primeUserId);
+      record.addField("groupId", 1);
+      conn.save(record);
+    }
+
+    if (existingId == -1) {
+      System.out.println("Inserting record..." + count);
+      conn.setAutoCommit(false);
+      {
         // Insert a new project
         DataRecord record = new DataRecord();
         record.setName("project");
@@ -344,23 +432,27 @@ if (csvFile.exists()) {
         if (existingSubCategory1Id > -1) {
           record.addField("subCategory1Id", existingSubCategory1Id);
         }
+        if (existingSubCategory2Id > -1) {
+          record.addField("subCategory2Id", existingSubCategory2Id);
+        }
         record.addField("title", projectNameValue);
         if (StringUtils.hasText(projectSubCategory2Value)) {
           record.addField("shortDescription", projectSubCategory2Value);
         } else {
           record.addField("shortDescription", projectNameValue);
         }
-        //TODO: Get current date
-        //record.addField("requestDate", "2008-08-22 00:00:00 -0400");
+        record.addField("budgetCurrency", "USD");
         record.addField("source", "imported");
         record.addField("approved", "true");
         record.addField("addressLine1", projectAddressValue);
         record.addField("city", projectCityValue);
         record.addField("state", projectStateValue);
         record.addField("postalCode", projectZipValue);
+        record.addField("country", "UNITED STATES");
         record.addField("latitude", projectLatitudeValue);
         record.addField("longitude", projectLongitudeValue);
         record.addField("businessPhone", projectPhoneValue);
+        record.addField("businessFax", projectFaxValue);
         record.addField("enteredBy", primeUserId);
         record.addField("modifiedBy", primeUserId);
         record.addField("groupId", 1);
@@ -372,47 +464,50 @@ if (csvFile.exists()) {
         record.addField("allowParticipants", "true");
         record.addField("updateMembershipRequired", "true");
         record.addField("membershipRequired", "false");
+        // Features
+        record.addField("features.showProfile", "true");
+        record.addField("features.showNews", "true");
+        record.addField("features.showWiki", "true");
+        record.addField("features.showDiscussion", "true");
+        record.addField("features.showCalendar", "true");
+        record.addField("features.showReviews", "true");
+        record.addField("features.showAds", "true");
+        record.addField("features.showDocuments", "true");
+        record.addField("features.showLists", "true");
+        record.addField("features.showTeam", "true");
+        record.addField("features.showMessages", "true");
+        record.addField("features.showBadges", "false");
         conn.save(record);
-        }
+      }
 
-        {
+      {
         // Update the features
         DataRecord record = new DataRecord();
         record.setName("projectFeatures");
         record.setAction(DataRecord.UPDATE);
         record.addField("id", "$C{project.id}");
 
-        //Setting tab preferences
-        record.addField("showProfile", "true");
-        record.addField("showNews", "true");
-        record.addField("labelNews", "Blog");
-        record.addField("showWiki", "true");
-        record.addField("showDiscussion", "true");
-        record.addField("showCalendar", "true");
-        record.addField("showReviews", "true");
-        record.addField("showAds", "true");
+        // Setting tab preferences (cannot be done with insert)
+        record.addField("labelBlog", "Blog");
         record.addField("labelAds", "Promotions");
-        record.addField("showDocuments", "true");
-        record.addField("showLists", "true");
-        record.addField("showTeam", "true");
         record.addField("labelTeam", "Members");
-        record.addField("showBadges", "false");
+        record.addField("labelLists", "Lists");
+        record.addField("labelDiscussion", "Discussion");
+        record.addField("labelDocuments", "Documents");
+        record.addField("labelCalendar", "Calendar");
+        record.addField("labelWiki", "Wiki");
+        record.addField("labelReviews", "Reviews");
         record.addField("modifiedBy", primeUserId);
         record.addField("modified", new Date());
 
         conn.save(record);
-        }
-        conn.commit();
-
       }
+      conn.commit();
+    }
 
-      if (conn.hasError()) {
-        System.out.println("Commit error: " + conn.getErrorText());
-        System.exit(2);
-      }
-
+    if (conn.hasError()) {
+      System.out.println("Commit error: " + conn.getErrorText());
+      System.exit(2);
     }
   }
-} else {
-  System.out.println("sendCSVProjects-> file does not exist: " + filename);
 }

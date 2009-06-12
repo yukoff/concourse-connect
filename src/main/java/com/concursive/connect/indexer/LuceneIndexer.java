@@ -290,6 +290,9 @@ public class LuceneIndexer implements IIndexerService {
   private boolean indexDeleteItem(IndexWriter writer, Object item, String deleteTerm) throws IOException {
     // Determine the object's indexer key term for deletion
     Indexer objectIndexer = (Indexer) getObjectIndexer(item.getClass().getName() + "Indexer");
+    if (objectIndexer == null) {
+      return false;
+    }
     // Delete the previous item from the index
     Object o = null;
     try {
@@ -376,7 +379,7 @@ public class LuceneIndexer implements IIndexerService {
     try {
       Indexer objectIndexer = (Indexer) getObjectIndexer(item.getClass().getName() + "Indexer");
       if (objectIndexer == null) {
-        throw new NullPointerException("ObjectIndexer is null for: " + item.getClass().getName() + "Indexer");
+        return false;
       }
       // Add the item to the index
       Object o = null;

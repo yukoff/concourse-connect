@@ -1919,7 +1919,7 @@ h3.eventName span em {
 
 /* @group Wiki Stuff */
 .articleBody img {
-  max-width: 475px!important
+  max-width: 95%!important
 }
 
 .external {

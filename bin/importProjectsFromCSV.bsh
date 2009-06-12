@@ -369,7 +369,7 @@ while ((nextLine = reader.readNext()) != null &&
           DataRecord record = new DataRecord();
           record.setName("projectCategory");
           record.setAction(DataRecord.INSERT);
-          record.addField("parentCategoryId", projectSubCategory1Value);
+          record.addField("parentCategoryId", existingSubCategory1Id);
           record.addField("description", projectSubCategory2Value);
           record.addField("enabled", true);
           record.addField("level", 10);

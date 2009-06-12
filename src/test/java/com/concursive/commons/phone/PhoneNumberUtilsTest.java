@@ -51,9 +51,6 @@ import junit.framework.TestCase;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.concursive.commons.phone.PhoneNumberBean;
-import com.concursive.commons.phone.PhoneNumberUtils;
-
 /**
  * Tests formatting phone numbers
  *

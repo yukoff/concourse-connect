@@ -449,40 +449,83 @@ ${this.message:html}<br />
     <!-- New Listing Notification -->
     <process name="concursive.project.notify.new" description="New listing notification" startId="1">
       <components>
+        <!-- Make sure it's a non-user profile -->
+        <component id="1" parent="0" class="com.concursive.commons.workflow.components.RunScript" description="Is non-user profile?">
+          <parameters>
+            <parameter name="runscript.script"><![CDATA[
+              import com.concursive.commons.workflow.components.RunScriptException;
+              import com.concursive.commons.workflow.ComponentContext;
+              import com.concursive.connect.web.modules.profile.dao.Project;
+
+              Project thisProject = (Project) context.getThisObject();
+              if (thisProject.getProfile()) {
+                throw new RunScriptException("Listing is a user's profile");
+              }
+              ]]>
+            </parameter>
+          </parameters>
+        </component>
         <!-- Prepare details for the creator of the listing -->
-        <component id="1" parent="0"  class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
           <parameters>
             <parameter name="userId" value="${this.enteredBy}" />
           </parameters>
         </component>
+        <component id="3" parent="2" if="true" class="com.concursive.commons.workflow.components.RunScript" description="Is listing claimed?">
+          <parameters>
+            <parameter name="runscript.script"><![CDATA[
+              import com.concursive.commons.workflow.components.RunScriptException;
+              import com.concursive.commons.workflow.ComponentContext;
+              import com.concursive.connect.web.modules.profile.dao.Project;
+
+              Project thisProject = (Project) context.getThisObject();
+              if (thisProject.getOwner() == -1) {
+                throw new RunScriptException("Listing is not claimed");
+              }
+              ]]>
+            </parameter>
+          </parameters>
+        </component>
         <!-- Send to admin -->
-        <!-- NOTE: Freemarker conditions are not supported, so the conditions are commented -->
-        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+        <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
           <parameters>
             <parameter name="notification.addAdmins" value="true"/>
-            <parameter name="notification.subject">New Listing: ${this.title} (${this.category.description?html})</parameter>
-            <parameter name="notification.body">
-              <![CDATA[
+            <parameter name="notification.subject">New listing added and claimed for approval: ${this.title} (${this.category.description?html})</parameter>
+            <parameter name="notification.body"><![CDATA[
                 <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
+                      <strong>The listing information needs to be confirmed, then approved, then forwarded for follow-up.</strong><br />
                       ${this.title?html} (${this.category.description?html})<br />
-                      <!--<#if (this.owner > -1)>
-                        ** The user claimed this listing
-                      </#if>
-                      -->
-                      Claim status: ${this.owner}<br />
                       <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
                       <br />
                       Created by ${userInfo.nameFirstLast?html}<br />
-                      <!--<#if userInfo.company?has_content>-->
-                        ${userInfo.company?html}<br />
-                      <!--</#if>-->
-                      ${userInfo.email}<br />
-                      <!--<#if userInfo.profileProject.location?has_content>-->
-                        ${userInfo.profileProject.location?html}
-                      <!--</#if>-->
                       <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
+                      ${userInfo.email}<br />
+                      ${userInfo.profileProject.location?html}
+                    </td>
+                  </tr>
+                </table>
+              ]]>
+            </parameter>
+          </parameters>
+        </component>
+        <component id="5" parent="3" if="false" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addAdmins" value="true"/>
+            <parameter name="notification.subject">New listing for approval: ${this.title} (${this.category.description?html})</parameter>
+            <parameter name="notification.body"><![CDATA[
+                <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
+                  <tr>
+                    <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
+                      <strong>The listing information needs to be confirmed and then approved.</strong><br />
+                      ${this.title?html} (${this.category.description?html})<br />
+                      <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
+                      <br />
+                      Created by ${userInfo.nameFirstLast?html}<br />
+                      <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
+                      ${userInfo.email}<br />
+                      ${userInfo.profileProject.location?html}
                     </td>
                   </tr>
                 </table>
@@ -497,7 +540,7 @@ ${this.message:html}<br />
     <process name="concursive.project.notify.claim" description="Claimed listing notification" startId="1">
       <components>
         <!-- See if the project was just claimed -->
-        <component id="1" parent="0"  class="com.concursive.commons.workflow.components.RunScript">
+        <component id="1" parent="0"  class="com.concursive.commons.workflow.components.RunScript" description="Is listing just claimed?">
           <parameters>
             <parameter name="runscript.script"><![CDATA[
               import com.concursive.commons.workflow.components.RunScriptException;
@@ -526,25 +569,19 @@ ${this.message:html}<br />
         <component id="3" parent="2" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
           <parameters>
             <parameter name="notification.addAdmins" value="true"/>
-            <parameter name="notification.subject">Claimed Listing: ${this.title} (${this.category.description?html})</parameter>
-            <parameter name="notification.body">
-              <![CDATA[
+            <parameter name="notification.subject">Existing listing claimed: ${this.title} (${this.category.description?html})</parameter>
+            <parameter name="notification.body"><![CDATA[
                 <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
-                      The following listing was just claimed:<br />
+                      <strong>This listing was just claimed and needs follow-up.</strong><br />
                       ${this.title?html} (${this.category.description?html})<br />
                       <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
                       <br />
                       Claimed by ${userInfo.nameFirstLast?html}<br />
-                      <!--<#if userInfo.company?has_content>-->
-                        ${userInfo.company?html}<br />
-                      <!--</#if>-->
-                      ${userInfo.email}<br />
-                      <!--<#if userInfo.profileProject.location?has_content>-->
-                        ${userInfo.profileProject.location?html}
-                      <!--</#if>-->
                       <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
+                      ${userInfo.email}<br />
+                      ${userInfo.profileProject.location?html}
                     </td>
                   </tr>
                 </table>
@@ -653,8 +690,7 @@ ${this.message:html}<br />
           <parameters>
             <parameter name="notification.userToNotify" value="${this.userId}"/>
             <parameter name="notification.subject">Request to become member from ${project.title}</parameter>
-            <parameter name="notification.body">
-              <![CDATA[
+            <parameter name="notification.body"><![CDATA[
                 <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">

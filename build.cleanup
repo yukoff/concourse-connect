@@ -133,3 +133,7 @@ WEB-INF/lib/concursive-commons-20090521.jar
 
 # 2009-06-10
 WEB-INF/lib/googlemaps-0.98c.jar
+
+# 2009-06-12
+WEB-INF/lib/concursive-commons-20090609.jar
+

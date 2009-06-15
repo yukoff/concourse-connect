@@ -54,7 +54,7 @@
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <div class="portlet-message-status">
   <p><c:out value="${message}"/></p>
-  <c:if test="${!empty project}">
+  <c:if test="${!empty project && project.approved}">
     <p><a href="${ctx}/show/${project.uniqueId}">Go to permanent profile page...</a></p>
   </c:if>
 </div>

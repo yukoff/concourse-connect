@@ -3246,7 +3246,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="button-list-vertical-" isSensitive="true">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list " isSensitive="true">
             <title>Filter by Category</title>
             <showSubcategories>true</showSubcategories>
             <hasMoreURL>/page/categories/${category}</hasMoreURL>
@@ -3272,7 +3272,7 @@
             </portlet-events>
           </portlet>
         </column>
-        <column width="80%" class="main">
+        <column width="auto" class="main">
           <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list " isSensitive="true">
             <autoSetPageTitle>true</autoSetPageTitle>
             <title>Browse ${category}</title>
@@ -3286,6 +3286,13 @@
               <generates-request-data>requestGeneratedTitle</generates-request-data>
               <generates-request-data>requestGeneratedCategory</generates-request-data>
             </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list " cache="60" isSensitive="true">
+            <title>Filter by Category</title>
+            <showSubcategories>true</showSubcategories>
+            <hasMoreURL>/page/categories/${category}</hasMoreURL>
           </portlet>
         </column>
       </row>

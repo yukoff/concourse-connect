@@ -48,6 +48,7 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--@elvariable id="labelMap" type="java.util.HashMap"--%>
+<%--@elvariable id="claim" type="com.concursive.connect.web.modules.profile.beans.ProjectFormBean"--%>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>

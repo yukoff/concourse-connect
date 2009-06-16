@@ -397,6 +397,14 @@ public class ProjectFormBean extends GenericBean {
     this.estimatedCloseDate = DatabaseUtils.parseTimestamp(tmp);
   }
 
+  public Project getProject() {
+    if (projectId > -1) {
+      return ProjectUtils.loadProject(projectId);
+    } else {
+      return null;
+    }
+  }
+
 
   public int saveProjectOwner(Connection db) throws SQLException {
     if (userId <= 0) {

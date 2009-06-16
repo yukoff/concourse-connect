@@ -63,9 +63,16 @@
         -->
         <action type="insert" process="concursive.project.notify.new"/>
         <action type="update" process="concursive.project.geocode"/>
-        <action type="update" process="concursive.project.notify.claim"/>
         <!--
         <action type="delete" process="concursive.project.deleteProjectFromSuite"/>
+        -->
+      </actions>
+    </hook>
+    <hook class="com.concursive.connect.web.modules.profile.beans.ProjectFormBean">
+      <actions>
+        <action type="insert" process="concursive.project.notify.claim"/>
+        <!--
+        <action type="insert" process="concursive.project.claimed.updateAsAccountInSuite"/>
         -->
       </actions>
     </hook>
@@ -110,13 +117,6 @@
         <action type="insert" process="concursive.issueReply.insert"/>
       </actions>
     </hook>
-    <!--
-    <hook class="com.concursive.connect.web.modules.profile.beans.ProjectFormBean">
-      <actions>
-        <action type="insert" process="concursive.project.claimed.updateAsAccountInSuite"/>
-      </actions>
-    </hook>
-    -->
     <hook class="com.concursive.connect.web.modules.members.dao.TeamMember">
       <actions>
         <!--
@@ -496,13 +496,19 @@ ${this.message:html}<br />
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>The listing information needs to be confirmed, then approved, then forwarded for follow-up.</strong><br />
-                      ${this.title?html} (${this.category.description?html})<br />
-                      <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
+                      <blockquote>
+                        ${this.title?html} (${this.category.description?html}) *claimed*<br />
+                        <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
+                        Listing Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br />
+                        Listing Location: ${this.location:html} &nbsp; ${this.country:html}<br />
+                      </blockquote>
                       <br />
-                      Created by ${userInfo.nameFirstLast?html}<br />
-                      <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
-                      ${userInfo.email}<br />
-                      ${userInfo.profileProject.location?html}
+                      <blockquote>
+                        Created by ${userInfo.nameFirstLast?html}<br />
+                        <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
+                        ${userInfo.email}<br />
+                        ${userInfo.profileProject.location?html}
+                      </blockquote>
                     </td>
                   </tr>
                 </table>
@@ -519,13 +525,19 @@ ${this.message:html}<br />
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>The listing information needs to be confirmed and then approved.</strong><br />
-                      ${this.title?html} (${this.category.description?html})<br />
-                      <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
+                      <blockquote>
+                        ${this.title?html} (${this.category.description?html})<br />
+                        <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
+                        Listing Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br />
+                        Listing Location: ${this.location:html} &nbsp; ${this.country:html}<br />
+                      </blockquote>
                       <br />
-                      Created by ${userInfo.nameFirstLast?html}<br />
-                      <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
-                      ${userInfo.email}<br />
-                      ${userInfo.profileProject.location?html}
+                      <blockquote>
+                        Created by ${userInfo.nameFirstLast?html}<br />
+                        <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
+                        ${userInfo.email}<br />
+                        ${userInfo.profileProject.location?html}
+                      </blockquote>
                     </td>
                   </tr>
                 </table>
@@ -539,49 +551,35 @@ ${this.message:html}<br />
     <!-- Claimed Listing Notification -->
     <process name="concursive.project.notify.claim" description="Claimed listing notification" startId="1">
       <components>
-        <!-- See if the project was just claimed -->
-        <component id="1" parent="0"  class="com.concursive.commons.workflow.components.RunScript" description="Is listing just claimed?">
-          <parameters>
-            <parameter name="runscript.script"><![CDATA[
-              import com.concursive.commons.workflow.components.RunScriptException;
-              import com.concursive.commons.workflow.ComponentContext;
-              import com.concursive.connect.web.modules.profile.dao.Project;
-
-              Project previousProject = (Project) context.getPreviousObject();
-              Project thisProject = (Project) context.getThisObject();
-              if (thisProject.getProfile()) {
-                throw new RunScriptException("Listing is a user's profile");
-              }
-              if (previousProject.getOwner() == thisProject.getOwner()) {
-                throw new RunScriptException("Listing was not just claimed");
-              }
-              ]]>
-            </parameter>
-          </parameters>
-        </component>
         <!-- Prepare details for the user claiming the listing -->
-        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
           <parameters>
-            <parameter name="userId" value="${this.owner}" />
+            <parameter name="userId" value="${this.userId}" />
           </parameters>
         </component>
         <!-- Send to admin -->
-        <component id="3" parent="2" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
           <parameters>
             <parameter name="notification.addAdmins" value="true"/>
-            <parameter name="notification.subject">Existing listing claimed: ${this.title} (${this.category.description?html})</parameter>
+            <parameter name="notification.subject">Existing listing claimed: ${this.project.title} (${this.project.category.description?html})</parameter>
             <parameter name="notification.body"><![CDATA[
                 <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>This listing was just claimed and needs follow-up.</strong><br />
-                      ${this.title?html} (${this.category.description?html})<br />
-                      <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
+                      <blockquote>
+                        ${this.project.title?html} (${this.project.category.description?html}) *claimed*<br />
+                        <a href="${secureUrl}/show/${this.project.uniqueId?html}" target="_blank">${secureUrl}/show/${this.project.uniqueId?html}</a><br />
+                        Listing Phone: ${this.project.businessPhone:html} - (${this.project.businessPhoneExt:html})<br />
+                        Listing Location: ${this.project.location:html} &nbsp; ${this.project.country:html}<br />
+                      </blockquote>
                       <br />
-                      Claimed by ${userInfo.nameFirstLast?html}<br />
-                      <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
-                      ${userInfo.email}<br />
-                      ${userInfo.profileProject.location?html}
+                      <blockquote>
+                        Claimed by ${userInfo.nameFirstLast?html}<br />
+                        <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
+                        ${userInfo.email}<br />
+                        ${userInfo.profileProject.location?html}
+                      </blockquote>
                     </td>
                   </tr>
                 </table>

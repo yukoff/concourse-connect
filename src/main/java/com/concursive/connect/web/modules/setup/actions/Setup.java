@@ -574,7 +574,7 @@ public final class Setup extends GenericAction {
 
 
   /**
-   * Description of the Method
+   * Determines if the admin has been configured
    *
    * @param context Description of the Parameter
    * @return Description of the Return Value
@@ -597,6 +597,7 @@ public final class Setup extends GenericAction {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to verify the account, the " +
               "following error was provided: " + e.getMessage());
+      LOG.error("configureAdmin", e);
       return "SetupConfigureAdminERROR";
     } finally {
       freeConnection(context, db);
@@ -606,7 +607,7 @@ public final class Setup extends GenericAction {
 
 
   /**
-   * Description of the Method
+   * Saves the admin's details
    *
    * @param context Description of the Parameter
    * @return Description of the Return Value

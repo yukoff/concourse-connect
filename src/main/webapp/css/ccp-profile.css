@@ -1958,9 +1958,8 @@ ul.wikiExtras li a {
 .infobox {
   margin:0;
   float: right;
-  padding: 2px;
+  padding: 4px;
   clear: right;
-  width: 250px;
   background:#fff;
 }
 

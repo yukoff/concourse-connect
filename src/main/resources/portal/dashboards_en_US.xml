@@ -3289,7 +3289,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list " cache="60" isSensitive="true">
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" class="basic-list " isSensitive="true">
             <title>Filter by Category</title>
             <showSubcategories>true</showSubcategories>
             <hasMoreURL>/page/categories/${category}</hasMoreURL>

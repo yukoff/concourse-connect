@@ -48,7 +48,7 @@
   background:#f0f0f0;
   padding: 2px;
   display:block;
-  _display:inline-block;
+  _display:inline-block; /* IE Fix */
 }
 
 
@@ -1961,10 +1961,12 @@ ul.wikiExtras li a {
   padding: 4px;
   clear: right;
   background:#fff;
+  _width: 275px; /* IE Fix */
 }
 
 .infobox table {
   width: 240px;
+  _width: 265px; /* IE Fix */
   float: right;
 }
 

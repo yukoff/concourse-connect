@@ -561,6 +561,9 @@ public class ProjectUtils {
     // Format to allowed characters to get extension (some will be treated later)
     String allowed = "abcdefghijklmnopqrstuvwxyz1234567890-/& ";
     String nameToSearch = StringUtils.toAllowedOnly(allowed, title.trim().toLowerCase());
+    if (!StringUtils.hasText(nameToSearch)) {
+      nameToSearch = "listing";
+    }
 
     // Break out any numbered extension: ex. name-5
     String originalExtension = null;
@@ -585,9 +588,9 @@ public class ProjectUtils {
             "WHERE projecttextid LIKE ? ");
     pst.setString(1, nameToSearch + "%");
     ResultSet rs = pst.executeQuery();
-    int value = 0;
+    long value = 0;
     while (rs.next()) {
-      int thisProjectId = rs.getInt("project_id");
+      long thisProjectId = rs.getLong("project_id");
       String thisTextId = rs.getString("projecttextid");
       // If it already owns this id, then keep it
       if (projectId > -1 && projectId == thisProjectId && nameToSearch.equals(thisTextId)) {
@@ -609,7 +612,7 @@ public class ProjectUtils {
         String foundExtensionValue = thisTextId.substring(thisTextId.lastIndexOf("-") + 1);
         if (StringUtils.isNumber(foundExtensionValue)) {
           try {
-            int thisValue = Integer.parseInt(foundExtensionValue);
+            long thisValue = Long.parseLong(foundExtensionValue);
             if (thisValue > value) {
               value = thisValue;
             }

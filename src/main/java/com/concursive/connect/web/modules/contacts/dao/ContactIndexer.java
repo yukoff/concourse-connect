@@ -128,6 +128,7 @@ public class ContactIndexer implements Indexer {
     document.add(new Field("contactId", String.valueOf(contact.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("userId", String.valueOf(contact.getOwner()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", contact.getIndexAs(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", contact.getIndexAs().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         contact.getIndexAs() + " " +
             contact.getComments() + " " +

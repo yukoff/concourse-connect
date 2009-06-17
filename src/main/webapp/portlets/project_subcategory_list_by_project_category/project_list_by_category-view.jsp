@@ -48,66 +48,67 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.concursive.commons.text.StringUtils" %>
-<jsp:useBean id="projectList" class="com.concursive.connect.web.modules.profile.dao.ProjectList" scope="request"/>
+<%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
+<%--@elvariable id="hits" type="com.concursive.connect.indexer.IndexerQueryResultList"--%>
+<jsp:useBean id="hits" class="com.concursive.connect.indexer.IndexerQueryResultList" scope="request"/>
 <jsp:useBean id="projectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
 <jsp:useBean id="projectSubCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-  <c:if test="${empty projectSubCategory.description}">
-    <h3><c:out value="${title}"/></h3>
-  </c:if>
-  <c:if test="${!empty projectSubCategory.description}">
-    <h3><c:out value="${projectSubCategory.description}"/></h3>
-  </c:if>
-  <c:if test="${empty projectList}">
-    No <c:out value="${projectCategory.description}"/> found.
-  </c:if>
-  <c:if test="${!empty projectList}">
-    <ul>
+<c:if test="${empty projectSubCategory.description}">
+  <h3><c:out value="${title}"/></h3>
+</c:if>
+<c:if test="${!empty projectSubCategory.description}">
+  <h3><c:out value="${projectSubCategory.description}"/></h3>
+</c:if>
+<c:if test="${empty hits}">
+  No <c:out value="${projectCategory.description}"/> found.
+</c:if>
+<c:if test="${!empty hits}">
+  <ul>
 <%
-    request.setAttribute("projectListInfo", projectList.getPagedListInfo());
+  request.setAttribute("projectListInfo", hits.getPagedListInfo());
 %>
-      <c:set var="recordCount">${fn:length(projectList)}</c:set>
-      <c:if test="${hasPaging eq 'true'}">
-	      <c:choose>
-	       <c:when test="${empty hasMoreURL && !empty projectListInfo && projectListInfo.numberOfPages > 1}">
-	         <c:set var="startIndex">
-	           ${projectListInfo.currentOffset}
-	         </c:set>
-	         <c:set var="endIndex">
-	           ${projectListInfo.itemsPerPage + projectListInfo.currentOffset < recordCount
-	                  ? projectListInfo.currentOffset + projectListInfo.itemsPerPage - 1 : recordCount - 1}
-	         </c:set>
-	       </c:when>
-	       <c:otherwise>
-	          <c:set var="limit">
-	             ${(!empty recordLimit && recordLimit < recordCount)
-	                  ? recordLimit - 1 : recordCount - 1}
-	          </c:set>
-	         <c:set var="startIndex">0</c:set>
-	         <c:set var="endIndex">${limit}</c:set>
-	       </c:otherwise>
-	      </c:choose>
-      </c:if>
-      <c:if test="${!empty projectList}">
-      	<c:if test="${showCategoryLandingPageLink}">
-      		<li><a href='${ctx}/${fn:toLowerCase(fn:replace(projectCategory.description," ","_"))}.shtml'>All <c:out value="${projectCategory.description}"/></a></li>
-      	</c:if>
-        <c:forEach items="${projectList}" var="project">
-          <li><a href="${ctx}/show/${project.uniqueId}" title="<c:out value="${project.title}"/>"><c:out value="${project.title}"/></a>
-          <c:if test="${!empty project.location}"><address><c:out value="${project.location}"/></address></c:if></li>
-        </c:forEach>
-      </c:if>
-    </ul>
+    <c:set var="recordCount">${fn:length(hits)}</c:set>
     <c:if test="${hasPaging eq 'true'}">
-	    <c:if test="${!empty projectListInfo && projectListInfo.numberOfPages > 1}">
-	      <jsp:useBean id="hasMoreURL" class="java.lang.String" scope="request"/>
-	      <c:if test="${!empty projectSubCategory.description}">
-	        <ccp:paginationControl object="projectListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(StringUtils.replace(projectSubCategory.getDescription().toLowerCase()," ", "_")) %>' />
-	      </c:if>
-	      <c:if test="${empty projectSubCategory.description}">
-	        <ccp:paginationControl object="projectListInfo" url='<%= hasMoreURL %>' />
-	      </c:if>
-	    </c:if>
-	  </c:if>
+      <c:choose>
+       <c:when test="${empty hasMoreURL && !empty projectListInfo && projectListInfo.numberOfPages > 1}">
+         <c:set var="startIndex">${projectListInfo.currentOffset}</c:set>
+         <c:set var="endIndex">
+           ${projectListInfo.itemsPerPage + projectListInfo.currentOffset < recordCount
+                  ? projectListInfo.currentOffset + projectListInfo.itemsPerPage - 1 : recordCount - 1}
+         </c:set>
+       </c:when>
+       <c:otherwise>
+          <c:set var="limit">
+             ${(!empty recordLimit && recordLimit < recordCount)
+                  ? recordLimit - 1 : recordCount - 1}
+          </c:set>
+         <c:set var="startIndex">0</c:set>
+         <c:set var="endIndex">${limit}</c:set>
+       </c:otherwise>
+      </c:choose>
+    </c:if>
+    <c:if test="${showCategoryLandingPageLink}">
+      <li><a href='${ctx}/${fn:toLowerCase(fn:replace(projectCategory.description," ","_"))}.shtml'>All <c:out value="${projectCategory.description}"/></a></li>
+    </c:if>
+    <c:forEach items="${hits}" var="document">
+      <c:set var="projectId">${document.projectId}</c:set>
+      <c:set var="title">${document.title}</c:set>
+      <% pageContext.setAttribute("project", ProjectUtils.loadProject((Integer.parseInt((String)pageContext.getAttribute("projectId"))))); %>
+      <li><a href="${ctx}/show/${project.uniqueId}" title="<c:out value="${project.title}"/>"><c:out value="${project.title}"/></a>
+      <c:if test="${!empty project.location}"><address><c:out value="${project.location}"/></address></c:if></li>
+    </c:forEach>
+  </ul>
+  <c:if test="${hasPaging eq 'true'}">
+    <c:if test="${!empty projectListInfo && projectListInfo.numberOfPages > 1}">
+      <jsp:useBean id="hasMoreURL" class="java.lang.String" scope="request"/>
+      <c:if test="${!empty projectSubCategory.description}">
+        <ccp:paginationControl object="projectListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(StringUtils.replace(projectSubCategory.getDescription().toLowerCase()," ", "_")) %>' />
+      </c:if>
+      <c:if test="${empty projectSubCategory.description}">
+        <ccp:paginationControl object="projectListInfo" url='<%= hasMoreURL %>' />
+      </c:if>
+    </c:if>
   </c:if>
+</c:if>

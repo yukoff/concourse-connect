@@ -93,7 +93,8 @@ public class ProjectIndexer implements Indexer {
     long startTime = System.currentTimeMillis();
     int count = 0;
     PreparedStatement pst = db.prepareStatement(
-        "SELECT project_id, title, shortdescription, description, requestedby, requesteddept, entered, modified, category_id, " +
+        "SELECT project_id, title, shortdescription, description, requestedby, requesteddept, entered, modified, " +
+            "category_id, subcategory1_id, " +
             "allow_guests, membership_required, allows_user_observers, approvaldate, closedate, portal, " +
             "city, state, postalcode, keywords, " +
             "rating_count, rating_value, rating_avg " +
@@ -113,6 +114,7 @@ public class ProjectIndexer implements Indexer {
       project.setEntered(rs.getTimestamp("entered"));
       project.setModified(rs.getTimestamp("modified"));
       project.setCategoryId(DatabaseUtils.getInt(rs, "category_id"));
+      project.setSubCategory1Id(DatabaseUtils.getInt(rs, "subcategory1_id"));
       project.getFeatures().setAllowGuests(rs.getBoolean("allow_guests"));
       project.getFeatures().setMembershipRequired(rs.getBoolean("membership_required"));
       project.getFeatures().setAllowParticipants(rs.getBoolean("allows_user_observers"));
@@ -165,6 +167,7 @@ public class ProjectIndexer implements Indexer {
     document.add(new Field("projectKeyId", String.valueOf(project.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(project.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectCategoryId", String.valueOf(project.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    document.add(new Field("projectCategoryId1", String.valueOf(project.getSubCategory1Id()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("guests", (project.getFeatures().getAllowGuests() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     // determine if membership is needed for this content based on a guest's access to the data
@@ -177,6 +180,7 @@ public class ProjectIndexer implements Indexer {
     document.add(new Field("closed", ((project.getClosed() || project.getCloseDate() != null) ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("website", (project.getPortal() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", project.getTitle(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", project.getTitle().toLowerCase().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         project.getTitle() + " " +
             project.getShortDescription() +

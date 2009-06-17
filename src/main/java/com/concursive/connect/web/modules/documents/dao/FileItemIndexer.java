@@ -145,6 +145,7 @@ public class FileItemIndexer implements Indexer {
     }
     document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", fileItem.getSubject() + " - " + fileItem.getClientFilename(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", (fileItem.getSubject() + " - " + fileItem.getClientFilename()).toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("filename", fileItem.getClientFilename(), Field.Store.YES, Field.Index.TOKENIZED));
     document.add(new Field("extension", fileItem.getExtension(), Field.Store.YES, Field.Index.TOKENIZED));
     document.add(new Field("contents",

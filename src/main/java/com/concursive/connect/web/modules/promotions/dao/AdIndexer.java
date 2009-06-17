@@ -138,6 +138,7 @@ public class AdIndexer implements Indexer {
       document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     document.add(new Field("title", ad.getHeading(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", ad.getHeading().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         ad.getHeading() + " " +
             ContentUtils.toText(ad.getContent()), Field.Store.YES, Field.Index.TOKENIZED));

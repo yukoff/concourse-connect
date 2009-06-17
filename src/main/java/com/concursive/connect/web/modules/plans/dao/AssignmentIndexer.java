@@ -136,6 +136,7 @@ public class AssignmentIndexer implements Indexer {
     }
     document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", assignment.getRole(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", assignment.getRole().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         assignment.getRole() + " " +
             assignment.getTechnology(), Field.Store.YES, Field.Index.TOKENIZED));

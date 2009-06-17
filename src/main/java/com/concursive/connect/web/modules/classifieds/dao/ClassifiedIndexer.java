@@ -138,6 +138,7 @@ public class ClassifiedIndexer implements Indexer {
       document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     document.add(new Field("title", classified.getTitle(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", classified.getTitle().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         classified.getTitle() + " " +
             ContentUtils.toText(classified.getDescription()), Field.Store.YES, Field.Index.TOKENIZED));

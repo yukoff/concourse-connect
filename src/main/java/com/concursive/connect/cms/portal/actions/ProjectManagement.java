@@ -1252,7 +1252,16 @@ public final class ProjectManagement extends GenericAction {
         context.getRequest().setAttribute("currentMember", teamMember);
 
         // Set shared project searcher
-        IIndexerSearch projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_DIRECTORY);
+        IIndexerSearch projectSearcher = null;
+        if ("true".equals(context.getServletContext().getAttribute(Constants.DIRECTORY_INDEX_INITIALIZED))) {
+          // Search public projects only
+          LOG.debug("Using directory index...");
+          projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_DIRECTORY);
+        } else {
+          // Use the full index because the directory hasn't loaded
+          LOG.debug("Using full index...");
+          projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_FULL);
+        }
         // Search public projects only
         String queryString =
             "(approved:1) " +

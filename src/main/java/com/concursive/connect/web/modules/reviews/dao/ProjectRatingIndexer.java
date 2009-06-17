@@ -138,6 +138,7 @@ public class ProjectRatingIndexer implements Indexer {
       document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     document.add(new Field("title", projectRating.getTitle(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", projectRating.getTitle().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         projectRating.getTitle() + " " +
             ContentUtils.toText(projectRating.getComment()), Field.Store.YES, Field.Index.TOKENIZED));

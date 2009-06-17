@@ -134,6 +134,7 @@ public class ForumIndexer implements Indexer {
     }
     document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", forum.getSubject(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", forum.getSubject().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         forum.getSubject() + " " +
             ContentUtils.toText(forum.getDescription()), Field.Store.YES, Field.Index.TOKENIZED));

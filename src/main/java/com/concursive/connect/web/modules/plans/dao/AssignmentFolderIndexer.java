@@ -140,6 +140,7 @@ public class AssignmentFolderIndexer implements Indexer {
     }
     document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", assignmentFolder.getName(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", assignmentFolder.getName().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         assignmentFolder.getName() + " " +
             ContentUtils.toText(assignmentFolder.getDescription()), Field.Store.YES, Field.Index.TOKENIZED));

@@ -136,6 +136,7 @@ public class TopicIndexer implements Indexer {
     }
     document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", topic.getSubject(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", topic.getSubject().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         topic.getSubject() + " " +
             ContentUtils.toText(topic.getBody()), Field.Store.YES, Field.Index.TOKENIZED));

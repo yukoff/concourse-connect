@@ -137,6 +137,7 @@ public class RequirementIndexer implements Indexer {
     }
     document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", requirement.getShortDescription(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", requirement.getShortDescription().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         requirement.getShortDescription() + " " +
             ContentUtils.toText(requirement.getDescription()) + " " +

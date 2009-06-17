@@ -48,9 +48,10 @@ package com.concursive.connect.web.modules.profile.portlets;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.dao.DashboardPage;
+import com.concursive.connect.indexer.IIndexerSearch;
+import com.concursive.connect.indexer.IndexerQueryResultList;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
-import com.concursive.connect.web.modules.profile.dao.ProjectList;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
 import org.apache.commons.logging.Log;
@@ -73,6 +74,11 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
   // Pages
   private static final String PROJECT_CATEGORY_VIEW_PAGE = "/portlets/project_subcategory_list_by_project_category/project_subcategory_list_by_project_category-view.jsp";
   private static final String PROJECT_VIEW_PAGE = "/portlets/project_subcategory_list_by_project_category/project_list_by_category-view.jsp";
+
+  // Context Parameters
+  private static final String SEARCHER = "projectSearcher";
+  private static final String BASE_QUERY_STRING = "baseQueryString";
+
   // Preferences
   private static final String PREF_AUTO_SET_PAGE_TITLE = "autoSetPageTitle";
   private static final String PREF_CATEGORY_NAME = "category";
@@ -245,27 +251,37 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
             projectListInfo.setItemsPerPage(-1);
           }
           request.setAttribute(HAS_PAGING, request.getPreferences().getValue(PREF_HAS_PAGING, "false"));
-          projectListInfo.setColumnToSortBy("level ASC, lower(title) ASC");
+          projectListInfo.setColumnToSortBy("titleLower");
           projectListInfo.setContextPath(request.getContextPath());
-          // Projects to show
-          ProjectList projects = new ProjectList();
-          projects.setPagedListInfo(projectListInfo);
-          projects.setPortalState(Constants.FALSE);
-          projects.setCategoryId(category.getId());
-          if (subCategory != null) {
-            projects.setSubCategory1Id(subCategory.getId());
+
+          // Get portal items
+          IIndexerSearch searcher = (IIndexerSearch) request.getAttribute(SEARCHER);
+          if (searcher == null) {
+            LOG.error("SEARCHER IS NULL!");
           }
-          projects.setApprovedOnly(true);
-          projects.setOpenProjectsOnly(true);
+          String queryString = (String) request.getAttribute(BASE_QUERY_STRING);
+          queryString +=
+              "AND (type:project) " +
+                  "AND (projectCategoryId:" + category.getId() + ") ";
+          if (subCategory != null) {
+            queryString += "AND (projectCategoryId1:" + subCategory.getId() + ") ";
+          }
           if (PortalUtils.canShowSensitiveData(request)) {
             // Use the most generic settings since this portlet is cached
-            projects.setForParticipant(Constants.TRUE);
+            if (PortalUtils.getUser(request).getId() > 0) {
+              queryString += "AND ((guests:1) OR (participants:1))";
+            } else {
+              queryString += "AND (guests:1)";
+            }
           } else {
-            // Use the most generic settings since this portlet is cached
-            projects.setPublicOnly(true);
+            // Use the most generic settings
+            queryString += "AND (guests:1)";
           }
-          projects.buildList(db);
-          request.setAttribute(PROJECT_LIST, projects);
+          IndexerQueryResultList hits = new IndexerQueryResultList(queryString);
+          hits.setPagedListInfo(projectListInfo);
+          searcher.search(hits);
+          request.setAttribute("hits", hits);
+
           defaultView = PROJECT_VIEW_PAGE;
         } else {
           int columns = Integer.parseInt(request.getPreferences().getValue(PREF_COLUMNS, "1"));

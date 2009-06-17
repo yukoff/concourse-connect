@@ -321,6 +321,8 @@ public class PortletManager {
         portalRequest.setAttribute("scheduler", context.getServletContext().getAttribute("Scheduler"));
         portalRequest.setAttribute("freemarkerConfiguration", context.getServletContext().getAttribute("FreemarkerConfiguration"));
         portalRequest.setAttribute("TEAM.KEY", context.getServletContext().getAttribute("TEAM.KEY"));
+        portalRequest.setAttribute("projectSearcher", context.getRequest().getAttribute("projectSearcher"));
+        portalRequest.setAttribute("baseQueryString", context.getRequest().getAttribute("baseQueryString"));
         // Framework display parameters
         portalRequest.setAttribute("popup", context.getRequest().getParameter("popup"));
         // Script Node and XHR DataSources

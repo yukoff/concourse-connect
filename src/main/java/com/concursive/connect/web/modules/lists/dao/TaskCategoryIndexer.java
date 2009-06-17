@@ -128,6 +128,7 @@ public class TaskCategoryIndexer implements Indexer {
     document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("membership", (project.getFeatures().getMembershipRequired() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", taskCategory.getDescription(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", taskCategory.getDescription().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents", taskCategory.getDescription(), Field.Store.YES, Field.Index.TOKENIZED));
     /*
      *  if (modified) {

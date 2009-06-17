@@ -138,6 +138,7 @@ public class ReplyIndexer implements Indexer {
     }
     document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", reply.getSubject(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", reply.getSubject().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         reply.getSubject() + " " +
             ContentUtils.toText(reply.getBody()), Field.Store.YES, Field.Index.TOKENIZED));

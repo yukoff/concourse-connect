@@ -145,6 +145,7 @@ public class BlogPostIndexer implements Indexer {
       document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     document.add(new Field("title", article.getSubject(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleLower", article.getSubject().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         article.getSubject() + " " +
             ContentUtils.toText(ContentUtils.stripHTML(article.getIntro())) + " " +

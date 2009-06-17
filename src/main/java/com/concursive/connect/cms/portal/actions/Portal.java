@@ -137,11 +137,19 @@ public final class Portal extends GenericAction {
           context.getRequest().setAttribute("portletView", context.getRequest().getParameter("view"));
           context.getRequest().setAttribute("portletParams", context.getRequest().getParameter("params"));
           context.getRequest().setAttribute("TEAM.KEY", context.getServletContext().getAttribute("TEAM.KEY"));
-          // Searcher for public projects
-          IIndexerSearch projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_DIRECTORY);
+          // Set shared project searcher
+          IIndexerSearch projectSearcher = null;
+          if ("true".equals(context.getServletContext().getAttribute(Constants.DIRECTORY_INDEX_INITIALIZED))) {
+            // Search public projects only
+            LOG.debug("Using directory index...");
+            projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_DIRECTORY);
+          } else {
+            // Use the full index because the directory hasn't loaded
+            LOG.debug("Using full index...");
+            projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_FULL);
+          }
           String queryString =
               "(approved:1) " +
-                  "AND (guests:1) " +
                   "AND (closed:0) " +
                   "AND (website:0) ";
           context.getRequest().setAttribute("projectSearcher", projectSearcher);
@@ -798,6 +806,23 @@ public final class Portal extends GenericAction {
       context.getRequest().setAttribute("portletView", context.getRequest().getParameter("view"));
       context.getRequest().setAttribute("portletParams", context.getRequest().getParameter("params"));
       context.getRequest().setAttribute("TEAM.KEY", context.getServletContext().getAttribute("TEAM.KEY"));
+      // Set shared project searcher
+      IIndexerSearch projectSearcher = null;
+      if ("true".equals(context.getServletContext().getAttribute(Constants.DIRECTORY_INDEX_INITIALIZED))) {
+        // Search public projects only
+        LOG.debug("Using directory index...");
+        projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_DIRECTORY);
+      } else {
+        // Use the full index because the directory hasn't loaded
+        LOG.debug("Using full index...");
+        projectSearcher = SearchUtils.retrieveSearcher(Constants.INDEXER_FULL);
+      }
+      String queryString =
+          "(approved:1) " +
+              "AND (closed:0) " +
+              "AND (website:0) ";
+      context.getRequest().setAttribute("projectSearcher", projectSearcher);
+      context.getRequest().setAttribute("baseQueryString", queryString);
       boolean isAction = PortletManager.processPage(context, db, page);
       if (isAction) {
         return ("-none-");

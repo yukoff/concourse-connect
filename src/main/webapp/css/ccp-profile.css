@@ -1961,12 +1961,11 @@ ul.wikiExtras li a {
   padding: 4px;
   clear: right;
   background:#fff;
-  _width: 275px; /* IE Fix */
+  width: 275px;
 }
 
 .infobox table {
-  width: 240px;
-  _width: 265px; /* IE Fix */
+  width: 265px;
   float: right;
 }
 

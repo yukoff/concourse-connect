@@ -163,7 +163,7 @@ public class URLControllerBean extends GenericBean {
         params = thisAction[3];
         int count = 4;
         while (count < thisAction.length) {
-          params = params + ";;;" + thisAction[count];
+          params = params + "_cc_" + thisAction[count];
           count++;
         }
       }

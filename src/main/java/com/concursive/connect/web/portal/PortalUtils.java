@@ -235,7 +235,7 @@ public class PortalUtils {
   public static String[] getPageParameters(PortletRequest request) {
     String paramsString = (String) request.getAttribute("portletParams");
     if (paramsString != null) {
-      String[] params = paramsString.trim().split(Pattern.quote(";;;"));
+      String[] params = paramsString.trim().split(Pattern.quote("_cc_"));
       if (params != null && params.length > 0) {
         return params;
       }

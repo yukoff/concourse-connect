@@ -54,7 +54,7 @@
       <li><a href="<%= ctx %>/AdminUsers.do">Manage Users</a></li>
       <li><a href="<%= ctx %>/AdminCustomize.do">Customize the site</a></li>
       <li><a href="<%= ctx %>/AdminApplication.do">Manage Application Settings</a></li>
-      <li><a href="<%= ctx %>/AdminSynch.do">Synch Profiles and User Information with Suite</a></li>
+      <li><a href="<%= ctx %>/AdminSync.do">Sync Profiles and User Information with Suite</a></li>
       <%--
       <li><a href="<%= ctx %>/AdminSettings.do">Configure System Settings</a></li>
       --%>

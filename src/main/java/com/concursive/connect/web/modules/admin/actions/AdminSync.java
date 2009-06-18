@@ -58,7 +58,7 @@ import java.sql.Connection;
  * @author Kailash Bhoopalam
  * @created June 18, 2009
  */
-public final class AdminSynch extends GenericAction {
+public final class AdminSync extends GenericAction {
 
   /**
    * Action to prepare a list of Admin options
@@ -77,21 +77,21 @@ public final class AdminSynch extends GenericAction {
   }
 
 
-  public String executeCommandStartSynch(ActionContext context) {
+  public String executeCommandStartSync(ActionContext context) {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
     try {
 
     	//Trigger the synch job
-    	synchSystem(context);
+    	triggerJob(context,"syncSystem");
     	
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return ("SystemError");
     } finally {
     }
-    return "StartSynchOK";
+    return "StartSyncOK";
   }
 
 }

@@ -51,11 +51,11 @@
     <h1>Synch Profiles and Users</h1>
     <p>Back to <a href="<%= ctx %>/admin">System Administration</a></p>
   </div>
-      <form name="editForm" action="<%= ctx %>/AdminSynch.do?command=StartSynch" method="post"  onSubmit="return checkForm(this);" >
+      <form name="editForm" action="<%= ctx %>/AdminSync.do?command=StartSync" method="post"  onSubmit="return checkForm(this);" >
   <div class="portlet-section-body">
-      Click on the Synch button to start synching with the suite.<br />
+      Click on the Sync button to start synching with the suite.<br />
       (This feature is available only if you have the enterprise edition and the suite installed.)<br /><br />
-      <input type="submit" name="Synch" value="<ccp:label name="button.synch">Synch</ccp:label>" class="submit" />
+      <input type="submit" name="Sync" value="<ccp:label name="button.sync">Sync</ccp:label>" class="submit" />
   </div>
   </form>
 </div>

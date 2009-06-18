@@ -199,6 +199,10 @@
     <forward name="ColorSchemesOK" resource="/admin_customize_color_schemes.jsp"/>
     <forward name="SaveOK" resource="/admin" redirect="true"/>
   </action>
+  <action name="AdminSynch" class="com.concursive.connect.web.modules.admin.actions.AdminSynch">
+    <forward name="DefaultOK" resource="/admin_synch.jsp"/>
+    <forward name="StartSynchOK" resource="/AdminSynch.do" redirect="true" />
+  </action>
   <action name="AdminUserDetails" class="com.concursive.connect.web.modules.admin.actions.AdminUsers">
     <bean name="User" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
     <forward name="DetailsOK" resource="/admin_users_details.jsp"/>

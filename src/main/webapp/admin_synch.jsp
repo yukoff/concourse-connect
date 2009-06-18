@@ -43,21 +43,19 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
 <%@ include file="initPage.jsp" %>
 <div class="admin-portlet">
   <div class="portlet-section-header">
-  	<h1>System Administration</h1>
+    <h1>Synch Profiles and Users</h1>
+    <p>Back to <a href="<%= ctx %>/admin">System Administration</a></p>
   </div>
+      <form name="editForm" action="<%= ctx %>/AdminSynch.do?command=StartSynch" method="post"  onSubmit="return checkForm(this);" >
   <div class="portlet-section-body">
-    <ul>
-      <li><a href="<%= ctx %>/AdminUsage.do">Review Application Usage</a></li>
-      <li><a href="<%= ctx %>/AdminUsers.do">Manage Users</a></li>
-      <li><a href="<%= ctx %>/AdminCustomize.do">Customize the site</a></li>
-      <li><a href="<%= ctx %>/AdminApplication.do">Manage Application Settings</a></li>
-      <li><a href="<%= ctx %>/AdminSynch.do">Synch Profiles and User Information with Suite</a></li>
-      <%--
-      <li><a href="<%= ctx %>/AdminSettings.do">Configure System Settings</a></li>
-      --%>
-    </ul>
+      Click on the Synch button to start synching with the suite.<br />
+      (This feature is available only if you have the enterprise edition and the suite installed.)<br /><br />
+      <input type="submit" name="Synch" value="<ccp:label name="button.synch">Synch</ccp:label>" class="submit" />
   </div>
+  </form>
 </div>

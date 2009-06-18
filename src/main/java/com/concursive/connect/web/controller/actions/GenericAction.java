@@ -485,6 +485,18 @@ public class GenericAction implements java.io.Serializable {
     return ApplicationPrefs.getApplicationPrefs(context.getServletContext());
   }
 
+  protected synchronized boolean synchSystem(ActionContext context) {
+    Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
+    try {
+      scheduler.triggerJob("synchSystem", (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
+    	//getApplicationPrefs(context).add("Synch-Start", "Started");
+    } catch (Exception e) {
+    	//getApplicationPrefs(context).add("Synch-Start", "Failed");
+      System.out.println("GenericAction-> Scheduler failed: " + e.getMessage());
+    }
+    return true;
+  }
+
   /**
    * Description of the Method
    *

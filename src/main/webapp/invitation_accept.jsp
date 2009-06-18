@@ -48,6 +48,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="user" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
 <jsp:useBean id="teamMember" class="com.concursive.connect.web.modules.members.dao.TeamMember" scope="request"/>
+<%@ include file="initPage.jsp" %>
 <table cellpadding="0" cellspacing="4" width="100%">
   <tr>
     <td width="100%" valign="top">
@@ -71,9 +72,8 @@
               Registration is simple.  Click "Continue" and fill out the information that appears
               on the following page.<br />
               <br />
-              <c:url var="continueUrl" value="/page/register/invited/" />
               <c:url var="imageUrl" value="/images/buttons/continue-green.gif" />
-              <a href="${continueUrl}<%= StringUtils.encodeUrl(request.getParameter("data")) %>"><img src="${imageUrl}" alt="Continue" border="0" /></a>
+              <a href="${ctx}/page/register/invited/<%= StringUtils.encodeUrl(request.getParameter("data")) %>"><img src="${imageUrl}" alt="Continue" border="0" /></a>
             </td>
           </tr>
         </tbody>

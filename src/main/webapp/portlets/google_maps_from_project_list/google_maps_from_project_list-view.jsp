@@ -49,6 +49,7 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <portlet:defineObjects/>
+<c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <jsp:useBean id="projectList" class="com.concursive.connect.web.modules.profile.dao.ProjectList" scope="request"/>
 <jsp:useBean id="maxResults" class="java.lang.String" scope="request"/>
 <jsp:useBean id="hitLimitReached" class="java.lang.String" scope="request"/>

@@ -214,7 +214,9 @@ public class RegisterPortlet extends GenericPortlet {
       if (!StringUtils.hasText(bean.getData())) {
         throw new PortletException("Registration is currently by invitation only");
       } else {
-        int userId = retrieveUserId(bean.getData());
+        Key key = PortalUtils.getApplicationKey(request);
+        String data = PrivateString.decrypt(key, bean.getData());
+        int userId = retrieveUserId(data);
         User thisUser = UserUtils.loadUser(userId);
         if (userId == -1 || thisUser == null) {
           throw new PortletException("Registration is currently by invitation only");

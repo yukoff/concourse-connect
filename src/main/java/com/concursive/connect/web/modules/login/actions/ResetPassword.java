@@ -49,6 +49,8 @@ package com.concursive.connect.web.modules.login.actions;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.members.dao.TeamMemberList;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
 
 import java.sql.Connection;
 
@@ -68,7 +70,6 @@ public final class ResetPassword extends GenericAction {
     }
     Connection db = null;
     int id = -1;
-    boolean saved = false;
     User thisUser = null;
     try {
       db = getConnection(context);
@@ -76,7 +77,21 @@ public final class ResetPassword extends GenericAction {
       id = User.getIdByEmailAddress(db, email);
       if (id > -1) {
         thisUser = new User(db, 1, id);
-        saved = thisUser.resetPassword(context, db);
+        if (thisUser.getRegistered()) {
+          thisUser.resetPassword(context, db);
+        } else {
+          TeamMemberList teamMemberList = new TeamMemberList();
+          teamMemberList.setUserId(thisUser.getId());
+          teamMemberList.buildList(db);
+          if (teamMemberList.size() > 0) {
+            // Resend the last invitation
+            TeamMember teamMember = teamMemberList.get(teamMemberList.size() - 1);
+            teamMember.setStatus(TeamMember.STATUS_INVITING);
+            processInsertHook(context, teamMember, "concursive.teamMember.sendInvitationToUser");
+          } else {
+            id = -1;
+          }
+        }
       }
     } catch (Exception e) {
       e.printStackTrace(System.out);

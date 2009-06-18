@@ -43,41 +43,41 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ page import="com.concursive.commons.text.StringUtils" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="user" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
 <jsp:useBean id="teamMember" class="com.concursive.connect.web.modules.members.dao.TeamMember" scope="request"/>
 <table cellpadding="0" cellspacing="4" width="100%">
   <tr>
-<%-- Left Side --%>
     <td width="100%" valign="top">
-<table class="pagedList">
-  <thead>
-    <tr>
-      <th>
-        Welcome to the Community!
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        Hello <ccp:username id="<%= user.getId() %>"/>,<br />
-        <br />
-        You have chosen to accept an invitation from <ccp:username id="<%= teamMember.getEnteredBy() %>"/>.<br />
-        <br />
-        To join the community you will need to create an account with this website.<br />
-        <br />
-        Registration is simple.  Click "Continue" and fill out the information that appears
-        on the following page.<br />
-        <br />
-        <c:url var="continueUrl" value="/register/invited/" />
-        <c:url var="imageUrl" value="/images/buttons/continue-green.gif" />
-        <a href="${continueUrl}<c:out value="${param.data}"/>"><img src="${imageUrl}" alt="Continue" border="0" /></a>
-      </td>
-    </tr>
-  </tbody>
-</table>
-</td>
+      <table class="pagedList">
+        <thead>
+          <tr>
+            <th>
+              Welcome to the Community!
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Hello <ccp:username id="<%= user.getId() %>"/>,<br />
+              <br />
+              You have chosen to accept an invitation from <ccp:username id="<%= teamMember.getEnteredBy() %>"/>.<br />
+              <br />
+              To join the community you will need to create an account with this website.<br />
+              <br />
+              Registration is simple.  Click "Continue" and fill out the information that appears
+              on the following page.<br />
+              <br />
+              <c:url var="continueUrl" value="/page/register/invited/" />
+              <c:url var="imageUrl" value="/images/buttons/continue-green.gif" />
+              <a href="${continueUrl}<%= StringUtils.encodeUrl(request.getParameter("data")) %>"><img src="${imageUrl}" alt="Continue" border="0" /></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
   </tr>
 </table>

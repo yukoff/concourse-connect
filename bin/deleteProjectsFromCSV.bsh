@@ -1,5 +1,5 @@
 #!/bin/sh
-//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/opencsv-1.8.jar:lib/log4j-1.2.11.jar:lib/commons-logging-1.0.4.jar:lib/spring-2.0.3.jar:lib/spring-context-2.0.3.jar:lib/spring-beans-2.0.3.jar:lib/spring-core-2.0.3.jar:lib/spring-support-2.0.3.jar:lib/managementConsolePersistence-common-1.0.jar:lib/managementConsoleBusinessService-1.0.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/concursive-commons-20090618.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/opencsv-1.8.jar:lib/log4j-1.2.11.jar:lib/commons-logging-1.0.4.jar:lib/spring-2.0.3.jar:lib/spring-context-2.0.3.jar:lib/spring-beans-2.0.3.jar:lib/spring-core-2.0.3.jar:lib/spring-support-2.0.3.jar:lib/managementConsolePersistence-common-1.0.jar:lib/managementConsoleBusinessService-1.0.jar bsh.Interpreter "$0" "$@"
 
 
 import com.zeroio.utils.APIConnection;

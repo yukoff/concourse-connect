@@ -78,6 +78,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Allowed portal capabilities accessible by embedded portlets
@@ -234,7 +235,7 @@ public class PortalUtils {
   public static String[] getPageParameters(PortletRequest request) {
     String paramsString = (String) request.getAttribute("portletParams");
     if (paramsString != null) {
-      String[] params = paramsString.split("\\+");
+      String[] params = paramsString.trim().split(Pattern.quote(";;;"));
       if (params != null && params.length > 0) {
         return params;
       }

@@ -100,6 +100,7 @@ public class SendInvitationMessageToTeamMember extends ObjectHookComponent imple
 
         String url = context.getParameter(URL);
         if (teamMemberUser != null) {
+          Map<String, String> prefs = context.getApplicationPrefs();
           Key key = (Key) context.getAttribute("TEAM.KEY");
           // Initialize the message template
           freemarker.template.Template inviteSubject = null;
@@ -107,14 +108,16 @@ public class SendInvitationMessageToTeamMember extends ObjectHookComponent imple
           // Set the data model
           Map subjectMappings = new HashMap();
           Map bodyMappings = new HashMap();
+          bodyMappings.put("site", new HashMap());
+          ((Map) bodyMappings.get("site")).put("title", prefs.get("TITLE"));
           bodyMappings.put("project", project);
           bodyMappings.put("user", user);
           bodyMappings.put("link", new HashMap());
           bodyMappings.put("invite", new HashMap());
-          bodyMappings.put("optional", new HashMap());
           ((Map) bodyMappings.get("invite")).put("firstName", teamMemberUser.getFirstName());
           ((Map) bodyMappings.get("invite")).put("lastName", teamMemberUser.getLastName());
           ((Map) bodyMappings.get("invite")).put("name", teamMemberUser.getNameFirstLast());
+          bodyMappings.put("optional", new HashMap());
           ((Map) bodyMappings.get("optional")).put("message", thisTeamMember.getCustomInvitationMessage() != null ? StringUtils.toHtmlValue(thisTeamMember.getCustomInvitationMessage(), false, true) : "");
           Configuration freeMarkerConfiguration = (Configuration) context.getAttribute(ComponentContext.FREEMARKER_CONFIGURATION);
           if (freeMarkerConfiguration == null) {
@@ -137,7 +140,6 @@ public class SendInvitationMessageToTeamMember extends ObjectHookComponent imple
           }
 
           // Send the message
-          Map<String, String> prefs = context.getApplicationPrefs();
           SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs);
           message.setFrom(prefs.get("EMAILADDRESS"));
           message.addReplyTo(user.getEmail(), user.getNameFirstLast());

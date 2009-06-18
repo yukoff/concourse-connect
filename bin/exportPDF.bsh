@@ -1,5 +1,5 @@
 #!/bin/sh
-//usr/bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/postgresql-8.3-604.jdbc3.jar:lib/itext-1.3.1.jar:target/lib/concursive-commons.jar:target/lib/concourseconnect.jar bsh.Interpreter "$0" "$@"
+//usr/bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/postgresql-8.3-604.jdbc3.jar:lib/itext-1.3.1.jar:lib/concursive-commons-20090618.jar:target/lib/concourseconnect.jar bsh.Interpreter "$0" "$@"
 
 
 

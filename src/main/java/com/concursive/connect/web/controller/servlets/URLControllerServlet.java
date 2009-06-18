@@ -124,7 +124,7 @@ public class URLControllerServlet extends HttpServlet {
       } else if (bean.getAction().equals(URLControllerBean.PAGE)) {
         mappedPath = "Portal.do?command=ShowPortalPage&name=" + URLEncoder.encode(bean.getDomainObject(), "UTF-8") +
             (StringUtils.hasText(bean.getObjectValue()) ? "&view=" + URLEncoder.encode(bean.getObjectValue(), "UTF-8") : "") +
-            (StringUtils.hasText(bean.getParams()) ? "&params=" + URLEncoder.encode(bean.getParams(), "UTF-8") : "");
+            (StringUtils.hasText(bean.getParams()) ? "&params=" + bean.getParams() : "");
       } else if (bean.getAction().equals(URLControllerBean.IMAGE)) {
         mappedPath = "Portal.do?command=Img&url=" + bean.getDomainObject();
       } else if (bean.getAction().equals(URLControllerBean.SETTINGS)) {

@@ -61,9 +61,11 @@
     <hook class="com.concursive.connect.web.modules.register.beans.RegisterBean" module="Project Management">
       <actions><action type="insert" process="teamelements.application.portal.register"/></actions>
     </hook>
+    <!--
     <hook class="com.concursive.connect.web.modules.members.dao.TeamMember" module="Project Management">
       <actions><action type="insert" process="teamelements.application.project.become-fan"/></actions>
     </hook>
+    -->
     <hook class="com.concursive.connect.web.modules.lists.dao.TaskList" module="Project Management">
       <actions><action type="insert" process="teamelements.application.project.favorite-list"/></actions>
     </hook>

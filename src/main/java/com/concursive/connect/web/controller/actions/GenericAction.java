@@ -560,26 +560,38 @@ public class GenericAction implements java.io.Serializable {
    * @param object  Description of the Parameter
    */
   protected void processInsertHook(ActionContext context, Object object) {
+    processInsertHook(context, object, null);
+  }
+
+  protected void processInsertHook(ActionContext context, Object object, String processName) {
     int userId = -1;
     User user = getUser(context);
     if (user != null) {
       userId = user.getId();
     }
     ObjectHookManager hookManager = (ObjectHookManager) context.getServletContext().getAttribute(Constants.OBJECT_HOOK_MANAGER);
-    hookManager.process(ObjectHookAction.INSERT, null, object, userId, getServerUrl(context));
+    hookManager.process(ObjectHookAction.INSERT, null, object, userId, getServerUrl(context), getServerUrl(context), processName);
   }
 
   protected void processUpdateHook(ActionContext context, Object previousObject, Object object) {
+    processUpdateHook(context, previousObject, object, null);
+  }
+
+  protected void processUpdateHook(ActionContext context, Object previousObject, Object object, String processName) {
     int userId = -1;
     User user = getUser(context);
     if (user != null) {
       userId = user.getId();
     }
     ObjectHookManager hookManager = (ObjectHookManager) context.getServletContext().getAttribute(Constants.OBJECT_HOOK_MANAGER);
-    hookManager.process(ObjectHookAction.UPDATE, previousObject, object, userId, getServerUrl(context));
+    hookManager.process(ObjectHookAction.UPDATE, previousObject, object, userId, getServerUrl(context), getServerUrl(context), processName);
   }
 
   protected void processSelectHook(ActionContext context, Object object) {
+    processSelectHook(context, object, null);
+  }
+
+  protected void processSelectHook(ActionContext context, Object object, String processName) {
     if (object != null) {
       int userId = -1;
       User user = getUser(context);
@@ -587,18 +599,22 @@ public class GenericAction implements java.io.Serializable {
         userId = user.getId();
       }
       ObjectHookManager hookManager = (ObjectHookManager) context.getServletContext().getAttribute(Constants.OBJECT_HOOK_MANAGER);
-      hookManager.process(ObjectHookAction.SELECT, null, object, userId, getServerUrl(context));
+      hookManager.process(ObjectHookAction.SELECT, null, object, userId, getServerUrl(context), getServerUrl(context), processName);
     }
   }
 
   protected void processDeleteHook(ActionContext context, Object previousObject) {
+    processDeleteHook(context, previousObject, null);
+  }
+
+  protected void processDeleteHook(ActionContext context, Object previousObject, String processName) {
     int userId = -1;
     User user = getUser(context);
     if (user != null) {
       userId = user.getId();
     }
     ObjectHookManager hookManager = (ObjectHookManager) context.getServletContext().getAttribute(Constants.OBJECT_HOOK_MANAGER);
-    hookManager.process(ObjectHookAction.DELETE, previousObject, null, userId, getServerUrl(context));
+    hookManager.process(ObjectHookAction.DELETE, previousObject, null, userId, getServerUrl(context), getServerUrl(context), processName);
   }
 
   /**

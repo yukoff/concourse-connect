@@ -438,7 +438,7 @@ public class TeamMemberList extends ArrayList<TeamMember> {
       pst.close();
     }
     // Determine column to sort by
-    pagedListInfo.setDefaultSort("r.level, last_name", null);
+    pagedListInfo.setDefaultSort("t.project_id, r.level, last_name", null);
     pagedListInfo.appendSqlTail(db, sqlOrder);
     // Need to build a base SQL statement for returning records
     pagedListInfo.appendSqlSelectHead(db, sqlSelect);

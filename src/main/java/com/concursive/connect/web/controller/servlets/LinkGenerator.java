@@ -217,7 +217,7 @@ public class LinkGenerator {
       } else if (linkModuleId == Constants.PROJECT_WIKI_FILES) {
         itemLink = "wiki"; //TODO: needs to consider wiki subject
       } else if (linkModuleId == Constants.DISCUSSION_FILES_TOPIC) {
-        itemLink = "post/" + linkItemId;
+        itemLink = "topic/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECT_WIKI_COMMENT_FILES) {
         itemLink = "wiki"; //TODO: needs to consider wiki subject
       } else if (linkModuleId == Constants.BLOG_POST_COMMENT_FILES) {

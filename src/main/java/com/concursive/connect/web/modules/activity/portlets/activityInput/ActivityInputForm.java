@@ -67,28 +67,28 @@ public class ActivityInputForm implements IPortletViewer {
 
   // Preferences
   private static final String PREF_TITLE = "title";
-  private static final String PROJECT = "project";
+  private static final String ALLOW_USERS = "allowUsers";
 
   // Object Results
   private static final String TITLE = "title";
 
-  public String doView(RenderRequest request, RenderResponse response)
-      throws Exception {
-    // The JSP to show upon success
-    String defaultView = VIEW_PAGE;
-
+  public String doView(RenderRequest request, RenderResponse response) throws Exception {
     // General display preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, ""));
 
+    // Determine the project to store the event against
     Project project = findProject(request);
-    User user = getUser(request);
 
     // Check the user's permissions
-    if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-activity-add")) {
+    User user = getUser(request);
+    if (Boolean.parseBoolean(request.getPreferences().getValue(ALLOW_USERS, "false"))) {
+      if (!user.isLoggedIn()) {
+        return null;
+      }
+    } else if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-activity-add")) {
       return null;
     }
-    request.setAttribute(PROJECT, project);
 
-    return defaultView;
+    return VIEW_PAGE;
   }
 }

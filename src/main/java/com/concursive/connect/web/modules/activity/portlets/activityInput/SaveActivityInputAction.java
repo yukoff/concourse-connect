@@ -70,6 +70,10 @@ import java.sql.Timestamp;
  */
 public class SaveActivityInputAction implements IPortletAction {
 
+  // Preferences
+  private static final String EVENT_TYPE = "event";
+  private static final String ALLOW_USERS = "allowUsers";
+
   public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
     // Determine the project container to use
     Project project = findProject(request);
@@ -85,24 +89,38 @@ public class SaveActivityInputAction implements IPortletAction {
 
     // Determine the database connection to use
     Connection db = getConnection(request);
+
     // Check the user's permissions
-    if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-activity-add")) {
+    if (Boolean.parseBoolean(request.getPreferences().getValue(ALLOW_USERS, "false"))) {
+      if (!user.isLoggedIn()) {
+        throw new PortletException("User needs to be logged in");
+      }
+    } else if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-activity-add")) {
       throw new PortletException("User does not have access to add activity");
     }
 
     String body = request.getParameter("body");
     ProjectHistory projectHistory = new ProjectHistory();
     projectHistory.setProjectId(project.getId());
-    projectHistory.setDescription(WikiLink.generateLink(project) + " " + body);
+
     projectHistory.setEnabled(true);
     projectHistory.setEnteredBy(user.getId());
     projectHistory.setLinkStartDate(new Timestamp(System.currentTimeMillis()));
-    projectHistory.setLinkItemId(project.getId());
-    projectHistory.setLinkObject(ProjectHistoryList.ACTIVITY_ENTRY_OBJECT);
-    projectHistory.setEventType(ProjectHistoryList.ADD_ACTIVITY_ENTRY_EVENT);
+
+    // Determine the event type to save
+    String eventType = request.getPreferences().getValue(EVENT_TYPE, null);
+    if (eventType != null) {
+      projectHistory.setDescription(WikiLink.generateLink(user.getProfileProject()) + " " + body);
+      projectHistory.setLinkItemId(user.getId());
+      projectHistory.setLinkObject(eventType);
+    } else {
+      projectHistory.setDescription(WikiLink.generateLink(project) + " " + body);
+      projectHistory.setLinkItemId(project.getId());
+      projectHistory.setLinkObject(ProjectHistoryList.ACTIVITY_ENTRY_OBJECT);
+      projectHistory.setEventType(ProjectHistoryList.ADD_ACTIVITY_ENTRY_EVENT);
+    }
     projectHistory.insert(db);
 
     return (PortalUtils.performRefresh(request, response, "/show"));
-
   }
 }

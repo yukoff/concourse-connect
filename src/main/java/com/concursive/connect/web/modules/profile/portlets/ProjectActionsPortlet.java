@@ -194,7 +194,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
               valid = false;
             }
           } else if ("isThisUsersProfile".equals(rule)) {
-            boolean isThisUsersProfile = thisUser != null && thisUser.getId() > 0 && project.getProfile() && project.getOwner() == thisUser.getId();
+            boolean isThisUsersProfile = thisUser != null && thisUser.isLoggedIn() && project.getProfile() && project.getOwner() == thisUser.getId();
             if (!isThisUsersProfile) {
               valid = false;
             }
@@ -203,7 +203,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
             if (!isUser) {
               valid = false;
             }
-            boolean isThisUsersProfile = thisUser != null && thisUser.getId() > 0 && project.getProfile() && project.getOwner() == thisUser.getId();
+            boolean isThisUsersProfile = thisUser != null && thisUser.isLoggedIn() && project.getProfile() && project.getOwner() == thisUser.getId();
             if (isThisUsersProfile) {
               valid = false;
             }
@@ -213,7 +213,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
               valid = false;
             }
           } else if ("userCanReview".equals(rule)) {
-            boolean isUserCanReview = thisUser != null && thisUser.getId() > 0 && project.getOwner() != thisUser.getId();
+            boolean isUserCanReview = thisUser != null && thisUser.isLoggedIn() && project.getOwner() != thisUser.getId();
             if (!isUserCanReview) {
               valid = false;
             }

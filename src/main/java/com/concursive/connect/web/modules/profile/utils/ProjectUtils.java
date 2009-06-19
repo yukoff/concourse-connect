@@ -225,7 +225,7 @@ public class ProjectUtils {
     }
     */
     // If the permissions allow for participants, return true
-    if (thisProject.getFeatures().getAllowParticipants() && thisUser.getId() > 0) {
+    if (thisProject.getFeatures().getAllowParticipants() && thisUser.isLoggedIn()) {
       // This user is logged in, and the project allows participants
       if (TeamMember.PARTICIPANT <= projectRoleId) {
         return true;
@@ -292,9 +292,6 @@ public class ProjectUtils {
         teamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.PROJECT_ADMIN));
         teamMember.setRoleId(TeamMember.PROJECT_ADMIN);
         teamMember.setTemporaryAdmin(true);
-      } else if (!thisProject.getFeatures().getAllowGuests() && !thisProject.getPortal()) {
-        // If the project is not open to guests, then no access
-        return null;
       } else if (!thisProject.getApproved()) {
         // If the project isn't approved, and you're not a team member
         return null;
@@ -303,13 +300,13 @@ public class ProjectUtils {
         // If not a member, and membership is required
         return false;
         */
-      } else if (thisProject.getApproved() && thisProject.getFeatures().getAllowParticipants() && thisUser.getId() > 0) {
+      } else if (thisProject.getFeatures().getAllowParticipants() && thisUser.isLoggedIn()) {
         // Create a participant because the project promotes registered users to Partcipant
         teamMember = new TeamMember();
         teamMember.setProjectId(thisProject.getId());
         teamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.PARTICIPANT));
         teamMember.setRoleId(TeamMember.PARTICIPANT);
-      } else if (thisProject.getApproved() && thisProject.getFeatures().getAllowGuests()) {
+      } else if (thisProject.getFeatures().getAllowGuests()) {
         // Create a guest by default because the project allows guests
         teamMember = new TeamMember();
         teamMember.setProjectId(thisProject.getId());

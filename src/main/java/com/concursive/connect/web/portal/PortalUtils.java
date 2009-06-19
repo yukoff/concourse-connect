@@ -596,6 +596,7 @@ public class PortalUtils {
     // Allowed reasons to retrieve a project (permissions will be validated elsewhere)
     if (project.getTeam().hasUserId(thisUser.getId()) ||
         project.getFeatures().getAllowGuests() ||
+        (thisUser.isLoggedIn() && project.getFeatures().getAllowParticipants()) ||
         project.getPortal()) {
       return project;
     }

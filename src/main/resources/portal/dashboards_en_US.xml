@@ -3382,7 +3382,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ClassifiedListByClassifiedCategoryPortlet" class="button-list-vertical-" isSensitive="true">
+          <portlet name="ClassifiedListByClassifiedCategoryPortlet" class="basic-list " isSensitive="true">
             <title>Filter by Category</title>
             <showClassifiedCategories>true</showClassifiedCategories>
             <hasMoreURL>/page/classifieds/${category}</hasMoreURL>

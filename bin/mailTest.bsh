@@ -1,0 +1,77 @@
+#!/bin/sh
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/commons-logging-1.1.1.jar:lib/activation-1.1.1.jar:lib/javamail-mail-1.4.jar:lib/javamail-mailapi-1.4.jar:lib/concursive-commons-20090618.jar bsh.Interpreter "$0" "$@"
+
+/* Test sending an email */
+import com.concursive.commons.email.SMTPMessage;
+
+String CRLF = System.getProperty("line.separator");
+
+System.setProperty("DEBUG", "1");
+
+if (bsh.args.length == 0) {
+  print("Usage:");
+  print("  mailTest [mail host] [address-to]");
+  print("");
+  System.exit(0);
+}
+
+String host = bsh.args[0];
+String address = bsh.args[1];
+
+SMTPMessage mail = new SMTPMessage();
+mail.setHost(host);
+mail.setType("text/plain");
+mail.addTo(address);
+mail.setFrom("Mail Test <" + address + ">");
+mail.addReplyTo("test@127.0.0.1");
+mail.setSubject("This is the subject [1]");
+mail.setBody(
+  "This is the body." + CRLF);
+print("Sending message 1: text/plain");
+if (mail.send() == 2) {
+  print("Mail error: " + mail.getErrorMsg());
+  System.exit(2);
+}
+
+print("Sending message 2: text/html");
+mail.setType("text/html");
+mail.setSubject("This is the subject [2]");
+mail.setBody(
+  "This is the <b>HTML</b> body.<br />" +
+  "<br />");
+if (mail.send() == 2) {
+  print("Mail error: " + mail.getErrorMsg());
+  System.exit(2);
+}
+
+print("Sending message 3: text/plain w/attachment");
+mail.setType("text/plain");
+mail.setSubject("This is the subject [3]");
+mail.setBody(
+  "This is the body." + CRLF + 
+  CRLF +
+  "This message should have a text attachment." + CRLF);
+mail.addByteArrayAttachment("a_file.txt", "Hello, this is an attached string" + CRLF + "wrapped in an attachment by the SMTPMessage class.", "text/plain");
+if (mail.send() == 2) {
+  print("Mail error: " + mail.getErrorMsg());
+  System.exit(2);
+}
+
+print("Sending message 4: text/html w/attachment");
+mail.setType("text/html");
+mail.setSubject("This is the subject [4]");
+mail.setBody(
+  "This is the <strong>HTML</strong> body.<br />" +
+  "<br />" +
+  "This message should have a text attachment.<br />");
+if (mail.send() == 2) {
+  print("Mail error: " + mail.getErrorMsg());
+  System.exit(2);
+}
+
+
+print("Done.");
+System.exit(0);
+
+
+

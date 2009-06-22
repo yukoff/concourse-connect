@@ -247,7 +247,7 @@
               FileItem thisFile = (FileItem) issueFiles.next();
           %>
                   <%= thisFile.getImageTag("-23", ctx) %>
-                  <a href="<%= ctx %>/Discussion.do?command=Download&pid=<%= project.getId() %>&iid=<%= topic.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a>
+                  <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&iid=<%= topic.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a>
           <%
             }
           %>
@@ -440,7 +440,7 @@
             FileItem thisFile = (FileItem) files.next();
         %>
                 <%= thisFile.getImageTag("-23", ctx) %>
-                <a href="<%= ctx %>/Discussion.do?command=Download&pid=<%= project.getId() %>&rid=<%= thisReply.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a><br />
+                <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&rid=<%= thisReply.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a><br />
         <%
           }
         %>

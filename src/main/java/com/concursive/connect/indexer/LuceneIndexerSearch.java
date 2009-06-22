@@ -145,25 +145,7 @@ public class LuceneIndexerSearch implements IIndexerSearch {
             Document doc = hits.doc(i);
             IndexerQueryResult responseItem = new IndexerQueryResult(response);
             responseItem.setIndexId(hits.id(i));
-
-            // Get the following fields...
-            responseItem.setType(doc.getField("type").stringValue());
-            responseItem.setObjectId(doc.getField(responseItem.getType() + "Id").stringValue());
-            responseItem.setProjectId(doc.getField("projectId").stringValue());
-            responseItem.setGuests(doc.getField("guests").stringValue());
-            responseItem.setMembership(doc.getField("membership").stringValue());
-            responseItem.setTitle(doc.getField("title").stringValue());
-            responseItem.setContents(doc.getField("contents").stringValue());
-            responseItem.setModified(doc.getField("modified").stringValue());
-            // Following need to be added...
-//        LOG.debug("Getting size...");
-//        responseItem.setSize(doc.getField("size").stringValue());
-//        LOG.debug("Getting filename...");
-//        responseItem.setFilename(doc.getField("filename").stringValue());
-//        LOG.debug("Getting type...");
-//        responseItem.setNewsPortal(doc.getField("newsPortal").stringValue());
-//        LOG.debug("Getting type...");
-//        responseItem.setNewsStatus(doc.getField("newsStatus").stringValue());
+            populateIndexerQueryResult(responseItem, doc);
             response.add(responseItem);
           } catch (IOException e) {
             e.printStackTrace();
@@ -183,25 +165,8 @@ public class LuceneIndexerSearch implements IIndexerSearch {
             Document doc = hits.doc(i);
             IndexerQueryResult responseItem = new IndexerQueryResult(response);
             responseItem.setIndexId(hits.id(i));
-
+            populateIndexerQueryResult(responseItem, doc);
             // Get the following fields...
-            responseItem.setType(doc.getField("type").stringValue());
-            responseItem.setObjectId(doc.getField(responseItem.getType() + "Id").stringValue());
-            responseItem.setProjectId(doc.getField("projectId").stringValue());
-            responseItem.setGuests(doc.getField("guests").stringValue());
-            responseItem.setMembership(doc.getField("membership").stringValue());
-            responseItem.setTitle(doc.getField("title").stringValue());
-            responseItem.setContents(doc.getField("contents").stringValue());
-            responseItem.setModified(doc.getField("modified").stringValue());
-            // Following need to be added...
-//        LOG.debug("Getting size...");
-//        responseItem.setSize(doc.getField("size").stringValue());
-//        LOG.debug("Getting filename...");
-//        responseItem.setFilename(doc.getField("filename").stringValue());
-//        LOG.debug("Getting type...");
-//        responseItem.setNewsPortal(doc.getField("newsPortal").stringValue());
-//        LOG.debug("Getting type...");
-//        responseItem.setNewsStatus(doc.getField("newsStatus").stringValue());
             response.add(responseItem);
           } catch (IOException e) {
             e.printStackTrace();
@@ -210,4 +175,41 @@ public class LuceneIndexerSearch implements IIndexerSearch {
       }
     }
   }
+
+  private void populateIndexerQueryResult(IndexerQueryResult responseItem, Document doc) {
+    // Get the following fields...
+    responseItem.setType(doc.getField("type").stringValue());
+    responseItem.setProjectId(doc.getField("projectId").stringValue());
+    responseItem.setGuests(doc.getField("guests").stringValue());
+    responseItem.setMembership(doc.getField("membership").stringValue());
+    responseItem.setTitle(doc.getField("title").stringValue());
+    responseItem.setContents(doc.getField("contents").stringValue());
+    responseItem.setModified(doc.getField("modified").stringValue());
+    // Handle a few object specific instances (for now)
+    if ("wiki".equals(responseItem.getType())) {
+      responseItem.setSubjectLink(doc.getField("subjectLink").stringValue());
+    } else if ("activityfolder".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("assignmentFolderId").stringValue());
+    } else if ("activity".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("assignmentId").stringValue());
+    } else if ("activitynote".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("assignmentNoteId").stringValue());
+    } else if ("classifieds".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("classifiedId").stringValue());
+    } else if ("issuecategory".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("issueCategoryId").stringValue());
+    } else if ("issuereply".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("issueReplyId").stringValue());
+    } else if ("outline".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("requirementId").stringValue());
+    } else if ("reviews".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("ratingId").stringValue());
+    } else if ("ticket".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("ticketId").stringValue());
+      responseItem.setObjectSerialId(doc.getField("projectTicketId").stringValue());
+    } else {
+      responseItem.setObjectId(doc.getField(responseItem.getType() + "Id").stringValue());
+    }
+  }
+
 }

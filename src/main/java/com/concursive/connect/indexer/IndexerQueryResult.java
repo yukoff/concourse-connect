@@ -67,6 +67,7 @@ public class IndexerQueryResult extends GenericBean {
   private int indexId = -1;
   private String type;
   private String objectId;
+  private String objectSerialId;
   private String projectId;
   private String guests;
   private String membership;
@@ -77,6 +78,7 @@ public class IndexerQueryResult extends GenericBean {
   private String filename;
   private String newsPortal;
   private String newsStatus;
+  private String subjectLink;
 
   public IndexerQueryResult() {
   }
@@ -195,6 +197,14 @@ public class IndexerQueryResult extends GenericBean {
     this.objectId = objectId;
   }
 
+  public String getObjectSerialId() {
+    return objectSerialId;
+  }
+
+  public void setObjectSerialId(String objectSerialId) {
+    this.objectSerialId = objectSerialId;
+  }
+
   public String getProjectId() {
     return projectId;
   }
@@ -209,6 +219,14 @@ public class IndexerQueryResult extends GenericBean {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getSubjectLink() {
+    return subjectLink;
+  }
+
+  public void setSubjectLink(String subjectLink) {
+    this.subjectLink = subjectLink;
   }
 
   public String getType() {

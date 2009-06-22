@@ -63,18 +63,18 @@
 <%
   for (int i = 0; i < hits.size() && i < Integer.parseInt(limit); i++) {
     IndexerQueryResult document = hits.get(i);
-    int projectId = Integer.parseInt(document.get("projectId"));
+    int projectId = Integer.parseInt(document.getProjectId());
     Project project = ProjectUtils.loadProject(projectId);
     String wikiSubject = "";
-    if (StringUtils.hasText(document.get("subjectLink"))) {
-      wikiSubject = "/" + document.get("subjectLink");
+    if (StringUtils.hasText(document.getSubjectLink())) {
+      wikiSubject = "/" + document.getSubjectLink();
     }
 %>
     <li>
-      <a href="${ctx}/show/<%= project.getUniqueId() %>/wiki<%= wikiSubject %>"><ccp:evaluate if="<%= StringUtils.hasText(document.get(\"title\")) %>"><%= StringUtils.toHtml(document.get("title")) %></ccp:evaluate><ccp:evaluate if="<%= !StringUtils.hasText(document.get(\"title\")) %>"><ccp:project id="<%= document.get(\"projectId\")%>"/></ccp:evaluate></a><br />
-      Source: <ccp:project id="<%= document.get(\"projectId\")%>"/> wiki
+      <%-- broken --%>
+      <a href="${ctx}/show/<%= project.getUniqueId() %>/wiki<%= wikiSubject %>"><ccp:evaluate if="<%= StringUtils.hasText(document.getTitle()) %>"><%= StringUtils.toHtml(document.getTitle()) %></ccp:evaluate><ccp:evaluate if="<%= !StringUtils.hasText(document.getTitle()) %>"><ccp:project id="<%= document.getProjectId() %>"/></ccp:evaluate></a><br />
+      Source: <ccp:project id="<%= document.getProjectId() %>"/> wiki
     </li>
-  
 <%
   }
 %>

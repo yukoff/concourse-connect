@@ -59,15 +59,15 @@
 <ul>
 <%
   for (IndexerQueryResult document : hits) {
-    String type = document.get("type");
+    String type = document.getType();
     boolean issueType = "issue".equals(type);
     boolean issueReplyType = "issuereply".equals(type);
-    Project project = ProjectUtils.loadProject(Integer.parseInt(document.get("projectId")));
+    Project project = ProjectUtils.loadProject(Integer.parseInt(document.getProjectId()));
 %>
     <li>
-      <a <ccp:evaluate if="<%= issueType %>">href='${ctx}/show/<%= project.getUniqueId() %>/topic/<%= document.get("issueId") %>?resetList=true'></ccp:evaluate>
-      <ccp:evaluate if="<%= issueReplyType %>">href='${ctx}/show/<%= project.getUniqueId() %>/topic/<%= document.get("issueId") %>?resetList=true'></ccp:evaluate>
-      <%= StringUtils.toHtml(document.get("title")) %></a>
+      <a <ccp:evaluate if="<%= issueType %>">href='${ctx}/show/<%= project.getUniqueId() %>/topic/<%= document.getObjectId() %>?resetList=true'></ccp:evaluate>
+      <ccp:evaluate if="<%= issueReplyType %>">href='${ctx}/show/<%= project.getUniqueId() %>/topic/<%= document.getObjectId() %>?resetList=true'></ccp:evaluate>
+      <%= StringUtils.toHtml(document.getTitle()) %></a>
     </li>
 <%
   }

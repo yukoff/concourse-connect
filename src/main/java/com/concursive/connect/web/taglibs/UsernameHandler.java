@@ -56,7 +56,9 @@ import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.portal.PortalUtils;
 
+import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -168,7 +170,7 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
       // Get the user from cache
       User userObject = (User) CacheUtils.getObjectValue(Constants.SYSTEM_USER_CACHE, userId);
 
-      ApplicationPrefs prefs = (ApplicationPrefs) this.pageContext.getServletContext().getAttribute("applicationPrefs");
+      ApplicationPrefs prefs = (ApplicationPrefs) this.pageContext.getServletContext().getAttribute(Constants.APPLICATION_PREFS);
       String user = "";
       if ("false".equals(prefs.get(ApplicationPrefs.USERS_ARE_ANONYMOUS))) {
         user = userObject.getNameFirstLast();
@@ -183,7 +185,25 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
       }
       if (showProfile) {
         if (userProject != null) {
-          foundProfile = true;
+          // Determine if access to profiles is limited
+          if ("true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE))) {
+            // Check this user's access
+            User thisUser = null;
+            PortletRequest renderRequest = (PortletRequest) pageContext.getRequest().getAttribute(org.apache.pluto.tags.Constants.PORTLET_REQUEST);
+            // Check the portlet request object
+            if (renderRequest != null) {
+              thisUser = PortalUtils.getUser(renderRequest);
+            }
+            // Check the session object
+            if (thisUser == null) {
+              thisUser = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
+            }
+            // Deny if not allowed
+            foundProfile = !(thisUser == null || !thisUser.isLoggedIn());
+          } else {
+            // Link to the user
+            foundProfile = true;
+          }
         }
       }
       if (userProject != null && showCityState) {

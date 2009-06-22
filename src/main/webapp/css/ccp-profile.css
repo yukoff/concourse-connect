@@ -521,6 +521,7 @@ IE fix
   position: relative;
   padding: 0 15px!important;
   width: auto!important;
+  overflow:hidden;
 }
 
 .carousel-component button {
@@ -536,7 +537,10 @@ IE fix
 }
 
 .carousel-clip-region {
+  overflow:hidden;
+	position:relative;
   width: auto!important;
+  *width: 211px!important;
   margin: 0 auto;
   border-width: 0 2px 2px 2px;
   border-color: #ddd;
@@ -544,12 +548,13 @@ IE fix
   -moz-border-radius: 0 0 5px 5px;
   -webkit-border-bottom-left-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
-  _overflow:hidden;
 }
 
-.carousel-component UL.carousel-list,
+.carousel-component ul.carousel-list,
 .carousel-list.carousel-horizontal{
-  *width: 212px!important;
+  width:10000000px;
+	position:relative;
+  _margin-left: -7px;
 }
 
 .carousel-component .carousel-next .enabled:hover,
@@ -562,12 +567,14 @@ IE fix
   margin: 4px 12px 4px 5px;
   width: 55px;
   height: 56px;
+  float:left;
+	list-style:none;
+	overflow:hidden;
 }
 
 .carousel-component .carousel-list li a {
   display: block;
-  border: 1px solid
-  #dedede;
+  border: 1px solid #dedede;
   outline: none;
 }
 
@@ -582,6 +589,7 @@ IE fix
 
 .carousel-component .carousel-prev {
   left: 0;
+  _left: -15px;
   position: absolute;
   top: 20px;
   cursor: pointer;
@@ -1550,6 +1558,7 @@ h3.eventName span em {
   position: relative;
   margin: 35px 15px 10px 0;
   padding: 0 0 5px;
+  *display: inline-block;
 }
 
 .userInputContainer h3 {

@@ -807,7 +807,7 @@ public class TeamMember extends GenericBean {
     }
 
     // Determine if the role can be changed
-    if ((memberMakingChange != null && memberMakingChange.getUser().getAccessAdmin()) ||
+    if ((memberMakingChange != null && memberMakingChange.getUser() != null && memberMakingChange.getUser().getAccessAdmin()) ||
         (thisUser != null && thisUser.getAccessAdmin())) {
       // This is an administrator and can make the change
     } else {

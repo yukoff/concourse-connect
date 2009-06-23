@@ -2,7 +2,7 @@
 ConcourseConnect 1.0.1
 Copyright (C) 2009 Concursive Corporation.
 Change Log
-June 2, 2009
+June 23, 2009
 ----------------------------------------------------------------------------
 
 If you are interested in collaborating on various social networking topics
@@ -10,11 +10,47 @@ and implementations, including customization and development, please join
 the ConcourseConnect community at:
 http://www.concursive.com/show/concourseconnect
 
-1.0.1 (June 2, 2009)
+1.0.2 (June 23, 2009)
 
   Important notes:
-    This release requires that the data be reindexed for search to work
-    correctly.  Reindexing is done by an Admin on the View Usage page.
+    This release requires that the disk data be reindexed for search to
+    work properly.  Reindexing is done by an Admin on the View Usage page.
+
+  Improvements:
+    Added administrative notifications for all new and/or claimed listings
+    Wiki and Discussion search results now have correct HTML links
+    IE7 and IE6 html improvements, particulary around hidden reviews,
+      Slideshow Carousel formatting, pagination elements and wiki infobox
+    When listings are created, any defined ticket/issue categories are 
+      created, previously they were not attached
+    Attachments in discussions couldn't be viewed or downloaded due to
+      an incorrect HTML link
+    When a user has been invited, but hasn't registered, choosing "forgot
+      password" resends the original invitation
+    Major speed improvement when browsing lots of listings (50k+)
+    Listings that use international characters did not obtain a unique
+      database id
+    Geocoding defaults to Google when using Google Maps
+    The sponsors page now shows a featured sponsor
+    Improved copying and pasting web pages into the Wiki editor
+    Several Business category names were truncated for new installs
+    When an Admin updated a listing using the Modify Listing feature,
+      the description of a listing was truncated to 255 characters
+    When an Admin modified the style of a listing, the style data did
+      not reload when subsequently modified
+
+  Developer Improvements:
+    NEW: Scheduler can be triggered from the workflow engine
+    NEW: Workflow engine can be triggered by a named process instead of
+      just by hooks
+    NEW: The Abstract MVC Portlet can redirect to a specific viewer after
+      the portlet action executes
+    CHANGE: Improved the RunScript workflow component so that it can return
+      a true/false condition
+    CHANGE: Upgraded TinyMCE to 3.2.4.1
+
+
+1.0.1 (June 2, 2009)
 
   Improvements:
     In documents, the currently selected folder is highlighted

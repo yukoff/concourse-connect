@@ -806,20 +806,28 @@ public class TeamMember extends GenericBean {
       thisUser = UserUtils.loadUser(userIdMakingChange);
     }
 
-    // An admin can do whatever...
-    if (thisUser == null || !thisUser.getAccessAdmin()) {
+    // Determine if the role can be changed
+    if ((memberMakingChange != null && memberMakingChange.getUser().getAccessAdmin()) ||
+        (thisUser != null && thisUser.getAccessAdmin())) {
+      // This is an administrator and can make the change
+    } else {
+      // This is not an administrator so make sure the user is on the team and has
+      // access to make the change
+      if (memberMakingChange == null) {
+        return false;
+      }
 
-      // A user cannot make themself worse or better
+      // A team member cannot make themself worse or better
       if (memberMakingChange.getUserId() == memberBeingChanged.getUserId()) {
         return false;
       }
 
-      // The user making the change cannot change the role of another user to something better than themself
+      // The team member making the change cannot change the role of another member to something better than themself
       if (newRowLevel < memberMakingChange.getRoleId()) {
         return false;
       }
 
-      // The user cannot make a better user, worse
+      // The team member cannot make a better team member, worse
       if (memberBeingChanged.getRoleId() < memberMakingChange.getRoleId()) {
         return false;
       }
@@ -922,11 +930,11 @@ public class TeamMember extends GenericBean {
   public Project getProject() {
     return project;
   }
-  
-  public boolean isAddedOrJoinedOrApproved(){
-  	
-  	return (status == STATUS_ADDED || status == STATUS_JOINED || status == STATUS_JOINED_APPROVED);
-  	
+
+  public boolean isAddedOrJoinedOrApproved() {
+
+    return (status == STATUS_ADDED || status == STATUS_JOINED || status == STATUS_JOINED_APPROVED);
+
   }
 }
 

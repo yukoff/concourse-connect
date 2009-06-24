@@ -110,10 +110,6 @@ public final class ProjectManagementLists extends GenericAction {
       teamMemberList.setProjectId(thisProject.getId());
       teamMemberList.setMinimumRoleLevel(TeamMember.VIP);
       teamMemberList.buildList(db);
-      for (TeamMember thisMember : teamMemberList) {
-        User thisUser = UserUtils.loadUser(thisMember.getUserId());
-        thisMember.setUser(thisUser);
-      }
       context.getRequest().setAttribute("teamMemberList", teamMemberList);
 
       ProjectItemList functionalAreaList = new ProjectItemList();

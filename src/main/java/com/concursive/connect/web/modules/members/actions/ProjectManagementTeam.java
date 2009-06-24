@@ -649,9 +649,6 @@ public final class ProjectManagementTeam extends GenericAction {
       if (!hasProjectAccess(context, project.getId(), "project-team-view")) {
         return "UserPermissionError";
       }
-      // Load the user record which has access to the profile
-      User thisUser = UserUtils.loadUser(thisMember.getUserId());
-      thisMember.setUser(thisUser);
       context.getRequest().setAttribute("project", project);
       context.getRequest().setAttribute("teamMember", thisMember);
       return "TooltipOK";

@@ -128,10 +128,8 @@ public class TeamMemberListViewer implements IPortletViewer {
     teamMemberList.buildList(db);
     // Map the users to a role
     for (TeamMember thisMember : teamMemberList) {
-      User thisUser = UserUtils.loadUser(thisMember.getUserId());
-      thisMember.setUser(thisUser);
       // On the profile page, skip the project's owner
-      if (project.getProfile() && project.getOwner() == thisUser.getId()) {
+      if (project.getProfile() && project.getOwner() == thisMember.getUser().getId()) {
         continue;
       }
       // Put the user into the correct role

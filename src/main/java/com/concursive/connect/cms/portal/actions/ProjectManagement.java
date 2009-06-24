@@ -1558,8 +1558,6 @@ public final class ProjectManagement extends GenericAction {
           TeamMember tm = teamMap.get(t.getOwner());
           if (tm != null) {
             teamMap.remove(t.getOwner()); //remove so teammembers are not added more than once
-            User thisUser = UserUtils.loadUser(tm.getUserId());
-            tm.setUser(thisUser);
             teamMemberList.add(tm);
           }
         }

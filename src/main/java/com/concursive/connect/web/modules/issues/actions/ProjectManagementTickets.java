@@ -125,10 +125,6 @@ public final class ProjectManagementTickets extends GenericAction {
       team.setProjectId(thisProject.getId());
       team.setPagedListInfo(projectTeamInfo);
       team.buildList(db);
-      for (TeamMember thisMember : team) {
-        User thisUser = UserUtils.loadUser(thisMember.getUserId());
-        thisMember.setUser(thisUser);
-      }
       context.getRequest().setAttribute("teamMemberList", team);
       // Prepare the form
       Ticket thisTicket = (Ticket) context.getFormBean();

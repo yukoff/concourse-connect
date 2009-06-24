@@ -467,6 +467,9 @@ public class TeamMember extends GenericBean {
    * @return The user value
    */
   public User getUser() {
+    if (user == null && userId > -1) {
+      return UserUtils.loadUser(userId);
+    }
     return user;
   }
 
@@ -800,11 +803,9 @@ public class TeamMember extends GenericBean {
     TeamMember memberBeingChanged = project.getTeam().getTeamMember(userId);
     LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
     int newRowLevel = roleList.getLevelFromId(newUserLevel);
-
-    User thisUser = null;
-    if (memberMakingChange == null) {
-      thisUser = UserUtils.loadUser(userIdMakingChange);
-    }
+    
+    // Leverage the user's record whether on the team or not
+    User thisUser = UserUtils.loadUser(userIdMakingChange);
 
     // Determine if the role can be changed
     if ((memberMakingChange != null && memberMakingChange.getUser() != null && memberMakingChange.getUser().getAccessAdmin()) ||

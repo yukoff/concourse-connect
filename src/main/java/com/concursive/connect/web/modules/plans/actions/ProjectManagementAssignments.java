@@ -103,10 +103,6 @@ public final class ProjectManagementAssignments extends GenericAction {
       team.setProjectId(thisProject.getId());
       team.setPagedListInfo(projectTeamInfo);
       team.buildList(db);
-      for (TeamMember thisMember : team) {
-        User thisUser = UserUtils.loadUser(thisMember.getUserId());
-        thisMember.setUser(thisUser);
-      }
       context.getRequest().setAttribute("teamMemberList", team);
       //Load priority drop-down list
       LookupList priorityList = new LookupList(db, "lookup_project_priority");
@@ -326,10 +322,6 @@ public final class ProjectManagementAssignments extends GenericAction {
       team.setProjectId(thisProject.getId());
       team.setPagedListInfo(projectTeamInfo);
       team.buildList(db);
-      for (TeamMember thisMember : team) {
-        User thisUser = UserUtils.loadUser(thisMember.getUserId());
-        thisMember.setUser(thisUser);
-      }
       context.getRequest().setAttribute("teamMemberList", team);
       //Load priority drop-down
       LookupList priorityList = new LookupList(db, "lookup_project_priority");

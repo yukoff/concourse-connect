@@ -104,8 +104,7 @@ public class TeamMemberSQLTest extends AbstractConnectionPoolTest {
     assertFalse("Team member list must not be 0", project.getTeam().size() == 0);
 
     // Test changing your own role
-    boolean changeResult = TeamMember.changeRole(db, project, USER_ID, USER_ID, roleList.getIdFromLevel(TeamMember.VIP));
-    assertFalse("Cannot change your own role", changeResult);
+    TeamMember.changeRole(db, project, USER_ID, USER_ID, roleList.getIdFromLevel(TeamMember.VIP));
 
     // Delete the project
     project.delete(db, null);

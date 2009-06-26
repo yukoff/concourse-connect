@@ -48,6 +48,7 @@ package com.concursive.connect.web.modules.calendar.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.connect.Constants;
+import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.Connection;
@@ -55,6 +56,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -70,6 +72,12 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
   private PagedListInfo pagedListInfo = null;
   private int meetingId = -1;
   private int isTentative = Constants.UNDEFINED;
+  private boolean isDimdimAttendee = false;
+
+  private List<MeetingAttendee> invitedList = null;
+  private List<MeetingAttendee> declinedList = null;
+  private List<MeetingAttendee> acceptedList = null;
+  private List<MeetingAttendee> tentativeList = null;
 
   public MeetingAttendeeList() {
   }
@@ -110,6 +118,59 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     this.isTentative = DatabaseUtils.parseBooleanToConstant(tmp);
   }
 
+  /*
+   * if true returns all dimdim meeting attendees 
+   */
+  public boolean isDimdimAttendees() {
+    return isDimdimAttendee;
+  }
+
+  /*
+  * Set to true to retrive Dimdim meeting attendee
+  */
+  public void setDimdimAttendees(boolean isDimdimAttendee) {
+    this.isDimdimAttendee = isDimdimAttendee;
+  }
+
+  /*
+   * Set to true to retrive Dimdim meeting attendee
+   */
+  public void setDimdimAttendees(String tmp) {
+    this.isDimdimAttendee = DatabaseUtils.parseBoolean(tmp);
+  }
+
+  public List<MeetingAttendee> getInvitedList() {
+    return invitedList;
+  }
+
+  public void setInvitedList(List<MeetingAttendee> invitedList) {
+    this.invitedList = invitedList;
+  }
+
+  public List<MeetingAttendee> getDeclinedList() {
+    return declinedList;
+  }
+
+  public void setDeclinedList(List<MeetingAttendee> declinedList) {
+    this.declinedList = declinedList;
+  }
+
+  public List<MeetingAttendee> getAcceptedList() {
+    return acceptedList;
+  }
+
+  public void setAcceptedList(List<MeetingAttendee> acceptedList) {
+    this.acceptedList = acceptedList;
+  }
+
+  public List<MeetingAttendee> getTentativeList() {
+    return tentativeList;
+  }
+
+  public void setTentativeList(List<MeetingAttendee> tentativeList) {
+    this.tentativeList = tentativeList;
+  }
+
   public int queryCount(Connection db) throws SQLException {
     int count = 0;
     StringBuffer sqlCount = new StringBuffer();
@@ -133,7 +194,7 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
   /**
    * builds MeetingList
    *
-   * @param db
+   * @param db Database Connection
    * @throws java.sql.SQLException
    */
   public void buildList(Connection db) throws SQLException {
@@ -196,6 +257,25 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     }
     rs.close();
     pst.close();
+    // Sort the attendees
+    invitedList = new ArrayList<MeetingAttendee>();
+    declinedList = new ArrayList<MeetingAttendee>();
+    acceptedList = new ArrayList<MeetingAttendee>();
+    tentativeList = new ArrayList<MeetingAttendee>();
+    for (MeetingAttendee meetingAttendee : this) {
+      if (meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_INVITED) {
+        getInvitedList().add(meetingAttendee);
+      }
+      if (meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_ACCEPTED) {
+        getAcceptedList().add(meetingAttendee);
+      }
+      if (meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_TENTATIVE) {
+        getTentativeList().add(meetingAttendee);
+      }
+      if (meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_DECLINED) {
+        getDeclinedList().add(meetingAttendee);
+      }
+    }
   }
 
 
@@ -208,6 +288,9 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     }
     if (isTentative != Constants.UNDEFINED) {
       sqlFilter.append("AND is_tentative = ? ");
+    }
+    if (isDimdimAttendee) {
+      sqlFilter.append("AND dimdim_status IS NOT NULL ");
     }
   }
 
@@ -226,4 +309,48 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     return i;
   }
 
+  /**
+   * Deletes all the attendees of a meeting
+   *
+   * @param db        - Database connection
+   * @param meetingId - Id of the meeting
+   * @throws SQLException
+   */
+  public void delete(Connection db, int meetingId) throws SQLException {
+    boolean autoCommit = db.getAutoCommit();
+    try {
+      if (autoCommit) {
+        db.setAutoCommit(false);
+      }
+      // Delete the Meeting
+      PreparedStatement pst = db.prepareStatement(
+          "DELETE FROM project_calendar_meeting_attendees " +
+              "WHERE meeting_id = ? ");
+      int i = 0;
+      pst.setInt(++i, meetingId);
+      pst.execute();
+      pst.close();
+      if (autoCommit) {
+        db.commit();
+      }
+    } catch (SQLException e) {
+      if (autoCommit) {
+        db.rollback();
+      }
+      throw e;
+    } finally {
+      if (autoCommit) {
+        db.setAutoCommit(true);
+      }
+    }
+  }
+
+  public MeetingAttendee getMeetingAttendee(User user) {
+    for (MeetingAttendee meetingAttendee : this) {
+      if (meetingAttendee.getUserId() == user.getId()) {
+        return meetingAttendee;
+      }
+    }
+    return null;
+  }
 }

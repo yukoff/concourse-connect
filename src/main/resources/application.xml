@@ -136,10 +136,19 @@
     <hook class="com.concursive.connect.web.modules.badges.dao.ProjectBadge" module="Project Management">
       <actions><action type="insert" process="teamelements.application.project.grant-badge"/></actions>
     </hook>
+    <hook class="com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean" module="Project Management">
+      <actions><action type="insert" process="connect.event.meetinginvitation"/></actions>
+    </hook>
   </hooks>
 
   <!-- Each process describes the workflow for the various object and action that is being hooked-->
   <processes>
+    <process name="connect.event.meetinginvitation" description="Event meeting invitation to attendees" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.calendar.workflow.SendEventMeetingInvitation"></component>
+      </components>
+    </process>
+  
     <process name="teamelements.application.project.insert" description="Record Project Events" startId="1">
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.SaveProjectAddEvent" enabled="true">

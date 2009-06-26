@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.calendar.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.common.social.rating.dao.Rating;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -83,12 +84,19 @@ public class Meeting extends GenericBean {
   private int durationMinutes = 0;
   private boolean byInvitationOnly = false;
   private String description = null;
+  private boolean isDimdim = false;
+  private String meetingInvitees = "";
+  private String dimdimMeetingId = null;
+  private String dimdimUrl = null;
+  private String dimdimUsername = null;
+  private String dimdimPassword = null;
 
   private int ratingCount = 0;
   private int ratingValue = 0;
   private double ratingAvg = 0.0;
   private int inappropriateCount = 0;
-
+  // Helper objects
+  private MeetingAttendeeList meetingAttendeeList = null;
 
   public Meeting() {
   }
@@ -245,6 +253,99 @@ public class Meeting extends GenericBean {
     this.isTentative = DatabaseUtils.parseBoolean(isTentative);
   }
 
+  /**
+   * @return if true meeting is a Dimdim meeting
+   */
+  public boolean getIsDimdim() {
+    return isDimdim;
+  }
+
+  /**
+   * @param isDimdim Set to true if its a Dimdim meeting
+   */
+  public void setIsDimdim(boolean isDimdim) {
+    this.isDimdim = isDimdim;
+  }
+
+  /**
+   * @param isDimdim Set to true if its a Dimdim meeting
+   */
+  public void setIsDimdim(String isDimdim) {
+    this.isDimdim = DatabaseUtils.parseBoolean(isDimdim);
+  }
+
+  /**
+   * @param meetingInvitees Dimdim meeting invitees
+   */
+  public void setMeetingInvitees(String meetingInvitees) {
+    this.meetingInvitees = meetingInvitees;
+  }
+
+  public String getMeetingInvitees() {
+    return meetingInvitees;
+  }
+
+  /**
+   * @return URL of dimdim server
+   */
+  public String getDimdimUrl() {
+    return dimdimUrl;
+  }
+
+  /**
+   * @param dimdimUrl URL of dimdim server
+   */
+  public void setDimdimUrl(String dimdimUrl) {
+    //add a slash if the URL does not end with it
+    if (StringUtils.hasText(dimdimUrl) && !dimdimUrl.endsWith("/")) {
+      dimdimUrl += "/";
+    }
+    this.dimdimUrl = dimdimUrl;
+  }
+
+  /**
+   * @return Dimdim web meeting id
+   */
+  public String getDimdimMeetingId() {
+    return dimdimMeetingId;
+  }
+
+  /**
+   * @param dimdimMeetingId Dimdim web meeting id
+   */
+  public void setDimdimMeetingId(String dimdimMeetingId) {
+    this.dimdimMeetingId = dimdimMeetingId;
+  }
+
+
+  /**
+   * @return Username to dimdim server
+   */
+  public String getDimdimUsername() {
+    return dimdimUsername;
+  }
+
+  /**
+   * @param dimdimUsername username to dimdim server
+   */
+  public void setDimdimUsername(String dimdimUsername) {
+    this.dimdimUsername = dimdimUsername;
+  }
+
+  /**
+   * @return password to dimdim server
+   */
+  public String getDimdimPassword() {
+    return dimdimPassword;
+  }
+
+  /**
+   * @param dimdimPassword password to dimdim server
+   */
+  public void setDimdimPassword(String dimdimPassword) {
+    this.dimdimPassword = dimdimPassword;
+  }
+
   public Timestamp getEntered() {
     return entered;
   }
@@ -361,6 +462,13 @@ public class Meeting extends GenericBean {
     this.inappropriateCount = Integer.parseInt(inappropriateCount);
   }
 
+  public MeetingAttendeeList getMeetingAttendeeList() {
+    return meetingAttendeeList;
+  }
+
+  public void setMeetingAttendeeList(MeetingAttendeeList meetingAttendeeList) {
+    this.meetingAttendeeList = meetingAttendeeList;
+  }
 
   public boolean hasDuration() {
     return (durationDays > 0 || durationHours > 0 || durationMinutes > 0);
@@ -425,8 +533,8 @@ public class Meeting extends GenericBean {
    *
    * @return The timeZoneParams value
    */
-  public static ArrayList getTimeZoneParams() {
-    ArrayList thisList = new ArrayList();
+  public static ArrayList<String> getTimeZoneParams() {
+    ArrayList<String> thisList = new ArrayList<String>();
     thisList.add("startDate");
     thisList.add("endDate");
     return thisList;
@@ -461,38 +569,35 @@ public class Meeting extends GenericBean {
     ratingValue = DatabaseUtils.getInt(rs, "rating_value", 0);
     ratingAvg = DatabaseUtils.getDouble(rs, "rating_avg", 0.0);
     inappropriateCount = DatabaseUtils.getInt(rs, "inappropriate_count", 0);
+    isDimdim = rs.getBoolean("is_dimdim");
+    dimdimUrl = rs.getString("dimdim_url");
+    dimdimMeetingId = rs.getString("dimdim_meetingid");
+    dimdimUsername = rs.getString("dimdim_username");
+    dimdimPassword = rs.getString("dimdim_password");
   }
 
   public boolean isValid() {
     if (projectId == -1) {
       errors.put("actionError", "Project ID not specified");
     }
-    if (title == null || title.equals("")) {
+    if (!StringUtils.hasText(title)) {
       errors.put("titleError", "Required field");
     }
-
     if (startDate == null) {
       errors.put("startDateError", "Required field");
     }
-
     if (endDate == null) {
       errors.put("endDateError", "Required field");
     }
-
     if (owner == -1 && enteredBy > -1) {
       owner = enteredBy;
     }
 
     /*
-    if (owner == -1 || enteredBy == -1 || modifiedBy == -1) {
-      errors.put("contentError", "Required field");
-    } */
-
-    if (hasErrors()) {
-      return false;
-    } else {
-      return true;
-    }
+   if (owner == -1 || enteredBy == -1 || modifiedBy == -1) {
+     errors.put("contentError", "Required field");
+   } */
+    return !hasErrors();
   }
 
   public boolean insert(Connection db) throws SQLException {
@@ -518,8 +623,20 @@ public class Meeting extends GenericBean {
       if (description != null) {
         sql.append("description, ");
       }
-      sql.append("owner,enteredby, modifiedby, by_invitation_only)");
-      sql.append("VALUES (?, ?, ?, ?, ?, ?,  ");
+      if (dimdimMeetingId != null) {
+        sql.append("dimdim_meetingid, ");
+      }
+      if (dimdimUrl != null) {
+        sql.append("dimdim_url, ");
+      }
+      if (dimdimUsername != null) {
+        sql.append("dimdim_username, ");
+      }
+      if (dimdimPassword != null) {
+        sql.append("dimdim_password, ");
+      }
+      sql.append("owner,enteredby, modifiedby, by_invitation_only, is_dimdim)");
+      sql.append("VALUES (?, ?, ?, ?, ?, ?, ");
 
       if (entered != null) {
         sql.append("?, ");
@@ -530,7 +647,19 @@ public class Meeting extends GenericBean {
       if (description != null) {
         sql.append("?, ");
       }
-      sql.append("?,?,?,?) ");
+      if (dimdimMeetingId != null) {
+        sql.append("?, ");
+      }
+      if (dimdimUrl != null) {
+        sql.append("?, ");
+      }
+      if (dimdimUsername != null) {
+        sql.append("?, ");
+      }
+      if (dimdimPassword != null) {
+        sql.append("?, ");
+      }
+      sql.append("?,?,?,?,?) ");
       int i = 0;
       //Insert the Meeting
       PreparedStatement pst = db.prepareStatement(sql.toString());
@@ -549,10 +678,23 @@ public class Meeting extends GenericBean {
       if (description != null) {
         pst.setString(++i, description);
       }
+      if (dimdimMeetingId != null) {
+        pst.setString(++i, dimdimMeetingId);
+      }
+      if (dimdimUrl != null) {
+        pst.setString(++i, dimdimUrl);
+      }
+      if (dimdimUsername != null) {
+        pst.setString(++i, dimdimUsername);
+      }
+      if (dimdimPassword != null) {
+        pst.setString(++i, dimdimPassword);
+      }
       pst.setInt(++i, owner);
       pst.setInt(++i, enteredBy);
       pst.setInt(++i, modifiedBy);
       pst.setBoolean(++i, byInvitationOnly);
+      pst.setBoolean(++i, isDimdim);
 
       pst.execute();
       pst.close();
@@ -590,9 +732,22 @@ public class Meeting extends GenericBean {
       String sql = "UPDATE project_calendar_meeting " +
           "SET title = ?, " +
           "location = ?, end_date = ?, start_date = ?, is_tentative = ?, " +
-          "modifiedby = ?, modified = CURRENT_TIMESTAMP, by_invitation_only = ? ";
+          "modifiedby = ?, modified = CURRENT_TIMESTAMP, by_invitation_only = ?, " +
+          "is_dimdim = ? ";
       if (description != null) {
         sql += ", description = ? ";
+      }
+      if (dimdimMeetingId != null) {
+        sql += ", dimdim_meetingid = ? ";
+      }
+      if (dimdimUrl != null) {
+        sql += ", dimdim_url = ? ";
+      }
+      if (dimdimUsername != null) {
+        sql += ", dimdim_username = ? ";
+      }
+      if (dimdimPassword != null) {
+        sql += ", dimdim_password = ? ";
       }
       sql += "WHERE meeting_id = ? AND modified = ?";
 
@@ -604,8 +759,21 @@ public class Meeting extends GenericBean {
       pst.setBoolean(++i, isTentative);
       pst.setInt(++i, this.getModifiedBy());
       pst.setBoolean(++i, byInvitationOnly);
+      pst.setBoolean(++i, isDimdim);
       if (description != null) {
         pst.setString(++i, description);
+      }
+      if (dimdimMeetingId != null) {
+        pst.setString(++i, dimdimMeetingId);
+      }
+      if (dimdimUrl != null) {
+        pst.setString(++i, dimdimUrl);
+      }
+      if (dimdimUsername != null) {
+        pst.setString(++i, dimdimUsername);
+      }
+      if (dimdimPassword != null) {
+        pst.setString(++i, dimdimPassword);
       }
       pst.setInt(++i, id);
       pst.setTimestamp(++i, modified);
@@ -665,5 +833,11 @@ public class Meeting extends GenericBean {
         db.setAutoCommit(true);
       }
     }
+  }
+
+  public void buildAttendeeList(Connection db) throws SQLException {
+    meetingAttendeeList = new MeetingAttendeeList();
+    meetingAttendeeList.setMeetingId(id);
+    meetingAttendeeList.buildList(db);
   }
 }

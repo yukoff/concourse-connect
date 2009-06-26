@@ -1,14 +1,24 @@
 ----------------------------------------------------------------------------
-ConcourseConnect 1.0.1
+ConcourseConnect 2.0 alpha
 Copyright (C) 2009 Concursive Corporation.
 Change Log
-June 23, 2009
+June 26, 2009
 ----------------------------------------------------------------------------
 
 If you are interested in collaborating on various social networking topics
 and implementations, including customization and development, please join
 the ConcourseConnect community at:
 http://www.concursive.com/show/concourseconnect
+
+2.0 alpha (June 26, 2009)
+
+  During alpha, features will be integrated and evaluated before having
+  a final release.  This just means the features are subject to change
+  and this release should be considered unstable.
+
+  Improvements:
+    Dimdim meetings can be scheduled from any listing's calendar
+
 
 1.0.2 (June 23, 2009)
 

@@ -59,6 +59,7 @@ public class UserSearchBean extends GenericBean {
   private String firstName = null;
   private String lastName = null;
   private String company = null;
+  private String name = null;
   private int admin = Constants.UNDEFINED;
   private int registered = Constants.UNDEFINED;
   private int enabled = Constants.UNDEFINED;
@@ -92,6 +93,25 @@ public class UserSearchBean extends GenericBean {
 
   public void setAdmin(int tmp) {
     this.admin = tmp;
+  }
+
+  /**
+   * The value set to search first and last name fields
+   *
+   * @return name
+   */
+
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Searches the first and last name fields for likely matches
+   *
+   * @param name - value to search
+   */
+  public void setName(String name) {
+    this.name = name;
   }
 
   public void setAdmin(String tmp) {

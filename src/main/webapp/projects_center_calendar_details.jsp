@@ -46,8 +46,8 @@
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
-<%@ page
-  import="java.util.*,java.text.DateFormat,java.lang.reflect.*, com.concursive.connect.web.modules.calendar.utils.CalendarBean,com.concursive.commons.text.StringUtils" %>
+<%@ taglib uri="http://packtag.sf.net" prefix="pack" %>
+<%@ page import="java.util.*,java.text.DateFormat,java.lang.reflect.*, com.concursive.connect.web.modules.calendar.utils.CalendarBean,com.concursive.commons.text.StringUtils" %>
 <%@ page import="com.concursive.connect.web.modules.issues.dao.Ticket " %>
 <%@ page import="com.concursive.connect.web.modules.calendar.utils.CalendarEventList,com.concursive.connect.web.modules.calendar.utils.CalendarEvent" %>
 <jsp:useBean id="SKIN" class="java.lang.String" scope="application"/>
@@ -56,6 +56,7 @@
 <jsp:useBean id="calendarView" class="com.concursive.connect.web.modules.calendar.utils.CalendarView" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
+<pack:script enabled="true" src="/javascript/projects_center_calendar_add.js" />
 <%
   CalendarBean calendarInfo = (CalendarBean) request.getAttribute("calendarInfoBean" + project.getId());
   request.setAttribute("calendarInfo", calendarInfo);
@@ -88,9 +89,7 @@
 
 <%-- Display back link --%>
 <ccp:evaluate if="<%= !calendarInfo.isAgendaView() %>">
-
   <a href="javascript:agendaView()">Back To Upcoming Events</a>
-
 </ccp:evaluate>
 <%-- Display the days, always starting with today in Agenda View --%>
 
@@ -103,10 +102,12 @@
         Calendar tmpCal = Calendar.getInstance();
         tmpCal.setTimeZone(timeZone);
       %>
+      <%--
         <span class="year">
         <ccp:tz timestamp="<%= new Timestamp(tmpCal.getTimeInMillis()) %>" pattern="y" dateOnly="true"
                    default="&nbsp;"/>
         </span>
+      --%>
         <span class="month">
         <ccp:tz timestamp="<%= new Timestamp(tmpCal.getTimeInMillis()) %>" pattern="MMM" dateOnly="true"
                    default="&nbsp;"/>
@@ -156,10 +157,12 @@
   <div class="dateContainer">
     <div class="dateWrapper">
         <%-- The dates are already using the user's timezone, so do not use again --%>
+      <%--
           <span class="year">
             <ccp:tz timestamp="<%= new Timestamp(thisCal.getTimeInMillis()) %>" pattern="y" dateOnly="true"
                        default="&nbsp;"/>
           </span>
+      --%>
           <span class="month">
             <ccp:tz timestamp="<%= new Timestamp(thisCal.getTimeInMillis()) %>" pattern="MMM" dateOnly="true"
                        default="&nbsp;"/>
@@ -206,10 +209,12 @@
 	        
 	      %>
 	        <%-- The dates are already using the user's timezone, so do not use again --%>
+        <%--
 	          <span class="year">
 	            <ccp:tz timestamp="<%= new Timestamp(tmpCal.getTimeInMillis()) %>" pattern="y" dateOnly="true"
 	                       default="&nbsp;"/>
 	          </span>
+	      --%>
 	          <span class="month">
 	            <ccp:tz timestamp="<%= new Timestamp(tmpCal.getTimeInMillis()) %>" pattern="MMM" dateOnly="true"
 	                       default="&nbsp;"/>

@@ -95,6 +95,7 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
     jsQuote = false;
     showLinkTitle = true;
     idTag = null;
+    showCityState = false;
   }
 
 
@@ -207,7 +208,7 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
         }
       }
       if (userProject != null && showCityState) {
-        user = user + userProject.getCityStateString();
+        user = user + " " + userProject.getCityStateString();
       }
       // Output as requested
       if (foundProfile) {

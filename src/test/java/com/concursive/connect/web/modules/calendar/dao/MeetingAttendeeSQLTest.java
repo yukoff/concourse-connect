@@ -98,6 +98,8 @@ public class MeetingAttendeeSQLTest extends AbstractConnectionPoolTest {
     MeetingAttendee attendee = new MeetingAttendee();
     attendee.setMeetingId(meeting.getId());
     attendee.setUserId(USER_ID);
+    attendee.setEnteredBy(meeting.getEnteredBy());
+    attendee.setModifiedBy(meeting.getEnteredBy());
     attendee.setIsTentative(true);
     attendee.insert(db);
 

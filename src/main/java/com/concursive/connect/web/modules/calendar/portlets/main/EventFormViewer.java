@@ -46,10 +46,17 @@
 package com.concursive.connect.web.modules.calendar.portlets.main;
 
 import com.concursive.commons.date.DateUtils;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
+import com.concursive.connect.web.modules.calendar.dao.MeetingAttendee;
+import com.concursive.connect.web.modules.calendar.dao.MeetingAttendeeList;
+import com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.portal.AbstractPortletModule;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
@@ -58,6 +65,9 @@ import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Meeting form
@@ -69,13 +79,27 @@ public class EventFormViewer implements IPortletViewer {
 
   // Pages
   private static final String VIEW_PAGE = "/projects_center_calendar_add.jsp";
+  private static final String CONFIRM_INVITEES = "/projects_center_calendar_meetings_confirm.jsp";
 
   // Object Results
   private static final String MEETING = "meeting";
+  private static final String TEAM_MEMBERS_LIST = "teamMembersList";
+  private static final String SHOW_DIMDIM_OPTION = "showDimDim";
 
   public String doView(RenderRequest request, RenderResponse response) throws Exception {
     // The JSP to show upon success
     String defaultView = VIEW_PAGE;
+
+    //Preferences
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+    request.setAttribute(SHOW_DIMDIM_OPTION, "true".equals(prefs.get(ApplicationPrefs.DIMDIM_ENABLED)) ? "true" : "false");
+
+    // Check the request existance of invitees bean then display the confirm invitees page.
+    Object meetingInviteesBean = request.getAttribute(AbstractPortletModule.FORM_BEAN);
+    if (meetingInviteesBean instanceof MeetingInviteesBean) {
+      meetingInviteesBean = (MeetingInviteesBean) PortalUtils.getFormBean(request, "meetingInviteesBean", MeetingInviteesBean.class);
+      return CONFIRM_INVITEES;
+    }
 
     // Determine the project container to use
     Project project = findProject(request);
@@ -98,11 +122,15 @@ public class EventFormViewer implements IPortletViewer {
     // Load the record
     if (recordId > -1) {
       meeting.queryRecord(db, recordId);
+
+      //get attendee list
+      setMeetingInvitees(db, meeting);
+      //request.setAttribute(MEETING_INVITEE_LIST, meetingInviteeList);
+
       // Verify the project id since the request cannot be trusted
       if (meeting.getProjectId() != project.getId()) {
         throw new PortletException("Project mismatch");
       }
-
     }
 
     // Meetings have defaults...
@@ -113,7 +141,45 @@ public class EventFormViewer implements IPortletViewer {
       }
     }
 
+    //Build the invitee list for adding members from the project team list.
+    List<User> teamMembersList = new ArrayList<User>();
+    for (TeamMember teamMember : project.getTeam()) {
+      User userInfo = UserUtils.loadUser(teamMember.getUserId());
+      // add if the user is not the meeting host(current user)
+      if (user.getId() != teamMember.getUserId())
+        teamMembersList.add(userInfo);
+    }
+    request.setAttribute(TEAM_MEMBERS_LIST, teamMembersList);
+
     // JSP view
     return defaultView;
+  }
+
+  //reloads meeting invitees to the page.
+  private void setMeetingInvitees(Connection db, Meeting meeting) throws SQLException {
+    //in case of error return from confirm invitees page
+    String inviteesConfirm = meeting.getMeetingInvitees();
+
+    //find all meeting attendees
+    MeetingAttendeeList meetingAttendeeList = new MeetingAttendeeList();
+    meetingAttendeeList.setMeetingId(meeting.getId());
+    meetingAttendeeList.setDimdimAttendees(true);
+    meetingAttendeeList.buildList(db);
+
+    //comma seperate the invitees
+    String meetingInvitees = "";
+    for (MeetingAttendee thisMeetingAttendee : meetingAttendeeList) {
+      if (!"".equals(meetingInvitees)) {
+        meetingInvitees += ", ";
+      }
+      User userInfo = UserUtils.loadUser(thisMeetingAttendee.getUserId());
+      meetingInvitees += userInfo.getNameFirstLast() + " (" + userInfo.getProfileProject().getUniqueId() + ")";
+    }
+    meeting.setMeetingInvitees(meetingInvitees);
+
+    if (!"".equals(inviteesConfirm)) {
+      meetingInvitees += ", " + inviteesConfirm;
+      meeting.setMeetingInvitees(meetingInvitees);
+    }
   }
 }

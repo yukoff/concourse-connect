@@ -47,6 +47,8 @@ package com.concursive.connect.web.modules.calendar.portlets.main;
 
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
+import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
+import com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -95,6 +97,11 @@ public class DeleteEventAction implements IPortletAction {
 
     // Load the record and delete it
     Meeting meeting = new Meeting(db, id, project.getId());
+
+    //Find the users to send meeting cancellation mail
+    MeetingInviteesBean meetingInviteesBean = new MeetingInviteesBean(meeting, project, DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL);
+    meetingInviteesBean.cancelMeeting(db);
+
     meeting.delete(db);
 
     // Remove from index
@@ -103,8 +110,11 @@ public class DeleteEventAction implements IPortletAction {
     // Trigger the workflow
     processDeleteHook(request, meeting);
 
+    //send mails on meeting cancellation
+    if (!meetingInviteesBean.getCancelledUsers().isEmpty()) {
+      processInsertHook(request, meetingInviteesBean);
+    }
     // This call will close panels and perform redirects
     return (PortalUtils.performRefresh(request, response, "/show/calendar"));
   }
-
 }

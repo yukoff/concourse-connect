@@ -319,6 +319,7 @@ public class InviteMembersPortlet extends GenericPortlet {
    */
   private void sendInvitation(ActionRequest request) throws Exception {
     Connection db = PortalUtils.getConnection(request);
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
     //Get message body and subject
     String optionalMessage = request.getParameter(OPTIONAL_MESSAGE);
 
@@ -353,8 +354,10 @@ public class InviteMembersPortlet extends GenericPortlet {
         thisMember.setStatus(TeamMember.STATUS_PENDING);
         thisMember.setCustomInvitationMessage(optionalMessage);
         if (!TeamMemberList.isOnTeam(db, PortalUtils.getProject(request).getId(), Integer.parseInt(matchedUserId))) {
-          if (thisMember.insert(db)) {
-            PortalUtils.processInsertHook(request, thisMember);
+          if ("true".equals(prefs.get(ApplicationPrefs.USERS_CAN_INVITE)) || PortalUtils.getUser(request).getAccessInvite() || PortalUtils.getUser(request).getAccessAdmin()) {
+            if (thisMember.insert(db)) {
+              PortalUtils.processInsertHook(request, thisMember);
+            }
           }
         }
       }
@@ -368,7 +371,6 @@ public class InviteMembersPortlet extends GenericPortlet {
         String lastName = (String) request.getPortletSession().getAttribute("lastName-" + unmatchedEntry);
         String email = (String) request.getPortletSession().getAttribute("email-" + unmatchedEntry);
         String notMatchedRole = (String) request.getPortletSession().getAttribute("notMatchedRole-" + unmatchedEntry);
-        ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
         Project thisProject = PortalUtils.getProject(request);
 
         request.getPortletSession().removeAttribute("email-" + unmatchedEntry);
@@ -473,7 +475,7 @@ public class InviteMembersPortlet extends GenericPortlet {
       }
     }
     if (matches == null && mismatches == null) {
-      request.getPortletSession().setAttribute(ACTION_ERROR, "Please choose atleast one entry before preparing the invitation message.");
+      request.getPortletSession().setAttribute(ACTION_ERROR, "Please choose at least one entry before preparing the invitation message.");
     } else if (hasError) {
       request.getPortletSession().setAttribute(ACTION_ERROR, "Name and email is required for every checked entry.");
     }

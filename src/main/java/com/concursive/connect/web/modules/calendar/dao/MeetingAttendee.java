@@ -63,6 +63,15 @@ public class MeetingAttendee extends GenericBean {
   private int userId = -1;
   private boolean isTentative = false;
   private Timestamp entered = null;
+  private int enteredBy = -1;
+  private Timestamp modified = null;
+  private int modifiedBy = -1;
+  private int dimdimStatus = -1;
+
+  public static final int STATUS_DIMDIM_DECLINED = 0;
+  public static final int STATUS_DIMDIM_ACCEPTED = 1;
+  public static final int STATUS_DIMDIM_INVITED = 2;
+  public static final int STATUS_DIMDIM_TENTATIVE = 3;
 
   public MeetingAttendee() {
   }
@@ -155,12 +164,73 @@ public class MeetingAttendee extends GenericBean {
     this.entered = DatabaseUtils.parseTimestamp(tmp);
   }
 
+  public int getEnteredBy() {
+    return enteredBy;
+  }
+
+  public void setEnteredBy(int enteredBy) {
+    this.enteredBy = enteredBy;
+  }
+
+  public void setEnteredBy(String enteredBy) {
+    this.enteredBy = Integer.parseInt(enteredBy);
+  }
+
+  public Timestamp getModified() {
+    return modified;
+  }
+
+  public void setModified(Timestamp modified) {
+    this.modified = modified;
+  }
+
+  public void setModified(String tmp) {
+    this.modified = DatabaseUtils.parseTimestamp(tmp);
+  }
+
+  public int getModifiedBy() {
+    return modifiedBy;
+  }
+
+  public void setModifiedBy(int modifiedBy) {
+    this.modifiedBy = modifiedBy;
+  }
+
+  public void setModifiedBy(String modifiedBy) {
+    this.modifiedBy = Integer.parseInt(modifiedBy);
+  }
+
+  /*
+  * returns the attendee status for Dimdim meeting
+  */
+  public int getDimdimStatus() {
+    return dimdimStatus;
+  }
+
+  /*
+  * sets the attendee status for Dimdim meeting
+  */
+  public void setDimdimStatus(int dimdimStatus) {
+    this.dimdimStatus = dimdimStatus;
+  }
+
+  /*
+   * sets the attendee status for Dimdim meeting
+   */
+  public void setDimdimStatus(String tmp) {
+    this.dimdimStatus = DatabaseUtils.parseInt(tmp, -1);
+  }
+
   private void buildRecord(ResultSet rs) throws SQLException {
     id = rs.getInt("attendee_id");
     meetingId = rs.getInt("meeting_id");
     userId = rs.getInt("user_id");
     isTentative = rs.getBoolean("is_tentative");
     entered = rs.getTimestamp("entered");
+    enteredBy = DatabaseUtils.getInt(rs, "enteredby");
+    modified = rs.getTimestamp("modified");
+    modifiedBy = DatabaseUtils.getInt(rs, "modifiedby");
+    dimdimStatus = rs.getInt("dimdim_status");
   }
 
   public boolean isValid() {
@@ -170,12 +240,7 @@ public class MeetingAttendee extends GenericBean {
     if (userId == -1) {
       errors.put("actionError", "User Id not specified");
     }
-
-    if (hasErrors()) {
-      return false;
-    } else {
-      return true;
-    }
+    return !hasErrors();
   }
 
   public boolean insert(Connection db) throws SQLException {
@@ -190,14 +255,24 @@ public class MeetingAttendee extends GenericBean {
       StringBuffer sql = new StringBuffer();
       sql.append(
           "INSERT INTO project_calendar_meeting_attendees " +
-              "(meeting_id, user_id, is_tentative ");
-
+              "(meeting_id, user_id, is_tentative, enteredby, modifiedby ");
       if (entered != null) {
         sql.append(", entered ");
       }
-      sql.append(") VALUES (?, ?, ? ");
-
+      if (dimdimStatus != -1) {
+        sql.append(", dimdim_status ");
+      }
+      if (modified != null) {
+        sql.append(", modified ");
+      }
+      sql.append(") VALUES (?, ?, ?, ?, ? ");
       if (entered != null) {
+        sql.append(", ? ");
+      }
+      if (dimdimStatus != -1) {
+        sql.append(", ? ");
+      }
+      if (modified != null) {
         sql.append(", ? ");
       }
       sql.append(") ");
@@ -207,10 +282,17 @@ public class MeetingAttendee extends GenericBean {
       pst.setInt(++i, meetingId);
       pst.setInt(++i, userId);
       pst.setBoolean(++i, isTentative);
+      pst.setInt(++i, enteredBy);
+      pst.setInt(++i, modifiedBy);
       if (entered != null) {
         pst.setTimestamp(++i, entered);
       }
-
+      if (dimdimStatus != -1) {
+        DatabaseUtils.setInt(pst, ++i, dimdimStatus);
+      }
+      if (modified != null) {
+        pst.setTimestamp(++i, modified);
+      }
       pst.execute();
       pst.close();
       id = DatabaseUtils.getCurrVal(db, "project_calendar_meeting_attendees_attendee_id_seq", -1);
@@ -257,5 +339,48 @@ public class MeetingAttendee extends GenericBean {
         db.setAutoCommit(true);
       }
     }
+  }
+
+  public int update(Connection db) throws SQLException {
+    int resultCount = 0;
+    boolean commit = db.getAutoCommit();
+    try {
+      if (commit) {
+        db.setAutoCommit(false);
+      }
+      if (this.getId() == -1) {
+        throw new SQLException("ID was not specified");
+      }
+      if (!isValid()) {
+        return -1;
+      }
+      int i = 0;
+      String sql = "UPDATE project_calendar_meeting_attendees " +
+          "SET meeting_id = ?, user_id = ?, is_tentative = ?, dimdim_status = ?, " +
+          "modified = CURRENT_TIMESTAMP, modifiedby = ? " +
+          "WHERE attendee_id = ?";
+      PreparedStatement pst = db.prepareStatement(sql);
+      pst.setInt(++i, meetingId);
+      pst.setInt(++i, userId);
+      pst.setBoolean(++i, isTentative);
+      DatabaseUtils.setInt(pst, ++i, dimdimStatus);
+      pst.setInt(++i, modifiedBy);
+      pst.setInt(++i, id);
+      resultCount = pst.executeUpdate();
+      pst.close();
+      if (commit) {
+        db.commit();
+      }
+    } catch (SQLException e) {
+      if (commit) {
+        db.rollback();
+      }
+      throw new SQLException(e.getMessage());
+    } finally {
+      if (commit) {
+        db.setAutoCommit(true);
+      }
+    }
+    return resultCount;
   }
 }

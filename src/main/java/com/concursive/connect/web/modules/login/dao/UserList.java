@@ -398,6 +398,9 @@ public class UserList extends ArrayList<User> {
       if (StringUtils.hasText(searchCriteria.getCompany())) {
         sqlFilter.append("AND lower(u.company) LIKE ? ");
       }
+      if (StringUtils.hasText(searchCriteria.getName())) {
+        sqlFilter.append("AND (lower(u.first_name) LIKE ? OR lower(u.last_name) LIKE ?) ");
+      }
       if (searchCriteria.getEnabled() != Constants.UNDEFINED) {
         sqlFilter.append("AND u.enabled = ? ");
       }
@@ -693,6 +696,12 @@ public class UserList extends ArrayList<User> {
       }
       if (StringUtils.hasText(searchCriteria.getCompany())) {
         pst.setString(++i, "%" + searchCriteria.getCompany().toLowerCase() + "%");
+      }
+      if (StringUtils.hasText(searchCriteria.getName())) {
+        pst.setString(++i, "%" + searchCriteria.getName().toLowerCase() + "%");
+      }
+      if (StringUtils.hasText(searchCriteria.getName())) {
+        pst.setString(++i, "%" + searchCriteria.getName().toLowerCase() + "%");
       }
       if (searchCriteria.getEnabled() != Constants.UNDEFINED) {
         pst.setBoolean(++i, searchCriteria.getEnabled() == Constants.TRUE);

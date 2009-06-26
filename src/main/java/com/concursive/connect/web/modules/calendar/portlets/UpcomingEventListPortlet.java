@@ -290,6 +290,8 @@ public class UpcomingEventListPortlet extends GenericPortlet {
       if (userId > 0) {
         attendee.setMeetingId(meetingId);
         attendee.setUserId(userId);
+        attendee.setEnteredBy(userId);
+        attendee.setModifiedBy(userId);
         attendee.insert(db);
       } else {
         throw new SQLException("Invalid user id specified for adding MeetingAttendee.");

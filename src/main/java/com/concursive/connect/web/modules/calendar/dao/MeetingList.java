@@ -81,6 +81,8 @@ public class MeetingList extends ArrayList<Meeting> {
   private int forParticipant = Constants.UNDEFINED;
   private int projectCategoryId = -1;
   private List<Integer> projectCategoryIdList = null; // set if multiple category ids are needed for filter
+  private boolean isDimdim = false;
+  private boolean buildAttendees = false;
 
   //calendar
   protected java.sql.Timestamp alertRangeStart = null;
@@ -232,6 +234,25 @@ public class MeetingList extends ArrayList<Meeting> {
     return this.projectCategoryIdList;
   }
 
+  /*
+   * Set true if dimdim meeting are to be searched
+   */
+  public void setIsDimdim(boolean isDimdim) {
+    this.isDimdim = isDimdim;
+  }
+
+  public boolean getIsDimdim() {
+    return isDimdim;
+  }
+
+  public boolean getBuildAttendees() {
+    return buildAttendees;
+  }
+
+  public void setBuildAttendees(boolean buildAttendees) {
+    this.buildAttendees = buildAttendees;
+  }
+
   public int queryCount(Connection db) throws SQLException {
     int count = 0;
     StringBuffer sqlCount = new StringBuffer();
@@ -287,7 +308,7 @@ public class MeetingList extends ArrayList<Meeting> {
     rs.close();
     pst.close();
     //Determine column to sort by
-    pagedListInfo.setDefaultSort("m.title", null);
+    pagedListInfo.setDefaultSort("m.start_date, m.end_date", null);
     pagedListInfo.appendSqlTail(db, sqlOrder);
     //Need to build a base SQL statement for returning records
     if (pagedListInfo != null) {
@@ -318,6 +339,12 @@ public class MeetingList extends ArrayList<Meeting> {
     }
     rs.close();
     pst.close();
+    // Further queries
+    for (Meeting thisMeeting : this) {
+      if (buildAttendees) {
+        thisMeeting.buildAttendeeList(db);
+      }
+    }
   }
 
 
@@ -354,6 +381,9 @@ public class MeetingList extends ArrayList<Meeting> {
       }
       sqlFilter.append(") )");
     }
+    if (isDimdim) {
+      sqlFilter.append("AND m.is_dimdim = ? ");
+    }
   }
 
 
@@ -384,6 +414,9 @@ public class MeetingList extends ArrayList<Meeting> {
     }
     if (projectCategoryId > 0) {
       pst.setInt(++i, projectCategoryId);
+    }
+    if (isDimdim) {
+      pst.setBoolean(++i, true);
     }
     return i;
   }

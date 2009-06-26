@@ -182,7 +182,7 @@
         <input type="hidden" name="id" value="<%= projectRating.getId() %>" />
         <input type="hidden" name="modified" value="<%= projectRating.getModified() %>" />
         <c:if test="${'true' eq param.popup || 'true' eq popup}">
-          <input type="hidden" name="popup" value="true"/>
+          <input type="hidden" name="popup" value="true" />
         </c:if>
         <c:if test="${!empty param.redirectTo}">
           <input type="hidden" name="redirectTo" value="${param.redirectTo}"/>

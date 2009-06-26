@@ -79,7 +79,7 @@ User Details<br />
       <img src="<%= ctx %>/images/icons/stock_new-bcard-16.gif" border="0" align="absMiddle"/>
     </td>
     <td width="100%">
-      <strong><%= toHtml(thisUser.getNameFirstLast()) %></strong>
+      <strong><ccp:username id="${thisUser.id}" showProfile="true" showPresence="true" showCityState="true" /></strong>
     </td>
     <td align="right" nowrap>
       (Type: <ccp:evaluate if="<%= thisUser.getAccessAdmin() %>">Administrator</ccp:evaluate><ccp:evaluate if="<%= !thisUser.getAccessAdmin() %>">User</ccp:evaluate>)

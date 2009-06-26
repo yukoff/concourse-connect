@@ -46,10 +46,10 @@
 
 package com.concursive.connect.web.modules.calendar.portlets.main;
 
-import com.concursive.connect.web.modules.calendar.utils.CalendarView;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.web.modules.calendar.utils.CalendarBean;
 import com.concursive.connect.web.modules.calendar.utils.CalendarBeanUtils;
+import com.concursive.connect.web.modules.calendar.utils.CalendarView;
 import com.concursive.connect.web.modules.calendar.utils.CalendarViewUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;

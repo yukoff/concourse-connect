@@ -47,6 +47,8 @@ package com.concursive.connect.web.modules.calendar.portlets.main;
 
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
+import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
+import com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -68,7 +70,6 @@ import java.sql.Connection;
 public class SaveEventAction implements IPortletAction {
 
   public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
-
     // Determine the project container to use
     Project project = findProject(request);
     if (project == null) {
@@ -84,6 +85,8 @@ public class SaveEventAction implements IPortletAction {
     // Populate any info from the request
     Meeting meeting = (Meeting) getFormBean(request, Meeting.class);
 
+    MeetingInviteesBean meetingInviteesBean = null;
+
     // Set default values when saving records
     meeting.setProjectId(project.getId());
     meeting.setModifiedBy(user.getId());
@@ -91,13 +94,26 @@ public class SaveEventAction implements IPortletAction {
     // Determine the database connection to use
     Connection db = getConnection(request);
 
+    //validate the checkbox and participants textarea contents
+    if (meeting.getIsDimdim() && (meeting.getMeetingInvitees() == null || meeting.getMeetingInvitees().equals(""))) {
+      meeting.addError("inviteesError", "Required field if Dimdim web meeting option is choosen.");
+      return meeting;
+    }
+    if (!meeting.getIsDimdim() && meeting.getMeetingInvitees() != null && !meeting.getMeetingInvitees().equals("")) {
+      meeting.addError("inviteesError", "Participants can be added only if Dimdim option is choosen.");
+      return meeting;
+    }
+
     // Save the record
     boolean recordInserted = false;
     int resultCount = -1;
     if (meeting.getId() == -1) {
       // This appears to be a new record
       meeting.setEnteredBy(user.getId());
-      recordInserted = meeting.insert(db);
+      // process the invitees list and save meeting
+      meetingInviteesBean = new MeetingInviteesBean(meeting, project, DimDimUtils.ACTION_MEETING_DIMDIM_SCHEDULE);
+      recordInserted = meetingInviteesBean.processInvitees(db, request);
+
       // Trigger the workflow
       if (recordInserted) {
         PortalUtils.processInsertHook(request, meeting);
@@ -106,11 +122,19 @@ public class SaveEventAction implements IPortletAction {
       // Load the previous record
       Meeting previousMeeting = new Meeting(db, meeting.getId());
       meeting.setEnteredBy(previousMeeting.getEnteredBy());
+      meeting.setDimdimMeetingId(previousMeeting.getDimdimMeetingId());
+      meeting.setDimdimPassword(previousMeeting.getDimdimPassword());
+      meeting.setDimdimUrl(previousMeeting.getDimdimUrl());
+      meeting.setDimdimUsername(previousMeeting.getDimdimUsername());
       // Verify the record matches the specified project
       if (previousMeeting.getProjectId() != project.getId()) {
         throw new PortletException("Mismatched projectId found");
       }
-      resultCount = meeting.update(db);
+
+      //check if new invitees were added or existing invitees removed and update meeting
+      meetingInviteesBean = new MeetingInviteesBean(meeting, project, DimDimUtils.ACTION_MEETING_DIMDIM_EDIT);
+      resultCount = meetingInviteesBean.compareInvitees(db, request, previousMeeting);
+
       // Trigger the workflow
       if (resultCount == 1) {
         PortalUtils.processUpdateHook(request, previousMeeting, meeting);
@@ -124,6 +148,17 @@ public class SaveEventAction implements IPortletAction {
 
     // Index the record
     PortalUtils.indexAddItem(request, meeting);
+
+    //if meeting is dimdim then show confirmation page
+    if (meeting.getIsDimdim()) {
+      //return goToViewer(request, response, "inviteesConfirm", meetingInviteesBean);
+      return meetingInviteesBean;
+    }
+
+    //if dimdim option have been removed from the current meeting, then send web meeting cancellation mail
+    if (meetingInviteesBean.getPreviousMeetingIsDimidim()) {
+      PortalUtils.processInsertHook(request, meetingInviteesBean);
+    }
 
     // This call will close panels and perform redirects
     return (PortalUtils.performRefresh(request, response, "/show/calendar"));

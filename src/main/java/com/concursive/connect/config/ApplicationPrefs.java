@@ -122,6 +122,9 @@ public class ApplicationPrefs {
   public final static String MAILSERVER_PORT = "MAILSERVER.CONNECTION.PORT";
   public final static String MAILSERVER_SSL = "MAILSERVER.CONNECTION.SSL";
   public final static String EMAILADDRESS = "EMAILADDRESS";
+  // DimDim Properties
+  public final static String DIMDIM_ENABLED = "DIMDIM.ENABLED";
+  public final static String DIMDIM_API_DOMAIN = "DIMDIM.DOMAIN";
   // Google Maps Properties
   public final static String GOOGLE_MAPS_API_DOMAIN = "GOOGLE_MAPS.DOMAIN";
   public final static String GOOGLE_MAPS_API_KEY = "GOOGLE_MAPS.KEY";
@@ -539,7 +542,7 @@ public class ApplicationPrefs {
 
       Scheduler scheduler = (Scheduler) context.getAttribute(Constants.SCHEDULER);
       hookManager.setScheduler(scheduler);
-      
+
       try {
         // Configure a separate connection pool
         ConnectionPool commonCP = (ConnectionPool) context.getAttribute(Constants.CONNECTION_POOL);
@@ -764,6 +767,14 @@ public class ApplicationPrefs {
     }
     if (!this.has(MAIN_PROFILE)) {
       this.add(MAIN_PROFILE, "main-profile");
+    }
+
+    // Dimdim service
+    if (!this.has(DIMDIM_ENABLED)) {
+      this.add(DIMDIM_ENABLED, "true");
+    }
+    if (!this.has(DIMDIM_API_DOMAIN)) {
+      this.add(DIMDIM_API_DOMAIN, "http://webmeeting.dimdim.com/portal");
     }
   }
 

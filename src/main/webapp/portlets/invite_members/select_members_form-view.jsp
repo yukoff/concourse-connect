@@ -142,7 +142,7 @@
                       <c:when test="${fn:length(fn:split(member.value,',')) > 1}">
                         <select name="matchUserId-${member.key}">
                           <c:forEach items="${member.value}" var="id" varStatus="matchUserIdStatus">
-                                    <option value="${id}" <c:if test="${!empty matchUserId[member.key] and matchUserId[member.key] eq id}"> selected</c:if>><ccp:username id="${id}" showProfile="${false}" showPresence="${false}" showCityState="${true}" /></option>
+                            <option value="${id}" <c:if test="${!empty matchUserId[member.key] and matchUserId[member.key] eq id}"> selected</c:if>><ccp:username id="${id}" showProfile="${false}" showPresence="${false}" showCityState="${true}" /></option>
                           </c:forEach>
                         </select>
                         <img src="${ctx}/images/box-hold.gif" />
@@ -203,20 +203,27 @@
                     <c:set var="foundToDisplay" value="true" />
                     <tr>
                       <td valign="top">
-                      <input type="checkbox" name="mismatches" value="${member.key}" checked />&nbsp;
-                    </td>
+                        <input type="checkbox" name="mismatches" value="${member.key}" checked />&nbsp;
+                      </td>
                       <td valign="top">
                         <c:out value="${member.key}" />&nbsp;
-                    </td>
+                      </td>
                       <td>
                         <input type="text" size="20" maxlength="50" name="firstName-${member.key}" value="<c:out value="${noMatchFirstName[member.key]}" />"/>&nbsp;
-                    </td>
+                      </td>
                       <td>
                         <input type="text" size="20" maxlength="50" name="lastName-${member.key}" value="<c:out value="${noMatchLastName[member.key]}" />" />&nbsp;
-                    </td>
+                      </td>
                       <td>
-                        <input type="text" size="20" maxlength="255" name="email-${member.key}" value="<c:out value="${noMatchEmail[member.key]}" />" />&nbsp;
-                    </td>
+                        <c:choose>
+                          <c:when test="${empty noMatchEmail[member.key] && fn:contains(member.key, '@')}">
+                            <input type="text" size="20" maxlength="255" name="email-${member.key}" value="<c:out value="${member.key}" />" />&nbsp;
+                          </c:when>
+                          <c:otherwise>
+                            <input type="text" size="20" maxlength="255" name="email-${member.key}" value="<c:out value="${noMatchEmail[member.key]}" />" />&nbsp;
+                          </c:otherwise>
+                        </c:choose>
+                      </td>
                       <td valign="top">
                            <select name="notMatchedRole-${member.key}" class="input selectInput">
                               <c:forEach items="${roleList}" var="role">

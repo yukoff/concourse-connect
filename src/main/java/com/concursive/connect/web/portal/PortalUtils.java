@@ -631,13 +631,44 @@ public class PortalUtils {
     boolean isPopup = "true".equals(request.getParameter("popup"));
     if (request.getParameter("redirectTo") != null) {
       // Redirect to the suggested location
+      LOG.debug("Sending to the specified redirectTo parameter");
       response.sendRedirect(ctx + "/redirect302.jsp?redirectTo=" + request.getParameter("redirectTo") + (isPopup ? "&popup=true" : ""));
     } else {
       if (isPopup) {
-        // Close the panel without a redirect
-        response.sendRedirect(ctx + "/projects_center_panel_refresh.jsp");
+        // If the portlet is using a project, it will be in the request
+        Project project = (Project) request.getAttribute("project");
+        if (defaultUrl == null || project == null) {
+          // Close the panel without a redirect
+          LOG.debug("Closing the panel WITHOUT a redirect");
+          response.sendRedirect(ctx + "/projects_center_panel_refresh.jsp");
+        } else {
+          // Close the panel WITH a redirect
+          LOG.debug("Closing the panel WITH a redirect");
+          int offset = 0;
+          if (defaultUrl.startsWith("/")) {
+            offset = 1;
+          }
+          String[] url = defaultUrl.split("[/]");
+
+          StringBuffer redirectUrl = new StringBuffer();
+          redirectUrl.append(ctx).append("/");
+          // The action
+          redirectUrl.append(url[offset]).append("/");
+          // The listing
+          redirectUrl.append(project.getUniqueId());
+          // The module
+          if (url.length > 1 + offset) {
+            redirectUrl.append("/").append(url[1 + offset]);
+          }
+          // The object
+          if (url.length > 2 + offset) {
+            redirectUrl.append("/").append(url[2 + offset]);
+          }
+          response.sendRedirect(ctx + "/redirect302.jsp?redirectTo=" + request.getParameter("redirectTo") + "&popup=true");
+        }
       } else {
         // Use the default redirect
+        LOG.debug("Using the specified redirect");
         int offset = 0;
         if (defaultUrl.startsWith("/")) {
           offset = 1;

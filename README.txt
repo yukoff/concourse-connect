@@ -147,6 +147,7 @@ Bouncy Castle Crypto API          Bouncy Castle Open Source License
 Castor                            Apache Software License v2.0
 CivicSpace Labs DB                Creative Commons Attribution-ShareAlike
 EHCache                           Apache Software License v2.0
+EZMorph                           Apache Software License v2.0
 FreeMarker                        Visigoth Software Society BSD License
 Google:maps                       Freeware
 HTMLCleaner                       BSD
@@ -164,6 +165,7 @@ Java Image Scaling                LGPL v3.0
 Java Mail                         Sun License
 Java Transaction API              Sun License
 JHLabs                            Apache Software License v2.0
+JSON-Lib                          Apache Software License v2.0
 JSTL                              Sun License
 jTDS Microsoft SQL Server Driver  LGPL
 JUnit                             Common Public License 1.0

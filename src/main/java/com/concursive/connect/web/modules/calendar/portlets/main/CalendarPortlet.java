@@ -69,6 +69,8 @@ public class CalendarPortlet extends AbstractPortletModule {
   public static final String SAVE_EVENT_FORM_ACTION = "saveForm";
   public static final String DELETE_EVENT_ACTION = "delete";
   public static final String CLONE_EVENT_ACTION = "clone";
+  public static final String DIMDIM_EVENT_ACTION = "dimdimAction";
+  public static final String EVENT_INVITEES_CONFIRM_ACTION = "saveInvitees";
 
   public CalendarPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -84,7 +86,9 @@ public class CalendarPortlet extends AbstractPortletModule {
 
     // Actions
     actions.put(SAVE_EVENT_FORM_ACTION, new SaveEventAction());
+    actions.put(EVENT_INVITEES_CONFIRM_ACTION, new SaveEventInviteesAction());
     actions.put(DELETE_EVENT_ACTION, new DeleteEventAction());
+    actions.put(DIMDIM_EVENT_ACTION, new EventDimdimAction());
 //    actions.put(CLONE_EVENT_ACTION, new CloneEventAction());
   }
 }

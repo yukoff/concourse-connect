@@ -95,6 +95,7 @@
               ++count;
               rowid = (rowid != 1?1:2);
               User thisUser = (User) i.next();
+              request.setAttribute("thisUser", thisUser);
           %>
             <tr class="row<%= rowid %>">
               <td valign="top" nowrap>
@@ -104,7 +105,8 @@
                    src="<%= ctx %>/images/select_<%= SKIN %>.gif" name="select_<%= SKIN %><%= count %>" id="select_<%= SKIN %><%= count %>" align="absmiddle" border="0"></a>
               </td>
               <td valign="top" nowrap>
-                <%= toHtml(thisUser.getNameFirstLast()) %><br />
+                <ccp:username id="${thisUser.id}" showProfile="true" showPresence="true" showCityState="true" />
+                (<a href="${ctx}/AdminUserDetails.do?command=Modify&id=${thisUser.id}&resetList=true">edit</a>)<br />
                 <%= toHtml(thisUser.getCompany()) %>
               </td>
               <td valign="top" nowrap>

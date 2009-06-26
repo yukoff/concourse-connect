@@ -209,6 +209,7 @@ public class CalendarViewUtils {
       meetingList.setProjectId(project.getId());
       meetingList.setAlertRangeStart(startDate);
       meetingList.setAlertRangeEnd(endDate);
+      meetingList.setBuildAttendees(true);
       meetingList.buildList(db);
       LOG.debug("Meeting count = " + meetingList.size());
       // Display the meetings by date

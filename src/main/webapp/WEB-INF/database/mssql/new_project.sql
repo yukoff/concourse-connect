@@ -682,7 +682,12 @@ CREATE TABLE project_calendar_meeting (
   rating_count INTEGER DEFAULT 0 NOT NULL,
   rating_value INTEGER DEFAULT 0 NOT NULL,
   rating_avg FLOAT DEFAULT 0 NOT NULL,
-  inappropriate_count INTEGER DEFAULT 0
+  inappropriate_count INTEGER DEFAULT 0,
+  is_dimidm BIT DEFAULT 0,
+  dimdim_url VARCHAR(255),
+  dimdim_meetingid VARCHAR(255),
+  dimdim_username VARCHAR(255),
+  dimdim_password VARCHAR(255)
 );
 CREATE INDEX project_cal_mtg_idx ON project_calendar_meeting(project_id);
 
@@ -691,7 +696,11 @@ CREATE TABLE project_calendar_meeting_attendees (
   meeting_id INTEGER REFERENCES project_calendar_meeting(meeting_id) NOT NULL,
   user_id INTEGER REFERENCES users(user_id) NOT NULL,
   is_tentative BIT DEFAULT 0,
-  entered DATETIME DEFAULT CURRENT_TIMESTAMP
+  entered DATETIME DEFAULT CURRENT_TIMESTAMP,
+  enteredby BIGINT REFERENCES users(user_id) NOT NULL,
+  modified DATETIME DEFAULT CURRENT_TIMESTAMP,
+  modifiedby INTEGER REFERENCES users(user_id) NOT NULL,
+  dimdim_status INTEGER
 );
 CREATE INDEX project_cal_mtg_att_idx ON project_calendar_meeting_attendees(meeting_id);
 CREATE INDEX project_cal_mtg_att_att_idx ON project_calendar_meeting_attendees(user_id);

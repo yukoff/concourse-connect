@@ -58,7 +58,7 @@
                   <content>Add an Event</content>
                   <title>Add a calendar entry for ${project.title:html}</title>
                   <href>/create/${project.uniqueId}/event</href>
-                  <rel>shadowbox</rel>
+                  <rel>shadowbox;width=700</rel>
                   <permission>project-calendar-add</permission>
                 ]]>
               </value>

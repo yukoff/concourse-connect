@@ -45,6 +45,7 @@
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
+<jsp:useBean id="syncStatus" class="java.util.Vector" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <div class="admin-portlet">
   <div class="portlet-section-header">
@@ -53,9 +54,24 @@
   </div>
       <form name="editForm" action="<%= ctx %>/AdminSync.do?command=StartSync" method="post"  onSubmit="return checkForm(this);" >
   <div class="portlet-section-body">
+  <ccp:evaluate if="<%= syncStatus.size() == 0 %>">
       Click on the Sync button to start synching with the suite.<br />
       (This feature is available only if you have the enterprise edition and the suite installed.)<br /><br />
       <input type="submit" name="Sync" value="<ccp:label name="button.sync">Sync</ccp:label>" class="submit" />
+  </ccp:evaluate>
+  <br />
+  <ccp:evaluate if="<%= syncStatus.size() > 0 %>">
+	<%
+		int size = syncStatus.size();
+		int count = size;
+		while (count > 0 ){
+			String syncStatusRecord = (String)syncStatus.get(--count);
+	%>
+		<%= syncStatusRecord %><br />
+	<%
+		}
+	%>
+  </ccp:evaluate>
   </div>
   </form>
 </div>

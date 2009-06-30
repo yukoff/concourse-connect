@@ -47,10 +47,14 @@
 package com.concursive.connect.web.modules.admin.actions;
 
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 
 import java.sql.Connection;
+import java.util.Vector;
+
+import org.quartz.Scheduler;
 
 /**
  * Actions for the administration module
@@ -70,9 +74,16 @@ public final class AdminSync extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    try {
     
-    //TODO: Read log to determine if a synch is in process and display the status
+	    Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
+	    context.getRequest().setAttribute("syncStatus",scheduler.getContext().get("CRMSyncStatus"));
     
+    } catch (Exception e) {
+      context.getRequest().setAttribute("Error", e);
+      return ("SystemError");
+    } finally {
+    }
     return "DefaultOK";
   }
 
@@ -83,8 +94,15 @@ public final class AdminSync extends GenericAction {
     }
     try {
 
-    	//Trigger the synch job
-    	triggerJob(context,"syncSystem");
+	    Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
+	    Vector syncStatus = (Vector)scheduler.getContext().get("CRMSyncStatus");
+	    
+	    if (syncStatus.size() == 0){
+	    	//Trigger the synch job
+	    	triggerJob(context,"syncSystem");
+	    } else {
+	    	//Do nothing as a sync. is already in progress.
+	    }
     	
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);

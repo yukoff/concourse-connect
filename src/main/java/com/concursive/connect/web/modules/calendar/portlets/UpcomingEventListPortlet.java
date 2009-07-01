@@ -111,6 +111,13 @@ public class UpcomingEventListPortlet extends GenericPortlet {
     String includeCategoryListString = request.getPreferences().getValue(INCLUDE_CATEGORY_LIST, "");
     String listSizeString = request.getPreferences().getValue(LIMIT, "10");
 
+    // Determine today's date for queries
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.HOUR_OF_DAY, 0);
+    calendar.set(Calendar.MINUTE, 0);
+    calendar.set(Calendar.SECOND, 0);
+    calendar.set(Calendar.MILLISECOND, 0);
+
     int listSize = Integer.parseInt(listSizeString);
     Collection<String> includeCategoryList = Arrays.asList(includeCategoryListString.split(","));
     ProjectCategoryList allCategories = new ProjectCategoryList();
@@ -189,7 +196,7 @@ public class UpcomingEventListPortlet extends GenericPortlet {
             events.setForUser(thisUser.getId());
           }
           // Show meetings that exist for the specified categories
-          events.setAlertRangeStart(new Timestamp(System.currentTimeMillis()));
+          events.setAlertRangeStart(new Timestamp(calendar.getTime().getTime()));
           events.setByInvitationOnly(Constants.FALSE);
           events.setProjectCategoryIdList(includeCategoryIdList);
           events.buildList(db);

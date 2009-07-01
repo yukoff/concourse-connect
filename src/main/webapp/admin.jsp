@@ -50,11 +50,11 @@
   </div>
   <div class="portlet-section-body">
     <ul>
-      <li><a href="<%= ctx %>/AdminUsage.do">Review Application Usage</a></li>
-      <li><a href="<%= ctx %>/AdminUsers.do">Manage Users</a></li>
+      <li><a href="<%= ctx %>/AdminUsage.do">Review application usage</a></li>
+      <li><a href="<%= ctx %>/AdminUsers.do">Manage users</a></li>
       <li><a href="<%= ctx %>/AdminCustomize.do">Customize the site</a></li>
-      <li><a href="<%= ctx %>/AdminApplication.do">Manage Application Settings</a></li>
-      <li><a href="<%= ctx %>/AdminSync.do">Sync Profiles and User Information with Suite</a></li>
+      <li><a href="<%= ctx %>/AdminApplication.do">Manage application settings</a></li>
+      <li><a href="<%= ctx %>/AdminSync.do">Synchronize with ConcourseSuite CRM</a></li>
       <%--
       <li><a href="<%= ctx %>/AdminSettings.do">Configure System Settings</a></li>
       --%>

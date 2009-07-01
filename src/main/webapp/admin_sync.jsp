@@ -49,29 +49,36 @@
 <%@ include file="initPage.jsp" %>
 <div class="admin-portlet">
   <div class="portlet-section-header">
-    <h1>Synch Profiles and Users</h1>
+    <h1>Synchronize with ConcourseSuite CRM</h1>
     <p>Back to <a href="<%= ctx %>/admin">System Administration</a></p>
   </div>
-      <form name="editForm" action="<%= ctx %>/AdminSync.do?command=StartSync" method="post"  onSubmit="return checkForm(this);" >
-  <div class="portlet-section-body">
-  <ccp:evaluate if="<%= syncStatus.size() == 0 %>">
-      Click on the Sync button to start synching with the suite.<br />
-      (This feature is available only if you have the enterprise edition and the suite installed.)<br /><br />
+  <form name="editForm" action="<%= ctx %>/AdminSync.do?command=StartSync" method="post"  onSubmit="return checkForm(this);" >
+    <div class="portlet-section-body">
+    <ccp:evaluate if="<%= syncStatus.size() == 0 %>">
+      <p>Click the Sync button to begin the process.</p>
+      <ol>
+        <li>The ConcourseConnect CRM Plug-in must be installed</li>
+        <li>ConcourseSuite CRM must be separately installed</li>
+        <li>ConcourseSuite CRM must have an API client configured</li>
+        <li>ConcourseConnect must have the CRM credentials configured</li>
+      </ol>
+      <p>For more information see the <a target="_blank" href="http://www.concursive.com/show/concourseconnect/wiki">ConcourseConnect Wiki</a></p>
       <input type="submit" name="Sync" value="<ccp:label name="button.sync">Sync</ccp:label>" class="submit" />
-  </ccp:evaluate>
-  <br />
-  <ccp:evaluate if="<%= syncStatus.size() > 0 %>">
-	<%
-		int size = syncStatus.size();
-		int count = size;
-		while (count > 0 ){
-			String syncStatusRecord = (String)syncStatus.get(--count);
-	%>
-		<%= syncStatusRecord %><br />
-	<%
-		}
-	%>
-  </ccp:evaluate>
-  </div>
+    </ccp:evaluate>
+    <ccp:evaluate if="<%= syncStatus.size() > 0 %>">
+      <p>
+      <%
+        int size = syncStatus.size();
+        int count = size;
+        while (count > 0 ){
+          String syncStatusRecord = (String)syncStatus.get(--count);
+      %>
+        <%= syncStatusRecord %><br />
+      <%
+        }
+      %>
+      </p>
+    </ccp:evaluate>
+    </div>
   </form>
 </div>

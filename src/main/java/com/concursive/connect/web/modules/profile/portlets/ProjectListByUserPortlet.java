@@ -154,7 +154,7 @@ public class ProjectListByUserPortlet extends GenericPortlet {
             teamMemberList.buildList(db);
 
             if (teamMemberList.size() > 0 || showIfEmpty) {
-              //fetch reviews by the user
+              // fetch ratings by the user
               ProjectRatingList projectRatingList = new ProjectRatingList();
               projectRatingList.setEnteredBy(userId);
               projectRatingList.setOpenProjectsOnly(true);
@@ -164,13 +164,17 @@ public class ProjectListByUserPortlet extends GenericPortlet {
 
               HashMap<Integer, ProjectRating> projectRatingMap = new HashMap<Integer, ProjectRating>();
               HashMap<Integer, Integer> privateMessageMap = new HashMap<Integer, Integer>();
-              Iterator<TeamMember> itr = teamMemberList.iterator();
-              while (itr.hasNext()) {
-                TeamMember teamMember = itr.next();
+              for (TeamMember teamMember : teamMemberList) {
+                // Verify this user can access the project
+                if (user.getId() != teamMember.getUserId() && !ProjectUtils.hasAccess(teamMember.getProjectId(), user, "project-profile-view")) {
+                  continue;
+                }
+
+                // Retrieve the team member's rating for display
                 ProjectRating projectRating = projectRatingList.getRatingForProject(teamMember.getProjectId());
                 projectRatingMap.put(teamMember.getProjectId(), projectRating);
 
-                //fetch the new messages only if the user is viewing his profile
+                // Fetch the new messages only if the user is viewing his profile
                 if (user.getProfileProjectId() == project.getId()) {
                   //Check if the user has permissions to view messages in the projects in which he is a team member
                   if (ProjectUtils.hasAccess(teamMember.getProjectId(), user, "project-private-messages-view")) {

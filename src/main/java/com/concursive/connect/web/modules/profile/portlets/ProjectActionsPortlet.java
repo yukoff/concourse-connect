@@ -164,7 +164,9 @@ public class ProjectActionsPortlet extends GenericPortlet {
             }
           } else if ("userCanRequestToJoin".equals(rule)) {
             boolean canRequestToJoin =
-                (thisUser != null && thisUser.getId() > 0 && project.getFeatures().getAllowGuests() && project.getFeatures().getMembershipRequired() &&
+                (thisUser != null && thisUser.getId() > 0 &&
+                    (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
+                    project.getFeatures().getMembershipRequired() &&
                     (member == null || member.getId() == -1));
             if (!canRequestToJoin) {
               valid = false;

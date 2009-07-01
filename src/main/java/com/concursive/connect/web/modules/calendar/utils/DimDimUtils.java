@@ -45,15 +45,21 @@
  */
 package com.concursive.connect.web.modules.calendar.utils;
 
+import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.net.HTTPUtils;
 import com.concursive.commons.text.StringUtils;
+import com.concursive.connect.Constants;
+import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -93,8 +99,8 @@ public class DimDimUtils {
    * @param attendeeUser        - host or participant based on the meeting action
    * @return - Url to dimdim server or the message returned
    */
-  public static HashMap<String, String> processDimdimMeeting(MeetingInviteesBean meetingInviteesBean,
-                                                             User attendeeUser) {
+  public static HashMap<String, String> processDimdimMeeting(MeetingInviteesBean meetingInviteesBean, User attendeeUser) {
+
     //return result
     HashMap<String, String> resultMap = new HashMap<String, String>();
 
@@ -105,15 +111,16 @@ public class DimDimUtils {
       //get meeting host
       User hostUser = UserUtils.loadUser(meeting.getOwner());
 
-      //comma seperate the attendee mailids
+      //comma seperate the attendee mailids for dimdim
       String attendeeMailIds = "";
       Set<User> userSet = meetingInviteesBean.getMembersFoundList().keySet();
       for (User user : userSet) {
-        if (!"".equals(attendeeMailIds)) {
-          attendeeMailIds += ", ";
-        }
-        attendeeMailIds += user.getEmail();
+        attendeeMailIds += user.getEmail() + ", ";
       }
+      for (User user : meetingInviteesBean.getMeetingChangeUsers()) {
+        attendeeMailIds += user.getEmail() + ", ";
+      }
+      attendeeMailIds = trimComma(attendeeMailIds);
 
       //Modify meeting
       if (meetingInviteesBean.getAction() == ACTION_MEETING_DIMDIM_EDIT) {
@@ -124,12 +131,6 @@ public class DimDimUtils {
           meetingInviteesBean.setAction(ACTION_MEETING_DIMDIM_SCHEDULE);
           resultMap = processDimdimMeeting(meetingInviteesBean, attendeeUser);
           meetingInviteesBean.setAction(ACTION_MEETING_DIMDIM_EDIT);
-          return resultMap;
-        }
-
-        //return if the meeting contents have not been modified
-        if (!meetingInviteesBean.getIsModifiedMeeting()) {
-          resultMap.put(DIMDIM_CODE_SUCCESS, meeting.getDimdimMeetingId());
           return resultMap;
         }
 
@@ -285,18 +286,89 @@ public class DimDimUtils {
 
   // builds a query from the params
   private static String buildDimdimUrl(Map<String, String> param) {
-    String queryString = "";
-    for (String name : param.keySet()) {
-      //discard the 'response' param from query string
-      if ("response".equalsIgnoreCase(name)) {
-        continue;
-      }
-      if ("".equals(queryString)) {
-        queryString = "?";
-      }
-      queryString += "&" + name + "=" + param.get(name);
+    if (param.size() < 1) {
+      return "";
     }
 
+    //query string start char
+    String queryString = "?";
+
+    //append name value pair prefixed with amp symbol
+    for (String name : param.keySet()) {
+      //discard the 'response' param from query string
+      if (!"response".equalsIgnoreCase(name)) {
+        queryString += "&" + name + "=" + param.get(name);
+      }
+    }
     return queryString;
+  }
+
+  /**
+   * Removes leading and trailing commas from a comma seperated string
+   *
+   * @param in - comma seperated input string
+   * @return Returns the string with leading and trailing commas removed. If the input string is empty or null then the same string is returned
+   */
+  public static String trimComma(String in) {
+    // return if empty or null
+    if (!StringUtils.hasText(in)) {
+      return in;
+    }
+
+    //remove leading commas
+    in = in.trim();
+    while (in.startsWith(",")) {
+      in = in.substring(1).trim();
+    }
+
+    //remove trailing commas
+    while (in.endsWith(",")) {
+      in = in.substring(0, in.lastIndexOf(",")).trim();
+    }
+    return in;
+  }
+
+  /**
+   * Encrypts data
+   *
+   * @param password string to be encrypted
+   * @return the encrypted password
+   */
+  public static String encryptData(String password) {
+    if (!StringUtils.hasText(password)) {
+      return password;
+    }
+    try {
+      // the password needs to be encrypted
+      Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_KEY_CACHE);
+      Element element = cache.get(1);
+      Key key = (Key) element.getObjectValue();
+      return PrivateString.encrypt(key, password);
+    } catch (Exception e) {
+      // the password may not be encypted
+      return password;
+    }
+  }
+
+  /**
+   * Decrypts data
+   *
+   * @param password the encrypted password
+   * @return password decrypted. If the param password is empty or null then the return value is the same.
+   */
+  public static String decryptData(String password) {
+    if (!StringUtils.hasText(password)) {
+      return password;
+    }
+    try {
+      // the password is encrypted
+      Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_KEY_CACHE);
+      Element element = cache.get(1);
+      Key key = (Key) element.getObjectValue();
+      return PrivateString.decrypt(key, password);
+    } catch (Exception e) {
+      // the password may not be encypted
+      return password;
+    }
   }
 }

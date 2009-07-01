@@ -87,9 +87,6 @@ public class EventFormViewer implements IPortletViewer {
   private static final String SHOW_DIMDIM_OPTION = "showDimDim";
 
   public String doView(RenderRequest request, RenderResponse response) throws Exception {
-    // The JSP to show upon success
-    String defaultView = VIEW_PAGE;
-
     //Preferences
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
     request.setAttribute(SHOW_DIMDIM_OPTION, "true".equals(prefs.get(ApplicationPrefs.DIMDIM_ENABLED)) ? "true" : "false");
@@ -123,9 +120,8 @@ public class EventFormViewer implements IPortletViewer {
     if (recordId > -1) {
       meeting.queryRecord(db, recordId);
 
-      //get attendee list
+      // Fetch the attendee list
       setMeetingInvitees(db, meeting);
-      //request.setAttribute(MEETING_INVITEE_LIST, meetingInviteeList);
 
       // Verify the project id since the request cannot be trusted
       if (meeting.getProjectId() != project.getId()) {
@@ -152,7 +148,7 @@ public class EventFormViewer implements IPortletViewer {
     request.setAttribute(TEAM_MEMBERS_LIST, teamMembersList);
 
     // JSP view
-    return defaultView;
+    return VIEW_PAGE;
   }
 
   //reloads meeting invitees to the page.

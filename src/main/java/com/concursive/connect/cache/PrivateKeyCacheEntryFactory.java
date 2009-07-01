@@ -45,63 +45,30 @@
  */
 package com.concursive.connect.cache;
 
-import com.concursive.commons.db.ConnectionElement;
-import com.concursive.commons.db.ConnectionPool;
-import com.concursive.connect.config.ApplicationPrefs;
-
-import java.security.Key;
-import java.sql.Connection;
+import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * Context items to be used by self-populating caches
+ * Provides the Application Key
  *
  * @author matt rajkowski
- * @created Apr 9, 2008
+ * @created July 1, 2009
  */
-public class CacheContext {
-  private ConnectionPool connectionPool = null;
-  private ConnectionElement connectionElement = null;
-  private ApplicationPrefs applicationPrefs = null;
-  private Connection upgradeConnection = null;
-  private Key key = null;
+public class PrivateKeyCacheEntryFactory implements CacheEntryFactory {
 
-  public ConnectionPool getConnectionPool() {
-    return connectionPool;
+  private static final Log LOG = LogFactory.getLog(PrivateKeyCacheEntryFactory.class);
+
+  private CacheContext context = null;
+
+  public PrivateKeyCacheEntryFactory(CacheContext context) {
+    this.context = context;
   }
 
-  public void setConnectionPool(ConnectionPool connectionPool) {
-    this.connectionPool = connectionPool;
-  }
-
-  public ConnectionElement getConnectionElement() {
-    return connectionElement;
-  }
-
-  public void setConnectionElement(ConnectionElement connectionElement) {
-    this.connectionElement = connectionElement;
-  }
-
-  public ApplicationPrefs getApplicationPrefs() {
-    return applicationPrefs;
-  }
-
-  public void setApplicationPrefs(ApplicationPrefs applicationPrefs) {
-    this.applicationPrefs = applicationPrefs;
-  }
-
-  public Connection getUpgradeConnection() {
-    return upgradeConnection;
-  }
-
-  public void setUpgradeConnection(Connection upgradeConnection) {
-    this.upgradeConnection = upgradeConnection;
-  }
-
-  public Key getKey() {
-    return key;
-  }
-
-  public void setKey(Key key) {
-    this.key = key;
+  public Object createEntry(Object key) throws Exception {
+    if (!key.equals(1)) {
+      return null;
+    }
+    return context.getKey();
   }
 }

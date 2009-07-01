@@ -49,6 +49,7 @@ package com.concursive.connect.web.modules.calendar.dao;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
+import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
 import com.concursive.connect.web.modules.common.social.rating.dao.Rating;
 import com.concursive.connect.web.modules.profile.dao.Project;
 
@@ -573,7 +574,7 @@ public class Meeting extends GenericBean {
     dimdimUrl = rs.getString("dimdim_url");
     dimdimMeetingId = rs.getString("dimdim_meetingid");
     dimdimUsername = rs.getString("dimdim_username");
-    dimdimPassword = rs.getString("dimdim_password");
+    dimdimPassword = DimDimUtils.decryptData(rs.getString("dimdim_password"));
   }
 
   public boolean isValid() {
@@ -688,7 +689,7 @@ public class Meeting extends GenericBean {
         pst.setString(++i, dimdimUsername);
       }
       if (dimdimPassword != null) {
-        pst.setString(++i, dimdimPassword);
+        pst.setString(++i, DimDimUtils.encryptData(dimdimPassword));
       }
       pst.setInt(++i, owner);
       pst.setInt(++i, enteredBy);
@@ -773,7 +774,7 @@ public class Meeting extends GenericBean {
         pst.setString(++i, dimdimUsername);
       }
       if (dimdimPassword != null) {
-        pst.setString(++i, dimdimPassword);
+        pst.setString(++i, DimDimUtils.encryptData(dimdimPassword));
       }
       pst.setInt(++i, id);
       pst.setTimestamp(++i, modified);

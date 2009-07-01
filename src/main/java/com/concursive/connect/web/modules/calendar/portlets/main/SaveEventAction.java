@@ -119,13 +119,13 @@ public class SaveEventAction implements IPortletAction {
         PortalUtils.processInsertHook(request, meeting);
       }
     } else {
-      // Load the previous record
+      // Load the previous record for use in the confirmation page
       Meeting previousMeeting = new Meeting(db, meeting.getId());
       meeting.setEnteredBy(previousMeeting.getEnteredBy());
       meeting.setDimdimMeetingId(previousMeeting.getDimdimMeetingId());
-      meeting.setDimdimPassword(previousMeeting.getDimdimPassword());
       meeting.setDimdimUrl(previousMeeting.getDimdimUrl());
       meeting.setDimdimUsername(previousMeeting.getDimdimUsername());
+      meeting.setDimdimPassword(previousMeeting.getDimdimPassword());
       // Verify the record matches the specified project
       if (previousMeeting.getProjectId() != project.getId()) {
         throw new PortletException("Mismatched projectId found");
@@ -151,7 +151,6 @@ public class SaveEventAction implements IPortletAction {
 
     //if meeting is dimdim then show confirmation page
     if (meeting.getIsDimdim()) {
-      //return goToViewer(request, response, "inviteesConfirm", meetingInviteesBean);
       return meetingInviteesBean;
     }
 

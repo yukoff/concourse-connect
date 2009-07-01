@@ -804,6 +804,7 @@ public class ApplicationPrefs {
     ce.setPassword(this.get(CONNECTION_PASSWORD));
     cacheContext.setConnectionElement(ce);
     cacheContext.setApplicationPrefs(this);
+    cacheContext.setKey((Key) context.getAttribute(TEAM_KEY));
     Caches.addCaches(cacheContext);
   }
 

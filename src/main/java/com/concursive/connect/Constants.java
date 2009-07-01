@@ -104,6 +104,7 @@ public class Constants {
   public static final String SYSTEM_DASHBOARD_PAGE_CACHE = "200810030928";
   public static final String SYSTEM_DASHBOARD_PORTLET_CACHE = "200901161510";
   public static final String SYSTEM_RSS_FEED_CACHE = "200904031620";
+  public static final String SYSTEM_KEY_CACHE = "200907011550";
 
   // Constants for use in the IndexerService Interface
   public static final int INDEXER_FULL = 1;

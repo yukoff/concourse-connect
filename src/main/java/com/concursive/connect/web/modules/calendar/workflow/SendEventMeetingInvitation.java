@@ -48,6 +48,7 @@ package com.concursive.connect.web.modules.calendar.workflow;
 
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
@@ -140,7 +141,7 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
 
       switch (meetingInviteesBean.getAction()) {
         case DimDimUtils.ACTION_MEETING_DIMDIM_EDIT:
-          if (!meetingInviteesBean.getMeetingChangeUsers().isEmpty()) {
+          if (!meetingInviteesBean.getMeetingChangeUsers().isEmpty() && meetingInviteesBean.getIsModifiedMeeting()) {
             sendMeetingChangeMail();
           }
           if (!meetingInviteesBean.getMembersFoundList().isEmpty()) {
@@ -221,6 +222,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     * Sends the meeting cancelled mail to attendees
     */
   private boolean sendMeetingCancellationMail() throws Exception {
+    // Check if the meeting had been scheduled with Dimdim before sending a cancel notice
+    if (!StringUtils.hasText(meetingInviteesBean.getMeeting().getDimdimMeetingId())) {
+      return false;
+    }
+
     LOG.debug("Trying to send meeting cancellation mail");
 
     //set mail templates
@@ -335,9 +341,9 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
         //send mail
         if (message.send() == 0) {
           LOG.debug("meeting change email sent to " + thisInvitee.getNameFirstLast() + " - " + thisInvitee.getEmail());
+        } else {
+          LOG.debug("meeting change email not sent to " + thisInvitee.getNameFirstLast() + " - " + thisInvitee.getEmail());
         }
-
-        LOG.debug("meeting change email not sent to " + thisInvitee.getNameFirstLast() + " - " + thisInvitee.getEmail());
       }
       return true;
     }

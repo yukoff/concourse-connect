@@ -100,7 +100,7 @@ public class EventDimdimAction implements IPortletAction {
       return (performRefresh(request, response, "/show/calendar"));
     }
 
-    //process meeting senario and get the url to dimdim server
+    //process meeting scenario and get the url to dimdim server
     HashMap<String, String> resultMap = DimDimUtils.processDimdimMeeting(meetingInviteesBean, currentUser);
 
     //redirect to dimdim server and return

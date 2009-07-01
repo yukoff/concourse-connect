@@ -65,10 +65,10 @@ import com.concursive.connect.web.utils.PagedListInfo;
 import javax.portlet.ActionRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.Iterator;
 
 /**
  * Handles meeting and invitees parameters and processes invitee list
@@ -431,8 +431,9 @@ public class MeetingInviteesBean extends GenericBean {
 
     // multiple user found
     if (userList.size() > 1) {
-      addToMultipleMemberList(email, userList);
-      return false;
+      if (addToMultipleMemberList(email, userList)) {
+        return true;
+      }
     }
 
     // user does not exist
@@ -465,8 +466,9 @@ public class MeetingInviteesBean extends GenericBean {
 
     // multiple user found
     if (userList.size() >= 1) {
-      addToMultipleMemberList(invitee, userList);
-      return false;
+      if (addToMultipleMemberList(invitee, userList)) {
+        return true;
+      }
     }
 
     //user does not exist
@@ -576,13 +578,15 @@ public class MeetingInviteesBean extends GenericBean {
    * @param invitee  - As entered by the user
    * @param userList - List of users to add.
    */
-  private void addToMultipleMemberList(String invitee, UserList userList) {
+  private boolean addToMultipleMemberList(String invitee, UserList userList) {
     removeInvitedMembers(userList);
 
     //add to multiple userlist if the list is not empty
     if (!userList.isEmpty()) {
       membersMultipleList.put(invitee, userList);
+      return true;
     }
+    return false;
   }
 
   //check if any of the users in the userlist has been already invited. Remove meeting host also from the list.
@@ -690,8 +694,9 @@ public class MeetingInviteesBean extends GenericBean {
    */
   private void addToMailUserList(String userIds, UserList userList) {
     //check if ids are empty
-    if ("".equals(userIds) || userIds == null)
+    if ("".equals(userIds) || userIds == null) {
       return;
+    }
 
     //split the userlist
     userIds = userIds.trim();

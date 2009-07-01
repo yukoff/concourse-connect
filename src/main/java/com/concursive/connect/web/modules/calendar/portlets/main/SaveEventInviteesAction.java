@@ -143,8 +143,8 @@ public class SaveEventInviteesAction implements IPortletAction {
     String dimdimPassword = request.getParameter("dimdimPassword");
     if (StringUtils.hasText(dimdimUrl) && StringUtils.hasText(dimdimUsername) && StringUtils.hasText(dimdimPassword)) {
       meeting.setDimdimUrl(dimdimUrl);
-      meeting.setDimdimPassword(dimdimPassword);
       meeting.setDimdimUsername(dimdimUsername);
+      meeting.setDimdimPassword(dimdimPassword);
     }
 
     // for save action check if no invitees were inserted

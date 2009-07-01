@@ -84,6 +84,9 @@ public class Caches {
     // NOTE: The default createInMemoryCache requires that objects are invalidated by the system
     // otherwise the objects will not expire
 
+    // 1 = Key
+    CacheUtils.createInMemoryCache(Constants.SYSTEM_KEY_CACHE, new PrivateKeyCacheEntryFactory(context), 1);
+
     // userId = User
     CacheUtils.createInMemoryCache(Constants.SYSTEM_USER_CACHE, new UserCacheEntryFactory(context), 100000);
 

@@ -311,6 +311,11 @@
             <limit>15</limit>
           </portlet>
           <portlet name="ProjectListByUserPortlet" class="basic-list ">
+            <title>My Committees</title>
+            <limit>10</limit>
+            <category>Committees</category>
+          </portlet>
+          <portlet name="ProjectListByUserPortlet" class="basic-list ">
             <title>My Businesses</title>
             <limit>10</limit>
             <category>Businesses</category>

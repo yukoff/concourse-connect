@@ -164,9 +164,12 @@ public class ProjectListByUserPortlet extends GenericPortlet {
 
               HashMap<Integer, ProjectRating> projectRatingMap = new HashMap<Integer, ProjectRating>();
               HashMap<Integer, Integer> privateMessageMap = new HashMap<Integer, Integer>();
-              for (TeamMember teamMember : teamMemberList) {
+              Iterator i = teamMemberList.iterator();
+              while (i.hasNext()) {
+                TeamMember teamMember = (TeamMember) i.next();
                 // Verify this user can access the project
                 if (user.getId() != teamMember.getUserId() && !ProjectUtils.hasAccess(teamMember.getProjectId(), user, "project-profile-view")) {
+                  i.remove();
                   continue;
                 }
 

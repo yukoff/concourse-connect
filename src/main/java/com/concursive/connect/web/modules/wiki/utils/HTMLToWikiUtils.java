@@ -62,6 +62,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -153,9 +154,9 @@ public class HTMLToWikiUtils {
           } else if ("p".equals(tag) || "div".equals(tag)) {
             if (n.getChildNodes().getLength() > 0 &&
                 (hasTextContent(n) || hasImageNodes(n.getChildNodes()))) {
-              // If this contains a Table, UL or OL, skip everything else to get there
+              // If this contains a Table, UL, OL, or object skip everything else to get there
               ArrayList<Node> subNodes = new ArrayList<Node>();
-              getNodes(n.getChildNodes(), subNodes, new String[]{"table", "ul", "ol"}, false);
+              getNodes(n.getChildNodes(), subNodes, new String[]{"table", "ul", "ol", "object"}, false);
               if (subNodes.size() > 0) {
                 LOG.trace("  nonTextNodes - yes");
                 processChildNodes(subNodes, sb, indentLevel, true, true, false, contextPath);
@@ -301,6 +302,8 @@ public class HTMLToWikiUtils {
             processLink(sb, element, contextPath);
           } else if ("img".equals(tag)) {
             processImage(sb, n, element, contextPath);
+          } else if ("object".equals(tag)) {
+            processVideo(sb, n, element, contextPath);
           } else {
             processChildNodes(getNodeList(n), sb, indentLevel, false, true, trim, contextPath);
           }
@@ -375,7 +378,7 @@ public class HTMLToWikiUtils {
         if (n.getNodeType() == Node.ELEMENT_NODE) {
           Element element = ((Element) n);
           String tag = element.getTagName();
-          if ("img".equals(tag)) {
+          if ("img".equals(tag) || "object".equals(tag)) {
             return true;
           }
         }
@@ -659,6 +662,35 @@ public class HTMLToWikiUtils {
       LOG.trace("CRLF");
       sb.append(CRLF);
       sb.append(CRLF);
+    }
+  }
+
+  public static void processVideo(StringBuffer sb, Node n, Element element, String contextPath) {
+    // Videos
+    // [[Video:http://www.youtube.com/watch?v=3LkNlTNHZzE]]
+
+    // <object width=\"425\" height=\"344\">\n
+    //     <param name=\"movie\" value=\"" + video + "\"></param>\n" +
+    //     <param name=\"wmode\" value=\"transparent\"></param>\n" +
+    //     <embed src=\"" + video + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></embed>\n" +
+    // </object>
+
+    // Parse the object
+    NodeList objectNodes = element.getChildNodes();
+    for (int i = 0; i < objectNodes.getLength(); i++) {
+      // For each object, parse the params
+      Node node = objectNodes.item(i);
+      if (node.getNodeType() == Node.ELEMENT_NODE && "param".equals(((Element) node).getTagName())) {
+        if ("movie".equals(((Element) node).getAttribute("name"))) {
+          String video = ((Element) node).getAttribute("value");
+          try {
+            URL url = new URL(video);
+            sb.append("[[Video:" + video + "]]").append(CRLF).append(CRLF);
+          } catch (Exception e) {
+            LOG.error("Could not create URL", e);
+          }
+        }
+      }
     }
   }
 

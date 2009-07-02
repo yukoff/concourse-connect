@@ -152,6 +152,9 @@ public class WikiToHTMLUtils {
     // [[Image:Filename.jpg|right]]
     // [[Image:Filename.jpg|left]]
 
+    // Videos
+    // [[Video:http://www.youtube.com/watch?v=3LkNlTNHZzE]]
+
     // Forms
     // [{form name="wikiForm"}]
     // ---
@@ -785,6 +788,11 @@ public class WikiToHTMLUtils {
             WikiImageLink wikiImageLink = new WikiImageLink(link, context.getProjectId(), context.getImageList(), (i + 1 == line.length()), context.isEditMode(), context.getContextPath());
             sb.append(wikiImageLink.getValue());
             needsCRLF = wikiImageLink.getNeedsCRLF();
+          } else if (link.startsWith("Video:") || link.startsWith("video:")) {
+            // Video link
+            WikiVideoLink wikiVideoLink = new WikiVideoLink(link);
+            sb.append(wikiVideoLink.getValue());
+            needsCRLF = wikiVideoLink.getNeedsCRLF();
           } else {
             // Any other kind of link
             // Parser for inter-project wiki links

@@ -283,7 +283,9 @@ public final class ProjectManagementTeam extends GenericAction {
         project = retrieveAuthorizedProject(projectId, context);
         // canRequestToJoin rule
         boolean canRequestToJoin =
-            (user != null && user.getId() > 0 && project.getFeatures().getAllowGuests() && project.getFeatures().getMembershipRequired());
+            (user.getId() > 0 &&
+                (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
+                project.getFeatures().getMembershipRequired());
         if (!canRequestToJoin) {
           return "PermissionError";
         }
@@ -569,8 +571,8 @@ public final class ProjectManagementTeam extends GenericAction {
       }
       boolean deleted = false;
       deleted = member.delete(db);
-      if (deleted){
-      	processDeleteHook(context, member);
+      if (deleted) {
+        processDeleteHook(context, member);
       }
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);

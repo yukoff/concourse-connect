@@ -392,7 +392,9 @@ public final class ProjectManagementTeam extends GenericAction {
         targetProject = retrieveAuthorizedProject(projectId, context);
         // userCanRequestToJoin rule
         boolean canRequestToJoin =
-            (user != null && user.getId() > 0 && targetProject.getFeatures().getAllowGuests() && targetProject.getFeatures().getMembershipRequired());
+            (user != null && user.getId() > 0 &&
+                (targetProject.getFeatures().getAllowGuests() || targetProject.getFeatures().getAllowParticipants()) && 
+                targetProject.getFeatures().getMembershipRequired());
         if (!canRequestToJoin) {
           return "PermissionError";
         }

@@ -179,6 +179,7 @@ Pluto                             Apache Software License v2.0
 PDFBox                            BSD
 POI                               Apache Software License
 PostgreSQL JDBC Driver            BSD
+PrettyTime                        LGPL v3.0
 Quartz                            Apache Software License
 ROME                              Apache Software License
 Spring                            Apache Software License v2.0

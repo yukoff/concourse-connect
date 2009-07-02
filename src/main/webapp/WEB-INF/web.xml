@@ -696,7 +696,6 @@
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
-
   <servlet>
     <servlet-name>PrivateMessagesPortlet</servlet-name>
     <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
@@ -863,6 +862,15 @@
     <init-param>
       <param-name>portlet-name</param-name>
       <param-value>UpcomingEventListPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>RssPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>RssPortlet</param-value>
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
@@ -1181,6 +1189,10 @@
   <servlet-mapping>
     <servlet-name>UpcomingEventListPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/UpcomingEventListPortlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RssPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/RssPortlet</url-pattern>
   </servlet-mapping>
 
   <!-- All iteam requests go through the framework controller -->

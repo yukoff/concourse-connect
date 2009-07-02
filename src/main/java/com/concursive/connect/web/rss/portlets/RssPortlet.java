@@ -43,54 +43,37 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.common.social.geotagging.portlets;
+package com.concursive.connect.web.rss.portlets;
 
-import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.connect.web.portal.PortalUtils;
-
-import javax.portlet.*;
-import java.io.IOException;
+import com.concursive.connect.web.portal.AbstractPortletModule;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * A google map portlet that shows a project location
+ * RSS portlet
  *
  * @author matt rajkowski
- * @created June 30, 2008
+ * @created July 2, 2009
  */
-public class ProjectGoogleMapsPortlet extends GenericPortlet {
-  // JSPs
-  private static final String VIEW_PAGE = "/portlets/project_google_maps/project_google_maps-view.jsp";
+public class RssPortlet extends AbstractPortletModule {
 
-  // Attributes for view
-  public static final String API_DOMAIN = "domain";
-  public static final String API_KEY = "key";
-  public static final String PROJECT = "project";
+  private static Log LOG = LogFactory.getLog(RssPortlet.class);
 
-  public void doView(RenderRequest request, RenderResponse response)
-      throws PortletException, IOException {
-    try {
-      // Objects from portal
-      Project project = PortalUtils.getProject(request);
-      request.setAttribute(PROJECT, project);
+  // Viewers
+  public static final String LIST_VIEW = "list";
 
-      // Check to see if Google Maps is enabled
-      if (PortalUtils.getApplicationPrefs(request).has("GOOGLE_MAPS.DOMAIN")) {
-        request.setAttribute(API_DOMAIN, PortalUtils.getApplicationPrefs(request).get("GOOGLE_MAPS.DOMAIN"));
-        request.setAttribute(API_KEY, PortalUtils.getApplicationPrefs(request).get("GOOGLE_MAPS.KEY"));
+  public static final String DEFAULT_VIEW = LIST_VIEW;
 
-        // Skip the portlet if the project isn't geocoded
-        if (project.isGeoCoded()) {
-          // JSP view
-          String defaultView = VIEW_PAGE;
-          PortletContext context = getPortletContext();
-          PortletRequestDispatcher requestDispatcher =
-              context.getRequestDispatcher(defaultView);
-          requestDispatcher.include(request, response);
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace(System.out);
-      throw new PortletException(e.getMessage());
-    }
+  // Actions
+
+  public RssPortlet() {
+    defaultCommand = DEFAULT_VIEW;
+  }
+
+  protected void doPopulateActionsAndViewers() {
+    // Viewers
+    viewers.put(LIST_VIEW, new RssListViewer());
+
+    // Actions
   }
 }

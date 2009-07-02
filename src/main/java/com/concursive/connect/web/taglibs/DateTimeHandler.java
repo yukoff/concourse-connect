@@ -46,14 +46,18 @@
 
 package com.concursive.connect.web.taglibs;
 
+import com.concursive.commons.date.DateUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.login.dao.User;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -64,6 +68,8 @@ import java.util.Locale;
  * @created September 3, 2003
  */
 public class DateTimeHandler extends TagSupport {
+
+  private static Log LOG = LogFactory.getLog(DateTimeHandler.class);
 
   private Timestamp timestamp = null;
   private boolean dateOnly = false;
@@ -83,6 +89,9 @@ public class DateTimeHandler extends TagSupport {
     this.timestamp = tmp;
   }
 
+  public void setDate(Date tmp) {
+    this.timestamp = new Timestamp(tmp.getTime());
+  }
 
   /**
    * Default in case the date is empty/null
@@ -180,7 +189,7 @@ public class DateTimeHandler extends TagSupport {
    */
   public int doStartTag() throws JspException {
     try {
-      if (timestamp != null && !"".equals(timestamp)) {
+      if (timestamp != null) {
         String timeZone = null;
         Locale locale = null;
         // Retrieve the user's timezone from their session
@@ -192,35 +201,44 @@ public class DateTimeHandler extends TagSupport {
         if (locale == null) {
           locale = Locale.getDefault();
         }
-
-        //Format the specified timestamp with the retrieved timezone
-        SimpleDateFormat formatter = null;
-        if (dateOnly) {
-          formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(
-              dateFormat, locale);
-        } else if (timeOnly) {
-          formatter = (SimpleDateFormat) SimpleDateFormat.getTimeInstance(
-              timeFormat, locale);
+        // Determine the output type
+        if (pattern != null && "relative".equals(pattern)) {
+          // Output a relative date
+          String relativeDate = DateUtils.createRelativeDate(timestamp);
+          if (relativeDate != null) {
+            this.pageContext.getOut().write(relativeDate);
+          }
         } else {
-          formatter = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance(
-              dateFormat, timeFormat, locale);
-        }
+          // Format the specified timestamp with the retrieved timezone
+          SimpleDateFormat formatter = null;
+          if (dateOnly) {
+            formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(
+                dateFormat, locale);
+          } else if (timeOnly) {
+            formatter = (SimpleDateFormat) SimpleDateFormat.getTimeInstance(
+                timeFormat, locale);
+          } else {
+            formatter = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance(
+                dateFormat, timeFormat, locale);
+          }
 
-        //set the pattern
-        if (pattern != null) {
-          formatter.applyPattern(pattern);
+          // Use a Java formatter pattern
+          if (pattern != null) {
+            formatter.applyPattern(pattern);
+          }
+          // Adjust the date/time based on any timezone
+          if (timeZone != null) {
+            java.util.TimeZone tz = java.util.TimeZone.getTimeZone(timeZone);
+            formatter.setTimeZone(tz);
+          }
+          this.pageContext.getOut().write(formatter.format(timestamp));
         }
-        //set the timezone
-        if (timeZone != null) {
-          java.util.TimeZone tz = java.util.TimeZone.getTimeZone(timeZone);
-          formatter.setTimeZone(tz);
-        }
-        this.pageContext.getOut().write(formatter.format(timestamp));
       } else {
         //no date found, output default
         this.pageContext.getOut().write(defaultValue);
       }
     } catch (Exception e) {
+      LOG.debug("Conversion error", e);
     }
     return SKIP_BODY;
   }

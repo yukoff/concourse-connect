@@ -43,54 +43,75 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.common.social.geotagging.portlets;
+package com.concursive.connect.web.rss.portlets;
 
-import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.connect.web.portal.PortalUtils;
+import com.concursive.connect.web.portal.IPortletViewer;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import javax.portlet.*;
-import java.io.IOException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import java.net.URL;
 
 /**
- * A google map portlet that shows a project location
+ * RSS feed viewer
  *
  * @author matt rajkowski
- * @created June 30, 2008
+ * @created July 2, 2009
  */
-public class ProjectGoogleMapsPortlet extends GenericPortlet {
-  // JSPs
-  private static final String VIEW_PAGE = "/portlets/project_google_maps/project_google_maps-view.jsp";
+public class RssListViewer implements IPortletViewer {
 
-  // Attributes for view
-  public static final String API_DOMAIN = "domain";
-  public static final String API_KEY = "key";
-  public static final String PROJECT = "project";
+  private static Log LOG = LogFactory.getLog(RssListViewer.class);
 
-  public void doView(RenderRequest request, RenderResponse response)
-      throws PortletException, IOException {
-    try {
-      // Objects from portal
-      Project project = PortalUtils.getProject(request);
-      request.setAttribute(PROJECT, project);
+  // Pages
+  private static final String VIEW_PAGE = "/portlets/rss/rss_feed-view.jsp";
 
-      // Check to see if Google Maps is enabled
-      if (PortalUtils.getApplicationPrefs(request).has("GOOGLE_MAPS.DOMAIN")) {
-        request.setAttribute(API_DOMAIN, PortalUtils.getApplicationPrefs(request).get("GOOGLE_MAPS.DOMAIN"));
-        request.setAttribute(API_KEY, PortalUtils.getApplicationPrefs(request).get("GOOGLE_MAPS.KEY"));
+  // Preferences
+  private static final String PREF_TITLE = "title";
+  private static final String PREF_FEED = "feed";
+  private static final String PREF_SHOW_DESCRIPTION = "showDescription";
+  private static final String PREF_LIMIT = "limit";
 
-        // Skip the portlet if the project isn't geocoded
-        if (project.isGeoCoded()) {
-          // JSP view
-          String defaultView = VIEW_PAGE;
-          PortletContext context = getPortletContext();
-          PortletRequestDispatcher requestDispatcher =
-              context.getRequestDispatcher(defaultView);
-          requestDispatcher.include(request, response);
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace(System.out);
-      throw new PortletException(e.getMessage());
+  // Object Results
+  private static final String TITLE = "title";
+  private static final String RSS_FEED = "rssFeed";
+  private static final String SHOW_DESCRIPTION = "showDescription";
+  private static final String LIMIT = "limit";
+
+  public String doView(RenderRequest request, RenderResponse response) throws Exception {
+    // The JSP to show upon success
+    String defaultView = VIEW_PAGE;
+
+    // General display preferences
+    request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, "Review"));
+    request.setAttribute(SHOW_DESCRIPTION, request.getPreferences().getValue(PREF_SHOW_DESCRIPTION, "true"));
+    request.setAttribute(LIMIT, String.valueOf(Integer.parseInt(request.getPreferences().getValue(PREF_LIMIT, "10"))-1));
+
+    // Determine the feed
+    String feedValue = request.getPreferences().getValue(PREF_FEED, null);
+    if (feedValue == null) {
+      return null;
     }
+
+    // Process the feed
+    URL feedUrl = new URL(feedValue);
+    SyndFeedInput input = new SyndFeedInput();
+    SyndFeed feed = input.build(new XmlReader(feedUrl));
+    request.setAttribute(RSS_FEED, feed);
+
+    if (LOG.isDebugEnabled()) {
+      LOG.debug(feed);
+    }
+
+    // Skip displaying if there are no entries
+    if (feed.getEntries().size() == 0) {
+      return null;
+    }
+
+    // JSP view
+    return defaultView;
   }
 }

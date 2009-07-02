@@ -860,7 +860,7 @@
       <title>View list of classifieds by category</title>
     </portlet-info>
   </portlet>
-   <portlet>
+  <portlet>
     <portlet-name>ClassifiedResultsSorterPortlet</portlet-name>
     <portlet-class>com.concursive.connect.web.modules.classifieds.portlets.classifiedResultsSorter.ClassifiedResultsSorterPortlet</portlet-class>
     <supports>
@@ -882,6 +882,18 @@
       <title>Count of classifieds by project category</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>RssPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.rss.portlets.RssPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Display an RSS Feed</title>
+    </portlet-info>
+  </portlet>
+
   <custom-portlet-mode>
     <description>Provides administration functions</description>
     <name>config</name>

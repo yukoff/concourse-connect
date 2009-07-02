@@ -1,5 +1,5 @@
 #!/bin/sh
-//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/commons-logging-1.1.1.jar:lib/activation-1.1.1.jar:lib/javamail-mail-1.4.jar:lib/javamail-mailapi-1.4.jar:lib/concursive-commons-20090618.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/commons-logging-1.1.1.jar:lib/activation-1.1.1.jar:lib/javamail-mail-1.4.jar:lib/javamail-mailapi-1.4.jar:lib/concursive-commons-20090702.jar bsh.Interpreter "$0" "$@"
 
 /* Test sending an email */
 import com.concursive.commons.email.SMTPMessage;

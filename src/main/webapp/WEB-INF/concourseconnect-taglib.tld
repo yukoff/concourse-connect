@@ -303,9 +303,15 @@
     </display-name>
     <attribute>
       <name>timestamp</name>
-      <required>yes</required>
+      <required>no</required>
       <rtexprvalue>true</rtexprvalue>
       <type>java.sql.Timestamp</type>
+    </attribute>
+    <attribute>
+      <name>date</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+      <type>java.util.Date</type>
     </attribute>
     <attribute>
       <name>dateOnly</name>

@@ -101,6 +101,6 @@ public class WikiParserVideoTest extends AbstractConnectionPoolTest {
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
 
     String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "");
-    assertEquals(wikiSample, wiki);
+    assertEquals(wikiSample2, wiki);
   }
 }

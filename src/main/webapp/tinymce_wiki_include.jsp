@@ -50,7 +50,7 @@
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="initPage.jsp" %>
-<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.4.1/tiny_mce.js?1"></script>
+<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.5/tiny_mce.js?1"></script>
 <script language="javascript" type="text/javascript">
   function initEditor(ta) {
 
@@ -86,9 +86,6 @@
 
     // Register plugin using the add method
     tinymce.PluginManager.add('wikiImage', teamelements.WikiImagePlugin);
-
-
-
 
     // Create a wiki link plugin
     tinymce.create('teamelements.WikiLinkPlugin', {
@@ -138,8 +135,41 @@
 
     });
 
-  // Register plugin
-	tinymce.PluginManager.add('wikiLink', teamelements.WikiLinkPlugin);
+    // Register plugin
+	  tinymce.PluginManager.add('wikiLink', teamelements.WikiLinkPlugin);
+
+    // Create a blog video plugin, adapted from wiki
+    tinymce.create('teamelements.WikiVideoPlugin', {
+      WikiVideoPlugin : function(ed, url) {
+        // Register commands
+        ed.addCommand('wikiVideo', function() {
+
+          // Internal image object like a flash placeholder
+          if (ed.dom.getAttrib(ed.selection.getNode(), 'class').indexOf('mceItem') != -1) {
+            alert('called, but not expected');
+            return;
+          }
+
+          ed.windowManager.open({
+            file : teamelements_ctx + "/ProjectManagementWiki.do?command=VideoSelect&popup=true&pid=" + ilId,
+            width : 640 + parseInt(ed.getLang('media.delta_width', 0)),
+            height : 400 + parseInt(ed.getLang('media.delta_height', 0)),
+            inline : 1
+          }, {
+            plugin_url : url
+          });
+        });
+
+        // Register buttons
+        ed.addButton('media', {
+          title : 'media.image_desc',
+          cmd : 'wikiVideo'
+        });
+      }
+    });
+
+    // Register plugin using the add method
+    tinymce.PluginManager.add('wikiVideo', teamelements.WikiVideoPlugin);
 
 
     // Start the editor
@@ -151,14 +181,14 @@
 	    theme : "advanced",
 	    relative_urls : false,
 
-      theme_advanced_buttons1 : "formatselect,link,unlink,image,|,bold,italic,underline,strikethrough,|,bullist,numlist,outdent,indent,removeformat,|,undo,redo,|,code",
+      theme_advanced_buttons1 : "formatselect,link,unlink,image,media,|,bold,italic,underline,strikethrough,|,bullist,numlist,outdent,indent,removeformat,|,undo,redo,|,code",
       theme_advanced_buttons2 : "tablecontrols",
       theme_advanced_buttons3 : "",
       theme_advanced_toolbar_location : "top",
       theme_advanced_toolbar_align : "left",
       theme_advanced_statusbar_location : "none",
       theme_advanced_blockformats : "p,h2,h3,h4,h5,h6,pre",
-      plugins : "safari,table,-wikiImage,-wikiLink,inlinepopups",
+      plugins : "safari,table,-wikiImage,-wikiLink,-wikiVideo,inlinepopups",
       content_css : "<%= RequestUtils.getAbsoluteServerUrl(request) %>/css/editor.css?v=<%= ApplicationVersion.APP_VERSION %>"
     });
   }

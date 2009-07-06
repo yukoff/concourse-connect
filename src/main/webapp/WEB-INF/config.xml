@@ -419,6 +419,7 @@
     <forward name="ImageSelectOK" resource="/projects_center_wiki_images.jsp"/>
     <forward name="UploadImageOK" resource="/ProjectManagementWiki.do?command=ImageSelect"/>
     <forward name="LinkSelectOK" resource="/projects_center_wiki_links.jsp"/>
+    <forward name="VideoSelectOK" resource="/projects_center_wiki_video.jsp"/>
   </action>
   <!-- These actions support capabilities not available in portlets -->
   <action name="WikiExports" class="com.concursive.connect.web.modules.wiki.actions.WikiExportActions" />
@@ -433,6 +434,7 @@
     <forward name="ArchiveERROR" resource="/projects_center_news_refresh.jsp"/>
     <forward name="ImageSelectOK" resource="/projects_center_wiki_images.jsp"/>
     <forward name="UploadImageOK" resource="/BlogActions.do?command=ImageSelect"/>
+    <forward name="VideoSelectOK" resource="/projects_center_wiki_video.jsp"/>
   </action>
   <action name="ProjectManagementClassifieds" class="com.concursive.connect.web.modules.classifieds.actions.ProjectManagementClassifieds">
     <bean name="classified" class="com.concursive.connect.web.modules.classifieds.dao.Classified" scope="request" />

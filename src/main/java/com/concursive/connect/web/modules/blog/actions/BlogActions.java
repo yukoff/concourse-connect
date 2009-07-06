@@ -534,4 +534,28 @@ public final class BlogActions extends GenericAction {
     }
     return "UploadImageOK";
   }
+
+  public String executeCommandVideoSelect(ActionContext context) {
+    Connection db = null;
+    //Parameters
+    String projectId = context.getRequest().getParameter("pid");
+    try {
+      db = getConnection(context);
+      // Load the project
+      Project thisProject = retrieveAuthorizedProject(Integer.parseInt(projectId), context);
+      if (!hasProjectAccess(context, thisProject.getId(), "project-news-view")) {
+        return "PermissionError";
+      }
+      context.getRequest().setAttribute("project", thisProject);
+      return ("VideoSelectOK");
+    } catch (Exception errorMessage) {
+      context.getRequest().setAttribute("Error", errorMessage);
+      return ("SystemError");
+    } finally {
+      this.freeConnection(context, db);
+    }
+  }
+
+
+
 }

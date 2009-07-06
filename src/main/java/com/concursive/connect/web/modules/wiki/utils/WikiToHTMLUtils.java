@@ -790,7 +790,7 @@ public class WikiToHTMLUtils {
             needsCRLF = wikiImageLink.getNeedsCRLF();
           } else if (link.startsWith("Video:") || link.startsWith("video:")) {
             // Video link
-            WikiVideoLink wikiVideoLink = new WikiVideoLink(link);
+            WikiVideoLink wikiVideoLink = new WikiVideoLink(link, context.isEditMode(), context.getContextPath());
             sb.append(wikiVideoLink.getValue());
             needsCRLF = wikiVideoLink.getNeedsCRLF();
           } else {

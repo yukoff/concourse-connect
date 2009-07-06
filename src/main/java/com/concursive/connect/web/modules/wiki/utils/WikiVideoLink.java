@@ -65,7 +65,7 @@ public class WikiVideoLink {
   private String value = "";
   private boolean needsCRLF = true;
 
-  public WikiVideoLink(String link) {
+  public WikiVideoLink(String link, boolean editMode, String contextPath) {
     String video = link.substring(6);
     String title = null;
     if (video.indexOf("|") > 0) {
@@ -95,11 +95,12 @@ public class WikiVideoLink {
         // Test the URL and set the output
         URL url = new URL(video);
         value =
-            "<object width=\"425\" height=\"344\">\n" +
-                "  <param name=\"movie\" value=\"" + video + "\"></param>\n" +
-                "  <param name=\"wmode\" value=\"transparent\"></param>\n" +
-                "  <embed src=\"" + video + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></embed>\n" +
-                "</object>";
+            "<object width=\"425\" height=\"344\">" +
+                "<param name=\"movie\" value=\"" + video + "\"></param>" +
+                (editMode ? "" :
+                    "<param name=\"wmode\" value=\"transparent\"></param>" +
+                        "<embed src=\"" + video + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"344\"></embed>") +
+                "</object>" + (editMode ? "&nbsp;" : "");
       } catch (Exception e) {
         LOG.error("Could not create a URL", e);
       }

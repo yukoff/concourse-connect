@@ -65,10 +65,10 @@ public class WikiParserVideoTest extends AbstractConnectionPoolTest {
   protected final static String wikiSample2 = "[[Video:http://www.youtube.com/v/3LkNlTNHZzE]]\n";
 
   protected final static String htmlSample =
-      "<p><object width=\"425\" height=\"344\"><br />" +
-          "  <param name=\"movie\" value=\"http://www.youtube.com/v/3LkNlTNHZzE\"></param><br />" +
-          "  <param name=\"wmode\" value=\"transparent\"></param><br />" +
-          "  <embed src=\"http://www.youtube.com/v/3LkNlTNHZzE\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></embed><br /></object></p>\n";
+      "<p><object width=\"425\" height=\"344\">" +
+          "<param name=\"movie\" value=\"http://www.youtube.com/v/3LkNlTNHZzE\"></param>" +
+          "<param name=\"wmode\" value=\"transparent\"></param>" +
+          "<embed src=\"http://www.youtube.com/v/3LkNlTNHZzE\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"344\"></embed></object></p>\n";
 
   public void testWikiToHTMLVideo() throws Exception {
     // Convert wiki to html

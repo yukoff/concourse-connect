@@ -303,6 +303,7 @@ public class HTMLToWikiUtils {
           } else if ("img".equals(tag)) {
             processImage(sb, n, element, contextPath);
           } else if ("object".equals(tag)) {
+            startOnNewLine(sb);
             processVideo(sb, n, element, contextPath);
           } else {
             processChildNodes(getNodeList(n), sb, indentLevel, false, true, trim, contextPath);

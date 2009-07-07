@@ -44,9 +44,48 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ page import="com.concursive.commons.text.StringUtils"%>
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
 <jsp:useBean id="syncStatus" class="java.util.Vector" scope="request"/>
 <%@ include file="initPage.jsp" %>
+<script language="JavaScript" type="text/javascript">
+  function checkForm(form) {
+    if (form.dosubmit.value == "false") {
+      return true;
+    }
+    var formTest = true;
+    var messageText = "";
+    
+    <ccp:evaluate if="<%= !StringUtils.hasText(applicationPrefs.get("CONCURSIVE_CRM.SERVER")) %>">
+    //Check required field
+	    if (form.serverURL.value == "") {
+	      messageText += "- Server URL  is a required field.\r\n";
+	      formTest = false;
+	    }
+	    if (form.apiClientId.value == "") {
+	      messageText += "- API Client Id  is a required field.\r\n";
+	      formTest = false;
+	    }
+	    if (form.apiCode.value == "") {
+	      messageText += "- API Code  is a required field.\r\n";
+	      formTest = false;
+	    }
+    </ccp:evaluate>
+    if (formTest == false) {
+      messageText = "The settings could not be submitted.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
+      form.dosubmit.value = "true";
+      alert(messageText);
+      return false;
+    } else {
+      return true;
+    }
+  }
+  
+  function setField(fieldId){
+  	document.getElementById(fieldId).value = "true";
+  }
+  
+</script>
 <div class="admin-portlet">
   <div class="portlet-section-header">
     <h1>Synchronize with ConcourseSuite CRM</h1>
@@ -63,7 +102,27 @@
         <li>ConcourseConnect must have the CRM credentials configured</li>
       </ol>
       <p>For more information see the <a target="_blank" href="http://www.concursive.com/show/concourseconnect/wiki">ConcourseConnect Wiki</a></p>
-      <input type="submit" name="Sync" value="<ccp:label name="button.sync">Sync</ccp:label>" class="submit" />
+    	<ccp:evaluate if="<%= StringUtils.hasText(applicationPrefs.get("CONCURSIVE_CRM.SERVER")) %>">
+      		<input type="submit" name="Sync" value="<ccp:label name="button.sync">Sync</ccp:label>" class="submit" onClick="javascript:setField('startSync')"/>
+			<input type="hidden" name="startSync" id="startSync" value="false">
+         </ccp:evaluate>
+    	<ccp:evaluate if="<%= !StringUtils.hasText(applicationPrefs.get("CONCURSIVE_CRM.SERVER")) %>">
+			  <div class="portlet-section-body">
+			    <div class="formContainer">
+			        <fieldset id="site-information">
+			          <legend>CRM Connection Information</legend>
+			          <label for="serverURL">Server URL<span class="required">*</span></label>
+			          <input type="text" name="serverURL" id="serverURL" value="<%= toHtmlValue((String)request.getAttribute("serverURL")) %>" />
+			          <label for="apiClientId">API Client Id<span class="required">*</span></label>
+			          <input type="text" name="apiClientId" id="apiClientId" value="<%= toHtmlValue((String)request.getAttribute("apiClientId")) %>" />
+			          <label for="apiCode">API Code<span class="required">*</span></label>
+			          <input type="text" name="apiCode" id="apiCode" value="<%= toHtmlValue((String)request.getAttribute("apiCode")) %>" />
+			        </fieldset>
+			        <input type="submit" name="Save" value="<ccp:label name="button.saveAndSync">Save and Sync</ccp:label>" class="submit" onClick="javascript:setField('saveConnectionDetails')"/>
+					<input type="hidden" name="saveConnectionDetails" id="saveConnectionDetails" value="false">
+			    </div>
+			   </div> 
+		</ccp:evaluate>         
     </ccp:evaluate>
     <ccp:evaluate if="<%= syncStatus.size() > 0 %>">
       <p>
@@ -80,5 +139,6 @@
       </p>
     </ccp:evaluate>
     </div>
+		<input type="hidden" name="dosubmit" value="true">
   </form>
 </div>

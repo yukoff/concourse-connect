@@ -48,7 +48,10 @@ package com.concursive.connect.web.modules.admin.actions;
 
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
+
+import org.aspcfs.utils.StringUtils;
 import org.quartz.Scheduler;
 
 import java.util.Vector;
@@ -92,11 +95,44 @@ public final class AdminSync extends GenericAction {
       Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
       Vector syncStatus = (Vector) scheduler.getContext().get("CRMSyncStatus");
 
-      if (syncStatus != null && syncStatus.size() == 0) {
-        // Trigger the sync job
-        triggerJob(context, "syncSystem");
-      } else {
-        // Do nothing as a sync is already in progress.
+      String startSync = context.getRequest().getParameter("startSync");
+      if ("true".equals(startSync)){
+	      if (syncStatus != null && syncStatus.size() == 0) {
+	        // Trigger the sync job
+	        triggerJob(context, "syncSystem");
+	      } else {
+	        // Do nothing as a sync is already in progress.
+	      }
+      }
+      String saveConnectionDetails = context.getRequest().getParameter("saveConnectionDetails");
+      if ("true".equals(saveConnectionDetails)){
+      	
+      	ApplicationPrefs prefs = this.getApplicationPrefs(context);
+      	
+        String serverURL = context.getRequest().getParameter("serverURL");
+        String apiClientId = context.getRequest().getParameter("apiClientId");
+        String apiCode = context.getRequest().getParameter("apiCode");
+        
+        String domainAndPort = serverURL.substring(7).split("/")[0];
+        String domain = domainAndPort;
+        if (domainAndPort.indexOf(":") != -1){
+        	domain = domainAndPort.split(":")[0];
+        }
+        
+        if (StringUtils.hasText(serverURL) &&  StringUtils.hasText(domain) &&
+        		StringUtils.hasText(apiClientId) && StringUtils.hasText(apiCode)){
+        	prefs.add("CONCURSIVE_CRM.SERVER", serverURL);
+        	prefs.add("CONCURSIVE_CRM.ID", domain);
+        	prefs.add("CONCURSIVE_CRM.CODE", apiCode);
+        	prefs.add("CONCURSIVE_CRM.CLIENT", apiClientId);
+        	prefs.save();
+        	
+	        triggerJob(context, "syncSystem");
+        } else {
+        	context.getRequest().setAttribute("serverURL", serverURL);
+          context.getRequest().setAttribute("apiClientId", apiClientId);
+          context.getRequest().setAttribute("apiCode", apiCode);
+        }
       }
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);

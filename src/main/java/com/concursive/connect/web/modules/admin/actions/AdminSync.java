@@ -51,9 +51,13 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 
+import org.aspcfs.apps.transfer.DataRecord;
+import org.aspcfs.utils.CRMConnection;
+import org.aspcfs.utils.HTTPUtils;
 import org.aspcfs.utils.StringUtils;
 import org.quartz.Scheduler;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -90,13 +94,20 @@ public final class AdminSync extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    boolean isValid = false;
+    String serverURL = null;
+    String apiClientId = null;
+    String apiCode = null;
+    String startSync = null;
+    String saveConnectionDetails = null;
     try {
 
       Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
       Vector syncStatus = (Vector) scheduler.getContext().get("CRMSyncStatus");
 
-      String startSync = context.getRequest().getParameter("startSync");
+      startSync = context.getRequest().getParameter("startSync");
       if ("true".equals(startSync)){
+      	isValid = true;
 	      if (syncStatus != null && syncStatus.size() == 0) {
 	        // Trigger the sync job
 	        triggerJob(context, "syncSystem");
@@ -104,15 +115,15 @@ public final class AdminSync extends GenericAction {
 	        // Do nothing as a sync is already in progress.
 	      }
       }
-      String saveConnectionDetails = context.getRequest().getParameter("saveConnectionDetails");
+      
+      saveConnectionDetails = context.getRequest().getParameter("saveConnectionDetails");
       if ("true".equals(saveConnectionDetails)){
       	
       	ApplicationPrefs prefs = this.getApplicationPrefs(context);
       	
-        String serverURL = context.getRequest().getParameter("serverURL");
-        String apiClientId = context.getRequest().getParameter("apiClientId");
-        String apiCode = context.getRequest().getParameter("apiCode");
-        
+        serverURL = context.getRequest().getParameter("serverURL");
+        apiClientId = context.getRequest().getParameter("apiClientId");
+        apiCode = context.getRequest().getParameter("apiCode");
         String domainAndPort = "";
         if (serverURL.indexOf("http://") != -1){
         	domainAndPort = serverURL.substring(7).split("/")[0];
@@ -126,17 +137,18 @@ public final class AdminSync extends GenericAction {
         
         if (StringUtils.hasText(serverURL) &&  StringUtils.hasText(domain) &&
         		StringUtils.hasText(apiClientId) && StringUtils.hasText(apiCode)){
-        	prefs.add("CONCURSIVE_CRM.SERVER", serverURL);
-        	prefs.add("CONCURSIVE_CRM.ID", domain);
-        	prefs.add("CONCURSIVE_CRM.CODE", apiCode);
-        	prefs.add("CONCURSIVE_CRM.CLIENT", apiClientId);
-        	prefs.save();
-        	
-	        triggerJob(context, "syncSystem");
-        } else {
-        	context.getRequest().setAttribute("serverURL", serverURL);
-          context.getRequest().setAttribute("apiClientId", apiClientId);
-          context.getRequest().setAttribute("apiCode", apiCode);
+        	if (testConnection(serverURL, domain, apiCode,apiClientId)){
+        		
+        		isValid = true;
+        		
+	        	prefs.add("CONCURSIVE_CRM.SERVER", serverURL);
+	        	prefs.add("CONCURSIVE_CRM.ID", domain);
+	        	prefs.add("CONCURSIVE_CRM.CODE", apiCode);
+	        	prefs.add("CONCURSIVE_CRM.CLIENT", apiClientId);
+	        	prefs.save();
+	        	
+		        triggerJob(context, "syncSystem");
+        	}
         }
       }
     } catch (Exception e) {
@@ -144,7 +156,49 @@ public final class AdminSync extends GenericAction {
       return ("SystemError");
     } finally {
     }
+    if (!isValid && "true".equals(saveConnectionDetails)){
+    	context.getRequest().setAttribute("serverURL", context.getRequest().getParameter("serverURL"));
+      context.getRequest().setAttribute("apiClientId", context.getRequest().getParameter("apiClientId"));
+      context.getRequest().setAttribute("apiCode", context.getRequest().getParameter("apiCode"));
+
+      context.getRequest().setAttribute("actionError","Could not connect to the suite.");
+      return executeCommandDefault(context);
+    }
     return "StartSyncOK";
+  }
+  
+  private boolean testConnection(String serverURL, String id, String code, String clientId){
+  	
+    CRMConnection crmConnection = new CRMConnection();
+    
+    crmConnection.setUrl(serverURL);
+    crmConnection.setCode(code);
+    crmConnection.setClientId(clientId);
+    crmConnection.setId(id);
+    crmConnection.setAutoCommit(false);
+    
+    ArrayList<String> meta = new ArrayList<String>();
+    meta.add("code");
+    crmConnection.setTransactionMeta(meta);
+
+    DataRecord list = new DataRecord();
+    list.setName("lookupAccountTypesList");
+    list.setAction(DataRecord.SELECT);
+    list.addField("uniqueField", "code");
+    list.addField("tableName", "lookup_account_types");
+    list.addField("description", "test");
+  	try {
+  		crmConnection.save(list);
+    	crmConnection.commit();
+    	
+    	if (crmConnection.hasError()){
+    		return false;
+    	}
+    	
+  	}catch (Exception e){
+  		return false;
+  	}
+    return true;
   }
 
 }

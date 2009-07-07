@@ -111,6 +111,9 @@
 			    <div class="formContainer">
 			        <fieldset id="site-information">
 			          <legend>CRM Connection Information</legend>
+				    	<ccp:evaluate if="<%= StringUtils.hasText((String)request.getAttribute("actionError")) %>">
+					    	<span class="required"><%= toHtmlValue((String)request.getAttribute("actionError")) %></span>
+				    	</ccp:evaluate>
 			          <label for="serverURL">Server URL<span class="required">*</span></label>
 			          <input type="text" name="serverURL" id="serverURL" value="<%= toHtmlValue((String)request.getAttribute("serverURL")) %>" />
 			          <label for="apiClientId">API Client Id<span class="required">*</span></label>

@@ -113,7 +113,12 @@ public final class AdminSync extends GenericAction {
         String apiClientId = context.getRequest().getParameter("apiClientId");
         String apiCode = context.getRequest().getParameter("apiCode");
         
-        String domainAndPort = serverURL.substring(7).split("/")[0];
+        String domainAndPort = "";
+        if (serverURL.indexOf("http://") != -1){
+        	domainAndPort = serverURL.substring(7).split("/")[0];
+        } else if (serverURL.indexOf("https://") != -1){
+        	domainAndPort = serverURL.substring(8).split("/")[0];
+        }
         String domain = domainAndPort;
         if (domainAndPort.indexOf(":") != -1){
         	domain = domainAndPort.split(":")[0];

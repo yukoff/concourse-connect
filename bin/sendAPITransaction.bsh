@@ -1,5 +1,15 @@
 #!/bin/sh
-//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/concursive-commons-20090702.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar bsh.Interpreter "$0" "$@"
+
+File libDir = new File("lib");
+if (libDir.isDirectory()) {
+  String[] children = libDir.list();
+  for (int i = 0; i < children.length; i++) {
+    if (children[i].startsWith("concursive-commons-")) {
+      addClassPath("lib/" + children[i]);
+    }
+  }
+}
 
 import com.concursive.commons.api.APIConnection;
 import com.concursive.commons.api.DataRecord;

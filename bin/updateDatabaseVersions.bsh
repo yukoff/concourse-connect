@@ -1,5 +1,16 @@
 #!/bin/sh
-//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/bcprov-jdk15-141.jar:lib/concursive-commons-20090702.jar:lib/postgresql-8.3-603.jdbc3.jar:src/lib/theseus.jar bsh.Interpreter "$0" "$@"
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/bcprov-jdk15-141.jar:lib/postgresql-8.3-603.jdbc3.jar:src/lib/theseus.jar bsh.Interpreter "$0" "$@"
+
+// Dynamically add to the classpath
+File libDir = new File("lib");
+if (libDir.isDirectory()) {
+  String[] children = libDir.list();
+  for (int i = 0; i < children.length; i++) {
+    if (children[i].startsWith("concursive-commons-")) {
+      addClassPath("lib/" + children[i]);
+    }
+  }
+}
 
 import com.concursive.commons.db.*;
 import com.concursive.connect.web.modules.upgrade.utils.UpgradeUtils;

@@ -1,5 +1,16 @@
 #!/bin/sh
-//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/bcprov-jdk15-141.jar:lib/concursive-commons-20090702.jar:target/lib/concourseconnect.jar:lib/postgresql-8.3-604.jdbc3.jar bsh.Interpreter "$0" "$@"
+//usr/bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/bcprov-jdk15-141.jar:target/lib/concourseconnect.jar:lib/postgresql-8.3-604.jdbc3.jar bsh.Interpreter "$0" "$@"
+
+// Dynamically add to the classpath
+File libDir = new File("lib");
+if (libDir.isDirectory()) {
+  String[] children = libDir.list();
+  for (int i = 0; i < children.length; i++) {
+    if (children[i].startsWith("concursive-commons-")) {
+      addClassPath("lib/" + children[i]);
+    }
+  }
+}
 
 import org.aspcfs.utils.HTTPUtils;
 import org.aspcfs.utils.StringUtils;

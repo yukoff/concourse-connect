@@ -483,7 +483,7 @@ public class MeetingInviteesBean extends GenericBean {
     boolean inserted = true;
 
     // check if the user is present in attendeelist, in case of modify meeting
-    for (int i = 0; action == DimDimUtils.ACTION_MEETING_DIMDIM_EDIT && i < meetingAttendeeList.size();) {
+    for (int i = 0; meetingAttendeeList != null && i < meetingAttendeeList.size();) {
       MeetingAttendee meetingAttendee = meetingAttendeeList.get(i);
       if (meetingAttendee.getUserId() == user.getId()) {
         meetingAttendeeList.remove(i);

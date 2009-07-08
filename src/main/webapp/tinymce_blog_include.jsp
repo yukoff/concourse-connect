@@ -108,7 +108,7 @@
 
         // Register buttons
         ed.addButton('media', {
-          title : 'media.image_desc',
+          title : 'media.desc',
           cmd : 'wikiVideo'
         });
       }

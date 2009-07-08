@@ -56,8 +56,8 @@
     var formTest = true;
     var messageText = "";
     
-    <ccp:evaluate if="<%= !StringUtils.hasText(applicationPrefs.get("CONCURSIVE_CRM.SERVER")) %>">
-    //Check required field
+    <ccp:evaluate if="<%= !StringUtils.hasText(applicationPrefs.get(\"CONCURSIVE_CRM.SERVER\")) %>">
+      //Check required field
 	    if (form.serverURL.value == "") {
 	      messageText += "- Server URL  is a required field.\r\n";
 	      formTest = false;
@@ -102,18 +102,18 @@
         <li>ConcourseConnect must have the CRM credentials configured</li>
       </ol>
       <p>For more information see the <a target="_blank" href="http://www.concursive.com/show/concourseconnect/wiki">ConcourseConnect Wiki</a></p>
-    	<ccp:evaluate if="<%= StringUtils.hasText(applicationPrefs.get("CONCURSIVE_CRM.SERVER")) %>">
-      		<input type="submit" name="Sync" value="<ccp:label name="button.sync">Sync</ccp:label>" class="submit" onClick="javascript:setField('startSync')"/>
-			<input type="hidden" name="startSync" id="startSync" value="false">
-         </ccp:evaluate>
-    	<ccp:evaluate if="<%= !StringUtils.hasText(applicationPrefs.get("CONCURSIVE_CRM.SERVER")) %>">
+    	<ccp:evaluate if="<%= StringUtils.hasText(applicationPrefs.get(\"CONCURSIVE_CRM.SERVER\")) %>">
+        <input type="submit" name="Sync" value="<ccp:label name="button.sync">Sync</ccp:label>" class="submit" onClick="setField('startSync')" />
+			  <input type="hidden" name="startSync" id="startSync" value="false" />
+      </ccp:evaluate>
+    	<ccp:evaluate if="<%= !StringUtils.hasText(applicationPrefs.get(\"CONCURSIVE_CRM.SERVER\")) %>">
 			  <div class="portlet-section-body">
 			    <div class="formContainer">
 			        <fieldset id="site-information">
 			          <legend>CRM Connection Information</legend>
-				    	<ccp:evaluate if="<%= StringUtils.hasText((String)request.getAttribute("actionError")) %>">
-					    	<span class="required"><%= toHtmlValue((String)request.getAttribute("actionError")) %></span>
-				    	</ccp:evaluate>
+                <ccp:evaluate if="<%= StringUtils.hasText((String)request.getAttribute(\"actionError\")) %>">
+                  <span class="required"><%= toHtmlValue((String)request.getAttribute("actionError")) %></span>
+                </ccp:evaluate>
 			          <label for="serverURL">Server URL<span class="required">*</span></label>
 			          <input type="text" name="serverURL" id="serverURL" value="<%= toHtmlValue((String)request.getAttribute("serverURL")) %>" />
 			          <label for="apiClientId">API Client Id<span class="required">*</span></label>
@@ -125,7 +125,7 @@
 					<input type="hidden" name="saveConnectionDetails" id="saveConnectionDetails" value="false">
 			    </div>
 			   </div> 
-		</ccp:evaluate>         
+		  </ccp:evaluate>
     </ccp:evaluate>
     <ccp:evaluate if="<%= syncStatus.size() > 0 %>">
       <p>
@@ -142,6 +142,6 @@
       </p>
     </ccp:evaluate>
     </div>
-		<input type="hidden" name="dosubmit" value="true">
+		<input type="hidden" name="dosubmit" value="true" />
   </form>
 </div>

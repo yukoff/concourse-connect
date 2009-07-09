@@ -114,7 +114,7 @@ var VideoSelect = {
         h+= '<param name="allowscriptaccess" value="always"></param>';
       }
       h += '<embed type="application/x-shockwave-flash" ';
-      h += 'src="" allowscriptaccess="always" allowfullscreen="true" width="' + width + '" height="' + height + '"';
+      h += 'src="' + link + '" allowscriptaccess="always" allowfullscreen="true" width="' + width + '" height="' + height + '"';
       h += '></embed>';
 
       // Avoid annoying warning about insecure items

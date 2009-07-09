@@ -136,6 +136,10 @@
           <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
             <showGetInvolved>false</showGetInvolved>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
           </portlet>
@@ -282,8 +286,12 @@
             <wikiForm>My Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>What are you thinking?</title>
+            <title>What are you thinking or doing?</title>
           </portlet> 
           <portlet name="ActivityStreamPortlet" class="detailed-list ">
             <title>Recent Activity</title>
@@ -487,6 +495,10 @@
             <wikiForm>Business Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
           </portlet>
@@ -676,6 +688,10 @@
             <wikiForm>Partner Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
           </portlet>
@@ -704,8 +720,9 @@
             </events>
             <limit>15</limit>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+          <portlet name="ProjectWikiContentPortlet" class="articleBody">
             <wiki>Introduction</wiki>
+            <showTitle>false</showTitle>
           </portlet>
           <portlet name="ProjectPromotionsPortlet" class="basic-list ">
             <title>Deals &amp; Specials</title>
@@ -869,6 +886,10 @@
           	<showGetInvolved>false</showGetInvolved>
             <wikiForm>Sponsor Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
@@ -1049,6 +1070,10 @@
             <showGetInvolved>false</showGetInvolved>
             <wikiForm>Organization Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
@@ -1235,6 +1260,10 @@
             <wikiForm>Event Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="UpcomingEventListPortlet" class="basic-list ">
             <title>Event Details</title>
             <limit>10</limit>
@@ -1402,6 +1431,10 @@
             <wikiForm>Group Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
           </portlet>
@@ -1533,6 +1566,10 @@
             <showAuthor>true</showAuthor>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
           </portlet>
@@ -1657,9 +1694,14 @@
             <showGetInvolved>false</showGetInvolved>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="articleBody">
             <wiki>Introduction</wiki>
-          </portlet>          
+            <showTitle>false</showTitle>
+          </portlet>
         </column>
         <column width="300">
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
@@ -1795,8 +1837,13 @@
             <showGetInvolved>false</showGetInvolved>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="articleBody">
             <wiki>Introduction</wiki>
+            <showTitle>false</showTitle>
           </portlet>
         </column>
         <column width="300">

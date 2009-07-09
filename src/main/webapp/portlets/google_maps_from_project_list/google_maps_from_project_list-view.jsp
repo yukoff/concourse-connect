@@ -61,6 +61,7 @@
   request.setAttribute("key", key);
 %>
 <c:set var="mapHeight" value="300px" scope="request"/>
+<%-- 2.73 --%>
 <c:set var="mapVersion" value="2.s" scope="request"/>
 <c:set var="mapZoom" value="2" scope="request"/>
 <script src="http://maps.google.com/maps?file=api&v=${mapVersion}&key=${key}&hl=en" type="text/javascript"></script>

@@ -60,6 +60,7 @@
   request.setAttribute("mapId", mapId);
 %>
 <c:set var="mapHeight" value="300px" scope="request"/>
+<%-- 2.73 --%>
 <c:set var="mapVersion" value="2.s" scope="request"/>
 <c:set var="mapZoom" value="2" scope="request"/>
 <script src="http://maps.google.com/maps?file=api&v=${mapVersion}&key=${key}&hl=en" type="text/javascript"></script>
@@ -77,7 +78,7 @@ if(document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#SVG","
 function initializeMap${mapId}(e) {
 	if (GBrowserIsCompatible()) {
 		${mapId} = new GMap(document.getElementById("${mapId}"));
-		${mapId}.setMapType(G_MAP_TYPE);
+		${mapId}.setMapType(G_NORMAL_MAP);
 		${mapId}.centerAndZoom(new GPoint(${project.longitude}, ${project.latitude}), ${mapZoom});
     <c:set var="markerContent" scope="request">
       <c:if test="${!empty project.category.logo}"><c:choose><c:when test="${!empty project.logo}"><img alt='<c:out value="${project.title}"/> photo' align='absmiddle' src='${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>' /> </c:when><c:otherwise><img alt='Default photo' align='absmiddle' src='${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>'  class='default-photo' /> </c:otherwise></c:choose></c:if><c:out value="${project.title}"/><c:if test="${!empty project.address}"><br /><c:out value="${project.address}"/></c:if><br /><c:out value="${project.location}"/><c:if test="${!empty project.businessPhone}"><br />Phone: <strong><c:out value="${project.businessPhone}"/></strong></c:if><c:if test="${!empty project.businessFax}"><br />Fax: <strong><c:out value="${project.businessFax}"/></strong></c:if>

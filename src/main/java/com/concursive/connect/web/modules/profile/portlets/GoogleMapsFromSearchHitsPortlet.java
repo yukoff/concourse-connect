@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.profile.portlets;
 
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.indexer.IndexerQueryResult;
 import com.concursive.connect.indexer.IndexerQueryResultList;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -77,49 +78,45 @@ public class GoogleMapsFromSearchHitsPortlet extends GenericPortlet {
   public void doView(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
     try {
-      request.setAttribute(PREF_DOMAIN, PortalUtils.getApplicationPrefs(request).get("GOOGLE_MAPS.DOMAIN"));
-      request.setAttribute(PREF_KEY, PortalUtils.getApplicationPrefs(request).get("GOOGLE_MAPS.KEY"));
+      if (PortalUtils.getApplicationPrefs(request).has(ApplicationPrefs.GOOGLE_MAPS_API_DOMAIN)) {
+        // Retrieve the portlet preferences
+        request.setAttribute(PREF_DOMAIN, PortalUtils.getApplicationPrefs(request).get(ApplicationPrefs.GOOGLE_MAPS_API_DOMAIN));
+        request.setAttribute(PREF_KEY, PortalUtils.getApplicationPrefs(request).get(ApplicationPrefs.GOOGLE_MAPS_API_KEY));
 
-      int maxResultsPerCategory = Integer.parseInt(request.getPreferences().getValue(PREF_MAX_RESULTS, "20"));
-      request.setAttribute(PREF_MAX_RESULTS, String.valueOf(maxResultsPerCategory));
+        int maxResultsPerCategory = Integer.parseInt(request.getPreferences().getValue(PREF_MAX_RESULTS, "20"));
+        request.setAttribute(PREF_MAX_RESULTS, String.valueOf(maxResultsPerCategory));
 
-      boolean hasMore = false;
+        boolean hasMore = false;
 
-      // This portlet can consume data from other portlets
-      ProjectList projectList = new ProjectList();
-      for (String event : PortalUtils.getDashboardPortlet(request).getConsumeDataEvents()) {
-        int mappedCount = 0;
-        IndexerQueryResultList hits = (IndexerQueryResultList) PortalUtils.getGeneratedData(request, event);
-        if (hits != null) {
-          for (int i = 0; i < hits.size() && mappedCount < maxResultsPerCategory; i++) {
-            IndexerQueryResult document = hits.get(i);
-            Project project = ProjectUtils.loadProject(Integer.parseInt(document.getProjectId()));
-            if (project.isGeoCoded()) {
-              projectList.add(project);
-              ++mappedCount;
+        // This portlet can consume data from other portlets
+        ProjectList projectList = new ProjectList();
+        for (String event : PortalUtils.getDashboardPortlet(request).getConsumeDataEvents()) {
+          int mappedCount = 0;
+          IndexerQueryResultList hits = (IndexerQueryResultList) PortalUtils.getGeneratedData(request, event);
+          if (hits != null) {
+            for (int i = 0; i < hits.size() && mappedCount < maxResultsPerCategory; i++) {
+              IndexerQueryResult document = hits.get(i);
+              Project project = ProjectUtils.loadProject(Integer.parseInt(document.getProjectId()));
+              if (project.isGeoCoded()) {
+                projectList.add(project);
+                ++mappedCount;
+              }
+            }
+            if (hits.size() > maxResultsPerCategory) {
+              hasMore = true;
             }
           }
-          if (hits.size() > maxResultsPerCategory) {
-            hasMore = true;
-          }
         }
-      }
-      request.setAttribute(PROJECT_LIST, projectList);
-      request.setAttribute(HIT_LIMIT_REACHED, String.valueOf(hasMore));
+        request.setAttribute(PROJECT_LIST, projectList);
+        request.setAttribute(HIT_LIMIT_REACHED, String.valueOf(hasMore));
 
-      // JSP view
-      String defaultView = MAP_PAGE;
-      if (projectList.size() > 0) {
-        if (System.getProperty("DEBUG") != null) {
-          System.out.println("GoogleMapsFromSearchHitsPortlet-> RequestDispatcher.include() ...");
+        // JSP view
+        String defaultView = MAP_PAGE;
+        if (projectList.size() > 0) {
+          PortletContext context = getPortletContext();
+          PortletRequestDispatcher requestDispatcher = context.getRequestDispatcher(defaultView);
+          requestDispatcher.include(request, response);
         }
-        PortletContext context = getPortletContext();
-        PortletRequestDispatcher requestDispatcher =
-            context.getRequestDispatcher(defaultView);
-        requestDispatcher.include(request, response);
-      }
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("GoogleMapsFromSearchHitsPortlet-> Finished.");
       }
     } catch (Exception e) {
       e.printStackTrace(System.out);

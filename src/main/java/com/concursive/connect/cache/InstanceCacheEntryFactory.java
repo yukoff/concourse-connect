@@ -89,13 +89,13 @@ public class InstanceCacheEntryFactory implements CacheEntryFactory {
       int dIndex = key.indexOf("://") + 3;
       int pIndex = key.indexOf(":", dIndex);
       int cIndex = key.indexOf("/", dIndex);
-      int deIndex = (pIndex != -1 ? pIndex : cIndex);
-      if (dIndex > -1 && pIndex > -1 && cIndex > -1 && deIndex > -1) {
-        LOG.debug("Index Values: " + dIndex + "/" + pIndex + "/" + cIndex + "/" + deIndex);
-        String domainName = key.substring(dIndex, deIndex);
-        String context = key.substring(cIndex);
-        LOG.debug("Domain Name: " + domainName);
-        LOG.debug("Context: " + context);
+      int eIndex = (pIndex != -1 ? pIndex : cIndex != -1 ? cIndex : key.length() - 1);
+      if (dIndex > -1 && eIndex > -1) {
+        LOG.info("Instance: " + key + " " + dIndex + "," + pIndex + "," + cIndex + "," + eIndex);
+        String domainName = key.substring(dIndex, eIndex);
+        String context = (cIndex != -1 ? key.substring(cIndex) : "/");
+        LOG.info("Domain Name: " + domainName);
+        LOG.info("Context: " + context);
         // Query the table
         list.setDomainName(domainName);
         list.setContext(context);
@@ -105,7 +105,8 @@ public class InstanceCacheEntryFactory implements CacheEntryFactory {
         }
       }
     } catch (Exception e) {
-      throw new Exception(e);
+      LOG.error("Couldn't determine instance", e);
+      return new Instance();
     } finally {
       CacheUtils.freeConnection(context, db);
     }

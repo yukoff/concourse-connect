@@ -134,6 +134,12 @@ public class TagCloudViewer implements IPortletViewer {
         UniqueTagList tagList = new UniqueTagList();
         tagList.setTableName(Project.TABLE);
         tagList.setInstanceId(PortalUtils.getInstance(request).getId());
+        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+          tagList.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          tagList.setForGuest(Constants.TRUE);
+        }
         PagedListInfo tagListInfo = new PagedListInfo();
         if ("true".equals(sortByTagCount) || (StringUtils.hasText(sortFilter) && ("popular".equals(sortFilter)))) {
           tagListInfo.setColumnToSortBy("tag_count DESC");

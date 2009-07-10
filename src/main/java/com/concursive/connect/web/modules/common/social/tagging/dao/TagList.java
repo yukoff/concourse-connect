@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.common.social.tagging.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.common.social.tagging.utils.TagUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.utils.PagedListInfo;
@@ -72,6 +73,9 @@ public class TagList extends ArrayList<Tag> {
   private String tableName = null;
   private boolean determineTagWeights = false;
   private int categoryId = -1;
+  private int instanceId = -1;
+  private int forGuest = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
 
   public TagList() {
   }
@@ -176,6 +180,41 @@ public class TagList extends ArrayList<Tag> {
     this.categoryId = Integer.parseInt(categoryId);
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
+
+  public int getForGuest() {
+    return forGuest;
+  }
+
+  public void setForGuest(int forGuest) {
+    this.forGuest = forGuest;
+  }
+
+  public void setForGuest(String tmp) {
+    forGuest = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
 
   public void buildList(Connection db) throws SQLException {
     PreparedStatement pst = null;
@@ -276,10 +315,18 @@ public class TagList extends ArrayList<Tag> {
       sqlFilter.append("AND " + uniqueField + " = ? ");
     }
     if (tag != null) {
-      sqlFilter.append("AND tag = ?  ");
+      sqlFilter.append("AND tag = ? ");
     }
-    if (categoryId != -1 && Project.PRIMARY_KEY.equals(uniqueField)) {
-      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE category_id = ? )  ");
+    if (Project.PRIMARY_KEY.equals(uniqueField) &&
+        (categoryId != -1 || instanceId != -1 || forGuest == Constants.TRUE || forParticipant == Constants.TRUE)) {
+      sqlFilter.append(
+          "AND project_id IN " +
+              "(SELECT project_id FROM projects WHERE project_id > -1 " +
+              (categoryId > -1 ? "AND category_id = ? " : "") +
+              (instanceId > -1 ? "AND instance_id = ? " : "") +
+              (forGuest == Constants.TRUE ? "AND allows_user_observers = ? AND approvaldate IS NOT NULL " : "") +
+              (forParticipant == Constants.TRUE ? "AND (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL " : "") +
+              ") ");
     }
   }
 
@@ -299,8 +346,21 @@ public class TagList extends ArrayList<Tag> {
     if (tag != null) {
       pst.setString(++i, tag);
     }
-    if (categoryId != -1 && Project.PRIMARY_KEY.equals(uniqueField)) {
-      pst.setInt(++i, categoryId);
+    if (Project.PRIMARY_KEY.equals(uniqueField) &&
+        (categoryId != -1 || instanceId != -1 || forGuest == Constants.TRUE || forParticipant == Constants.TRUE)) {
+      if (categoryId > -1) {
+        pst.setInt(++i, categoryId);
+      }
+      if (instanceId > -1) {
+        pst.setInt(++i, instanceId);
+      }
+      if (forGuest == Constants.TRUE) {
+        pst.setBoolean(++i, true);
+      }
+      if (forParticipant == Constants.TRUE) {
+        pst.setBoolean(++i, true);
+        pst.setBoolean(++i, true);
+      }
     }
     return i;
   }

@@ -86,6 +86,7 @@ public class ClassifiedList extends ArrayList<Classified> {
   private boolean onlyWithoutClassifiedCategory = false;
 
   //Project filters
+  private int instanceId = -1;
   private int projectCategoryId = -1;
   private boolean openProjectsOnly = false;
   private int publicProjects = Constants.UNDEFINED;
@@ -133,6 +134,17 @@ public class ClassifiedList extends ArrayList<Classified> {
     this.classifiedId = Integer.parseInt(classifiedId);
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
 
   /**
    * @return the projectCategoryId
@@ -664,6 +676,7 @@ public class ClassifiedList extends ArrayList<Classified> {
     }
     */
     if (projectCategoryId > -1 ||
+        instanceId > -1 ||
         groupId > -1 ||
         openProjectsOnly ||
         publicProjects == Constants.TRUE ||
@@ -671,6 +684,9 @@ public class ClassifiedList extends ArrayList<Classified> {
       sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
       if (projectCategoryId > -1) {
         sqlFilter.append("AND category_id = ? ");
+      }
+      if (instanceId > -1) {
+        sqlFilter.append("AND instance_id = ?  ");
       }
       if (groupId > -1) {
         sqlFilter.append("AND group_id = ?  ");
@@ -762,12 +778,16 @@ public class ClassifiedList extends ArrayList<Classified> {
     }
     */
     if (projectCategoryId > -1 ||
+        instanceId > -1 ||
         groupId > -1 ||
         openProjectsOnly ||
         publicProjects == Constants.TRUE ||
         forParticipant == Constants.TRUE) {
       if (projectCategoryId > -1) {
         pst.setInt(++i, projectCategoryId);
+      }
+      if (instanceId > -1) {
+        pst.setInt(++i, instanceId);
       }
       if (groupId > -1) {
         pst.setInt(++i, groupId);

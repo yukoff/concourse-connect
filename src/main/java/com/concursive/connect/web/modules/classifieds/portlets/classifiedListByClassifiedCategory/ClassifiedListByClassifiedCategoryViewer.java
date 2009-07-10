@@ -182,7 +182,7 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
       if (event.toLowerCase().equals("classifiedcategory") && classifiedCategory != null) {
         PortalUtils.setGeneratedData(request, event, classifiedCategory.getItemName());
         LOG.debug("SetData: " + event + " - " + PortalUtils.getGeneratedData(request, event));
-      } else if (event.toLowerCase().equals("category") && category != null) {
+      } else if (event.toLowerCase().equals("category")) {
         PortalUtils.setGeneratedData(request, event, category.getDescription());
         LOG.debug("SetData: " + event + " - " + PortalUtils.getGeneratedData(request, event));
       }
@@ -196,16 +196,14 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
         // Set the title
         if (classifiedCategory != null) {
           pageTitle = classifiedCategory.getItemName() + " - " + category.getDescription();
-        } else if (category != null) {
+        } else {
           pageTitle = category.getDescription();
         }
         if (pageTitle != null) {
           request.setAttribute(Constants.REQUEST_GENERATED_TITLE, pageTitle);
         }
         // Set the category
-        if (category != null) {
-          request.setAttribute(Constants.REQUEST_GENERATED_CATEGORY, pageTitle);
-        }
+        request.setAttribute(Constants.REQUEST_GENERATED_CATEGORY, pageTitle);
       }
     }
 
@@ -270,6 +268,13 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
         classifiedListInfo.setContextPath(request.getContextPath());
         // Projects to show
         classifieds.setPagedListInfo(classifiedListInfo);
+        classifieds.setInstanceId(PortalUtils.getInstance(request).getId());
+        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+          classifieds.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          classifieds.setPublicProjects(Constants.TRUE);
+        }
         classifieds.setCategoryId(classifiedCategory.getId());
         classifieds.setProjectCategoryId(category.getId());
         classifieds.setOpenProjectsOnly(true);
@@ -293,7 +298,7 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
         pagedListInfo.setColumnToSortBy("lpc.level ASC, cc.level ASC, cc.item_name ASC");
         ClassifiedCategoryList classifiedCategories = new ClassifiedCategoryList();
         classifiedCategories.setPagedListInfo(pagedListInfo);
-        if (category != null && category.getId() != -1) {
+        if (category.getId() != -1) {
           classifiedCategories.setProjectCategoryId(category.getId());
           request.setAttribute(SHOW_PROJECT_CATEGORY_NAME_IN_CATEGORY_LIST, "false");
         } else {
@@ -311,7 +316,6 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
         }
       }
     }
-
     return defaultView;
   }
 }

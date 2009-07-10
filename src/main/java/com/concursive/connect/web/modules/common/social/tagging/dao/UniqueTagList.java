@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.common.social.tagging.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.common.social.tagging.utils.TagUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.utils.PagedListInfo;
@@ -71,6 +72,8 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
   private boolean determineTagWeights = false;
   private int projectCategoryId = -1;
   private int instanceId = -1;
+  private int forGuest = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
 
   public UniqueTagList() {
   }
@@ -147,6 +150,30 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
 
   public void setInstanceId(String tmp) {
     this.instanceId = Integer.parseInt(tmp);
+  }
+
+  public int getForGuest() {
+    return forGuest;
+  }
+
+  public void setForGuest(int forGuest) {
+    this.forGuest = forGuest;
+  }
+
+  public void setForGuest(String tmp) {
+    forGuest = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
   }
 
   public void buildList(Connection db) throws SQLException {
@@ -246,16 +273,17 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
       sqlFilter.append("AND tag = ?  ");
     }
     if ((Project.TABLE + "_").equals(tableName) &&
-        (projectCategoryId != -1 || instanceId != -1)) {
+        (projectCategoryId != -1 || instanceId != -1 || forGuest == Constants.TRUE || forParticipant == Constants.TRUE)) {
       sqlFilter.append(
           "AND tag IN " +
               "(SELECT tag FROM projects_tag WHERE project_id IN " +
               "(SELECT project_id FROM projects WHERE project_id > -1 " +
               (projectCategoryId > -1 ? "AND category_id = ? " : "") +
               (instanceId > -1 ? "AND instance_id = ? " : "") +
-              "))  ");
+              (forGuest == Constants.TRUE ? "AND allows_user_observers = ? AND approvaldate IS NOT NULL " : "") +
+              (forParticipant == Constants.TRUE ? "AND (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL " : "") +
+              ")) ");
     }
-
   }
 
 
@@ -272,12 +300,19 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
       pst.setString(++i, tag);
     }
     if ((Project.TABLE + "_").equals(tableName) &&
-        (projectCategoryId != -1 || instanceId != -1)) {
+        (projectCategoryId != -1 || instanceId != -1 || forGuest == Constants.TRUE || forParticipant == Constants.TRUE)) {
       if (projectCategoryId > -1) {
         pst.setInt(++i, projectCategoryId);
       }
       if (instanceId > -1) {
         pst.setInt(++i, instanceId);
+      }
+      if (forGuest == Constants.TRUE) {
+        pst.setBoolean(++i, true);
+      }
+      if (forParticipant == Constants.TRUE) {
+        pst.setBoolean(++i, true);
+        pst.setBoolean(++i, true);
       }
     }
     return i;

@@ -123,8 +123,15 @@ public class ProjectListByTagViewer implements IPortletViewer {
       request.setAttribute(TAG_NAME, tagName);
       request.setAttribute(NORMALIZED_TAG, StringUtils.replace(tagName, " ", "-"));
 
-      // Get this project's that match a tag
+      // Get the projects that match a tag
       TagList projectListByTag = new TagList();
+      projectListByTag.setInstanceId(PortalUtils.getInstance(request).getId());
+      if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+        projectListByTag.setForParticipant(Constants.TRUE);
+      } else {
+        // Use the most generic settings since this portlet is cached
+        projectListByTag.setForGuest(Constants.TRUE);
+      }
       projectListByTag.setTableName(Project.TABLE);
       projectListByTag.setTag(StringUtils.replace(tagName, "-", " "));
       // @todo Fix showing disabled category projects
@@ -179,7 +186,6 @@ public class ProjectListByTagViewer implements IPortletViewer {
         projectList.buildList(db);
       }
       request.setAttribute(PROJECT_LIST_BY_TAG, projectList);
-
 
       // JSP view
       return defaultView;

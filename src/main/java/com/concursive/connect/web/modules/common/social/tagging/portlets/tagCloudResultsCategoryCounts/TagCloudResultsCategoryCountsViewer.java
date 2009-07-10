@@ -138,6 +138,13 @@ public class TagCloudResultsCategoryCountsViewer implements IPortletViewer {
         int categoryId = category.getId();
 
         TagList tagListByProjectCategory = new TagList();
+        tagListByProjectCategory.setInstanceId(PortalUtils.getInstance(request).getId());
+        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+          tagListByProjectCategory.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          tagListByProjectCategory.setForGuest(Constants.TRUE);
+        }
         tagListByProjectCategory.setTableName(Project.TABLE);
         tagListByProjectCategory.setTag(StringUtils.replace(tagName, "-", " "));
         tagListByProjectCategory.setCategoryId(categoryId);

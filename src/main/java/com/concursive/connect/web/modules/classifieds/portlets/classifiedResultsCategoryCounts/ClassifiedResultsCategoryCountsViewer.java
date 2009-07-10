@@ -136,7 +136,13 @@ public class ClassifiedResultsCategoryCountsViewer implements IPortletViewer {
         classifiedListByProjectCategory.setProjectCategoryId(categoryId);
         classifiedListByProjectCategory.setCurrentClassifieds(Constants.TRUE);
         classifiedListByProjectCategory.setOpenProjectsOnly(true);
-        classifiedListByProjectCategory.setPublicProjects(Constants.TRUE);
+        classifiedListByProjectCategory.setInstanceId(PortalUtils.getInstance(request).getId());
+        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+          classifiedListByProjectCategory.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          classifiedListByProjectCategory.setPublicProjects(Constants.TRUE);
+        }
         classifiedListByProjectCategory.buildList(db);
 
         classifiedCountMap.put(category, classifiedListByProjectCategory.size());

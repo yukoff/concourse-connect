@@ -59,8 +59,15 @@
                 <title>Review ${project.title:html}</title>
                 <href>/create/${project.uniqueId}/review</href>
                 <permission>project-reviews-add</permission>
-                <rule>userCanReview</rule>
-              ]]>
+                <rule>userCanReview</rule>]]>
+              </value>
+              <value>
+                <![CDATA[
+                <content>Review This</content>
+                <title>Review ${project.title:html}</title>
+                <href>/page/registration-required</href>
+                <rel>shadowbox;width=600</rel>
+                <rule>isNotUser</rule>]]>
               </value>
             </urls>
           </portlet>
@@ -131,6 +138,22 @@
                 <href>/show/${project.uniqueId}/reviews</href>
                 <permission>project-reviews-view</permission>
               ]]>
+              </value>
+              <value>
+                <![CDATA[
+                <content>Add a Review</content>
+                <title>Review ${project.title:html}</title>
+                <href>/create/${project.uniqueId}/review</href>
+                <permission>project-reviews-add</permission>
+                <rule>userCanReview</rule>]]>
+              </value>
+              <value>
+                <![CDATA[
+                <content>Review This</content>
+                <title>Review ${project.title:html}</title>
+                <href>/page/registration-required</href>
+                <rel>shadowbox;width=600</rel>
+                <rule>isNotUser</rule>]]>
               </value>
             </urls>
           </portlet>

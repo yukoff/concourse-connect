@@ -148,3 +148,8 @@ WEB-INF/lib/concursive-commons-20090625.jar
 
 # 2009-07-08
 WEB-INF/lib/concursive-commons-20090702.jar
+
+# 2009-07-10
+WEB-INF/lib/concursive-commons-20090708.jar
+WEB-INF/lib/imagescaling_0_7_1.jar
+

@@ -182,6 +182,7 @@ public class UpcomingEventListPortlet extends GenericPortlet {
             projectByIdMap.put(p.getId(), p);
           }
         } else {
+          events.setInstanceId(PortalUtils.getInstance(request).getId());
           if (PortalUtils.getDashboardPortlet(request).isCached()) {
             if (PortalUtils.canShowSensitiveData(request)) {
               // Use the most generic settings since this portlet is cached

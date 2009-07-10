@@ -254,7 +254,8 @@ CREATE TABLE projects (
   messages_order INTEGER DEFAULT 0 NOT NULL,
   messages_description VARCHAR(255),
   system_default BOOLEAN DEFAULT false NOT NULL,
-  shortdescription VARCHAR(1000) NOT NULL
+  shortdescription VARCHAR(1000) NOT NULL,
+  instance_id INTEGER REFERENCES instances(instance_id)
 );
 CREATE INDEX "projects_idx"
   ON "projects"
@@ -264,6 +265,7 @@ CREATE INDEX projects_portal_idx ON projects(portal);
 CREATE INDEX projects_title_idx ON projects(title);
 CREATE INDEX projects_cat_idx ON projects(category_id);
 CREATE INDEX projects_subcat1_idx ON projects(subcategory1_id);
+CREATE INDEX projects_instanc_idx ON projects(instance_id);
 
 CREATE TABLE projects_view (
   project_id BIGINT REFERENCES projects(project_id) NOT NULL,

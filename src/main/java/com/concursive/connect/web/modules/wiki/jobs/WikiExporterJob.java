@@ -143,7 +143,6 @@ public class WikiExporterJob implements StatefulJob {
           availableList.add(bean);
         }
         exportList.remove(0);
-        LOG.debug("Finishished exporting file: " + bean.getExportedFile().getName());
       }
     } catch (Exception e) {
       LOG.error("WikiExporterJob Exception", e);

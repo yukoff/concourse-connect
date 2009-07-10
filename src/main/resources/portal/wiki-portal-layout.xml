@@ -67,6 +67,7 @@
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[
                   <content>Configure the wiki module</content>
@@ -75,7 +76,13 @@
                   <permission>project-setup-customize</permission>
                 ]]>
               </value>
+              -->
             </urls>
+          </portlet>
+          <portlet name="AddWikiPortlet">
+            <title>Add a Page</title>
+            <showTemplates>true</showTemplates>
+            <exclude>Home</exclude>
           </portlet>
           <!-- Display Ads -->
           <portlet name="ProjectPromotionsPortlet" class="basic-list ">
@@ -123,6 +130,7 @@
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[
                   <content>Configure the wiki module</content>
@@ -131,6 +139,7 @@
                   <permission>project-setup-customize</permission>
                 ]]>
               </value>
+              -->
             </urls>
           </portlet>
           <!-- Display Ads -->
@@ -169,6 +178,7 @@
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[
                   <content>Configure the wiki module</content>
@@ -177,7 +187,13 @@
                   <permission>project-setup-customize</permission>
                 ]]>
               </value>
+              -->
             </urls>
+          </portlet>
+          <portlet name="AddWikiPortlet">
+            <title>Add a Page</title>
+            <showTemplates>true</showTemplates>
+            <exclude>Home</exclude>
           </portlet>
           <!-- Display Ads -->
           <portlet name="ProjectPromotionsPortlet" class="basic-list ">
@@ -215,6 +231,7 @@
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[
                   <content>Configure the wiki module</content>
@@ -223,6 +240,7 @@
                   <permission>project-setup-customize</permission>
                 ]]>
               </value>
+              -->
             </urls>
           </portlet>
           <!-- Display Ads -->
@@ -332,6 +350,7 @@
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[
                   <content>Configure the wiki module</content>
@@ -340,6 +359,7 @@
                   <permission>project-setup-customize</permission>
                 ]]>
               </value>
+              -->
             </urls>
           </portlet>
           <!-- Display Ads -->
@@ -388,6 +408,7 @@
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[
                   <content>Configure the wiki module</content>
@@ -396,6 +417,7 @@
                   <permission>project-setup-customize</permission>
                 ]]>
               </value>
+              -->
             </urls>
           </portlet>
           <!-- Display Ads -->
@@ -454,6 +476,7 @@
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[
                   <content>Configure the wiki module</content>
@@ -462,6 +485,7 @@
                   <permission>project-setup-customize</permission>
                 ]]>
               </value>
+              -->
             </urls>
           </portlet>
           <!-- Display Ads -->

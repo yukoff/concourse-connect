@@ -43,40 +43,34 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.wiki.portlets.main;
+package com.concursive.connect.web.modules.wiki.portlets.addWiki;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
-import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.wiki.beans.WikiExportBean;
-import com.concursive.connect.web.modules.wiki.dao.Wiki;
-import com.concursive.connect.web.modules.wiki.dao.WikiList;
-import com.concursive.connect.web.modules.wiki.jobs.WikiExporterJob;
 import com.concursive.connect.web.portal.IPortletAction;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.*;
+import static com.concursive.connect.web.portal.PortalUtils.findProject;
+import static com.concursive.connect.web.portal.PortalUtils.getUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.quartz.Scheduler;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
-import java.sql.Connection;
-import java.util.Vector;
+import java.util.HashMap;
 
 /**
- * Action for exporting a wiki
+ * Action for starting a wiki
  *
  * @author matt rajkowski
- * @created November 4, 2008
+ * @created July 8, 2009
  */
-public class ExportAction implements IPortletAction {
+public class SaveAddWikiFormAction implements IPortletAction {
 
-  // Logger
-  private static Log LOG = LogFactory.getLog(ExportAction.class);
+  private static Log LOG = LogFactory.getLog(AddWikiPortlet.class);
 
   public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
 
@@ -88,34 +82,24 @@ public class ExportAction implements IPortletAction {
 
     // Check the user's permissions
     User user = getUser(request);
-    if (!ProjectUtils.hasAccess(project.getId(), user, "project-wiki-view")) {
-      throw new PortletException("Unauthorized to admin in this project");
+    if (!ProjectUtils.hasAccess(project.getId(), user, "project-wiki-add")) {
+      throw new PortletException("Unauthorized to add in this project");
     }
 
-    // Parameters
-    WikiExportBean exportBean = (WikiExportBean) getFormBean(request, WikiExportBean.class);
+    String title = request.getParameter("title");
+    title = StringUtils.replace(StringUtils.jsEscape(title), "%20", "+");
 
-    // Load the wiki page
-    Connection db = getConnection(request);
-    Wiki wiki = WikiList.queryBySubject(db, exportBean.getSubject(), project.getId());
+    String templateId = request.getParameter("templateId");
 
-    // Validate the bean
-    if (wiki.getId() == -1) {
-      exportBean.addError("actionError", "Wiki to export not found with your credentials");
-      return exportBean;
+    LOG.debug("title: " + title);
+    LOG.debug("templateId: " + templateId);
+
+    // This call will close panels and perform redirects
+    HashMap<String, String> params = new HashMap<String, String>();
+    //    params.put("mode", "raw");
+    if (templateId != null) {
+      params.put("template", templateId);
     }
-
-    // Add the bean to the queue then update the user.
-    // The page will poll the progress
-    // Can stream result or queue it...
-    exportBean.setProjectId(project.getId());
-    exportBean.setWikiId(wiki.getId());
-    exportBean.setUserId(user.getId());
-    Scheduler scheduler = PortalUtils.getScheduler(request);
-    ((Vector) scheduler.getContext().get(WikiExporterJob.WIKI_EXPORT_ARRAY)).add(exportBean);
-    scheduler.triggerJob("wikiExporter", (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
-
-    // Redirect to another view
-    return PortalUtils.performRefresh(request, response, "/show/wiki-exports");
+    return (PortalUtils.performRefresh(request, response, "/modify/wiki/" + title, params));
   }
 }

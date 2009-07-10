@@ -43,62 +43,39 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.login.utils;
+package com.concursive.connect.web.modules.wiki.portlets.addWiki;
 
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.commons.db.AbstractConnectionPoolTest;
-import com.concursive.connect.web.modules.login.dao.UserList;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
-
-import java.sql.Timestamp;
+import com.concursive.connect.web.portal.AbstractPortletModule;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * Tests methods in UserUtils
+ * Add Wiki portlet
  *
  * @author matt rajkowski
- * @created July 30, 2008
+ * @created July 8, 2009
  */
-public class UserUtilsTest extends AbstractConnectionPoolTest {
+public class AddWikiPortlet extends AbstractPortletModule {
 
-  protected static final int GROUP_ID = 1;
-  protected static final int DEPARTMENT_ID = 1;
+  private static Log LOG = LogFactory.getLog(AddWikiPortlet.class);
 
-  public void testGenerateGuid() throws Exception {
-    // Setup a test user
-    User user = new User();
-    user.setGroupId(GROUP_ID);
-    user.setDepartmentId(DEPARTMENT_ID);
-    user.setFirstName("Test First");
-    user.setLastName("Test Last");
-    user.setEmail(System.currentTimeMillis() + "@concursive.com");
-    user.setUsername(System.currentTimeMillis() + "@concursive.com");
-    user.setPassword("e358bf645a205cf15efa983b5517d945");
-    user.setCountry("UNITED STATES");
-    user.setPostalCode("23456");
-    Timestamp entered = new Timestamp(System.currentTimeMillis());
-    entered.setNanos(23456);
-    user.setEntered(entered);
-    user.insert(db, null, null);
+  // Viewers
+  public static final String LIST_VIEW = "list";
 
-    // Reset the fields from the database
-    user = new User(db, user.getId());
+  public static final String DEFAULT_VIEW = LIST_VIEW;
 
-    // Generate a guid
-    String guid = UserUtils.generateGuid(user);
-    // Test the output
-    assertEquals("UserId mismatch", String.valueOf(user.getId()), String.valueOf(UserUtils.getUserIdFromGuid(guid)));
-    assertEquals("Entered mismatch", String.valueOf(user.getEntered().getTime()), String.valueOf(UserUtils.getEnteredTimestampFromGuid(guid).getTime()));
-    assertEquals("PW Substring mismatch", user.getPassword().substring(2, 15), UserUtils.getPasswordSubStringFromGuid(guid));
-    // Test UserList query
-    UserList userList = new UserList();
-    userList.setGuid(guid);
-    userList.buildList(db);
-    assertTrue("User not found by guid: " + user.getId()+ " (" + userList.size() + ")", userList.size() == 1);
-    // Test UserUtils
-    User retrievedUser = UserUtils.loadUserFromGuid(db, guid);
-    assertNotNull("UserUtils did not find a user", retrievedUser);
-    // Delete the test user
-    user.delete(db);
+  // Actions
+  public static final String SAVE_FORM = "save";
+
+  public AddWikiPortlet() {
+    defaultCommand = DEFAULT_VIEW;
   }
 
+  protected void doPopulateActionsAndViewers() {
+    // Viewers
+    viewers.put(LIST_VIEW, new AddWikiFormViewer());
+
+    // Actions
+    actions.put(SAVE_FORM, new SaveAddWikiFormAction());
+  }
 }

@@ -46,67 +46,47 @@
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
-<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
-<%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
+<c:set var="ctx" value="${renderRequest.contextPath}" />
+<%--@elvariable id="title" type="java.lang.String"--%>
+<%--@elvariable id="templateList" type="com.concursive.connect.web.modules.wiki.dao.WikiTemplateList"--%>
 <script language="JavaScript" type="text/javascript">
-  function checkActivityInputForm<portlet:namespace/>(form) {
+  function checkInputForm<portlet:namespace/>(form) {
     var formTest = true;
     var messageText = "";
-    if (document.inputForm<portlet:namespace/>.body.value.trim() == "") {
-        messageText += "- A message is required\r\n";
+    if (document.inputForm<portlet:namespace/>.title.value.trim() == "") {
+        messageText += "- A title is required\r\n";
         formTest = false;
     }
     if (!formTest) {
-        messageText = "The message could not be sent.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
+        messageText = "The wiki could not be added.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
         alert(messageText);
         return false;
     } else {
-      if (form.save.value != 'Please Wait...') {
-        // Tell the user to wait
-        form.save.value='Please Wait...';
-        form.save.disabled = true;
-        // find one or more spinners
-        var uItems = YAHOO.util.Dom.getElementsByClassName("submitSpinner");
-        for (var j = 0; j < uItems.length; j++) {
-          YAHOO.util.Dom.setStyle(uItems[j], "display", "inline");
-        }
-        return true;
-      } else {
-        return false;
-      }
+      return true;
     }
   }
 </script>
-<c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
+<h3 class="portletHeader"><c:out value="${title}"/></h3>
 <div class="formContainer">
   <portlet:actionURL var="saveFormUrl">
-    <portlet:param name="portlet-command" value="saveForm"/>
+    <portlet:param name="portlet-command" value="save"/>
   </portlet:actionURL>
-  <form method="POST" name="inputForm<portlet:namespace/>" action="${saveFormUrl}" onSubmit="try {return checkActivityInputForm<portlet:namespace/>(this);}catch(e){return true;}">
-    <ol>
-      <li>
-        <c:choose>
-          <c:when test="${!empty project.logo}">
-            <img alt="<c:out value="${project.title}"/> photo"
-                 src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>"/>
-          </c:when>
-          <c:when test="${!empty project.category.logo}">
-            <img alt="Default user photo"
-                 src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
-          </c:when>
-        </c:choose>
-        <div class="portlet-section-body">
-          <%= showError(request, "actionError") %>
-          <label for="<portlet:namespace/>body"><c:out value="${title}" /></label>
-          <%= showAttribute(request, "bodyError") %>
-          <input id="<portlet:namespace/>body" name="body" type="text" class="input longInput" maxlength="200" value='<c:out value="${body}" />' />
-          <span class="characterCounter">200 characters max</span>
-        </div>
-      </li>
-    </ol>
+  <form method="POST" name="inputForm<portlet:namespace/>" action="${saveFormUrl}" onSubmit="try {return checkInputForm<portlet:namespace/>(this);}catch(e){return true;}">
+    <label for="title<portlet:namespace/>">Title</label>
+    <input id="title<portlet:namespace/>" name="title" type="text" class="input longInput" maxlength="200" />
+    <span class="characterCounter">200 characters max</span>
+    <c:if test="${!empty templateList}">
+    <label for="templateId">Template (optional)</label>
+    <span>
+      <select name="templateId" id="templateId">
+        <option value="-1">----- Choose one -----</option>
+        <c:forEach var="wikiTemplate" items="${templateList}">
+          <option value="${wikiTemplate.id}"><c:out value="${wikiTemplate.title}" /></option>
+        </c:forEach>
+      </select>
+    </span>
+    </c:if>
     <input type="submit" name="save" class="submit" value="<ccp:label name="button.submit">Submit</ccp:label>" />
-    <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
   </form>
 </div>

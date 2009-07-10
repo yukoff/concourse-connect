@@ -104,6 +104,7 @@ public class Constants {
   public static final String SYSTEM_DASHBOARD_PAGE_CACHE = "200810030928";
   public static final String SYSTEM_DASHBOARD_PORTLET_CACHE = "200901161510";
   public static final String SYSTEM_RSS_FEED_CACHE = "200904031620";
+  public static final String SYSTEM_INSTANCE_CACHE = "200907061615";
   public static final String SYSTEM_KEY_CACHE = "200907011550";
 
   // Constants for use in the IndexerService Interface
@@ -147,6 +148,7 @@ public class Constants {
   public static final String COOKIE_USER_SEARCH_LOCATION = "USER_SEARCH_LOCATION";
 
   // Global request attribute names
+  public static final String REQUEST_INSTANCE = "requestInstance";
   public static final String REQUEST_MY_PROJECT_COUNT = "requestMyProjectCount";
   public static final String REQUEST_INVITATION_COUNT = "requestInvitationCount";
   public static final String REQUEST_WHATS_NEW_COUNT = "requestWhatsNewCount";

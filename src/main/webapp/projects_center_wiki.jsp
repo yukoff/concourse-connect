@@ -161,9 +161,8 @@
                     <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
                   </ccp:evaluate>
                 </portlet:renderURL>
-
-                <a href="javascript:popURL('${exportUrl}?popup=true','Wiki_Export_Options','550','475','yes','yes');" title="Export to PDF">
-                  <img src="<%= ctx %>/images/icons/pdf_export.png" border="0" height="16" width="16" alt="Export to PDF"/>
+                <a href="${exportUrl}" rel="shadowbox" title="Export to PDF">
+                  <img src="${ctx}/images/icons/pdf_export.png" border="0" height="16" width="16" alt="Export to PDF"/>
                 </a>
                 <ccp:permission name="project-wiki-add">
                   <portlet:renderURL var="versionsUrl">

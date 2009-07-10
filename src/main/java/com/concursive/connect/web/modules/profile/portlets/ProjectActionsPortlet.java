@@ -200,7 +200,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
             if (!isThisUsersProfile) {
               valid = false;
             }
-          } else if ("isThisNotUsersProfile".equals(rule)) {
+          } else if ("isNotThisUsersProfile".equals(rule)) {
             boolean isUser = thisUser != null && thisUser.getId() > 0;
             if (!isUser) {
               valid = false;
@@ -212,6 +212,11 @@ public class ProjectActionsPortlet extends GenericPortlet {
           } else if ("isUser".equals(rule)) {
             boolean isUser = thisUser != null && thisUser.getId() > 0;
             if (!isUser) {
+              valid = false;
+            }
+          } else if ("isNotUser".equals(rule)) {
+            boolean isUser = thisUser != null && thisUser.getId() > 0;
+            if (isUser) {
               valid = false;
             }
           } else if ("userCanReview".equals(rule)) {

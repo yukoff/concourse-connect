@@ -64,6 +64,7 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
 
   private PagedListInfo pagedListInfo = null;
   private int id = -1;
+  private int instanceId = -1;
   private int userId = -1;
   private int contributionId = -1;
   private Timestamp sinceContributionDate = null;
@@ -104,6 +105,14 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
 
   public void setId(String id) {
     this.id = Integer.parseInt(id);
+  }
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
   }
 
   /**
@@ -302,6 +311,9 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     if (projectId > -1) {
       sqlFilter.append("AND project_id = ? ");
     }
+    if (instanceId > -1) {
+      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE instance_id = ?) ");
+    }
     if (projectCategoryId > -1) {
       sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE category_id = ?) ");
     }
@@ -331,6 +343,9 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     }
     if (projectId > -1) {
       pst.setInt(++i, projectId);
+    }
+    if (instanceId > -1) {
+      pst.setInt(++i, instanceId);
     }
     if (projectCategoryId > -1) {
       pst.setInt(++i, projectCategoryId);

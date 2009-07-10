@@ -151,6 +151,7 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
         // Projects to show
         ProjectRatingList projectRatingList = new ProjectRatingList();
         projectRatingList.setPagedListInfo(pagedListInfo);
+        projectRatingList.setInstanceId(PortalUtils.getInstance(request).getId());
         projectRatingList.setGroupId(thisUser.getGroupId());
         projectRatingList.setCategoryId(categoryId);
         projectRatingList.setProjectId(projectId);

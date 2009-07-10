@@ -351,13 +351,11 @@ function showPanel(title, url, width) {
     if (o.status == 200 && o.responseText.indexOf("\"location\":") > -1) {
       // success, found a redirect location
       panel.cancel();
-      var url = o.responseText.substring(o.responseText.indexOf('\"location\":') + 11, o.responseText.lastIndexOf('\"'));
+      var url = o.responseText.substring(o.responseText.indexOf('\"location\":') + 12, o.responseText.lastIndexOf('\"'));
       if (url) {
         if (url.indexOf("\r") > -1) {
           url = url.substring(0, url.indexOf("\r"));
         }
-        // Reload the current page
-        url = window.location.href;
         window.location.href = url;
       }
     } else if (o.status == 201) {

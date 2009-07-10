@@ -131,6 +131,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   private int linkItemId = -1;
   private int eventType = -1;
   private ArrayList<String> objectPreferences = null;
+  private int instanceId = -1;
   private int projectCategoryId = -1;
   private int forUser = -1;
   private Timestamp untilLinkStartDate = null;
@@ -189,6 +190,18 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
    */
   public void setObjectPreferences(ArrayList<String> objectPreferences) {
     this.objectPreferences = objectPreferences;
+  }
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
   }
 
   /**
@@ -401,8 +414,13 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
       }
       sqlFilter.append(" ) ");
     }
-    if (projectCategoryId > -1) {
-      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE  category_id = ?) ");
+    if (instanceId > -1 || projectCategoryId > -1) {
+      sqlFilter.append("AND project_id IN " +
+          "(SELECT project_id FROM projects " +
+          "WHERE project_id > -1 " +
+          (instanceId > -1 ? "AND instance_id = ? " : "") +
+          (projectCategoryId > -1 ? "AND category_id = ? " : "") +
+          ") ");
     }
     if (forUser != -1) {
       sqlFilter.append("AND (ph.project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
@@ -423,7 +441,6 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
 
   protected int prepareFilter(PreparedStatement pst) throws SQLException {
     int i = 0;
-
     if (projectId > -1) {
       pst.setInt(++i, projectId);
     }
@@ -450,6 +467,9 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
           pst.setString(++i, objectPreference);
         }
       }
+    }
+    if (instanceId > -1) {
+      pst.setInt(++i, instanceId);
     }
     if (projectCategoryId > -1) {
       pst.setInt(++i, projectCategoryId);

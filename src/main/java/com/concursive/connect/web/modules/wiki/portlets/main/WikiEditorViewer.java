@@ -50,6 +50,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.dao.WikiList;
+import com.concursive.connect.web.modules.wiki.dao.WikiTemplate;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
@@ -57,6 +58,7 @@ import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
 import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import com.concursive.commons.text.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -115,17 +117,25 @@ public class WikiEditorViewer implements IPortletViewer {
     String mode = request.getParameter("mode");
     String sectionId = request.getParameter("section");
     String formId = request.getParameter("form");
+    String templateId = request.getParameter("template");
 
     // Load the record
     Connection db = getConnection(request);
     Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
+    // Determine if a template is requested
+    if (!StringUtils.hasText(wiki.getContent()) && templateId != null) {
+      WikiTemplate template = new WikiTemplate(db, Integer.parseInt(templateId));
+      if (template.getEnabled() && template.getProjectCategoryId() == project.getCategoryId() && StringUtils.hasText(template.getContent())) {
+        wiki.setContent(template.getContent());
+      }
+    }
     request.setAttribute(WIKI, wiki);
 
     // Load wiki image library dimensions (@todo cache)
     HashMap imageList = WikiUtils.buildImageInfo(db, project.getId());
     request.setAttribute(WIKI_IMAGE_LIST, imageList);
 
-    // Convert the wiki to html for this user
+    // Create a wiki context to manage sections and forms being edited
     WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, db, user.getId(), true, request.getContextPath());
     // Determine the wiki editor to use
     if ("raw".equals(mode)) {

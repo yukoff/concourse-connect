@@ -2,7 +2,7 @@
 ConcourseConnect 2.0 alpha
 Copyright (C) 2009 Concursive Corporation.
 Change Log
-June 26, 2009
+July 10, 2009
 ----------------------------------------------------------------------------
 
 If you are interested in collaborating on various social networking topics
@@ -10,19 +10,37 @@ and implementations, including customization and development, please join
 the ConcourseConnect community at:
 http://www.concursive.com/show/concourseconnect
 
-2.0 alpha (June 26, 2009)
+2.0 alpha (July 10, 2009)
 
   During alpha, features will be integrated and evaluated before having
   a final release.  This just means the features are subject to change
   and this release should be considered unstable.
 
+  ** Important notes **
+    This release requires that the disk data be reindexed for search to
+    work properly.  Reindexing is done by an Admin on the View Usage page.
+
   Improvements:
     Dimdim meetings can be scheduled from any listing's calendar
+    Videos can be embedded in blogs and wikis
+    Each profile now has a usable "Profile Message" wiki for displaying
+      content on the profile's overview page
+    Added multi-instance capability to associate data to a url
+    Added a portlet which allows users to add a page to a wiki with an
+      optional wiki template
+    Changed wiki export popup to be a panel
+
+  Developer Improvements:
+    Added an RSS Portlet which displays and caches specified RSS feeds
+    Added relative date reporting by using pattern="relative" for the
+      ccp:tz tag; example: 5 days ago, in 3 minutes
+    Added an [instances] table for organizing content between shared
+      application contexts (users, profiles and contact us records)
 
 
 1.0.2 (June 23, 2009)
 
-  Important notes:
+  ** Important notes **
     This release requires that the disk data be reindexed for search to
     work properly.  Reindexing is done by an Admin on the View Usage page.
 

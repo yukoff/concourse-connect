@@ -89,6 +89,7 @@ public final class ContactUs extends GenericAction {
     Connection db = null;
     try {
       db = getConnection(context);
+      bean.setInstanceId(getInstance(context).getId());
       bean.save(context, db);
     } catch (Exception e) {
       e.printStackTrace(System.out);

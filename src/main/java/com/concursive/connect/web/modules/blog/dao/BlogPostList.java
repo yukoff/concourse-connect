@@ -65,6 +65,7 @@ import java.util.Iterator;
  */
 public class BlogPostList extends ArrayList<BlogPost> {
   //filters
+  private int instanceId = -1;
   private int projectId = -1;
   private boolean overviewAll = false;
   private int currentNews = Constants.UNDEFINED;
@@ -101,6 +102,17 @@ public class BlogPostList extends ArrayList<BlogPost> {
   public BlogPostList() {
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String instanceId) {
+    this.instanceId = Integer.parseInt(instanceId);
+  }
 
   /**
    * Sets the projectId attribute of the NewsArticleList object
@@ -706,6 +718,9 @@ public class BlogPostList extends ArrayList<BlogPost> {
    * @param sqlFilter Description of the Parameter
    */
   protected void createFilter(StringBuffer sqlFilter) {
+    if (instanceId > -1) {
+      sqlFilter.append("AND n.project_id IN (SELECT project_id FROM projects WHERE instance_id = ?) ");
+    }
     if (projectId > 0) {
       sqlFilter.append("AND n.project_id = ? ");
     }
@@ -731,10 +746,10 @@ public class BlogPostList extends ArrayList<BlogPost> {
       sqlFilter.append("AND (status = ? OR status IS NULL) ");
     }
     if (publicProjectPosts == Constants.TRUE) {
-      sqlFilter.append("AND n.project_id IN ( SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL ) ");
+      sqlFilter.append("AND n.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL) ");
     }
     if (forParticipant == Constants.TRUE) {
-      sqlFilter.append("AND n.project_id IN ( SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ) ");
+      sqlFilter.append("AND n.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL) ");
     }
     if (alertRangeStart != null) {
       sqlFilter.append("AND n.start_date >= ? ");
@@ -800,6 +815,9 @@ public class BlogPostList extends ArrayList<BlogPost> {
     int i = 0;
     if (projectId > 0) {
       pst.setInt(++i, projectId);
+    }
+    if (instanceId > 0) {
+      pst.setInt(++i, instanceId);
     }
     if (currentNews == Constants.TRUE) {
       pst.setInt(++i, BlogPost.PUBLISHED);

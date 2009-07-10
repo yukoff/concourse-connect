@@ -380,6 +380,7 @@ public class InviteMembersPortlet extends GenericPortlet {
 
         //insert user
         User thisUser = new User();
+        thisUser.setInstanceId(PortalUtils.getInstance(request).getId());
         thisUser.setGroupId(1);
         thisUser.setDepartmentId(1);
         thisUser.setFirstName(firstName);

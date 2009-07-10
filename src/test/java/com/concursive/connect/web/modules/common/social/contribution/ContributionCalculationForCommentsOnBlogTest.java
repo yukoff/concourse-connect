@@ -111,7 +111,7 @@ public class ContributionCalculationForCommentsOnBlogTest extends AbstractConnec
     user1.setModifiedBy(USER_ID);
     user1.setGroupId(GROUP_ID);
     user1.setDepartmentId(1);
-    boolean user1Inserted = user1.insert(db);
+    boolean user1Inserted = user1.insert(db, null, null);
     assertTrue("User1 was not inserted", user1Inserted);
     assertTrue("User1 did not have an id", user1.getId() > -1);
     

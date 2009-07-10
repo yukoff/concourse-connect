@@ -251,6 +251,7 @@ public class RegisterPortlet extends GenericPortlet {
           response.sendRedirect(ctx + "/page/register");
         } else {
           // User chose to continue, so save all data and provide confirmation
+          bean.setInstanceId(PortalUtils.getInstance(request).getId());
           boolean saved = bean.save(db, prefs, request, null);
           if (saved) {
             PortalUtils.processInsertHook(request, bean);

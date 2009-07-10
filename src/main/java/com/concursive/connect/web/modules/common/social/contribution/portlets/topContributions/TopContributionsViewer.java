@@ -101,6 +101,7 @@ public class TopContributionsViewer implements IPortletViewer {
     if (project != null && project.getId() != -1) {
       thisUserContributionLogList.setProjectId(project.getId());
     } else {
+      thisUserContributionLogList.setInstanceId(PortalUtils.getInstance(request).getId());
       int projectCategoryId = -1;
       if (StringUtils.hasText(projectCategoryName)) {
         ProjectCategoryList projectCategoryList = (ProjectCategoryList) request.getAttribute(Constants.REQUEST_TAB_CATEGORY_LIST);

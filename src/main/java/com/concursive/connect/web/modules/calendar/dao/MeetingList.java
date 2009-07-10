@@ -71,6 +71,7 @@ import java.util.TimeZone;
  */
 public class MeetingList extends ArrayList<Meeting> {
 
+  private int instanceId = -1;
   private int projectId = -1;
   private PagedListInfo pagedListInfo = null;
   private int enteredBy = -1;
@@ -92,6 +93,17 @@ public class MeetingList extends ArrayList<Meeting> {
   public MeetingList() {
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
 
   public void setProjectId(int tmp) {
     this.projectId = tmp;
@@ -365,6 +377,9 @@ public class MeetingList extends ArrayList<Meeting> {
     if (byInvitationOnly != Constants.UNDEFINED) {
       sqlFilter.append("AND by_invitation_only = ? ");
     }
+    if (instanceId > -1) {
+      sqlFilter.append("AND m.project_id IN (SELECT project_id FROM projects WHERE instance_id = ?) ");
+    }
     if (publicOpenProjectsOnly) {
       sqlFilter.append("AND m.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL) ");
     }
@@ -404,6 +419,9 @@ public class MeetingList extends ArrayList<Meeting> {
     }
     if (byInvitationOnly != Constants.UNDEFINED) {
       pst.setBoolean(++i, (byInvitationOnly == Constants.TRUE));
+    }
+    if (instanceId > -1) {
+      pst.setInt(++i, instanceId);
     }
     if (publicOpenProjectsOnly) {
       pst.setBoolean(++i, true);

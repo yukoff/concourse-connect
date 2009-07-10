@@ -43,62 +43,70 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.login.utils;
+package com.concursive.connect.cache;
 
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.commons.db.AbstractConnectionPoolTest;
-import com.concursive.connect.web.modules.login.dao.UserList;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.web.modules.login.dao.Instance;
+import com.concursive.connect.web.modules.login.dao.InstanceList;
+import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import java.sql.Timestamp;
+import java.sql.Connection;
 
 /**
- * Tests methods in UserUtils
+ * Provides the Application Instance
  *
  * @author matt rajkowski
- * @created July 30, 2008
+ * @created July 6, 2009
  */
-public class UserUtilsTest extends AbstractConnectionPoolTest {
+public class InstanceCacheEntryFactory implements CacheEntryFactory {
 
-  protected static final int GROUP_ID = 1;
-  protected static final int DEPARTMENT_ID = 1;
+  private static final Log LOG = LogFactory.getLog(InstanceCacheEntryFactory.class);
 
-  public void testGenerateGuid() throws Exception {
-    // Setup a test user
-    User user = new User();
-    user.setGroupId(GROUP_ID);
-    user.setDepartmentId(DEPARTMENT_ID);
-    user.setFirstName("Test First");
-    user.setLastName("Test Last");
-    user.setEmail(System.currentTimeMillis() + "@concursive.com");
-    user.setUsername(System.currentTimeMillis() + "@concursive.com");
-    user.setPassword("e358bf645a205cf15efa983b5517d945");
-    user.setCountry("UNITED STATES");
-    user.setPostalCode("23456");
-    Timestamp entered = new Timestamp(System.currentTimeMillis());
-    entered.setNanos(23456);
-    user.setEntered(entered);
-    user.insert(db, null, null);
+  private CacheContext context = null;
 
-    // Reset the fields from the database
-    user = new User(db, user.getId());
-
-    // Generate a guid
-    String guid = UserUtils.generateGuid(user);
-    // Test the output
-    assertEquals("UserId mismatch", String.valueOf(user.getId()), String.valueOf(UserUtils.getUserIdFromGuid(guid)));
-    assertEquals("Entered mismatch", String.valueOf(user.getEntered().getTime()), String.valueOf(UserUtils.getEnteredTimestampFromGuid(guid).getTime()));
-    assertEquals("PW Substring mismatch", user.getPassword().substring(2, 15), UserUtils.getPasswordSubStringFromGuid(guid));
-    // Test UserList query
-    UserList userList = new UserList();
-    userList.setGuid(guid);
-    userList.buildList(db);
-    assertTrue("User not found by guid: " + user.getId()+ " (" + userList.size() + ")", userList.size() == 1);
-    // Test UserUtils
-    User retrievedUser = UserUtils.loadUserFromGuid(db, guid);
-    assertNotNull("UserUtils did not find a user", retrievedUser);
-    // Delete the test user
-    user.delete(db);
+  public InstanceCacheEntryFactory(CacheContext context) {
+    this.context = context;
   }
 
+  public Object createEntry(Object url) throws Exception {
+    // The current URL
+    // https://www.example.com/
+    // http://www.example.com/
+    // http://www.example.com:8080/
+    // http://www.example.com/context/
+    // http://www.example.com:8080/context/
+    if (url == null) {
+      return new Instance();
+    }
+    Connection db = null;
+    try {
+      db = CacheUtils.getConnection(context);
+      InstanceList list = new InstanceList();
+      // Determine the domain name and context
+      String key = (String) url;
+      int dIndex = key.indexOf("://") + 3;
+      int pIndex = key.indexOf(":", dIndex);
+      int cIndex = key.indexOf("/", dIndex);
+      int deIndex = (pIndex != -1 ? pIndex : cIndex);
+      LOG.debug("Index Values: " + dIndex + "/" + pIndex + "/" + cIndex + "/" + deIndex);
+      String domainName = key.substring(dIndex, deIndex);
+      String context = key.substring(cIndex);
+      LOG.debug("Domain Name: " + domainName);
+      LOG.debug("Context: " + context);
+      // Query the table
+      list.setDomainName(domainName);
+      list.setContext(context);
+      list.buildList(db);
+      if (list.size() > 0) {
+        return list.get(0);
+      }
+    } catch (Exception e) {
+      throw new Exception(e);
+    } finally {
+      CacheUtils.freeConnection(context, db);
+    }
+    return new Instance();
+  }
 }

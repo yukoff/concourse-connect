@@ -66,6 +66,7 @@ public class TopicList extends ArrayList<Topic> {
   private PagedListInfo pagedListInfo = null;
   private String emptyHtmlSelectRecord = null;
   private int lastIssues = -1;
+  private int instanceId = -1;
   private int projectId = -1;
   private int categoryId = -1;
   private int forUser = -1;
@@ -119,6 +120,17 @@ public class TopicList extends ArrayList<Topic> {
     this.lastIssues = Integer.parseInt(tmp);
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
 
   /**
    * Sets the projectId attribute of the IssueList object
@@ -471,6 +483,9 @@ public class TopicList extends ArrayList<Topic> {
     if (sqlFilter == null) {
       sqlFilter = new StringBuffer();
     }
+    if (instanceId > -1) {
+      sqlFilter.append("AND i.project_id IN (SELECT project_id FROM projects WHERE instance_id = ?) ");
+    }
     if (projectId > -1) {
       sqlFilter.append("AND project_id = ? ");
     }
@@ -494,10 +509,10 @@ public class TopicList extends ArrayList<Topic> {
           "AND status IS NULL) OR i.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
     }
     if (publicProjectIssues == Constants.TRUE) {
-      sqlFilter.append("AND i.project_id IN ( SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL ) ");
+      sqlFilter.append("AND i.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL) ");
     }
     if (forParticipant == Constants.TRUE) {
-      sqlFilter.append("AND i.project_id IN ( SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ) ");
+      sqlFilter.append("AND i.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL) ");
     }
     if (projectCategoryId != -1) {
       sqlFilter.append(" AND i.project_id IN ( SELECT project_id FROM projects WHERE category_id = ? ) ");
@@ -514,6 +529,9 @@ public class TopicList extends ArrayList<Topic> {
    */
   private int prepareFilter(PreparedStatement pst) throws SQLException {
     int i = 0;
+    if (instanceId > -1) {
+      pst.setInt(++i, instanceId);
+    }
     if (projectId > -1) {
       pst.setInt(++i, projectId);
     }

@@ -78,7 +78,6 @@ import com.concursive.connect.web.modules.lists.dao.TaskCategoryList;
 import com.concursive.connect.web.modules.lists.dao.TaskList;
 import com.concursive.connect.web.modules.lists.utils.TaskUtils;
 import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.plans.dao.*;
@@ -506,6 +505,7 @@ public final class ProjectManagement extends GenericAction {
     try {
       db = getConnection(context);
       Project thisProject = (Project) context.getFormBean();
+      thisProject.setInstanceId(getInstance(context).getId());
       thisProject.setGroupId(getUser(context).getGroupId());
       thisProject.setEnteredBy(getUserId(context));
       thisProject.setModifiedBy(getUserId(context));

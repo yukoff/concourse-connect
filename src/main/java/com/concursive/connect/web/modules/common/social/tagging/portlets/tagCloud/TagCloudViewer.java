@@ -133,6 +133,7 @@ public class TagCloudViewer implements IPortletViewer {
         // Get this category's tag cloud
         UniqueTagList tagList = new UniqueTagList();
         tagList.setTableName(Project.TABLE);
+        tagList.setInstanceId(PortalUtils.getInstance(request).getId());
         PagedListInfo tagListInfo = new PagedListInfo();
         if ("true".equals(sortByTagCount) || (StringUtils.hasText(sortFilter) && ("popular".equals(sortFilter)))) {
           tagListInfo.setColumnToSortBy("tag_count DESC");

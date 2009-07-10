@@ -480,6 +480,8 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
       project.getFeatures().setAllowParticipants(false);
     }
 
+    // Set the instance id, if there is one
+    project.setInstanceId(PortalUtils.getInstance(request).getId());
 
     // Insert the validated project
     boolean recordInserted = project.insert(db);

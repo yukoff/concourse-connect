@@ -116,7 +116,7 @@ public class SaveTeamMemberUpdateEventsTest extends AbstractWorkflowManagerTest 
     user.setEnabled(true);
     user.setStartPage(1);
     user.setRegistered(true);
-    user.insert(db, "127.0.0.1");
+    user.insert(db, "127.0.0.1", null);
     assertTrue("Unable to add a user..", user.getId() != -1);
     return user;
   }

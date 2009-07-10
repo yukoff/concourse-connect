@@ -4,7 +4,15 @@
  *@author     matt rajkowski
  *@created
  */
- 
+
+CREATE TABLE instances (
+  instance_id SERIAL PRIMARY KEY,
+  domain_name VARCHAR(255) NOT NULL,
+  context VARCHAR(255) NOT NULL DEFAULT '/',
+  enabled BOOLEAN DEFAULT false NOT NULL
+);
+CREATE UNIQUE INDEX instances_uni_idx ON instances (domain_name, context);
+
 CREATE TABLE groups (
   group_id SERIAL PRIMARY KEY,
   group_name VARCHAR(50) NOT NULL,
@@ -90,7 +98,8 @@ CREATE TABLE users (
   show_gender_to INTEGER DEFAULT 0,
   show_location_to INTEGER DEFAULT 0,
   show_company_to INTEGER DEFAULT 0,
-  points BIGINT DEFAULT 0 NOT NULL
+  points BIGINT DEFAULT 0 NOT NULL,
+  instance_id INTEGER REFERENCES instances(instance_id)
 );
 CREATE UNIQUE INDEX users_uni_idx ON users (email);
 
@@ -177,7 +186,8 @@ CREATE TABLE contact_us (
   state VARCHAR(255),
   country VARCHAR(255),
   postalcode VARCHAR(255),
-  form_data TEXT
+  form_data TEXT,
+  instance_id INTEGER REFERENCES instances(instance_id)
 );
 
 CREATE TABLE lookup_number (
@@ -265,12 +275,12 @@ CREATE TABLE lookup_service (
 
 -- Lookup table of contributions
 CREATE TABLE lookup_contribution (
-	code SERIAL PRIMARY KEY,
-	constant VARCHAR(255) NOT NULL,
-	description VARCHAR(300) NOT NULL,
-	level INTEGER DEFAULT 0,
-	enabled BOOLEAN DEFAULT true,
-	run_date TIMESTAMP(3),
-	points_awarded INTEGER DEFAULT 1 NOT NULL 
+  code SERIAL PRIMARY KEY,
+  constant VARCHAR(255) NOT NULL,
+  description VARCHAR(300) NOT NULL,
+  level INTEGER DEFAULT 0,
+  enabled BOOLEAN DEFAULT true,
+  run_date TIMESTAMP(3),
+  points_awarded INTEGER DEFAULT 1 NOT NULL
 );
 

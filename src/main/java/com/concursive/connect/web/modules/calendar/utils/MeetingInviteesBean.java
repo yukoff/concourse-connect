@@ -512,6 +512,7 @@ public class MeetingInviteesBean extends GenericBean {
       user.setAccountSize(prefs.get("ACCOUNT.SIZE"));
       user.setAccessAddProjects(prefs.get("START_PROJECTS"));
       if ("true".equals(prefs.get(ApplicationPrefs.USERS_CAN_INVITE)) || PortalUtils.getUser(request).getAccessInvite() || PortalUtils.getUser(request).getAccessAdmin()) {
+        user.setInstanceId(PortalUtils.getInstance(request).getId());
         inserted = user.insert(db, PortalUtils.getServerDomainNameAndPort(request), prefs);
       }
     }

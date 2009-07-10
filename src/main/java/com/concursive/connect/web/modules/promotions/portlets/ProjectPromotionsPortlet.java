@@ -135,6 +135,9 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
 
       AdList adList = new AdList();
       adList.setPagedListInfo(pagedListInfo);
+      if (project == null) {
+        adList.setInstanceId(PortalUtils.getInstance(request).getId());
+      }
       adList.setGroupId(thisUser.getGroupId());
       if (categoryId > -1) {
         adList.setProjectCategoryId(categoryId);

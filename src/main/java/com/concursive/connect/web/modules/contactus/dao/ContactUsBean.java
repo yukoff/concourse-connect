@@ -75,6 +75,7 @@ public class ContactUsBean extends GenericBean {
   public static final String lf = System.getProperty("line.separator");
   //Base properties
   private int id = -1;
+  private int instanceId = -1;
   //Form properties
   private String nameFirst = null;
   private String nameLast = null;
@@ -99,6 +100,14 @@ public class ContactUsBean extends GenericBean {
   private String[] formData = null;
   private String formDataString = null;
   private ArrayList formDataList = new ArrayList();
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
 
   public void setNameFirst(String tmp) {
     this.nameFirst = tmp;
@@ -371,10 +380,10 @@ public class ContactUsBean extends GenericBean {
   public boolean save(ActionContext context, Connection db) throws SQLException {
     //store message in database
     PreparedStatement pst = db.prepareStatement(
-        "INSERT INTO contact_us (first_name, last_name, email, organization, description, copied, ip_address, browser, language, " +
+        "INSERT INTO contact_us (instance_id, first_name, last_name, email, organization, description, copied, ip_address, browser, language, " +
             "job_title, business_phone, business_phone_ext, addrline1, addrline2, addrline3, " +
             "city, state, country, postalcode, form_data) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
     StringBuffer sbf = new StringBuffer();
     if (formData != null) {
       for (int m = 0; m < formData.length; m++) {
@@ -382,6 +391,7 @@ public class ContactUsBean extends GenericBean {
       }
     }
     int i = 0;
+    DatabaseUtils.setInt(pst, ++i, instanceId);
     pst.setString(++i, nameFirst);
     pst.setString(++i, nameLast);
     pst.setString(++i, email);

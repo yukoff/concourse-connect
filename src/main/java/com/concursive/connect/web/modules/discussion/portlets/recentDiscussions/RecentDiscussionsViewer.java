@@ -100,6 +100,7 @@ public class RecentDiscussionsViewer implements IPortletViewer {
 
     //if no project is available, look for category in preferences
     if (project == null) {
+      recentTopicList.setInstanceId(PortalUtils.getInstance(request).getId());
       String category = request.getPreferences().getValue(PREF_CATEGORY, null);
       ProjectCategoryList categories = new ProjectCategoryList();
       categories.setEnabled(true);

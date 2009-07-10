@@ -86,17 +86,28 @@
     </portlet:actionURL>
     <form name="inputForm" action="${exportUrl}" method="post" onSubmit="return checkForm(this);">
       <fieldset id="wikiExportOptions">
-         <legend>
-            Export plan:
-         </legend>
-              <label for="includeTitle"><input type="checkbox" class="checkbox" name="includeTitle" id="includeTitle" value="ON" />Include a title page</label>
-              <label for="followLinks"><input type="checkbox" class="checkbox" name="followLinks" id="followLinks" value="ON" />Include all linked documents</label>
+        <legend>Export a wiki for download</legend>
+        <label for="includeTitle"><input type="checkbox" class="checkbox" name="includeTitle" id="includeTitle" value="ON" />Include a title page</label>
+        <label for="followLinks"><input type="checkbox" class="checkbox" name="followLinks" id="followLinks" value="ON" />Include all linked documents</label>
         <c:if test="${'true' eq param.popup || 'true' eq popup}">
           <input type="hidden" name="popup" value="true" />
         </c:if>
         <input type="hidden" name="subject" value="<%= wiki.getSubject() %>" />
-        <input type="submit" class="submit" name="Export" value="Export" />
-        <input type="button" class="cancel" name="Cancel" value="Cancel" onClick="window.close();" />
+        <input type="submit" name="save" class="submit" value="Export" />
+        <c:choose>
+          <c:when test="${'true' eq param.popup || 'true' eq popup}">
+            <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
+          </c:when>
+          <c:otherwise>
+            <portlet:renderURL var="cancelUrl">
+              <portlet:param name="portlet-action" value="show"/>
+              <portlet:param name="portlet-object" value="wiki"/>
+              <portlet:param name="portlet-value" value="<%= wiki.getSubject() %>"/>
+            </portlet:renderURL>
+            <a href="${cancelUrl}" class="cancel">Cancel</a>
+          </c:otherwise>
+        </c:choose>
+        <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
       </fieldset>
     </form>
   </div>

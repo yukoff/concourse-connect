@@ -271,7 +271,7 @@
                   <href>/show/${project.uniqueId}/app/compose_message?module=profile&amp;id=${project.id}</href>
                   <rel>shadowbox;width=700</rel>
                   <projectCondition>features.showMessages</projectCondition>
-                  <rule>isThisNotUsersProfile</rule>]]>
+                  <rule>isNotThisUsersProfile</rule>]]>
               </value>
             </urls>
           </portlet>
@@ -403,6 +403,13 @@
                   <rel>shadowbox;width=600</rel>
                   <permission>project-reviews-add</permission>
                   <rule>userCanReview</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Review This</content>
+                  <title>Review ${project.title:xml}</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Send to Friend</content>
@@ -980,6 +987,13 @@
                   <rel>shadowbox;width=600</rel>
                   <permission>project-reviews-add</permission>
                   <rule>userCanReview</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Review This</content>
+                  <title>Review ${project.title:xml}</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Send to Friend</content>

@@ -70,6 +70,7 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
   private String tableName = null;
   private boolean determineTagWeights = false;
   private int projectCategoryId = -1;
+  private int instanceId = -1;
 
   public UniqueTagList() {
   }
@@ -134,6 +135,18 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
 
   public void setProjectCategoryId(String projectCategoryId) {
     this.projectCategoryId = Integer.parseInt(projectCategoryId);
+  }
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
   }
 
   public void buildList(Connection db) throws SQLException {
@@ -232,8 +245,15 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
     if (tag != null) {
       sqlFilter.append("AND tag = ?  ");
     }
-    if ((Project.TABLE + "_").equals(tableName) && projectCategoryId != -1) {
-      sqlFilter.append("AND tag IN (SELECT tag FROM projects_tag WHERE project_id IN (SELECT project_id FROM projects WHERE category_id = ?))  ");
+    if ((Project.TABLE + "_").equals(tableName) &&
+        (projectCategoryId != -1 || instanceId != -1)) {
+      sqlFilter.append(
+          "AND tag IN " +
+              "(SELECT tag FROM projects_tag WHERE project_id IN " +
+              "(SELECT project_id FROM projects WHERE project_id > -1 " +
+              (projectCategoryId > -1 ? "AND category_id = ? " : "") +
+              (instanceId > -1 ? "AND instance_id = ? " : "") +
+              "))  ");
     }
 
   }
@@ -251,8 +271,14 @@ public class UniqueTagList extends ArrayList<UniqueTag> {
     if (tag != null) {
       pst.setString(++i, tag);
     }
-    if ((Project.TABLE + "_").equals(tableName) && projectCategoryId != -1) {
-      pst.setInt(++i, projectCategoryId);
+    if ((Project.TABLE + "_").equals(tableName) &&
+        (projectCategoryId != -1 || instanceId != -1)) {
+      if (projectCategoryId > -1) {
+        pst.setInt(++i, projectCategoryId);
+      }
+      if (instanceId > -1) {
+        pst.setInt(++i, instanceId);
+      }
     }
     return i;
   }

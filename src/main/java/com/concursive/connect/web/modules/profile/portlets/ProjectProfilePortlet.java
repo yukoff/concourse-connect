@@ -318,6 +318,7 @@ public class ProjectProfilePortlet extends GenericPortlet {
 
       //Determine if the record for the key exists for today in the database
       ProjectFeaturedListingList projectFeaturedListingList = new ProjectFeaturedListingList();
+      projectFeaturedListingList.setInstanceId(PortalUtils.getInstance(request).getId());
       projectFeaturedListingList.setPortletKey(portletKey);
       projectFeaturedListingList.setFeaturedDate(new Timestamp(System.currentTimeMillis()));
       projectFeaturedListingList.buildList(db);
@@ -335,6 +336,7 @@ public class ProjectProfilePortlet extends GenericPortlet {
         String daysWithoutBeingFeatured = randomProjectPreference.get(PREF_DAYS_WITHOUT_BEING_FEATURED);
 
         ProjectList projectList = new ProjectList();
+        projectList.setInstanceId(PortalUtils.getInstance(request).getId());
         //get categoryId for the provided category
         if (category != null) {
           ProjectCategoryList categories = new ProjectCategoryList();

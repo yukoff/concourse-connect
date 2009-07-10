@@ -11,7 +11,7 @@ CREATE TABLE lookup_project_activity (
   default_item BIT DEFAULT 0,
   level INTEGER DEFAULT 0,
   enabled BIT DEFAULT 1,
-  group_id INTEGER NOT NULL DEFAULT 0,
+  group_id INTEGER DEFAULT 0 NOT NULL,
   template_id INTEGER DEFAULT 0
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE lookup_project_priority (
   default_item BIT DEFAULT 0,
   level INTEGER DEFAULT 0,
   enabled BIT DEFAULT 1,
-  group_id INTEGER NOT NULL DEFAULT 0,
+  group_id INTEGER DEFAULT 0 NOT NULL,
   graphic VARCHAR(75),
   type INTEGER NOT NULL
 );
@@ -32,7 +32,7 @@ CREATE TABLE lookup_project_status (
   default_item BIT DEFAULT 0,
   level INTEGER DEFAULT 0,
   enabled BIT DEFAULT 1,
-  group_id INTEGER NOT NULL DEFAULT 0,
+  group_id INTEGER DEFAULT 0 NOT NULL,
   graphic VARCHAR(75),
   type INTEGER NOT NULL
 );
@@ -44,7 +44,7 @@ CREATE TABLE lookup_project_loe (
   default_item BIT DEFAULT 0,
   level INTEGER DEFAULT 0,
   enabled BIT DEFAULT 1,
-  group_id INTEGER NOT NULL DEFAULT 0
+  group_id INTEGER DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE lookup_project_role (
@@ -53,7 +53,7 @@ CREATE TABLE lookup_project_role (
   default_item BIT DEFAULT 0,
   level INTEGER DEFAULT 0,
   enabled BIT DEFAULT 1,
-  group_id INTEGER NOT NULL DEFAULT 0
+  group_id INTEGER DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE lookup_project_category (
@@ -62,7 +62,7 @@ CREATE TABLE lookup_project_category (
   default_item BIT DEFAULT 0,
   level INTEGER DEFAULT 0,
   enabled BIT DEFAULT 1,
-  group_id INTEGER NOT NULL DEFAULT 0,
+  group_id INTEGER DEFAULT 0 NOT NULL,
   logo_id INTEGER,
   parent_category INTEGER,
   style TEXT,
@@ -75,7 +75,7 @@ CREATE TABLE lookup_project_assignment_role (
   default_item BIT DEFAULT 0,
   level INTEGER DEFAULT 0,
   enabled BIT DEFAULT 1,
-  group_id INTEGER NOT NULL DEFAULT 0
+  group_id INTEGER DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE lookup_project_language (
@@ -93,7 +93,7 @@ CREATE TABLE project_language_team (
   id INT IDENTITY PRIMARY KEY,
   member_id INTEGER REFERENCES users(user_id) NOT NULL,
   language_id INTEGER REFERENCES lookup_project_language NOT NULL,
-  entered DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  entered DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE INDEX proj_lan_team_mem_id ON project_language_team(member_id);
@@ -250,7 +250,8 @@ CREATE TABLE projects (
   messages_order INTEGER DEFAULT 0 NOT NULL,
   messages_description VARCHAR(255),
   system_default BIT DEFAULT 0 NOT NULL,
-  shortdescription VARCHAR(1000) NOT NULL
+  shortdescription VARCHAR(1000) NOT NULL,
+  instance_id INTEGER REFERENCES instances(instance_id)
 );
 CREATE INDEX "projects_idx"
   ON "projects"
@@ -260,6 +261,7 @@ CREATE INDEX projects_portal_idx ON projects(portal);
 CREATE INDEX projects_title_idx ON projects(title);
 CREATE INDEX projects_cat_idx ON projects(category_id);
 CREATE INDEX projects_subcat1_idx ON projects(subcategory1_id);
+CREATE INDEX projects_instanc_idx ON projects(instance_id);
 
 CREATE TABLE projects_view (
   project_id INTEGER NOT NULL REFERENCES projects(project_id),

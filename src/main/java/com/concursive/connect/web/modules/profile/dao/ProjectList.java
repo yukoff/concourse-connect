@@ -72,6 +72,7 @@ public class ProjectList extends ArrayList<Project> {
   private PagedListInfo pagedListInfo = null;
   private String emptyHtmlSelectRecord = null;
   private int groupId = -1;
+  private int instanceId = -1;
   private int projectId = -1;
   private int projectsForUser = -1;
   private int enteredByUser = -1;
@@ -177,6 +178,17 @@ public class ProjectList extends ArrayList<Project> {
     this.groupId = tmp;
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
 
   /**
    * Sets the projectId attribute of the ProjectList object
@@ -1129,13 +1141,16 @@ public class ProjectList extends ArrayList<Project> {
       sqlFilter = new StringBuffer();
     }
     if (groupId > -1) {
-      sqlFilter.append("AND (group_id = ?) ");
+      sqlFilter.append("AND group_id = ? ");
+    }
+    if (instanceId > -1) {
+      sqlFilter.append("AND instance_id = ? ");
     }
     if (projectId > -1) {
-      sqlFilter.append("AND (project_id = ?) ");
+      sqlFilter.append("AND project_id = ? ");
     }
     if (projectsWithAssignmentsOnly) {
-      sqlFilter.append("AND (p.project_id IN (SELECT DISTINCT project_id FROM project_assignments)) ");
+      sqlFilter.append("AND p.project_id IN (SELECT DISTINCT project_id FROM project_assignments) ");
     }
     if (openProjectsOnly && withProjectDaysComplete > -1) {
       sqlFilter.append("AND (closedate IS NULL OR closedate > ?) ");
@@ -1325,6 +1340,9 @@ public class ProjectList extends ArrayList<Project> {
     int i = 0;
     if (groupId > -1) {
       pst.setInt(++i, groupId);
+    }
+    if (instanceId > -1) {
+      pst.setInt(++i, instanceId);
     }
     if (projectId > -1) {
       pst.setInt(++i, projectId);

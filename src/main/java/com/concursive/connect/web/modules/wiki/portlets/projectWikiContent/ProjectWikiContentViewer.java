@@ -111,13 +111,17 @@ public class ProjectWikiContentViewer implements IPortletViewer {
     if (basedOnUser) {
       // Use the actual user
       user = PortalUtils.getUser(request);
-    } else {
+      // Determine if the user has access to the content
+      if (user == null || !ProjectUtils.hasAccess(project.getId(), user, "project-wiki-view")) {
+        return null;
+      }
+    }
+    if (user == null) {
       // Simulate a guest user
       user = UserUtils.createGuestUser();
     }
-
     // Determine if the user has access to the content
-    if (!ProjectUtils.hasAccess(project.getId(), user, "project-wiki-view")) {
+    if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-view")) {
       return null;
     }
 

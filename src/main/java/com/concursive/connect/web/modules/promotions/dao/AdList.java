@@ -84,6 +84,7 @@ public class AdList extends ArrayList<Ad> {
   private Timestamp publishedRangeEnd = null;
 
   //Project filters
+  private int instanceId = -1;
   private int projectCategoryId = -1;
   private int portalState = Constants.UNDEFINED;
   private boolean openProjectsOnly = false;
@@ -434,6 +435,19 @@ public class AdList extends ArrayList<Ad> {
     this.publishedRangeEnd = DatabaseUtils.parseTimestamp(publishedRangeEnd);
   }
 
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
+
   /**
    * @return the categoryId
    */
@@ -695,7 +709,6 @@ public class AdList extends ArrayList<Ad> {
               "  OR ( " +
               "          (CURRENT_TIMESTAMP < a.publish_date OR a.publish_date IS NULL)))) ");
     }
-    //@TODO add projectCategoryId
     if (categoryId > -1) {
       sqlFilter.append("AND a.ad_category_id = ? ");
     }
@@ -712,21 +725,25 @@ public class AdList extends ArrayList<Ad> {
       sqlFilter.append(" AND a.enteredby = ? ");
     }
     if (publishedYearMonth != null) {
-      sqlFilter.append(" AND ( a.publish_date >= ? AND a.publish_date < ? )");
+      sqlFilter.append(" AND (a.publish_date >= ? AND a.publish_date < ?) ");
     }
 
     if (projectCategoryId > -1 ||
         portalState != Constants.UNDEFINED ||
+        instanceId > -1 ||
         groupId > -1 ||
         openProjectsOnly ||
         publicProjects == Constants.TRUE ||
         forParticipant == Constants.TRUE) {
-      sqlFilter.append("AND project_id IN (select project_id from projects WHERE project_id > 0 ");
+      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
       if (projectCategoryId > -1) {
         sqlFilter.append("AND category_id = ? ");
       }
       if (portalState != Constants.UNDEFINED) {
         sqlFilter.append("AND portal = ?  ");
+      }
+      if (instanceId > -1) {
+        sqlFilter.append("AND instance_id = ?  ");
       }
       if (groupId > -1) {
         sqlFilter.append("AND group_id = ?  ");
@@ -747,7 +764,7 @@ public class AdList extends ArrayList<Ad> {
           "AND status IS NULL) OR project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
     }
     if (publishedRangeStart != null) {
-      sqlFilter.append(" AND (a.publish_date >= ? ) ");
+      sqlFilter.append(" AND (a.publish_date >= ?) ");
     }
     if (publishedRangeEnd != null) {
       sqlFilter.append(" AND (a.publish_date < ?) ");
@@ -771,6 +788,7 @@ public class AdList extends ArrayList<Ad> {
     }
     if (projectCategoryId > -1 ||
         portalState != Constants.UNDEFINED ||
+        instanceId > -1 ||
         groupId > -1 ||
         openProjectsOnly ||
         publicProjects == Constants.TRUE ||
@@ -780,6 +798,9 @@ public class AdList extends ArrayList<Ad> {
       }
       if (portalState != Constants.UNDEFINED) {
         pst.setBoolean(++i, (portalState == Constants.TRUE));
+      }
+      if (instanceId > -1) {
+        pst.setInt(++i, instanceId);
       }
       if (groupId > -1) {
         pst.setInt(++i, groupId);

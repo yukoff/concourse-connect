@@ -332,6 +332,7 @@ public final class Translation extends GenericAction {
       try {
         db = getConnection(context);
         bean.setEmailCopy(true);
+        bean.setInstanceId(getInstance(context).getId());
         bean.save(context, db);
       } catch (Exception e) {
         e.printStackTrace(System.out);

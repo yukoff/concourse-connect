@@ -80,6 +80,7 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
   private int publicProjects = Constants.UNDEFINED;
   private int forParticipant = Constants.UNDEFINED;
   private boolean openProjectsOnly = false;
+  private int instanceId = -1;
   private int groupId = -1;
   private int forUser = -1;
   private boolean loadProject = true;
@@ -369,6 +370,17 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
     this.openProjectsOnly = DatabaseUtils.parseBoolean(openProjectsOnly);
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
 
   /**
    * @return the groupId
@@ -528,16 +540,20 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
     }
     if (categoryId > -1 ||
         portalState != Constants.UNDEFINED ||
+        instanceId > -1 ||
         groupId > -1 ||
         openProjectsOnly ||
         publicProjects != Constants.UNDEFINED ||
         forParticipant != Constants.UNDEFINED) {
-      sqlFilter.append("AND project_id IN (select project_id from projects WHERE project_id > 0 ");
+      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
       if (categoryId > -1) {
         sqlFilter.append("AND category_id = ? ");
       }
       if (portalState != Constants.UNDEFINED) {
         sqlFilter.append("AND portal = ?  ");
+      }
+      if (instanceId > -1) {
+        sqlFilter.append("AND instance_id = ? ");
       }
       if (groupId > -1) {
         sqlFilter.append("AND group_id = ?  ");
@@ -592,6 +608,7 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
     }
     if (categoryId > -1 ||
         portalState != Constants.UNDEFINED ||
+        instanceId > -1 ||
         groupId > -1 ||
         openProjectsOnly ||
         publicProjects != Constants.UNDEFINED ||
@@ -601,6 +618,9 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
       }
       if (portalState != Constants.UNDEFINED) {
         pst.setBoolean(++i, (portalState == Constants.TRUE));
+      }
+      if (instanceId > -1) {
+        pst.setInt(++i, instanceId);
       }
       if (groupId > -1) {
         pst.setInt(++i, groupId);

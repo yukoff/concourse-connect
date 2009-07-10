@@ -57,6 +57,7 @@ import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.indexer.IndexEvent;
 import com.concursive.connect.scheduler.ScheduledJobs;
+import com.concursive.connect.web.modules.login.dao.Instance;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
@@ -65,6 +66,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import freemarker.template.Configuration;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.Scheduler;
@@ -623,7 +626,7 @@ public class GenericAction implements java.io.Serializable {
    * @param context Description of the Parameter
    * @return The link value
    */
-  protected String getServerUrl(ActionContext context) {
+  protected static String getServerUrl(ActionContext context) {
     ApplicationPrefs prefs = (ApplicationPrefs) context.getServletContext().getAttribute(Constants.APPLICATION_PREFS);
     boolean sslEnabled = "true".equals(prefs.get("SSL"));
     return ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest()));
@@ -670,5 +673,10 @@ public class GenericAction implements java.io.Serializable {
     return ApplicationPrefs.getFreemarkerConfiguration(context.getServletContext());
   }
 
-}
+  protected static Instance getInstance(ActionContext context) {
+    Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_INSTANCE_CACHE);
+    Element element = cache.get(getServerUrl(context));
+    return (Instance) element.getObjectValue();
+  }
 
+}

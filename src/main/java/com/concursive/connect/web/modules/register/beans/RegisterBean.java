@@ -79,6 +79,9 @@ public class RegisterBean extends GenericBean {
 
   public final static String lf = System.getProperty("line.separator");
 
+  // Bean properties
+  private int instanceId = -1;
+
   // Form properties
   private String city = null;
   private String state = null;
@@ -104,6 +107,13 @@ public class RegisterBean extends GenericBean {
   public RegisterBean() {
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
 
   /**
    * Sets the request iteams the RegisterBean object
@@ -478,6 +488,7 @@ public class RegisterBean extends GenericBean {
       // Store the user in the database
       user = new User();
       user.setId(User.getIdByEmailAddress(db, email));
+      user.setInstanceId(instanceId);
       user.setGroupId(1);
       user.setDepartmentId(1);
       user.setFirstName(nameFirst);

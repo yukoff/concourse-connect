@@ -68,6 +68,7 @@ public class WikiTemplateList extends ArrayList<WikiTemplate> {
   private int projectCategoryId = -1;
   private int enabled = Constants.UNDEFINED;
   private String title = null;
+  private String exclude = null;
 
   private PagedListInfo pagedListInfo = null;
 
@@ -139,6 +140,13 @@ public class WikiTemplateList extends ArrayList<WikiTemplate> {
     return pagedListInfo;
   }
 
+  public String getExclude() {
+    return exclude;
+  }
+
+  public void setExclude(String exclude) {
+    this.exclude = exclude;
+  }
 
   public int queryCount(Connection db) throws SQLException {
     int count = 0;
@@ -234,7 +242,10 @@ public class WikiTemplateList extends ArrayList<WikiTemplate> {
       sqlFilter.append("AND wt.enabled = ? ");
     }
     if (title != null) {
-      sqlFilter.append("AND wt.title = ? ");
+      sqlFilter.append("AND lower(wt.title) = ? ");
+    }
+    if (exclude != null) {
+      sqlFilter.append("AND lower(wt.title) <> ? ");
     }
   }
 
@@ -250,7 +261,10 @@ public class WikiTemplateList extends ArrayList<WikiTemplate> {
       pst.setBoolean(++i, enabled == Constants.TRUE);
     }
     if (title != null) {
-      pst.setString(++i, title);
+      pst.setString(++i, title.toLowerCase());
+    }
+    if (exclude != null) {
+      pst.setString(++i, exclude.toLowerCase());
     }
     return i;
   }

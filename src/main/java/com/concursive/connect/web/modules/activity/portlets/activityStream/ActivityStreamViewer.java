@@ -116,6 +116,8 @@ public class ActivityStreamViewer implements IPortletViewer {
         projectHistoryList.setProjectId(project.getId());
       }
     } else {
+      // Constrain to the current instance
+      projectHistoryList.setInstanceId(PortalUtils.getInstance(request).getId());
       // Determine if a specific category is specified
       String projectCategoryName = request.getPreferences().getValue(PREF_CATEGORY, null);
       int projectCategoryId = -1;

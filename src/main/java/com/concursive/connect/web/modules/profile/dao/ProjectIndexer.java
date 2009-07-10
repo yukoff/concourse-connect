@@ -93,7 +93,7 @@ public class ProjectIndexer implements Indexer {
     long startTime = System.currentTimeMillis();
     int count = 0;
     PreparedStatement pst = db.prepareStatement(
-        "SELECT project_id, title, shortdescription, description, requestedby, requesteddept, entered, modified, " +
+        "SELECT instance_id, project_id, title, shortdescription, description, requestedby, requesteddept, entered, modified, " +
             "category_id, subcategory1_id, " +
             "allow_guests, membership_required, allows_user_observers, approvaldate, closedate, portal, " +
             "city, state, postalcode, keywords, " +
@@ -105,6 +105,7 @@ public class ProjectIndexer implements Indexer {
       ++count;
       // read the record
       Project project = new Project();
+      project.setInstanceId(rs.getInt("instance_id"));
       project.setId(rs.getInt("project_id"));
       project.setTitle(rs.getString("title"));
       project.setShortDescription(rs.getString("shortdescription"));
@@ -164,6 +165,7 @@ public class ProjectIndexer implements Indexer {
     // add the document
     Document document = new Document();
     document.add(new Field("type", "project", Field.Store.YES, Field.Index.UN_TOKENIZED));
+    document.add(new Field("instanceId", String.valueOf(project.getInstanceId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectKeyId", String.valueOf(project.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(project.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectCategoryId", String.valueOf(project.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));

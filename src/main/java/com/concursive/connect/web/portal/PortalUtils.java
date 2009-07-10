@@ -52,12 +52,14 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.commons.workflow.ObjectHookAction;
 import com.concursive.commons.workflow.ObjectHookManager;
+import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.cms.portal.dao.DashboardPage;
 import com.concursive.connect.cms.portal.dao.DashboardPortlet;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.indexer.IndexEvent;
 import com.concursive.connect.scheduler.ScheduledJobs;
+import com.concursive.connect.web.modules.login.dao.Instance;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -65,6 +67,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import freemarker.template.Configuration;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.Scheduler;
@@ -101,6 +105,12 @@ public class PortalUtils {
 
   public static DashboardPage getDashboardPage(PortletRequest request) {
     return (DashboardPage) request.getAttribute("dashboardPage");
+  }
+
+  public static Instance getInstance(PortletRequest request) {
+    Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_INSTANCE_CACHE);
+    Element element = cache.get(getApplicationUrl(request));
+    return (Instance) element.getObjectValue();
   }
 
   public static Project getProject(PortletRequest request) {
@@ -627,6 +637,10 @@ public class PortalUtils {
    * @throws java.io.IOException
    */
   public static GenericBean performRefresh(ActionRequest request, ActionResponse response, String defaultUrl) throws java.io.IOException {
+    return performRefresh(request, response, defaultUrl, null);
+  }
+
+  public static GenericBean performRefresh(ActionRequest request, ActionResponse response, String defaultUrl, HashMap<String, String> params) throws java.io.IOException {
     String ctx = request.getContextPath();
     boolean isPopup = "true".equals(request.getParameter("popup"));
     if (request.getParameter("redirectTo") != null) {
@@ -651,7 +665,7 @@ public class PortalUtils {
           String[] url = defaultUrl.split("[/]");
 
           StringBuffer redirectUrl = new StringBuffer();
-          redirectUrl.append(ctx).append("/");
+          redirectUrl.append("/");
           // The action
           redirectUrl.append(url[offset]).append("/");
           // The listing
@@ -664,7 +678,8 @@ public class PortalUtils {
           if (url.length > 2 + offset) {
             redirectUrl.append("/").append(url[2 + offset]);
           }
-          response.sendRedirect(ctx + "/redirect302.jsp?redirectTo=" + request.getParameter("redirectTo") + "&popup=true");
+          LOG.debug("Redirect to: " + redirectUrl.toString());
+          response.sendRedirect(ctx + "/redirect302.jsp?popup=true&redirectTo=" + StringUtils.encodeUrl(redirectUrl.toString()));
         }
       } else {
         // Use the default redirect
@@ -682,6 +697,18 @@ public class PortalUtils {
         }
         if (url.length > 2 + offset) {
           response.setRenderParameter("portlet-value", url[2 + offset]);
+        }
+        if (params != null && params.size() > 0) {
+          StringBuffer sb = new StringBuffer("?");
+          Iterator i = params.keySet().iterator();
+          while (i.hasNext()) {
+            String param = (String) i.next();
+            sb.append(param).append("=").append(params.get(param));
+            if (i.hasNext()) {
+              sb.append("&");
+            }
+          }
+          response.setRenderParameter("portlet-params", sb.toString());
         }
       }
     }

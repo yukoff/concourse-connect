@@ -84,6 +84,9 @@ public class Caches {
     // NOTE: The default createInMemoryCache requires that objects are invalidated by the system
     // otherwise the objects will not expire
 
+    // url = Instance
+    CacheUtils.createInMemoryCache(Constants.SYSTEM_INSTANCE_CACHE, new InstanceCacheEntryFactory(context), 5);
+
     // 1 = Key
     CacheUtils.createInMemoryCache(Constants.SYSTEM_KEY_CACHE, new PrivateKeyCacheEntryFactory(context), 1);
 

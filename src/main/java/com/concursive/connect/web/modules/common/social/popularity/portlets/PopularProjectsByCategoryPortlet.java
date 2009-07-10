@@ -99,6 +99,7 @@ public class PopularProjectsByCategoryPortlet extends GenericPortlet {
       ProjectCategory category = (categories.size() > 0 ? categories.get(0) : null);
       if (category != null) {
         PopularityCriteria popularityCriteria = new PopularityCriteria();
+        popularityCriteria.setInstanceId(PortalUtils.getInstance(request).getId());
         popularityCriteria.setLimit(request.getPreferences().getValue(PREF_RECORD_LIMIT, "-1"));
         popularityCriteria.setOrder(request.getPreferences().getValue(PREF_ORDER, "desc"));
 

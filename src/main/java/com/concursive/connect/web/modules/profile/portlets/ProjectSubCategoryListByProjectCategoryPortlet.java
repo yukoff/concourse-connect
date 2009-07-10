@@ -112,6 +112,9 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
     try {
       String defaultView = PROJECT_CATEGORY_VIEW_PAGE;
 
+      // Determine the application's instance id
+      int instanceId = PortalUtils.getInstance(request).getId();
+
       // Get preferences
       boolean autoSetPageTitle = Boolean.parseBoolean(request.getPreferences().getValue(PREF_AUTO_SET_PAGE_TITLE, "false"));
       String categoryValue = request.getPreferences().getValue(PREF_CATEGORY_NAME, PortalUtils.getPageView(request));
@@ -262,6 +265,7 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
           String queryString = (String) request.getAttribute(BASE_QUERY_STRING);
           queryString +=
               "AND (type:project) " +
+                  (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
                   "AND (projectCategoryId:" + category.getId() + ") ";
           if (subCategory != null) {
             queryString += "AND (projectCategoryId1:" + subCategory.getId() + ") ";

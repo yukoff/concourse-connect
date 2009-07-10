@@ -80,6 +80,7 @@ public class User extends GenericBean {
   public final static String lf = System.getProperty("line.separator");
 
   // Properties
+  private int instanceId = -1;
   private int id = -1;
   private String firstName = null;
   private String lastName = null;
@@ -262,6 +263,7 @@ public class User extends GenericBean {
       points = rs.getInt("points");
       //department table
       department = rs.getString("department");
+      instanceId = DatabaseUtils.getInt(rs, "instance_id", -1);
     } catch (Exception e) {
       // since these field may not exist in an upgraded system,
       // do not throw an error
@@ -270,6 +272,17 @@ public class User extends GenericBean {
     idRange = String.valueOf(id);
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
 
   /**
    * Sets the id attribute of the User object
@@ -1687,29 +1700,25 @@ public class User extends GenericBean {
     return true;
   }
 
-
+  /**
+   * Basic user insert method, used by API
+   *
+   * @param db The database connection
+   * @return true if the record was added successfully
+   * @throws SQLException Database exception
+   */
   public boolean insert(Connection db) throws SQLException {
     return insert(db, null, null);
   }
 
   /**
-   * @param db
-   * @param ipAddress
-   * @return
-   * @throws SQLException
-   * @deprecated
-   */
-  public boolean insert(Connection db, String ipAddress) throws SQLException {
-    return insert(db, ipAddress, null);
-  }
-
-  /**
    * Description of the Method
    *
-   * @param db        Description of the Parameter
-   * @param ipAddress Description of the Parameter
-   * @return Description of the Return Value
-   * @throws SQLException Description of the Exception
+   * @param db        The database connection
+   * @param ipAddress The ip address requesting the user to be added
+   * @param prefs     The application prefs
+   * @return true if the record was added successfully
+   * @throws SQLException Database exception
    */
   public boolean insert(Connection db, String ipAddress, ApplicationPrefs prefs) throws SQLException {
     boolean commit = db.getAutoCommit();
@@ -1720,18 +1729,19 @@ public class User extends GenericBean {
       // Insert the user
       PreparedStatement pst = db.prepareStatement(
           "INSERT INTO users " +
-              "(group_id, department_id, first_name, last_name, username, password, temporary_password, " +
+              "(instance_id, group_id, department_id, first_name, last_name, username, password, temporary_password, " +
               "company, email, enteredby, modifiedby, enabled, start_page, access_personal, access_enterprise, " +
               "access_admin, access_inbox, access_resources, expiration, registered, " +
               "account_size, access_invite, access_add_projects, terms, timezone, currency, language" +
               (entered != null ? ", entered" : "") +
               (modified != null ? ", modified" : "") +
               ") " +
-              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
+              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?" +
               (entered != null ? ", ?" : "") +
               (modified != null ? ", ?" : "") +
               ") ");
       int i = 0;
+      DatabaseUtils.setInt(pst, ++i, instanceId);
       pst.setInt(++i, groupId);
       pst.setInt(++i, departmentId);
       pst.setString(++i, firstName);

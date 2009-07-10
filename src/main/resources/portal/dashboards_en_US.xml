@@ -3213,6 +3213,19 @@
         </column>
       </row>
     </page>
+    <page name="registration-required">
+      <row>
+        <column>
+          <portlet name="ContentPortlet" isUser="false">
+            <content>
+              <![CDATA[<h1>You must be logged in to do that</h1>
+                <p>You must be logged in before you can do that. <a href="${ctx}/login">Click here to login</a></p>
+								<p>Don't have an account? <a href="${ctx}/register">We'll get you set up once you click here.</a></p>]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
 
     <page name="categories" title="Listings by Category">
       <row>

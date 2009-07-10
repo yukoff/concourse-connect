@@ -102,6 +102,7 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
 
     if (category != null) {
       ProjectList projectList = new ProjectList();
+      projectList.setInstanceId(PortalUtils.getInstance(request).getId());
       projectList.setCategoryId(category.getId());
       PagedListInfo projectListInfo = new PagedListInfo();
       projectListInfo.setItemsPerPage(Integer.parseInt(limitString));

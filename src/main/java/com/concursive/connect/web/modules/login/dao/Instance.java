@@ -43,62 +43,97 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.login.utils;
 
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.commons.db.AbstractConnectionPoolTest;
-import com.concursive.connect.web.modules.login.dao.UserList;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
+package com.concursive.connect.web.modules.login.dao;
 
-import java.sql.Timestamp;
+import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.commons.web.mvc.beans.GenericBean;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * Tests methods in UserUtils
+ * Represents a unit of a shared application context
  *
  * @author matt rajkowski
- * @created July 30, 2008
+ * @created July 6, 2009
  */
-public class UserUtilsTest extends AbstractConnectionPoolTest {
+public class Instance extends GenericBean {
 
-  protected static final int GROUP_ID = 1;
-  protected static final int DEPARTMENT_ID = 1;
+  private int id = -1;
+  private String domainName = null;
+  private String context = null;
+  private boolean enabled = false;
 
-  public void testGenerateGuid() throws Exception {
-    // Setup a test user
-    User user = new User();
-    user.setGroupId(GROUP_ID);
-    user.setDepartmentId(DEPARTMENT_ID);
-    user.setFirstName("Test First");
-    user.setLastName("Test Last");
-    user.setEmail(System.currentTimeMillis() + "@concursive.com");
-    user.setUsername(System.currentTimeMillis() + "@concursive.com");
-    user.setPassword("e358bf645a205cf15efa983b5517d945");
-    user.setCountry("UNITED STATES");
-    user.setPostalCode("23456");
-    Timestamp entered = new Timestamp(System.currentTimeMillis());
-    entered.setNanos(23456);
-    user.setEntered(entered);
-    user.insert(db, null, null);
 
-    // Reset the fields from the database
-    user = new User(db, user.getId());
+  /**
+   * Constructor for the Instance object
+   */
+  public Instance() {
+  }
 
-    // Generate a guid
-    String guid = UserUtils.generateGuid(user);
-    // Test the output
-    assertEquals("UserId mismatch", String.valueOf(user.getId()), String.valueOf(UserUtils.getUserIdFromGuid(guid)));
-    assertEquals("Entered mismatch", String.valueOf(user.getEntered().getTime()), String.valueOf(UserUtils.getEnteredTimestampFromGuid(guid).getTime()));
-    assertEquals("PW Substring mismatch", user.getPassword().substring(2, 15), UserUtils.getPasswordSubStringFromGuid(guid));
-    // Test UserList query
-    UserList userList = new UserList();
-    userList.setGuid(guid);
-    userList.buildList(db);
-    assertTrue("User not found by guid: " + user.getId()+ " (" + userList.size() + ")", userList.size() == 1);
-    // Test UserUtils
-    User retrievedUser = UserUtils.loadUserFromGuid(db, guid);
-    assertNotNull("UserUtils did not find a user", retrievedUser);
-    // Delete the test user
-    user.delete(db);
+
+  /**
+   * Constructor for the Instance object
+   *
+   * @param rs Description of the Parameter
+   * @throws java.sql.SQLException Description of the Exception
+   */
+  public Instance(ResultSet rs) throws SQLException {
+    buildRecord(rs);
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setId(String tmp) {
+    this.id = Integer.parseInt(tmp);
+  }
+
+  public String getDomainName() {
+    return domainName;
+  }
+
+  public void setDomainName(String domainName) {
+    this.domainName = domainName;
+  }
+
+  public String getContext() {
+    return context;
+  }
+
+  public void setContext(String context) {
+    this.context = context;
+  }
+
+  public boolean getEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public void setEnabled(String tmp) {
+    this.enabled = DatabaseUtils.parseBoolean(tmp);
+  }
+
+  /**
+   * Sets properties from a database resultset
+   *
+   * @param rs Description of the Parameter
+   * @throws java.sql.SQLException Description of the Exception
+   */
+  public void buildRecord(ResultSet rs) throws SQLException {
+    id = rs.getInt("instance_id");
+    domainName = rs.getString("domain_name");
+    context = rs.getString("context");
+    enabled = rs.getBoolean("enabled");
   }
 
 }

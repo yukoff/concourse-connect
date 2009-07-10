@@ -69,6 +69,7 @@ public class ProjectFeaturedListingList extends ArrayList<ProjectFeaturedListing
   // The user's rating and review
 
   private int id = -1;
+  private int instanceId = -1;
   private int projectId = -1;
   private String portletKey = null;
   private Timestamp featuredDate = null;
@@ -108,6 +109,18 @@ public class ProjectFeaturedListingList extends ArrayList<ProjectFeaturedListing
 
   public int getId() {
     return id;
+  }
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
   }
 
   /**
@@ -265,6 +278,9 @@ public class ProjectFeaturedListingList extends ArrayList<ProjectFeaturedListing
     if (id > -1) {
       sqlFilter.append("AND featured_id = ? ");
     }
+    if (instanceId > -1) {
+      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE instance_id = ?) ");
+    }
     if (projectId > -1) {
       sqlFilter.append("AND project_id = ? ");
     }
@@ -283,6 +299,9 @@ public class ProjectFeaturedListingList extends ArrayList<ProjectFeaturedListing
     int i = 0;
     if (id > -1) {
       pst.setInt(++i, id);
+    }
+    if (instanceId > -1) {
+      pst.setInt(++i, instanceId);
     }
     if (projectId > -1) {
       pst.setInt(++i, projectId);

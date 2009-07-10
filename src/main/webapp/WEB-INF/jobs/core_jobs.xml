@@ -55,4 +55,20 @@
       </simple>
     </trigger>
   </job>
+  <job pref="BACKGROUND.DELETE_DISABLED_USERS">
+    <job-detail>
+      <name>deleteDisabledUsersJob</name>
+      <group>DEFAULT</group>
+      <description>Removes disabled users if they don't have any content published</description>
+      <job-class>com.concursive.connect.web.modules.login.jobs.DeleteDisabledUsersJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>deleteDisabledUsersJob</name>
+        <group>DEFAULT</group>
+        <start-time>90m</start-time>
+        <repeat-interval>24h</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
 </quartz>

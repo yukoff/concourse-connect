@@ -105,6 +105,7 @@ public class RecentBlogPostsViewer implements IPortletViewer {
     //if no project is available, look for category in preferences
     if (project == null) {
       LOG.debug("A project was not found... using the whole category");
+      blogPostList.setInstanceId(PortalUtils.getInstance(request).getId());
       String category = request.getPreferences().getValue(PREF_CATEGORY, null);
       if (category == null) {
         LOG.debug("A category was not found... doing nothing");

@@ -56,54 +56,52 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Collection of user logins
+ * Collection of instance objects
  *
  * @author matt rajkowski
- * @version $Id$
- * @created April 6, 2004
+ * @created July 6, 2009
  */
-public class UserLogList extends ArrayList<UserLog> {
+public class InstanceList extends ArrayList<Instance> {
 
-  private int userId = -1;
+  private int instanceId = -1;
+  private String domainName = null;
+  private String context = null;
   private PagedListInfo pagedListInfo = null;
 
 
   /**
-   * Constructor for the UserLogList object
+   * Constructor for the InstanceList object
    */
-  public UserLogList() {
+  public InstanceList() {
   }
 
-
-  /**
-   * Sets the userId attribute of the UserLogList object
-   *
-   * @param tmp The new userId value
-   */
-  public void setUserId(int tmp) {
-    this.userId = tmp;
+  public int getInstanceId() {
+    return instanceId;
   }
 
-
-  /**
-   * Sets the userId attribute of the UserLogList object
-   *
-   * @param tmp The new userId value
-   */
-  public void setUserId(String tmp) {
-    this.userId = Integer.parseInt(tmp);
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
   }
 
-
-  /**
-   * Gets the userId attribute of the UserLogList object
-   *
-   * @return The userId value
-   */
-  public int getUserId() {
-    return userId;
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
   }
 
+  public String getDomainName() {
+    return domainName;
+  }
+
+  public void setDomainName(String domainName) {
+    this.domainName = domainName;
+  }
+
+  public String getContext() {
+    return context;
+  }
+
+  public void setContext(String context) {
+    this.context = context;
+  }
 
   /**
    * Sets the pagedListInfo attribute of the UserLogList object
@@ -119,7 +117,7 @@ public class UserLogList extends ArrayList<UserLog> {
    * Description of the Method
    *
    * @param db Description of the Parameter
-   * @throws SQLException Description of the Exception
+   * @throws java.sql.SQLException Description of the Exception
    */
   public void buildList(Connection db) throws SQLException {
     PreparedStatement pst = null;
@@ -132,11 +130,11 @@ public class UserLogList extends ArrayList<UserLog> {
     // Build a base SQL statement for counting records
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
-            "FROM user_log " +
-            "WHERE user_id > -1 ");
+            "FROM instances " +
+            "WHERE instance_id > -1 ");
     createFilter(sqlFilter);
     if (pagedListInfo != null) {
-      //Get the total number of records matching filter
+      // Get the total number of records matching filter
       pst = db.prepareStatement(sqlCount.toString() + sqlFilter.toString());
       items = prepareFilter(pst);
       rs = pst.executeQuery();
@@ -147,10 +145,10 @@ public class UserLogList extends ArrayList<UserLog> {
       rs.close();
       pst.close();
       //Determine column to sort by
-      pagedListInfo.setDefaultSort("log_date", "desc");
+      pagedListInfo.setDefaultSort("instance_id", null);
       pagedListInfo.appendSqlTail(db, sqlOrder);
     } else {
-      sqlOrder.append("ORDER BY log_date desc ");
+      sqlOrder.append("ORDER BY instance_id ");
     }
     //Need to build a base SQL statement for returning records
     if (pagedListInfo != null) {
@@ -160,8 +158,8 @@ public class UserLogList extends ArrayList<UserLog> {
     }
     sqlSelect.append(
         "* " +
-            "FROM user_log " +
-            "WHERE user_id > -1 ");
+            "FROM instances " +
+            "WHERE instance_id > -1 ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -176,7 +174,7 @@ public class UserLogList extends ArrayList<UserLog> {
         break;
       }
       ++count;
-      UserLog thisEntry = new UserLog(rs);
+      Instance thisEntry = new Instance(rs);
       this.add(thisEntry);
     }
     rs.close();
@@ -193,8 +191,14 @@ public class UserLogList extends ArrayList<UserLog> {
     if (sqlFilter == null) {
       sqlFilter = new StringBuffer();
     }
-    if (userId > -1) {
-      sqlFilter.append("AND user_id = ? ");
+    if (instanceId > -1) {
+      sqlFilter.append("AND instance_id = ? ");
+    }
+    if (domainName != null) {
+      sqlFilter.append("AND domain_name = ? ");
+    }
+    if (context != null) {
+      sqlFilter.append("AND context = ? ");
     }
   }
 
@@ -204,14 +208,19 @@ public class UserLogList extends ArrayList<UserLog> {
    *
    * @param pst Description of the Parameter
    * @return Description of the Return Value
-   * @throws SQLException Description of the Exception
+   * @throws java.sql.SQLException Description of the Exception
    */
   private int prepareFilter(PreparedStatement pst) throws SQLException {
     int i = 0;
-    if (userId > -1) {
-      pst.setInt(++i, userId);
+    if (instanceId > -1) {
+      pst.setInt(++i, instanceId);
+    }
+    if (domainName != null) {
+      pst.setString(++i, domainName);
+    }
+    if (context != null) {
+      pst.setString(++i, context);
     }
     return i;
   }
 }
-

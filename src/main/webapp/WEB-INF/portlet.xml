@@ -893,6 +893,17 @@
       <title>Display an RSS Feed</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>AddWikiPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.wiki.portlets.addWiki.AddWikiPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Displays a form for adding a wiki to the current listing</title>
+    </portlet-info>
+  </portlet>
 
   <custom-portlet-mode>
     <description>Provides administration functions</description>

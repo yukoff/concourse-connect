@@ -43,79 +43,81 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.wiki.portlets.main;
+package com.concursive.connect.web.modules.wiki.portlets.addWiki;
 
-import com.concursive.commons.web.mvc.beans.GenericBean;
-import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.wiki.beans.WikiExportBean;
-import com.concursive.connect.web.modules.wiki.dao.Wiki;
-import com.concursive.connect.web.modules.wiki.dao.WikiList;
-import com.concursive.connect.web.modules.wiki.jobs.WikiExporterJob;
-import com.concursive.connect.web.portal.IPortletAction;
+import com.concursive.connect.web.modules.wiki.dao.WikiTemplateList;
+import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.*;
+import static com.concursive.connect.web.portal.PortalUtils.getUser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.quartz.Scheduler;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import java.sql.Connection;
-import java.util.Vector;
 
 /**
- * Action for exporting a wiki
+ * Add wiki form viewer
  *
  * @author matt rajkowski
- * @created November 4, 2008
+ * @created July 8, 2009
  */
-public class ExportAction implements IPortletAction {
+public class AddWikiFormViewer implements IPortletViewer {
 
-  // Logger
-  private static Log LOG = LogFactory.getLog(ExportAction.class);
+  private static Log LOG = LogFactory.getLog(AddWikiFormViewer.class);
 
-  public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
+  // Pages
+  private static final String VIEW_PAGE = "/portlets/wiki/add_wiki_form-view.jsp";
 
-    // Determine the project container to use
-    Project project = findProject(request);
+  // Preferences
+  private static final String PREF_TITLE = "title";
+  private static final String PREF_SHOW_TEMPLATES = "showTemplates";
+  private static final String PREF_TEMPLATES_TO_EXCLUDE = "exclude";
+
+  // Object Results
+  private static final String TITLE = "title";
+  private static final String TEMPLATE_LIST = "templateList";
+
+  public String doView(RenderRequest request, RenderResponse response) throws Exception {
+    // The JSP to show upon success
+    String defaultView = VIEW_PAGE;
+
+    // Get the project
+    Project project = PortalUtils.findProject(request);
     if (project == null) {
-      throw new Exception("Project is null");
+      return null;
     }
 
     // Check the user's permissions
     User user = getUser(request);
-    if (!ProjectUtils.hasAccess(project.getId(), user, "project-wiki-view")) {
-      throw new PortletException("Unauthorized to admin in this project");
+    if (!ProjectUtils.hasAccess(project.getId(), user, "project-wiki-add")) {
+      return null;
     }
 
-    // Parameters
-    WikiExportBean exportBean = (WikiExportBean) getFormBean(request, WikiExportBean.class);
+    // General display preferences
+    request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, "New Wiki Document"));
+    boolean showTemplates = "true".equals(request.getPreferences().getValue(PREF_SHOW_TEMPLATES, "true"));
+    String templatesToExclude = request.getPreferences().getValue(PREF_TEMPLATES_TO_EXCLUDE, null);
 
-    // Load the wiki page
-    Connection db = getConnection(request);
-    Wiki wiki = WikiList.queryBySubject(db, exportBean.getSubject(), project.getId());
+    // Determine the database connection to use
+    Connection db = PortalUtils.getConnection(request);
 
-    // Validate the bean
-    if (wiki.getId() == -1) {
-      exportBean.addError("actionError", "Wiki to export not found with your credentials");
-      return exportBean;
+    // Query the templates
+    if (showTemplates) {
+      WikiTemplateList templateList = new WikiTemplateList();
+      templateList.setProjectCategoryId(project.getCategoryId());
+      templateList.setEnabled(true);
+      if (templatesToExclude != null) {
+        templateList.setExclude(templatesToExclude);
+      }
+      templateList.buildList(db);
+      request.setAttribute(TEMPLATE_LIST, templateList);
     }
 
-    // Add the bean to the queue then update the user.
-    // The page will poll the progress
-    // Can stream result or queue it...
-    exportBean.setProjectId(project.getId());
-    exportBean.setWikiId(wiki.getId());
-    exportBean.setUserId(user.getId());
-    Scheduler scheduler = PortalUtils.getScheduler(request);
-    ((Vector) scheduler.getContext().get(WikiExporterJob.WIKI_EXPORT_ARRAY)).add(exportBean);
-    scheduler.triggerJob("wikiExporter", (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
-
-    // Redirect to another view
-    return PortalUtils.performRefresh(request, response, "/show/wiki-exports");
+    // JSP view
+    return defaultView;
   }
 }

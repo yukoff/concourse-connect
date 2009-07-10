@@ -106,6 +106,7 @@ public class Project extends GenericBean {
   public final static int PORTAL_TYPE_NEWS = 5;
   public final static int PORTAL_TYPE_WIKI = 6;
 
+  private int instanceId = -1;
   private int id = -1;
   private int groupId = -1;
   private int departmentId = -1;
@@ -297,6 +298,17 @@ public class Project extends GenericBean {
     pst.close();
   }
 
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
+  }
+
+  public void setInstanceId(String tmp) {
+    this.instanceId = Integer.parseInt(tmp);
+  }
 
   /**
    * Sets the Id attribute of the Project object
@@ -2493,7 +2505,7 @@ public class Project extends GenericBean {
       StringBuffer sql = new StringBuffer();
       sql.append(
           "INSERT INTO projects " +
-              "(" + (id > -1 ? "project_id, " : "") + "group_id, department_id, category_id, owner, enteredby, modifiedby, template_id, ");
+              "(" + (id > -1 ? "project_id, " : "") + "instance_id, group_id, department_id, category_id, owner, enteredby, modifiedby, template_id, ");
       if (entered != null) {
         sql.append("entered, ");
       }
@@ -2535,13 +2547,14 @@ public class Project extends GenericBean {
       if (level > -1) {
         sql.append("?, ");
       }
-      sql.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?," +
+      sql.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?," +
           "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       int i = 0;
       PreparedStatement pst = db.prepareStatement(sql.toString());
       if (id > -1) {
         pst.setInt(++i, id);
       }
+      DatabaseUtils.setInt(pst, ++i, instanceId);
       DatabaseUtils.setInt(pst, ++i, groupId);
       DatabaseUtils.setInt(pst, ++i, departmentId);
       DatabaseUtils.setInt(pst, ++i, categoryId);
@@ -3307,6 +3320,7 @@ public class Project extends GenericBean {
     features.setDescriptionMessages(rs.getString("messages_description"));
     systemDefault = rs.getBoolean("system_default");
     shortDescription = rs.getString("shortdescription");
+    instanceId = DatabaseUtils.getInt(rs, "instance_id", -1);
 
     //Set the related objects
     team.setProjectId(this.getId());

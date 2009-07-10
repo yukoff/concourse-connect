@@ -286,6 +286,7 @@ public class UserUtils {
       ProjectCategory people = projectCategoryList.getFromValue("People");
       // Create a user project profile
       Project project = new Project();
+      project.setInstanceId(user.getInstanceId());
       project.setGroupId(1);
       project.setApproved(true);
       project.setProfile(true);

@@ -90,17 +90,19 @@ public class InstanceCacheEntryFactory implements CacheEntryFactory {
       int pIndex = key.indexOf(":", dIndex);
       int cIndex = key.indexOf("/", dIndex);
       int deIndex = (pIndex != -1 ? pIndex : cIndex);
-      LOG.debug("Index Values: " + dIndex + "/" + pIndex + "/" + cIndex + "/" + deIndex);
-      String domainName = key.substring(dIndex, deIndex);
-      String context = key.substring(cIndex);
-      LOG.debug("Domain Name: " + domainName);
-      LOG.debug("Context: " + context);
-      // Query the table
-      list.setDomainName(domainName);
-      list.setContext(context);
-      list.buildList(db);
-      if (list.size() > 0) {
-        return list.get(0);
+      if (dIndex > -1 && pIndex > -1 && cIndex > -1 && deIndex > -1) {
+        LOG.debug("Index Values: " + dIndex + "/" + pIndex + "/" + cIndex + "/" + deIndex);
+        String domainName = key.substring(dIndex, deIndex);
+        String context = key.substring(cIndex);
+        LOG.debug("Domain Name: " + domainName);
+        LOG.debug("Context: " + context);
+        // Query the table
+        list.setDomainName(domainName);
+        list.setContext(context);
+        list.buildList(db);
+        if (list.size() > 0) {
+          return list.get(0);
+        }
       }
     } catch (Exception e) {
       throw new Exception(e);

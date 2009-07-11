@@ -89,7 +89,7 @@ public class InstanceCacheEntryFactory implements CacheEntryFactory {
       int dIndex = key.indexOf("://") + 3;
       int pIndex = key.indexOf(":", dIndex);
       int cIndex = key.indexOf("/", dIndex);
-      int eIndex = (pIndex != -1 ? pIndex : cIndex != -1 ? cIndex : key.length() - 1);
+      int eIndex = (pIndex != -1 ? pIndex : cIndex != -1 ? cIndex : key.length());
       if (dIndex > -1 && eIndex > -1) {
         LOG.info("Instance: " + key + " " + dIndex + "," + pIndex + "," + cIndex + "," + eIndex);
         String domainName = key.substring(dIndex, eIndex);

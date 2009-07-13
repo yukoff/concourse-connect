@@ -201,6 +201,10 @@ public class TransactionItem {
         ObjectUtils.setParam(object, "sortBy", thisMapping.getSortBy());
       }
     }
+    // Override the supplied instance on INSERTs or SELECTs
+    if (action == TransactionItem.INSERT || action == TransactionItem.SELECT) {
+      ObjectUtils.setParam(object, "instanceId", packetContext.getInstanceId());
+    }
   }
 
   /**

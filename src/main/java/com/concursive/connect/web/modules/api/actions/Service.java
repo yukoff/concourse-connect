@@ -90,6 +90,7 @@ public final class Service extends GenericAction {
     Connection db = null;
     String encoding = "UTF-8";
     PacketContext packetContext = new PacketContext();
+    packetContext.setInstanceId(getInstance(context).getId());
 
     ConnectionPool sqlDriver = (ConnectionPool) context.getServletContext().getAttribute("ConnectionPoolAPI");
 

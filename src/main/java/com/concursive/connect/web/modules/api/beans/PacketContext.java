@@ -83,6 +83,7 @@ public class PacketContext {
   private ApplicationPrefs applicationPrefs = null;
   private HttpServletResponse response = null;
   private OutputStream outputStream = null;
+  private int instanceId = -1;
 
   /**
    * Constructor for the PacketContext object
@@ -244,5 +245,13 @@ public class PacketContext {
 
   public void setScheduler(Scheduler scheduler) {
     this.scheduler = scheduler;
+  }
+
+  public int getInstanceId() {
+    return instanceId;
+  }
+
+  public void setInstanceId(int instanceId) {
+    this.instanceId = instanceId;
   }
 }

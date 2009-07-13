@@ -87,6 +87,10 @@ public class SaveProjectUpdateEvent extends ObjectHookComponent implements Compo
       // load the user that updated the project
       User user = UserUtils.loadUser(thisProject.getModifiedBy());
       Project userProfile = ProjectUtils.loadProject(user.getProfileProjectId());
+      if (userProfile == null) {
+        // NOTE: likely if using the API and using the API user
+        return false;
+      }
 
       // user is updating his/her own profile
       if (userProfile.getId() == thisProject.getId()) {

@@ -461,6 +461,9 @@ ${this.message:html}<br />
               if (thisProject.getProfile()) {
                 throw new RunScriptException("Listing is a user's profile");
               }
+              if (thisProject.getEnteredBy() == 1) {
+                throw new RunScriptException("Listing was created by API or Admin");
+              }
               ]]>
             </parameter>
           </parameters>

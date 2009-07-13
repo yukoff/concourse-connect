@@ -83,6 +83,10 @@ public class SaveProjectAddEvent extends ObjectHookComponent implements Componen
       //load the user that created the project
       User user = UserUtils.loadUser(thisProject.getEnteredBy());
       Project userProfile = ProjectUtils.loadProject(user.getProfileProjectId());
+      if (userProfile == null) {
+        // NOTE: likely if using the API and using the API user
+        return false;
+      }
 
       // Prepare the wiki links
       context.setParameter("user", WikiLink.generateLink(userProfile));

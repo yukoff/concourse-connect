@@ -59,6 +59,7 @@ import com.concursive.connect.indexer.IndexEvent;
 import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.web.modules.login.dao.Instance;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.InstanceUtils;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -66,8 +67,6 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import freemarker.template.Configuration;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.Scheduler;
@@ -674,9 +673,7 @@ public class GenericAction implements java.io.Serializable {
   }
 
   protected static Instance getInstance(ActionContext context) {
-    Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_INSTANCE_CACHE);
-    Element element = cache.get(getServerUrl(context));
-    return (Instance) element.getObjectValue();
+    return InstanceUtils.getInstance(getServerUrl(context));
   }
 
 }

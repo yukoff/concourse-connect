@@ -54,6 +54,7 @@ import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
 import com.concursive.connect.web.modules.blog.feed.BlogPostFeedEntry;
 import com.concursive.connect.web.modules.discussion.feed.DiscussionTopicFeedEntry;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.InstanceUtils;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
@@ -159,6 +160,7 @@ public class FeedCacheEntryFactory implements CacheEntryFactory {
 
         // Find feed items by querying the ProjectHistoryList
         ProjectHistoryList historyList = new ProjectHistoryList();
+        historyList.setInstanceId(InstanceUtils.getInstance(serverUrl).getId());
         PagedListInfo info = new PagedListInfo();
         info.setItemsPerPage(limit);
         historyList.setPagedListInfo(info);

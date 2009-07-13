@@ -205,13 +205,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="profile-portlet-body home " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to the site</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="profile-portlet-body home " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to the site</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -236,7 +236,7 @@
               <value>Badges=See our badges</value>
               <value>Calendar=View our upcoming events</value>
             </links>
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <linkTitle>true</linkTitle>
             <wikiForm>Group Information</wikiForm>
           </portlet>
@@ -268,7 +268,7 @@
           <portlet name="RecentProjectReviewsPortlet" cache="60" class="detailed-list ">
             <title>Featured Reviews</title>
             <limit>5</limit>
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <showProjectTitle>false</showProjectTitle>
             <sortByRating>desc</sortByRating>
             <sortByRatingAvg>desc</sortByRatingAvg>
@@ -343,13 +343,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="products " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to products</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="products " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to products</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -459,13 +459,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="services " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to services</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="services " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to services</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -575,13 +575,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="solutions " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to solutions</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="solutions " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to solutions</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -691,13 +691,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="partners " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to partners</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="partners " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to partners</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -815,13 +815,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="businesses " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to businesses</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="businesses " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to businesses</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -938,13 +938,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to organizations</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="organizations " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to organizations</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1057,13 +1057,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to committees</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="organizations " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to committees</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1157,13 +1157,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="sponsors " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to sponsors</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="sponsors " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to sponsors</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1281,13 +1281,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="groups " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to groups</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="groups " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to groups</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1404,13 +1404,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="people " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to people</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="people " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to people</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1522,13 +1522,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="places " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to places</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="places " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to places</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1646,13 +1646,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="events " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to events</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="events " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to events</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1770,13 +1770,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="ideas " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to ideas</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="ideas " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to ideas</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -1889,13 +1889,13 @@
         </column>
         <column width="auto" class="main">
           <portlet name="ProjectWikiContentPortlet" class="projects " isAdmin="true">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to projects</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="projects " cache="10" isAdmin="false">
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to projects</wiki>
             <showTitle>false</showTitle>
           </portlet>
@@ -3548,7 +3548,7 @@
         <column>
           <portlet name="ReportAsInappropriatePortlet">
             <title>Mark Inappropriate Request Form</title>
-            <project>main-profile</project>
+            <project>${main-profile.uniqueId}</project>
             <ticketCategory>Inappropriate Content</ticketCategory>
           </portlet>
         </column>

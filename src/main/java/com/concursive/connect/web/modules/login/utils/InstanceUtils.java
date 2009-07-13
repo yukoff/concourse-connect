@@ -43,76 +43,30 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.cache;
 
+package com.concursive.connect.web.modules.login.utils;
+
+import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.login.dao.Instance;
-import com.concursive.connect.web.modules.login.dao.InstanceList;
-import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.sql.Connection;
-
 /**
- * Provides the Application Instance
+ * Utilities for working with instances
  *
  * @author matt rajkowski
- * @created July 6, 2009
+ * @created July 13, 2009
  */
-public class InstanceCacheEntryFactory implements CacheEntryFactory {
+public class InstanceUtils {
 
-  private static final Log LOG = LogFactory.getLog(InstanceCacheEntryFactory.class);
+  private static Log LOG = LogFactory.getLog(InstanceUtils.class);
 
-  private CacheContext context = null;
-
-  public InstanceCacheEntryFactory(CacheContext context) {
-    this.context = context;
-  }
-
-  public Object createEntry(Object url) throws Exception {
-    // The current URL
-    // https://www.example.com/
-    // http://www.example.com/
-    // http://www.example.com:8080/
-    // http://www.example.com/context/
-    // http://www.example.com:8080/context/
-    if (url == null) {
-      LOG.warn("URL is null");
-      return new Instance();
-    }
-    Connection db = null;
-    try {
-      db = CacheUtils.getConnection(context);
-      InstanceList list = new InstanceList();
-      // Determine the domain name and context
-      String key = (String) url;
-      int dIndex = key.indexOf("://") + 3;
-      int pIndex = key.indexOf(":", dIndex);
-      int cIndex = key.indexOf("/", dIndex);
-      int eIndex = (pIndex != -1 ? pIndex : cIndex != -1 ? cIndex : key.length());
-      if (dIndex > -1 && eIndex > -1) {
-        LOG.info("Instance: " + key + " " + dIndex + "," + pIndex + "," + cIndex + "," + eIndex);
-        String domainName = key.substring(dIndex, eIndex);
-        String context = (cIndex != -1 ? key.substring(cIndex) : "/");
-        LOG.info("Domain Name: " + domainName);
-        LOG.info("Context: " + context);
-        // Query the table
-        list.setDomainName(domainName);
-        list.setContext(context);
-        list.buildList(db);
-        if (list.size() > 0) {
-          return list.get(0);
-        }
-      } else {
-        LOG.warn("Did not parse url: " + url);
-      }
-    } catch (Exception e) {
-      LOG.error("Couldn't determine instance", e);
-      return new Instance();
-    } finally {
-      CacheUtils.freeConnection(context, db);
-    }
-    return new Instance();
+  public static Instance getInstance(String url) {
+    Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_INSTANCE_CACHE);
+    Element element = cache.get(url);
+    return (Instance) element.getObjectValue();
   }
 }

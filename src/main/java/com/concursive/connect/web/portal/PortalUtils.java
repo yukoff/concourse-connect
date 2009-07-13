@@ -52,7 +52,6 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.commons.workflow.ObjectHookAction;
 import com.concursive.commons.workflow.ObjectHookManager;
-import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.cms.portal.dao.DashboardPage;
 import com.concursive.connect.cms.portal.dao.DashboardPortlet;
@@ -61,14 +60,13 @@ import com.concursive.connect.indexer.IndexEvent;
 import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.web.modules.login.dao.Instance;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.InstanceUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import freemarker.template.Configuration;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.Scheduler;
@@ -108,9 +106,7 @@ public class PortalUtils {
   }
 
   public static Instance getInstance(PortletRequest request) {
-    Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_INSTANCE_CACHE);
-    Element element = cache.get(getApplicationUrl(request));
-    return (Instance) element.getObjectValue();
+    return InstanceUtils.getInstance(getApplicationUrl(request));
   }
 
   public static Project getProject(PortletRequest request) {

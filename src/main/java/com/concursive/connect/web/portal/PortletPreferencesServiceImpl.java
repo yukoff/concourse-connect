@@ -52,6 +52,8 @@ import com.concursive.commons.xml.XMLUtils;
 import com.concursive.connect.cms.portal.dao.DashboardPortlet;
 import com.concursive.connect.cms.portal.dao.DashboardPortletPrefs;
 import com.concursive.connect.cms.portal.dao.DashboardPortletPrefsList;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.config.ApplicationPrefs;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pluto.PortletContainerException;
@@ -128,6 +130,8 @@ public class PortletPreferencesServiceImpl implements PortletPreferencesService 
                 Object object = null;
                 if ("project".equals(variable[0])) {
                   object = PortalUtils.getProject(request);
+                } else if ("main-profile".equals(variable[0])) {
+                  object = ProjectUtils.loadProject(PortalUtils.getApplicationPrefs(request).get(ApplicationPrefs.MAIN_PROFILE));
                 } else if ("user".equals(variable[0])) {
                   object = PortalUtils.getUser(request);
                 } else if ("system".equals(variable[0])) {

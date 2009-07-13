@@ -114,6 +114,7 @@ public class ProjectCopier {
         offset = bean.getRequestDate().getTime() - project.getRequestDate().getTime();
       }
       project.setId(-1);
+      project.setUniqueId(null);
       project.setGroupId(groupId);
       project.setEnteredBy(userId);
       project.setModifiedBy(userId);

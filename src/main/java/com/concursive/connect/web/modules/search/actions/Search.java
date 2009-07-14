@@ -225,10 +225,10 @@ public final class Search extends GenericAction {
         }
 
         // Generate a valid project title query string
-        String queryString = SearchUtils.generateProjectQueryString(search, getUserId(context));
+        String queryString = SearchUtils.generateProjectQueryString(search, getUserId(context), getInstance(context).getId());
 
         // Generate a valid data query string
-        String dataQueryString = SearchUtils.generateDataQueryString(search, db, getUserId(context), -1);
+        String dataQueryString = SearchUtils.generateDataQueryString(search, db, getUserId(context), -1, getInstance(context).getId());
 
         // provide other common items to the portlets
         context.getRequest().setAttribute("searchBean", search);

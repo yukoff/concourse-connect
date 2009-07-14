@@ -89,13 +89,13 @@ public class SessionValidator implements ISessionValidator {
   public User validateSession(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
     User thisUser = (User) request.getSession(false).getAttribute(Constants.SESSION_USER);
     LOG.debug("Has user session: " + (thisUser != null));
-    if (thisUser == null) {
+    if (thisUser == null || !thisUser.isLoggedIn()) {
       LOG.debug("Checking for cookie...");
       // Check cookie for session info and generate a logged in user
       String guid = CookieUtils.getCookieValue(request, Constants.COOKIE_USER_GUID);
       if (guid == null) {
         LOG.debug("No cookie found.");
-        return null;
+        return (thisUser == null ? null : thisUser);
       }
       LOG.debug("Cookie found with guid: " + guid);
       // Retrieve prefs to see if user with guid exists

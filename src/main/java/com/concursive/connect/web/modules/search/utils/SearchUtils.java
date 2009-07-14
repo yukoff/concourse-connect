@@ -218,7 +218,7 @@ public class SearchUtils {
    * @param userId
    * @return
    */
-  public static String generateProjectQueryString(SearchBean search, int userId) {
+  public static String generateProjectQueryString(SearchBean search, int userId, int instanceId) {
     // The search portal is being used
     String locationTerm = search.getParsedLocation();
 
@@ -271,6 +271,7 @@ public class SearchUtils {
 
     return
         "(approved:1) " +
+            (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +            
             "AND (" +
             "(guests:1)" +
             (userId > 0 ? " OR (participants:1)" : "") +
@@ -293,7 +294,7 @@ public class SearchUtils {
    * @return
    * @throws SQLException
    */
-  public static String generateDataQueryString(SearchBean search, Connection db, int userId, int specificProjectId) throws SQLException {
+  public static String generateDataQueryString(SearchBean search, Connection db, int userId, int specificProjectId, int instanceId) throws SQLException {
     // @todo get ids from user cache
     // get the projects for the user
     // get the project permissions for each project
@@ -326,6 +327,7 @@ public class SearchUtils {
     // Generate the string
     return
         (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") " : "") +
+            (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
             "AND " +
             "(" +
             "(" +

@@ -50,6 +50,7 @@
     <!-- User -->
     <map class="com.concursive.connect.web.modules.login.dao.User" id="user" shareKey="true" cached="true">
       <property alias="guid">id</property>
+      <property>instanceId</property>
       <property>groupId</property>
       <property>departmentId</property>
       <property>firstName</property>
@@ -423,6 +424,7 @@
     <!-- Project -->
     <map class="com.concursive.connect.web.modules.profile.dao.Project" id="project" shareKey="true" cached="true">
       <property alias="guid">id</property>
+      <property>instanceId</property>
       <property>groupId</property>
       <property>departmentId</property>
       <property lookup="projectCategory">categoryId</property>
@@ -687,7 +689,7 @@
     </map>
     <map class="com.concursive.connect.web.modules.reviews.dao.ProjectRatingList" id="reviewList"/>
 
-        <!-- Wiki -->
+    <!-- Wiki -->
     <map class="com.concursive.connect.web.modules.wiki.dao.Wiki" id="wiki" shareKey="true">
       <property alias="guid">id</property>
       <property lookup="project">projectId</property>
@@ -805,6 +807,8 @@
       <property>entered</property>
     </map>
     <map class="com.concursive.connect.web.modules.communications.dao.ProjectMessageList" id="projectMessageList"/>
+
+    <!-- Ticket -->
 
     <map class="com.concursive.connect.web.modules.issues.dao.ProjectTicketCountList" id="projectTicketCountList"/>
 
@@ -969,8 +973,37 @@
     <!-- com.concursive.connect.web.modules.documents.dao.FileItemVersion -->
     <!-- com.concursive.connect.web.modules.documents.dao.FileFolder -->
     <!-- com.concursive.connect.web.modules.documents.dao.FileDownloadLog -->
+    <map class="com.concursive.connect.web.modules.calendar.dao.Meeting" id="meeting" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="user">owner</property>
+      <property>title</property>
+      <property>location</property>
+      <property>startDate</property>
+      <property>endDate</property>
+      <property>isTentative</property>
+      <property>durationDays</property>
+      <property>durationHours</property>
+      <property>durationMinutes</property>
+      <property>byInvitationOnly</property>
+      <property>description</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAvg</property>
+      <property>inappropriateCount</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>dimdimMeetingId</property>
+      <property>dimdimUrl</property>
+      <property>dimdimUsername</property>
+      <property>dimdimPassword</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.calendar.dao.MeetingList" id="meetingList"/>
+
     <!-- com.concursive.connect.web.modules.lists.dao.TaskCategory -->
-    <!-- com.concursive.connect.web.modules.lists.dao.Task -->
+    <!-- com.concursive.connect.web.modules.lists.dao.Task (references?) -->
     <!-- taskcategory_project -->
     <!-- taskcategorylink_news -->
     <!-- com.concursive.connect.web.modules.plans.dao.Requirement -->

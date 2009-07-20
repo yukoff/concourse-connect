@@ -1002,7 +1002,98 @@
     </map>
     <map class="com.concursive.connect.web.modules.calendar.dao.MeetingList" id="meetingList"/>
 
-    <!-- com.concursive.connect.web.modules.lists.dao.TaskCategory -->
+    <!-- Lists -->
+    <map class="com.concursive.connect.web.modules.lists.dao.TaskCategory" id="list" shareKey="true">
+      <property alias="guid">id</property>
+      <property>description</property>
+      <property>defaultItem</property>
+      <property>level</property>
+      <property>enabled</property>
+      <property>linkModuleId</property>
+      <property lookup="project">linkItemId</property>
+      <property>taskCount</property>
+      <property>lastTaskEntered</property>
+      <property lookup="user">lastTaskEnteredBy</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.lists.dao.TaskCategoryList" id="listList">
+      <property value="4">linkModuleId</property>
+    </map>
+
+    <!-- List Items -->
+    <map class="com.concursive.connect.web.modules.lists.dao.Task" id="listItem" shareKey="true">
+      <property alias="guid">id</property>
+      <property lookup="user">enteredBy</property>
+      <property>priority</property>
+      <property>reminderId</property>
+      <property>sharing</property>
+      <property lookup="user">modifiedBy</property>
+      <property>estimatedLOE</property>
+      <property>estimatedLOEType</property>
+      <property lookup="user">owner</property>
+      <property lookup="list?">categoryId</property>
+      <property>age</property>
+      <property>notes</property>
+      <property>description</property>
+      <property>complete</property>
+      <property>enabled</property>
+      <property>dueDate</property>
+      <property>modified</property>
+      <property>entered</property>
+      <property>completeDate</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAverage</property>
+      <property>functionalArea</property>
+      <property>status</property>
+      <property>businessValue</property>
+      <property>complexity</property>
+      <property>targetRelease</property>
+      <property>targetSprint</property>
+      <property>loeRemaining</property>
+      <property>assignedPriority</property>
+      <property>linkModuleId</property>
+      <property>linkItemId</property>
+      <property>linkItemRating</property>
+      <property>contactId</property>
+      <property>ticketId</property>
+      <property lookup="project">projectId</property>
+      <property>hasLinks</property>
+      <property>contactName</property>
+      <property>ownerName</property>
+      <property>hasEnabledOwnerAccount</property>
+      <property>hasEnabledLinkAccount</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.lists.dao.TaskList" id="listItemList">
+      <property value="4">linkModuleId</property>
+    </map>
+
+    <!-- Promotions -->
+    <map class="com.concursive.connect.web.modules.promotions.dao.Ad" id="promotion" shareKey="true">
+      <property alias="guid">id</property>
+      <property>projectCategoryId</property>
+      <property lookup="adCategory">categoryId</property>
+      <property lookup="project">projectId</property>
+      <property>heading</property>
+      <property>briefDescription1</property>
+      <property>briefDescription2</property>
+      <property>content</property>
+      <property>webPage</property>
+      <property>destinationUrl</property>
+      <property>publishDate</property>
+      <property>expirationDate</property>
+      <property>entered</property>
+      <property lookup="user">enteredBy</property>
+      <property>modified</property>
+      <property lookup="user">modifiedBy</property>
+      <property>readCount</property>
+      <property>enabled</property>
+      <property>readDate</property>
+      <property>ratingCount</property>
+      <property>ratingValue</property>
+      <property>ratingAvg</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.promotions.dao.AdList" id="promotionList"/>
+
     <!-- com.concursive.connect.web.modules.lists.dao.Task (references?) -->
     <!-- taskcategory_project -->
     <!-- taskcategorylink_news -->

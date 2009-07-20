@@ -181,8 +181,8 @@ public class LuceneIndexer implements IIndexerService {
         ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.discussion.dao.TopicIndexer")).add(this, db, context);
         ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.discussion.dao.ReplyIndexer")).add(this, db, context);
         ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.documents.dao.FileItemIndexer")).add(this, db, context);
-        ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.lists.dao.TaskCategoryIndexer")).add(this, db, context);
-        ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.lists.dao.TaskIndexer")).add(this, db, context);
+//        ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.lists.dao.TaskCategoryIndexer")).add(this, db, context);
+//        ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.lists.dao.TaskIndexer")).add(this, db, context);
         ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.issues.dao.TicketIndexer")).add(this, db, context);
         ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.plans.dao.RequirementIndexer")).add(this, db, context);
         ((Indexer) getObjectIndexer("com.concursive.connect.web.modules.plans.dao.AssignmentFolderIndexer")).add(this, db, context);

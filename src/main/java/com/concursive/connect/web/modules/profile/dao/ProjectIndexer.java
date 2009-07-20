@@ -194,7 +194,7 @@ public class ProjectIndexer implements Indexer {
     } else {
       document.add(new Field("entered", String.valueOf(project.getEntered().getTime()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
-    if (modified) {
+    if (modified || project.getModified() == null) {
       document.add(new Field("modified", String.valueOf(System.currentTimeMillis()), Field.Store.YES, Field.Index.UN_TOKENIZED));
       document.add(new Field("newsDate", String.valueOf(System.currentTimeMillis()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     } else {

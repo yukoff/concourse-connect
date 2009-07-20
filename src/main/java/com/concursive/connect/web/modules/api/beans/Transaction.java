@@ -219,7 +219,10 @@ public class Transaction extends ArrayList<TransactionItem> {
     Exception exception = null;
     try {
       int count = 0;
-      db.setAutoCommit(false);
+      // Perform all the transaction items as a single database transaction
+      // NOTE: this caused the inline hook manager to fail because records
+      // have not been committed
+//      db.setAutoCommit(false);
       //Process the transaction items
       for (TransactionItem thisItem : this) {
         thisItem.setMeta(meta);
@@ -243,14 +246,14 @@ public class Transaction extends ArrayList<TransactionItem> {
           }
         }
       }
-      db.commit();
+//      db.commit();
     } catch (Exception e) {
       exception = e;
       LOG.error(e);
       appendErrorMessage("Transaction failed");
-      db.rollback();
+//      db.rollback();
     } finally {
-      db.setAutoCommit(true);
+//      db.setAutoCommit(true);
     }
 
     if (exception == null && errorMessage.length() == 0) {

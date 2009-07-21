@@ -64,11 +64,15 @@ boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
     }
   }
   function focusForm(form) {
-    form.username.focus();
+    if (form.username.value == "") {
+      form.username.focus();
+    } else {
+      form.password.focus();
+    }
     return false;
   }
 </script>
-<body onLoad="document.loginForm.username.focus()">
+<body onLoad="focusForm(document.loginForm)">
   <div class="portletWrapper">
     <div class="formContainer">
       <div class="leftColumn">

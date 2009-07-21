@@ -164,7 +164,7 @@
 %>
           <label>Total:</label>
           <span><%= newSize %>KB</span>
-          <label>${counter}. Choose Finish to finishing attaching the files.</label>
+          <label>${counter}. Choose Finish to attach the files.</label>
           <c:set var="counter" value="${counter+1}"/>
           <input type="button" value="Finish" onClick="finish();" class="submit" />
         </ccp:evaluate>

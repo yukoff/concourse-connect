@@ -155,7 +155,7 @@ public class SaveEventInviteesAction implements IPortletAction {
     }
 
     // schedule dimdim meeting
-    if (!scheduleDimdimMeeting(db, meetingInviteesBean)) {
+    if (meeting.getIsDimdim() && !scheduleDimdimMeeting(db, meetingInviteesBean)) {
       return meeting;
     }
 

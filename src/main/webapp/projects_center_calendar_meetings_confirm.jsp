@@ -153,22 +153,20 @@
           <p>Invites without a name and email address will not be sent an invitation.</p>
         </div>
       </c:if>
-
-
-      <p>To schedule the Dimdim meeting, you must have an account with the Dimdim server.
-        If you do not have one please <a href="http://www.dimdim.com" target="_blank">setup an account</a> with Dimdim.
-      Once you have an account, provide your Dimdim information.</p>
-
-      <%--
-      <label for="dimdimUrl">Dimdim URL <span class="required">*</span></label>
-      <input type="text" name="dimdimUrl" id="dimdimUrl" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUrl}"/>">
-      --%>
       
-      <label for="dimdimUsername">Dimdim Username <span class="required">*</span></label>
-      <input type="text" name="dimdimUsername" id="dimdimUsername" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUsername}"/>">
-      <label for="dimdimPassword">Dimdim Password <span class="required">*</span></label>
-      <input type="password" name="dimdimPassword" id="dimdimPassword" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimPassword}"/>" autocomplete="off">
-      
+      <c:if test="${meetingInviteesBean.meeting.isDimdim}">
+	      <p>To schedule the Dimdim meeting, you must have an account with the Dimdim server.
+	        If you do not have one please <a href="http://www.dimdim.com" target="_blank">setup an account</a> with Dimdim.
+	      Once you have an account, provide your Dimdim information.</p>
+	      <%--
+	      <label for="dimdimUrl">Dimdim URL <span class="required">*</span></label>
+	      <input type="text" name="dimdimUrl" id="dimdimUrl" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUrl}"/>">
+	      --%>
+	      <label for="dimdimUsername">Dimdim Username <span class="required">*</span></label>
+	      <input type="text" name="dimdimUsername" id="dimdimUsername" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUsername}"/>">
+	      <label for="dimdimPassword">Dimdim Password <span class="required">*</span></label>
+	      <input type="password" name="dimdimPassword" id="dimdimPassword" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimPassword}"/>" autocomplete="off">
+      </c:if>
     </fieldset>
     <input type="submit" class="submit" name="submitAction" value="<ccp:label name="button.save">Save</ccp:label>" onclick="return checkFormEventMeetingConfirm(this.form);" />
     <input type="submit" class="cancel" name="submitAction" value="Cancel" />

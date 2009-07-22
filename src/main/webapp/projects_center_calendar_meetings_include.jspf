@@ -122,109 +122,122 @@
               <%=toHtml(thisMeeting.getDescription()) %>
             </span>
           </c:if>
-          <c:if test="${thisMeeting.isDimdim}">
-            <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getInvitedList() %>" varStatus="loopStatus">
-              <c:if test="${loopStatus.first}"><br/>Invited: </c:if>
-              <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
-            </c:forEach>
-            <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getAcceptedList() %>" varStatus="loopStatus">
-           	  <c:if test="${loopStatus.first}"><br/>Accepted: </c:if>
-              <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
-            </c:forEach>
-            <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getTentativeList() %>" varStatus="loopStatus">
-           	  <c:if test="${loopStatus.first}"><br/>Tentative: </c:if>
-              <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
-            </c:forEach>
-            <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getDeclinedList() %>" varStatus="loopStatus">
-           	  <c:if test="${loopStatus.first}"><br/>Declined: </c:if>
-              <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
-            </c:forEach>
-            <ccp:debug value="done."/>
-            <%
-            // get calendar instance for the selected date on calendar
-            Calendar calCalendar = Calendar.getInstance(today.getTimeZone());
-            calCalendar.setTime(thisDay.getDate());
+          <br/>
+          Organized by: <ccp:username id="${thisMeeting.owner}" showProfile="true" />
+          <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getInvitedList() %>" varStatus="loopStatus">
+            <c:if test="${loopStatus.first}"><br/>Invited: </c:if>
+            <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
+          </c:forEach>
+          <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getAcceptedList() %>" varStatus="loopStatus">
+         	  <c:if test="${loopStatus.first}"><br/>Accepted: </c:if>
+            <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
+          </c:forEach>
+          <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getTentativeList() %>" varStatus="loopStatus">
+         	  <c:if test="${loopStatus.first}"><br/>Tentative: </c:if>
+            <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
+          </c:forEach>
+          <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getDeclinedList() %>" varStatus="loopStatus">
+         	  <c:if test="${loopStatus.first}"><br/>Declined: </c:if>
+            <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
+          </c:forEach>
+          <ccp:debug value="done."/>
+          <%
+          // get calendar instance for the selected date on calendar
+          Calendar calCalendar = Calendar.getInstance(today.getTimeZone());
+          calCalendar.setTime(thisDay.getDate());
 
-            // strip time from todays calendar
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            String strDate = simpleDateFormat.format(today.getTime());
-            today.setTime(simpleDateFormat.parse(strDate));
-            boolean isPastDate = calCalendar.compareTo(today) < 0 ? true : false;
-            MeetingAttendee currentAttendee = thisMeeting.getMeetingAttendeeList().getMeetingAttendee(User);
-            %>
-            <c:choose>
-              <c:when test="${!empty thisMeeting.dimdimMeetingId}">
-                <c:if test="<%= thisMeeting.getOwner()==User.getId() && !isPastDate %>">
-                  <br/><br/><a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_START %>)">Start the web meeting</a><br/>
-                  <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL %>)">Cancel the web meeting</a>
-                </c:if>
-                <c:if test="<%= currentAttendee!=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_INVITED && !isPastDate %>">
-                  <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Confirm that you will be attending</a><br/>
-                  <a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_TENTATIVE %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Mark your participation is tentative</a><br/>
-                  <a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_DECLINED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Decline this meeting</a><br/>
-                  <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_JOIN %>)">Join the web meeting</a><br/>
-                </c:if>
-                <c:if test="<%= currentAttendee!=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_ACCEPTED && !isPastDate %>">
-                  <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_TENTATIVE %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Mark your participation as tentative</a><br/>
-                  <a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_DECLINED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Decline this meeting</a><br/>
-                  <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_JOIN %>)">Join the web meeting</a><br/>
-                </c:if>
-                <c:if test="<%= currentAttendee!=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_TENTATIVE && !isPastDate %>">
-                  <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Confirm that you will be attending</a><br/>
-                  <a href="javascript:setMeetingStatus('${thisMeeting.id}', <%= MeetingAttendee.STATUS_DIMDIM_DECLINED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Decline this meeting</a><br/>
-                  <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_JOIN %>)">Join the web meeting</a><br/>
-                </c:if>
-                <c:if test="<%= currentAttendee!=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_DECLINED && !isPastDate %>">
-                  <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Confirm that you will be attending</a><br/>
-                  <a href="javascript:setMeetingStatus('${thisMeeting.id}', <%= MeetingAttendee.STATUS_DIMDIM_TENTATIVE %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Mark your participation as tentative</a><br/>
-                </c:if><br/>
-                <span class="required"><%= request.getSession().getAttribute("actionError"+thisMeeting.getId())!=null ? request.getSession().getAttribute("actionError"+thisMeeting.getId()) : "" %></span>
-                <% request.getSession().removeAttribute("actionError"+thisMeeting.getId()); %>
-              </c:when>
-              <c:otherwise>
-                <c:if test="${thisMeeting.owner == User.id}">
-                  <div class="portlet-message-alert">
-                    <p>This web meeting is incomplete, please modify the meeting to schedule it.</p>
-                  </div>
-                </c:if>
-              </c:otherwise>
-            </c:choose>
-          </c:if>
+          // strip time from todays calendar
+          SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+          String strDate = simpleDateFormat.format(today.getTime());
+          today.setTime(simpleDateFormat.parse(strDate));
+          boolean isPastDate = calCalendar.compareTo(today) < 0 ? true : false;
+          MeetingAttendee currentAttendee = thisMeeting.getMeetingAttendeeList().getMeetingAttendee(User);
+          %>
+          <c:choose>
+            <c:when test="${!thisMeeting.isDimdim || (thisMeeting.isDimdim && !empty thisMeeting.dimdimMeetingId)}">
+              <c:if test="<%= thisMeeting.getOwner()==User.getId() && !isPastDate %>"><br/><br/>
+                <c:choose>
+                  <c:when test="${thisMeeting.isDimdim}">
+                    <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_START %>)">Start the web meeting</a><br/>
+                    <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL %>)">Cancel the web meeting</a>
+                  </c:when>
+                  <c:otherwise>
+                    <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL %>)">Cancel the meeting</a>
+                  </c:otherwise>
+                </c:choose>
+              </c:if>
+              <c:if test="<%= currentAttendee !=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_INVITED && !isPastDate %>">
+                <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Confirm that you will be attending</a><br/>
+                <a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_TENTATIVE %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Mark your participation is tentative</a><br/>
+                <a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_DECLINED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Decline this meeting</a><br/>
+				        <c:if test="${thisMeeting.isDimdim}">
+	                <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_JOIN %>)">Join the web meeting</a>				        
+	              </c:if><br/>
+              </c:if>
+              <c:if test="<%= currentAttendee!=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_ACCEPTED && !isPastDate %>">
+                <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_TENTATIVE %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Mark your participation as tentative</a><br/>
+                <a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_DECLINED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Decline this meeting</a><br/>
+                <c:if test="${thisMeeting.isDimdim}">
+	                <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_JOIN %>)">Join the web meeting</a>				        
+	              </c:if><br/>
+              </c:if>
+              <c:if test="<%= currentAttendee!=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_TENTATIVE && !isPastDate %>">
+                <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Confirm that you will be attending</a><br/>
+                <a href="javascript:setMeetingStatus('${thisMeeting.id}', <%= MeetingAttendee.STATUS_DIMDIM_DECLINED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Decline this meeting</a><br/>
+                <c:if test="${thisMeeting.isDimdim}">
+	                <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_JOIN %>)">Join the web meeting</a>				        
+	              </c:if><br/>
+              </c:if>
+              <c:if test="<%= currentAttendee!=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_DECLINED && !isPastDate %>">
+                <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Confirm that you will be attending</a><br/>
+                <a href="javascript:setMeetingStatus('${thisMeeting.id}', <%= MeetingAttendee.STATUS_DIMDIM_TENTATIVE %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Mark your participation as tentative</a><br/>
+              </c:if><br/>
+              <span class="required"><%= request.getSession().getAttribute("actionError"+thisMeeting.getId())!=null ? request.getSession().getAttribute("actionError"+thisMeeting.getId()) : "" %></span>
+              <% request.getSession().removeAttribute("actionError"+thisMeeting.getId()); %>
+            </c:when>
+            <c:otherwise>
+              <c:if test="${thisMeeting.owner == User.id}">
+                <div class="portlet-message-alert">
+                  <p>This web meeting is incomplete, please modify the meeting to schedule it.</p>
+                </div>
+              </c:if>
+            </c:otherwise>
+          </c:choose>
         </div>
-	    <div class="userInputFooter">
-	      <ccp:evaluate if="<%= thisMeeting.getRatingCount() > 0 %>">
-	        <p>(<%= thisMeeting.getRatingValue() %> out of <%= thisMeeting.getRatingCount() %> <%= thisMeeting.getRatingCount() == 1 ? " person" : " people"%> found this event useful.)</p>
-	      </ccp:evaluate>
-	      <ccp:evaluate if="<%= thisMeeting.getInappropriateCount() > 0 && ProjectUtils.hasAccess(project.getId(), User, \"project-calendar-add\")%>">
-	        <p>(<%= thisMeeting.getInappropriateCount() %><%= thisMeeting.getInappropriateCount() == 1? " person" : " people"%> found this event inappropriate.)</p>
-	      </ccp:evaluate>
-	        <%-- any user who is not the author of the event can mark the event as useful  --%>
-	      <ccp:permission name="project-calendar-view">
-	        <ccp:evaluate if="<%= (thisMeeting.getEnteredBy() != User.getId())  && User.isLoggedIn() %>">
-	          <p>Are you interested in this event?</p>
-	          <p>
-              <portlet:renderURL var="ratingUrl" windowState="maximized">
-                <portlet:param name="portlet-command" value="event-setRating"/>
-                <portlet:param name="id" value="${thisMeeting.id}"/>
-                <portlet:param name="v" value="1"/>
-                <portlet:param name="out" value="text"/>
-              </portlet:renderURL>
-              <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisMeeting.getId() %>','message');">Yes</a>&nbsp;
-              <portlet:renderURL var="ratingUrl" windowState="maximized">
-                <portlet:param name="portlet-command" value="event-setRating"/>
-                <portlet:param name="id" value="${thisMeeting.id}"/>
-                <portlet:param name="v" value="0"/>
-                <portlet:param name="out" value="text"/>
-              </portlet:renderURL>
-              <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisMeeting.getId() %>','message');">No</a>&nbsp;
-              <ccp:evaluate if="<%= thisMeeting.getId() > -1 && User.isLoggedIn() %>">
-                <a href="javascript:showPanel('Mark this post as inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=calendarevent&pid=${project.id}&id=${thisMeeting.id}',700)">Report this as inappropriate</a>
-              </ccp:evaluate>
-	 		      </p>
-	          <div id="message_<%= thisMeeting.getId() %>"></div>
-	        </ccp:evaluate>
-	      </ccp:permission>
-	    </div>
+		    <div class="userInputFooter">
+		      <ccp:evaluate if="<%= thisMeeting.getRatingCount() > 0 %>">
+		        <p>(<%= thisMeeting.getRatingValue() %> out of <%= thisMeeting.getRatingCount() %> <%= thisMeeting.getRatingCount() == 1 ? " person" : " people"%> found this event useful.)</p>
+		      </ccp:evaluate>
+		      <ccp:evaluate if="<%= thisMeeting.getInappropriateCount() > 0 && ProjectUtils.hasAccess(project.getId(), User, \"project-calendar-add\")%>">
+		        <p>(<%= thisMeeting.getInappropriateCount() %><%= thisMeeting.getInappropriateCount() == 1? " person" : " people"%> found this event inappropriate.)</p>
+		      </ccp:evaluate>
+		        <%-- any user who is not the author of the event can mark the event as useful  --%>
+		      <ccp:permission name="project-calendar-view">
+		        <ccp:evaluate if="<%= (thisMeeting.getEnteredBy() != User.getId())  && User.isLoggedIn() %>">
+		          <p>Are you interested in this event?</p>
+		          <p>
+	              <portlet:renderURL var="ratingUrl" windowState="maximized">
+	                <portlet:param name="portlet-command" value="event-setRating"/>
+	                <portlet:param name="id" value="${thisMeeting.id}"/>
+	                <portlet:param name="v" value="1"/>
+	                <portlet:param name="out" value="text"/>
+	              </portlet:renderURL>
+	              <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisMeeting.getId() %>','message');">Yes</a>&nbsp;
+	              <portlet:renderURL var="ratingUrl" windowState="maximized">
+	                <portlet:param name="portlet-command" value="event-setRating"/>
+	                <portlet:param name="id" value="${thisMeeting.id}"/>
+	                <portlet:param name="v" value="0"/>
+	                <portlet:param name="out" value="text"/>
+	              </portlet:renderURL>
+	              <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisMeeting.getId() %>','message');">No</a>&nbsp;
+	              <ccp:evaluate if="<%= thisMeeting.getId() > -1 && User.isLoggedIn() %>">
+	                <a href="javascript:showPanel('Mark this post as inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=calendarevent&pid=${project.id}&id=${thisMeeting.id}',700)">Report this as inappropriate</a>
+	              </ccp:evaluate>
+		 		      </p>
+		          <div id="message_<%= thisMeeting.getId() %>"></div>
+		        </ccp:evaluate>
+		      </ccp:permission>
+		    </div>
       </li>
       <% }
       } %>

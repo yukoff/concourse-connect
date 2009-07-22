@@ -734,12 +734,9 @@ public class Meeting extends GenericBean {
           "SET title = ?, " +
           "location = ?, end_date = ?, start_date = ?, is_tentative = ?, " +
           "modifiedby = ?, modified = CURRENT_TIMESTAMP, by_invitation_only = ?, " +
-          "is_dimdim = ? ";
+          "is_dimdim = ?, dimdim_meetingid = ? ";
       if (description != null) {
         sql += ", description = ? ";
-      }
-      if (dimdimMeetingId != null) {
-        sql += ", dimdim_meetingid = ? ";
       }
       if (dimdimUrl != null) {
         sql += ", dimdim_url = ? ";
@@ -761,11 +758,9 @@ public class Meeting extends GenericBean {
       pst.setInt(++i, this.getModifiedBy());
       pst.setBoolean(++i, byInvitationOnly);
       pst.setBoolean(++i, isDimdim);
+      pst.setString(++i, dimdimMeetingId);
       if (description != null) {
         pst.setString(++i, description);
-      }
-      if (dimdimMeetingId != null) {
-        pst.setString(++i, dimdimMeetingId);
       }
       if (dimdimUrl != null) {
         pst.setString(++i, dimdimUrl);

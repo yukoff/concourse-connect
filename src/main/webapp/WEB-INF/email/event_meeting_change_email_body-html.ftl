@@ -10,7 +10,7 @@
       </tr>
       <tr>
         <td style="padding:10px 20px; background:#fff; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8">
-          <p>A change has been made to the web meeting, ${meeting.title?html}, by ${host.nameFirstLast?html} of ${startDate?html}</p>
+          <p>A change has been made to the <#if meeting.isDimdim>web</#if> meeting, ${meeting.title?html}, by ${host.nameFirstLast?html} of ${startDate?html}</p>
           <p>You can view more information about the meeting here:<br />
             <a href="${eventUrl}" target="_blank">${eventUrl}</a></p>
           <p>To review our privacy and security policies, please visit <a href="${url}" target="_blank">${url}</a></p>

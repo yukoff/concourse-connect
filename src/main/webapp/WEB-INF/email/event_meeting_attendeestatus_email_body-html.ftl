@@ -10,7 +10,7 @@
       </tr>
       <tr>
         <td style="padding:10px 20px; background:#fff; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8">
-          <p>${invitee.nameFirstLast?html} <strong>${status?html}</strong> the invitation to your meeting, ${meeting.title?html}, of ${startDate?html}.</p>
+          <p>${invitee.nameFirstLast?html} <strong>${status?html}</strong> the invitation to your <#if meeting.isDimdim>web</#if> meeting, ${meeting.title?html}, of ${startDate?html}.</p>
           <p>You can check the current status of all the participants here:<br />
             <a href="${eventUrl}" target="_blank">${eventUrl}</a></p>
           <p>To review our privacy and security policies, please visit <a href="${url}" target="_blank">${url}</a></p>

@@ -111,7 +111,7 @@ public class DimDimUtils {
       //get meeting host
       User hostUser = UserUtils.loadUser(meeting.getOwner());
 
-      //comma seperate the attendee mailids for dimdim
+      //comma separate the attendee mailids for dimdim
       String attendeeMailIds = "";
       Set<User> userSet = meetingInviteesBean.getMembersFoundList().keySet();
       for (User user : userSet) {
@@ -163,8 +163,6 @@ public class DimDimUtils {
         //post to dimdim server and process response
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_EDIT;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
-
-        //int resSuccess = dimdimResp.getInt("code");
         String resSuccess = dimdimResp.getString("code");
         String resText = dimdimResp.getJSONObject("data").getString("text");
 
@@ -208,8 +206,6 @@ public class DimDimUtils {
         //post to dimdim server and process response
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_SCHEDULE;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
-
-        //int resSuccess = dimdimResp.getInt("code");
         String resSuccess = dimdimResp.getString("code");
         String resText = dimdimResp.getJSONObject("data").getString("text");
 
@@ -235,7 +231,6 @@ public class DimDimUtils {
         //post to dimdim server and process response
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_JOIN;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
-        //int resSuccess = dimdimResp.getInt("code");
         String resSuccess = dimdimResp.getString("code");
         String resText = dimdimResp.getJSONObject("data").getString("text");
 
@@ -261,8 +256,6 @@ public class DimDimUtils {
         //post to dimdim server and process response
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_START;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
-
-        //int resSuccess = dimdimResp.getInt("code");
         String resSuccess = dimdimResp.getString("code");
         String resText = dimdimResp.getJSONObject("data").getString("text");
 
@@ -304,9 +297,9 @@ public class DimDimUtils {
   }
 
   /**
-   * Removes leading and trailing commas from a comma seperated string
+   * Removes leading and trailing commas from a comma separated string
    *
-   * @param in - comma seperated input string
+   * @param in - comma separated input string
    * @return Returns the string with leading and trailing commas removed. If the input string is empty or null then the same string is returned
    */
   public static String trimComma(String in) {
@@ -345,7 +338,7 @@ public class DimDimUtils {
       Key key = (Key) element.getObjectValue();
       return PrivateString.encrypt(key, password);
     } catch (Exception e) {
-      // the password may not be encypted
+      // the password may not be encrypted
       return password;
     }
   }
@@ -367,7 +360,7 @@ public class DimDimUtils {
       Key key = (Key) element.getObjectValue();
       return PrivateString.decrypt(key, password);
     } catch (Exception e) {
-      // the password may not be encypted
+      // the password may not be encrypted
       return password;
     }
   }

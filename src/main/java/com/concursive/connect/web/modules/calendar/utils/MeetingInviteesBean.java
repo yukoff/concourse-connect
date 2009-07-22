@@ -89,8 +89,6 @@ public class MeetingInviteesBean extends GenericBean {
   private int action = -1;
   private boolean isModifiedMeeting = false;
   private boolean previousMeetingIsDimidim = false;
-  //private String previousMeetingTitle = null;
-  //private Timestamp previousMeetingStartDate = null;
   private UserList cancelledUsers = null;
   private UserList meetingChangeUsers = null;
   private UserList rejectedUsers = null;
@@ -159,20 +157,6 @@ public class MeetingInviteesBean extends GenericBean {
   public boolean getPreviousMeetingIsDimidim() {
     return previousMeetingIsDimidim;
   }
-
-//	/*
-//	 * Retruns the previous meeting title if the meeting values have changed after update
-//	 */
-//	public String getPreviousMeetingTitle() {
-//		return previousMeetingTitle;
-//	}
-
-//	/*
-//	 * Returns the previous meeting startdate if the meeting values have changed after update
-//	 */
-//	public Timestamp getPreviousMeetingStartDate() {
-//		return previousMeetingStartDate;
-//	}
 
   /*
     * Returns the userlist for sending meeting cancelled mail
@@ -262,49 +246,39 @@ public class MeetingInviteesBean extends GenericBean {
     addAttendeeToCancelledUsers(meetingAttendeeList);
   }
 
-  /*
-      * Compares current invitees list with previous invitee list for update meeting
-      */
-  public int compareInvitees(Connection db, ActionRequest request, Meeting previousMeeting)
+  /**
+   * @param db              - Connection object
+   * @param request         - request object
+   * @param previousMeeting - previous meeting
+   * @return - true if the meeting has been modified.
+   * @throws SQLException
+   */
+  public boolean compareInvitees(Connection db, ActionRequest request, Meeting previousMeeting)
       throws SQLException {
+    boolean updated = false;
 
-    int updated = 0;
-    // delete all attendees and update meeting if dimdim checkbox is not checked.
-    if (!meeting.getIsDimdim()) {
-      updated = meeting.update(db);
-
-      //check if updated and if the meeting was a dimdim meeting
-      if (updated > 0 && previousMeeting.getIsDimdim()) {
-        //get all attendee list
-        meetingAttendeeList = new MeetingAttendeeList();
-        meetingAttendeeList.setMeetingId(meeting.getId());
-        meetingAttendeeList.setDimdimAttendees(true);
-        meetingAttendeeList.buildList(db);
-
-        //delete the attendees
-        meetingAttendeeList.delete(db, meeting.getId());
-
-        //add them to cancel user list to send mail
-        addAttendeeToCancelledUsers(meetingAttendeeList);
-
-        //compare if meeting record has been changed
-        isMeetingModified(previousMeeting);
-        previousMeetingIsDimidim = true;
-      }
-
-      return updated;
-    }
-
+    //get all attendee list
     meetingAttendeeList = new MeetingAttendeeList();
     meetingAttendeeList.setMeetingId(meeting.getId());
     meetingAttendeeList.setDimdimAttendees(true);
     meetingAttendeeList.buildList(db);
 
-    //check for any new invitees added to the list
-    boolean inserted = processInvitees(db, request);
+    if (!meeting.getIsDimdim()) {
+      meeting.setDimdimMeetingId(null);
+    }
 
-    //check if invitees were processed
-    if (inserted) {
+    //Check if there are meeting attendees.
+    if (!StringUtils.hasText(meeting.getMeetingInvitees().trim())) {
+      if (meeting.update(db) > 0) {
+        updated = true;
+      }
+    } else {
+      //check for any new invitees added to the list
+      updated = processInvitees(db, request);
+    }
+
+    //check for removed users
+    if (updated) {
       //check if the meeting has been modified
       isMeetingModified(previousMeeting);
 
@@ -312,25 +286,22 @@ public class MeetingInviteesBean extends GenericBean {
       for (MeetingAttendee meetingAttendee : meetingAttendeeList) {
         meetingAttendee.delete(db);
       }
-
-      //compare if meeting record has been changed
+      //add the users to invitation rejected list
       addAttendeeToRejectedUsers(meetingAttendeeList);
-      return 1;
     }
 
     return updated;
   }
-
 
   /*
     * Processes through the invitee list for adding attendees
     */
   public boolean processInvitees(Connection db, ActionRequest request) throws SQLException {
     boolean inserted = false;
-    String meetingInvitees = meeting.getMeetingInvitees();
+    String meetingInvitees = meeting.getMeetingInvitees().trim();
 
     // check if dimdim option is not selected.
-    if (meetingInvitees.length() < 1 || !meeting.getIsDimdim()) {
+    if (meetingInvitees.length() < 1) {
       // insert the meeting without any invitees
       if (meeting.getId() == -1) {
         inserted = meeting.insert(db);
@@ -339,7 +310,9 @@ public class MeetingInviteesBean extends GenericBean {
     }
 
     // find and set the dimdim credentials for the host from previous meeting
-    setDimdimCredentials(db);
+    if (meeting.getIsDimdim()) {
+      setDimdimCredentials(db);
+    }
 
     // check insert action for new meeting
     if (meeting.getId() == -1) {
@@ -395,7 +368,7 @@ public class MeetingInviteesBean extends GenericBean {
     }
 
     //return true after committing if there are members to be confirmed or if update has been successful
-    return hasInviteeToConfirm() || updated > 0;
+    return hasInviteesToConfirm() || updated > 0;
   }
 
   /*
@@ -489,7 +462,7 @@ public class MeetingInviteesBean extends GenericBean {
         meetingAttendeeList.remove(i);
 
         // if valid dimdim meeting the send meeting change mail otherwise send invitation mail.
-        if (meeting.getDimdimMeetingId() == null || "".equals(meeting.getDimdimMeetingId())) {
+        if (meeting.getIsDimdim() && !StringUtils.hasText(meeting.getDimdimMeetingId())) {
           addToMemberFoundList(user, invitee);
         } else {
           meetingChangeUsers.add(user);
@@ -500,7 +473,7 @@ public class MeetingInviteesBean extends GenericBean {
     }
 
     // return if the user has already been invited.
-    if (isInMemberFoundList(user)) {
+    if (isMemberInvited(user)) {
       return false;
     }
 
@@ -564,9 +537,16 @@ public class MeetingInviteesBean extends GenericBean {
   /*
     * Checks if the user has already been invited
     */
-  private boolean isInMemberFoundList(User user) {
+  private boolean isMemberInvited(User user) {
+    //check in new mail list
     Set<User> keySet = membersFoundList.keySet();
     for (User key : keySet) {
+      if (key.getId() == user.getId())
+        return true;
+    }
+
+    //check in changed mail list
+    for (User key : meetingChangeUsers) {
       if (key.getId() == user.getId())
         return true;
     }
@@ -574,7 +554,7 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /**
-   * Add members to multple member found list
+   * Add members to multiple member found list
    *
    * @param invitee  - As entered by the user
    * @param userList - List of users to add.
@@ -594,7 +574,7 @@ public class MeetingInviteesBean extends GenericBean {
   private void removeInvitedMembers(UserList userList) {
     for (int i = 0; i < userList.size();) {
       User thisUser = userList.get(i);
-      if (meeting.getOwner() == thisUser.getId() || isInMemberFoundList(thisUser)) {
+      if (meeting.getOwner() == thisUser.getId() || isMemberInvited(thisUser)) {
         userList.remove(i);
         continue;
       }
@@ -607,7 +587,7 @@ public class MeetingInviteesBean extends GenericBean {
    */
   private void setDimdimCredentials(Connection db) throws SQLException {
     //check if credentials are already set for the meeting.
-    if (meeting.getDimdimUrl() != null || meeting.getDimdimUsername() != null || meeting.getDimdimPassword() != null) {
+    if (StringUtils.hasText(meeting.getDimdimUrl()) || StringUtils.hasText(meeting.getDimdimUsername()) || StringUtils.hasText(meeting.getDimdimPassword())) {
       return;
     }
 
@@ -659,9 +639,9 @@ public class MeetingInviteesBean extends GenericBean {
     //check if this user is present in multiple member found list
     Set<String> keySet = membersMultipleList.keySet();
 
-    Iterator iterator = keySet.iterator();
+    Iterator<String> iterator = keySet.iterator();
     while (iterator.hasNext()) {
-      String key = (String) iterator.next();
+      String key = iterator.next();
       UserList userList = membersMultipleList.get(key);
       removeInvitedMembers(userList);
       if (userList.isEmpty()) {
@@ -742,17 +722,15 @@ public class MeetingInviteesBean extends GenericBean {
    *
    * @return false - if all invitees have been processed and dimdim credentials are also available
    */
-  public boolean hasInviteeToConfirm() {
-    return meeting.getIsDimdim() && (!membersNotFoundList.isEmpty() || !membersMultipleList.isEmpty() ||
-        "".equals(meeting.getDimdimUrl()) || "".equals(meeting.getDimdimUsername()) ||
-        "".equals(meeting.getDimdimPassword()));
+  public boolean hasInviteesToConfirm() {
+    return !membersNotFoundList.isEmpty() || !membersMultipleList.isEmpty();
   }
 
   /**
    * Checks the values of previous and current meeting
    *
-   * @param previousMeeting - previous meeting to be compared. returns false if the parameter is null
-   * @return - true if changed and sets previousMeetingTitle, previousMeetingStartDate and isModifiedMeeting values
+   * @param previousMeeting - previous meeting to be compared.
+   * @return - true if previousMeeting is not null and current meeting values have changed. Sets isModifiedMeeting to true
    */
   private boolean isMeetingModified(Meeting previousMeeting) {
     if (previousMeeting == null) {
@@ -765,16 +743,21 @@ public class MeetingInviteesBean extends GenericBean {
     if (!meeting.getDescription().equalsIgnoreCase((previousMeeting.getDescription()))) {
       return true;
     }
+    if (!meeting.getLocation().equalsIgnoreCase((previousMeeting.getLocation()))) {
+      return true;
+    }
     if (meeting.getStartDate().compareTo(previousMeeting.getStartDate()) != 0) {
       return true;
     }
     if (meeting.getEndDate().compareTo(previousMeeting.getEndDate()) != 0) {
       return true;
     }
+    if (meeting.getIsDimdim() != previousMeeting.getIsDimdim()) {
+      return true;
+    }
     isModifiedMeeting = false;
     return false;
   }
-
 
   /**
    * Changes the status of a meeting attendee
@@ -797,6 +780,10 @@ public class MeetingInviteesBean extends GenericBean {
     meetingAttendeeList.setUserId(user.getId());
     meetingAttendeeList.setDimdimAttendees(true);
     meetingAttendeeList.buildList(db);
+
+    if (meetingAttendeeList.size() < 1) {
+      return false;
+    }
 
     MeetingAttendee meetingAttendee = meetingAttendeeList.get(0);
     meetingAttendee.setDimdimStatus(meetingStatus);

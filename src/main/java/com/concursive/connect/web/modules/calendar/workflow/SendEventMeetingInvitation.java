@@ -48,7 +48,6 @@ package com.concursive.connect.web.modules.calendar.workflow;
 
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
-import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
@@ -101,16 +100,21 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
         return false;
       }
 
-      //check if dimdim meeting
-      if (!meetingInviteesBean.getMeeting().getIsDimdim()) {
-        if (!meetingInviteesBean.getPreviousMeetingIsDimidim()) {
-          LOG.error("The meeting is not a web meeting.");
-          return false;
-        }
+      //check mail is to be send
+      if (meetingInviteesBean.getAction() != DimDimUtils.ACTION_MEETING_STATUS_CHANGE &&
+          meetingInviteesBean.getMeetingChangeUsers().isEmpty() &&
+          meetingInviteesBean.getMembersFoundList().isEmpty() &&
+          meetingInviteesBean.getRejectedUsers().isEmpty() &&
+          meetingInviteesBean.getCancelledUsers().isEmpty()) {
+        return false;
       }
 
       //get meeting host
       hostUser = UserUtils.loadUser(meetingInviteesBean.getMeeting().getOwner());
+      if (hostUser == null) {
+        LOG.error("Cannot find meeting host details.");
+        return false;
+      }
 
       //mail settings
       Map<String, String> prefs = context.getApplicationPrefs();
@@ -207,6 +211,7 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       templateBody.process(bodyMap, bodyTextWriter);
       message.setSubject(subjectTextWriter.toString());
       message.setBody(bodyTextWriter.toString());
+      LOG.debug(bodyTextWriter.toString());
 
       //send mail
       if (message.send() == 0) {
@@ -222,11 +227,6 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     * Sends the meeting cancelled mail to attendees
     */
   private boolean sendMeetingCancellationMail() throws Exception {
-    // Check if the meeting had been scheduled with Dimdim before sending a cancel notice
-    if (!StringUtils.hasText(meetingInviteesBean.getMeeting().getDimdimMeetingId())) {
-      return false;
-    }
-
     LOG.debug("Trying to send meeting cancellation mail");
 
     //set mail templates
@@ -251,6 +251,7 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       templateBody.process(bodyMap, bodyTextWriter);
       message.setSubject(subjectTextWriter.toString());
       message.setBody(bodyTextWriter.toString());
+      LOG.debug(bodyTextWriter.toString());
 
       //send mail
       if (message.send() == 0) {
@@ -292,6 +293,7 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     templateBody.process(bodyMap, bodyTextWriter);
     message.setSubject(subjectTextWriter.toString());
     message.setBody(bodyTextWriter.toString());
+    LOG.debug(bodyTextWriter.toString());
 
     //set replyto and to mailids
     message.setReplyTo(inviteeUser.getEmail(), inviteeUser.getNameFirstLast());
@@ -337,6 +339,7 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
         templateBody.process(bodyMap, bodyTextWriter);
         message.setSubject(subjectTextWriter.toString());
         message.setBody(bodyTextWriter.toString());
+        LOG.debug(bodyTextWriter.toString());
 
         //send mail
         if (message.send() == 0) {
@@ -379,6 +382,7 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       templateBody.process(bodyMap, bodyTextWriter);
       message.setSubject(subjectTextWriter.toString());
       message.setBody(bodyTextWriter.toString());
+      LOG.debug(bodyTextWriter.toString());
 
       //send mail
       if (message.send() == 0) {
@@ -405,5 +409,4 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
   public String getDescription() {
     return "Sends event meeting mails to meeting attendees";
   }
-
 }

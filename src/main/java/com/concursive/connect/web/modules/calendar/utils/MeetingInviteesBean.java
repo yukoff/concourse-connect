@@ -81,7 +81,6 @@ public class MeetingInviteesBean extends GenericBean {
   private static final String NOT_MATCHED_PROFILE = "profileNotMatched";
   private static final String NOT_MATCHED_EMAIL = "emailNotMatched";
   private static final String NOT_MATCHED_NAME = "nameNotMatched";
-
   private Meeting meeting = null;
   private Project project = null;
   private MeetingAttendeeList meetingAttendeeList = null;
@@ -92,7 +91,6 @@ public class MeetingInviteesBean extends GenericBean {
   private UserList cancelledUsers = null;
   private UserList meetingChangeUsers = null;
   private UserList rejectedUsers = null;
-
   private Map<User, String> membersFoundList = null;
   private Map<String, String> membersNotFoundList = null;
   private Map<String, UserList> membersMultipleList = null;
@@ -141,8 +139,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * Returns true if the meeting values have been modified.
-    */
+   * Returns true if the meeting values have been modified.
+   */
   public boolean getIsModifiedMeeting() {
     return isModifiedMeeting;
   }
@@ -152,60 +150,59 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * Returns true if the meeting was a dimdim meeting before update
-    */
+   * Returns true if the meeting was a dimdim meeting before update
+   */
   public boolean getPreviousMeetingIsDimidim() {
     return previousMeetingIsDimidim;
   }
 
   /*
-    * Returns the userlist for sending meeting cancelled mail
-    */
-
+   * Returns the userlist for sending meeting cancelled mail
+   */
   public UserList getCancelledUsers() {
     return cancelledUsers;
   }
 
   /*
-    * Returns the userlist for sending meeting change mail
-    */
+   * Returns the userlist for sending meeting change mail
+   */
   public UserList getMeetingChangeUsers() {
     return meetingChangeUsers;
   }
 
   /*
-    * Returns the userlist for sending invitation rejected mail
-    */
+   * Returns the userlist for sending invitation rejected mail
+   */
   public UserList getRejectedUsers() {
     return rejectedUsers;
   }
 
   /*
-    * Returns map with invited users
-    */
+   * Returns map with invited users
+   */
   public Map<User, String> getMembersFoundList() {
     return membersFoundList;
   }
 
   /*
-    * Returns map with invitees to be confirmed or non member invitees
-    */
+   * Returns map with invitees to be confirmed or non member invitees
+   */
   public Map<String, String> getMembersNotFoundList() {
     return membersNotFoundList;
   }
 
   /*
-    * Returns map with invitees in case if multiple profiles matches were found
-    */
+   * Returns map with invitees in case if multiple profiles matches were found
+   */
   public Map<String, UserList> getMembersMultipleList() {
     return membersMultipleList;
   }
 
   /*
-    * Adds new invitees
-    */
+   * Adds new invitees
+   */
   public boolean inviteeNewMembers(Connection db, ActionRequest request, String[] firstName,
-                                   String[] lastName, String[] emailAddress) throws SQLException {
+      String[] lastName, String[] emailAddress) throws SQLException {
     boolean isInserted = false;
     for (int i = 0; i < firstName.length; i++) {
       if (StringUtils.hasText(firstName[i]) && StringUtils.hasText(lastName[i]) && StringUtils.hasText(emailAddress[i])) {
@@ -234,8 +231,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * sets the cancelled users list for sending mail
-    */
+   * sets the cancelled users list for sending mail
+   */
   public void cancelMeeting(Connection db) throws SQLException {
     meetingAttendeeList = new MeetingAttendeeList();
     meetingAttendeeList.setMeetingId(meeting.getId());
@@ -294,8 +291,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * Processes through the invitee list for adding attendees
-    */
+   * Processes through the invitee list for adding attendees
+   */
   public boolean processInvitees(Connection db, ActionRequest request) throws SQLException {
     boolean inserted = false;
     String meetingInvitees = meeting.getMeetingInvitees().trim();
@@ -372,8 +369,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * Verifies if a profile exists
-    */
+   * Verifies if a profile exists
+   */
   private boolean checkProfile(Connection db, ActionRequest request, String profile, String name) throws SQLException {
     // find user
     Project userProject = ProjectUtils.loadProject(profile);
@@ -388,25 +385,17 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * Verifies if a user with the emailid exists
-    */
+   * Verifies if a user with the emailid exists
+   */
   private boolean checkUserEmail(Connection db, ActionRequest request, String email)
       throws SQLException {
     // Query users for email
-    UserList userList = new UserList();
-    userList.setEmail(email);
-    userList.buildList(db);
+    int userId = User.getIdByEmailAddress(db, email);
 
     // user found
-    if (userList.size() == 1) {
-      return insertInvitee(db, request, email, userList.get(0));
-    }
-
-    // multiple user found
-    if (userList.size() > 1) {
-      if (addToMultipleMemberList(email, userList)) {
-        return true;
-      }
+    if (userId > -1) {
+      User thisUser = new User(db, userId);
+      return insertInvitee(db, request, email, thisUser);
     }
 
     // user does not exist
@@ -415,8 +404,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * checks if user(s) can be found for the invitee name
-    */
+   * checks if user(s) can be found for the invitee name
+   */
   private boolean checkName(Connection db, String invitee, String notMatched)
       throws SQLException {
 
@@ -450,8 +439,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * Add the invitee accordingly to the user, member and attendee tables
-    */
+   * Add the invitee accordingly to the user, member and attendee tables
+   */
   private boolean insertInvitee(Connection db, ActionRequest request, String invitee, User user) throws SQLException {
     boolean inserted = true;
 
@@ -535,20 +524,22 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * Checks if the user has already been invited
-    */
+   * Checks if the user has already been invited
+   */
   private boolean isMemberInvited(User user) {
     //check in new mail list
     Set<User> keySet = membersFoundList.keySet();
     for (User key : keySet) {
-      if (key.getId() == user.getId())
+      if (key.getId() == user.getId()) {
         return true;
+      }
     }
 
     //check in changed mail list
     for (User key : meetingChangeUsers) {
-      if (key.getId() == user.getId())
+      if (key.getId() == user.getId()) {
         return true;
+      }
     }
     return false;
   }
@@ -651,8 +642,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * finds the user info of the meeting attendees and adds to invitation rejected users list for sending mail
-    */
+   * finds the user info of the meeting attendees and adds to invitation rejected users list for sending mail
+   */
   private void addAttendeeToRejectedUsers(MeetingAttendeeList meetingAttendeeList) {
     for (MeetingAttendee meetingAttendee : meetingAttendeeList) {
       User user = UserUtils.loadUser(meetingAttendee.getUserId());
@@ -661,8 +652,8 @@ public class MeetingInviteesBean extends GenericBean {
   }
 
   /*
-    * finds the user info of the meeting attendees and adds to cancelled users list for sending mail
-    */
+   * finds the user info of the meeting attendees and adds to cancelled users list for sending mail
+   */
   private void addAttendeeToCancelledUsers(MeetingAttendeeList meetingAttendeeList) {
     for (MeetingAttendee meetingAttendee : meetingAttendeeList) {
       User user = UserUtils.loadUser(meetingAttendee.getUserId());
@@ -701,8 +692,9 @@ public class MeetingInviteesBean extends GenericBean {
     addToMailUserList(changedUserIds, meetingChangeUsers);
 
     //add to member found list
-    if ("".equals(invitedUserIds) || invitedUserIds == null)
+    if ("".equals(invitedUserIds) || invitedUserIds == null) {
       return;
+    }
 
     //split the userlist
     invitedUserIds = invitedUserIds.trim();

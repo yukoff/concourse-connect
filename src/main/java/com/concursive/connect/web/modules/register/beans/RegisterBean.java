@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.register.beans;
 
 import com.concursive.commons.codec.PasswordHash;
@@ -78,10 +77,8 @@ import java.sql.SQLException;
 public class RegisterBean extends GenericBean {
 
   public final static String lf = System.getProperty("line.separator");
-
   // Bean properties
   private int instanceId = -1;
-
   // Form properties
   private String city = null;
   private String state = null;
@@ -97,7 +94,6 @@ public class RegisterBean extends GenericBean {
   private String captcha = null;
   private String postalCode = null;
   private String data = null;
-
   // Resulting user
   private User user = null;
 
@@ -120,7 +116,6 @@ public class RegisterBean extends GenericBean {
    *
    * @param tmp the request iteams value
    */
-
   public void setRequestIteams(String tmp) {
     this.requestIteams = tmp;
   }
@@ -130,11 +125,9 @@ public class RegisterBean extends GenericBean {
    *
    * @param tmp The new country value
    */
-
   public void setCountry(String tmp) {
     this.country = tmp;
   }
-
 
   /**
    * Sets the email attribute of the RegisterBean object
@@ -142,9 +135,12 @@ public class RegisterBean extends GenericBean {
    * @param tmp The new email value
    */
   public void setEmail(String tmp) {
-    this.email = tmp;
+    if (tmp != null) {
+      email = tmp.trim();
+    } else {
+      this.email = tmp;
+    }
   }
-
 
   /**
    * Sets the nameFirst attribute of the RegisterBean object
@@ -155,7 +151,6 @@ public class RegisterBean extends GenericBean {
     this.nameFirst = tmp;
   }
 
-
   /**
    * Sets the nameLast attribute of the RegisterBean object
    *
@@ -164,7 +159,6 @@ public class RegisterBean extends GenericBean {
   public void setNameLast(String tmp) {
     this.nameLast = tmp;
   }
-
 
   /**
    * Sets the organization attribute of the RegisterBean object
@@ -175,7 +169,6 @@ public class RegisterBean extends GenericBean {
     this.organization = tmp;
   }
 
-
   /**
    * Sets the password attribute of the RegisterBean object
    *
@@ -184,7 +177,6 @@ public class RegisterBean extends GenericBean {
   public void setPassword(String tmp) {
     this.password = tmp;
   }
-
 
   /**
    * Sets the encryptedPassword attribute of the RegisterBean object
@@ -195,7 +187,6 @@ public class RegisterBean extends GenericBean {
     this.encryptedPassword = tmp;
   }
 
-
   /**
    * Sets the terms attribute of the RegisterBean object
    *
@@ -204,7 +195,6 @@ public class RegisterBean extends GenericBean {
   public void setTerms(boolean tmp) {
     this.terms = tmp;
   }
-
 
   /**
    * Sets the terms attribute of the RegisterBean object
@@ -215,7 +205,6 @@ public class RegisterBean extends GenericBean {
     this.terms = (tmp.equals("accept") || DatabaseUtils.parseBoolean(tmp));
   }
 
-
   /**
    * Sets the user attribute of the RegisterBean object
    *
@@ -224,7 +213,6 @@ public class RegisterBean extends GenericBean {
   public void setUser(User tmp) {
     this.user = tmp;
   }
-
 
   /**
    * Gets the country attribute of the RegisterBean object
@@ -235,7 +223,6 @@ public class RegisterBean extends GenericBean {
     return country;
   }
 
-
   /**
    * Gets the request iteams attribute of the RegisterBean object
    *
@@ -244,7 +231,6 @@ public class RegisterBean extends GenericBean {
   public String getRequestIteams() {
     return requestIteams;
   }
-
 
   /**
    * Gets the email attribute of the RegisterBean object
@@ -255,7 +241,6 @@ public class RegisterBean extends GenericBean {
     return email;
   }
 
-
   /**
    * Gets the nameFirst attribute of the RegisterBean object
    *
@@ -264,7 +249,6 @@ public class RegisterBean extends GenericBean {
   public String getNameFirst() {
     return nameFirst;
   }
-
 
   /**
    * Gets the nameLast attribute of the RegisterBean object
@@ -275,7 +259,6 @@ public class RegisterBean extends GenericBean {
     return nameLast;
   }
 
-
   /**
    * Gets the organization attribute of the RegisterBean object
    *
@@ -284,7 +267,6 @@ public class RegisterBean extends GenericBean {
   public String getOrganization() {
     return organization;
   }
-
 
   /**
    * Gets the password attribute of the RegisterBean object
@@ -295,7 +277,6 @@ public class RegisterBean extends GenericBean {
     return password;
   }
 
-
   /**
    * Gets the encryptedPassword attribute of the RegisterBean object
    *
@@ -305,7 +286,6 @@ public class RegisterBean extends GenericBean {
     return encryptedPassword;
   }
 
-
   /**
    * Gets the terms attribute of the RegisterBean object
    *
@@ -314,7 +294,6 @@ public class RegisterBean extends GenericBean {
   public boolean getTerms() {
     return terms;
   }
-
 
   public String getCaptcha() {
     return captcha;
@@ -363,14 +342,12 @@ public class RegisterBean extends GenericBean {
     return city;
   }
 
-
   /**
    * @param city the city to set
    */
   public void setCity(String city) {
     this.city = city;
   }
-
 
   /**
    * @return the state
@@ -379,14 +356,12 @@ public class RegisterBean extends GenericBean {
     return state;
   }
 
-
   /**
    * @param state the state to set
    */
   public void setState(String state) {
     this.state = state;
   }
-
 
   /**
    * Gets the valid attribute of the RegisterBean object
@@ -438,7 +413,6 @@ public class RegisterBean extends GenericBean {
     return (!hasErrors());
   }
 
-
   /**
    * Gets the alreadyRegistered attribute of the RegisterBean object
    *
@@ -449,9 +423,9 @@ public class RegisterBean extends GenericBean {
   public boolean isAlreadyRegistered(Connection db) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "SELECT count(*) AS records " +
-            "FROM users " +
-            "WHERE lower(email) = ? " +
-            "AND registered = ?");
+        "FROM users " +
+        "WHERE lower(email) = ? " +
+        "AND registered = ?");
     pst.setString(1, email.toLowerCase());
     pst.setBoolean(2, true);
     ResultSet rs = pst.executeQuery();
@@ -461,7 +435,6 @@ public class RegisterBean extends GenericBean {
     pst.close();
     return count >= 1;
   }
-
 
   /**
    * Description of the Method
@@ -532,7 +505,6 @@ public class RegisterBean extends GenericBean {
     return true;
   }
 
-
   /**
    * Description of the Method
    *
@@ -544,9 +516,9 @@ public class RegisterBean extends GenericBean {
   private static boolean updateRegisteredStatus(Connection db, User user) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "UPDATE users " +
-            "SET first_name = ?, last_name = ?, password = ?, " +
-            "company = ?, registered = ?, enabled = ?, terms = ? " +
-            "WHERE user_id = ? ");
+        "SET first_name = ?, last_name = ?, password = ?, " +
+        "company = ?, registered = ?, enabled = ?, terms = ? " +
+        "WHERE user_id = ? ");
     int i = 0;
     pst.setString(++i, user.getFirstName());
     pst.setString(++i, user.getLastName());
@@ -561,6 +533,5 @@ public class RegisterBean extends GenericBean {
     CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, user.getId());
     return count == 1;
   }
-
 }
 

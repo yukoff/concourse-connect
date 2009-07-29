@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.controller.servlets;
 
 import com.concursive.commons.db.ConnectionElement;
@@ -225,13 +224,10 @@ public class URLControllerServlet extends HttpServlet {
           mappedPath = LinkGenerator.getProjectPortalLink(bean);
         }
       }
-      db = getConnection(getServletContext());
     } catch (Exception ex) {
       String msg = "URLControllerServletError1";
       LOG.error(msg, ex);
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, msg);
-    } finally {
-      freeConnection(db, getServletContext());
     }
 
     try {

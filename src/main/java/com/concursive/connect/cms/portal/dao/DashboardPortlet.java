@@ -65,7 +65,6 @@ import java.util.HashMap;
 public class DashboardPortlet extends GenericBean {
 
   private static Log LOG = LogFactory.getLog(DashboardPortlet.class);
-
   // Local properties
   private int id = -1;
   private int pageId = -1;
@@ -327,14 +326,13 @@ public class DashboardPortlet extends GenericBean {
     // Insert the page
     PreparedStatement pst = db.prepareStatement(
         "INSERT INTO project_dashboard_portlet " +
-            "(page_id, portlet_id " +
-            (entered != null ? ", entered " : "") +
-            (modified != null ? ", modified " : "") +
-            ") VALUES (?, ?" +
-            (entered != null ? ", ? " : "") +
-            (modified != null ? ", ? " : "") +
-            ")"
-    );
+        "(page_id, portlet_id " +
+        (entered != null ? ", entered " : "") +
+        (modified != null ? ", modified " : "") +
+        ") VALUES (?, ?" +
+        (entered != null ? ", ? " : "") +
+        (modified != null ? ", ? " : "") +
+        ")");
     int i = 0;
     pst.setInt(++i, pageId);
     pst.setInt(++i, portletId);

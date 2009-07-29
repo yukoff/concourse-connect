@@ -236,8 +236,8 @@ public class RegisterPortlet extends GenericPortlet {
         } else if (bean.isAlreadyRegistered(db)) {
           bean.getErrors().put("actionError",
               "This email address is already registered. " +
-                  "If you forgot your login information then you can request your registration " +
-                  "information from the login page.");
+              "If you forgot your login information then you can request your registration " +
+              "information from the login page.");
           response.sendRedirect(ctx + "/page/register");
         } else {
           // Forward to the verification page

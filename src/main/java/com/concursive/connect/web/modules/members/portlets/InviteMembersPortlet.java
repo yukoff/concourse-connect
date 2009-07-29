@@ -79,12 +79,10 @@ public class InviteMembersPortlet extends GenericPortlet {
   private static final String ENTER_MESSAGE_FORM = "/portlets/invite_members/enter_invitation_message_form-view.jsp";
   private static final String INVITATION_SENT_PAGE = "/portlets/invite_members/invitation_sent-view.jsp";
   private static final String CLOSE_PAGE = "/portlets/invite_members/enter_members_form-refresh.jsp";
-
   // Preferences
   private static final String PREF_TITLE = "title";
   private static final String PREF_MESSAGE_SUBJECT = "messageSubject";
   private static final String PREF_MESSAGE_BODY = "messageBody";
-
   // Attribute names for objects available in the view
   private static final String TITLE = "title";
   private static final String ERROR_MESSAGE = "errorMessage";
@@ -100,16 +98,13 @@ public class InviteMembersPortlet extends GenericPortlet {
   private static final String INVITATION_SUBJECT = "invitationSubject";
   private static final String INVITATION_MESSAGE = "invitationMessage";
   private static final String OPTIONAL_MESSAGE = "optionalMessage";
-
   private static final String VIEW_TYPE = "viewType";
   private static final String SAVE_FAILURE = "saveFailure";
   private static final String CLOSE = "close";
-
   private static final String GET_MATCHES = "getMatches";
   private static final String GET_MEMBERS = "getMembers";
   private static final String GET_INVITATION_MESSAGE = "getInvitationMessage";
   private static final String SEND_INVITATION = "sendInvitation";
-
   private static final String NO_MATCH_FOUND = "noMatchFound";
   private static final String HAS_MULTIPLE_MATCHES = "hasMultipleMatches";
   private static final String ACTION_ERROR = "actionError";
@@ -272,7 +267,6 @@ public class InviteMembersPortlet extends GenericPortlet {
     }
   }
 
-
   public void processAction(ActionRequest request, ActionResponse response)
       throws PortletException, IOException {
     try {
@@ -312,7 +306,6 @@ public class InviteMembersPortlet extends GenericPortlet {
       throw new RuntimeException(e);
     }
   }
-
 
   /**
    * @param request
@@ -433,7 +426,6 @@ public class InviteMembersPortlet extends GenericPortlet {
     request.getPortletSession().removeAttribute("notMatchedAccessToTools");
   }
 
-
   /**
    * @param request
    */
@@ -482,7 +474,6 @@ public class InviteMembersPortlet extends GenericPortlet {
     }
     return (matches == null) && (mismatches == null) || hasError;
   }
-
 
   /**
    * @param request
@@ -551,18 +542,10 @@ public class InviteMembersPortlet extends GenericPortlet {
     while (keyIterator.hasNext()) {
       String email = keyIterator.next();
       if (members.get(email).equals(NO_MATCH_FOUND) && (email.indexOf("@") != -1)) {
-        UserList userList = new UserList();
-        userList.setEmail(email);
-        userList.buildList(db);
-        if (userList.size() > 0) {
-          if (userList.size() > 1) {
-            hasMultipleMatches = true;
-          }
-          StringBuffer idStringBuffer = new StringBuffer();
-          for (User user : userList) {
-            idStringBuffer.append("," + user.getId());
-          }
-          members.put(email, idStringBuffer.toString().substring(1));
+        // Find user by email address
+        int userId = User.getIdByEmailAddress(db, email.trim());
+        if (userId > -1) {
+          members.put(email, String.valueOf(userId));
         }
       }
     }

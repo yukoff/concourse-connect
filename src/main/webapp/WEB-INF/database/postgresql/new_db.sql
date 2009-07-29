@@ -101,7 +101,7 @@ CREATE TABLE users (
   points BIGINT DEFAULT 0 NOT NULL,
   instance_id INTEGER REFERENCES instances(instance_id)
 );
-CREATE UNIQUE INDEX users_uni_idx ON users (email);
+CREATE UNIQUE INDEX users_uni_idx ON users (lower(email));
 
 CREATE TABLE user_groups (
   user_id BIGINT REFERENCES users(user_id) NOT NULL,

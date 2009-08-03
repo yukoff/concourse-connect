@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.login.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.Connection;
@@ -67,6 +68,7 @@ public class InstanceList extends ArrayList<Instance> {
   private String domainName = null;
   private String context = null;
   private PagedListInfo pagedListInfo = null;
+  private int enabled = Constants.UNDEFINED;
 
 
   /**
@@ -112,6 +114,24 @@ public class InstanceList extends ArrayList<Instance> {
     this.pagedListInfo = tmp;
   }
 
+
+  /**
+   * @return the enabled
+   */
+  public int getEnabled() {
+  	return enabled;
+  }
+
+	/**
+   * @param enabled the enabled to set
+   */
+  public void setEnabled(int enabled) {
+  	this.enabled = enabled;
+  }
+
+  public void setEnabled(String enabled) {
+  	this.enabled = Integer.parseInt(enabled);
+  }
 
   /**
    * Description of the Method
@@ -200,6 +220,9 @@ public class InstanceList extends ArrayList<Instance> {
     if (context != null) {
       sqlFilter.append("AND context = ? ");
     }
+    if (enabled != Constants.UNDEFINED) {
+      sqlFilter.append("AND enabled = ? ");
+    }
   }
 
 
@@ -221,6 +244,35 @@ public class InstanceList extends ArrayList<Instance> {
     if (context != null) {
       pst.setString(++i, context);
     }
+    if (enabled != Constants.UNDEFINED) {
+      pst.setBoolean(++i, (enabled == Constants.TRUE));
+    }
     return i;
   }
+
+  
+  public boolean contains(Instance instance){
+  	int id = -1;
+  	id = getIdFromInfo(instance.getDomainName(), instance.getContext(), instance.getTitle());
+  	if (id != -1){
+  		return true;
+  	}
+  	return false;
+  }
+  	
+  	
+  public int getIdFromInfo(String domainName, String context, String title){
+  	int id = -1;
+  	
+  	for(Instance instance : this){
+  		if (domainName.equals(instance.getDomainName()) && 
+  				context.equals(instance.getContext()) &&
+  				title.equals(instance.getTitle())){
+  			id = instance.getId();
+  		}
+  	}
+  	
+  	return id;
+  }
+
 }

@@ -105,12 +105,13 @@ public final class AdminSync extends GenericAction {
       Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
       Vector syncStatus = (Vector) scheduler.getContext().get("CRMSyncStatus");
 
+      String syncListings = context.getRequest().getParameter("syncListings");
       startSync = context.getRequest().getParameter("startSync");
       if ("true".equals(startSync)){
       	isValid = true;
 	      if (syncStatus != null && syncStatus.size() == 0) {
 	        // Trigger the sync job
-	        triggerJob(context, "syncSystem");
+	        triggerJob(context, "syncSystem", syncListings);
 	      } else {
 	        // Do nothing as a sync is already in progress.
 	      }
@@ -147,7 +148,7 @@ public final class AdminSync extends GenericAction {
 	        	prefs.add("CONCURSIVE_CRM.CLIENT", apiClientId);
 	        	prefs.save();
 	        	
-		        triggerJob(context, "syncSystem");
+		        triggerJob(context, "syncSystem", syncListings);
         	}
         }
       }

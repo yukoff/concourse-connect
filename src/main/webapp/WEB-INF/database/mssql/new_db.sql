@@ -9,7 +9,8 @@ CREATE TABLE instances (
   instance_id INT IDENTITY PRIMARY KEY,
   domain_name VARCHAR(255) NOT NULL,
   context VARCHAR(255) NOT NULL DEFAULT '/',
-  enabled BIT DEFAULT 0 NOT NULL
+  enabled BIT DEFAULT 0 NOT NULL,
+  title VARCHAR(255) NOT NULL 
 );
 CREATE UNIQUE INDEX instances_uni_idx ON instances (domain_name, context);
 

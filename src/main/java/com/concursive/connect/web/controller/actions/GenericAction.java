@@ -66,6 +66,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.connect.scheduler.JobEvent;
 import freemarker.template.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -487,9 +488,13 @@ public class GenericAction implements java.io.Serializable {
     return ApplicationPrefs.getApplicationPrefs(context.getServletContext());
   }
 
-  protected synchronized boolean triggerJob(ActionContext context, String name) {
+  protected synchronized boolean triggerJob(ActionContext context, String name, Object item) {
     Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
     try {
+    	if (item != null){
+	      JobEvent jobEvent = new JobEvent(item);
+	      ((Vector) scheduler.getContext().get(name + "EventArray")).add(jobEvent);
+    	}
       scheduler.triggerJob(name, (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
     } catch (Exception e) {
       System.out.println("GenericAction-> Scheduler failed: " + e.getMessage());

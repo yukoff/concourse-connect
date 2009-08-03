@@ -44,114 +44,32 @@
  * by Concursive Corporation
  */
 
-package com.concursive.connect.web.modules.login.dao;
-
-import com.concursive.commons.db.DatabaseUtils;
-import com.concursive.commons.web.mvc.beans.GenericBean;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+package com.concursive.connect.scheduler;
 
 /**
- * Represents a unit of a shared application context
+ * Encapsulates the information for a generic job event
  *
- * @author matt rajkowski
- * @created July 6, 2009
+ * @author Kailash Bhoopalam
+ * @version $Id: JobEvent.java $
+ * @created June 03, 2009
  */
-public class Instance extends GenericBean {
+public class JobEvent {
+  private Object item = null;
 
-  private int id = -1;
-  private String domainName = null;
-  private String context = null;
-  private String title = null;
-  private boolean enabled = false;
+  public JobEvent() {
 
-
-  /**
-   * Constructor for the Instance object
-   */
-  public Instance() {
   }
 
-
-  /**
-   * Constructor for the Instance object
-   *
-   * @param rs Description of the Parameter
-   * @throws java.sql.SQLException Description of the Exception
-   */
-  public Instance(ResultSet rs) throws SQLException {
-    buildRecord(rs);
+  public JobEvent(Object item) {
+    this.item = item;
   }
 
-  public int getId() {
-    return id;
+  public Object getItem() {
+    return item;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setItem(Object item) {
+    this.item = item;
   }
-
-  public void setId(String tmp) {
-    this.id = Integer.parseInt(tmp);
-  }
-
-  public String getDomainName() {
-    return domainName;
-  }
-
-  public void setDomainName(String domainName) {
-    this.domainName = domainName;
-  }
-
-  public String getContext() {
-    return context;
-  }
-
-  public void setContext(String context) {
-    this.context = context;
-  }
-
-  /**
-   * @return the title
-   */
-  public String getTitle() {
-  	return title;
-  }
-
-
-	/**
-   * @param title the title to set
-   */
-  public void setTitle(String title) {
-  	this.title = title;
-  }
-
-
-	public boolean getEnabled() {
-    return enabled;
-  }
-
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
-  }
-
-  public void setEnabled(String tmp) {
-    this.enabled = DatabaseUtils.parseBoolean(tmp);
-  }
-
-  /**
-   * Sets properties from a database resultset
-   *
-   * @param rs Description of the Parameter
-   * @throws java.sql.SQLException Description of the Exception
-   */
-  public void buildRecord(ResultSet rs) throws SQLException {
-    id = rs.getInt("instance_id");
-    domainName = rs.getString("domain_name");
-    context = rs.getString("context");
-    enabled = rs.getBoolean("enabled");
-    title = rs.getString("title");
-  }
-
 }
+

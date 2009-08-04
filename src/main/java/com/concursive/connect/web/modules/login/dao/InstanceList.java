@@ -275,4 +275,17 @@ public class InstanceList extends ArrayList<Instance> {
   	return id;
   }
 
+  public Instance getInstanceFromId(int id){
+  	Instance thisInstance = null;
+  	
+  	for(Instance instance : this){
+  		if (instance.getId() == id){
+  			thisInstance = instance;
+  			break;
+  		}
+  	}
+  	
+  	return thisInstance;
+  }
+
 }

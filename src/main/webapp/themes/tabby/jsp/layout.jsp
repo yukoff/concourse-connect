@@ -275,6 +275,11 @@
                   <a href="<%= ctx %>/settings">Settings</a>
                 </li>
                 <ccp:evaluate if="<%= User.getAccessAdmin() %>">
+                  <ccp:evaluate if="<%= User.isConnectCRMAdmin() || User.isConnectCRMManager() %>">
+                    <li>
+                      <a href="<%= ctx %>/show/crm" target="_blank">CRM</a>
+                    </li>
+                  </ccp:evaluate>
                   <li>
                     <a href="<%= ctx %>/admin">Admin</a>
                   </li>

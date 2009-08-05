@@ -50,6 +50,7 @@ import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
+import com.concursive.connect.web.modules.login.dao.User;
 
 import org.aspcfs.apps.transfer.DataRecord;
 import org.aspcfs.utils.CRMConnection;
@@ -59,6 +60,7 @@ import org.quartz.Scheduler;
 
 import java.util.ArrayList;
 import java.util.Vector;
+import java.sql.Connection;
 
 /**
  * Actions for the administration module
@@ -100,6 +102,7 @@ public final class AdminSync extends GenericAction {
     String apiCode = null;
     String startSync = null;
     String saveConnectionDetails = null;
+    Connection db = null;
     try {
 
       Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute(Constants.SCHEDULER);
@@ -152,10 +155,17 @@ public final class AdminSync extends GenericAction {
         	}
         }
       }
+
+      //Set the connect user performing the sync to have crm admin role 
+      db = this.getConnection(context);
+      User user = getUser(context);
+      user.setConnectCRMAdmin(true);
+      user.update(db);
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return ("SystemError");
     } finally {
+      this.freeConnection(context, db);
     }
     if (!isValid && "true".equals(saveConnectionDetails)){
     	context.getRequest().setAttribute("serverURL", context.getRequest().getParameter("serverURL"));

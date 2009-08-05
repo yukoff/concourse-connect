@@ -195,6 +195,11 @@ public final class AdminUsers extends GenericAction {
       thisUser.setModifiedBy(getUserId(context));
       // the username is always the email address
       thisUser.setUsername(thisUser.getEmail());
+      String crmRole = context.getRequest().getParameter("crmRole");
+      if (crmRole != null) {
+        thisUser.setConnectCRMAdmin("admin".equals(crmRole));
+        thisUser.setConnectCRMManager("manager".equals(crmRole));
+      }
       // TODO: Before updating the user, check and see if the email address changed
       // so that the user can be notified
 

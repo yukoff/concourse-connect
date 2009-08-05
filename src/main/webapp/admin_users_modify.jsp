@@ -58,6 +58,13 @@ String languagesUrl = ctx + "/AdminUserDetails.do?command=Languages&id=" + thisU
 String webSitesUrl = ctx + "/AdminUserDetails.do?command=WebSites&id=" + thisUser.getId();
 %>
 <script language="JavaScript" type="text/javascript">
+  function clearRole(form) {
+    var role = document.detailForm.crmRole;
+    for (var i=0; i< role.length; i++) {
+      role[i].checked = '';
+    }
+  }
+
   function checkForm(form) {
     var formTest = true;
     var messageText = "";
@@ -201,6 +208,23 @@ User Details<br />
       </td>
     </tr>
 
+    <%-- Management CRM access role --%>
+    <tr class="containerBody">
+      <td nowrap class="formLabel">Management CRM Role</td>
+      <td>
+        <input type="radio" name="crmRole" value="admin"
+        <ccp:evaluate if="<%= thisUser.isConnectCRMAdmin() %>">
+          checked
+        </ccp:evaluate>
+        /> Administrator<br/>
+        <input type="radio" name="crmRole" value="manager"
+        <ccp:evaluate if="<%= thisUser.isConnectCRMManager() %>">
+          checked
+        </ccp:evaluate>
+        /> Manager&nbsp;&nbsp;<input type="button" value="Clear" onclick="javascript:clearRole();"/>
+      </td>
+    </tr>
+
     <%-- Invitation access --%>
     <tr class="containerBody">
       <td nowrap class="formLabel">Invitations</td>
@@ -271,4 +295,4 @@ User Details<br />
 
 <input type="submit" value="Save" />
 <input type="button" value="Cancel" onClick="window.location.href='<%= ctx %>/AdminUserDetails.do?command=Details&id=<%= thisUser.getId() %>'" />
-
+</form>

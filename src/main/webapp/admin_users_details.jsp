@@ -192,6 +192,29 @@ User Details<br />
       </td>
     </tr>
 
+    <%-- Management CRM access role --%>
+    <tr class="containerBody">
+      <td nowrap class="formLabel">Management CRM Role</td>
+      <td>
+        <ccp:evaluate if="<%= !thisUser.isConnectCRMAdmin() %>">
+          <img border="0" src="<%= ctx %>/images/box.gif" alt="" align="absmiddle" />
+          <i>User does not have 'Management CRM' Administrator access</i>
+        </ccp:evaluate>
+        <ccp:evaluate if="<%= thisUser.isConnectCRMAdmin() %>">
+          <img border="0" src="<%= ctx %>/images/box-checked.gif" alt="" align="absmiddle" />
+          <i>User has 'Management CRM' Administrator access</i>
+        </ccp:evaluate><br/>
+        <ccp:evaluate if="<%= !thisUser.isConnectCRMManager() %>">
+          <img border="0" src="<%= ctx %>/images/box.gif" alt="" align="absmiddle" />
+          <i>User does not have 'Management CRM' Manager access</i>
+        </ccp:evaluate>
+        <ccp:evaluate if="<%= thisUser.isConnectCRMManager() %>">
+          <img border="0" src="<%= ctx %>/images/box-checked.gif" alt="" align="absmiddle" />
+          <i>User has 'Management CRM' Manager access</i>
+        </ccp:evaluate>
+      </td>
+    </tr>
+
     <%-- Content Editor access --%>
     <ccp:evaluate if="<%= thisUser.getWebSiteLanguageList().size() > 0 %>">
     <tr class="containerBody">

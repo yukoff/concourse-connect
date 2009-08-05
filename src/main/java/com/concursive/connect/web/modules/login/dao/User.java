@@ -143,6 +143,10 @@ public class User extends GenericBean {
   private Stack<Integer> recentProjects = new Stack<Integer>();
   private WebSiteLanguageList webSiteLanguageList = new WebSiteLanguageList();
 
+  // ConcourseSuite CRM Roles
+  private boolean connectCRMAdmin = false;
+  private boolean connectCRMManager = false;
+
   /**
    * Constructor for the User object
    */
@@ -264,6 +268,9 @@ public class User extends GenericBean {
       //department table
       department = rs.getString("department");
       instanceId = DatabaseUtils.getInt(rs, "instance_id", -1);
+      //connect-crm roles
+      connectCRMAdmin = rs.getBoolean("connect_crm_admin");
+      connectCRMManager = rs.getBoolean("connect_crm_manager");
     } catch (Exception e) {
       // since these field may not exist in an upgraded system,
       // do not throw an error
@@ -1610,6 +1617,22 @@ public class User extends GenericBean {
     this.apiRestore = apiRestore;
   }
 
+  public boolean isConnectCRMAdmin() {
+    return connectCRMAdmin;
+  }
+
+  public void setConnectCRMAdmin(boolean connectCRMAdmin) {
+    this.connectCRMAdmin = connectCRMAdmin;
+  }
+
+  public boolean isConnectCRMManager() {
+    return connectCRMManager;
+  }
+
+  public void setConnectCRMManager(boolean connectCRMManager) {
+    this.connectCRMManager = connectCRMManager;
+  }
+  
   /**
    * Description of the Method
    *
@@ -1827,7 +1850,8 @@ public class User extends GenericBean {
             "access_invite = ?, " +
             "account_size = ?, access_add_projects = ?, " +
             "access_contacts_view_all = ?, access_contacts_edit_all = ?, watch_forums = ?, " +
-            "modified = " + DatabaseUtils.getCurrentTimestamp(db) + ", modifiedby = ? " +
+            "modified = " + DatabaseUtils.getCurrentTimestamp(db) + ", modifiedby = ?, " +
+            "connect_crm_admin = ?, connect_crm_manager = ? " +
             "WHERE user_id = ? ");
     int i = 0;
     pst.setString(++i, firstName);
@@ -1848,6 +1872,8 @@ public class User extends GenericBean {
     pst.setBoolean(++i, accessEditAllContacts);
     pst.setBoolean(++i, watchForums);
     pst.setInt(++i, modifiedBy);
+    pst.setBoolean(++i, connectCRMAdmin);
+    pst.setBoolean(++i, connectCRMManager);
     pst.setInt(++i, id);
     int count = pst.executeUpdate();
     pst.close();

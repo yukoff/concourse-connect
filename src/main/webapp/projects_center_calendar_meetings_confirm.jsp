@@ -166,6 +166,9 @@
 	      <input type="text" name="dimdimUsername" id="dimdimUsername" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUsername}"/>">
 	      <label for="dimdimPassword">Dimdim Password <span class="required">*</span></label>
 	      <input type="password" name="dimdimPassword" id="dimdimPassword" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimPassword}"/>" autocomplete="off">
+	      <c:if test="${meetingInviteesBean.meeting.byInvitationOnly}">
+	      	Meeting key to be used by the participants: ${meetingInviteesBean.meeting.dimdimMeetingKey}
+	      </c:if>
       </c:if>
     </fieldset>
     <input type="submit" class="submit" name="submitAction" value="<ccp:label name="button.save">Save</ccp:label>" onclick="return checkFormEventMeetingConfirm(this.form);" />

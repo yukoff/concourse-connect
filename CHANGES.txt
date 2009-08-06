@@ -2,7 +2,7 @@
 ConcourseConnect 2.0 alpha
 Copyright (C) 2009 Concursive Corporation.
 Change Log
-July 10, 2009
+August 4, 2009
 ----------------------------------------------------------------------------
 
 If you are interested in collaborating on various social networking topics
@@ -22,6 +22,9 @@ http://www.concursive.com/show/concourseconnect
 
   Improvements:
     Dimdim meetings can be scheduled from any listing's calendar
+    Meeting participants can be invited and sent details by email
+    Meetings can be setup so that participants can add themselves to a
+      waiting/standby list
     Videos can be embedded in blogs and wikis
     Each profile now has a usable "Profile Message" wiki for displaying
       content on the profile's overview page

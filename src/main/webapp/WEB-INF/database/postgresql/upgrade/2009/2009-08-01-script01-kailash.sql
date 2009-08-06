@@ -1,1 +1,1 @@
-ALTER TABLE instances ADD title VARCHAR(255) NOT NULL;
+ALTER TABLE instances ADD title VARCHAR(255);

@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.calendar.workflow;
 
 import com.concursive.commons.email.SMTPMessage;
@@ -72,8 +71,8 @@ import java.util.*;
  * @created June 11, 2009
  */
 public class SendEventMeetingInvitation extends ObjectHookComponent implements ComponentInterface {
-  private static Log LOG = LogFactory.getLog(SendEventMeetingInvitation.class);
 
+  private static Log LOG = LogFactory.getLog(SendEventMeetingInvitation.class);
   private Configuration freeMarkerConfiguration = null;
   private MeetingInviteesBean meetingInviteesBean = null;
   private freemarker.template.Template templateSubject = null;
@@ -102,6 +101,8 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
 
       //check mail is to be send
       if (meetingInviteesBean.getAction() != DimDimUtils.ACTION_MEETING_STATUS_CHANGE &&
+          meetingInviteesBean.getAction() != DimDimUtils.ACTION_MEETING_USER_JOIN &&
+          meetingInviteesBean.getAction() != DimDimUtils.ACTION_MEETING_APPROVE_JOIN &&
           meetingInviteesBean.getMeetingChangeUsers().isEmpty() &&
           meetingInviteesBean.getMembersFoundList().isEmpty() &&
           meetingInviteesBean.getRejectedUsers().isEmpty() &&
@@ -171,6 +172,14 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
           sendMeetingCancellationMail();
           break;
 
+        case DimDimUtils.ACTION_MEETING_USER_JOIN:
+          sendUserJoinedMail();
+          break;
+
+        case DimDimUtils.ACTION_MEETING_APPROVE_JOIN:
+          sendUserJoinStatusMail();
+          break;
+
         default:
           LOG.error("Meeting action not known - " + meetingInviteesBean.getAction());
           return false;
@@ -184,8 +193,8 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
   }
 
   /*
-    * Sends the meeting invitation rejected mail to attendees
-    */
+   * Sends the meeting invitation rejected mail to attendees
+   */
   private boolean sendMeetingInvitationRejectMail() throws Exception {
     LOG.debug("Trying to send invitation rejected mail");
 
@@ -224,8 +233,8 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
   }
 
   /*
-    * Sends the meeting cancelled mail to attendees
-    */
+   * Sends the meeting cancelled mail to attendees
+   */
   private boolean sendMeetingCancellationMail() throws Exception {
     LOG.debug("Trying to send meeting cancellation mail");
 
@@ -263,10 +272,9 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     return true;
   }
 
-
   /*
-    * Sends the meeting invitiation status change mail of attendees to meeting host
-    */
+   * Sends the meeting invitation status change mail of attendees to meeting host
+   */
   private boolean sendInvitationStatusMail() throws Exception {
     LOG.debug("Trying to send meeting invitation status change mail");
 
@@ -310,8 +318,8 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
   }
 
   /*
-    * Sends meeting change mail to attendees
-    */
+   * Sends meeting change mail to attendees
+   */
   private boolean sendMeetingChangeMail() throws Exception {
     LOG.debug("Trying to send meeting change mail");
 
@@ -354,8 +362,8 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
   }
 
   /*
-    * Sends meeting invitation mails
-    */
+   * Sends meeting invitation mails
+   */
   private boolean sendMeetingInvitationMail() throws Exception {
     LOG.debug("Trying to send meeting invitation mail");
 
@@ -392,6 +400,91 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       }
     }
     return true;
+  }
+
+  /*
+   * Sends mail to meeting host regarding user adding himself to meeting
+   */
+  private boolean sendUserJoinedMail() throws Exception {
+    LOG.debug("Trying to send user joined to meeting mail");
+
+    //set mail templates
+    templateSubject = freeMarkerConfiguration.getTemplate("event_meeting_userjoined_email_subject-text.ftl");
+    templateBody = freeMarkerConfiguration.getTemplate("event_meeting_userjoined_email_body-html.ftl");
+
+    //set additional mail parameter maps
+    User inviteeUser = UserUtils.loadUser(meetingInviteesBean.getMeetingAttendee().getUserId());
+    bodyMap.put("invitee", inviteeUser);
+
+    bodyMap.put("status", "but is tentative about");
+    if (meetingInviteesBean.getMeetingAttendee().getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_ACCEPTED ||
+        meetingInviteesBean.getMeetingAttendee().getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_APPROVE_YES) {
+      bodyMap.put("status", "and will be");
+    }
+
+    //build the templates
+    StringWriter subjectTextWriter = new StringWriter();
+    templateSubject.process(subjectMap, subjectTextWriter);
+    StringWriter bodyTextWriter = new StringWriter();
+    templateBody.process(bodyMap, bodyTextWriter);
+    message.setSubject(subjectTextWriter.toString());
+    message.setBody(bodyTextWriter.toString());
+    LOG.debug(bodyTextWriter.toString());
+
+    //set replyto and to mailids
+    message.setReplyTo(inviteeUser.getEmail(), inviteeUser.getNameFirstLast());
+    message.setTo(hostUser.getEmail());
+
+    //send mail
+    if (message.send() == 0) {
+      LOG.debug("user joined to meeting email sent to " + hostUser.getNameFirstLast() + " - " + hostUser.getEmail());
+      return true;
+    }
+
+    LOG.debug("user joined to meeting email not sent to " + hostUser.getNameFirstLast() + " - " + hostUser.getEmail());
+    return false;
+  }
+
+  /*
+   * Sends approval or rejection mail to user on adding himself to meeting
+   */
+  private boolean sendUserJoinStatusMail() throws Exception {
+    LOG.debug("Trying to send approve or reject mail for user join");
+
+    //set mail templates
+    templateSubject = freeMarkerConfiguration.getTemplate("event_meeting_joinstatus_email_subject-text.ftl");
+    templateBody = freeMarkerConfiguration.getTemplate("event_meeting_joinstatus_email_body-html.ftl");
+
+    //set additional mail parameter maps
+    User inviteeUser = UserUtils.loadUser(meetingInviteesBean.getMeetingAttendee().getUserId());
+    bodyMap.put("invitee", inviteeUser);
+
+    bodyMap.put("status", "rejected");
+    if (meetingInviteesBean.getMeetingAttendee().getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_ACCEPTED) {
+      bodyMap.put("status", "approved");
+    }
+
+    //build the templates
+    StringWriter subjectTextWriter = new StringWriter();
+    templateSubject.process(subjectMap, subjectTextWriter);
+    StringWriter bodyTextWriter = new StringWriter();
+    templateBody.process(bodyMap, bodyTextWriter);
+    message.setSubject(subjectTextWriter.toString());
+    message.setBody(bodyTextWriter.toString());
+    LOG.debug(bodyTextWriter.toString());
+
+    //set replyto and to mailids
+    message.setReplyTo(hostUser.getEmail(), hostUser.getNameFirstLast());
+    message.setTo(inviteeUser.getEmail());
+
+    //send mail
+    if (message.send() == 0) {
+      LOG.debug("user joined status to meeting email sent to " + inviteeUser.getNameFirstLast() + " - " + inviteeUser.getEmail());
+      return true;
+    }
+
+    LOG.debug("user joined status to meeting email not sent to " + inviteeUser.getNameFirstLast() + " - " + inviteeUser.getEmail());
+    return false;
   }
 
   private String longDateToString(Date date) {

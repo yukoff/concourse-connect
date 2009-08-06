@@ -1,4 +1,4 @@
-/*
+/**
  * ConcourseConnect
  * Copyright 2009 Concursive Corporation
  * http://www.concursive.com
@@ -45,47 +45,40 @@
  */
 package com.concursive.connect.web.modules.calendar.portlets.main;
 
-import com.concursive.commons.text.StringUtils;
+import static com.concursive.connect.web.portal.PortalUtils.*;
+
+import java.sql.Connection;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
 import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
 import com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean;
 import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.portal.IPortletAction;
-import static com.concursive.connect.web.portal.PortalUtils.*;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.util.HashMap;
+import com.concursive.connect.web.portal.PortalUtils;
 
 /**
- * Action to change meeting status and to start or join meeting
+ * Adds a user to event for meeting owner confirmation.
  *
  * @author Nanda Kumar
- * @created May 29, 2009
+ * July 23, 2009
  */
-public class EventDimdimAction implements IPortletAction {
+public class SaveEventJoinAction implements IPortletAction {
 
   public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
-    //get parameters
-    int meetingAction = Integer.parseInt(request.getParameter("aid"));
-    int meetingId = Integer.parseInt(request.getParameter("mid"));
-    int meetingStatus = Integer.parseInt(request.getParameter("sid"));
-    int attendeeUserId = -1;
-    if (StringUtils.hasText(request.getParameter("uid"))) {
-      attendeeUserId = Integer.parseInt(request.getParameter("uid"));
-    }
-
+    //get meeting id
+    int meetingId = Integer.parseInt(request.getParameter("meetingId"));
+    String join = request.getParameter("join");
 
     //get connection
     Connection db = getConnection(request);
 
     //get current user
-    User currentUser = getUser(request);
+    User user = getUser(request);
 
     //get project
     Project project = getProject(request);
@@ -94,42 +87,15 @@ public class EventDimdimAction implements IPortletAction {
     Meeting meeting = new Meeting();
     meeting.queryRecord(db, meetingId);
 
-    MeetingInviteesBean meetingInviteesBean = new MeetingInviteesBean(meeting, project, meetingAction);
-
-    //check if action is attendee status change 
-    if (meetingAction == DimDimUtils.ACTION_MEETING_STATUS_CHANGE) {
-      //change status and send mail to meeting host
-      if (meetingInviteesBean.setMeetingStatus(db, request, currentUser, meetingStatus)) {
-        processInsertHook(request, meetingInviteesBean);
-      }
-
-      return (performRefresh(request, response, "/show/calendar"));
+    MeetingInviteesBean meetingInviteesBean = new MeetingInviteesBean(meeting, project, DimDimUtils.ACTION_MEETING_USER_JOIN);
+    if (meetingInviteesBean.joinMeeting(db, request, meeting, user, join)) {
+      processInsertHook(request, meetingInviteesBean);
     }
 
-    //check if action is approve user join
-    if (meetingAction == DimDimUtils.ACTION_MEETING_APPROVE_JOIN) {
-      //find attendee
-      User attendeeUser = UserUtils.loadUser(attendeeUserId);
-
-      //change status and send mail to meeting host
-      if (meetingInviteesBean.setMeetingStatus(db, request, attendeeUser, meetingStatus)) {
-        processInsertHook(request, meetingInviteesBean);
-      }
-
-      return (performRefresh(request, response, "/show/calendar"));
+    //performRefresh() needs project in request scope, its found missing 
+    if (project != null && request.getAttribute("project") == null) {
+      request.setAttribute("project", project);
     }
-
-    //process meeting scenario and get the url to dimdim server
-    HashMap<String, String> resultMap = DimDimUtils.processDimdimMeeting(meetingInviteesBean, currentUser);
-
-    //redirect to dimdim server and return
-    if (resultMap.containsKey(DimDimUtils.DIMDIM_CODE_SUCCESS)) {
-      response.sendRedirect(resultMap.get(DimDimUtils.DIMDIM_CODE_SUCCESS));
-      return null;
-    }
-
-    //set error message
-    ((HttpServletRequest) request).getSession().setAttribute("actionError" + meeting.getId(), resultMap.get(resultMap.keySet().toArray()[0]));
-    return null;
+    return (PortalUtils.performRefresh(request, response, "/show/calendar"));
   }
 }

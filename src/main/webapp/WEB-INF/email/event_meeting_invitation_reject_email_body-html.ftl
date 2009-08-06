@@ -10,7 +10,7 @@
       </tr>
       <tr>
         <td style="padding:10px 20px; background:#fff; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8">
-          <p>Your invitation to <#if meeting.isDimdim>web</#if> meeting, ${meeting.title?html}, of ${startDate?html} has been <strong>removed</strong> by ${host.nameFirstLast?html}</p>
+          <p>Your invitation to <#if meeting.isDimdim>web </#if>meeting, ${meeting.title?html}, of ${startDate?html} has been <strong>removed</strong> by ${host.nameFirstLast?html}</p>
           <p>To review our privacy and security policies, please visit <a href="${url}" target="_blank">${url}</a></p>
         </td>
       </tr>

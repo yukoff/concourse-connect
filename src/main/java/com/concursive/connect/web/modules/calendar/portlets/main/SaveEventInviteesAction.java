@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.calendar.portlets.main;
 
 import com.concursive.commons.text.StringUtils;
@@ -65,6 +64,8 @@ import javax.portlet.PortletException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Displays the confirmation of meeting invitees and Dimdim server credentials
@@ -74,6 +75,8 @@ import java.util.HashMap;
  */
 public class SaveEventInviteesAction implements IPortletAction {
 
+  private static Log LOG = LogFactory.getLog(SaveEventInviteesAction.class);
+
   public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
 
     // Find current project
@@ -81,7 +84,7 @@ public class SaveEventInviteesAction implements IPortletAction {
 
     // Determine if Save or Cancel was selected
     String submitAction = request.getParameter("submitAction");
-    System.out.println("SubmitAction: " + submitAction);
+    LOG.debug("Submit action: " + submitAction);
     if ("Cancel".equals(submitAction)) {
       return (PortalUtils.performRefresh(request, response, "/show/calendar"));
     }
@@ -91,6 +94,7 @@ public class SaveEventInviteesAction implements IPortletAction {
 
     // Reload the meeting information
     int meetingId = Integer.parseInt(request.getParameter("meetingId"));
+    LOG.debug("Loading the meetingId: " + meetingId);
     Meeting meeting = new Meeting();
     meeting.queryRecord(db, meetingId);
 
@@ -108,11 +112,13 @@ public class SaveEventInviteesAction implements IPortletAction {
     meetingInviteesBean.setIsModifiedMeeting("true".equalsIgnoreCase(request.getParameter("isModifiedMeeting")));
 
     // Populate the email user list
+    LOG.debug("populateMailUserList");
     meetingInviteesBean.populateMailUserList(request.getParameter("membersInvited"),
         request.getParameter("rejectedUsers"), request.getParameter("cancelledUsers"),
         request.getParameter("meetingChangeUsers"));
 
     //comma seperate the invitee profile list.
+    LOG.debug("profiles");
     String[] profiles = request.getParameterValues("multipleInvitees");
     if (profiles != null) {
       String meetingInvitees = "";
@@ -127,6 +133,7 @@ public class SaveEventInviteesAction implements IPortletAction {
     }
 
     // process new members
+    LOG.debug("processNewMembers");
     String[] firstName = request.getParameterValues("firstName");
     String[] lastName = request.getParameterValues("lastName");
     String[] emailAddress = request.getParameterValues("emailAddress");
@@ -148,20 +155,24 @@ public class SaveEventInviteesAction implements IPortletAction {
     }
 
     // for save action check if no invitees were inserted
-    if (meetingInviteesBean.getMembersFoundList().isEmpty() && meetingInviteesBean.getAction() == DimDimUtils.ACTION_MEETING_DIMDIM_SCHEDULE) {
+    LOG.debug("Check for members");
+    if (meeting.getByInvitationOnly() && meetingInviteesBean.getMembersFoundList().isEmpty() && meetingInviteesBean.getAction() == DimDimUtils.ACTION_MEETING_DIMDIM_SCHEDULE) {
       meeting.addError("inviteesError", "No participants were invited");
       setMeetingInvitees(meeting, meetingInviteesBean);
-      return null;
+      return meeting;
     }
 
     // schedule dimdim meeting
     if (meeting.getIsDimdim() && !scheduleDimdimMeeting(db, meetingInviteesBean)) {
+      LOG.debug("Meeting not scheduled.");
       return meeting;
     }
 
     // send invitation mail
+    LOG.debug("Sending meeting invitations");
     PortalUtils.processInsertHook(request, meetingInviteesBean);
 
+    LOG.debug("Closing and refreshing the calendar");
     return (PortalUtils.performRefresh(request, response, "/show/calendar"));
   }
 

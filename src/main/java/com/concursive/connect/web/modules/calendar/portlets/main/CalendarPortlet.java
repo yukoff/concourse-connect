@@ -61,16 +61,15 @@ public class CalendarPortlet extends AbstractPortletModule {
   public static final String EVENT_DETAILS_VIEW = "details";
   public static final String EVENT_FORM_VIEW = "form";
   public static final String SET_EVENT_RATING_AJAX_VIEW = "event-setRating";
-
   // Default viewer
   public static final String DEFAULT_VIEW = CALENDAR_VIEW;
-
   // Actions
   public static final String SAVE_EVENT_FORM_ACTION = "saveForm";
   public static final String DELETE_EVENT_ACTION = "delete";
   public static final String CLONE_EVENT_ACTION = "clone";
   public static final String DIMDIM_EVENT_ACTION = "dimdimAction";
   public static final String EVENT_INVITEES_CONFIRM_ACTION = "saveInvitees";
+  public static final String SAVE_EVENT_JOIN_ACTION = "saveJoinEvent";
 
   public CalendarPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -89,6 +88,7 @@ public class CalendarPortlet extends AbstractPortletModule {
     actions.put(EVENT_INVITEES_CONFIRM_ACTION, new SaveEventInviteesAction());
     actions.put(DELETE_EVENT_ACTION, new DeleteEventAction());
     actions.put(DIMDIM_EVENT_ACTION, new EventDimdimAction());
+    actions.put(SAVE_EVENT_JOIN_ACTION, new SaveEventJoinAction());
 //    actions.put(CLONE_EVENT_ACTION, new CloneEventAction());
   }
 }

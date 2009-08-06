@@ -106,23 +106,18 @@
         <ccp:timeSelect baseName="endDate" value="<%= meeting.getEndDate() %>" timeZone="<%= User.getTimeZone() %>"/>
         <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
       </fieldset>
-      <c:if test="${showDimDim eq 'true'}">
         <fieldset>
           <legend><ccp:label name="projectsCenterCalendar.add.details">Details</ccp:label></legend>
-          <label for="isDimdim">
-            <input type="checkbox" name="isDimdim" id="isDimdim" value="on" <%= meeting.getIsDimdim() ? "checked" : "" %>/>
-            Schedule a Dimdim web meeting and notify participants<br/>
+          <label for="allowUsersToJoin">
+            <input type="checkbox" name="allowUsersToJoin" id="allowUsersToJoin" value="on" <%= meeting.getAllowUsersToJoin() ? "checked" : "" %>/>
+            Allow any user to sign up for this meeting<br />
           </label>
-  <%--
-          <label for="byInvitationOnly">
-            <input type="checkbox" name="byInvitationOnly" id="byInvitationOnly" value="on" <%= meeting.getByInvitationOnly() ? "checked" : "" %>/>
-            This meeting is by invitation only and users cannot add themselves<br/>
-          </label>
-          <label for="isTentative">
-            <input type="checkbox" name="isTentative" id="isTentative" value="on" <%= meeting.getIsTentative() ? "checked" : "" %>/>
-            <ccp:label name="projectsCenterCalendar.thisItemIsTentative">This meeting is tentative</ccp:label><br/>
-          </label>
-  --%>
+          <c:if test="${showDimDim eq 'true'}">
+            <label for="isDimdim">
+              <input type="checkbox" name="isDimdim" id="isDimdim" value="on" <%= meeting.getIsDimdim() ? "checked" : "" %>/>
+              Schedule a Dimdim web meeting and notify participants<br />
+            </label>
+          </c:if>
         </fieldset>
         <fieldset>
           <legend>Participants</legend>
@@ -137,7 +132,6 @@
             <a href="javascript:void(0);" onClick="addMember('${teamMember.profileProject.uniqueId}','<%= StringUtils.jsStringEscape(((User)request.getAttribute("teamMember")).getNameFirstLast()) %>'); void(0);"><u><c:out value="${teamMember.nameFirstLast}"/></u></a><c:if test="${!loopStatus.last}">,</c:if>
           </c:forEach>
         </fieldset>
-      </c:if>
     </fieldset>
     <input type="submit" name="save" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" onclick="calendarTrigger('inputForm', 'startDate', '', <%= User.getLocale().getLanguage().equals("en") %>); return checkFormEventMeetingAdd(this.form);" />
     <c:choose>

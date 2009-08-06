@@ -70,26 +70,25 @@ import java.util.*;
  * @created May 28, 2009
  */
 public class DimDimUtils {
-  private static Log LOG = LogFactory.getLog(DimDimUtils.class);
 
+  private static Log LOG = LogFactory.getLog(DimDimUtils.class);
   public static final int ACTION_MEETING_STATUS_CHANGE = 0;
   public static final int ACTION_MEETING_DIMDIM_START = 1;
   public static final int ACTION_MEETING_DIMDIM_SCHEDULE = 2;
   public static final int ACTION_MEETING_DIMDIM_EDIT = 3;
   public static final int ACTION_MEETING_DIMDIM_JOIN = 4;
   public static final int ACTION_MEETING_DIMDIM_CANCEL = 5;
-
+  public static final int ACTION_MEETING_USER_JOIN = 6;
+  public static final int ACTION_MEETING_APPROVE_JOIN = 7;
   private static final String URL_DIMDIM_START = "StartScheduledMeeting.action";
   private static final String URL_DIMDIM_SCHEDULE = "schedule.action";
   private static final String URL_DIMDIM_EDIT = "EditScheduledMeeting.action";
   private static final String URL_DIMDIM_JOIN = "join.action";
-
   public static final String ATTENDEES_INVITED = "attendeesInvited";
   public static final String ATTENDEES_ACCEPTED = "attendeesAccepted";
   public static final String ATTENDEES_TENTATIVE = "attendeesTentative";
   public static final String ATTENDEES_DECLINED = "attendeesDeclined";
   public static final String CURRENT_ATTENDEE = "currentAttendee";
-
   public static final String DIMDIM_CODE_SUCCESS = "200";
 
   /**
@@ -113,14 +112,16 @@ public class DimDimUtils {
 
       //comma separate the attendee mailids for dimdim
       String attendeeMailIds = "";
-      Set<User> userSet = meetingInviteesBean.getMembersFoundList().keySet();
-      for (User user : userSet) {
-        attendeeMailIds += user.getEmail() + ", ";
+      if (meetingInviteesBean.getMembersFoundList() != null && meetingInviteesBean.getMembersFoundList().size() > 0) {
+        Set<User> userSet = meetingInviteesBean.getMembersFoundList().keySet();
+        for (User user : userSet) {
+          attendeeMailIds += user.getEmail() + ", ";
+        }
+        for (User user : meetingInviteesBean.getMeetingChangeUsers()) {
+          attendeeMailIds += user.getEmail() + ", ";
+        }
+        attendeeMailIds = trimComma(attendeeMailIds);
       }
-      for (User user : meetingInviteesBean.getMeetingChangeUsers()) {
-        attendeeMailIds += user.getEmail() + ", ";
-      }
-      attendeeMailIds = trimComma(attendeeMailIds);
 
       //Modify meeting
       if (meetingInviteesBean.getAction() == ACTION_MEETING_DIMDIM_EDIT) {
@@ -143,8 +144,9 @@ public class DimDimUtils {
         SimpleDateFormat dtFormater = new SimpleDateFormat("MMMM dd, yyyy");
 
         TimeZone timeZone = Calendar.getInstance().getTimeZone();
-        if (hostUser.getTimeZone() != null)
+        if (hostUser.getTimeZone() != null) {
           timeZone = TimeZone.getTimeZone(hostUser.getTimeZone());
+        }
         Calendar calendar = Calendar.getInstance(timeZone);
         calendar.setTime(meeting.getStartDate());
 
@@ -156,11 +158,21 @@ public class DimDimUtils {
         params.put("confname", meeting.getTitle());
         params.put("timezone", timeZone.getID());
         params.put("feedback", hostUser.getEmail());
-        params.put("attendees", attendeeMailIds);
+        if (StringUtils.hasText(attendeeMailIds)) {
+          params.put("attendees", attendeeMailIds);
+        }
         params.put("agenda", meeting.getDescription());
+        if (meeting.getByInvitationOnly()) {
+          params.put("attendeePwd", meeting.getDimdimMeetingKey());
+          params.put("waitingarea", "false");
+        } else {
+          params.put("attendeePwd", "");
+          params.put("waitingarea", "false");
+        }
         params.put("response", "json");
 
         //post to dimdim server and process response
+        LOG.debug("JSON POST");
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_EDIT;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
         String resSuccess = dimdimResp.getString("code");
@@ -186,8 +198,9 @@ public class DimDimUtils {
         SimpleDateFormat dtFormater = new SimpleDateFormat("MMMM dd, yyyy");
 
         TimeZone timeZone = Calendar.getInstance().getTimeZone();
-        if (hostUser.getTimeZone() != null)
+        if (hostUser.getTimeZone() != null) {
           timeZone = TimeZone.getTimeZone(hostUser.getTimeZone());
+        }
         Calendar calendar = Calendar.getInstance(timeZone);
         calendar.setTime(meeting.getStartDate());
 
@@ -199,11 +212,18 @@ public class DimDimUtils {
         params.put("confname", meeting.getTitle());
         params.put("timezone", timeZone.getID());
         params.put("feedback", hostUser.getEmail());
-        params.put("attendees", attendeeMailIds);
+        if (StringUtils.hasText(attendeeMailIds)) {
+          params.put("attendees", attendeeMailIds);
+        }
         params.put("agenda", meeting.getDescription());
+        if (StringUtils.hasText(meeting.getDimdimMeetingKey())) {
+          params.put("attendeePwd", meeting.getDimdimMeetingKey());
+          params.put("waitingarea", "false");
+        }
         params.put("response", "json");
 
         //post to dimdim server and process response
+        LOG.debug("JSON POST");
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_SCHEDULE;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
         String resSuccess = dimdimResp.getString("code");
@@ -226,9 +246,13 @@ public class DimDimUtils {
         Map<String, String> params = new HashMap<String, String>();
         params.put("meetingRoomName", meeting.getDimdimUsername());
         params.put("displayname", attendeeUser.getNameFirstLast());
+        if (StringUtils.hasText(meeting.getDimdimMeetingKey())) {
+          params.put("attendeePwd", meeting.getDimdimMeetingKey());
+        }
         params.put("response", "json");
 
         //post to dimdim server and process response
+        LOG.debug("JSON POST");
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_JOIN;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
         String resSuccess = dimdimResp.getString("code");
@@ -254,6 +278,7 @@ public class DimDimUtils {
         params.put("response", "json");
 
         //post to dimdim server and process response
+        LOG.debug("JSON POST");
         String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_START;
         JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
         String resSuccess = dimdimResp.getString("code");

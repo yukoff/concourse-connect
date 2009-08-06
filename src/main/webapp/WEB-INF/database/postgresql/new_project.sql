@@ -708,7 +708,8 @@ CREATE TABLE project_calendar_meeting (
   dimdim_url VARCHAR(255),
   dimdim_meetingid VARCHAR(255),
   dimdim_username VARCHAR(255),
-  dimdim_password VARCHAR(255)
+  dimdim_password VARCHAR(255),
+  dimdim_meeting_key VARCHAR(255)
 );
 CREATE INDEX project_cal_mtg_idx ON project_calendar_meeting(project_id);
 

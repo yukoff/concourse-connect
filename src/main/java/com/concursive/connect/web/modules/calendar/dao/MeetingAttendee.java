@@ -58,6 +58,7 @@ import java.sql.*;
  * @created July 3, 2008
  */
 public class MeetingAttendee extends GenericBean {
+
   private int id = -1;
   private int meetingId = -1;
   private int userId = -1;
@@ -67,11 +68,12 @@ public class MeetingAttendee extends GenericBean {
   private Timestamp modified = null;
   private int modifiedBy = -1;
   private int dimdimStatus = -1;
-
   public static final int STATUS_DIMDIM_DECLINED = 0;
   public static final int STATUS_DIMDIM_ACCEPTED = 1;
   public static final int STATUS_DIMDIM_INVITED = 2;
   public static final int STATUS_DIMDIM_TENTATIVE = 3;
+  public static final int STATUS_DIMDIM_APPROVE_YES = 4;
+  public static final int STATUS_DIMDIM_APPROVE_MAYBE = 5;
 
   public MeetingAttendee() {
   }
@@ -88,8 +90,8 @@ public class MeetingAttendee extends GenericBean {
     StringBuffer sql = new StringBuffer();
     sql.append(
         "SELECT ma.* " +
-            "FROM project_calendar_meeting_attendees ma " +
-            "WHERE attendee_id = ? ");
+        "FROM project_calendar_meeting_attendees ma " +
+        "WHERE attendee_id = ? ");
     PreparedStatement pst = db.prepareStatement(sql.toString());
     int i = 0;
     pst.setInt(++i, attendeeId);
@@ -201,15 +203,15 @@ public class MeetingAttendee extends GenericBean {
   }
 
   /*
-  * returns the attendee status for Dimdim meeting
-  */
+   * returns the attendee status for Dimdim meeting
+   */
   public int getDimdimStatus() {
     return dimdimStatus;
   }
 
   /*
-  * sets the attendee status for Dimdim meeting
-  */
+   * sets the attendee status for Dimdim meeting
+   */
   public void setDimdimStatus(int dimdimStatus) {
     this.dimdimStatus = dimdimStatus;
   }
@@ -255,7 +257,7 @@ public class MeetingAttendee extends GenericBean {
       StringBuffer sql = new StringBuffer();
       sql.append(
           "INSERT INTO project_calendar_meeting_attendees " +
-              "(meeting_id, user_id, is_tentative, enteredby, modifiedby ");
+          "(meeting_id, user_id, is_tentative, enteredby, modifiedby ");
       if (entered != null) {
         sql.append(", entered ");
       }
@@ -321,7 +323,7 @@ public class MeetingAttendee extends GenericBean {
       // Delete the Meeting
       PreparedStatement pst = db.prepareStatement(
           "DELETE FROM project_calendar_meeting_attendees " +
-              "WHERE attendee_id = ? ");
+          "WHERE attendee_id = ? ");
       int i = 0;
       pst.setInt(++i, id);
       pst.execute();

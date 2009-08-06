@@ -122,14 +122,14 @@
               <%=toHtml(thisMeeting.getDescription()) %>
             </span>
           </c:if>
-          <br/>
-          Organized by: <ccp:username id="${thisMeeting.owner}" showProfile="true" />
+          
+          <br/>Organized by: <ccp:username id="${thisMeeting.owner}" showProfile="true" />
           <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getInvitedList() %>" varStatus="loopStatus">
             <c:if test="${loopStatus.first}"><br/>Invited: </c:if>
             <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
           </c:forEach>
           <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getAcceptedList() %>" varStatus="loopStatus">
-         	  <c:if test="${loopStatus.first}"><br/>Accepted: </c:if>
+         	  <c:if test="${loopStatus.first}"><br/>Attending: </c:if>
             <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
           </c:forEach>
           <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getTentativeList() %>" varStatus="loopStatus">
@@ -139,6 +139,19 @@
           <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getDeclinedList() %>" varStatus="loopStatus">
          	  <c:if test="${loopStatus.first}"><br/>Declined: </c:if>
             <ccp:username id="${meetingInvitee.userId}" showProfile="true" /><c:if test="${!loopStatus.last}">, </c:if>
+          </c:forEach>
+          <c:forEach var="meetingInvitee" items="<%= thisMeeting.getMeetingAttendeeList().getApproveList() %>" varStatus="loopStatus">
+         	  <c:if test="${loopStatus.first}"><br/>Waiting approval: </c:if>
+         	  <c:set var="titleStatus" value="Participant is Tentative"/>
+         	  <c:set var="statusApproveYes" value="<%=MeetingAttendee.STATUS_DIMDIM_APPROVE_YES %>"/>
+         	  <c:if test="${meetingInvitee.dimdimStatus == statusApproveYes}">
+         	  	<c:set var="titleStatus" value="Participant is Confirmed"/>
+         	  </c:if>
+            <ccp:username id="${meetingInvitee.userId}" showProfile="true" />
+            <c:if test="${thisMeeting.owner==User.id && !isPastDate}">
+            	(<a title="${titleStatus}" href="javascript:setMeetingStatus(${thisMeeting.id},<%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_APPROVE_JOIN %>, ${meetingInvitee.userId})">Approve</a>/<a title="${titleStatus}" href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_DECLINED %>, <%= DimDimUtils.ACTION_MEETING_APPROVE_JOIN %>, ${meetingInvitee.userId})">Reject</a>)
+            </c:if>
+            <c:if test="${!loopStatus.last}">, </c:if>
           </c:forEach>
           <ccp:debug value="done."/>
           <%
@@ -153,18 +166,35 @@
           boolean isPastDate = calCalendar.compareTo(today) < 0 ? true : false;
           MeetingAttendee currentAttendee = thisMeeting.getMeetingAttendeeList().getMeetingAttendee(User);
           %>
+
+          <portlet:renderURL var="joinEventUrl" windowState="maximized">
+          	<portlet:param name="portlet-object" value="event"/>
+            <portlet:param name="portlet-action" value="modify"/>
+            <portlet:param name="viewType" value="joinEvent"/>
+            <portlet:param name="id" value="${thisMeeting.id}"/>
+          </portlet:renderURL>         
+          <c:if test="<%= !thisMeeting.getByInvitationOnly() && !isPastDate && currentAttendee==null && thisMeeting.getOwner()!=User.getId() && (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) %>">
+          	<br/><br/>Want to attend?
+	          <c:choose>
+  	        	<c:when test="${User.id < 1}">
+  	        		You must be <a href="${ctx}/login?redirectTo=/show/${project.uniqueId}/calendar">logged in</a> to join this event.
+    	      	</c:when>
+    	      	<c:otherwise>
+    	      		<a href="javascript:showPanel('Event','${joinEventUrl}','500')">Join this event.</a>
+    	      	</c:otherwise>
+      	    </c:choose> 
+          </c:if>
+          
           <c:choose>
             <c:when test="${!thisMeeting.isDimdim || (thisMeeting.isDimdim && !empty thisMeeting.dimdimMeetingId)}">
               <c:if test="<%= thisMeeting.getOwner()==User.getId() && !isPastDate %>"><br/><br/>
-                <c:choose>
-                  <c:when test="${thisMeeting.isDimdim}">
-                    <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_START %>)">Start the web meeting</a><br/>
-                    <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL %>)">Cancel the web meeting</a>
-                  </c:when>
-                  <c:otherwise>
-                    <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL %>)">Cancel the meeting</a>
-                  </c:otherwise>
-                </c:choose>
+                <c:if test="${thisMeeting.isDimdim}">
+	                <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_START %>)">Start web meeting</a><br/>
+	                <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL %>)">Cancel web meeting</a>
+                </c:if>
+                <c:if test="${!thisMeeting.isDimdim}">
+	                <a href="javascript:dimdimMeeting(${thisMeeting.id}, <%= DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL %>)">Cancel meeting</a>
+                </c:if>
               </c:if>
               <c:if test="<%= currentAttendee !=null && currentAttendee.getDimdimStatus()==MeetingAttendee.STATUS_DIMDIM_INVITED && !isPastDate %>">
                 <br/><br/><a href="javascript:setMeetingStatus(${thisMeeting.id}, <%= MeetingAttendee.STATUS_DIMDIM_ACCEPTED %>, <%= DimDimUtils.ACTION_MEETING_STATUS_CHANGE %>)">Confirm that you will be attending</a><br/>

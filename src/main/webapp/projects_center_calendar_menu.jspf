@@ -165,8 +165,11 @@
     document.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&id=' + thisTicketId + '&pid='+ thisProjectId + '&return=list';
   }
   
-  function setMeetingStatus(meetingId, meetingStatus, meetingAction) {
-   	document.location.href="${eventMeetingUrl}&mid=" + meetingId + "&sid=" + meetingStatus + "&aid=" + meetingAction;
+  function setMeetingStatus(meetingId, meetingStatus, meetingAction, attendeeId) {
+	  if (attendeeId == null) {
+		  attendeeId = -1;
+	  }
+   	document.location.href="${eventMeetingUrl}&mid=" + meetingId + "&uid=" + attendeeId + "&sid=" + meetingStatus + "&aid=" + meetingAction;
   }
   
   function dimdimMeeting(meetingId, meetingAction) {

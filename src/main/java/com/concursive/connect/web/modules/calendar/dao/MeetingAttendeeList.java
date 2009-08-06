@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.calendar.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -58,7 +57,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Contains a collection of MeetingAttendees
  *
@@ -72,12 +70,11 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
   private PagedListInfo pagedListInfo = null;
   private int meetingId = -1;
   private int isTentative = Constants.UNDEFINED;
-  private boolean isDimdimAttendee = false;
-
   private List<MeetingAttendee> invitedList = null;
   private List<MeetingAttendee> declinedList = null;
   private List<MeetingAttendee> acceptedList = null;
   private List<MeetingAttendee> tentativeList = null;
+  private List<MeetingAttendee> approveList = null;
 
   public MeetingAttendeeList() {
   }
@@ -118,27 +115,6 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     this.isTentative = DatabaseUtils.parseBooleanToConstant(tmp);
   }
 
-  /*
-   * if true returns all dimdim meeting attendees 
-   */
-  public boolean isDimdimAttendees() {
-    return isDimdimAttendee;
-  }
-
-  /*
-  * Set to true to retrive Dimdim meeting attendee
-  */
-  public void setDimdimAttendees(boolean isDimdimAttendee) {
-    this.isDimdimAttendee = isDimdimAttendee;
-  }
-
-  /*
-   * Set to true to retrive Dimdim meeting attendee
-   */
-  public void setDimdimAttendees(String tmp) {
-    this.isDimdimAttendee = DatabaseUtils.parseBoolean(tmp);
-  }
-
   public List<MeetingAttendee> getInvitedList() {
     return invitedList;
   }
@@ -171,14 +147,22 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     this.tentativeList = tentativeList;
   }
 
+  public List<MeetingAttendee> getApproveList() {
+    return approveList;
+  }
+
+  public void setApproveList(List<MeetingAttendee> approveList) {
+    this.approveList = approveList;
+  }
+
   public int queryCount(Connection db) throws SQLException {
     int count = 0;
     StringBuffer sqlCount = new StringBuffer();
     StringBuffer sqlFilter = new StringBuffer();
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
-            "FROM project_calendar_meeting_attendees ma " +
-            "WHERE ma.attendee_id > -1 ");
+        "FROM project_calendar_meeting_attendees ma " +
+        "WHERE ma.attendee_id > -1 ");
     createFilter(sqlFilter);
     PreparedStatement pst = db.prepareStatement(sqlCount.toString() + sqlFilter.toString());
     prepareFilter(pst);
@@ -208,8 +192,8 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     //Need to build a base SQL statement for counting records
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
-            "FROM project_calendar_meeting_attendees ma " +
-            "WHERE ma.attendee_id > -1 ");
+        "FROM project_calendar_meeting_attendees ma " +
+        "WHERE ma.attendee_id > -1 ");
     createFilter(sqlFilter);
     if (pagedListInfo == null) {
       pagedListInfo = new PagedListInfo();
@@ -236,8 +220,8 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     }
     sqlSelect.append(
         "ma.* " +
-            "FROM project_calendar_meeting_attendees ma " +
-            "WHERE ma.attendee_id > -1 ");
+        "FROM project_calendar_meeting_attendees ma " +
+        "WHERE ma.attendee_id > -1 ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -262,6 +246,7 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     declinedList = new ArrayList<MeetingAttendee>();
     acceptedList = new ArrayList<MeetingAttendee>();
     tentativeList = new ArrayList<MeetingAttendee>();
+    approveList = new ArrayList<MeetingAttendee>();
     for (MeetingAttendee meetingAttendee : this) {
       if (meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_INVITED) {
         getInvitedList().add(meetingAttendee);
@@ -275,9 +260,12 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
       if (meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_DECLINED) {
         getDeclinedList().add(meetingAttendee);
       }
+      if (meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_APPROVE_YES ||
+          meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_APPROVE_MAYBE) {
+        getApproveList().add(meetingAttendee);
+      }
     }
   }
-
 
   protected void createFilter(StringBuffer sqlFilter) {
     if (meetingId > -1) {
@@ -289,11 +277,7 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
     if (isTentative != Constants.UNDEFINED) {
       sqlFilter.append("AND is_tentative = ? ");
     }
-    if (isDimdimAttendee) {
-      sqlFilter.append("AND dimdim_status IS NOT NULL ");
-    }
   }
-
 
   protected int prepareFilter(PreparedStatement pst) throws SQLException {
     int i = 0;
@@ -325,7 +309,7 @@ public class MeetingAttendeeList extends ArrayList<MeetingAttendee> {
       // Delete the Meeting
       PreparedStatement pst = db.prepareStatement(
           "DELETE FROM project_calendar_meeting_attendees " +
-              "WHERE meeting_id = ? ");
+          "WHERE meeting_id = ? ");
       int i = 0;
       pst.setInt(++i, meetingId);
       pst.execute();

@@ -236,7 +236,6 @@ public class MeetingInviteesBean extends GenericBean {
   public void cancelMeeting(Connection db) throws SQLException {
     meetingAttendeeList = new MeetingAttendeeList();
     meetingAttendeeList.setMeetingId(meeting.getId());
-    meetingAttendeeList.setDimdimAttendees(true);
     meetingAttendeeList.buildList(db);
 
     //add them to cancel user list to send mail
@@ -257,7 +256,6 @@ public class MeetingInviteesBean extends GenericBean {
     //get all attendee list
     meetingAttendeeList = new MeetingAttendeeList();
     meetingAttendeeList.setMeetingId(meeting.getId());
-    meetingAttendeeList.setDimdimAttendees(true);
     meetingAttendeeList.buildList(db);
 
     if (!meeting.getIsDimdim()) {
@@ -279,10 +277,11 @@ public class MeetingInviteesBean extends GenericBean {
       //check if the meeting has been modified
       isMeetingModified(previousMeeting);
 
-      //check if any invitees remaining after processing then delete them
+      //check if any invitees remains after processing then delete them
       for (MeetingAttendee meetingAttendee : meetingAttendeeList) {
         meetingAttendee.delete(db);
       }
+
       //add the users to invitation rejected list
       addAttendeeToRejectedUsers(meetingAttendeeList);
     }
@@ -297,6 +296,11 @@ public class MeetingInviteesBean extends GenericBean {
     boolean inserted = false;
     String meetingInvitees = meeting.getMeetingInvitees().trim();
 
+    // find and set the dimdim credentials for the host from previous meeting
+    if (meeting.getIsDimdim()) {
+      setDimdimCredentials(db);
+    }
+
     // check if dimdim option is not selected.
     if (meetingInvitees.length() < 1) {
       // insert the meeting without any invitees
@@ -304,11 +308,6 @@ public class MeetingInviteesBean extends GenericBean {
         inserted = meeting.insert(db);
       }
       return inserted;
-    }
-
-    // find and set the dimdim credentials for the host from previous meeting
-    if (meeting.getIsDimdim()) {
-      setDimdimCredentials(db);
     }
 
     // check insert action for new meeting
@@ -366,6 +365,59 @@ public class MeetingInviteesBean extends GenericBean {
 
     //return true after committing if there are members to be confirmed or if update has been successful
     return hasInviteesToConfirm() || updated > 0;
+  }
+
+  public boolean joinMeeting(Connection db, ActionRequest request, Meeting meeting, User user, String join) throws SQLException {
+    //create attendee
+    MeetingAttendee thisAttendee = new MeetingAttendee();
+    thisAttendee.setMeetingId(meeting.getId());
+    thisAttendee.setUserId(user.getId());
+    thisAttendee.setEnteredBy(user.getId());
+    thisAttendee.setModifiedBy(user.getId());
+
+    //check if user is a member of the team
+    TeamMember member = project.getTeam().getTeamMember(user.getId());
+    boolean addAsTeamMember = (member == null || member.getId() == -1);
+
+    //set attendee status
+    if (meeting.getIsDimdim()) {
+      if ("yes".equalsIgnoreCase(join)) {
+        thisAttendee.setDimdimStatus(MeetingAttendee.STATUS_DIMDIM_APPROVE_YES);
+      } else {
+        thisAttendee.setDimdimStatus(MeetingAttendee.STATUS_DIMDIM_APPROVE_MAYBE);
+      }
+
+      //needs owner approval
+      addAsTeamMember = false;
+    } else {
+      if ("yes".equalsIgnoreCase(join)) {
+        thisAttendee.setDimdimStatus(MeetingAttendee.STATUS_DIMDIM_ACCEPTED);
+      } else {
+        thisAttendee.setDimdimStatus(MeetingAttendee.STATUS_DIMDIM_TENTATIVE);
+      }
+    }
+
+    if (addAsTeamMember) {
+      TeamMember thisMember = new TeamMember();
+      thisMember.setProjectId(meeting.getProjectId());
+      thisMember.setUserId(user.getId());
+      thisMember.setUserLevel(PortalUtils.getUserLevel(TeamMember.PARTICIPANT));
+      thisMember.setStatus(TeamMember.STATUS_JOINED);
+      thisMember.setEnteredBy(user.getId());
+      thisMember.setModifiedBy(user.getId());
+      String optionalMessage = "";
+      thisMember.setCustomInvitationMessage(optionalMessage);
+      if (thisMember.insert(db)) {
+        PortalUtils.processInsertHook(request, thisMember);
+      }
+    }
+
+    //add user as attendee
+    if (thisAttendee.insert(db)) {
+      this.meetingAttendee = thisAttendee;
+      return true;
+    }
+    return false;
   }
 
   /*
@@ -755,7 +807,6 @@ public class MeetingInviteesBean extends GenericBean {
    * Changes the status of a meeting attendee
    *
    * @param db            - Connection object
-   * @param meeting       - meeting the attendee was invited
    * @param user          - attendee to change the status
    * @param meetingStatus - status to change to
    *                      MeetingAttendee.STATUS_DIMDIM_ACCEPTED
@@ -766,22 +817,54 @@ public class MeetingInviteesBean extends GenericBean {
    *         for sending status mail to meeting host
    * @throws SQLException
    */
-  public boolean setMeetingStatus(Connection db, Meeting meeting, User user, int meetingStatus) throws SQLException {
+  public boolean setMeetingStatus(Connection db, ActionRequest request, User user, int meetingStatus) throws SQLException {
     MeetingAttendeeList meetingAttendeeList = new MeetingAttendeeList();
     meetingAttendeeList.setMeetingId(meeting.getId());
     meetingAttendeeList.setUserId(user.getId());
-    meetingAttendeeList.setDimdimAttendees(true);
     meetingAttendeeList.buildList(db);
 
     if (meetingAttendeeList.size() < 1) {
       return false;
     }
 
-    MeetingAttendee meetingAttendee = meetingAttendeeList.get(0);
+    this.meetingAttendee = meetingAttendeeList.get(0);
+    meetingAttendee.setModifiedBy(meetingAttendee.getUserId());
+
+    if (action == DimDimUtils.ACTION_MEETING_APPROVE_JOIN) {
+      //check if meeting owner denied meeting request.
+      if (meetingStatus == MeetingAttendee.STATUS_DIMDIM_DECLINED) {
+        meetingAttendee.delete(db);
+        return true;
+      }
+
+      //if accepted then check if the user status is 'maybe'
+      if (meetingStatus == MeetingAttendee.STATUS_DIMDIM_ACCEPTED &&
+          meetingAttendee.getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_APPROVE_MAYBE) {
+        meetingStatus = MeetingAttendee.STATUS_DIMDIM_TENTATIVE;
+      }
+      meetingAttendee.setModifiedBy(meeting.getOwner());
+
+      //add attendee as team member
+      TeamMember member = project.getTeam().getTeamMember(meetingAttendee.getUserId());
+      if ((member == null || member.getId() == -1)) {
+        TeamMember thisMember = new TeamMember();
+        thisMember.setProjectId(meeting.getProjectId());
+        thisMember.setUserId(meetingAttendee.getUserId());
+        thisMember.setUserLevel(PortalUtils.getUserLevel(TeamMember.PARTICIPANT));
+        thisMember.setStatus(TeamMember.STATUS_JOINED);
+        thisMember.setEnteredBy(meeting.getOwner());
+        thisMember.setModifiedBy(meeting.getOwner());
+        String optionalMessage = "";
+        thisMember.setCustomInvitationMessage(optionalMessage);
+        if (thisMember.insert(db)) {
+          PortalUtils.processInsertHook(request, thisMember);
+        }
+      }
+    }
+
+    //set attendee status and update
     meetingAttendee.setDimdimStatus(meetingStatus);
-    meetingAttendee.setModifiedBy(user.getId());
     if (meetingAttendee.update(db) > 0) {
-      this.meetingAttendee = meetingAttendee;
       return true;
     }
     return false;

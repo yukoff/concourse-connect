@@ -80,18 +80,29 @@ public class EventFormViewer implements IPortletViewer {
   // Pages
   private static final String VIEW_PAGE = "/projects_center_calendar_add.jsp";
   private static final String CONFIRM_INVITEES = "/projects_center_calendar_meetings_confirm.jsp";
-
+  private static final String JOIN_EVENT_PAGE = "/projects_center_calendar_join_event.jsp";
+  // Object attributes
+  private static final String VIEW_TYPE = "viewType";
+  private static final String JOIN_EVENT_VIEW = "joinEvent";
+  private static final String MEETING_ID = "meetingId";
   // Object Results
   private static final String MEETING = "meeting";
   private static final String TEAM_MEMBERS_LIST = "teamMembersList";
   private static final String SHOW_DIMDIM_OPTION = "showDimDim";
 
   public String doView(RenderRequest request, RenderResponse response) throws Exception {
+
+    String viewType = request.getParameter(VIEW_TYPE);
+    if (JOIN_EVENT_VIEW.equals(viewType)) {
+      request.setAttribute(MEETING_ID, request.getParameter("id"));
+      return JOIN_EVENT_PAGE;
+    }
+
     //Preferences
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
     request.setAttribute(SHOW_DIMDIM_OPTION, "true".equals(prefs.get(ApplicationPrefs.DIMDIM_ENABLED)) ? "true" : "false");
 
-    // Check the request existance of invitees bean then display the confirm invitees page.
+    // Check the request existence of invitees bean then display the confirm invitees page.
     Object meetingInviteesBean = request.getAttribute(AbstractPortletModule.FORM_BEAN);
     if (meetingInviteesBean instanceof MeetingInviteesBean) {
       meetingInviteesBean = (MeetingInviteesBean) PortalUtils.getFormBean(request, "meetingInviteesBean", MeetingInviteesBean.class);
@@ -142,8 +153,9 @@ public class EventFormViewer implements IPortletViewer {
     for (TeamMember teamMember : project.getTeam()) {
       User userInfo = UserUtils.loadUser(teamMember.getUserId());
       // add if the user is not the meeting host(current user)
-      if (user.getId() != teamMember.getUserId())
+      if (user.getId() != teamMember.getUserId()) {
         teamMembersList.add(userInfo);
+      }
     }
     request.setAttribute(TEAM_MEMBERS_LIST, teamMembersList);
 
@@ -159,10 +171,9 @@ public class EventFormViewer implements IPortletViewer {
     //find all meeting attendees
     MeetingAttendeeList meetingAttendeeList = new MeetingAttendeeList();
     meetingAttendeeList.setMeetingId(meeting.getId());
-    meetingAttendeeList.setDimdimAttendees(true);
     meetingAttendeeList.buildList(db);
 
-    //comma seperate the invitees
+    //comma separate the invitees
     String meetingInvitees = "";
     for (MeetingAttendee thisMeetingAttendee : meetingAttendeeList) {
       if (!"".equals(meetingInvitees)) {

@@ -95,8 +95,8 @@ public class SaveEventAction implements IPortletAction {
     Connection db = getConnection(request);
 
     //validate the checkbox and participants textarea contents
-    if (meeting.getIsDimdim() && !StringUtils.hasText(meeting.getMeetingInvitees())) {
-      meeting.addError("inviteesError", "Required field if Dimdim web meeting option is choosen.");
+    if (meeting.getByInvitationOnly() && !StringUtils.hasText(meeting.getMeetingInvitees())) {
+      meeting.addError("inviteesError", "Required field");
       return meeting;
     }
 
@@ -121,6 +121,7 @@ public class SaveEventAction implements IPortletAction {
       meeting.setDimdimUrl(previousMeeting.getDimdimUrl());
       meeting.setDimdimUsername(previousMeeting.getDimdimUsername());
       meeting.setDimdimPassword(previousMeeting.getDimdimPassword());
+      meeting.setDimdimMeetingKey(previousMeeting.getDimdimMeetingKey());
 
       // Verify the record matches the specified project
       if (previousMeeting.getProjectId() != project.getId()) {

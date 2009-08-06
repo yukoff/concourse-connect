@@ -56,6 +56,7 @@ import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.common.social.geotagging.utils.LocationBean;
 import com.concursive.connect.web.modules.common.social.geotagging.utils.LocationUtils;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import nl.captcha.Captcha;
@@ -492,6 +493,8 @@ public class RegisterBean extends GenericBean {
       if (commit) {
         db.commit();
       }
+      // Reload the complete user record
+      user = UserUtils.loadUser(user.getId());
     } catch (Exception e) {
       if (commit) {
         db.rollback();

@@ -51,6 +51,7 @@
     <forward name="UserPermissionError" resource="/error_permission.jsp"/>
     <forward name="SystemError" resource="/error_system.jsp"/>
     <forward name="ToolsError" resource="/error_tools.jsp"/>
+    <forward name="CRMError" resource="/error_tools.jsp"/>
     <forward name="UserError" resource="/error_user.jsp"/>
     <forward name="NotSetupError" resource="/Setup.do" redirect="true"/>
     <forward name="UpgradeCheck" resource="/Upgrade.do?command=Default&amp;style=true" redirect="true" />
@@ -559,6 +560,7 @@
     <forward name="ShowPortalPageOK" resource="/projects_center_portal_page.jsp"/>
   </action>
   <action name="ProjectManagementTools" class="com.concursive.connect.web.modules.tools.actions.ProjectManagementTools"/>
+  <action name="ProjectManagementCRM" class="com.concursive.connect.web.modules.tools.actions.ProjectManagementCRM"/>
   <action name="Timesheet" class="com.concursive.connect.web.modules.timesheet.actions.Timesheet">
     <forward name="TimesheetOK" resource="/projects_timesheet.jsp"/>
     <forward name="SliderOK" resource="/projects_timesheet_slider.jsp"/>

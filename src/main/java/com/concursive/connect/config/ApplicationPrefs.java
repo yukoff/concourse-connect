@@ -162,6 +162,11 @@ public class ApplicationPrefs {
   public final static String MAIN_PROFILE = "MAIN_PROFILE";
   // Default values
   public final static String DEFAULT_NODE = "primary";
+  // Management CRM Settings
+  public final static String CONCURSIVE_CRM_SERVER = "CONCURSIVE_CRM.SERVER";
+  public final static String CONCURSIVE_CRM_ID = "CONCURSIVE_CRM.ID";
+  public final static String CONCURSIVE_CRM_CODE = "CONCURSIVE_CRM.CODE";
+  public final static String CONCURSIVE_CRM_CLIENT = "CONCURSIVE_CRM.CLIENT";
 
   // System constants
   public final static String ls = System.getProperty("line.separator");

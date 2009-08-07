@@ -56,7 +56,9 @@ import com.concursive.connect.web.modules.documents.dao.FileItemVersionList;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.dao.UserList;
 import com.concursive.connect.web.modules.login.dao.UserLogList;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.translation.dao.LanguagePackList;
 import com.concursive.connect.web.modules.translation.dao.LanguageTeamList;
 import com.concursive.connect.web.modules.translation.dao.WebSiteLanguageList;
@@ -186,35 +188,41 @@ public final class AdminUsers extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    User prevUser = null;
+    User thisUser = (User) context.getFormBean();
     Connection db = null;
     int count = 0;
     try {
       db = getConnection(context);
-      // Retrieve the user
-      User thisUser = (User) context.getFormBean();
       thisUser.setModifiedBy(getUserId(context));
       // the username is always the email address
       thisUser.setUsername(thisUser.getEmail());
-      String crmRole = context.getRequest().getParameter("crmRole");
-      if (crmRole != null) {
-        thisUser.setConnectCRMAdmin("admin".equals(crmRole));
-        thisUser.setConnectCRMManager("manager".equals(crmRole));
-      }
+      thisUser.setConnectCRMAdmin("admin".equals(context.getRequest().getParameter("crmRole")));
+      thisUser.setConnectCRMManager("manager".equals(context.getRequest().getParameter("crmRole")));
       // TODO: Before updating the user, check and see if the email address changed
       // so that the user can be notified
 
       // TODO: Make sure the email address is unique before changing it
-
+      prevUser = UserUtils.loadUser(thisUser.getId());
       count = thisUser.update(db);
       if (count > 0) {
         CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, thisUser.getId());
-        // TODO: Update the user's session so that they have new abilities -- or fewer abilities
+        //Update the user's session to reflect the CRM role
+        getUser(context).setConnectCRMAdmin("admin".equals(context.getRequest().getParameter("crmRole")));
+        getUser(context).setConnectCRMManager("manager".equals(context.getRequest().getParameter("crmRole")));
+        // TODO: Update the user's session so that they have new abilities -- or fewer abilities       
       }
+      //reload the user record.
+      thisUser = UserUtils.loadUser(thisUser.getId());
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return ("SystemError");
     } finally {
       freeConnection(context, db);
+    }
+    if (count > 0) {
+      // Trigger the workflow
+      processUpdateHook(context, prevUser, thisUser);
     }
     return "SaveOK";
   }

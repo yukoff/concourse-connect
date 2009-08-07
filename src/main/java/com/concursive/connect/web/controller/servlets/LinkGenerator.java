@@ -187,6 +187,10 @@ public class LinkGenerator {
     return "ProjectManagementTools.do?command=Default&pid=" + projectId + "&linkTo=" + url;
   }
 
+  public static String getCRMLink() {
+    return "ProjectManagementCRM.do?command=Default";
+  }
+
   public static String getItemLink(int linkModuleId, int linkItemId, int linkAnchor) {
     return (getItemLink(linkModuleId, linkItemId) + "#" + linkAnchor);
   }

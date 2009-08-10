@@ -444,6 +444,13 @@
                   <rule>userHasToolsEnabled</rule>]]>
               </value>
               <value>
+                <![CDATA[<content>Access CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <target>_blank</target>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Is this your business?</content>
                   <title>Claim ownership of ${project.title:xml} listing</title>
                   <href>/show/${project.uniqueId}/app/claim</href>

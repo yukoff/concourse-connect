@@ -162,6 +162,10 @@ public class ProjectActionsPortlet extends GenericPortlet {
             if (member == null || !member.getTools() || !StringUtils.hasText(project.getConcursiveCRMUrl())) {
               valid = false;
             }
+          } else if ("userHasCRMAccess".equals(rule)) {
+            if (!thisUser.isConnectCRMAdmin() && !thisUser.isConnectCRMManager()) {
+              valid = false;
+            }
           } else if ("userCanRequestToJoin".equals(rule)) {
             boolean canRequestToJoin =
                 (thisUser != null && thisUser.getId() > 0 &&

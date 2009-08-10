@@ -181,6 +181,8 @@ public class URLControllerServlet extends HttpServlet {
           mappedPath = LinkGenerator.getToolsLink(bean.getProjectId(), bean.getObjectValue());
         } else if ("crm".equals(bean.getDomainObject())) {
           mappedPath = LinkGenerator.getCRMLink();
+        } else if ("crm-account".equals(bean.getDomainObject())) {
+          mappedPath = LinkGenerator.getCRMAccountLink(bean.getProjectId(), bean.getObjectValue());
         } else {
           mappedPath = LinkGenerator.getProjectPortalLink(bean);
         }

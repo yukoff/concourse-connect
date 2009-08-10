@@ -191,6 +191,10 @@ public class LinkGenerator {
     return "ProjectManagementCRM.do?command=Default";
   }
 
+  public static String getCRMAccountLink(int projectId, String objectValue) {
+    return "ProjectManagementCRM.do?command=ShowAccount&pid=" + projectId;
+  }
+
   public static String getItemLink(int linkModuleId, int linkItemId, int linkAnchor) {
     return (getItemLink(linkModuleId, linkItemId) + "#" + linkAnchor);
   }

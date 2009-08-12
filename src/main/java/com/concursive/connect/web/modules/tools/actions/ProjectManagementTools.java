@@ -152,6 +152,9 @@ public class ProjectManagementTools extends GenericAction {
     if (StringUtils.hasText(ownerEmail)) {
       record.addField("userReportsTo", ownerEmail);
     }
+    record.addField("userTimeZone", user.getTimeZone());
+    record.addField("hasCRMAdminRole", user.isConnectCRMAdmin());
+    record.addField("hasCRMManagerRole", user.isConnectCRMManager());
     boolean success = conn.save(record);
     if (!success) {
       if (System.getProperty("DEBUG") != null) {

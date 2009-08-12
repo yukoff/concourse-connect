@@ -183,6 +183,10 @@ public class ProjectManagementCRM extends GenericAction {
     record.addField("userLastName", user.getLastName());
     record.addField("userCompany", user.getCompany());
     record.addField("userPassword", user.getPassword());
+    record.addField("userTimeZone", user.getTimeZone());
+    record.addField("hasCRMAdminRole", user.isConnectCRMAdmin());
+    record.addField("hasCRMManagerRole", user.isConnectCRMManager());
+
     boolean success = conn.save(record);
     if (!success) {
       if (System.getProperty("DEBUG") != null) {

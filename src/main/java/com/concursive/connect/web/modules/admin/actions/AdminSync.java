@@ -152,15 +152,15 @@ public final class AdminSync extends GenericAction {
 	        	prefs.save();
 	        	
 		        triggerJob(context, "syncSystem", syncListings);
+
+            //Set the connect user performing the first sync to have crm admin role
+            db = this.getConnection(context);
+            User user = getUser(context);
+            user.setConnectCRMAdmin(true);
+            user.update(db);
         	}
         }
       }
-
-      //Set the connect user performing the sync to have crm admin role 
-      db = this.getConnection(context);
-      User user = getUser(context);
-      user.setConnectCRMAdmin(true);
-      user.update(db);
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return ("SystemError");

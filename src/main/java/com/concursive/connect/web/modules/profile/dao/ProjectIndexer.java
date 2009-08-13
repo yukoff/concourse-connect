@@ -183,6 +183,7 @@ public class ProjectIndexer implements Indexer {
     document.add(new Field("website", (project.getPortal() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("title", project.getTitle(), Field.Store.YES, Field.Index.TOKENIZED));
     document.add(new Field("titleLower", project.getTitle().toLowerCase().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    document.add(new Field("keywords", (StringUtils.hasText(project.getKeywords()) ? project.getKeywords() : ""), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         project.getTitle() + " " +
             project.getShortDescription() +

@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.search.utils;
 
 import com.concursive.commons.text.StringUtils;
@@ -60,6 +59,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Utilities to work with search strings and Lucene queries
@@ -69,10 +70,10 @@ import java.util.StringTokenizer;
  */
 public class SearchUtils {
 
+  private static Log LOG = LogFactory.getLog(SearchUtils.class);
   private final static String DOUBLE_QUOTE = "\"";
   private final static String WHITESPACE_AND_QUOTES = " \t\r\n\"";
   private final static String QUOTES_ONLY = "\"";
-
 
   /**
    * Extracts the keywords into tokens, and then either concats them with AND
@@ -129,7 +130,6 @@ public class SearchUtils {
     return sb.toString();
   }
 
-
   /**
    * Description of the Method
    *
@@ -149,7 +149,6 @@ public class SearchUtils {
         if (hasText(token)) {
           String gotToken = token.trim().toLowerCase();
           if ("and".equals(gotToken) || "or".equals(gotToken) || "not".equals(gotToken)) {
-
           } else {
             if (sb.length() > 0) {
               sb.append(" ");
@@ -166,7 +165,6 @@ public class SearchUtils {
     return terms;
   }
 
-
   /**
    * Description of the Method
    *
@@ -177,7 +175,6 @@ public class SearchUtils {
     return (text != null && !text.trim().equals(""));
   }
 
-
   /**
    * Gets the doubleQuote attribute of the SearchUtils object
    *
@@ -187,7 +184,6 @@ public class SearchUtils {
   private static boolean isDoubleQuote(String text) {
     return text.equals(DOUBLE_QUOTE);
   }
-
 
   /**
    * Description of the Method
@@ -219,6 +215,7 @@ public class SearchUtils {
    * @return
    */
   public static String generateProjectQueryString(SearchBean search, int userId, int instanceId) {
+    LOG.info("Search Query: " + search.getQuery() + " (" + search.getLocation() + ")");
     // The search portal is being used
     String locationTerm = search.getParsedLocation();
 
@@ -236,20 +233,43 @@ public class SearchUtils {
     }
 
     // Optimize the terms
+    StringBuffer titleValues = new StringBuffer();
+    StringBuffer keywordValues = new StringBuffer();
     StringBuffer termValues = new StringBuffer();
-    // Find the phrase as-is in quotes for exactness
-    termValues.append("\"").append(search.getParsedQuery()).append("\"^20");
+
+    // Find the phrase as-is in quotes for exactness, in the title
+    titleValues.append("\"").append(search.getParsedQuery()).append("\"^25");
+
+    // Find matches in the keywords
+    keywordValues.append("\"").append(search.getParsedQuery()).append("\"^24");
+
+    // Exact description match
+    termValues.append("\"").append(search.getParsedQuery()).append("\"^16");
 
     // Find the words in the phrase
     ArrayList<String> terms = search.getTerms();
+
+    int titleCount = 23;
+    int keywordCount = 19;
     int count = 15;
+
     for (String term : terms) {
+      if (titleValues.length() > 0) {
+        titleValues.append(" OR ");
+      }
+      if (keywordValues.length() > 0) {
+        keywordValues.append(" OR ");
+      }
       if (termValues.length() > 0) {
         termValues.append(" OR ");
       }
       if (count < 5) {
         count = 5;
       }
+      titleValues.append(term).append("^").append(titleCount);
+      --titleCount;
+      keywordValues.append(term).append("^").append(count);
+      --keywordCount;
       termValues.append(term).append("^").append(count);
       --count;
     }
@@ -265,22 +285,23 @@ public class SearchUtils {
       termValues.append(term).append("*").append("^").append(count);
       --count;
     }
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("SearchUtils-> Query: " + termValues.toString());
-    }
 
-    return
-        "(approved:1) " +
-            (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +            
-            "AND (" +
-            "(guests:1)" +
-            (userId > 0 ? " OR (participants:1)" : "") +
-            ") " +
-            "AND (closed:0) " +
-            "AND (website:0) " +
-            (search.getProjectId() > -1 ? "AND (projectId:" + search.getProjectId() + ") " : "") +
-            (StringUtils.hasText(search.getQuery()) ? "AND (" + termValues.toString() + ") " : "") +
-            (StringUtils.hasText(locationTerm) ? "AND (location:(" + locationTerm + ")) " : "");
+    String thisQuery = "(approved:1) " +
+        (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
+        "AND (" +
+        "(guests:1)" +
+        (userId > 0 ? " OR (participants:1)" : "") +
+        ") " +
+        "AND (closed:0) " +
+        "AND (website:0) " +
+        (search.getProjectId() > -1 ? "AND (projectId:" + search.getProjectId() + ") " : "") +
+        (StringUtils.hasText(search.getQuery()) ? 
+          "AND (title:(" + titleValues.toString() + ") OR (keywords:(" + keywordValues.toString() + ")) OR (" + termValues.toString() + ")) " : "") +
+        (StringUtils.hasText(locationTerm) ? "AND (location:(" + locationTerm + ")) " : "");
+
+    LOG.debug("Built Query: " + thisQuery);
+
+    return thisQuery;
   }
 
   /**
@@ -302,10 +323,10 @@ public class SearchUtils {
     StringBuffer projectList = new StringBuffer();
     PreparedStatement pst = db.prepareStatement(
         "SELECT project_id, userlevel " +
-            "FROM project_team " +
-            "WHERE user_id = ? " +
-            "AND status IS NULL " +
-            (specificProjectId > -1 ? "AND project_id = ? " : ""));
+        "FROM project_team " +
+        "WHERE user_id = ? " +
+        "AND status IS NULL " +
+        (specificProjectId > -1 ? "AND project_id = ? " : ""));
     int i = 0;
     pst.setInt(++i, userId);
     if (specificProjectId > -1) {
@@ -325,19 +346,17 @@ public class SearchUtils {
     pst.close();
 
     // Generate the string
-    return
-        (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") " : "") +
-            (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
-            "AND " +
-            "(" +
-            "(" +
-            "((guests:1) AND (membership:0)) " +
-            (userId > 0 ? " OR ((participants:1) AND (membership:0)) " : "") +
-            ") " +
-            (StringUtils.hasText(projectList.toString()) ?
-                "OR " +
-                    "(projectId:(" + projectList + "))"
-                : "") +
-            ") ";
+    return (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") " : "") +
+        (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
+        "AND " +
+        "(" +
+        "(" +
+        "((guests:1) AND (membership:0)) " +
+        (userId > 0 ? " OR ((participants:1) AND (membership:0)) " : "") +
+        ") " +
+        (StringUtils.hasText(projectList.toString()) ? "OR " +
+        "(projectId:(" + projectList + "))"
+        : "") +
+        ") ";
   }
 }

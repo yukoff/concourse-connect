@@ -140,6 +140,8 @@ public class URLControllerServlet extends HttpServlet {
         mappedPath = "Reports.do?command=List";
       } else if (bean.getAction().equals(URLControllerBean.BADGE)) {
         mappedPath = "Badges.do?command=Details&id=" + bean.getObjectValue();
+      } else if (bean.getAction().equals(URLControllerBean.MANAGEMENT_CRM)) {
+        mappedPath = LinkGenerator.getCRMLink();
       } else if (bean.getAction().equals(URLControllerBean.SHOW)) {
         if (bean.getDomainObject() == null) {
           mappedPath = LinkGenerator.getProjectPortalLink(bean);
@@ -179,8 +181,6 @@ public class URLControllerServlet extends HttpServlet {
           mappedPath = LinkGenerator.getPageLink(bean.getProjectId(), bean.getObjectValue());
         } else if ("tools".equals(bean.getDomainObject())) {
           mappedPath = LinkGenerator.getToolsLink(bean.getProjectId(), bean.getObjectValue());
-        } else if ("crm".equals(bean.getDomainObject())) {
-          mappedPath = LinkGenerator.getCRMLink();
         } else if ("crm-account".equals(bean.getDomainObject())) {
           mappedPath = LinkGenerator.getCRMAccountLink(bean.getProjectId(), bean.getObjectValue());
         } else {

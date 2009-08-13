@@ -100,7 +100,9 @@ CREATE TABLE users (
   show_location_to INTEGER DEFAULT 0,
   show_company_to INTEGER DEFAULT 0,
   points INTEGER DEFAULT 0 NOT NULL,
-  instance_id INTEGER REFERENCES instances(instance_id)
+  instance_id INTEGER REFERENCES instances(instance_id),
+  connect_crm_admin BIT DEFAULT 0,
+  connect_crm_manager BIT DEFAULT 0
 );
 CREATE UNIQUE INDEX users_uni_idx ON users (email);
 

@@ -87,6 +87,7 @@ public class URLControllerBean extends GenericBean {
   public static final String SITEMAP = "sitemap";
   public static final String SIGN_UP = "sign-up";
   public static final String SUPPORT = "support";
+  public static final String MANAGEMENT_CRM = "management-crm";
 
   // Root context project values
   // Ex. /show/project-name [/blog][/x]

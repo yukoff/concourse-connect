@@ -277,6 +277,7 @@ public class ProjectCRM extends GenericBean {
    * @throws java.sql.SQLException Description of Exception
    */
   private void buildRecord(ResultSet rs) throws SQLException {
+    id = rs.getInt("project_id");
     concursiveCRMUrl = rs.getString("concursive_crm_url");
     concursiveCRMDomain = rs.getString("concursive_crm_domain");
     concursiveCRMCode = rs.getString("concursive_crm_code");

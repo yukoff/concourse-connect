@@ -51,16 +51,20 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.api.dao.SyncClient;
 
+import org.apache.commons.codec.binary.Hex;
 import org.aspcfs.apps.transfer.DataRecord;
 import org.aspcfs.utils.CRMConnection;
-import org.aspcfs.utils.HTTPUtils;
 import org.aspcfs.utils.StringUtils;
 import org.quartz.Scheduler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.Vector;
 import java.sql.Connection;
+import java.security.Key;
 
 /**
  * Actions for the administration module
@@ -69,6 +73,9 @@ import java.sql.Connection;
  * @created June 18, 2009
  */
 public final class AdminSync extends GenericAction {
+
+  protected static final Log LOG = LogFactory.getLog(GenericAction.class);
+  protected static final String SAVE_CONNECT_SYNC_INFO_SERVICE = "saveConnectSyncInfoService";
 
   /**
    * Action to prepare a list of Admin options
@@ -158,6 +165,41 @@ public final class AdminSync extends GenericAction {
             User user = getUser(context);
             user.setConnectCRMAdmin(true);
             user.update(db);
+
+            //Add a sync client and send that information over to the Mgmt CRM Server
+            Key key = (Key) context.getServletContext().getAttribute(ApplicationPrefs.TEAM_KEY);
+            SyncClient syncClient = new SyncClient();
+            syncClient.setType(prefs.get(ApplicationPrefs.PURPOSE));
+            syncClient.setCode(new String(Hex.encodeHex(key.getEncoded())));
+            syncClient.setEnabled(true);
+            syncClient.setEnteredBy(user.getId());
+            syncClient.setModifiedBy(user.getId());
+            boolean recorded = syncClient.insert(db);
+            if (recorded) {
+              CRMConnection connection = new CRMConnection();
+              connection.setUrl(serverURL);
+              connection.setId(domain);
+              connection.setCode(apiCode);
+              connection.setClientId(apiClientId);
+
+              DataRecord record = new DataRecord();
+              record.setName(SAVE_CONNECT_SYNC_INFO_SERVICE);
+              record.setAction(SAVE_CONNECT_SYNC_INFO_SERVICE);
+              record.addField("connectURL", getServerUrl(context));
+              if (StringUtils.hasText(prefs.get(ApplicationPrefs.WEB_URL))) {
+                record.addField("connectDomain", prefs.get(ApplicationPrefs.WEB_URL));
+              } else {
+                record.addField("connectDomain", context.getRequest().getServerName());
+              }
+              record.addField("connectSyncClientId", syncClient.getId());
+              record.addField("connectSyncClientCode", syncClient.getCode());
+              connection.save(record);
+              if (!connection.hasError()) {
+                LOG.debug("Connect Sync connection information has been successfully transmitted...");
+              } else {
+                LOG.debug("Connect Sync connection information transmission failed...");
+              }
+            }
         	}
         }
       }

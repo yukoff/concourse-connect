@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.setup.actions;
 
 import com.concursive.commons.codec.PrivateString;
@@ -73,6 +72,7 @@ import java.io.File;
 import java.security.Key;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Properties;
 import java.util.Set;
 
 /**
@@ -96,7 +96,6 @@ public final class Setup extends GenericAction {
     }
     return "SetupOK";
   }
-
 
   /**
    * Description of the Method
@@ -137,7 +136,6 @@ public final class Setup extends GenericAction {
     return "SetupConfigureLibraryOK";
   }
 
-
   /**
    * Description of the Method
    *
@@ -175,7 +173,9 @@ public final class Setup extends GenericAction {
           // Save the location of the fileLibrary
           String thisPath = ApplicationPrefs.getRealPath(context.getServletContext());
           if (thisPath == null) {
-            thisPath = StringUtils.loadText(context.getServletContext().getResourceAsStream("/WEB-INF/instance.property"));
+            Properties instanceProperties = new Properties();
+            instanceProperties.load(context.getServletContext().getResourceAsStream("/WEB-INF/instance.property"));
+            thisPath = instanceProperties.getProperty("path");
           }
           ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
           // Load the specified prefs...
@@ -217,7 +217,9 @@ public final class Setup extends GenericAction {
         // save the location
         String thisPath = ApplicationPrefs.getRealPath(context.getServletContext());
         if (thisPath == null) {
-          thisPath = StringUtils.loadText(context.getServletContext().getResourceAsStream("/WEB-INF/instance.property"));
+          Properties instanceProperties = new Properties();
+          instanceProperties.load(context.getServletContext().getResourceAsStream("/WEB-INF/instance.property"));
+          thisPath = instanceProperties.getProperty("path");
         }
         ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
         // Test to see if registration of services is enabled
@@ -255,10 +257,9 @@ public final class Setup extends GenericAction {
     bean.setJava(System.getProperty("java.version"));
     bean.setWebserver(HTTPUtils.getServerName(
         context.getRequest().getScheme() + "://" +
-            RequestUtils.getServerUrl(context.getRequest())));
+        RequestUtils.getServerUrl(context.getRequest())));
     return "SetupRegistrationFormOK";
   }
-
 
   public synchronized String executeCommandSaveRegistration(ActionContext context) {
     ApplicationPrefs prefs = getApplicationPrefs(context);
@@ -281,7 +282,7 @@ public final class Setup extends GenericAction {
     bean.setJava(System.getProperty("java.version"));
     bean.setWebserver(HTTPUtils.getServerName(
         context.getRequest().getScheme() + "://" +
-            RequestUtils.getServerUrl(context.getRequest())));
+        RequestUtils.getServerUrl(context.getRequest())));
     // Set key for exchanging info
     Key key = PrivateString.generateKey();
     bean.setKey(PrivateString.encodeHex(key));
@@ -315,7 +316,6 @@ public final class Setup extends GenericAction {
     return "SaveRegistrationOK";
   }
 
-
   public String executeCommandConfigureDatabase(ActionContext context) {
     if (SetupUtils.isConfigured(getApplicationPrefs(context))) {
       return "AlreadySetupOK";
@@ -346,7 +346,6 @@ public final class Setup extends GenericAction {
     }
     return "SetupConfigureDatabaseOK";
   }
-
 
   /**
    * Description of the Method
@@ -401,7 +400,7 @@ public final class Setup extends GenericAction {
       } catch (Exception e) {
         context.getRequest().setAttribute("actionError",
             "An error occurred while trying to connect to the database, the " +
-                "following error was provided by the database driver: " + e.getMessage());
+            "following error was provided by the database driver: " + e.getMessage());
       } finally {
         DriverManager.setLoginTimeout(timeout);
         if (db != null) {
@@ -415,7 +414,6 @@ public final class Setup extends GenericAction {
     processErrors(context, bean.getErrors());
     return "SetupSaveDatabaseERROR";
   }
-
 
   /**
    * Description of the Method
@@ -481,14 +479,13 @@ public final class Setup extends GenericAction {
       e.printStackTrace(System.out);
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to install the database, the " +
-              "following error was provided: " + e.getMessage());
+          "following error was provided: " + e.getMessage());
       return "SetupInstallDatabaseERROR";
     } finally {
       freeConnection(context, db);
     }
     return "SetupInstallDatabaseOK";
   }
-
 
   /**
    * Description of the Method
@@ -537,7 +534,6 @@ public final class Setup extends GenericAction {
     return "SetupConfigureDetailsOK";
   }
 
-
   /**
    * Description of the Method
    *
@@ -572,7 +568,6 @@ public final class Setup extends GenericAction {
     return "SetupSaveDetailsOK";
   }
 
-
   /**
    * Determines if the admin has been configured
    *
@@ -596,7 +591,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to verify the account, the " +
-              "following error was provided: " + e.getMessage());
+          "following error was provided: " + e.getMessage());
       LOG.error("configureAdmin", e);
       return "SetupConfigureAdminERROR";
     } finally {
@@ -604,7 +599,6 @@ public final class Setup extends GenericAction {
     }
     return "SetupConfigureAdminOK";
   }
-
 
   /**
    * Saves the admin's details
@@ -640,7 +634,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to create the account, the " +
-              "following error was provided: " + e.getMessage());
+          "following error was provided: " + e.getMessage());
       LOG.error("userInsert", e);
       return "SetupSaveAdminERROR";
     } finally {
@@ -671,7 +665,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to verify the site, the " +
-              "following error was provided: " + e.getMessage());
+          "following error was provided: " + e.getMessage());
       return "SetupConfigureSiteERROR";
     } finally {
       freeConnection(context, db);
@@ -695,7 +689,6 @@ public final class Setup extends GenericAction {
     }
     return "SetupConfigureSiteOK";
   }
-
 
   /**
    * Description of the Method
@@ -745,7 +738,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to create the account, the " +
-              "following error was provided: " + e.getMessage());
+          "following error was provided: " + e.getMessage());
       LOG.error("userInsert", e);
       return "SetupSaveSiteERROR";
     } finally {
@@ -753,7 +746,6 @@ public final class Setup extends GenericAction {
     }
     return "SetupSaveSiteOK";
   }
-
 
   /**
    * Completes the setup process

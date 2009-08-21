@@ -590,13 +590,6 @@
         <include name="**/*"/>
       </fileset>
     </copy>
-    <!-- Copy the resources -->
-    <mkdir dir="${dist.dir}/${project.war.finalName}/WEB-INF/classes"/>
-    <copy todir="${dist.dir}/${project.war.finalName}/WEB-INF/classes">
-      <fileset dir="${src.resources.dir}">
-        <include name="**/*"/>
-      </fileset>
-    </copy>
     <!-- Copy any contributions -->
     <property name="contrib.list" value=""/>
     <for list="${contrib.list}" param="contrib">
@@ -623,7 +616,7 @@
       </sequential>
     </for>
     <!-- Copy the instance property -->
-    <echo file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property">node=${NODE}</echo>
+    <echo file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property">name=ConnectInstance${fs}node=${NODE}</echo>
     <loadresource property="message">
        <file file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property"/>
     </loadresource>

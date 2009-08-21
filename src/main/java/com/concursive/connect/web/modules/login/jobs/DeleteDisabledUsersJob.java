@@ -43,10 +43,11 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.login.jobs;
 
 import com.concursive.connect.Constants;
+import com.concursive.connect.indexer.IndexEvent;
+import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.scheduler.SchedulerUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.dao.UserList;
@@ -57,6 +58,7 @@ import org.quartz.SchedulerContext;
 import org.quartz.StatefulJob;
 
 import java.sql.Connection;
+import java.util.Vector;
 
 /**
  * User: matt rajkowski
@@ -65,6 +67,7 @@ import java.sql.Connection;
  * Attempts to delete disabled users -- will fail due to referential integrity
  */
 public class DeleteDisabledUsersJob implements StatefulJob {
+
   public void execute(JobExecutionContext context) throws JobExecutionException {
     SchedulerContext schedulerContext = null;
     Connection db = null;
@@ -86,6 +89,12 @@ public class DeleteDisabledUsersJob implements StatefulJob {
           // Double-check and delete the user
           if (UserUtils.isUserDisabled(user)) {
             user.delete(db);
+            // Remove the user's profile from the index
+            if (user.getProfileProjectId() > -1) {
+              IndexEvent indexEvent = new IndexEvent(user.getProfileProject(), IndexEvent.DELETE);
+              ((Vector) schedulerContext.get("IndexArray")).add(indexEvent);
+              context.getScheduler().triggerJob("indexer", (String) schedulerContext.get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
+            }
           }
           ++count;
         } catch (Exception e) {

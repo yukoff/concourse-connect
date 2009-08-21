@@ -178,8 +178,8 @@ public class CacheUtils {
       SelfPopulatingCache selfPopulatingCache = new SelfPopulatingCache(cache,
           entryFactory);
       // Add any additional listener properties
-      if (manager.getCachePeerListener() != null) {
-        LOG.info("Setting rmi properties");
+      if (manager.getCachePeerListener("RMI") != null) {
+        LOG.info("Setting RMI properties");
         Properties properties = new Properties();
         properties.put("replicateAsynchronously", "true");
         properties.put("replicatePuts", "false");

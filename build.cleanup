@@ -153,3 +153,8 @@ WEB-INF/lib/concursive-commons-20090702.jar
 WEB-INF/lib/concursive-commons-20090708.jar
 WEB-INF/lib/imagescaling_0_7_1.jar
 
+# 2009-08-19
+WEB-INF/lib/concursive-commons-20090710.jar
+WEB-INF/lib/backport-util-concurrent-3.0.jar
+WEB-INF/lib/ehcache-1.5.0.jar
+WEB-INF/lib/jsr107cache-1.0.jar

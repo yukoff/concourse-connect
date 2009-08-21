@@ -175,7 +175,10 @@ public final class Setup extends GenericAction {
           if (thisPath == null) {
             Properties instanceProperties = new Properties();
             instanceProperties.load(context.getServletContext().getResourceAsStream("/WEB-INF/instance.property"));
-            thisPath = instanceProperties.getProperty("path");
+            String potentialPath = instanceProperties.getProperty("path");
+            if (potentialPath != null) {
+              thisPath = potentialPath;
+            }
           }
           ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
           // Load the specified prefs...
@@ -219,7 +222,10 @@ public final class Setup extends GenericAction {
         if (thisPath == null) {
           Properties instanceProperties = new Properties();
           instanceProperties.load(context.getServletContext().getResourceAsStream("/WEB-INF/instance.property"));
-          thisPath = instanceProperties.getProperty("path");
+          String potentialPath = instanceProperties.getProperty("path");
+          if (potentialPath != null) {
+            thisPath = potentialPath;
+          }
         }
         ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
         // Test to see if registration of services is enabled

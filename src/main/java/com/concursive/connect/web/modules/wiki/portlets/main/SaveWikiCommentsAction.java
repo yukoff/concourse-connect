@@ -83,8 +83,10 @@ public class SaveWikiCommentsAction implements IPortletAction {
       throw new PortletException("Unauthorized to view in this project");
     }
 
+    // Determine the record to show
+    String subject = PortalUtils.getPageView(request);
+
     // Parameters
-    String subject = request.getParameter("subject");
     String comment = request.getParameter("comment");
 
     // Find the record to record comments against

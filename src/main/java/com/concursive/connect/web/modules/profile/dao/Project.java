@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.profile.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -97,7 +96,6 @@ public class Project extends GenericBean {
 
   public static final String TABLE = "projects";
   public static final String PRIMARY_KEY = "project_id";
-
   public final static int PORTAL_TYPE_ARTICLE = -1;
   public final static int PORTAL_TYPE_HOMEPAGE = 1;
   public final static int PORTAL_TYPE_COMMUNITY = 2;
@@ -105,7 +103,6 @@ public class Project extends GenericBean {
   public final static int PORTAL_TYPE_CONTACT_US = 4;
   public final static int PORTAL_TYPE_NEWS = 5;
   public final static int PORTAL_TYPE_WIKI = 6;
-
   private int instanceId = -1;
   private int id = -1;
   private int groupId = -1;
@@ -145,7 +142,6 @@ public class Project extends GenericBean {
   private boolean styleEnabled = false;
   private String description = null;
   private boolean systemDefault = false;
-
   // Portal capabilities
   private boolean portal = false;
   private String portalHeader = null;
@@ -157,13 +153,11 @@ public class Project extends GenericBean {
   private boolean portalDefault = false;
   private String portalLink = null;
   private int languageId = -1;
-
   // Integration capabilities
   private String concursiveCRMUrl = null;
   private String concursiveCRMDomain = null;
   private String concursiveCRMCode = null;
   private String concursiveCRMClient = null;
-
   // Personalization
   private String email1 = null;
   private String email2 = null;
@@ -196,31 +190,26 @@ public class Project extends GenericBean {
   private int subCategory1Id = -1;
   private int subCategory2Id = -1;
   private int subCategory3Id = -1;
-
   // Helper properties
   private String userRange = null;
   private boolean apiRestore = false;
   private FileItemList siteLogos = new FileItemList();
-
   // Project cached items
   private ProjectFeatures features = new ProjectFeatures();
   private TeamMemberList team = new TeamMemberList();
   private PermissionList permissions = new PermissionList();
   private FileItemList images = new FileItemList();
   private ServiceList services = new ServiceList();
-
   // TODO: move these out of the project class
   private int ticketsClosed = -1;
   private int ticketsOpen = -1;
   private int ticketsOverdue = -1;
-
 
   /**
    * Constructor for the Project object
    */
   public Project() {
   }
-
 
   /**
    * Constructor for the Project object
@@ -231,7 +220,6 @@ public class Project extends GenericBean {
   public Project(ResultSet rs) throws SQLException {
     buildRecord(rs);
   }
-
 
   /**
    * Constructor for the Project object
@@ -246,7 +234,6 @@ public class Project extends GenericBean {
     queryRecord(db, thisId);
   }
 
-
   /**
    * Constructor for the Project object
    *
@@ -257,7 +244,6 @@ public class Project extends GenericBean {
   public Project(Connection db, int thisId) throws SQLException {
     queryRecord(db, thisId);
   }
-
 
   /**
    * Description of the Method
@@ -270,15 +256,15 @@ public class Project extends GenericBean {
     StringBuffer sql = new StringBuffer();
     sql.append(
         "SELECT * " +
-            "FROM projects p " +
-            "WHERE p.project_id = ? ");
+        "FROM projects p " +
+        "WHERE p.project_id = ? ");
     if (userRange != null) {
       sql.append(
           "AND (project_id in (SELECT DISTINCT project_id FROM project_team WHERE user_id IN (" + userRange + ") " +
-              "AND project_id = ?) " +
-              "OR p.enteredby IN (" + userRange + ") " +
-              "OR (p.allow_guests = ? AND p.membership_required = ?) " +
-              "OR p.portal = ?) ");
+          "AND project_id = ?) " +
+          "OR p.enteredby IN (" + userRange + ") " +
+          "OR (p.allow_guests = ? AND p.membership_required = ?) " +
+          "OR p.portal = ?) ");
     }
 
     PreparedStatement pst = db.prepareStatement(sql.toString());
@@ -319,7 +305,6 @@ public class Project extends GenericBean {
     this.id = tmp;
   }
 
-
   /**
    * Sets the id attribute of the Project object
    *
@@ -328,7 +313,6 @@ public class Project extends GenericBean {
   public void setId(String tmp) {
     this.id = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the GroupId attribute of the Project object
@@ -339,7 +323,6 @@ public class Project extends GenericBean {
     this.groupId = tmp;
   }
 
-
   /**
    * Sets the groupId attribute of the Project object
    *
@@ -348,7 +331,6 @@ public class Project extends GenericBean {
   public void setGroupId(String tmp) {
     this.groupId = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the DepartmentId attribute of the Project object
@@ -359,7 +341,6 @@ public class Project extends GenericBean {
     this.departmentId = tmp;
   }
 
-
   /**
    * Sets the departmentId attribute of the Project object
    *
@@ -368,7 +349,6 @@ public class Project extends GenericBean {
   public void setDepartmentId(String tmp) {
     this.departmentId = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the categoryId attribute of the Project object
@@ -379,7 +359,6 @@ public class Project extends GenericBean {
     categoryId = tmp;
   }
 
-
   /**
    * Sets the categoryId attribute of the Project object
    *
@@ -389,7 +368,6 @@ public class Project extends GenericBean {
     categoryId = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the templateId attribute of the Project object
    *
@@ -398,7 +376,6 @@ public class Project extends GenericBean {
   public void setTemplateId(int tmp) {
     this.templateId = tmp;
   }
-
 
   /**
    * Sets the templateId attribute of the Project object
@@ -455,7 +432,6 @@ public class Project extends GenericBean {
     this.shortDescription = tmp;
   }
 
-
   /**
    * Sets the RequestedBy attribute of the Project object
    *
@@ -464,7 +440,6 @@ public class Project extends GenericBean {
   public void setRequestedBy(String tmp) {
     this.requestedBy = tmp;
   }
-
 
   /**
    * Sets the RequestedByDept attribute of the Project object
@@ -475,7 +450,6 @@ public class Project extends GenericBean {
     this.requestedByDept = tmp;
   }
 
-
   /**
    * Sets the RequestDate attribute of the Project object
    *
@@ -484,7 +458,6 @@ public class Project extends GenericBean {
   public void setRequestDate(Timestamp tmp) {
     this.requestDate = tmp;
   }
-
 
   /**
    * Sets the requestDate attribute of the Project object
@@ -495,7 +468,6 @@ public class Project extends GenericBean {
     requestDate = DatabaseUtils.parseTimestamp(tmp);
   }
 
-
   /**
    * Sets the Approved attribute of the Project object
    *
@@ -504,7 +476,6 @@ public class Project extends GenericBean {
   public void setApproved(boolean tmp) {
     this.approved = tmp;
   }
-
 
   /**
    * Sets the approved attribute of the Project object
@@ -515,7 +486,6 @@ public class Project extends GenericBean {
     approved = DatabaseUtils.parseBoolean(tmp);
   }
 
-
   /**
    * Sets the ApprovalDate attribute of the Project object
    *
@@ -524,7 +494,6 @@ public class Project extends GenericBean {
   public void setApprovalDate(java.sql.Timestamp tmp) {
     this.approvalDate = tmp;
   }
-
 
   /**
    * Sets the approvalDate attribute of the Project object
@@ -535,7 +504,6 @@ public class Project extends GenericBean {
     approvalDate = DatabaseUtils.parseDateToTimestamp(tmp);
   }
 
-
   /**
    * Sets the closed attribute of the Project object
    *
@@ -544,7 +512,6 @@ public class Project extends GenericBean {
   public void setClosed(boolean tmp) {
     this.closed = tmp;
   }
-
 
   /**
    * Sets the closed attribute of the Project object
@@ -555,7 +522,6 @@ public class Project extends GenericBean {
     closed = DatabaseUtils.parseBoolean(tmp);
   }
 
-
   /**
    * Sets the closeDate attribute of the Project object
    *
@@ -564,7 +530,6 @@ public class Project extends GenericBean {
   public void setCloseDate(java.sql.Timestamp tmp) {
     this.closeDate = tmp;
   }
-
 
   /**
    * Sets the closeDate attribute of the Project object
@@ -575,7 +540,6 @@ public class Project extends GenericBean {
     this.closeDate = DatabaseUtils.parseDateToTimestamp(tmp);
   }
 
-
   /**
    * Sets the estimatedCloseDate attribute of the Project object
    *
@@ -584,7 +548,6 @@ public class Project extends GenericBean {
   public void setEstimatedCloseDate(Timestamp tmp) {
     this.estimatedCloseDate = tmp;
   }
-
 
   /**
    * Sets the estimatedCloseDate attribute of the Project object
@@ -595,7 +558,6 @@ public class Project extends GenericBean {
     this.estimatedCloseDate = DatabaseUtils.parseTimestamp(tmp);
   }
 
-
   /**
    * Sets the budget attribute of the Project object
    *
@@ -605,7 +567,6 @@ public class Project extends GenericBean {
     this.budget = tmp;
   }
 
-
   /**
    * Sets the budget attribute of the Project object
    *
@@ -614,7 +575,6 @@ public class Project extends GenericBean {
   public void setBudget(String tmp) {
     this.budget = Double.parseDouble(tmp);
   }
-
 
   /**
    * Sets the budgetCurrency attribute of the Project object
@@ -638,7 +598,6 @@ public class Project extends GenericBean {
     this.owner = tmp;
   }
 
-
   /**
    * Sets the owner attribute of the Project object
    *
@@ -647,7 +606,6 @@ public class Project extends GenericBean {
   public void setOwner(String tmp) {
     this.owner = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the enteredBy attribute of the Project object
@@ -658,7 +616,6 @@ public class Project extends GenericBean {
     this.enteredBy = tmp;
   }
 
-
   /**
    * Sets the entered attribute of the Project object
    *
@@ -667,7 +624,6 @@ public class Project extends GenericBean {
   public void setEntered(String tmp) {
     this.entered = DatabaseUtils.parseTimestamp(tmp);
   }
-
 
   /**
    * Sets the entered attribute of the Project object
@@ -678,7 +634,6 @@ public class Project extends GenericBean {
     entered = tmp;
   }
 
-
   /**
    * Sets the enteredBy attribute of the Project object
    *
@@ -687,7 +642,6 @@ public class Project extends GenericBean {
   public void setEnteredBy(String tmp) {
     this.enteredBy = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the modified attribute of the Project object
@@ -698,7 +652,6 @@ public class Project extends GenericBean {
     this.modified = DatabaseUtils.parseTimestamp(tmp);
   }
 
-
   /**
    * Sets the modified attribute of the Project object
    *
@@ -707,7 +660,6 @@ public class Project extends GenericBean {
   public void setModified(Timestamp tmp) {
     modified = tmp;
   }
-
 
   /**
    * Sets the modifiedBy attribute of the Project object
@@ -718,7 +670,6 @@ public class Project extends GenericBean {
     this.modifiedBy = tmp;
   }
 
-
   /**
    * Sets the modifiedBy attribute of the Project object
    *
@@ -727,7 +678,6 @@ public class Project extends GenericBean {
   public void setModifiedBy(String tmp) {
     this.modifiedBy = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the Team attribute of the Project object
@@ -738,7 +688,6 @@ public class Project extends GenericBean {
     this.team = tmp;
   }
 
-
   /**
    * Sets the portal attribute of the Project object
    *
@@ -747,7 +696,6 @@ public class Project extends GenericBean {
   public void setPortal(boolean tmp) {
     this.portal = tmp;
   }
-
 
   /**
    * Sets the portal attribute of the Project object
@@ -758,7 +706,6 @@ public class Project extends GenericBean {
     this.portal = DatabaseUtils.parseBoolean(tmp);
   }
 
-
   /**
    * Gets the portalHeader attribute of the Project object
    *
@@ -767,7 +714,6 @@ public class Project extends GenericBean {
   public String getPortalHeader() {
     return portalHeader;
   }
-
 
   /**
    * Sets the portalHeader attribute of the Project object
@@ -778,7 +724,6 @@ public class Project extends GenericBean {
     this.portalHeader = tmp;
   }
 
-
   /**
    * Gets the portalFormat attribute of the Project object
    *
@@ -788,7 +733,6 @@ public class Project extends GenericBean {
     return portalFormat;
   }
 
-
   /**
    * Sets the portalFormat attribute of the Project object
    *
@@ -797,7 +741,6 @@ public class Project extends GenericBean {
   public void setPortalFormat(String tmp) {
     this.portalFormat = tmp;
   }
-
 
   /**
    * Gets the portalKey attribute of the Project object
@@ -812,7 +755,6 @@ public class Project extends GenericBean {
     return StringUtils.replace(StringUtils.jsEscape(portalKey), "%20", "+");
   }
 
-
   /**
    * Sets the portalKey attribute of the Project object
    *
@@ -821,7 +763,6 @@ public class Project extends GenericBean {
   public void setPortalKey(String tmp) {
     this.portalKey = tmp;
   }
-
 
   /**
    * Gets the portalBuildNewsBody attribute of the Project object
@@ -832,7 +773,6 @@ public class Project extends GenericBean {
     return portalBuildNewsBody;
   }
 
-
   /**
    * Sets the portalBuildNewsBody attribute of the Project object
    *
@@ -841,7 +781,6 @@ public class Project extends GenericBean {
   public void setPortalBuildNewsBody(boolean tmp) {
     this.portalBuildNewsBody = tmp;
   }
-
 
   /**
    * Sets the portalBuildNewsBody attribute of the Project object
@@ -852,7 +791,6 @@ public class Project extends GenericBean {
     this.portalBuildNewsBody = DatabaseUtils.parseBoolean(tmp);
   }
 
-
   /**
    * Gets the portalNewsMenu attribute of the Project object
    *
@@ -861,7 +799,6 @@ public class Project extends GenericBean {
   public boolean getPortalNewsMenu() {
     return portalNewsMenu;
   }
-
 
   /**
    * Sets the portalNewsMenu attribute of the Project object
@@ -872,7 +809,6 @@ public class Project extends GenericBean {
     this.portalNewsMenu = tmp;
   }
 
-
   /**
    * Sets the portalNewsMenu attribute of the Project object
    *
@@ -881,7 +817,6 @@ public class Project extends GenericBean {
   public void setPortalNewsMenu(String tmp) {
     this.portalNewsMenu = DatabaseUtils.parseBoolean(tmp);
   }
-
 
   /**
    * Gets the portalPageType attribute of the Project object
@@ -892,7 +827,6 @@ public class Project extends GenericBean {
     return portalPageType;
   }
 
-
   /**
    * Sets the portalPageType attribute of the Project object
    *
@@ -901,7 +835,6 @@ public class Project extends GenericBean {
   public void setPortalPageType(int tmp) {
     this.portalPageType = tmp;
   }
-
 
   /**
    * Sets the portalPageType attribute of the Project object
@@ -937,7 +870,6 @@ public class Project extends GenericBean {
     features.setAllowGuests(tmp);
   }
 
-
   /**
    * Sets the allowGuests attribute of the Project object
    *
@@ -946,7 +878,6 @@ public class Project extends GenericBean {
   public void setAllowGuests(String tmp) {
     features.setAllowGuests(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   /**
    * Sets the updateAllowGuests attribute of the Project object
@@ -957,11 +888,9 @@ public class Project extends GenericBean {
     features.setUpdateAllowGuests(tmp);
   }
 
-
   public void setUpdateAllowGuests(String tmp) {
     features.setUpdateAllowGuests(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   public void setAllowParticipants(boolean tmp) {
     features.setAllowParticipants(tmp);
@@ -975,31 +904,25 @@ public class Project extends GenericBean {
     features.setUpdateAllowParticipants(tmp);
   }
 
-
   public void setUpdateAllowParticipants(String tmp) {
     features.setUpdateAllowParticipants(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   public void setUpdateMembershipRequired(boolean tmp) {
     features.setUpdateMembershipRequired(tmp);
   }
 
-
   public void setUpdateMembershipRequired(String tmp) {
     features.setUpdateMembershipRequired(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   public void setMembershipRequired(boolean tmp) {
     features.setMembershipRequired(tmp);
   }
 
-
   public void setMembershipRequired(String tmp) {
     features.setMembershipRequired(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   public void setShowDashboard(boolean showDashboard) {
     features.setShowDashboard(showDashboard);
@@ -1017,7 +940,6 @@ public class Project extends GenericBean {
   public void setShowCalendar(boolean tmp) {
     features.setShowCalendar(tmp);
   }
-
 
   /**
    * Sets the showCalendar attribute of the Project object
@@ -1045,11 +967,9 @@ public class Project extends GenericBean {
     features.setShowNews(tmp);
   }
 
-
   public void setShowBlog(boolean tmp) {
     this.setShowNews(tmp);
   }
-
 
   /**
    * Sets the showNews attribute of the Project object
@@ -1060,11 +980,9 @@ public class Project extends GenericBean {
     features.setShowNews(DatabaseUtils.parseBoolean(tmp));
   }
 
-
   public void setShowBlog(String tmp) {
     this.setShowNews(tmp);
   }
-
 
   /**
    * Sets the showDetails attribute of the Project object
@@ -1075,7 +993,6 @@ public class Project extends GenericBean {
     features.setShowDetails(tmp);
   }
 
-
   /**
    * Sets the showDetails attribute of the Project object
    *
@@ -1084,7 +1001,6 @@ public class Project extends GenericBean {
   public void setShowDetails(String tmp) {
     features.setShowDetails(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   /**
    * Sets the showTeam attribute of the Project object
@@ -1095,7 +1011,6 @@ public class Project extends GenericBean {
     features.setShowTeam(tmp);
   }
 
-
   /**
    * Sets the showTeam attribute of the Project object
    *
@@ -1104,7 +1019,6 @@ public class Project extends GenericBean {
   public void setShowTeam(String tmp) {
     features.setShowTeam(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   /**
    * Sets the showPlan attribute of the Project object
@@ -1115,7 +1029,6 @@ public class Project extends GenericBean {
     features.setShowPlan(tmp);
   }
 
-
   /**
    * Sets the showPlan attribute of the Project object
    *
@@ -1124,7 +1037,6 @@ public class Project extends GenericBean {
   public void setShowPlan(String tmp) {
     features.setShowPlan(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   /**
    * Sets the showLists attribute of the Project object
@@ -1135,7 +1047,6 @@ public class Project extends GenericBean {
     features.setShowLists(tmp);
   }
 
-
   /**
    * Sets the showLists attribute of the Project object
    *
@@ -1144,7 +1055,6 @@ public class Project extends GenericBean {
   public void setShowLists(String tmp) {
     features.setShowLists(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   /**
    * Sets the showDiscussion attribute of the Project object
@@ -1155,7 +1065,6 @@ public class Project extends GenericBean {
     features.setShowDiscussion(tmp);
   }
 
-
   /**
    * Sets the showDiscussion attribute of the Project object
    *
@@ -1164,7 +1073,6 @@ public class Project extends GenericBean {
   public void setShowDiscussion(String tmp) {
     features.setShowDiscussion(DatabaseUtils.parseBoolean(tmp));
   }
-
 
   /**
    * Sets the showTickets attribute of the Project object
@@ -1175,11 +1083,9 @@ public class Project extends GenericBean {
     features.setShowTickets(tmp);
   }
 
-
   public void setShowIssues(boolean tmp) {
     this.setShowTickets(tmp);
   }
-
 
   /**
    * Sets the showTickets attribute of the Project object
@@ -1194,7 +1100,6 @@ public class Project extends GenericBean {
     this.setShowTickets(tmp);
   }
 
-
   /**
    * Sets the showDocuments attribute of the Project object
    *
@@ -1203,7 +1108,6 @@ public class Project extends GenericBean {
   public void setShowDocuments(boolean tmp) {
     features.setShowDocuments(tmp);
   }
-
 
   /**
    * Sets the showDocuments attribute of the Project object
@@ -1262,7 +1166,6 @@ public class Project extends GenericBean {
     features.setShowMessages(DatabaseUtils.parseBoolean(tmp));
   }
 
-
   /**
    * Sets the labelCalendar attribute of the Project object
    *
@@ -1293,7 +1196,6 @@ public class Project extends GenericBean {
     this.setLabelNews(tmp);
   }
 
-
   /**
    * Sets the labelDetails attribute of the Project object
    *
@@ -1302,7 +1204,6 @@ public class Project extends GenericBean {
   public void setLabelDetails(String tmp) {
     features.setLabelDetails(tmp);
   }
-
 
   /**
    * Sets the labelTeam attribute of the Project object
@@ -1313,7 +1214,6 @@ public class Project extends GenericBean {
     features.setLabelTeam(tmp);
   }
 
-
   /**
    * Sets the labelPlan attribute of the Project object
    *
@@ -1322,7 +1222,6 @@ public class Project extends GenericBean {
   public void setLabelPlan(String tmp) {
     features.setLabelPlan(tmp);
   }
-
 
   /**
    * Sets the labelLists attribute of the Project object
@@ -1333,7 +1232,6 @@ public class Project extends GenericBean {
     features.setLabelLists(tmp);
   }
 
-
   /**
    * Sets the labelDiscussion attribute of the Project object
    *
@@ -1342,7 +1240,6 @@ public class Project extends GenericBean {
   public void setLabelDiscussion(String tmp) {
     features.setLabelDiscussion(tmp);
   }
-
 
   /**
    * Sets the labelTickets attribute of the Project object
@@ -1356,7 +1253,6 @@ public class Project extends GenericBean {
   public void setLabelIssues(String tmp) {
     this.setLabelTickets(tmp);
   }
-
 
   /**
    * Sets the labelDocuments attribute of the Project object
@@ -1390,7 +1286,6 @@ public class Project extends GenericBean {
   public void setLabelMessages(String tmp) {
     features.setLabelMessages(tmp);
   }
-
 
   public int getOrderNews() {
     return features.getOrderNews();
@@ -1605,7 +1500,6 @@ public class Project extends GenericBean {
     return id;
   }
 
-
   /**
    * Gets the GroupId attribute of the Project object
    *
@@ -1615,7 +1509,6 @@ public class Project extends GenericBean {
     return groupId;
   }
 
-
   /**
    * Gets the DepartmentId attribute of the Project object
    *
@@ -1624,7 +1517,6 @@ public class Project extends GenericBean {
   public int getDepartmentId() {
     return departmentId;
   }
-
 
   /**
    * Gets the categoryId attribute of the Project object
@@ -1656,7 +1548,6 @@ public class Project extends GenericBean {
     return templateId;
   }
 
-
   /**
    * Gets the Title attribute of the Project object
    *
@@ -1665,7 +1556,6 @@ public class Project extends GenericBean {
   public String getTitle() {
     return title;
   }
-
 
   /**
    * Gets the ShortDescription attribute of the Project object
@@ -1676,7 +1566,6 @@ public class Project extends GenericBean {
     return shortDescription;
   }
 
-
   /**
    * Gets the RequestedBy attribute of the Project object
    *
@@ -1685,7 +1574,6 @@ public class Project extends GenericBean {
   public String getRequestedBy() {
     return requestedBy;
   }
-
 
   /**
    * Gets the RequestedByDept attribute of the Project object
@@ -1696,7 +1584,6 @@ public class Project extends GenericBean {
     return requestedByDept;
   }
 
-
   /**
    * Gets the RequestDate attribute of the Project object
    *
@@ -1705,7 +1592,6 @@ public class Project extends GenericBean {
   public Timestamp getRequestDate() {
     return requestDate;
   }
-
 
   /**
    * Gets the estimatedCloseDate attribute of the Project object
@@ -1716,7 +1602,6 @@ public class Project extends GenericBean {
     return estimatedCloseDate;
   }
 
-
   /**
    * Gets the budget attribute of the Project object
    *
@@ -1725,7 +1610,6 @@ public class Project extends GenericBean {
   public double getBudget() {
     return budget;
   }
-
 
   /**
    * Gets the budgetCurrency attribute of the Project object
@@ -1749,7 +1633,6 @@ public class Project extends GenericBean {
     return approved;
   }
 
-
   /**
    * Gets the ApprovalDate attribute of the Project object
    *
@@ -1758,7 +1641,6 @@ public class Project extends GenericBean {
   public java.sql.Timestamp getApprovalDate() {
     return approvalDate;
   }
-
 
   /**
    * Gets the closed attribute of the Project object
@@ -1769,7 +1651,6 @@ public class Project extends GenericBean {
     return closed;
   }
 
-
   /**
    * Gets the CloseDate attribute of the Project object
    *
@@ -1778,7 +1659,6 @@ public class Project extends GenericBean {
   public java.sql.Timestamp getCloseDate() {
     return closeDate;
   }
-
 
   /**
    * Gets the entered attribute of the Project object
@@ -1789,7 +1669,6 @@ public class Project extends GenericBean {
     return entered;
   }
 
-
   /**
    * Gets the owner attribute of the Project object
    *
@@ -1798,7 +1677,6 @@ public class Project extends GenericBean {
   public int getOwner() {
     return owner;
   }
-
 
   /**
    * Gets the enteredBy attribute of the Project object
@@ -1809,7 +1687,6 @@ public class Project extends GenericBean {
     return enteredBy;
   }
 
-
   /**
    * Gets the modified attribute of the Project object
    *
@@ -1818,7 +1695,6 @@ public class Project extends GenericBean {
   public Timestamp getModified() {
     return modified;
   }
-
 
   /**
    * Gets the modifiedBy attribute of the Project object
@@ -1829,7 +1705,6 @@ public class Project extends GenericBean {
     return modifiedBy;
   }
 
-
   /**
    * Gets the Team attribute of the Project object
    *
@@ -1838,7 +1713,6 @@ public class Project extends GenericBean {
   public TeamMemberList getTeam() {
     return team;
   }
-
 
   /**
    * Gets the paddedId attribute of the Project object
@@ -1852,7 +1726,6 @@ public class Project extends GenericBean {
     }
     return padded;
   }
-
 
   /**
    * Gets the portal attribute of the Project object
@@ -1910,7 +1783,6 @@ public class Project extends GenericBean {
   public void setLanguageId(String tmp) {
     this.languageId = Integer.parseInt(tmp);
   }
-
 
   public boolean isApiRestore() {
     return apiRestore;
@@ -2175,7 +2047,6 @@ public class Project extends GenericBean {
     return latitude;
   }
 
-
   /**
    * @param latitude the latitude to set
    */
@@ -2186,7 +2057,6 @@ public class Project extends GenericBean {
     }
   }
 
-
   /**
    * @param latitude the latitude to set
    */
@@ -2194,14 +2064,12 @@ public class Project extends GenericBean {
     this.latitude = latitude;
   }
 
-
   /**
    * @return the longitude
    */
   public double getLongitude() {
     return longitude;
   }
-
 
   /**
    * @param longitude the longitude to set
@@ -2212,7 +2080,6 @@ public class Project extends GenericBean {
       this.longitude = Double.parseDouble(newLong);
     }
   }
-
 
   /**
    * @param longitude the longitude to set
@@ -2228,14 +2095,12 @@ public class Project extends GenericBean {
     return subCategory1Id;
   }
 
-
   /**
    * @param subCategory1Id the subCategory1Id to set
    */
   public void setSubCategory1Id(int subCategory1Id) {
     this.subCategory1Id = subCategory1Id;
   }
-
 
   /**
    * @param subCategory1Id the subCategory1Id to set
@@ -2244,14 +2109,12 @@ public class Project extends GenericBean {
     this.subCategory1Id = Integer.parseInt(subCategory1Id);
   }
 
-
   /**
    * @return the subCategory2Id
    */
   public int getSubCategory2Id() {
     return subCategory2Id;
   }
-
 
   /**
    * @param subCategory2Id the subCategory2Id to set
@@ -2260,14 +2123,12 @@ public class Project extends GenericBean {
     this.subCategory2Id = subCategory2Id;
   }
 
-
   /**
    * @param subCategory2Id the subCategory2Id to set
    */
   public void setSubCategory2Id(String subCategory2Id) {
     this.subCategory2Id = Integer.parseInt(subCategory2Id);
   }
-
 
   /**
    * @return the subCategory3Id
@@ -2276,7 +2137,6 @@ public class Project extends GenericBean {
     return subCategory3Id;
   }
 
-
   /**
    * @param subCategory3Id the subCategory3Id to set
    */
@@ -2284,14 +2144,12 @@ public class Project extends GenericBean {
     this.subCategory3Id = subCategory3Id;
   }
 
-
   /**
    * @param subCategory3Id the subCategory3Id to set
    */
   public void setSubCategory3Id(String subCategory3Id) {
     this.subCategory3Id = Integer.parseInt(subCategory3Id);
   }
-
 
   public int getLogoId() {
     return logoId;
@@ -2368,7 +2226,6 @@ public class Project extends GenericBean {
     return description;
   }
 
-
   /**
    * @param description the htmldescription to set, which is filtered
    */
@@ -2433,7 +2290,6 @@ public class Project extends GenericBean {
     return team.size();
   }
 
-
   public boolean hasPermissionList() {
     return (permissions != null && permissions.size() > 0);
   }
@@ -2478,7 +2334,6 @@ public class Project extends GenericBean {
     return services.size();
   }
 
-
   /**
    * Description of the Method
    *
@@ -2505,7 +2360,7 @@ public class Project extends GenericBean {
       StringBuffer sql = new StringBuffer();
       sql.append(
           "INSERT INTO projects " +
-              "(" + (id > -1 ? "project_id, " : "") + "instance_id, group_id, department_id, category_id, owner, enteredby, modifiedby, template_id, ");
+          "(" + (id > -1 ? "project_id, " : "") + "instance_id, group_id, department_id, category_id, owner, enteredby, modifiedby, template_id, ");
       if (entered != null) {
         sql.append("entered, ");
       }
@@ -2514,27 +2369,27 @@ public class Project extends GenericBean {
       }
       sql.append(
           "title, projecttextid, shortdescription, requestedby, requesteddept, requestdate, " +
-              (features.getUpdateAllowGuests() ? "allow_guests," : "") +
-              (features.getUpdateAllowParticipants() ? "allows_user_observers," : "") +
-              (features.getUpdateMembershipRequired() ? "membership_required," : "") +
-              "calendar_enabled, dashboard_enabled, news_enabled, wiki_enabled, details_enabled, " +
-              "team_enabled, plan_enabled, lists_enabled, discussion_enabled, " +
-              "tickets_enabled, documents_enabled, " +
-              "badges_enabled, reviews_enabled, classifieds_enabled, ads_enabled, profile_enabled, messages_enabled, " +
-              (level > -1 ? "level, " : "") +
-              "approvaldate, closedate, est_closedate, budget, budget_currency, description, template, language_id," +
-              "address_to, addrline1, addrline2, addrline3, city, state, country, postalcode, " +
-              "latitude, longitude, " +
-              "email1, email2, email3, " +
-              "home_phone, home_phone_ext, home2_phone, home2_phone_ext, home_fax, " +
-              "business_phone, business_phone_ext, business2_phone, business2_phone_ext, business_fax, " +
-              "mobile_phone, pager_number, car_phone, radio_phone, web_page, " +
-              "subcategory1_id, subcategory2_id, subcategory3_id, keywords, profile, source) " +
-              "VALUES (?, ?, ?, ?, ?, " +
-              (features.getUpdateAllowGuests() ? "?," : "") +
-              (features.getUpdateAllowParticipants() ? "?," : "") +
-              (features.getUpdateMembershipRequired() ? "?," : "") +
-              "?, ?, ");
+          (features.getUpdateAllowGuests() ? "allow_guests," : "") +
+          (features.getUpdateAllowParticipants() ? "allows_user_observers," : "") +
+          (features.getUpdateMembershipRequired() ? "membership_required," : "") +
+          "calendar_enabled, dashboard_enabled, news_enabled, wiki_enabled, details_enabled, " +
+          "team_enabled, plan_enabled, lists_enabled, discussion_enabled, " +
+          "tickets_enabled, documents_enabled, " +
+          "badges_enabled, reviews_enabled, classifieds_enabled, ads_enabled, profile_enabled, messages_enabled, " +
+          (level > -1 ? "level, " : "") +
+          "approvaldate, closedate, est_closedate, budget, budget_currency, description, template, language_id," +
+          "address_to, addrline1, addrline2, addrline3, city, state, country, postalcode, " +
+          "latitude, longitude, " +
+          "email1, email2, email3, " +
+          "home_phone, home_phone_ext, home2_phone, home2_phone_ext, home_fax, " +
+          "business_phone, business_phone_ext, business2_phone, business2_phone_ext, business_fax, " +
+          "mobile_phone, pager_number, car_phone, radio_phone, web_page, " +
+          "subcategory1_id, subcategory2_id, subcategory3_id, keywords, profile, source) " +
+          "VALUES (?, ?, ?, ?, ?, " +
+          (features.getUpdateAllowGuests() ? "?," : "") +
+          (features.getUpdateAllowParticipants() ? "?," : "") +
+          (features.getUpdateMembershipRequired() ? "?," : "") +
+          "?, ?, ");
       if (id > -1) {
         sql.append("?, ");
       }
@@ -2841,7 +2696,7 @@ public class Project extends GenericBean {
       // Delete the actual project
       PreparedStatement pst = db.prepareStatement(
           "DELETE FROM projects " +
-              "WHERE project_id = ? ");
+          "WHERE project_id = ? ");
       pst.setInt(1, id);
       recordCount = pst.executeUpdate();
       pst.close();
@@ -2859,6 +2714,9 @@ public class Project extends GenericBean {
       CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_NAME_CACHE, id);
       CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, id);
       CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, uniqueId);
+      if (profile && owner > -1) {
+        CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, owner);
+      }
     } catch (Exception e) {
       if (commit) {
         db.rollback();
@@ -2928,25 +2786,25 @@ public class Project extends GenericBean {
     int resultCount = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-            "SET department_id = ?, category_id = ?, title = ?, shortdescription = ?, requestedby = ?, " +
-            "requesteddept = ?, requestdate = ?, " +
-            "approvaldate = ?, closedate = ?, owner = ?, est_closedate = ?, budget = ?, " +
-            "budget_currency = ?, template = ?, " +
-            (features.getUpdateAllowGuests() ? "allow_guests = ?, " : "") +
-            (features.getUpdateAllowParticipants() ? "allows_user_observers = ?, " : "") +
-            (features.getUpdateMembershipRequired() ? "membership_required = ?, " : "") +
-            (level > -1 ? "level = ?, " : "") +
-            "description = ?, " +
-            "address_to = ?, addrline1 = ?, addrline2 = ?, addrline3 = ?, city = ?, state = ?, country = ?, postalcode = ?, " +
-            "latitude = ?, longitude = ?, " +
-            "email1 = ?, email2 = ?, email3 = ?, " +
-            "home_phone = ?, home_phone_ext = ?, home2_phone = ?, home2_phone_ext = ?, home_fax = ?, " +
-            "business_phone = ?, business_phone_ext = ?, business2_phone = ?, business2_phone_ext = ?, business_fax = ?, " +
-            "mobile_phone = ?, pager_number = ?, car_phone = ?, radio_phone = ?, web_page = ?, " +
-            "subcategory1_id = ?, subcategory2_id = ?, subcategory3_id = ?, keywords = ?, " +
-            "modifiedby = ?, modified = CURRENT_TIMESTAMP " +
-            "WHERE project_id = ? " +
-            "AND modified = ? ");
+        "SET department_id = ?, category_id = ?, title = ?, shortdescription = ?, requestedby = ?, " +
+        "requesteddept = ?, requestdate = ?, " +
+        "approvaldate = ?, closedate = ?, owner = ?, est_closedate = ?, budget = ?, " +
+        "budget_currency = ?, template = ?, " +
+        (features.getUpdateAllowGuests() ? "allow_guests = ?, " : "") +
+        (features.getUpdateAllowParticipants() ? "allows_user_observers = ?, " : "") +
+        (features.getUpdateMembershipRequired() ? "membership_required = ?, " : "") +
+        (level > -1 ? "level = ?, " : "") +
+        "description = ?, " +
+        "address_to = ?, addrline1 = ?, addrline2 = ?, addrline3 = ?, city = ?, state = ?, country = ?, postalcode = ?, " +
+        "latitude = ?, longitude = ?, " +
+        "email1 = ?, email2 = ?, email3 = ?, " +
+        "home_phone = ?, home_phone_ext = ?, home2_phone = ?, home2_phone_ext = ?, home_fax = ?, " +
+        "business_phone = ?, business_phone_ext = ?, business2_phone = ?, business2_phone_ext = ?, business_fax = ?, " +
+        "mobile_phone = ?, pager_number = ?, car_phone = ?, radio_phone = ?, web_page = ?, " +
+        "subcategory1_id = ?, subcategory2_id = ?, subcategory3_id = ?, keywords = ?, " +
+        "modifiedby = ?, modified = CURRENT_TIMESTAMP " +
+        "WHERE project_id = ? " +
+        "AND modified = ? ");
     int i = 0;
     DatabaseUtils.setInt(pst, ++i, departmentId);
     DatabaseUtils.setInt(pst, ++i, categoryId);
@@ -3032,6 +2890,9 @@ public class Project extends GenericBean {
     pst.close();
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_NAME_CACHE, id);
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, id);
+    if (profile && owner > -1) {
+      CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, owner);
+    }
     return resultCount;
   }
 
@@ -3079,8 +2940,8 @@ public class Project extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-            "SET portal = ?, portal_key = ?, portal_default = ?, portal_page_type = ? " +
-            "WHERE project_id = ?");
+        "SET portal = ?, portal_key = ?, portal_default = ?, portal_page_type = ? " +
+        "WHERE project_id = ?");
     pst.setBoolean(1, portal);
     pst.setString(2, portalKey);
     pst.setBoolean(3, portalDefault);
@@ -3108,8 +2969,8 @@ public class Project extends GenericBean {
       if (currentDefault > -1 && currentDefault != id) {
         pst = db.prepareStatement(
             "UPDATE projects " +
-                "SET system_default = ? " +
-                "WHERE project_id = ?");
+            "SET system_default = ? " +
+            "WHERE project_id = ?");
         pst.setBoolean(1, false);
         pst.setInt(2, currentDefault);
         pst.execute();
@@ -3119,8 +2980,8 @@ public class Project extends GenericBean {
       // Turn on the new default
       pst = db.prepareStatement(
           "UPDATE projects " +
-              "SET system_default = ? " +
-              "WHERE project_id = ?");
+          "SET system_default = ? " +
+          "WHERE project_id = ?");
       pst.setBoolean(1, true);
       pst.setInt(2, id);
       pst.execute();
@@ -3487,8 +3348,8 @@ public class Project extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-            "SET latitude = ?, longitude = ? " +
-            "WHERE project_id = ?");
+        "SET latitude = ?, longitude = ? " +
+        "WHERE project_id = ?");
     pst.setDouble(1, latitude);
     pst.setDouble(2, longitude);
     pst.setInt(3, id);
@@ -3503,8 +3364,8 @@ public class Project extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-            "SET latitude = ?, longitude = ?, city = ?, state = ?, postalcode = ?, country = ? " +
-            "WHERE project_id = ?");
+        "SET latitude = ?, longitude = ?, city = ?, state = ?, postalcode = ?, country = ? " +
+        "WHERE project_id = ?");
     pst.setDouble(1, latitude);
     pst.setDouble(2, longitude);
     pst.setString(3, city);
@@ -3529,8 +3390,8 @@ public class Project extends GenericBean {
       // set the project default
       PreparedStatement pst = db.prepareStatement(
           "UPDATE projects " +
-              "SET logo_id = ? " +
-              "WHERE project_id = ?");
+          "SET logo_id = ? " +
+          "WHERE project_id = ?");
       DatabaseUtils.setInt(pst, 1, logoId);
       pst.setInt(2, this.getId());
       pst.execute();
@@ -3539,8 +3400,8 @@ public class Project extends GenericBean {
         // set the file item list default
         pst = db.prepareStatement(
             "UPDATE project_files " +
-                "SET default_file = ? " +
-                "WHERE item_id = ?");
+            "SET default_file = ? " +
+            "WHERE item_id = ?");
         pst.setBoolean(1, true);
         DatabaseUtils.setInt(pst, 2, logoId);
         pst.execute();
@@ -3549,8 +3410,8 @@ public class Project extends GenericBean {
       // unset the others
       pst = db.prepareStatement(
           "UPDATE project_files " +
-              "SET default_file = ? " +
-              "WHERE link_module_id = ? AND link_item_id = ? AND default_file = ? AND item_id <> ?");
+          "SET default_file = ? " +
+          "WHERE link_module_id = ? AND link_item_id = ? AND default_file = ? AND item_id <> ?");
       pst.setBoolean(1, false);
       pst.setInt(2, Constants.PROJECT_IMAGE_FILES);
       pst.setInt(3, id);
@@ -3574,15 +3435,14 @@ public class Project extends GenericBean {
     }
   }
 
-
   public void updateStyle(Connection db) throws SQLException {
     if (this.getId() == -1) {
       throw new SQLException("ID was not specified");
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-            "SET style = ?, style_enabled = ? " +
-            "WHERE project_id = ?");
+        "SET style = ?, style_enabled = ? " +
+        "WHERE project_id = ?");
     int i = 1;
     pst.setString(i++, style);
     pst.setBoolean(i++, styleEnabled);
@@ -3623,7 +3483,6 @@ public class Project extends GenericBean {
     }
     return StringUtils.hasText(cityStateStringBuffer.toString()) ? cityStateStringBuffer.toString() : "";
   }
-
 
   /**
    * @param db

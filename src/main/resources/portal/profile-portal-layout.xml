@@ -164,6 +164,7 @@
             	<value>question</value>
             	<value>reply</value>
               <value>wiki</value>
+              <value>wiki-comment</value>
               <value>user-entry</value>
             </events>
             <limit>15</limit>
@@ -1480,6 +1481,7 @@
             	<value>question</value>
             	<value>reply</value>
               <value>wiki</value>
+              <value>wiki-comment</value>
               <value>user-entry</value>
             </events>
             <limit>15</limit>
@@ -1615,6 +1617,7 @@
             	<value>question</value>
             	<value>reply</value>
               <value>wiki</value>
+              <value>wiki-comment</value>
               <value>user-entry</value>
             </events>
             <limit>15</limit>

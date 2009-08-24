@@ -88,6 +88,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static String QUESTION_OBJECT = "question";
   public final static String REPLY_OBJECT = "reply";
   public final static String WIKI_OBJECT = "wiki";
+  public final static String WIKI_COMMENT_OBJECT = "wiki-comment";
   public final static String ACTIVITY_ENTRY_OBJECT = "user-entry";
 
   //Event constants
@@ -110,6 +111,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static int SETUP_PROFILE_MEETING_EVENT = 2009022617; //meeting
   public final static int UPDATE_PROFILE_MEETING_EVENT = 2009022618; //meeting
   public final static int CONTRIBUTE_WIKI_EVENT = 2009022619; //wiki
+  public final static int CONTRIBUTE_WIKI_COMMENT_EVENT = 2009082145; //wiki comment
   public final static int CREATE_FORUM_EVENT = 2009022620; //discussion
   public final static int POST_FORUM_TOPIC_EVENT = 2009022621; //topic
   public final static int POST_FORUM_QUESTION_EVENT = 2009030416; //topic

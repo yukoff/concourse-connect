@@ -102,6 +102,8 @@ public class SaveWikiCommentsAction implements IPortletAction {
       if (!inserted) {
         return wikiComment;
       }
+      // Send to workflow
+      processInsertHook(request, wikiComment);
     }
 
     // This call will close panels and perform redirects

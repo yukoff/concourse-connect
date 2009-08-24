@@ -97,6 +97,12 @@
         <action type="updated" process="teamelements.application.project.post-wiki"/>
       </actions>
     </hook>
+    <hook class="com.concursive.connect.web.modules.wiki.dao.WikiComment" module="Project Management">
+      <actions>
+        <action type="insert" process="teamelements.application.project.post-wiki-comment"/>
+        <action type="updated" process="teamelements.application.project.post-wiki-comment"/>
+      </actions>
+    </hook>
     <hook class="com.concursive.connect.web.modules.discussion.dao.Forum" module="Project Management">
       <actions><action type="insert" process="teamelements.application.project.create-forum"/></actions>
     </hook>
@@ -297,6 +303,17 @@
           <parameters>
             <parameter name="history.text">${user} contributed to ${wiki} in ${profile}</parameter>
             <parameter name="history.user-profile.text">${user} contributed to ${wiki}</parameter>
+          </parameters>
+        </component>
+      </components>
+    </process>
+
+    <process name="teamelements.application.project.post-wiki-comment" description="Record WikiComment Events" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.wiki.workflow.SaveWikiCommentEvent" enabled="true">
+          <parameters>
+            <parameter name="history.text">${user} commented on ${wiki} in ${profile}</parameter>
+            <parameter name="history.user-profile.text">${user} commented on ${wiki}</parameter>
           </parameters>
         </component>
       </components>

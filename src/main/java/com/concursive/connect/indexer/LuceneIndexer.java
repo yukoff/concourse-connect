@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.indexer;
 
 import com.concursive.commons.api.DataField;
@@ -79,25 +78,20 @@ import java.util.concurrent.locks.ReentrantLock;
 public class LuceneIndexer implements IIndexerService {
 
   private static Log LOG = LogFactory.getLog(LuceneIndexer.class);
-
   // Only one index reference must exist for the application
   protected Directory fullIndex = null;
   protected Directory directoryIndex = null;
   protected boolean directoryIndexInitialized = false;
-
   // Only one writer for each index can exist at any given time
   private final ReentrantLock writeLock = new ReentrantLock();
   protected IndexWriter fullWriter = null;
   protected IndexWriter directoryWriter = null;
-
   // Reuse searchers for performance, and for point-in-time index queries
   protected LuceneIndexerSearch fullSearcher = null;
   protected LuceneIndexerSearch directorySearcher = null;
   private boolean directorySearcherReady = false;
-
   // Cache the indexer classes for reuse
   private Map<String, Object> classes = new HashMap<String, Object>();
-
 
   /**
    * Sets up any Lucene Indexer classes
@@ -323,9 +317,16 @@ public class LuceneIndexer implements IIndexerService {
   public boolean indexAddItem(Object item, boolean modified) {
 
     DataRecordFactory factory = DataRecordFactory.INSTANCE;
-    DataRecord record = factory.parse(item);
+    if (factory == null) {
+      LOG.error("DataRecordFactory IS NULL");
+    }
 
-    if (LOG.isDebugEnabled()) {
+    DataRecord record = factory.parse(item);
+    if (record == null) {
+      LOG.error("DataRecord IS NULL");
+    }
+
+    if (LOG.isDebugEnabled() && record != null) {
       StringBuffer sb = new StringBuffer();
       for (DataField thisField : record) {
         sb.append(thisField.getName()).append("=");
@@ -362,7 +363,6 @@ public class LuceneIndexer implements IIndexerService {
     }
     return false;
   }
-
 
   protected boolean indexAddItem(IndexWriter writer, Object item, boolean modified) throws Exception {
     if (writer == null) {

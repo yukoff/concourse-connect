@@ -174,8 +174,14 @@ public class ClaimProjectPortlet extends GenericPortlet {
 
       // Process the claim
       try {
-        boolean isSuccess = claimProject(project, user, request);
+        // Determine the database connection to use
+        Connection db = PortalUtils.getConnection(request);
+
+        boolean isSuccess = claimProject(project, user, request, db);
         if (isSuccess) {
+          Project newProject = new Project(db,project.getId());
+          PortalUtils.processUpdateHook(request, project, newProject);
+
           response.setRenderParameter(VIEW_TYPE, SAVE_SUCCESS);
         }
       } catch (SQLException e) {
@@ -185,7 +191,7 @@ public class ClaimProjectPortlet extends GenericPortlet {
     }
   }
 
-  private boolean claimProject(Project project, User user, ActionRequest request) throws SQLException {
+  private boolean claimProject(Project project, User user, ActionRequest request, Connection db) throws SQLException {
     // Process the form
     ProjectFormBean claimForm = new ProjectFormBean();
     // Request parameters
@@ -234,9 +240,6 @@ public class ClaimProjectPortlet extends GenericPortlet {
       return false;
     }
 
-    // Determine the database connection to use
-    Connection db = PortalUtils.getConnection(request);
-
     // 1. Save the user as the new owner
     int resultCount = claimForm.saveProjectOwner(db);
     // If there is a save error, let the view know
@@ -258,6 +261,8 @@ public class ClaimProjectPortlet extends GenericPortlet {
         thisMember.setEnteredBy(user.getId());
         thisMember.setModifiedBy(user.getId());
         thisMember.insert(db);
+        
+        PortalUtils.processInsertHook(request, thisMember);
       }
 
     }

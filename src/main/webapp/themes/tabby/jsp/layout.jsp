@@ -197,11 +197,11 @@
     </ccp:evaluate>
     <title><%= toHtml(pageTitle) %></title>
     <%--
-      <link rel="shortcut icon" href="<%= ctx %>/favicon.ico" type="image/x-icon" />
-      <link rel="apple-touch-icon" href="<%= ctx %>/images/apple-touch-icon.png" type="image/png" />
+      <link rel="shortcut icon" href="${ctx}/favicon.ico" type="image/x-icon" />
+      <link rel="apple-touch-icon" href="${ctx}/images/apple-touch-icon.png" type="image/png" />
     --%>
     <jsp:include page="../../../css_include.jsp" flush="true"/>
-    <link rel="SHORTCUT ICON" href="${ctx}/images/icons/favicon.ico"/>
+    <link rel="SHORTCUT ICON" href="${ctx}/favicon.ico"/>
   </head>
   <body>
     <p class="access"><a href="#content" accesskey="1">Skip Navigation and Search to Content</a></p>
@@ -277,7 +277,7 @@
                 <ccp:evaluate if="<%= User.getAccessAdmin() %>">
                   <ccp:evaluate if="<%= User.isConnectCRMAdmin() || User.isConnectCRMManager() %>">
                     <li>
-                      <a href="<%= ctx %>/management-crm" target="_blank">CRM</a>
+                      <a href="<%= ctx %>/management-crm">CRM</a>
                     </li>
                   </ccp:evaluate>
                   <li>

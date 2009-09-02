@@ -460,7 +460,7 @@ Can be removed and made into a seperate portlet --%>
 </c:if> <%-- End Basic Info Display Test --%>
 
 <%-- Edit Menu for Wiki Atrributes --%>
-<c:if test="${!empty wikiAttributeList}">
+<c:if test="${!empty wiki}">
   <ccp:permission name="project-profile-admin">
     <a href="javascript:showPanel('','${ctx}/show/${project.uniqueId}/app/edit_wiki','600')"
        class="portlet-menu-edit">Edit Details</a>

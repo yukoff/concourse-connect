@@ -48,8 +48,11 @@ package com.concursive.connect.web.modules.members.portlets;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.web.modules.admin.beans.UserSearchBean;
+import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.dao.UserList;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -62,8 +65,11 @@ import javax.portlet.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Invite members Portlet
@@ -93,8 +99,8 @@ public class InviteMembersPortlet extends GenericPortlet {
   private static final String DEFAULT_ROLE = "defaultRole";
   private static final String TEAM_MEMBER_LIST = "teamMemberList";
   private static final String MEMBERS_TO_INVITE = "membersToInvite";
-  private static final String MEMBER_IDS_TO_INVITE = "memberIdsToInvite";
   private static final String MEMBERS = "members";
+  private static final String MEMBERS_PRESENT = "membersPresent";
   private static final String INVITATION_SUBJECT = "invitationSubject";
   private static final String INVITATION_MESSAGE = "invitationMessage";
   private static final String OPTIONAL_MESSAGE = "optionalMessage";
@@ -114,6 +120,7 @@ public class InviteMembersPortlet extends GenericPortlet {
     try {
       String defaultView = ENTER_MEMBERS_FORM;
       String viewType = request.getParameter(VIEW_TYPE);
+
       // Set global preferences
       request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
       Project project = PortalUtils.findProject(request);
@@ -129,12 +136,12 @@ public class InviteMembersPortlet extends GenericPortlet {
         // Cleanup other session attributes
         request.getPortletSession().removeAttribute(MEMBERS_TO_INVITE + "Error");
         request.getPortletSession().removeAttribute(MEMBERS_TO_INVITE);
-        request.getPortletSession().removeAttribute(MEMBER_IDS_TO_INVITE);
 
         defaultView = CLOSE_PAGE;
       } else if (SAVE_FAILURE.equals(viewType)) {
       } else if (GET_MATCHES.equals(viewType)) {
         request.setAttribute(MEMBERS, request.getPortletSession().getAttribute(MEMBERS));
+        request.setAttribute(MEMBERS_PRESENT, request.getPortletSession().getAttribute(MEMBERS_PRESENT));
         //build request attributes to show what the user has entered.
         request.setAttribute(HAS_MULTIPLE_MATCHES, (String) request.getPortletSession().getAttribute(HAS_MULTIPLE_MATCHES));
 
@@ -230,7 +237,7 @@ public class InviteMembersPortlet extends GenericPortlet {
         request.getPortletSession().removeAttribute(MEMBERS);
         request.getPortletSession().removeAttribute(MEMBERS_TO_INVITE + "Error");
         request.getPortletSession().removeAttribute(MEMBERS_TO_INVITE);
-        request.getPortletSession().removeAttribute(MEMBER_IDS_TO_INVITE);
+        request.getPortletSession().removeAttribute(MEMBERS_PRESENT);
 
         defaultView = INVITATION_SENT_PAGE;
       } else if (GET_MEMBERS.equals(viewType) || !StringUtils.hasText(viewType)) {
@@ -249,7 +256,6 @@ public class InviteMembersPortlet extends GenericPortlet {
         // the user's values, else reset the form
         if (StringUtils.hasText(viewType)) {
           //Set request attributes if any
-          request.setAttribute(MEMBER_IDS_TO_INVITE, request.getPortletSession().getAttribute(MEMBER_IDS_TO_INVITE));
           request.setAttribute(MEMBERS_TO_INVITE, request.getPortletSession().getAttribute(MEMBERS_TO_INVITE));
           request.setAttribute(MEMBERS_TO_INVITE + "Error", request.getPortletSession().getAttribute(MEMBERS_TO_INVITE + "Error"));
         }
@@ -278,13 +284,16 @@ public class InviteMembersPortlet extends GenericPortlet {
           response.setRenderParameter(VIEW_TYPE, actionType);
         } else if (GET_MATCHES.equals(actionType)) {
           String membersToInvite = request.getParameter(MEMBERS_TO_INVITE);
-          String memberIdsToInvite = request.getParameter(MEMBER_IDS_TO_INVITE);
 
           if (StringUtils.hasText(membersToInvite)) {
-            buildMatches(request);
             request.getPortletSession().setAttribute(MEMBERS_TO_INVITE, membersToInvite);
-            request.getPortletSession().setAttribute(MEMBER_IDS_TO_INVITE, memberIdsToInvite);
-            response.setRenderParameter(VIEW_TYPE, actionType);
+
+            if (!buildMatches(request)) {
+              response.setRenderParameter(VIEW_TYPE, actionType);
+            } else {
+              request.getPortletSession().setAttribute(MEMBERS_TO_INVITE + "Error", "Could not find new members in the list");
+              response.setRenderParameter(VIEW_TYPE, GET_MEMBERS);
+            }
           } else {
             request.getPortletSession().setAttribute(MEMBERS_TO_INVITE + "Error", "Required");
             response.setRenderParameter(VIEW_TYPE, GET_MEMBERS);
@@ -478,47 +487,64 @@ public class InviteMembersPortlet extends GenericPortlet {
   /**
    * @param request
    */
-  private void buildMatches(ActionRequest request) throws SQLException {
+  private boolean buildMatches(ActionRequest request) throws SQLException {
 
     Connection db = PortalUtils.getConnection(request);
     String[] membersToInvite = request.getParameter(MEMBERS_TO_INVITE).split(",");
-    String memberIdsToInvite = request.getParameter(MEMBER_IDS_TO_INVITE);
     LinkedHashMap<String, String> members = new LinkedHashMap<String, String>();
+    LinkedHashMap<String, String> membersPresent = new LinkedHashMap<String, String>();
     boolean hasMultipleMatches = false;
     for (String member : membersToInvite) {
       members.put(member.trim(), NO_MATCH_FOUND);
     }
-    //1. Id based Query
-    //build query from memberIdsTo Invite
-    //Get the abbreviated names from the query and see if they match any of the names that are entered.
-    if (StringUtils.hasText(memberIdsToInvite)) {
-      UserList userList = new UserList();
-      userList.setUserIds(memberIdsToInvite);
-      userList.buildList(db);
-      for (User user : userList) {
-        if (members.get(user.getNameFirstLastInitial()) != null) {
-          if (members.get(user.getNameFirstLastInitial()).equals(NO_MATCH_FOUND)) {
-            members.put(user.getNameFirstLastInitial(), String.valueOf(user.getId()));
-          }
-        } else if (members.get(user.getNameFirstLast()) != null) {
-          if (members.get(user.getNameFirstLast()).equals(NO_MATCH_FOUND)) {
-            members.put(user.getNameFirstLast(), String.valueOf(user.getId()));
-          }
+
+    //1. Profile Id based Query
+    Iterator<String> keyIterator = members.keySet().iterator();
+    while (keyIterator.hasNext()) {
+      String profileId = keyIterator.next();
+      if (members.get(profileId).equals(NO_MATCH_FOUND) && (profileId.indexOf("(") != -1)) {
+        // Find user by unique profileId
+      	String[] arrNameProfile = profileId.split("\\(");
+      	int endIndex = arrNameProfile[1].indexOf(")") < 0 ? arrNameProfile[1].length() : arrNameProfile[1].indexOf(")");
+      	arrNameProfile[1] = arrNameProfile[1].substring(0, endIndex);
+      	Project project = ProjectUtils.loadProject(arrNameProfile[1]);
+      	if (project == null) {
+      		continue;
+      	}
+        int userId = project.getOwner();
+        if (userId > -1) {
+          members = updateMemberList(request, profileId, String.valueOf(userId), members, membersPresent);
         }
       }
     }
 
-    //2. Name based Query based on first and last name
+    //2. Email based Query
+    keyIterator = members.keySet().iterator();
+    while (keyIterator.hasNext()) {
+      String email = keyIterator.next();
+      if (members.get(email).equals(NO_MATCH_FOUND) && (email.indexOf("@") != -1)) {
+        // Find user by email address
+        int userId = User.getIdByEmailAddress(db, email.trim());
+        if (userId > -1) {
+          members = updateMemberList(request, email, String.valueOf(userId), members, membersPresent);
+        }
+      }
+    }
+
+    //3. Name based Query based on first and last name
     //for the items that did not match in 1.get the names (i.e., first and last names) only (i.e., filter out the emails)
     //Fetch from users by matching first name and last name if more than one character exists in the last name
-    Iterator<String> keyIterator = members.keySet().iterator();
+    keyIterator = members.keySet().iterator();
     while (keyIterator.hasNext()) {
       String name = keyIterator.next();
       if (members.get(name).equals(NO_MATCH_FOUND) && (name.indexOf("@") == -1)) {
         String[] nameParts = name.split(" ");
         UserList userList = new UserList();
         if (nameParts.length == 1) {
-          userList.setFirstName(nameParts[0]);
+        //search first and last name fields
+          UserSearchBean userSearch = new UserSearchBean(); 
+          userSearch.setName(nameParts[0]);
+          userList.setSearchCriteria(userSearch);
         } else if (nameParts.length == 2) {
           userList.setFirstName(nameParts[0]);
           userList.setLastName(nameParts[1]);
@@ -532,24 +558,112 @@ public class InviteMembersPortlet extends GenericPortlet {
           for (User user : userList) {
             idStringBuffer.append("," + user.getId());
           }
-          members.put(name, idStringBuffer.toString().substring(1));
+          members = updateMemberList(request, name, idStringBuffer.toString().substring(1), members, membersPresent);
         }
       }
     }
 
-    //3. Email based Query
-    keyIterator = members.keySet().iterator();
-    while (keyIterator.hasNext()) {
-      String email = keyIterator.next();
-      if (members.get(email).equals(NO_MATCH_FOUND) && (email.indexOf("@") != -1)) {
-        // Find user by email address
-        int userId = User.getIdByEmailAddress(db, email.trim());
-        if (userId > -1) {
-          members.put(email, String.valueOf(userId));
-        }
-      }
-    }
     request.getPortletSession().setAttribute(MEMBERS, members);
     request.getPortletSession().setAttribute(HAS_MULTIPLE_MATCHES, String.valueOf(hasMultipleMatches));
+    request.getPortletSession().setAttribute(MEMBERS_PRESENT, membersPresent);
+
+    return members.isEmpty();
+  }
+
+  /*
+   * checks and removes duplicate entries from the members to be invited list
+   */
+  private LinkedHashMap<String, String> updateMemberList(ActionRequest request, String member, String id, 
+  		LinkedHashMap<String, String> memberMap, LinkedHashMap<String, String> memberPresentMap) {
+  	//return if the id passed is not valid or empty
+    if (NO_MATCH_FOUND.equals(id) || !StringUtils.hasText(id)) {
+      return memberMap;
+    }
+
+    LinkedHashMap<String, String> members = new LinkedHashMap<String, String>(memberMap);
+    //remove the entry if the userid(s) was already added
+    if (members.containsValue(id)) {
+    	members.remove(member);
+    	return members;
+    }
+    
+    User currentUser = PortalUtils.getUser(request);
+    Project currentProject = PortalUtils.getProject(request);
+    
+    String arrUserId[] = id.split(",");
+    String userIds = "";
+    for (String userId : arrUserId) {
+      //discard the userid if added before
+      if (members.containsValue(userId)) {
+      	continue;
+      }
+      //discard the userid if its the current user
+      if (Integer.parseInt(userId) == currentUser.getId()) {
+      	continue;
+      }
+      //discard the userid if the user is already a member
+      if (currentProject.getTeam().getTeamMember(Integer.parseInt(userId)) != null) {
+      	continue;
+      }
+
+      userIds += userId + ",";
+    }
+    userIds = DimDimUtils.trimComma(userIds);
+    
+    //check if there are ids not discarded
+    if (StringUtils.hasText(userIds)) {
+      //if its not a multi match then check if the user was previous added to any multi match list.
+      if (arrUserId.length == 1) {
+      	checkDuplicates(members, member, userIds);
+      }
+      members.put(member, userIds);
+    } else {
+    	//remove from the member list if its not a multi match
+      if (arrUserId.length == 1) {
+      	memberPresentMap.put(member, id);
+        members.remove(member);
+      } else {
+      	members.put(member, NO_MATCH_FOUND);
+      }
+    }
+    return members;
+  }
+  
+  /*
+   * removes multiple occurrences of userId from comma separated values of members list
+   */
+  private void checkDuplicates(LinkedHashMap<String, String> members, String member, String userId) {
+    Iterator<String> memIterator = members.keySet().iterator();
+    while (memIterator.hasNext()) {
+    	String keyName = (String)memIterator.next();
+    	String idValue = members.get(keyName);
+    	
+    	//check only previous values and not entire list
+    	if (keyName == member) {
+    		return;
+    	}
+    	
+    	//check if valid ids
+    	if (NO_MATCH_FOUND.equals(idValue) || !StringUtils.hasText(idValue)) {
+    		continue;
+    	}
+    	
+    	//convert comma separated string to ArrayList and remove duplicates 
+    	ArrayList<String> lstIds = new ArrayList<String>(Arrays.asList(idValue.split(",")));
+    	while (lstIds.contains(userId)) {
+    		lstIds.remove(userId);
+    	}
+    	
+    	//convert the id list to comma separated string and assign it to members list if there ids remaining
+    	if (!lstIds.isEmpty()) {
+    		String ids = lstIds.toString();
+    		ids = ids.replace("[", "");
+    		ids = ids.replace("]", "");
+    		ids = ids.replace(" ", "");
+    		members.put(keyName, ids);
+    	} else {
+    		memIterator.remove();
+    	}
+    }
   }
 }

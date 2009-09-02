@@ -80,7 +80,6 @@ public class EventDimdimAction implements IPortletAction {
       attendeeUserId = Integer.parseInt(request.getParameter("uid"));
     }
 
-
     //get connection
     Connection db = getConnection(request);
 

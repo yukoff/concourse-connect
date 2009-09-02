@@ -87,7 +87,6 @@ public class MeetingInviteesBean extends GenericBean {
   private MeetingAttendee meetingAttendee = null;
   private int action = -1;
   private boolean isModifiedMeeting = false;
-  private boolean previousMeetingIsDimidim = false;
   private UserList cancelledUsers = null;
   private UserList meetingChangeUsers = null;
   private UserList rejectedUsers = null;
@@ -147,13 +146,6 @@ public class MeetingInviteesBean extends GenericBean {
 
   public void setIsModifiedMeeting(boolean isModifiedMeeting) {
     this.isModifiedMeeting = isModifiedMeeting;
-  }
-
-  /*
-   * Returns true if the meeting was a dimdim meeting before update
-   */
-  public boolean getPreviousMeetingIsDimidim() {
-    return previousMeetingIsDimidim;
   }
 
   /*
@@ -284,6 +276,19 @@ public class MeetingInviteesBean extends GenericBean {
 
       //add the users to invitation rejected list
       addAttendeeToRejectedUsers(meetingAttendeeList);
+
+      //call Dimdim API and delete meeting if the web meeting was unchecked during edit
+      if (!meeting.getIsDimdim() && previousMeeting.getIsDimdim()) {
+        //switch to cancel mode and use previous meeting instance for dimdim meetingId
+        action = DimDimUtils.ACTION_MEETING_DIMDIM_CANCEL;
+        Meeting temp = meeting;
+        meeting = previousMeeting;
+        //call api
+        DimDimUtils.processDimdimMeeting(this, null);
+        //switch back to edit mode for sending mail
+        meeting = temp;
+        action = DimDimUtils.ACTION_MEETING_DIMDIM_EDIT;
+      }
     }
 
     return updated;
@@ -426,7 +431,7 @@ public class MeetingInviteesBean extends GenericBean {
   private boolean checkProfile(Connection db, ActionRequest request, String profile, String name) throws SQLException {
     // find user
     Project userProject = ProjectUtils.loadProject(profile);
-    if (userProject != null) {
+    if (userProject != null && userProject.getProfile()) {
       // user found
       User user = UserUtils.loadUser(userProject.getOwner());
       return insertInvitee(db, request, name, user);
@@ -502,7 +507,7 @@ public class MeetingInviteesBean extends GenericBean {
       if (meetingAttendee.getUserId() == user.getId()) {
         meetingAttendeeList.remove(i);
 
-        // if valid dimdim meeting the send meeting change mail otherwise send invitation mail.
+        // if valid dimdim meeting then send meeting change mail otherwise send invitation mail.
         if (meeting.getIsDimdim() && !StringUtils.hasText(meeting.getDimdimMeetingId())) {
           addToMemberFoundList(user, invitee);
         } else {
@@ -820,14 +825,13 @@ public class MeetingInviteesBean extends GenericBean {
   public boolean setMeetingStatus(Connection db, ActionRequest request, User user, int meetingStatus) throws SQLException {
     MeetingAttendeeList meetingAttendeeList = new MeetingAttendeeList();
     meetingAttendeeList.setMeetingId(meeting.getId());
-    meetingAttendeeList.setUserId(user.getId());
     meetingAttendeeList.buildList(db);
 
-    if (meetingAttendeeList.size() < 1) {
+    this.meetingAttendee = meetingAttendeeList.getMeetingAttendee(user);
+    if (meetingAttendee == null) {
       return false;
     }
 
-    this.meetingAttendee = meetingAttendeeList.get(0);
     meetingAttendee.setModifiedBy(meetingAttendee.getUserId());
 
     if (action == DimDimUtils.ACTION_MEETING_APPROVE_JOIN) {
@@ -865,6 +869,17 @@ public class MeetingInviteesBean extends GenericBean {
     //set attendee status and update
     meetingAttendee.setDimdimStatus(meetingStatus);
     if (meetingAttendee.update(db) > 0) {
+
+      //call dimdim api to edit meeting
+      if (meeting.getIsDimdim() && action == DimDimUtils.ACTION_MEETING_APPROVE_JOIN) {
+        String attendeeIds = "";
+        for (MeetingAttendee thisAttendee : meetingAttendeeList) {
+          attendeeIds += thisAttendee.getUserId() + ", ";
+        }
+        attendeeIds = DimDimUtils.trimComma(attendeeIds);
+        populateMailUserList(null, null, null, attendeeIds);
+        DimDimUtils.processDimdimMeeting(this, null);
+      }
       return true;
     }
     return false;

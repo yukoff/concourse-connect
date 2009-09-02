@@ -77,19 +77,19 @@
   }
   function addNameToList(nameText){
   	var textArea = document.getElementById("<portlet:namespace/>membersToInvite");
+
+  	var arrName = textArea.value.split(",");
+  	for(i = 0; i < arrName.length; i++) {
+  	  	if (arrName[i].trim() == nameText.trim()) {
+  	  	  	alert("The member was added before.");
+  	  	  	return;
+  	  	}
+  	}
   	if (textArea.value == ""){
 	  	textArea.value = nameText;
   	} else {
 	  	textArea.value = textArea.value + ", " + nameText;
-	}
-  }
-  function addIdToList(idText){
-  	var textIds = document.getElementById("<portlet:namespace/>memberIdsToInvite");
-  	if (textIds.value == ""){
-	  	textIds.value = idText;
-  	} else {
-	  	textIds.value = textIds.value + ", " + idText;
-	}
+	  }
   }
 </script>
 <div class="inviteMembersPortletEdit">
@@ -117,10 +117,9 @@
         <c:if test="${!empty teamMemberList}">
           <label>You may choose from your friends below</label><br />
           <c:forEach items="${teamMemberList}" var="teamMember" varStatus="status">
-            <c:out value="${status.count}" />.&nbsp;<a href="javascript:addNameToList('<ccp:username id="${teamMember.userId}" showProfile="${false}" showPresence="${false}"/>');addIdToList('${teamMember.userId}')"><ccp:username id="${teamMember.userId}" showProfile="${false}"/></a>&nbsp;
+            <c:out value="${status.count}" />.&nbsp;<a href="javascript:addNameToList('<ccp:username id="${teamMember.userId}" showProfile="${false}" showPresence="${false}"/>(${teamMember.user.profileProject.uniqueId})')"><ccp:username id="${teamMember.userId}" showProfile="${false}"/></a>&nbsp;
           </c:forEach>
         </c:if>
-        <input type="hidden" name="memberIdsToInvite" id="<portlet:namespace/>memberIdsToInvite" value="${memberIdsToInvite}" />
   	 </fieldset>
 	   <c:if test="${'true' eq param.popup || 'true' eq popup}">
 	      <input type="hidden" name="popup" value="true" />

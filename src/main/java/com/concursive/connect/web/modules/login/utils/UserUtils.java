@@ -51,6 +51,8 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.web.modules.common.social.tagging.dao.TagList;
+import com.concursive.connect.web.modules.common.social.tagging.dao.TagLogList;
 import com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplate;
 import com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplateList;
 import com.concursive.connect.web.modules.discussion.dao.Forum;
@@ -501,5 +503,24 @@ public class UserUtils {
         projectList.buildList(db);
       }
     }
+  }
+  
+  /**
+   * Get recently used tags by the user
+   * @param db
+   * @param userId
+   * @return
+   * @throws SQLException
+   */
+  public static TagList loadRecentlyUsedTagsByUser(Connection db, int userId) throws SQLException {
+    TagList popularTagList = new TagList();
+    popularTagList.setTableName("user");
+    popularTagList.setUniqueField("user_id");
+    popularTagList.setLinkItemId(userId);
+    PagedListInfo tagListInfo = new PagedListInfo();
+    tagListInfo.setColumnToSortBy("tag_date DESC, tag_count DESC, tag");
+    popularTagList.setPagedListInfo(tagListInfo);
+    popularTagList.buildList(db);
+    return popularTagList;
   }
 }

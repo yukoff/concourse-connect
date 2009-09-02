@@ -347,6 +347,9 @@
   <action name="AdminMembers" class="com.concursive.connect.web.modules.admin.actions.AdminMembers">
     <forward name="DefaultOK" resource="/admin_members_list.jsp"/>
   </action>
+  <action name="AdminContributionPointsSystem" class="com.concursive.connect.web.modules.admin.actions.AdminContributionPointsSystem">
+    <forward name="DefaultOK" resource="/admin_contribution_points_system_modify.jsp"/>
+  </action>
   <action name="Profile" class="com.concursive.connect.web.modules.userprofile.actions.Profile">
     <bean name="User" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
     <forward name="UpdateOK" resource="/Profile.do?command=Default"/>

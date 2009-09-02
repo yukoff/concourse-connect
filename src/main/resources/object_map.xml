@@ -999,6 +999,7 @@
       <property>dimdimUrl</property>
       <property>dimdimUsername</property>
       <property>dimdimPassword</property>
+      <property>dimdimMeetingKey</property>
     </map>
     <map class="com.concursive.connect.web.modules.calendar.dao.MeetingList" id="meetingList"/>
 

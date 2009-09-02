@@ -250,13 +250,13 @@
             <portlet:param name="out" value="text"/>
           </portlet:renderURL>
           <a href="javascript:copyRequest('${ratingUrl}','<%= "message_" + thisArticle.getId() %>','message');">No</a>&nbsp;
-     	  <ccp:evaluate if="<%= thisArticle.getId() > -1 && User.isLoggedIn() %>">
- 			<a href="javascript:showPanel('Mark this blog post as Inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=blog&pid=${project.id}&id=${thisArticle.id}',700)">Report this as inappropriate</a>
- 		  </ccp:evaluate>
- 		  </p>
+          <ccp:evaluate if="<%= thisArticle.getId() > -1 && User.isLoggedIn() %>">
+            <a href="javascript:showPanel('Mark this blog post as Inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=blog&pid=${project.id}&id=${thisArticle.id}',700)">Report this as inappropriate</a>
+          </ccp:evaluate>
+          </p>
           <div id="message_<%= thisArticle.getId() %>"></div>
         </ccp:evaluate>
-        </ccp:permission>
+      </ccp:permission>
     </div>
    <ccp:evaluate if="<%= thisArticle.getId() > -1 && User.isLoggedIn() %>">
     <div class="formContainer" id="thisCommentWindow<%= thisArticle.getId() %>"

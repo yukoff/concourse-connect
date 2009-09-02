@@ -47,6 +47,7 @@ package com.concursive.connect.web.modules.reviews.portlets.main;
 
 import com.concursive.connect.web.modules.common.social.rating.dao.Rating;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.reviews.dao.ProjectRating;
@@ -108,6 +109,7 @@ public class ReviewsFormViewer implements IPortletViewer {
       // Supporting form data
       request.setAttribute("popularTags", ProjectUtils.loadProjectTags(db, project.getId()));
       request.setAttribute("userTags", ProjectUtils.loadProjectTagsForUser(db, project.getId(), thisProjectRating.getEnteredBy()));
+      request.setAttribute("userRecentTags", UserUtils.loadRecentlyUsedTagsByUser(db, thisProjectRating.getEnteredBy()));
     } else {
       // Check the request for the record and provide a value for the request scope
       PortalUtils.getFormBean(request, PROJECT_RATING, ProjectRating.class);
@@ -125,6 +127,7 @@ public class ReviewsFormViewer implements IPortletViewer {
       // Supporting form data
       request.setAttribute("popularTags", ProjectUtils.loadProjectTags(db, project.getId()));
       request.setAttribute("userTags", ProjectUtils.loadProjectTagsForUser(db, project.getId(), user.getId()));
+      request.setAttribute("userRecentTags", UserUtils.loadRecentlyUsedTagsByUser(db, user.getId()));
     }
 
     // JSP view

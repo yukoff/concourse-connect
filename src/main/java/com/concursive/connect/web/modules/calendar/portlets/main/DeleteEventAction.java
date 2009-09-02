@@ -104,6 +104,10 @@ public class DeleteEventAction implements IPortletAction {
 
     meeting.delete(db);
 
+    if (meeting.getIsDimdim()) {
+      DimDimUtils.processDimdimMeeting(meetingInviteesBean, null);
+    }
+
     // Remove from index
     indexDeleteItem(request, meeting);
 

@@ -84,6 +84,7 @@ public class DimDimUtils {
   private static final String URL_DIMDIM_SCHEDULE = "schedule.action";
   private static final String URL_DIMDIM_EDIT = "EditScheduledMeeting.action";
   private static final String URL_DIMDIM_JOIN = "join.action";
+  private static final String URL_DIMDIM_DELETE = "DeleteSchedule.action";
   public static final String ATTENDEES_INVITED = "attendeesInvited";
   public static final String ATTENDEES_ACCEPTED = "attendeesAccepted";
   public static final String ATTENDEES_TENTATIVE = "attendeesTentative";
@@ -99,7 +100,6 @@ public class DimDimUtils {
    * @return - Url to dimdim server or the message returned
    */
   public static HashMap<String, String> processDimdimMeeting(MeetingInviteesBean meetingInviteesBean, User attendeeUser) {
-
     //return result
     HashMap<String, String> resultMap = new HashMap<String, String>();
 
@@ -117,16 +117,17 @@ public class DimDimUtils {
         for (User user : userSet) {
           attendeeMailIds += user.getEmail() + ", ";
         }
+      }
+      if (meetingInviteesBean.getMeetingChangeUsers() != null && meetingInviteesBean.getMeetingChangeUsers().size() > 0) {
         for (User user : meetingInviteesBean.getMeetingChangeUsers()) {
           attendeeMailIds += user.getEmail() + ", ";
         }
-        attendeeMailIds = trimComma(attendeeMailIds);
       }
+      attendeeMailIds = trimComma(attendeeMailIds);
 
       //Modify meeting
-      if (meetingInviteesBean.getAction() == ACTION_MEETING_DIMDIM_EDIT) {
-        //return result
-
+      if (meetingInviteesBean.getAction() == ACTION_MEETING_DIMDIM_EDIT ||
+          meetingInviteesBean.getAction() == ACTION_MEETING_APPROVE_JOIN) {
         //check for meetingId if not present then call schedule meeting
         if (!StringUtils.hasText(meeting.getDimdimMeetingId())) {
           meetingInviteesBean.setAction(ACTION_MEETING_DIMDIM_SCHEDULE);
@@ -292,6 +293,32 @@ public class DimDimUtils {
         resultMap.put(resSuccess, resText);
         return resultMap;
       }
+
+      //delete a meeting
+      if (meetingInviteesBean.getAction() == ACTION_MEETING_DIMDIM_CANCEL) {
+        //set the query string values as params
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("name", meeting.getDimdimUsername());
+        params.put("password", meeting.getDimdimPassword());
+        params.put("meetingID", meeting.getDimdimMeetingId());
+        params.put("response", "json");
+
+        //post to dimdim server and process response
+        LOG.debug("JSON POST");
+        String urlPrefix = meeting.getDimdimUrl() + URL_DIMDIM_DELETE;
+        JSONObject dimdimResp = JSONObject.fromObject(HTTPUtils.post(urlPrefix, params));
+        String resSuccess = dimdimResp.getString("code");
+        String resText = dimdimResp.getJSONObject("data").getString("text");
+
+        if (DIMDIM_CODE_SUCCESS.equals(resSuccess)) {
+          resultMap.put(resSuccess, urlPrefix + buildDimdimUrl(params));
+          return resultMap;
+        }
+
+        resultMap.put(resSuccess, resText);
+        return resultMap;
+      }
+
       LOG.error("Unknown Dimdim meeting senario or action.");
       resultMap.put("0", "Error occured while accessing Dimdim server.");
       return resultMap;

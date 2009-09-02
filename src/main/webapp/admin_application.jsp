@@ -68,6 +68,7 @@
         <li><a href="<%= ctx %>/AdminListsTemplates.do?command=List">Project Lists Templates</a></li>
         <li><a href="<%= ctx %>/AdminProjectMessageTemplates.do?command=List">Project Message Templates</a></li>
         <li><a href="<%= ctx %>/AdminTicketCategoryTemplates.do?command=List">Project Ticket Category Templates</a></li>
+        <li><a href="<%= ctx %>/AdminContributionPointsSystem.do">Contribution Points System</a></li>
       </ul>
     </dl>
   </div>

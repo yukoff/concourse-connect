@@ -242,6 +242,12 @@
               </c:choose>
             </c:forEach>
          </table>
+         <c:if test="${!empty membersPresent}">
+         Following are already members of the profile:
+         <c:forEach items="${membersPresent}" var="member" varStatus="status">
+         	 <ccp:username id="${member.value}" showProfile="${true}" showPresence="${false}" showCityState="${true}" /><c:if test="${!status.last}">, </c:if>
+         </c:forEach>
+         </c:if> 
        </fieldset>
        <input type="hidden" name="sourcePage" value="getMatches" />
         <c:if test="${'true' eq param.popup || 'true' eq popup}">

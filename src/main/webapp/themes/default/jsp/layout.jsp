@@ -256,12 +256,12 @@
                 <li>
                   <a href="<%= ctx %>/settings">Settings</a>
                 </li>
+                <ccp:evaluate if="<%= User.isConnectCRMAdmin() || User.isConnectCRMManager() %>">
+                  <li>
+                    <a href="<%= ctx %>/management-crm">Management CRM</a>
+                  </li>
+                </ccp:evaluate>
                 <ccp:evaluate if="<%= User.getAccessAdmin() %>">
-                  <ccp:evaluate if="<%= User.isConnectCRMAdmin() || User.isConnectCRMManager() %>">
-                    <li>
-                      <a href="<%= ctx %>/management-crm">CRM</a>
-                    </li>
-                  </ccp:evaluate>
                   <li>
                     <a href="<%= ctx %>/admin">Admin</a>
                   </li>

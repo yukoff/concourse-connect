@@ -258,7 +258,7 @@
                 </li>
                 <ccp:evaluate if="<%= User.isConnectCRMAdmin() || User.isConnectCRMManager() %>">
                   <li>
-                    <a href="<%= ctx %>/management-crm">Management CRM</a>
+                    <a href="<%= ctx %>/management-crm<ccp:evaluate if='<%= request.getAttribute("requestedURL") != null %>'>?returnURL=<%= URLEncoder.encode((String)request.getAttribute("requestedURL"), "UTF-8") %></ccp:evaluate>">CRM</a>
                   </li>
                 </ccp:evaluate>
                 <ccp:evaluate if="<%= User.getAccessAdmin() %>">

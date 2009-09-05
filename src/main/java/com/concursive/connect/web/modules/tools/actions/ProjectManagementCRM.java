@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.tools.actions;
 
+import com.concursive.commons.http.RequestUtils;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -52,6 +53,7 @@ import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.commons.text.StringUtils;
 
+import java.net.URLEncoder;
 import java.util.Random;
 import java.util.ArrayList;
 import java.sql.SQLException;
@@ -66,6 +68,7 @@ import org.aspcfs.apps.transfer.DataRecord;
  * @created Aug 7, 2009
  */
 public class ProjectManagementCRM extends GenericAction {
+
   static Random random = new Random();
   static String validCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy0123456789";
 
@@ -86,13 +89,20 @@ public class ProjectManagementCRM extends GenericAction {
       }
       // if successful, send the redirect...
       String redirect = "MyCFS.do?command=Home";
-      context.getRequest().setAttribute("redirectTo", prefs.get(ApplicationPrefs.CONCURSIVE_CRM_SERVER) + "/" + redirect + "&SessionId=" + token);
+      String returnURL = (String) context.getRequest().getParameter("returnURL");
+      if (returnURL != null) {
+        try {
+          returnURL = RequestUtils.getAbsoluteServerUrl(context.getRequest()) + URLEncoder.encode(returnURL, "UTF-8");
+        } catch (Exception e) {
+        }
+      }
+      LOG.debug("Return URL: " + returnURL);
+      context.getRequest().setAttribute("redirectTo", prefs.get(ApplicationPrefs.CONCURSIVE_CRM_SERVER) + "/" + redirect + "&token=" + token + (returnURL != null ? "&returnURL=" + returnURL : ""));
       return ("Redirect301");
     } else {
       return "CRMError";
     }
   }
-
 
   public String executeCommandShowAccount(ActionContext context) {
     if (!getUser(context).isConnectCRMAdmin() && !getUser(context).isConnectCRMManager()) {
@@ -117,9 +127,16 @@ public class ProjectManagementCRM extends GenericAction {
             System.out.println("ProjectManagementCRM-> sending redirect");
           }
           // if successful, send the redirect...
-          //TODO: Need to use modules/accounts/show/<id> instead of Accounts.do?command=Details URL...
-          String redirect = "Accounts.do?command=Details&orgId=" + crmAccountId;
-          context.getRequest().setAttribute("redirectTo", prefs.get(ApplicationPrefs.CONCURSIVE_CRM_SERVER) + "/" + redirect + "&SessionId=" + token);
+          String redirect = "module/accounts/show/" + crmAccountId;
+          String returnURL = (String) context.getRequest().getParameter("returnURL");
+          if (returnURL != null) {
+            try {
+              returnURL = RequestUtils.getAbsoluteServerUrl(context.getRequest()) + URLEncoder.encode(returnURL, "UTF-8");
+            } catch (Exception e) {
+            }
+          }
+          LOG.debug("Return URL: " + returnURL);
+          context.getRequest().setAttribute("redirectTo", prefs.get(ApplicationPrefs.CONCURSIVE_CRM_SERVER) + "/" + redirect + "?token=" + token + (returnURL != null ? "&returnURL=" + returnURL : ""));
           return ("Redirect301");
         } else {
           return "CRMError";

@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.tools.actions;
 
+import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.web.controller.actions.GenericAction;
@@ -52,6 +53,7 @@ import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import java.net.URLEncoder;
 import org.aspcfs.apps.transfer.DataRecord;
 import org.aspcfs.utils.CRMConnection;
 
@@ -119,7 +121,16 @@ public class ProjectManagementTools extends GenericAction {
         if ("campaign".equals(linkTo)) {
           redirect = "CampaignManager.do?command=Default";
         }
-        context.getRequest().setAttribute("redirectTo", ("true".equals(getPref(context, "SSL")) ? "https://" : "http://") + thisProject.getConcursiveCRMDomain() + "/" + redirect + "&SessionId=" + token);
+        // Link back to this page
+        String returnURL = (String) context.getRequest().getParameter("returnURL");
+        if (returnURL != null) {
+          try {
+            returnURL = RequestUtils.getAbsoluteServerUrl(context.getRequest()) + URLEncoder.encode(returnURL, "UTF-8");
+          } catch (Exception e) {
+          }
+        }
+        LOG.debug("Return URL: " + returnURL);
+        context.getRequest().setAttribute("redirectTo", ("true".equals(getPref(context, "SSL")) ? "https://" : "http://") + thisProject.getConcursiveCRMDomain() + "/" + redirect + "&token=" + token + (returnURL != null ? "&returnURL=" + returnURL : ""));
         return ("Redirect301");
       } else {
         return "ToolsError";
@@ -163,7 +174,6 @@ public class ProjectManagementTools extends GenericAction {
     }
     return success;
   }
-
   static Random random = new Random();
   static String validCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy0123456789";
 

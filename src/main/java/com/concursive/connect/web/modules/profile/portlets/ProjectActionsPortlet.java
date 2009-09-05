@@ -60,6 +60,7 @@ import org.w3c.dom.Element;
 
 import javax.portlet.*;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -72,14 +73,11 @@ import java.util.HashMap;
 public class ProjectActionsPortlet extends GenericPortlet {
 
   private static Log LOG = LogFactory.getLog(ProjectActionsPortlet.class);
-
   // Pages
   private static final String VIEW_PAGE = "/portlets/project_actions/project_actions-view.jsp";
-
   // Preferences
   private static final String PREF_TITLE = "title";
   private static final String PREF_URLS = "urls";
-
   // Attribute names for objects available in the view
   private static final String TITLE = "title";
   private static final String URL_LIST = "urlList";
@@ -169,9 +167,9 @@ public class ProjectActionsPortlet extends GenericPortlet {
           } else if ("userCanRequestToJoin".equals(rule)) {
             boolean canRequestToJoin =
                 (thisUser != null && thisUser.getId() > 0 &&
-                    (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
-                    project.getFeatures().getMembershipRequired() &&
-                    (member == null || member.getId() == -1));
+                (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
+                project.getFeatures().getMembershipRequired() &&
+                (member == null || member.getId() == -1));
             if (!canRequestToJoin) {
               valid = false;
             }
@@ -239,8 +237,29 @@ public class ProjectActionsPortlet extends GenericPortlet {
             valid = false;
           }
         }
-        // If valid, add it to the list
+        // If valid
         if (valid) {
+          // Append any special parameters to the url
+          if (url.containsKey("parameter")) {
+            String parameter = url.get("parameter");
+            // This parameter takes the current url and appends to the link
+            if ("returnURL".equals(parameter)) {
+              String requestedURL = (String) request.getAttribute("requestedURL");
+              if (requestedURL != null) {
+                String value = URLEncoder.encode(requestedURL, "UTF-8");
+                LOG.debug("Parameter: " + parameter + "=" + value);
+                String link = url.get("href");
+                if (link.contains("&")) {
+                  link += "&" + parameter + "=" + value;
+                } else {
+                  link += "?" + parameter + "=" + value;
+                }
+                LOG.debug("Setting href to " + link);
+                url.put("href", link);
+              }
+            }
+          }
+          // Add to the list
           urlList.add(url);
         }
       }

@@ -149,6 +149,7 @@ public class RegisterPortlet extends GenericPortlet {
           bean.setNameLast(thisUser.getLastName());
           bean.setData(codedData);
           request.setAttribute(REGISTER_BEAN, bean);
+          request.setAttribute(SHOW_TERMS_AND_CONDITIONS, String.valueOf(showLicense));
         } else {
           if (invitationOnly) {
             defaultView = VIEW_PAGE_CLOSED;

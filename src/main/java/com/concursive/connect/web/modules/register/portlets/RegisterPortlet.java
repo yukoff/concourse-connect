@@ -70,14 +70,12 @@ import java.util.StringTokenizer;
 public class RegisterPortlet extends GenericPortlet {
 
   private static final Log LOG = LogFactory.getLog(RegisterPortlet.class);
-
   // Pages
   private static final String VIEW_PAGE_FORM = "/portlets/register/register_form-view.jsp";
   private static final String VIEW_PAGE_VERIFY_DETAILS = "/portlets/register/register_verify_details-view.jsp";
   private static final String VIEW_PAGE_TERMS = "/portlets/register/register_terms-view.jsp";
   private static final String VIEW_PAGE_CLOSED = "/portlets/register/register_closed-view.jsp";
   private static final String VIEW_PAGE_THANKS = "/portlets/register/register_thanks-view.jsp";
-
   // Attribute names for objects available in the view
   private static final String REGISTER_BEAN = "registerBean";
   private static final String SHOW_TERMS_AND_CONDITIONS = "showTermsAndConditions";
@@ -131,7 +129,8 @@ public class RegisterPortlet extends GenericPortlet {
         }
       } else if ("invited".equals(view)) {
         // Check for the coded data that was generated during the invite
-        String codedData = PortalUtils.getPageParameter(request);
+        // as a pageParameter, the parameter cannot contain a / so a | is used
+        String codedData = StringUtils.replace(PortalUtils.getPageParameter(request), "|", "/");
         //Decode the user id
         Key key = PortalUtils.getApplicationKey(request);
         if (key == null) {

@@ -43,10 +43,11 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ page import="com.concursive.commons.text.StringUtils" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="user" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
 <%@ include file="initPage.jsp" %>
-<form name="register" method="post" action="<%= ctx %>/register">
 <%= showError(request, "actionError", false) %>
 <table cellpadding="0" cellspacing="4" width="100%">
   <tr>
@@ -75,8 +76,8 @@
         Registration is simple.  Click "Continue" and fill out the information that appears
         on the following page.<br />
         <br />
-        <input type="hidden" name="data" value="<%= request.getParameter("data") %>"/>
-        <input type="image" src="<%= ctx %>/images/buttons/continue-green.gif" systran="yes" border="0" alt="Continue" name="Continue" value="Continue" />
+        <c:url var="imageUrl" value="/images/buttons/continue-green.gif" />
+        <a href="${ctx}/page/register/invited/<%= StringUtils.replace(StringUtils.encodeUrl(request.getParameter("data")), "%2F", "|") %>"><img src="${imageUrl}" alt="Continue" border="0" /></a>
       </td>
     </tr>
   </tbody>
@@ -84,4 +85,3 @@
 </td>
   </tr>
 </table>
-</form>

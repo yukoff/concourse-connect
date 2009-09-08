@@ -73,7 +73,7 @@
               on the following page.<br />
               <br />
               <c:url var="imageUrl" value="/images/buttons/continue-green.gif" />
-              <a href="${ctx}/page/register/invited/<%= StringUtils.encodeUrl(request.getParameter("data")) %>"><img src="${imageUrl}" alt="Continue" border="0" /></a>
+              <a href="${ctx}/page/register/invited/<%= StringUtils.replace(StringUtils.encodeUrl(request.getParameter("data")), "%2F", "|") %>"><img src="${imageUrl}" alt="Continue" border="0" /></a>
             </td>
           </tr>
         </tbody>

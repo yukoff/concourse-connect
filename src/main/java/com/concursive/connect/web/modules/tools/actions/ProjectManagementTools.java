@@ -152,8 +152,8 @@ public class ProjectManagementTools extends GenericAction {
     conn.setCode(project.getConcursiveCRMCode());
     // Request info
     DataRecord record = new DataRecord();
-    record.setName("importSessionAuthenticationId");
-    record.setAction("execute");
+    record.setName("map");
+    record.setAction("importSessionAuthenticationId");
     record.addField("userEmail", user.getEmail());
     record.addField("sessionToken", token);
     record.addField("userFirstName", user.getFirstName());

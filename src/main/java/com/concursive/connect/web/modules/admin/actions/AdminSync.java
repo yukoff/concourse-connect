@@ -75,6 +75,7 @@ import java.security.Key;
 public final class AdminSync extends GenericAction {
 
   protected static final Log LOG = LogFactory.getLog(GenericAction.class);
+  protected static final String MAP = "map";
   protected static final String SAVE_CONNECT_SYNC_INFO_SERVICE = "saveConnectSyncInfoService";
 
   /**
@@ -183,7 +184,7 @@ public final class AdminSync extends GenericAction {
               connection.setClientId(apiClientId);
 
               DataRecord record = new DataRecord();
-              record.setName(SAVE_CONNECT_SYNC_INFO_SERVICE);
+              record.setName(MAP);
               record.setAction(SAVE_CONNECT_SYNC_INFO_SERVICE);
               record.addField("connectURL", getServerUrl(context));
               if (StringUtils.hasText(prefs.get(ApplicationPrefs.WEB_URL))) {

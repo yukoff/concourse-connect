@@ -1,5 +1,5 @@
 #!/bin/sh                                                                                
-//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/concursive-commons-20090710.jar:target/lib/concourseconnect.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:target/lib/concourseconnect.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
 
 // Dynamically add to the classpath
 File libDir = new File("lib");

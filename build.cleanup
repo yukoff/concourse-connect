@@ -158,3 +158,6 @@ WEB-INF/lib/concursive-commons-20090710.jar
 WEB-INF/lib/backport-util-concurrent-3.0.jar
 WEB-INF/lib/ehcache-1.5.0.jar
 WEB-INF/lib/jsr107cache-1.0.jar
+
+# 2009-09-11
+WEB-INF/lib/concursive-commons-20090819.jar

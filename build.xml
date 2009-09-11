@@ -616,7 +616,7 @@
       </sequential>
     </for>
     <!-- Copy the instance property -->
-    <echo file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property">name=ConnectInstance${fs}node=${NODE}</echo>
+    <echo file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property">name=ConnectInstance${lf}node=${NODE}</echo>
     <loadresource property="message">
        <file file="${dist.dir}/${project.war.finalName}/WEB-INF/instance.property"/>
     </loadresource>

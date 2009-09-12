@@ -123,7 +123,7 @@ public class WikiEditorViewer implements IPortletViewer {
     Connection db = getConnection(request);
     Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
     // Determine if a template is requested
-    if (!StringUtils.hasText(wiki.getContent()) && templateId != null) {
+    if (!StringUtils.hasText(wiki.getContent()) && templateId != null && !"-1".equals(templateId)) {
       WikiTemplate template = new WikiTemplate(db, Integer.parseInt(templateId));
       if (template.getEnabled() && template.getProjectCategoryId() == project.getCategoryId() && StringUtils.hasText(template.getContent())) {
         wiki.setContent(template.getContent());

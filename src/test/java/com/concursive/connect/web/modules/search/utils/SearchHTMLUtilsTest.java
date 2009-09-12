@@ -73,9 +73,6 @@ public class SearchHTMLUtilsTest extends TestCase {
 
     String output = SearchHTMLUtils.highlightedTextToHtml(highlightedText);
     assertEquals("General <strong>admin</strong> training starts this week", output);
-
-    String invalidOutput = StringUtils.toHtml(highlightedText);
-    assertEquals("General //lt;strong//gt;admin//lt;/strong//gt; training starts this week", invalidOutput);
   }
 
 }

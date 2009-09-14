@@ -68,14 +68,12 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
 
   // Pages
   private static final String VIEW_PAGE = "/portlets/recent_project_reviews/recent_project_reviews-view.jsp";
-
   // Request Attributes
   private static final String PROJECT_RATING_LIST = "projectRatingList";
   private static final String PROJECT_CATEGORY_LIST = "projectCategoryList";
   private static final String TITLE = "title";
   private static final String SHOW_PROJECT_TITLE = "showProjectTitle";
   private static final String SHOW_PROJECT_CATEGORY = "showProjectCategory";
-
   // Preferences
   private static final String PREF_TITLE = "title";
   private static final String PREF_NO_OF_REVIEWS_TO_SHOW = "limit";
@@ -83,7 +81,6 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
   private static final String PREF_CATEGORY = "category";
   private static final String PREF_SHOW_PROJECT_TITLE = "showProjectTitle";
   private static final String PREF_SHOW_PROJECT_CATEGORY = "showProjectCategory";
-
   private static final String PREF_SORT_BY_RATING = "sortByRating";
   private static final String PREF_SORT_BY_RATING_AVG = "sortByRatingAvg";
   private static final String PREF_PREF_MINIMUM_RATING_COUNT = "minimumRatingCount";
@@ -120,6 +117,9 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
         }
       }
 
+      // The list to show
+      ProjectRatingList projectRatingList = new ProjectRatingList();
+
       try {
         Connection db = PortalUtils.getConnection(request);
 
@@ -149,7 +149,6 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
         pagedListInfo.setColumnToSortBy(columnsToSort.toString());
 
         // Projects to show
-        ProjectRatingList projectRatingList = new ProjectRatingList();
         projectRatingList.setPagedListInfo(pagedListInfo);
         projectRatingList.setInstanceId(PortalUtils.getInstance(request).getId());
         projectRatingList.setGroupId(thisUser.getGroupId());
@@ -192,10 +191,12 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
       }
 
       // JSP view
-      PortletContext context = getPortletContext();
-      PortletRequestDispatcher requestDispatcher =
-          context.getRequestDispatcher(defaultView);
-      requestDispatcher.include(request, response);
+      if (projectRatingList.size() > 0) {
+        PortletContext context = getPortletContext();
+        PortletRequestDispatcher requestDispatcher =
+            context.getRequestDispatcher(defaultView);
+        requestDispatcher.include(request, response);
+      }
     } catch (Exception e) {
       throw new PortletException(e.getMessage());
     }

@@ -163,11 +163,12 @@ img:after {
       }
 
 .ccp-alert {
-  position:absolute;
-  right:10px;
-  top:35px;
-  padding:0 0 0 23px;
   background:url(../images/icons/mail_blue.png) center left no-repeat;
+  float:right;
+  padding:0 0 0 23px;
+  position:relative;
+  right:10px;
+  top:4px;
 }
 
 /* @end */

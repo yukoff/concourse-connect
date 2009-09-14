@@ -122,6 +122,15 @@
         </value>
         <value>
           <![CDATA[
+            <content>Add a department</content>
+            <title>Add a department</title>
+            <href>/add_departments.shtml</href>
+            <rule>isAdmin</rule>
+            <categoryEnabled>Departments</categoryEnabled>
+          ]]>
+        </value>
+        <value>
+          <![CDATA[
             <content>Start a group</content>
             <title>Start a group</title>
             <href>/start_group.shtml</href>
@@ -134,6 +143,15 @@
             <title>Add a place</title>
             <href>/add_place.shtml</href>
             <categoryEnabled>Places</categoryEnabled>
+          ]]>
+        </value>
+        <value>
+          <![CDATA[
+            <content>Add a neighborhood</content>
+            <title>Add a neighborhood</title>
+            <href>/add_neighborhood.shtml</href>
+            <rule>isAdmin</rule>
+            <categoryEnabled>Neighborhoods</categoryEnabled>
           ]]>
         </value>
         <value>
@@ -172,6 +190,16 @@
         </value>
       </urls>
     </fragment>
+    <fragment id="portal-fragments-unregistered-user">
+      <content><![CDATA[
+        <div style="padding: 10px 30px; background: rgb(252, 238, 221);">
+          <h3>Site Information</h3>
+          <p>This site requires a user account.</p>
+          <p>If you would like a user account, please <a href="${ctx}/contact-us">contact the administrator</a> so that your information can be verified.</p>
+          <p>Once your information is approved, you will receive an invitation to join the site.</p>
+        </div>]]>
+      </content>
+    </fragment>
   </fragments>
   <!-- Web Site Tab Portals -->
   <portal id="portal">
@@ -204,6 +232,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="profile-portlet-body home " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to the site</wiki>
@@ -814,6 +846,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="businesses " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to businesses</wiki>
@@ -937,6 +973,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to organizations</wiki>
@@ -1056,6 +1096,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to committees</wiki>
@@ -1156,6 +1200,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="sponsors " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to sponsors</wiki>
@@ -1248,6 +1296,133 @@
       </row>
     </page>
 
+    <page name="departments.shtml" title="Departments" description="" category="departments">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud " isSensitive="true">
+            <title>Popular Tags</title>
+            <category>Departments</category>
+            <limit>30</limit>
+            <sortByTagCount>true</sortByTagCount>
+            <hasMoreURL>/page/tags/departments</hasMoreURL>
+            <hasMoreTitle>see all tags</hasMoreTitle>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
+            <title>Promotions</title>
+            <category>Departments</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
+            <title>Classifieds</title>
+            <category>Departments</category>
+            <limit>5</limit>
+            <hasMoreURL>/page/classifieds/departments</hasMoreURL>
+            <hasMoreTitle>see more classifieds</hasMoreTitle>
+          </portlet>
+          <portlet name="ProxyPortlet" cache="3700" timeout="3" class="ads">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-230x600</adContext>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="groups " isAdmin="true">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Welcome to departments</wiki>
+            <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="groups " cache="10" isAdmin="false">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Welcome to departments</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300" isSensitive="true">
+			      <title>Featured Group</title>
+          	<showGetInvolved>false</showGetInvolved>
+            <randomProject>
+              <value>category=departments</value>
+              <value>publicOnly=true</value>
+              <value>approvedOnly=true</value>
+              <value>openProjectsOnly=true</value>
+              <value>minimumAverageRating=1</value>
+              <value>daysWithoutBeingFeatured=1</value>
+            </randomProject>
+            <linkTitle>true</linkTitle>
+            <wikiForm>Group Information</wikiForm>
+          </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items " isSensitive="true">
+            <title>Browse Departments by Category</title>
+            <category>Departments</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/departments</hasMoreURL>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+            <title>Recent Activity</title>
+            <category>Departments</category>
+            <events>
+            	<value>ad</value>
+            	<value>badge</value>
+            	<value>blog</value>
+              <value>classified</value>
+            	<value>document</value>
+            	<value>image</value>
+              <value>list</value>
+              <!--
+            	<value>meeting</value>
+            	-->
+            	<value>profile</value>
+            	<value>rating</value>
+            	<value>topic</value>
+            	<value>question</value>
+            	<value>reply</value>
+            	<value>wiki</value>
+            </events>
+            <limit>15</limit>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" cache="300" isSensitive="true">
+            <content><![CDATA[
+            <h4>Browse All Listings</h4>
+            View all <a title="View the complete list of departments" href="${ctx}/page/lists/departments">Departments</a>
+            ]]></content>
+          </portlet>
+          <portlet name="ProxyPortlet"  timeout="3" class="ads" cache="3600">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-280x250</adContext>
+          </portlet>
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list " isSensitive="true">
+            <title>Recent Blog Posts</title>
+            <category>Departments</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list " isSensitive="true">
+            <title>Recent Discussions</title>
+            <category>Departments</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
+            <title>Popular Departments</title>
+            <category>Departments</category>
+            <limit>5</limit>
+            <daysLimit>30</daysLimit>
+          </portlet>
+          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list " isSensitive="true">
+            <title>New Departments</title>
+            <category>Departments</category>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
     <page name="groups.shtml" title="Groups" description="" category="groups">
       <row>
         <column width="240">
@@ -1280,6 +1455,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="groups " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to groups</wiki>
@@ -1371,6 +1550,7 @@
         </column>
       </row>
     </page>
+
     <page name="people.shtml" title="People" description="" category="people">
       <row>
         <column width="240">
@@ -1403,6 +1583,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="people " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to people</wiki>
@@ -1613,6 +1797,134 @@
         </column>
       </row>
     </page>
+    <page name="neighborhoods.shtml" title="Neighborhoods" description="" category="neighborhoods">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+            <title>Popular Tags</title>
+            <category>Neighborhoods</category>
+            <limit>30</limit>
+            <sortByTagCount>true</sortByTagCount>
+            <hasMoreURL>/page/tags/neighborhoods</hasMoreURL>
+            <hasMoreTitle>see all tags</hasMoreTitle>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list ">
+            <title>Promotions</title>
+            <category>Neighborhoods</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+            <title>Classifieds</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+            <hasMoreURL>/page/classifieds/neighborhoods</hasMoreURL>
+            <hasMoreTitle>see more classifieds</hasMoreTitle>
+          </portlet>
+          <portlet name="ProxyPortlet" cache="3700" timeout="3" class="ads">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-230x600</adContext>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="neighborhoods " isAdmin="true">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Welcome to neighborhoods</wiki>
+            <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="neighborhoods " cache="10" isAdmin="false">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Welcome to neighborhoods</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300">
+			      <title>Featured Neighborhood</title>
+          	<showGetInvolved>false</showGetInvolved>
+            <randomProject>
+              <value>category=neighborhoods</value>
+              <value>publicOnly=true</value>
+              <value>approvedOnly=true</value>
+              <value>openProjectsOnly=true</value>
+              <value>minimumAverageRating=1</value>
+              <value>daysWithoutBeingFeatured=1</value>
+            </randomProject>
+            <linkTitle>true</linkTitle>
+            <wikiForm>Neighborhood Information</wikiForm>
+          </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Neighborhoods by Category</title>
+            <category>Neighborhoods</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/neighborhoods</hasMoreURL>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+            <title>Recent Activity</title>
+            <category>Neighborhoods</category>
+            <events>
+            	<value>ad</value>
+            	<value>badge</value>
+            	<value>blog</value>
+              <value>classified</value>
+            	<value>document</value>
+            	<value>image</value>
+              <value>list</value>
+              <!--
+            	<value>meeting</value>
+            	-->
+            	<value>profile</value>
+            	<value>rating</value>
+            	<value>topic</value>
+            	<value>question</value>
+            	<value>reply</value>
+            	<value>wiki</value>
+            </events>
+            <limit>15</limit>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" cache="300">
+            <content><![CDATA[
+            <h4>Browse All Listings</h4>
+            View all <a title="View the complete list of neighborhoods" href="${ctx}/page/lists/neighborhoods">Neighborhoods</a>
+            ]]></content>
+          </portlet>
+          <portlet name="ProxyPortlet"  timeout="3" class="ads" cache="3600">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-280x250</adContext>
+          </portlet>
+          <portlet name="RecentBlogPostsPortlet" cache="10">
+            <title>Recent Blog Posts</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="RecentDiscussionsPortlet" cache="10"
+                   class="detailed-list ">
+            <title>Recent Discussion</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list ">
+            <title>Popular Neighborhoods</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+            <daysLimit>30</daysLimit>
+          </portlet>
+          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list ">
+            <title>New Neighborhoods</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
     <page name="events.shtml" title="Events" description="" category="events">
       <row>
         <column width="240">
@@ -1645,6 +1957,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="events " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to events</wiki>
@@ -1769,6 +2085,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="ideas " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to ideas</wiki>
@@ -2826,6 +3146,150 @@
         </column>
       </row>
     </page>
+    <page name="add_department.shtml" title="Add a Department"
+          description="Add a department to collaborate with others"
+          category="departments">
+      <!-- Is a User -->
+      <row>
+        <column width="240">
+          <!-- Let's Get Started -->
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>Departments</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+            <title>Classifieds</title>
+            <category>Departments</category>
+            <limit>5</limit>
+            <hasMoreURL>/page/classifieds/departments</hasMoreURL>
+            <hasMoreTitle>see more classifieds</hasMoreTitle>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet" isUser="false">
+            <content>
+              <![CDATA[<h3>Start a Group</h3>
+                <p>You must be signed in to start a group. <a href="${ctx}/login?redirectTo=/start_group.shtml">Click here to sign in</a></p>
+								<p>Don't have an account? <a href="${ctx}/register">We'll get you set up once you click here.</a></p>]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet" isUser="false">
+            <content>
+              <![CDATA[
+								<h3>Why Start a Group?</h3>
+                <ol>
+                <li>Connect with others that share your interests or cause</li>
+                <li>Get tools to manage your own community around your group, like blogs, wikis and forums</li>
+                <li>Grow your group with new members from the community</li>
+                <li>It's FREE to get started!</li>
+                </ol>
+                ]]>
+            </content>
+          </portlet>
+          <portlet name="AddProjectByCategoryPortlet" isUser="true">
+            <category>Departments</category>
+            <title>Add a Department</title>
+            <introductionMessage>
+              Enter information below to add a department
+            </introductionMessage>
+            <showSubCategories>true</showSubCategories>
+            <labels>
+              <value>title=Department Name</value>
+            </labels>
+            <addUserAsOwner>true</addUserAsOwner>
+            <addUserWithRole>Manager</addUserWithRole>
+            <allowGuests>false</allowGuests>
+            <showAllowGuestsOption>false</showAllowGuestsOption>
+            <allowParticipants>true</allowParticipants>
+            <showRequiresMembershipOption>true</showRequiresMembershipOption>
+            <isApproved>true</isApproved>
+            <showAddress>false</showAddress>
+            <showShortDescription>true</showShortDescription>
+            <showKeywords>true</showKeywords>
+            <showWebsite>true</showWebsite>
+            <successMessage>
+              <![CDATA[The department is now available in the directory.]]>
+            </successMessage>
+            <failureMessage>The information could not be saved.</failureMessage>
+            <modules>
+              <value>Profile=Overview</value>
+              <value>News=Blog</value>
+              <!--
+              <value>Reviews</value>
+              -->
+              <value>Wiki</value>
+              <value>Calendar</value>
+              <value>Discussion</value>
+              <value>Documents</value>
+              <value>Classifieds</value>
+              <value>Badges</value>
+              <value>Lists</value>
+              <value>Team=Participants</value>
+              <value>Messages</value>
+            </modules>
+            <portlet-events>
+              <generates-data>savedProject</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
+            <showGetInvolved>true</showGetInvolved>
+            <links>
+              <value>Ads=Act on current promotions</value>
+              <value>News=Read the blog</value>
+              <value>Wiki=Check out the wiki</value>
+              <value>Discussion=Participate in discussions</value>
+              <value>Classifieds=Search classifieds</value>
+              <value>Documents</value>
+              <value>Lists</value>
+              <value>Team=View members</value>
+              <value>Reviews=View reviews</value>
+              <value>Tickets=Use the issue tracker</value>
+              <value>Badges=See our badges</value>
+              <value>Calendar=View upcoming events</value>
+            </links>
+            <portlet-events>
+              <consumes-data>savedProject</consumes-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>How to Add a Department</h3>
+                <ol>
+                <li>Pick a Department name that is consistent with your organization.</li>
+                <li>Provide as much detail as possible for the Department.</li>
+                </ol>
+                ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Who can Add a Department?</h3>
+                <p>The administrator can add a department.</p>
+                ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet">
+            <content>
+              <![CDATA[
+                <h3>Why Add a Department?</h3>
+                <ol>
+                <li>Connect with others in your department.</li>
+                <li>Each department has blogs, wikis, forums and document management.</li>
+                </ol>
+                ]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
     <page name="add_place.shtml" title="Add a Place"
           description="Add a place"
           category="places">
@@ -2861,7 +3325,7 @@
             <title>Add a Place</title>
             <introductionMessage>Please search to see if the place already
               exists before requesting for it to be added. Next, enter basic
-              information about the place. After competing this form, the
+              information about the place. After completing this form, the
               place will be searchable for others to find and
               start participating.
             </introductionMessage>
@@ -2922,6 +3386,102 @@
         </column>
       </row>
     </page>
+    <page name="add_neighborhood.shtml" title="Add a Neighborhood"
+          description="Add a neighborhood"
+          category="neighborhoods">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " cache="10">
+            <title>Promotions</title>
+            <category>Neighborhoods</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+            <title>Classifieds</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+            <hasMoreURL>/page/classifieds/neighborhoods</hasMoreURL>
+            <hasMoreTitle>see more classifieds</hasMoreTitle>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet" isUser="false">
+            <content>
+              <![CDATA[<h3>Add a Neighborhood</h3>
+                <p>You must be signed in to add a neighborhood <a href="${ctx}/login?redirectTo=/add_neighborhood.shtml">Click here to sign in</a></p>
+								<p>Don't have an account? <a href="${ctx}/register">We'll get you set up once you click here.</a></p>
+								]]>
+            </content>
+          </portlet>
+          <portlet name="AddProjectByCategoryPortlet" isUser="true">
+            <category>Neighborhoods</category>
+            <title>Add a Neighborhood</title>
+            <introductionMessage>Please search to see if the neighborhood already
+              exists before requesting for it to be added. Next, enter basic
+              information about the neighborhood. After completing this form, the
+              neighborhood will be searchable for others to find and
+              start participating.
+            </introductionMessage>
+            <showSubCategories>true</showSubCategories>
+            <labels>
+              <value>title=Neighborhood Name</value>
+            </labels>
+            <addUserAsOwner>true</addUserAsOwner>
+            <addUserWithRole>Manager</addUserWithRole>
+            <allowGuests>true</allowGuests>
+            <showAllowGuestsOption>false</showAllowGuestsOption>
+            <allowParticipants>true</allowParticipants>
+            <showRequiresMembershipOption>false</showRequiresMembershipOption>
+            <isApproved>true</isApproved>
+            <showLocationName>true</showLocationName>
+            <showAddress>true</showAddress>
+            <showContactInformation>true</showContactInformation>
+            <showShortDescription>true</showShortDescription>
+            <showKeywords>true</showKeywords>
+            <showWebsite>true</showWebsite>
+            <spawnMeeting>true</spawnMeeting>
+            <successMessage>
+              <![CDATA[The neighborhood is now available in the directory.]]>
+            </successMessage>
+            <failureMessage>The information could not be saved.</failureMessage>
+            <modules>
+              <value>Profile</value>
+              <value>News=Blog</value>
+              <value>Wiki</value>
+              <value>Discussion</value>
+              <value>Documents</value>
+              <value>Lists</value>
+              <value>Team=Visitors</value>
+              <value>Reviews</value>
+            </modules>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" cache="60">
+            <content>
+              <![CDATA[
+								<h3>Who can Add a Neighborhood?</h3>
+                <p>Any member can add a neighborhood.</p>
+						  ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet" cache="60">
+            <content>
+              <![CDATA[
+								<h3>Why Add a Neighborhood?</h3>
+                <ol>
+								<li>Share a neighborhood with the entire community for details and discussion.</li>
+								<li>It's FREE!</li>
+								</ol>
+							]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
     <page name="add_event.shtml" title="Add an Event"
           description="Add an event to manage your next meetup using collaboration tools"
           category="events">
@@ -2957,7 +3517,7 @@
             <title>Add an Event</title>
             <introductionMessage>Please search to see if your event already
               exists before requesting for it to be added. Next, enter basic
-              information about your event. After competing this form, your
+              information about your event. After completing this form, your
               event will be searchable for others to find you and
               start participating.
             </introductionMessage>
@@ -3025,7 +3585,7 @@
             <content>
               <![CDATA[
 								<h3>Who can Add an Event?</h3>
-                <p>Any member can start a group.</p>
+                <p>Any member can add an event.</p>
 						  ]]>
             </content>
           </portlet>
@@ -3067,7 +3627,7 @@
             <title>Add an Idea</title>
             <introductionMessage>Please search to see if your idea already
               exists before requesting for it to be added. Next, describe your
-              idea and add a picture. After competing this form, your idea will
+              idea and add a picture. After completing this form, your idea will
               be searchable for others to find and start participating.
             </introductionMessage>
             <showSubCategories>true</showSubCategories>
@@ -3148,7 +3708,7 @@
             <title>Add a Project</title>
             <introductionMessage>Please search to see if your project already
               exists before requesting for it to be added. Next, describe your
-              project. After competing this form, your project will be private
+              project. After completing this form, your project will be private
               and you must invite others if you want them to participate.
             </introductionMessage>
             <showSubCategories>true</showSubCategories>
@@ -3274,6 +3834,9 @@
     <page name="lists" title="Listings">
       <row>
         <column width="240">
+          <!-- not developed yet
+          <portlet name="ListFilterPortlet" class="button-list-vertical-"/>
+          -->
           <portlet name="ActionsPortlet" class="button-list-vertical-">
             <xml-include fragment="portal-fragments-get-started"/>
           </portlet>
@@ -3518,13 +4081,13 @@
                 </ul>]]>
             </introductionMessage>
             <successMessage>
-              <![CDATA[You will be contacted by one of our application specialists to set up your free suite of software tools to manage your listing.<br/><br/>
-                With our easy-to-use management tools, you will be able to:<br/>
-                - Expand your listing to include items such as photos, logos, wikis, blogs, and documents<br/>
-                - Place specials &amp; classified ads<br/>
-                - Invite colleagues to join your listing<br/>
-                - Send out email messages to customers<br/>
-                <br/>
+              <![CDATA[You will be contacted by one of our application specialists to set up your free suite of software tools to manage your listing.<br /><br />
+                With our easy-to-use management tools, you will be able to:<br />
+                - Expand your listing to include items such as photos, logos, wikis, blogs, and documents<br />
+                - Place specials &amp; classified ads<br />
+                - Invite colleagues to join your listing<br />
+                - Send out email messages to customers<br />
+                <br />
                 If you have any questions about this process, please contact us.]]>
             </successMessage>
             <labels>
@@ -3599,7 +4162,7 @@
                       <b>${bean.project.title:html}</b><br />
                       ${project.shortDescription:html}<br />
                       <address>${project.addressToAndLocation:html}</address>
-                      See the complete profile at <a href="${secureUrl}/show/${bean.project.uniqueId}" target="_blank">${secureUrl}/show/${bean.project.uniqueId}</a><br/>
+                      See the complete profile at <a href="${secureUrl}/show/${bean.project.uniqueId}" target="_blank">${secureUrl}/show/${bean.project.uniqueId}</a><br />
                       Message from ${bean.sentFromName:html}:<br />
                       ${bean.message:html}<br />
                       <p>For more information and to review our privacy and security policies, please visit <a href="${secureUrl}" target="_blank">${secureUrl}</a></p>
@@ -3660,12 +4223,21 @@
             <committees>
               <value>pageTitle=Committee Information</value>
             </committees>
+            <departments>
+              <value>pageTitle=Department Information</value>
+            </departments>
             <groups>
               <value>pageTitle=Group Information</value>
             </groups>
             <events>
               <value>pageTitle=Event Information</value>
             </events>
+            <places>
+              <value>pageTitle=Place Information</value>
+            </places>
+            <neighborhoods>
+              <value>pageTitle=Neighborhood Information</value>
+            </neighborhoods>
             <person>
               <value>pageTitle=Profile Information</value>
             </person>
@@ -3727,6 +4299,36 @@
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </organizations>
+            <committees>
+              <value>pageTitle=Committee Information</value>
+              <value>title=Committee Name</value>
+              <value>subCategory1=Category</value>
+              <value>addressLine1=Street Address</value>
+              <value>city=City</value>
+              <value>state=State</value>
+              <value>postalCode=Postal Code</value>
+              <value>country=Country</value>
+              <value>businessPhone=Phone</value>
+              <value>email1=Email</value>
+              <value>webPage=Website</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Description</value>
+            </committees>
+            <departments>
+              <value>pageTitle=Department Information</value>
+              <value>title=Department Name</value>
+              <value>subCategory1=Category</value>
+              <value>addressLine1=Street Address</value>
+              <value>city=City</value>
+              <value>state=State</value>
+              <value>postalCode=Postal Code</value>
+              <value>country=Country</value>
+              <value>businessPhone=Phone</value>
+              <value>email1=Email</value>
+              <value>webPage=Website</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Description</value>
+            </departments>
             <groups>
               <value>pageTitle=Group Information</value>
               <value>title=Group Name</value>
@@ -3808,6 +4410,20 @@
               <value>keywords=Keywords</value>
               <value>shortDescription=Short description</value>
             </places>
+            <neighborhoods>
+              <value>pageTitle=Neighborhood Information</value>
+              <value>title=Neighborhood Name</value>
+              <value>addressTo=Location Name</value>
+              <value>addressLine1=Street Address</value>
+              <value>city=City</value>
+              <value>state=State</value>
+              <value>postalCode=Postal Code</value>
+              <value>country=Country</value>
+              <value>businessPhone=Phone</value>
+              <value>webPage=Website</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Short description</value>
+            </neighborhoods>
             <solutions>
               <value>pageTitle=Solution Information</value>
               <value>title=Solution Name</value>
@@ -4018,6 +4634,22 @@
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Places</title>
+            <category>Places</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>placeResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Neighborhoods</title>
+            <category>Neighborhoods</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>neighborhoodResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
             <category>Ideas</category>
             <limit>3</limit>
@@ -4052,6 +4684,14 @@
             <limit>3</limit>
             <portlet-events>
               <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Departments</title>
+            <category>Departments</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>departmentResultsFound</generates-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
@@ -4092,8 +4732,11 @@
             <maxResults>3</maxResults>
             <portlet-events>
               <consumes-data>groupsResultsFound</consumes-data>
+              <consumes-data>committeeResultsFound</consumes-data>
+              <consumes-data>departmentResultsFound</consumes-data>
               <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>placeResultsFound</consumes-data>
+              <consumes-data>neighborhoodResultsFound</consumes-data>
               <consumes-data>businessesResultsFound</consumes-data>
               <consumes-data>organizationResultsFound</consumes-data>
               <consumes-data>sponsorResultsFound</consumes-data>
@@ -4130,6 +4773,7 @@
         </column>
       </row>
     </page>
+
     <page name="Detail" title="Search Details">
       <row>
         <column class="ccp-search-menu-">
@@ -4291,7 +4935,7 @@
         </column>
       </row>
     </page>
-
+    <!-- Products Search -->
     <page name="Products" title="Products - Search">
       <row>
         <column class="ccp-search-menu-">
@@ -4943,6 +5587,7 @@
         </column>
       </row>
     </page>
+    <!-- Organizations Search -->
     <page name="Organizations" title="Organizations - Search">
       <row>
         <column class="ccp-search-menu-">
@@ -5105,6 +5750,7 @@
         </column>
       </row>
     </page>
+    <!-- Committees Search -->
     <page name="Committees" title="Committees - Search">
       <row>
         <column class="ccp-search-menu-">
@@ -5149,7 +5795,189 @@
             <category>Committees</category>
             <limit>10</limit>
             <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Departments</title>
+            <category>Departments</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>departmentResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Sponsors</title>
+            <category>Sponsors</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>sponsorResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Partners</title>
+            <category>Partners</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>partnerResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Products</title>
+            <category>Products</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>productResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Solutions</title>
+            <category>Solutions</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>solutionsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>People</title>
+            <category>People</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Groups</title>
+            <category>Groups</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>groupsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Events</title>
+            <category>Events</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>eventResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Ideas</title>
+            <category>Ideas</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Projects</title>
+            <category>Projects</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>projectsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Businesses</title>
+            <category>Businesses</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>businessesResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Organizations</title>
+            <category>Organizations</category>
+            <limit>3</limit>
+            <portlet-events>
               <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="GoogleMapsFromSearchHitsPortlet">
+            <maxResults>3</maxResults>
+            <portlet-events>
+              <consumes-data>committeeResultsFound</consumes-data>
+              <consumes-data>departmentResultsFound</consumes-data>
+              <consumes-data>groupsResultsFound</consumes-data>
+              <consumes-data>eventResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>businessesResultsFound</consumes-data>
+              <consumes-data>organizationResultsFound</consumes-data>
+              <consumes-data>sponsorResultsFound</consumes-data>
+              <consumes-data>productResultsFound</consumes-data>
+              <consumes-data>solutionsResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Blogs</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
+            <title>Related Wikis</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Discussions</title>
+            <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <!-- Departments Search -->
+    <page name="Departments" title="Departments - Search">
+      <row>
+        <column class="ccp-search-menu-">
+          <portlet name="SearchResultsProjectCategoryCountsPortlet"
+                   class="button-list-horizontal-">
+            <portlet-events>
+              <generates-data>hideIfEmpty</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+      <row>
+        <column width="240">
+          <!--Search Filter-->
+          <portlet name="SearchFilterPortlet" class="button-list-vertical-"/>
+          <!--Getting Started-->
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
+            <title>Promotions</title>
+            <category>Departments</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet">
+            <content><![CDATA[
+              <h3>No results? Please try another search.</h3>
+              <ul>
+                <li>Try searching a different topic or location.</li>
+                <li>Check the spelling or try alternate spellings.</li>
+                <li>Try a more general search.</li>
+              </ul>
+              ]]></content>
+            <portlet-events>
+              <consumes-data>hideIfEmpty</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Departments</title>
+            <category>Departments</category>
+            <limit>10</limit>
+            <portlet-events>
+              <generates-data>departmentResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
             </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
@@ -5267,6 +6095,7 @@
         </column>
       </row>
     </page>
+    <!-- Sponsors Search -->
     <page name="Sponsors" title="Sponsors - Search">
       <row>
         <column class="ccp-search-menu-">
@@ -5709,7 +6538,7 @@
         </column>
       </row>
     </page>
-    <!-- Places search -->
+    <!-- Events search -->
     <page name="Events" title="Events - Search">
       <row>
         <column class="ccp-search-menu-">
@@ -5872,6 +6701,369 @@
         </column>
       </row>
     </page>
+    <!-- Places Search -->
+    <page name="Places" title="Places - Search">
+      <row>
+        <column class="ccp-search-menu-">
+          <portlet name="SearchResultsProjectCategoryCountsPortlet"
+                   class="button-list-horizontal-">
+            <portlet-events>
+              <generates-data>hideIfEmpty</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+      <row>
+        <column width="240">
+          <!--Search Filter-->
+          <portlet name="SearchFilterPortlet" class="button-list-vertical-"/>
+          <!--Getting Started-->
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
+            <title>Promotions</title>
+            <category>Places</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet">
+            <content><![CDATA[
+              <h3>No results? Please try another search.</h3>
+              <ul>
+                <li>Try searching a different topic or location.</li>
+                <li>Check the spelling or try alternate spellings.</li>
+                <li>Try a more general search.</li>
+              </ul>
+              ]]></content>
+            <portlet-events>
+              <consumes-data>hideIfEmpty</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Places</title>
+            <category>Places</category>
+            <limit>10</limit>
+            <portlet-events>
+              <generates-data>placeResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Neighborhoods</title>
+            <category>Neighborhoods</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>neighborhoodResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Events</title>
+            <category>Events</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>eventResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Ideas</title>
+            <category>Ideas</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Projects</title>
+            <category>Projects</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>projectsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Businesses</title>
+            <category>Businesses</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>businessesResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Organizations</title>
+            <category>Organizations</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Sponsors</title>
+            <category>Sponsors</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>sponsorResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Partners</title>
+            <category>Partners</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>partnerResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Products</title>
+            <category>Products</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>productResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Solutions</title>
+            <category>Solutions</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>solutionsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>People</title>
+            <category>People</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Groups</title>
+            <category>Groups</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>groupsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="GoogleMapsFromSearchHitsPortlet">
+            <maxResults>3</maxResults>
+            <portlet-events>
+              <consumes-data>groupsResultsFound</consumes-data>
+              <consumes-data>eventResultsFound</consumes-data>
+              <consumes-data>placeResultsFound</consumes-data>
+              <consumes-data>neighborhoodResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>businessesResultsFound</consumes-data>
+              <consumes-data>organizationResultsFound</consumes-data>
+              <consumes-data>sponsorResultsFound</consumes-data>
+              <consumes-data>productResultsFound</consumes-data>
+              <consumes-data>solutionsResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Blogs</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
+            <title>Related Wikis</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Discussions</title>
+            <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <!-- Neighborhoods Search -->
+    <page name="Neighborhoods" title="Neighborhoods - Search">
+      <row>
+        <column class="ccp-search-menu-">
+          <portlet name="SearchResultsProjectCategoryCountsPortlet"
+                   class="button-list-horizontal-">
+            <portlet-events>
+              <generates-data>hideIfEmpty</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+      <row>
+        <column width="240">
+          <!--Search Filter-->
+          <portlet name="SearchFilterPortlet" class="button-list-vertical-"/>
+          <!--Getting Started-->
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
+            <title>Promotions</title>
+            <category>Events</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet">
+            <content><![CDATA[
+              <h3>No results? Please try another search.</h3>
+              <ul>
+                <li>Try searching a different topic or location.</li>
+                <li>Check the spelling or try alternate spellings.</li>
+                <li>Try a more general search.</li>
+              </ul>
+              ]]></content>
+            <portlet-events>
+              <consumes-data>hideIfEmpty</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Neighborhoods</title>
+            <category>Neighborhoods</category>
+            <limit>10</limit>
+            <portlet-events>
+              <generates-data>neighborhoodResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Events</title>
+            <category>Events</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>eventResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Places</title>
+            <category>Places</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>placeResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Ideas</title>
+            <category>Ideas</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Projects</title>
+            <category>Projects</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>projectsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Businesses</title>
+            <category>Businesses</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>businessesResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Organizations</title>
+            <category>Organizations</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Sponsors</title>
+            <category>Sponsors</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>sponsorResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Partners</title>
+            <category>Partners</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>partnerResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Products</title>
+            <category>Products</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>productResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Solutions</title>
+            <category>Solutions</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>solutionsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>People</title>
+            <category>People</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Groups</title>
+            <category>Groups</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>groupsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="GoogleMapsFromSearchHitsPortlet">
+            <maxResults>3</maxResults>
+            <portlet-events>
+              <consumes-data>groupsResultsFound</consumes-data>
+              <consumes-data>eventResultsFound</consumes-data>
+              <consumes-data>placeResultsFound</consumes-data>
+              <consumes-data>neighborhoodResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>businessesResultsFound</consumes-data>
+              <consumes-data>organizationResultsFound</consumes-data>
+              <consumes-data>sponsorResultsFound</consumes-data>
+              <consumes-data>productResultsFound</consumes-data>
+              <consumes-data>solutionsResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Blogs</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
+            <title>Related Wikis</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Discussions</title>
+            <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <!-- Ideas Search -->
     <page name="Ideas" title="Ideas - Search">
       <row>
         <column class="ccp-search-menu-">
@@ -6034,6 +7226,7 @@
         </column>
       </row>
     </page>
+    <!-- Projects Search -->
     <page name="Projects" title="Projects - Search">
       <row>
         <column class="ccp-search-menu-">

@@ -162,6 +162,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
             }
           } else if ("userHasCRMAccess".equals(rule)) {
             if (!thisUser.isConnectCRMAdmin() && !thisUser.isConnectCRMManager()) {
+              LOG.debug("Does not have ConnectCRM access");
               valid = false;
             }
           } else if ("userCanRequestToJoin".equals(rule)) {
@@ -227,7 +228,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
               valid = false;
             }
           } else {
-            System.out.println("ProjectActionsPortlet-> Rule not found: " + rule);
+            LOG.error("Rule not found: " + rule);
             valid = false;
           }
         }

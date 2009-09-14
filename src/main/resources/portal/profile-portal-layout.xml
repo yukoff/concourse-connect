@@ -325,6 +325,11 @@
             <category>Committees</category>
           </portlet>
           <portlet name="ProjectListByUserPortlet" class="basic-list ">
+            <title>My Departments</title>
+            <limit>10</limit>
+            <category>Departments</category>
+          </portlet>
+          <portlet name="ProjectListByUserPortlet" class="basic-list ">
             <title>My Businesses</title>
             <limit>10</limit>
             <category>Businesses</category>
@@ -335,14 +340,19 @@
             <category>Organizations</category>
           </portlet>
           <portlet name="ProjectListByUserPortlet" class="basic-list ">
-            <title>My Events</title>
-            <limit>10</limit>
-            <category>Events</category>
-          </portlet>
-          <portlet name="ProjectListByUserPortlet" class="basic-list ">
             <title>My Groups</title>
             <limit>10</limit>
             <category>Groups</category>
+          </portlet>
+          <portlet name="ProjectListByUserPortlet" class="basic-list ">
+            <title>My Places</title>
+            <limit>10</limit>
+            <category>Places</category>
+          </portlet>
+          <portlet name="ProjectListByUserPortlet" class="basic-list ">
+            <title>My Neighborhoods</title>
+            <limit>10</limit>
+            <category>Neighborhoods</category>
           </portlet>
           <portlet name="ProjectListByUserPortlet" class="basic-list ">
             <title>My Ideas</title>
@@ -1990,9 +2000,33 @@
             <committees>
               <value>pageTitle=Committee Information</value>
               <value>title=Committee Name</value>
+              <value>subCategory1=Category</value>
+              <value>addressLine1=Street Address</value>
+              <value>city=City</value>
+              <value>state=State</value>
+              <value>postalCode=Postal Code</value>
+              <value>country=Country</value>
+              <value>businessPhone=Phone</value>
+              <value>email1=Email</value>
+              <value>webPage=Website</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </committees>
+            <departments>
+              <value>pageTitle=Department Information</value>
+              <value>title=Department Name</value>
+              <value>subCategory1=Category</value>
+              <value>addressLine1=Street Address</value>
+              <value>city=City</value>
+              <value>state=State</value>
+              <value>postalCode=Postal Code</value>
+              <value>country=Country</value>
+              <value>businessPhone=Phone</value>
+              <value>email1=Email</value>
+              <value>webPage=Website</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Description</value>
+            </departments>
             <groups>
               <value>pageTitle=Group Information</value>
               <value>title=Group Name</value>
@@ -2074,6 +2108,20 @@
               <value>keywords=Keywords</value>
               <value>shortDescription=Short description</value>
             </places>
+            <neighborhoods>
+              <value>pageTitle=Neighborhood Information</value>
+              <value>title=Neighborhood Name</value>
+              <value>addressTo=Location Name</value>
+              <value>addressLine1=Street Address</value>
+              <value>city=City</value>
+              <value>state=State</value>
+              <value>postalCode=Postal Code</value>
+              <value>country=Country</value>
+              <value>businessPhone=Phone</value>
+              <value>webPage=Website</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Short description</value>
+            </neighborhoods>
             <solutions>
               <value>pageTitle=Solution Information</value>
               <value>title=Solution Name</value>

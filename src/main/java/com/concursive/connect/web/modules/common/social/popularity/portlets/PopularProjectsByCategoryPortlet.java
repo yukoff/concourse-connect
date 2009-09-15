@@ -49,6 +49,7 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.common.social.popularity.beans.PopularityCriteria;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.modules.profile.dao.ProjectList;
 import com.concursive.connect.web.modules.profile.dao.ProjectPopularity;
 import com.concursive.connect.web.portal.PortalUtils;
 
@@ -67,14 +68,12 @@ public class PopularProjectsByCategoryPortlet extends GenericPortlet {
 
   // Pages
   private static final String VIEW_PAGE = "/portlets/popular_projects_by_category/popular_projects_by_category-view.jsp";
-
   // Preferences
   private static final String PREF_CATEGORY_NAME = "category";
   private static final String PREF_TITLE = "title";
   private static final String PREF_RECORD_LIMIT = "limit";
   private static final String PREF_ORDER = "order";
   private static final String PREF_DAYS_LIMIT = "daysLimit";
-
   // Attribute names for objects available in the view
   private static final String PROJECT_LIST = "projectList";
   private static final String TITLE = "title";
@@ -123,13 +122,15 @@ public class PopularProjectsByCategoryPortlet extends GenericPortlet {
           popularityCriteria.setForPublic(Constants.TRUE);
         }
 
-        request.setAttribute(PROJECT_LIST, ProjectPopularity.retrieveProjects(db, popularityCriteria, category.getId()));
-
-        // JSP view
-        PortletContext context = getPortletContext();
-        PortletRequestDispatcher requestDispatcher =
-            context.getRequestDispatcher(defaultView);
-        requestDispatcher.include(request, response);
+        ProjectList projectList = ProjectPopularity.retrieveProjects(db, popularityCriteria, category.getId());
+        request.setAttribute(PROJECT_LIST, projectList);
+        
+        if (projectList.size() > 0) {
+          PortletContext context = getPortletContext();
+          PortletRequestDispatcher requestDispatcher =
+              context.getRequestDispatcher(defaultView);
+          requestDispatcher.include(request, response);
+        }
       }
     } catch (Exception e) {
       throw new PortletException(e.getMessage());

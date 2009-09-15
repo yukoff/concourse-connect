@@ -191,6 +191,7 @@
       </urls>
     </fragment>
     <fragment id="portal-fragments-unregistered-user">
+      <rule>hideWhenNotSensitiveMode</rule>
       <content><![CDATA[
         <div style="padding: 10px 30px; background: rgb(252, 238, 221);">
           <h3>Site Information</h3>
@@ -233,7 +234,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="profile-portlet-body home " isAdmin="true">
@@ -847,7 +848,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="businesses " isAdmin="true">
@@ -974,7 +975,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
@@ -1097,7 +1098,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
@@ -1201,7 +1202,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="sponsors " isAdmin="true">
@@ -1329,7 +1330,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="groups " isAdmin="true">
@@ -1456,7 +1457,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="groups " isAdmin="true">
@@ -1584,7 +1585,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="people " isAdmin="true">
@@ -1830,7 +1831,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="neighborhoods " isAdmin="true">
@@ -1958,7 +1959,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="events " isAdmin="true">
@@ -2086,7 +2087,7 @@
         </column>
         <column width="auto" class="main">
           <!-- Let the user know that registration is required -->
-          <portlet name="ContentPortlet" isUser="false" isSensitive="true">
+          <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="ideas " isAdmin="true">

@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.profile.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -80,10 +79,10 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
   private String categoryNameLowerCase = null;
   private int parentCategoryId = -1;
   private boolean topLevelOnly = false;
+  private int sensitive = Constants.UNDEFINED;
 
   public ProjectCategoryList() {
   }
-
 
   /**
    * @return the pagedListInfo
@@ -91,7 +90,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
   public PagedListInfo getPagedListInfo() {
     return pagedListInfo;
   }
-
 
   /**
    * Sets the pagedListInfo attribute of the ProjectCategoryList object
@@ -102,14 +100,12 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     this.pagedListInfo = tmp;
   }
 
-
   /**
    * @return the emptyHtmlSelectRecord
    */
   public String getEmptyHtmlSelectRecord() {
     return emptyHtmlSelectRecord;
   }
-
 
   /**
    * @param emptyHtmlSelectRecord the emptyHtmlSelectRecord to set
@@ -118,11 +114,9 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     this.emptyHtmlSelectRecord = emptyHtmlSelectRecord;
   }
 
-
   public int getEnabled() {
     return enabled;
   }
-
 
   public void setEnabled(int tmp) {
     this.enabled = tmp;
@@ -132,21 +126,17 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     this.enabled = (tmp ? Constants.TRUE : Constants.FALSE);
   }
 
-
   public void setEnabled(String tmp) {
     this.enabled = Integer.parseInt(tmp);
   }
-
 
   public int getIncludeId() {
     return includeId;
   }
 
-
   public void setIncludeId(int tmp) {
     this.includeId = tmp;
   }
-
 
   public void setIncludeId(String tmp) {
     try {
@@ -179,14 +169,12 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     return categoryNameLowerCase;
   }
 
-
   /**
    * @param categoryNameLowerCase the categoryNameLowerCase to set
    */
   public void setCategoryNameLowerCase(String categoryNameLowerCase) {
     this.categoryNameLowerCase = categoryNameLowerCase;
   }
-
 
   public int getParentCategoryId() {
     return parentCategoryId;
@@ -212,13 +200,24 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     this.topLevelOnly = DatabaseUtils.parseBoolean(topLevelOnly);
   }
 
+  public int getSensitive() {
+    return sensitive;
+  }
+
+  public void setSensitive(int sensitive) {
+    this.sensitive = sensitive;
+  }
+
+  public void setSensitive(String sensitive) {
+    this.sensitive = DatabaseUtils.parseBooleanToConstant(sensitive);
+  }
+
   /**
    * @return the buildLogos
    */
   public boolean getBuildLogos() {
     return buildLogos;
   }
-
 
   /**
    * @param buildLogos the buildLogos to set
@@ -227,14 +226,12 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     this.buildLogos = buildLogos;
   }
 
-
   /**
    * @param buildLogos the buildLogos to set
    */
   public void setBuildLogos(String buildLogos) {
     this.buildLogos = DatabaseUtils.parseBoolean(buildLogos);
   }
-
 
   public void buildList(Connection db) throws SQLException {
     PreparedStatement pst = null;
@@ -249,8 +246,8 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     //Need to build a base SQL statement for counting records
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
-            "FROM lookup_project_category pc " +
-            "WHERE code > -1 ");
+        "FROM lookup_project_category pc " +
+        "WHERE code > -1 ");
     createFilter(sqlFilter, db);
     if (pagedListInfo == null) {
       pagedListInfo = new PagedListInfo();
@@ -292,8 +289,8 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     pagedListInfo.appendSqlSelectHead(db, sqlSelect);
     sqlSelect.append(
         " * " +
-            "FROM lookup_project_category pc " +
-            "WHERE code > -1 ");
+        "FROM lookup_project_category pc " +
+        "WHERE code > -1 ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -319,7 +316,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     }
   }
 
-
   /**
    * @param db
    * @throws java.sql.SQLException
@@ -329,7 +325,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
       projectCategory.buildLogo(db);
     }
   }
-
 
   public void addCategories(ProjectList projects) {
     categoryMap = new ArrayList();
@@ -370,7 +365,7 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     if (categoriesForProjectUser > -1) {
       sqlFilter.append(
           "AND (pc.code IN (SELECT category_id FROM projects WHERE project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
-              "AND status IS NULL) OR project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
+          "AND status IS NULL) OR project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
       if (includeId > -1) {
         sqlFilter.append("OR pc.code = ? ");
       }
@@ -391,8 +386,10 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     if (topLevelOnly) {
       sqlFilter.append("AND pc.parent_category IS NULL ");
     }
+    if (sensitive != Constants.UNDEFINED) {
+      sqlFilter.append("AND pc.is_sensitive = ? ");
+    }
   }
-
 
   protected int prepareFilter(PreparedStatement pst) throws SQLException {
     int i = 0;
@@ -428,9 +425,11 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     if (parentCategoryId > -1) {
       pst.setInt(++i, parentCategoryId);
     }
+    if (sensitive != Constants.UNDEFINED) {
+      pst.setBoolean(++i, sensitive == Constants.TRUE);
+    }
     return i;
   }
-
 
   public String getValueFromId(int id) {
     for (ProjectCategory thisCategory : this) {
@@ -441,7 +440,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     return null;
   }
 
-
   public int getIdFromValue(String name) {
     for (ProjectCategory thisCategory : this) {
       if (name.equalsIgnoreCase(thisCategory.getDescription())) {
@@ -450,7 +448,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     }
     return -1;
   }
-
 
   public ProjectCategory get(ProjectCategory category) {
     for (ProjectCategory thisCategory : this) {
@@ -482,7 +479,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     return minCategory;
   }
 
-
   public ProjectCategory getMaxFromValue(String name) {
     ProjectCategory maxCategory = null;
     for (ProjectCategory thisCategory : this) {
@@ -494,7 +490,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     }
     return maxCategory;
   }
-
 
   public String getHtmlSelect(String selectName, int selectedId) {
     HtmlSelect thisSelect = new HtmlSelect();
@@ -508,7 +503,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     return thisSelect.getHtml(selectName, selectedId);
   }
 
-
   public HtmlSelect getHtmlSelect() {
     HtmlSelect thisSelect = new HtmlSelect();
     for (ProjectCategory thisCategory : this) {
@@ -517,7 +511,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     }
     return thisSelect;
   }
-
 
   public void updateValues(Connection db, String[] params, String[] names) throws SQLException {
 
@@ -569,7 +562,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     // END TRANSACTION
   }
 
-
   public void updateLevel(Connection db, int id, int level) throws SQLException {
     PreparedStatement pst = db.prepareStatement("UPDATE lookup_project_category " +
         "SET level = ? " +
@@ -582,7 +574,6 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CATEGORY_LIST_CACHE, id);
   }
 
-
   public void updateName(Connection db, int id, String name) throws SQLException {
     PreparedStatement pst = db.prepareStatement("UPDATE lookup_project_category " +
         "SET description = ? " +
@@ -594,6 +585,5 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     pst.close();
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CATEGORY_LIST_CACHE, id);
   }
-
 }
 

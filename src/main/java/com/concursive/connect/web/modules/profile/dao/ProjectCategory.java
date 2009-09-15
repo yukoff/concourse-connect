@@ -80,6 +80,7 @@ public class ProjectCategory extends GenericBean {
   private int parentCategoryId = -1;
   private String style = null;
   private boolean styleEnabled = false;
+  private boolean sensitive = false;
 
   // Helpers
   private FileItem logo = null;
@@ -270,6 +271,18 @@ public class ProjectCategory extends GenericBean {
     this.styleEnabled = DatabaseUtils.parseBoolean(styleEnabled);
   }
 
+  public boolean getSensitive() {
+    return sensitive;
+  }
+
+  public void setSensitive(boolean sensitive) {
+    this.sensitive = sensitive;
+  }
+
+  public void setSensitive(String tmp) {
+    this.sensitive = DatabaseUtils.parseBoolean(tmp);
+  }
+
 
   private void buildRecord(ResultSet rs) throws SQLException {
     id = rs.getInt("code");
@@ -280,6 +293,7 @@ public class ProjectCategory extends GenericBean {
     parentCategoryId = DatabaseUtils.getInt(rs, "parent_category");
     style = rs.getString("style");
     styleEnabled = rs.getBoolean("style_enabled");
+    sensitive = rs.getBoolean("is_sensitive");
   }
 
 
@@ -321,8 +335,8 @@ public class ProjectCategory extends GenericBean {
       }
       PreparedStatement pst = db.prepareStatement(
           "INSERT INTO lookup_project_category " +
-              "(description, enabled, level, logo_id, parent_category, style, style_enabled) VALUES " +
-              "(?, ?, ?, ?, ?, ?, ?) ");
+              "(description, enabled, level, logo_id, parent_category, style, style_enabled, is_sensitive) VALUES " +
+              "(?, ?, ?, ?, ?, ?, ?, ?) ");
       int i = 0;
       pst.setString(++i, description);
       pst.setBoolean(++i, enabled);
@@ -331,6 +345,7 @@ public class ProjectCategory extends GenericBean {
       DatabaseUtils.setInt(pst, ++i, parentCategoryId);
       pst.setString(++i, style);
       pst.setBoolean(++i, styleEnabled);
+      pst.setBoolean(++i, sensitive);
       pst.execute();
       pst.close();
       id = DatabaseUtils.getCurrVal(db, "lookup_project_cat_code_seq", -1);
@@ -365,7 +380,7 @@ public class ProjectCategory extends GenericBean {
     int resultCount = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE lookup_project_category " +
-            "SET description = ?, enabled = ?, level = ?, logo_id = ?, parent_category = ?, style = ?, style_enabled= ? " +
+            "SET description = ?, enabled = ?, level = ?, logo_id = ?, parent_category = ?, style = ?, style_enabled = ?, is_sensitive = ? " +
             "WHERE code = ? ");
     int i = 0;
     pst.setString(++i, description);
@@ -375,6 +390,7 @@ public class ProjectCategory extends GenericBean {
     DatabaseUtils.setInt(pst, ++i, parentCategoryId);
     pst.setString(++i, style);
     pst.setBoolean(++i, styleEnabled);
+    pst.setBoolean(++i, sensitive);
     pst.setInt(++i, id);
     resultCount = pst.executeUpdate();
     pst.close();

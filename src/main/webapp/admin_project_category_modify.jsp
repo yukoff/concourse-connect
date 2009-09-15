@@ -158,9 +158,15 @@ Add Site Category
        </tr>
       <tr class="containerBody">
         <td nowrap class="formLabel">Enabled</td>
-      <td>
-        <input type="checkbox" name="enabled" value="true" <%= projectCategory.getEnabled()?" CHECKED":"" %> />
-      </td>
+        <td>
+          <input type="checkbox" name="enabled" value="true" <%= projectCategory.getEnabled() ? " CHECKED":"" %> />
+        </td>
+      </tr>
+      <tr class="containerBody">
+        <td nowrap class="formLabel">For logged in users only</td>
+        <td>
+          <input type="checkbox" name="sensitive" value="true" <%= projectCategory.getSensitive() ? " CHECKED":"" %> />
+        </td>
       </tr>
       <tr class="containerBody">
         <td class="formLabel" valign="top">
@@ -172,14 +178,14 @@ Add Site Category
        </tr>
       <tr class="containerBody">
         <td nowrap class="formLabel">Style Enabled</td>
-      <td>
-        <input type="checkbox" name="styleEnabled" value="true" <%= projectCategory.getStyleEnabled()?" CHECKED":"" %> />
-      </td>
+        <td>
+          <input type="checkbox" name="styleEnabled" value="true" <%= projectCategory.getStyleEnabled() ? " CHECKED":"" %> />
+        </td>
       </tr>
       <tr>
         <td nowrap class="formLabel">Display Order</td>
         <td>
-          <input type="text" name="level" size="5" maxlength="5" value='<%=projectCategory.getLevel() == -1?"":projectCategory.getLevel()%>'/>
+          <input type="text" name="level" size="5" maxlength="5" value='<%= projectCategory.getLevel() == -1 ? "" : projectCategory.getLevel() %>'/>
         </td>
       </tr>
     </tbody>
@@ -187,5 +193,5 @@ Add Site Category
   <input type="hidden" name="id" value="<%= projectCategory.getId() %>">
   <input type="hidden" name="dosubmit" value="true">
   <input type="submit" value="<ccp:label name="button.save">Save</ccp:label>">
-  <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="javascript:this.form.dosubmit.value='false';window.location.href='<%= ctx %>/AdminProjectCategories.do?command=List'">
+  <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="this.form.dosubmit.value='false';window.location.href='<%= ctx %>/AdminProjectCategories.do?command=List'">
 </form>

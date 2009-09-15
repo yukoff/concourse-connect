@@ -259,6 +259,9 @@ public class SecurityHook implements ControllerHook {
           ProjectCategoryList categoryList = new ProjectCategoryList();
           categoryList.setEnabled(Constants.TRUE);
           categoryList.setTopLevelOnly(true);
+          if (!userSession.isLoggedIn()) {
+            categoryList.setSensitive(Constants.FALSE);
+          }
           categoryList.buildList(db);
           request.setAttribute(Constants.REQUEST_TAB_CATEGORY_LIST, categoryList);
 

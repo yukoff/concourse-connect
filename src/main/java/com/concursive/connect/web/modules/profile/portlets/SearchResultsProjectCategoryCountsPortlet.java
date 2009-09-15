@@ -92,13 +92,11 @@ public class SearchResultsProjectCategoryCountsPortlet extends GenericPortlet {
       // If no categories specified, then use them all
       if (categoriesToInclude == null) {
         StringBuffer sb = new StringBuffer();
-        int count = 0;
         for (ProjectCategory thisCategory : categories) {
-          ++count;
-          sb.append(thisCategory.getDescription());
-          if (count < categories.size()) {
+          if (sb.length() > 0) {
             sb.append(",");
           }
+          sb.append(thisCategory.getDescription());
         }
         categoriesToInclude = sb.toString();
       }

@@ -198,6 +198,10 @@ public final class Search extends GenericAction {
       ProjectCategoryList categories = new ProjectCategoryList();
       categories.setEnabled(true);
       categories.setTopLevelOnly(true);
+      // Limit the categories to the ones that are available to the user
+      if (!getUser(context).isLoggedIn()) {
+        categories.setSensitive(Constants.FALSE);
+      }
       categories.buildList(db);
 
       // Pass the query string and let the portlet customize it

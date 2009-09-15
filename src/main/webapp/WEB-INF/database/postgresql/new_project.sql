@@ -69,7 +69,8 @@ CREATE TABLE lookup_project_category (
   logo_id INTEGER,
   parent_category INTEGER,
   style TEXT,
-  style_enabled BOOLEAN DEFAULT false
+  style_enabled BOOLEAN DEFAULT false,
+  is_sensitive BOOLEAN DEFAULT false
 );
 
 CREATE SEQUENCE lookup_project_ass_code_seq;

@@ -66,7 +66,8 @@ CREATE TABLE lookup_project_category (
   logo_id INTEGER,
   parent_category INTEGER,
   style TEXT,
-  style_enabled BIT DEFAULT 0
+  style_enabled BIT DEFAULT 0,
+  is_sensitive BIT DEFAULT 0
 );
 
 CREATE TABLE lookup_project_assignment_role (

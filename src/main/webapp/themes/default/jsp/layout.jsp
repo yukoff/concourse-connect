@@ -335,46 +335,50 @@
             <img id="ccp-header-title-image-id" src="${ctx}/image/<%= applicationPrefs.get("LOGO") %>/logo.png" alt="<%= toHtml(applicationPrefs.get("TITLE")) %>" />
          </ccp:evaluate>
         </a>
-        <div class="ccp-search-form">
-          <form action="<%= ctx %>/search" method="get">
-            <fieldset>
-              <legend>Search <%= toHtml(pageTitle) %></legend>
-              <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
-                <label for="categoryId">Search</label>
-                <%= menuCategoryList.getHtml("categoryId", searchBean.getCategoryId()) %>
-              </ccp:evaluate>
-              <label for="query">for</label>
-              <%-- TODO: Add id attribute for properly labeling --%>
-              <input type="text" size="20" name="query" value="<%= toHtmlValue(searchBean.getQuery()) %>"/>
-              <ccp:evaluate if="<%= useLocations %>">
-                <label for="location">near</label>
+
+        <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
+          <div class="ccp-search-form">
+            <form action="<%= ctx %>/search" method="get">
+              <fieldset>
+                <legend>Search <%= toHtml(pageTitle) %></legend>
+                <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
+                  <label for="categoryId">Search</label>
+                  <%= menuCategoryList.getHtml("categoryId", searchBean.getCategoryId()) %>
+                </ccp:evaluate>
+                <label for="query">for</label>
                 <%-- TODO: Add id attribute for properly labeling --%>
-                <input type="text" size="20" name="location" value="<%= toHtmlValue(searchBean.getLocation()) %>" />
-              </ccp:evaluate>
-              <input type="submit" alt="Search" value="Go" />
-              <%-- Removed by popular request
-              <ccp:evaluate if="<%= inProject || searchThis %>">
-                <input type="radio" onClick="this.form.query.focus()" name="type" value="all" <%= !searchThis ? "checked" : "" %> />
-                All
-                <input type="radio" onClick="this.form.query.focus()" name="type" value="this" <%= searchThis ? "checked" : "" %> />
-                This profile
-              </ccp:evaluate>
-              <ccp:evaluate if="<%= !inProject && !searchThis %>">
-                <input type="hidden" name="type" value="all" />
-              </ccp:evaluate>
-              --%>
-              <input type="hidden" name="type" value="all"/>
-              <input type="hidden" name="scope" value="<%= searchBean.getScopeText() %>"/>
-              <input type="hidden" name="filter" value="<%= searchBean.getFilter() %>"/>
-              <input type="hidden" name="projectId" value="<%= searchProjectId %>"/>
-              <input type="hidden" name="openProjectsOnly" value="true"/>
-              <input type="hidden" name="auto-populate" value="true"/>
-              <%--
-              <a href="javascript:popURL('<%= ctx %>/Search.do?command=Tips&popup=true','Search_Tips','500','325','yes','yes')">tips</a>
-              --%>
-            </fieldset>
-          </form>
-        </div>
+                <input type="text" size="20" name="query" value="<%= toHtmlValue(searchBean.getQuery()) %>"/>
+                <ccp:evaluate if="<%= useLocations %>">
+                  <label for="location">near</label>
+                  <%-- TODO: Add id attribute for properly labeling --%>
+                  <input type="text" size="20" name="location" value="<%= toHtmlValue(searchBean.getLocation()) %>" />
+                </ccp:evaluate>
+                <input type="submit" alt="Search" value="Go" />
+                <%-- Removed by popular request
+                <ccp:evaluate if="<%= inProject || searchThis %>">
+                  <input type="radio" onClick="this.form.query.focus()" name="type" value="all" <%= !searchThis ? "checked" : "" %> />
+                  All
+                  <input type="radio" onClick="this.form.query.focus()" name="type" value="this" <%= searchThis ? "checked" : "" %> />
+                  This profile
+                </ccp:evaluate>
+                <ccp:evaluate if="<%= !inProject && !searchThis %>">
+                  <input type="hidden" name="type" value="all" />
+                </ccp:evaluate>
+                --%>
+                <input type="hidden" name="type" value="all"/>
+                <input type="hidden" name="scope" value="<%= searchBean.getScopeText() %>"/>
+                <input type="hidden" name="filter" value="<%= searchBean.getFilter() %>"/>
+                <input type="hidden" name="projectId" value="<%= searchProjectId %>"/>
+                <input type="hidden" name="openProjectsOnly" value="true"/>
+                <input type="hidden" name="auto-populate" value="true"/>
+                <%--
+                <a href="javascript:popURL('<%= ctx %>/Search.do?command=Tips&popup=true','Search_Tips','500','325','yes','yes')">tips</a>
+                --%>
+              </fieldset>
+            </form>
+          </div>
+        </ccp:evaluate>
+
         <div class="ccp-navigation">
           <ul>
             <c:choose>

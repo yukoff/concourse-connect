@@ -68,11 +68,15 @@ import org.apache.commons.logging.LogFactory;
 public class ContentPortlet extends GenericPortlet {
 
   private static Log LOG = LogFactory.getLog(ContentPortlet.class);
+  // Views
   private static final String VIEW_PAGE = "/portlets/content/content-view.jsp";
   private static final String EDIT_PAGE = "/portlets/content/content-edit.jsp";
   private static final String HELP_PAGE = "/portlets/content/content-help.jsp";
+  // Request Objects
   private static final String CONTENT = "content";
   private static final String STYLE_IMAGE = "style-image";
+  // Preferences
+  private static final String PREF_RULE = "rule";
   private static final String DEFAULT_CONTENT = "<p>This content can be edited.</p>";
 
   // GenericPortlet Impl -----------------------------------------------------
@@ -80,6 +84,8 @@ public class ContentPortlet extends GenericPortlet {
       throws PortletException, IOException {
     // For content links
     String ctx = request.getContextPath();
+    // Get the rules
+    String rule = request.getPreferences().getValue(PREF_RULE, null);
     // Get the content and replace any parameters
     String content = request.getPreferences().getValue(CONTENT, DEFAULT_CONTENT);
     content = StringUtils.replace(content, "${ctx}", ctx);
@@ -122,17 +128,15 @@ public class ContentPortlet extends GenericPortlet {
     }
 
     // Hide the portlet if the portlet is for sensitive mode and sensitive is off
-    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
-    LOG.debug("IsSensitive? " + PortalUtils.getDashboardPortlet(request).isSensitive());
-    LOG.debug("Prefs set to sensitive? " + prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE));
-    if (PortalUtils.getDashboardPortlet(request).isSensitive() &&
-        !"true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE))) {
-      showThisPortlet = false;
+    if ("hideWhenNotSensitiveMode".equals(rule)) {
+      ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+      if (!"true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE))) {
+        showThisPortlet = false;
+      }
     }
-
+  
     if (showThisPortlet) {
       // Show the content
-      LOG.debug("Showing the content... length: " + content.length());
       PortletContext context = getPortletContext();
       PortletRequestDispatcher requestDispatcher =
           context.getRequestDispatcher(VIEW_PAGE);

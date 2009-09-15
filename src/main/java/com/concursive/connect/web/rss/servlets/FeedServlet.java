@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.rss.servlets;
 
 import com.concursive.commons.db.ConnectionElement;
@@ -94,7 +93,6 @@ import java.util.List;
 public class FeedServlet extends HttpServlet {
 
   private static final Log LOG = LogFactory.getLog(FeedServlet.class);
-
   private static final String MIME_TYPE = "application/xml; charset=UTF-8";
   private static final String COULD_NOT_GENERATE_FEED_ERROR = "Could not generate feed";
 
@@ -134,10 +132,10 @@ public class FeedServlet extends HttpServlet {
           feed.setDescription(prefs.get("TITLE") + " feed");
         } else {
           // Check to see which website category feed is requested
-          //TODO: Could this be got from the cache..?
           ProjectCategoryList projectCategoryList = new ProjectCategoryList();
           projectCategoryList.setTopLevelOnly(true);
           projectCategoryList.setEnabled(true);
+          projectCategoryList.setSensitive(Constants.FALSE);
           projectCategoryList.buildList(db);
           for (ProjectCategory projectCategory : projectCategoryList) {
             String normalizedCategoryName = projectCategory.getNormalizedCategoryName();
@@ -268,16 +266,15 @@ public class FeedServlet extends HttpServlet {
             description.setType("text/html");
             description.setValue(
                 "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\">\n" +
-                    "          <tr>\n" +
-                    "            <td valign=\"top\">\n" +
-                    "              " + fileItem.getImageTag("-23", url) + "\n" +
-                    "            </td>\n" +
-                    "            <td>\n" +
-                    "              " + StringUtils.toHtml(fileItem.getClientFilename()) + " " + fileItem.getVersion() + ", " + fileItem.getRelativeSize() + "k\n" +
-                    "            </td>\n" +
-                    "          </tr>\n" +
-                    "        </table>"
-            );
+                "          <tr>\n" +
+                "            <td valign=\"top\">\n" +
+                "              " + fileItem.getImageTag("-23", url) + "\n" +
+                "            </td>\n" +
+                "            <td>\n" +
+                "              " + StringUtils.toHtml(fileItem.getClientFilename()) + " " + fileItem.getVersion() + ", " + fileItem.getRelativeSize() + "k\n" +
+                "            </td>\n" +
+                "          </tr>\n" +
+                "        </table>");
             entry.setLink(url + "/ProjectManagementFiles.do?command=Details&pid=" + fileItem.getLinkItemId() + "&fid=" + fileItem.getId() + "&folderId=" + fileItem.getFolderId());
             entry.setDescription(description);
             entries.add(entry);
@@ -365,5 +362,4 @@ public class FeedServlet extends HttpServlet {
     }
     db = null;
   }
-
 }

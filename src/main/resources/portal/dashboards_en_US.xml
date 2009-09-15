@@ -2209,6 +2209,10 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
           <portlet name="ProjectWikiContentPortlet" class="projects " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to projects</wiki>

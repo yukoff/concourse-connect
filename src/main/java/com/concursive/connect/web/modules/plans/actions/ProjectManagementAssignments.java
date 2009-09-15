@@ -152,10 +152,8 @@ public final class ProjectManagementAssignments extends GenericAction {
     Assignment thisAssignment = (Assignment) context.getFormBean();
     try {
       db = getConnection(context);
-      //Load the project
+      // Load the project
       Project thisProject = retrieveAuthorizedProject(Integer.parseInt(projectId), context);
-      //Process the assignment
-      thisAssignment.setModifiedBy(getUserId(context));
       thisAssignment.setProjectId(thisProject.getId());
       //Check permissions
       if (!hasProjectAccess(context, thisProject.getId(), "project-plan-outline-modify") &&
@@ -167,14 +165,6 @@ public final class ProjectManagementAssignments extends GenericAction {
         return "PermissionError";
       }
       if (thisAssignment.getId() > 0) {
-        //Check user permissions
-        TeamMember currentMember = new TeamMember(
-            db, thisProject.getId(), getUserId(context));
-        if (thisAssignment.excludesUser(getUserId(context)) &&
-            currentMember.getRoleId() > TeamMember.PROJECT_ADMIN &&
-            !getUser(context).getAccessAdmin()) {
-          return "PermissionError";
-        }
         thisAssignment.setModifiedBy(getUserId(context));
         resultCount = thisAssignment.update(db);
         // Index some items
@@ -184,9 +174,6 @@ public final class ProjectManagementAssignments extends GenericAction {
           indexAddItem(context, assignmentNote);
         }
       } else {
-        if (!hasProjectAccess(context, thisProject.getId(), "project-plan-outline-modify")) {
-          return "PermissionError";
-        }
         thisAssignment.setEnteredBy(getUserId(context));
         thisAssignment.setModifiedBy(getUserId(context));
         recordInserted = thisAssignment.insert(db);

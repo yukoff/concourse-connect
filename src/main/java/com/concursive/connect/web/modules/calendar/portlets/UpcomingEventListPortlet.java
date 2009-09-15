@@ -77,11 +77,9 @@ public class UpcomingEventListPortlet extends GenericPortlet {
   private static final String VIEW_PAGE = "/portlets/event_upcoming_list/event_upcoming_list-view.jsp";
   private static final String MESSAGE_PAGE = "/portlets/event_upcoming_list/event_upcoming_list-message-view.jsp";
   private static final String CLOSE_PAGE = "/portlets/event_upcoming_list/event_upcoming_list-refresh.jsp";
-
   private static final String VIEW_TYPE = "viewType";
   private static final String ADD_SUCCESS = "addSuccess";
   private static final String DELETE_SUCCESS = "deleteSuccess";
-
   // Parameters
   private static final String PROJECT_BY_ID_MAP = "projectByIdMap";
   private static final String EVENT_LIST = "eventList";
@@ -89,15 +87,12 @@ public class UpcomingEventListPortlet extends GenericPortlet {
   private static final String ATTENDEE_BY_MEETING_ID_MAP = "attendeeByMeetingIdMap";
   private static final String PROJECT_URL = "projectUrl";
   private static final String PROJECT = "project";
-
   // Preferences
   private static final String LIMIT = "limit";
   private static final String INCLUDE_CATEGORY_LIST = "category";
   private static final String TITLE = "title";
   private static final String PREF_SUCCESS_MESSAGE = "successMessage";
-
   private static final String SUCCESS_MESSAGE = "successMessage";
-
 
   public void doView(RenderRequest request, RenderResponse response) throws PortletException, IOException {
     // Prefs
@@ -178,7 +173,9 @@ public class UpcomingEventListPortlet extends GenericPortlet {
           events.buildList(db);
           for (Meeting m : events) {
             Project p = projectByIdMap.get(m.getProjectId()); // check if project was already added
-            if (p == null) p = ProjectUtils.loadProject(m.getProjectId());
+            if (p == null) {
+              p = ProjectUtils.loadProject(m.getProjectId());
+            }
             projectByIdMap.put(p.getId(), p);
           }
         } else {
@@ -198,12 +195,13 @@ public class UpcomingEventListPortlet extends GenericPortlet {
           }
           // Show meetings that exist for the specified categories
           events.setAlertRangeStart(new Timestamp(calendar.getTime().getTime()));
-          events.setByInvitationOnly(Constants.FALSE);
           events.setProjectCategoryIdList(includeCategoryIdList);
           events.buildList(db);
           for (Meeting m : events) {
             Project p = projectByIdMap.get(m.getProjectId()); // check if project was already added
-            if (p == null) p = ProjectUtils.loadProject(m.getProjectId());
+            if (p == null) {
+              p = ProjectUtils.loadProject(m.getProjectId());
+            }
             projectByIdMap.put(p.getId(), p);
           }
         }
@@ -255,8 +253,9 @@ public class UpcomingEventListPortlet extends GenericPortlet {
       if (attendeeId != -1) {
         attendee = new MeetingAttendee(db, attendeeId);
         // verify the user is modifying their own attendee record
-        if (attendee.getUserId() != user.getId())
+        if (attendee.getUserId() != user.getId()) {
           throw new PortletException("Action is not authorized.");
+        }
         meetingId = attendee.getMeetingId();
       }
       if (meetingId != -1) {
@@ -307,5 +306,4 @@ public class UpcomingEventListPortlet extends GenericPortlet {
     }
     return attendee;
   }
-
 }

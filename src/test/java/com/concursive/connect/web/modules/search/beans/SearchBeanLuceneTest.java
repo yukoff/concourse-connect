@@ -119,7 +119,7 @@ public class SearchBeanLuceneTest extends AbstractLuceneTest {
       search.parseQuery();
       assertTrue(search.isValid());
 
-      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1);
+      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1, null);
       assertNotNull(queryString);
 
       // (approved:1)
@@ -143,7 +143,7 @@ public class SearchBeanLuceneTest extends AbstractLuceneTest {
       search.parseQuery();
       assertTrue(search.isValid());
 
-      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1);
+      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1, null);
       assertNotNull(queryString);
 
       // (approved:1)
@@ -165,7 +165,7 @@ public class SearchBeanLuceneTest extends AbstractLuceneTest {
       search.parseQuery();
       assertTrue(search.isValid());
 
-      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1);
+      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1, null);
       assertNotNull(queryString);
 
       // (approved:1)
@@ -197,7 +197,7 @@ public class SearchBeanLuceneTest extends AbstractLuceneTest {
       }
       assertTrue(jCount > 0);
 
-      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1);
+      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1, null);
       assertNotNull(queryString);
 
       // (approved:1)
@@ -218,7 +218,7 @@ public class SearchBeanLuceneTest extends AbstractLuceneTest {
       search.setLocation("Norfolk");
       search.parseQuery();
 
-      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1);
+      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1, null);
 
       Query query = parser.parse(queryString);
       Hits hits = getSnowballSearcher().search(query);
@@ -232,7 +232,7 @@ public class SearchBeanLuceneTest extends AbstractLuceneTest {
       search.setLocation("Virginia Beach");
       search.parseQuery();
 
-      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1);
+      String queryString = SearchUtils.generateProjectQueryString(search, UserUtils.createGuestUser().getId(), -1, null);
 
       Query query = parser.parse(queryString);
       Hits hits = getSnowballSearcher().search(query);

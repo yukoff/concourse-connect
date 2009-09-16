@@ -66,6 +66,8 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Add Project Portlet
@@ -74,6 +76,8 @@ import java.util.Iterator;
  * @created June 9, 2008
  */
 public class AddProjectByCategoryPortlet extends GenericPortlet {
+
+  private static final Log LOG = LogFactory.getLog(AddProjectByCategoryPortlet.class);
 
   // Pages
   private static final String VIEW_PAGE1 = "/portlets/add_project_by_category/add_project_by_category-add.jsp";
@@ -246,7 +250,6 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
             }
           }
           responseBuffer.append("]");
-          //System.out.println(responseBuffer.toString());
           response.setContentType("text/html");
           PrintWriter out = response.getWriter();
           out.println(responseBuffer.toString());
@@ -516,7 +519,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
         LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
         int newRowLevel = roleList.getIdFromValue(userRole);
         if (newRowLevel == -1) {
-          System.out.println("Could not insert team member with role: " + userRole);
+          LOG.error("Could not insert team member with role: " + userRole);
         }
         TeamMember thisMember = new TeamMember();
         thisMember.setProjectId(project.getId());
@@ -529,7 +532,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
       // Send to the rules engine for any additional workflow
       PortalUtils.processInsertHook(request, project);
     } else {
-      System.out.println("Could not insert project record");
+      LOG.debug("Listing was not added -- Form did not validate");
     }
     return project;
   }
@@ -542,7 +545,6 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
       int numberOfModules = modulePreferences.length;
       int count = 0;
       while (count < numberOfModules) {
-        //System.out.println(modulePreferences[count]);
         String moduleName = null;
         String moduleLabel = null;
         String modulePreference = modulePreferences[count];

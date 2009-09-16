@@ -43,10 +43,10 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.common.social.contribution.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.*;
@@ -70,7 +70,7 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
   private Timestamp sinceContributionDate = null;
   private int projectId = -1;
   private int projectCategoryId = -1;
-
+  private int enabledUsers = Constants.UNDEFINED;
 
   public UserContributionLogList() {
   }
@@ -205,6 +205,18 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     this.projectCategoryId = Integer.parseInt(projectCategoryId);
   }
 
+  public int getEnabledUsers() {
+    return enabledUsers;
+  }
+
+  public void setEnabledUsers(int enabledUsers) {
+    this.enabledUsers = enabledUsers;
+  }
+
+  public void setEnabledUsers(String enabledUsers) {
+    this.enabledUsers = DatabaseUtils.parseBooleanToConstant(enabledUsers);
+  }
+
   /**
    * Description of the Method
    *
@@ -222,14 +234,14 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     //Need to build a base SQL statement for counting records
     sqlCount.append(
         "SELECT COUNT(*) as recordcount " +
-            "FROM user_contribution_log ucl " +
-            "WHERE ucl.record_id > 0 ");
+        "FROM user_contribution_log ucl " +
+        "WHERE ucl.record_id > 0 ");
     createFilter(sqlFilter, db);
     if (pagedListInfo != null) {
       //Get the total number of records matching filter
       pst = db.prepareStatement(
           sqlCount.toString() +
-              sqlFilter.toString());
+          sqlFilter.toString());
       items = prepareFilter(pst);
       rs = pst.executeQuery();
       if (rs.next()) {
@@ -252,8 +264,8 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     }
     sqlSelect.append(
         "* " +
-            "FROM user_contribution_log ucl " +
-            "WHERE ucl.record_id > 0 ");
+        "FROM user_contribution_log ucl " +
+        "WHERE ucl.record_id > 0 ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -275,7 +287,6 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     pst.close();
   }
 
-
   /**
    * Description of the Method
    *
@@ -287,7 +298,6 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
       thisUserContributionLog.delete(db);
     }
   }
-
 
   /**
    * Description of the Method
@@ -317,8 +327,11 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     if (projectCategoryId > -1) {
       sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE category_id = ?) ");
     }
+    if (enabledUsers != Constants.UNDEFINED) {
+      // Eliminate disabled users (NOT IN)
+      sqlFilter.append("AND ucl.user_id NOT IN (SELECT user_id FROM users WHERE enabled = ?) ");
+    }
   }
-
 
   /**
    * Description of the Method
@@ -350,6 +363,10 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     if (projectCategoryId > -1) {
       pst.setInt(++i, projectCategoryId);
     }
+    if (enabledUsers != Constants.UNDEFINED) {
+      // Eliminate disabled users
+      pst.setBoolean(++i, !(enabledUsers == Constants.TRUE));
+    }
     return i;
   }
 
@@ -365,8 +382,8 @@ public class UserContributionLogList extends ArrayList<UserContributionLog> {
     StringBuffer sqlFilter = new StringBuffer();
     sqlStatement.append(
         "SELECT user_id, SUM(points) AS points " +
-            "FROM user_contribution_log ucl " +
-            "WHERE ucl.record_id > 0 ");
+        "FROM user_contribution_log ucl " +
+        "WHERE ucl.record_id > 0 ");
     createFilter(sqlFilter, db);
     sqlFilter.append("GROUP BY user_id ");
     sqlFilter.append("ORDER BY points DESC ");

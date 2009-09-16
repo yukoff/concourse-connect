@@ -97,6 +97,7 @@ public class TopContributionsViewer implements IPortletViewer {
 
     UserContributionLogList thisUserContributionLogList = new UserContributionLogList();
     thisUserContributionLogList.setSinceContributionDate(new Timestamp(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * Long.parseLong(daysLimit)));
+    thisUserContributionLogList.setEnabledUsers(Constants.TRUE);
 
     if (project != null && project.getId() != -1) {
       thisUserContributionLogList.setProjectId(project.getId());

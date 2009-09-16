@@ -45,6 +45,7 @@
   --%>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
 <%@ page import="com.concursive.connect.config.ApplicationVersion" %>
+<%@ page import="com.concursive.connect.config.ApplicationPrefs" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
@@ -82,7 +83,9 @@
 <link rel="stylesheet" type="text/css" href="<%= yuiURL %>/autocomplete/assets/skins/sam/autocomplete.css" />
 --%>
 <%-- RSS Feeds --%>
-<link rel="alternate" type="application/rss+xml" title="<c:out value="${requestMainProfile.title}"/>" href="<%= RequestUtils.getAbsoluteServerUrl(request) %>/feed/rss.xml"/>
+<ccp:evaluate if='<%= !"intranet".equals(applicationPrefs.get("PURPOSE")) || User.isLoggedIn() || !"true".equals(applicationPrefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE)) %>'>
+  <link rel="alternate" type="application/rss+xml" title="<c:out value="${requestMainProfile.title}"/>" href="<%= RequestUtils.getAbsoluteServerUrl(request) %>/feed/rss.xml"/>
+</ccp:evaluate>
 <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
   <link rel="alternate" type="application/rss+xml" title="<c:out value="${requestMainProfile.title}"/> - <c:out value="${tabCategory.description}"/>" href="<%= RequestUtils.getAbsoluteServerUrl(request) %>/feed/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}/rss.xml"/>
 </c:forEach>

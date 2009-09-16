@@ -124,6 +124,23 @@ public class FeedServlet extends HttpServlet {
       if (path.endsWith("/rss.xml")) {
         // Use the purpose of the site for determining what is included in the feed
         String purpose = prefs.get(ApplicationPrefs.PURPOSE);
+
+        // The intranet feed is not a public feed and requires login
+        int userId = -1;
+        if ("intranet".equals(purpose) && "true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE))) {
+          // Check credentials
+          boolean authenticated = WebdavManager.checkAuthentication(request);
+          if (!authenticated) {
+            WebdavManager.askForAuthentication(response);
+            return;
+          }
+          userId = WebdavManager.validateUser(db, request);
+          if (userId == -1) {
+            WebdavManager.askForAuthentication(response);
+            return;
+          }
+        }
+
         // Check to see which public feed is requested
         if (path.endsWith("/feed/rss.xml")) {
           // This is the main website feed
@@ -135,7 +152,9 @@ public class FeedServlet extends HttpServlet {
           ProjectCategoryList projectCategoryList = new ProjectCategoryList();
           projectCategoryList.setTopLevelOnly(true);
           projectCategoryList.setEnabled(true);
-          projectCategoryList.setSensitive(Constants.FALSE);
+          if (userId == -1) {
+            projectCategoryList.setSensitive(Constants.FALSE);
+          }
           projectCategoryList.buildList(db);
           for (ProjectCategory projectCategory : projectCategoryList) {
             String normalizedCategoryName = projectCategory.getNormalizedCategoryName();

@@ -54,9 +54,9 @@
   <div class="g_tabsContainer">
     <ul class="g_tabsList">
       <ccp:permission name="project-details-edit">
-  			<li><a href="<%= ctx %>/ProjectManagement.do?command=ModifyProject&pid=<%= project.getId() %>&return=ProjectCenter"><ccp:label name="projectsCenter.details.modifyProject">Modify Project</ccp:label></a></li>
+  			<li><a href="<%= ctx %>/ProjectManagement.do?command=ModifyProject&pid=<%= project.getId() %>&return=ProjectCenter"><ccp:label name="projectsCenter.details.modifyProject">Modify Profile</ccp:label></a></li>
         <ccp:permission name="project-details-delete">
-    			<li><a href="javascript:confirmDelete('<%= ctx %>/ProjectManagement.do?command=DeleteProject&pid=<%= project.getId() %>');"><ccp:label name="projectsCenter.details.deleteProject">Delete Project</ccp:label></a></li>
+    			<li><a href="javascript:confirmDelete('<%= ctx %>/ProjectManagement.do?command=DeleteProject&pid=<%= project.getId() %>');"><ccp:label name="projectsCenter.details.deleteProject">Delete Profile</ccp:label></a></li>
   			</ccp:permission>
       </ccp:permission>
     </ul>

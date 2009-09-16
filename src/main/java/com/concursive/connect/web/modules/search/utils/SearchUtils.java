@@ -214,7 +214,7 @@ public class SearchUtils {
    * @param userId
    * @return
    */
-  public static String generateProjectQueryString(SearchBean search, int userId, int instanceId) {
+  public static String generateProjectQueryString(SearchBean search, int userId, int instanceId, String projectList) {
     LOG.info("Search Query: " + search.getQuery() + " (" + search.getLocation() + ")");
     // The search portal is being used
     String locationTerm = search.getParsedLocation();
@@ -286,11 +286,13 @@ public class SearchUtils {
       --count;
     }
 
-    String thisQuery = "(approved:1) " +
+    String thisQuery =
+        "(approved:1) " +
         (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
         "AND (" +
         "(guests:1)" +
         (userId > 0 ? " OR (participants:1)" : "") +
+        (StringUtils.hasText(projectList) ? "OR " + "(projectId:(" + projectList + "))" : "") +
         ") " +
         "AND (closed:0) " +
         "AND (website:0) " +
@@ -315,14 +317,28 @@ public class SearchUtils {
    * @return
    * @throws SQLException
    */
-  public static String generateDataQueryString(SearchBean search, Connection db, int userId, int specificProjectId, int instanceId) throws SQLException {
+  public static String generateDataQueryString(SearchBean search, int userId, int instanceId, String projectListings) throws SQLException {
+    // Generate the string
+    return (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") " : "") +
+        (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
+        "AND (" +
+        "(" +
+        "((guests:1) AND (membership:0)) " +
+        (userId > 0 ? " OR ((participants:1) AND (membership:0)) " : "") +
+        ") " +
+        (StringUtils.hasText(projectListings) ? "OR " + "(projectId:(" + projectListings + "))" : "") +
+        ") ";
+  }
+
+  public static String generateValidProjects(Connection db, int userId, int specificProjectId) throws SQLException {
     // @todo get ids from user cache
+    // @update cache everytime a user is added or removed from a project team
     // get the projects for the user
     // get the project permissions for each project
     // if user has access to the data, then add to query
     StringBuffer projectList = new StringBuffer();
     PreparedStatement pst = db.prepareStatement(
-        "SELECT project_id, userlevel " +
+        "SELECT project_id " +
         "FROM project_team " +
         "WHERE user_id = ? " +
         "AND status IS NULL " +
@@ -335,7 +351,6 @@ public class SearchUtils {
     ResultSet rs = pst.executeQuery();
     while (rs.next()) {
       int projectId = rs.getInt("project_id");
-      int roleId = rs.getInt("userlevel");
       // these projects override the lower access projects
       if (projectList.length() > 0) {
         projectList.append(" OR ");
@@ -344,19 +359,6 @@ public class SearchUtils {
     }
     rs.close();
     pst.close();
-
-    // Generate the string
-    return (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") " : "") +
-        (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
-        "AND " +
-        "(" +
-        "(" +
-        "((guests:1) AND (membership:0)) " +
-        (userId > 0 ? " OR ((participants:1) AND (membership:0)) " : "") +
-        ") " +
-        (StringUtils.hasText(projectList.toString()) ? "OR " +
-        "(projectId:(" + projectList + "))"
-        : "") +
-        ") ";
+    return projectList.toString();
   }
 }

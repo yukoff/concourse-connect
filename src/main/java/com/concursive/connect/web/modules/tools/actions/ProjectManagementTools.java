@@ -150,6 +150,7 @@ public class ProjectManagementTools extends GenericAction {
     conn.setUrl(project.getConcursiveCRMUrl());
     conn.setId(project.getConcursiveCRMDomain());
     conn.setCode(project.getConcursiveCRMCode());
+    conn.setClientId(project.getConcursiveCRMClient());
     // Request info
     DataRecord record = new DataRecord();
     record.setName("map");

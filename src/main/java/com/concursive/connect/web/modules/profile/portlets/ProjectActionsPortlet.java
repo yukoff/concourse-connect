@@ -185,7 +185,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
               valid = false;
             }
           } else if ("projectHasTools".equals(rule)) {
-            if (!(StringUtils.hasText(project.getConcursiveCRMUrl()) && StringUtils.hasText(project.getBusinessPhone()))) {
+            if (!StringUtils.hasText(project.getConcursiveCRMUrl())) {
               valid = false;
             }
           } else if ("canClaim".equals(rule)) {

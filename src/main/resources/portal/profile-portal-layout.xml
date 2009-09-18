@@ -54,6 +54,20 @@
             <title>Quick Actions</title>
             <urls>
               <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:xml}</title>
                   <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
@@ -218,6 +232,15 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <!--
+              <value>
+                <![CDATA[<content>Go to CRM Contact</content>
+                  <title>Access the CRM contact record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-contact</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              -->
               <value>
                 <![CDATA[<content>Send to Friend</content>
                   <title>Send ${project.title:xml} information to friend</title>
@@ -266,13 +289,14 @@
                 <rule>isThisUsersProfile</rule>
                 ]]>
               </value>
-              <value>
-                <![CDATA[<content>Contact Me</content>
-                  <title>Contact Me</title>
-                  <href>/show/${project.uniqueId}/app/compose_message?module=profile&amp;id=${project.id}</href>
-                  <rel>shadowbox;width=700</rel>
-                  <projectCondition>features.showMessages</projectCondition>
-                  <rule>isNotThisUsersProfile</rule>]]>
+              <value><![CDATA[
+                <content>Contact Me</content>
+                <title>Contact Me</title>
+                <href>/show/${project.uniqueId}/app/compose_message?module=profile&amp;id=${project.id}</href>
+                <rel>shadowbox;width=700</rel>
+                <projectCondition>features.showMessages</projectCondition>
+                <rule>isNotThisUsersProfile</rule>
+                ]]>
               </value>
             </urls>
           </portlet>
@@ -399,6 +423,20 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
               <value><![CDATA[
                 <content>Call Us for Free</content>
                 <title>Call ${project.title:xml} for free</title>
@@ -446,20 +484,6 @@
                   <class>green</class>
                   <rel>shadowbox;width=600</rel>
                   <rule>userCanJoin</rule>]]>
-              </value>
-              <value>
-                <![CDATA[<content>Access Tools</content>
-                  <title>Access the tools for ${project.title:xml}</title>
-                  <href>/show/${project.uniqueId}/tools</href>
-                  <parameter>returnURL</parameter>
-                  <rule>userHasToolsEnabled</rule>]]>
-              </value>
-              <value>
-                <![CDATA[<content>Access CRM Account</content>
-                  <title>Access the CRM account record for ${project.title:xml}</title>
-                  <href>/show/${project.uniqueId}/crm-account</href>
-                  <parameter>returnURL</parameter>
-                  <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Is this your business?</content>
@@ -606,6 +630,20 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
               <value><![CDATA[
                 <content>Call Us for Free</content>
                 <title>Call ${project.title:html} for free</title>
@@ -646,13 +684,6 @@
                   <class>green</class>
                   <rel>shadowbox;width=600</rel>
                   <rule>userCanJoin</rule>]]>
-              </value>
-              <value>
-                <![CDATA[<content>Access Tools</content>
-                  <title>Access the tools for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/tools</href>
-                  <target>_blank</target>
-                  <rule>userHasToolsEnabled</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Is this your listing?</content>
@@ -805,6 +836,20 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
               <!--<value><![CDATA[
                 <content>Call Us for Free</content>
                 <title>Call ${project.title:xml} for free</title>
@@ -845,13 +890,6 @@
 									<class>green</class>
                   <rel>shadowbox;width=600</rel>
                   <rule>userCanJoin</rule>]]>
-              </value>
-              <value>
-                <![CDATA[<content>Access Tools</content>
-                  <title>Access the tools for ${project.title:xml}</title>
-                  <href>/show/${project.uniqueId}/tools</href>
-                  <target>_blank</target>
-                  <rule>userHasToolsEnabled</rule>]]>
               </value>
               <!--<value>
                 <![CDATA[<content>Is this your business?</content>
@@ -990,6 +1028,20 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
               <value><![CDATA[
                 <content>Call Us for Free</content>
                 <title>Call ${project.title:html} for free</title>
@@ -1045,13 +1097,6 @@
                <rule>userCanRequestToJoin</rule>
                ]]>
              </value>
-              <value>
-                <![CDATA[<content>Access Tools</content>
-                  <title>Access the tools for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/tools</href>
-                  <target>_blank</target>
-                  <rule>userHasToolsEnabled</rule>]]>
-              </value>
               <value>
                 <![CDATA[<content>Is this your listing?</content>
                   <title>Claim ownership of ${project.title:html} listing</title>
@@ -1195,6 +1240,20 @@
             <title>Quick Actions</title>
             <urls>
               <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:html}</title>
                   <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
@@ -1233,13 +1292,6 @@
                 <rel>shadowbox;width=500</rel>
                 <rule>userCanRequestToJoin</rule>
                 ]]>
-              </value>
-              <value>
-                <![CDATA[<content>Access Tools</content>
-                  <title>Access the tools for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/tools</href>
-                  <target>_blank</target>
-                  <rule>userHasToolsEnabled</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Is this your event?</content>
@@ -1379,6 +1431,20 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
               <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:html}</title>
@@ -1547,6 +1613,20 @@
             <title>Quick Actions</title>
             <urls>
               <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:xml}</title>
                   <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
@@ -1677,6 +1757,20 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
               <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:xml}</title>
@@ -1827,6 +1921,20 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Access Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
               <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:xml}</title>

@@ -130,7 +130,7 @@ public class ProjectManagementTools extends GenericAction {
           }
         }
         LOG.debug("Return URL: " + returnURL);
-        context.getRequest().setAttribute("redirectTo", ("true".equals(getPref(context, "SSL")) ? "https://" : "http://") + thisProject.getConcursiveCRMDomain() + "/" + redirect + "&token=" + token + (returnURL != null ? "&returnURL=" + returnURL : ""));
+        context.getRequest().setAttribute("redirectTo", thisProject.getConcursiveCRMUrl() + "/" + redirect + "&token=" + token + (returnURL != null ? "&returnURL=" + returnURL : ""));
         return ("Redirect301");
       } else {
         return "ToolsError";

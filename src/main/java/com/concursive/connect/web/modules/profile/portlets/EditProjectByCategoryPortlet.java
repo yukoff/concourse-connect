@@ -265,26 +265,33 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
     int saved = -1;
     Connection db = null;
     db = PortalUtils.getConnection(request);
-    //Project originalProject = new Project(db, PortalUtils.getProject(request).getId());
-    Project projectToEdit = new Project(db, PortalUtils.getProject(request).getId());
+    // Load the previous state of the project for comparison
     Project prevProject = new Project(db, PortalUtils.getProject(request).getId());
 
+    // Load the project to make changes to it
+    Project projectToEdit = new Project(db, PortalUtils.getProject(request).getId());
+
+    // Populate the updated project
     ProjectFormBean projectBean = new ProjectFormBean();
     PortalUtils.populateObject(projectBean, request);
+
     //Check required fields enforced by preferences
     String categoryName = getProjectCategoryName(db, projectToEdit);
     HashMap<String, String> preferenceMap = getDisplayPreferences(request, categoryName);
 
-    //Populate project based on portlet preferences
+    // Populate project based on portlet preferences
     projectBean.populateProjectFromBeanBasedOnPreferences(preferenceMap, projectToEdit);
+
+    // Update who modified the project
+    projectToEdit.setModifiedBy(PortalUtils.getUser(request).getId());
 
     if (isValid(request, projectToEdit, preferenceMap)) {
       saved = projectToEdit.update(db);
       if (saved != -1) {
-        //Save as meeting based on preferences
+        // Save as meeting based on preferences
         boolean isSpawnMeeting = (preferenceMap.get(PREF_SPAWN_MEETING) != null && "true".equals(preferenceMap.get(PREF_SPAWN_MEETING))) ? true : false;
         if (isSpawnMeeting) {
-          //Update an existing meeting corresponding to the event if it exists, else create a new one
+          // Update an existing meeting corresponding to the event if it exists, else create a new one
           MeetingList meetingList = new MeetingList();
           PagedListInfo meetingListInfo = new PagedListInfo();
           meetingListInfo.setColumnToSortBy("m.modified");
@@ -293,7 +300,7 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
           meetingList.buildList(db);
           Meeting originalMeeting = null;
           if (meetingList.size() > 0) {
-            //Get  the latest record
+            // Get the latest record
             originalMeeting = meetingList.get(meetingList.size() - 1);
           }
           Meeting meeting = Meeting.createMeetingFromProject(projectToEdit);

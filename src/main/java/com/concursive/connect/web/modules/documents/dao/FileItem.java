@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.documents.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -73,12 +72,9 @@ import java.util.Calendar;
 public class FileItem extends GenericBean {
 
   private static Log LOG = LogFactory.getLog(FileItem.class);
-
   public final static String fs = System.getProperty("file.separator");
   public static final String TABLE = "project_files";
   public static final String PRIMARY_KEY = "item_id";
-
-
   protected int linkModuleId = -1;
   protected int linkItemId = -1;
   protected int id = -1;
@@ -92,30 +88,22 @@ public class FileItem extends GenericBean {
   protected String image = null;
   protected boolean enabled = false;
   protected boolean defaultFile = false;
-
   protected boolean doVersionInsert = true;
   protected int downloads = 0;
-
   protected java.sql.Timestamp entered = null;
   protected int enteredBy = -1;
-
   protected java.sql.Timestamp modified = null;
   protected int modifiedBy = -1;
-
   protected FileItemVersionList versionList = null;
-
   protected String thumbnailFilename = null;
   protected int imageWidth = 0;
   protected int imageHeight = 0;
-
   protected String comment = null;
   protected boolean featuredFile = false;
-
   protected int ratingCount = 0;
   protected int ratingValue = 0;
   protected double ratingAvg = 0.0;
   protected int inappropriateCount = 0;
-
   protected String fileAttachment = null;
 
   /**
@@ -123,7 +111,6 @@ public class FileItem extends GenericBean {
    */
   public FileItem() {
   }
-
 
   /**
    * Constructor for the FileItem object
@@ -135,7 +122,6 @@ public class FileItem extends GenericBean {
   public FileItem(Connection db, int itemId) throws SQLException {
     queryRecord(db, itemId);
   }
-
 
   /**
    * Constructor for the FileItem object
@@ -152,7 +138,6 @@ public class FileItem extends GenericBean {
     queryRecord(db, itemId);
   }
 
-
   /**
    * Constructor for the FileItem object when the linkItemId is programmed to
    * have only ONE fileItem
@@ -168,7 +153,6 @@ public class FileItem extends GenericBean {
     queryRecord(db, -1);
   }
 
-
   /**
    * Description of the Method
    *
@@ -180,9 +164,9 @@ public class FileItem extends GenericBean {
     StringBuffer sql = new StringBuffer();
     sql.append(
         "SELECT f.*, t.filename AS thumbnail " +
-            "FROM project_files f " +
-            "LEFT JOIN project_files_thumbnail t ON (f.item_id = t.item_id AND f.version = t.version) " +
-            "WHERE f.item_id > 0 ");
+        "FROM project_files f " +
+        "LEFT JOIN project_files_thumbnail t ON (f.item_id = t.item_id AND f.version = t.version) " +
+        "WHERE f.item_id > 0 ");
     if (itemId > -1) {
       sql.append("AND f.item_id = ? ");
     }
@@ -215,7 +199,6 @@ public class FileItem extends GenericBean {
     pst.close();
   }
 
-
   /**
    * Constructor for the FileItem object
    *
@@ -225,7 +208,6 @@ public class FileItem extends GenericBean {
   public FileItem(ResultSet rs) throws SQLException {
     buildRecord(rs, false);
   }
-
 
   /**
    * Constructor for the FileItem object
@@ -237,7 +219,6 @@ public class FileItem extends GenericBean {
   public FileItem(ResultSet rs, boolean isVersion) throws SQLException {
     buildRecord(rs, isVersion);
   }
-
 
   /**
    * Gets the datePath attribute of the FileItem class
@@ -253,7 +234,6 @@ public class FileItem extends GenericBean {
     return datePathToUse1 + fs + datePathToUse2 + fs;
   }
 
-
   /**
    * Gets the datePath attribute of the FileItem class
    *
@@ -268,7 +248,6 @@ public class FileItem extends GenericBean {
       return null;
     }
   }
-
 
   /**
    * Gets the fullFilePath attribute of the FileItem object
@@ -287,7 +266,6 @@ public class FileItem extends GenericBean {
     }
   }
 
-
   /**
    * Sets the linkModuleId attribute of the FileItem object
    *
@@ -296,7 +274,6 @@ public class FileItem extends GenericBean {
   public void setLinkModuleId(int tmp) {
     linkModuleId = tmp;
   }
-
 
   /**
    * Sets the linkModuleId attribute of the FileItem object
@@ -307,7 +284,6 @@ public class FileItem extends GenericBean {
     linkModuleId = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the linkItemId attribute of the FileItem object
    *
@@ -316,7 +292,6 @@ public class FileItem extends GenericBean {
   public void setLinkItemId(int tmp) {
     linkItemId = tmp;
   }
-
 
   /**
    * Sets the linkItemId attribute of the FileItem object
@@ -327,7 +302,6 @@ public class FileItem extends GenericBean {
     linkItemId = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the id attribute of the FileItem object
    *
@@ -336,7 +310,6 @@ public class FileItem extends GenericBean {
   public void setId(int tmp) {
     this.id = tmp;
   }
-
 
   /**
    * Sets the id attribute of the FileItem object
@@ -347,7 +320,6 @@ public class FileItem extends GenericBean {
     this.id = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the folderId attribute of the FileItem object
    *
@@ -356,7 +328,6 @@ public class FileItem extends GenericBean {
   public void setFolderId(int tmp) {
     this.folderId = tmp;
   }
-
 
   /**
    * Sets the folderId attribute of the FileItem object
@@ -367,7 +338,6 @@ public class FileItem extends GenericBean {
     this.folderId = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the subject attribute of the FileItem object
    *
@@ -376,7 +346,6 @@ public class FileItem extends GenericBean {
   public void setSubject(String tmp) {
     this.subject = tmp;
   }
-
 
   /**
    * Sets the clientFilename attribute of the FileItem object
@@ -387,7 +356,6 @@ public class FileItem extends GenericBean {
     this.clientFilename = tmp;
   }
 
-
   /**
    * Sets the filename attribute of the FileItem object
    *
@@ -396,7 +364,6 @@ public class FileItem extends GenericBean {
   public void setFilename(String tmp) {
     this.filename = tmp;
   }
-
 
   /**
    * Sets the directory attribute of the FileItem object
@@ -407,7 +374,6 @@ public class FileItem extends GenericBean {
     this.directory = tmp;
   }
 
-
   /**
    * Sets the size attribute of the FileItem object
    *
@@ -416,7 +382,6 @@ public class FileItem extends GenericBean {
   public void setSize(int tmp) {
     this.size = tmp;
   }
-
 
   /**
    * Sets the size attribute of the FileItem object
@@ -427,7 +392,6 @@ public class FileItem extends GenericBean {
     this.size = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the version attribute of the FileItem object
    *
@@ -436,7 +400,6 @@ public class FileItem extends GenericBean {
   public void setVersion(double tmp) {
     this.version = tmp;
   }
-
 
   /**
    * Sets the version attribute of the FileItem object
@@ -447,7 +410,6 @@ public class FileItem extends GenericBean {
     this.version = Double.parseDouble(tmp);
   }
 
-
   /**
    * Sets the image attribute of the FileItem object
    *
@@ -456,7 +418,6 @@ public class FileItem extends GenericBean {
   public void setImage(String tmp) {
     this.image = tmp;
   }
-
 
   /**
    * Sets the entered attribute of the FileItem object
@@ -467,7 +428,6 @@ public class FileItem extends GenericBean {
     this.entered = tmp;
   }
 
-
   /**
    * Sets the entered attribute of the FileItem object
    *
@@ -476,7 +436,6 @@ public class FileItem extends GenericBean {
   public void setEntered(String tmp) {
     this.entered = DatabaseUtils.parseTimestamp(tmp);
   }
-
 
   /**
    * Sets the enteredBy attribute of the FileItem object
@@ -487,7 +446,6 @@ public class FileItem extends GenericBean {
     this.enteredBy = tmp;
   }
 
-
   /**
    * Sets the enteredBy attribute of the FileItem object
    *
@@ -496,7 +454,6 @@ public class FileItem extends GenericBean {
   public void setEnteredBy(String tmp) {
     this.enteredBy = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the modified attribute of the FileItem object
@@ -507,7 +464,6 @@ public class FileItem extends GenericBean {
     this.modified = tmp;
   }
 
-
   /**
    * Sets the modified attribute of the FileItem object
    *
@@ -516,7 +472,6 @@ public class FileItem extends GenericBean {
   public void setModified(String tmp) {
     this.modified = DatabaseUtils.parseTimestamp(tmp);
   }
-
 
   /**
    * Sets the modifiedBy attribute of the FileItem object
@@ -527,7 +482,6 @@ public class FileItem extends GenericBean {
     this.modifiedBy = tmp;
   }
 
-
   /**
    * Sets the modifiedBy attribute of the FileItem object
    *
@@ -536,7 +490,6 @@ public class FileItem extends GenericBean {
   public void setModifiedBy(String tmp) {
     this.modifiedBy = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the enabled attribute of the FileItem object
@@ -547,7 +500,6 @@ public class FileItem extends GenericBean {
     this.enabled = tmp;
   }
 
-
   /**
    * Sets the enabled attribute of the FileItem object
    *
@@ -556,7 +508,6 @@ public class FileItem extends GenericBean {
   public void setEnabled(String tmp) {
     this.enabled = DatabaseUtils.parseBoolean(tmp);
   }
-
 
   /**
    * Sets the defaultFile attribute of the FileItem object
@@ -567,7 +518,6 @@ public class FileItem extends GenericBean {
     this.defaultFile = tmp;
   }
 
-
   /**
    * Sets the defaultFile attribute of the FileItem object
    *
@@ -576,7 +526,6 @@ public class FileItem extends GenericBean {
   public void setDefaultFile(String tmp) {
     defaultFile = DatabaseUtils.parseBoolean(tmp);
   }
-
 
   /**
    * Gets the defaultFile attribute of the FileItem object
@@ -587,7 +536,6 @@ public class FileItem extends GenericBean {
     return defaultFile;
   }
 
-
   /**
    * Sets the downloads attribute of the FileItem object
    *
@@ -596,7 +544,6 @@ public class FileItem extends GenericBean {
   public void setDownloads(int tmp) {
     downloads = tmp;
   }
-
 
   /**
    * Sets the downloads attribute of the FileItem object
@@ -607,7 +554,6 @@ public class FileItem extends GenericBean {
     downloads = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the doVersionInsert attribute of the FileItem object
    *
@@ -617,7 +563,6 @@ public class FileItem extends GenericBean {
     this.doVersionInsert = tmp;
   }
 
-
   /**
    * Sets the doVersionInsert attribute of the FileItem object
    *
@@ -626,7 +571,6 @@ public class FileItem extends GenericBean {
   public void setDoVersionInsert(String tmp) {
     doVersionInsert = DatabaseUtils.parseBoolean(tmp);
   }
-
 
   /**
    * Sets the thumbnailFilename attribute of the FileItem object
@@ -667,14 +611,12 @@ public class FileItem extends GenericBean {
     return featuredFile;
   }
 
-
   /**
    * @param featuredFile the featuredFile to set
    */
   public void setFeaturedFile(boolean featuredFile) {
     this.featuredFile = featuredFile;
   }
-
 
   public void setFeaturedFile(String featuredFile) {
     this.featuredFile = DatabaseUtils.parseBoolean(featuredFile);
@@ -686,7 +628,6 @@ public class FileItem extends GenericBean {
   public int getRatingCount() {
     return ratingCount;
   }
-
 
   /**
    * @param ratingCount the ratingCount to set
@@ -706,7 +647,6 @@ public class FileItem extends GenericBean {
     return ratingValue;
   }
 
-
   /**
    * @param ratingValue the ratingValue to set
    */
@@ -725,7 +665,6 @@ public class FileItem extends GenericBean {
     return ratingAvg;
   }
 
-
   /**
    * @param ratingAvg the ratingAvg to set
    */
@@ -743,7 +682,6 @@ public class FileItem extends GenericBean {
   public int getInappropriateCount() {
     return inappropriateCount;
   }
-
 
   /**
    * @param inappropriateCount the inappropriateCount to set
@@ -773,7 +711,6 @@ public class FileItem extends GenericBean {
     return doVersionInsert;
   }
 
-
   /**
    * Gets the linkModuleId attribute of the FileItem object
    *
@@ -782,7 +719,6 @@ public class FileItem extends GenericBean {
   public int getLinkModuleId() {
     return linkModuleId;
   }
-
 
   /**
    * Gets the linkItemId attribute of the FileItem object
@@ -793,7 +729,6 @@ public class FileItem extends GenericBean {
     return linkItemId;
   }
 
-
   /**
    * Gets the id attribute of the FileItem object
    *
@@ -802,7 +737,6 @@ public class FileItem extends GenericBean {
   public int getId() {
     return id;
   }
-
 
   /**
    * Gets the folderId attribute of the FileItem object
@@ -813,7 +747,6 @@ public class FileItem extends GenericBean {
     return folderId;
   }
 
-
   /**
    * Gets the subject attribute of the FileItem object
    *
@@ -822,7 +755,6 @@ public class FileItem extends GenericBean {
   public String getSubject() {
     return subject;
   }
-
 
   /**
    * Gets the clientFilename attribute of the FileItem object
@@ -833,7 +765,6 @@ public class FileItem extends GenericBean {
     return clientFilename;
   }
 
-
   /**
    * Gets the extension attribute of the FileItem object
    *
@@ -842,7 +773,6 @@ public class FileItem extends GenericBean {
   public String getExtension() {
     return getExtension(clientFilename);
   }
-
 
   /**
    * Gets the extension attribute of the FileItem class
@@ -858,7 +788,6 @@ public class FileItem extends GenericBean {
     }
   }
 
-
   /**
    * Gets the filename attribute of the FileItem object
    *
@@ -867,7 +796,6 @@ public class FileItem extends GenericBean {
   public String getFilename() {
     return filename;
   }
-
 
   /**
    * Gets the directory attribute of the FileItem object
@@ -878,7 +806,6 @@ public class FileItem extends GenericBean {
     return directory;
   }
 
-
   /**
    * Gets the size attribute of the FileItem object
    *
@@ -887,7 +814,6 @@ public class FileItem extends GenericBean {
   public int getSize() {
     return size;
   }
-
 
   /**
    * Gets the relativeSize attribute of the FileItem object
@@ -903,7 +829,6 @@ public class FileItem extends GenericBean {
     }
   }
 
-
   /**
    * Gets the version attribute of the FileItem object
    *
@@ -912,7 +837,6 @@ public class FileItem extends GenericBean {
   public double getVersion() {
     return version;
   }
-
 
   /**
    * Description of the Method
@@ -923,7 +847,6 @@ public class FileItem extends GenericBean {
   public boolean hasVersion(double version) {
     return (getVersion(version) != null);
   }
-
 
   /**
    * Gets the version attribute of the FileItem object
@@ -942,7 +865,6 @@ public class FileItem extends GenericBean {
     return null;
   }
 
-
   /**
    * Gets the versionNextMajor attribute of the FileItem object
    *
@@ -951,7 +873,6 @@ public class FileItem extends GenericBean {
   public String getVersionNextMajor() {
     return (((int) version + 1) + ".0");
   }
-
 
   /**
    * Gets the versionNextMinor attribute of the FileItem object
@@ -972,7 +893,6 @@ public class FileItem extends GenericBean {
     }
   }
 
-
   /**
    * Gets the versionNextChanges attribute of the FileItem object
    *
@@ -981,7 +901,6 @@ public class FileItem extends GenericBean {
   public String getVersionNextChanges() {
     return (new java.math.BigDecimal("" + version).add(new java.math.BigDecimal(".01"))).toString();
   }
-
 
   /**
    * Gets the image attribute of the FileItem object
@@ -992,11 +911,9 @@ public class FileItem extends GenericBean {
     return image;
   }
 
-
   public String getImageTag(String imageExt, String url) {
     return getImageTag(image, imageExt, getExtension(), url);
   }
-
 
   /**
    * Gets the imageTag attribute of the FileItem object
@@ -1086,7 +1003,6 @@ public class FileItem extends GenericBean {
     return "<img border=\"0\" src=\"" + (imageUrl != null ? imageUrl : "") + "/images/mime/" + image + imageSizeExtension + ".png\" align=\"absmiddle\" alt=\"" + "" + "\" />";
   }
 
-
   /**
    * Gets the thumbnail attribute of the FileItem object
    *
@@ -1101,7 +1017,6 @@ public class FileItem extends GenericBean {
     }
   }
 
-
   public String getFullImageFromAdmin(String contextPath) {
     if (hasThumbnail()) {
       return "<img border=\"0\" src=\"" + contextPath + "/Admin.do?command=Img&fileItemId=" + id + "\" align=\"absmiddle\" alt=\"\" />";
@@ -1110,20 +1025,18 @@ public class FileItem extends GenericBean {
     }
   }
 
-
   /**
    * Gets the fullImage attribute of the FileItem object
    *
    * @return The fullImage value
    */
   public String getFullImage(String contextPath) {
-    if (isImageFormat()) {
+    if (isImageFormat() && hasValidImageSize()) {
       return "<img border=\"0\" src=\"" + contextPath + "/ProjectManagementFiles.do?command=ShowThumbnail&p=" + linkItemId + "&i=" + id + "&v=" + version + "&s=full" + "\" align=\"absmiddle\" alt=\"\" />";
     } else {
       return getImageTag(image, "", getExtension(), contextPath);
     }
   }
-
 
   /**
    * Gets the entered attribute of the FileItem object
@@ -1133,7 +1046,6 @@ public class FileItem extends GenericBean {
   public java.sql.Timestamp getEntered() {
     return entered;
   }
-
 
   /**
    * Gets the enteredString attribute of the FileItem object
@@ -1148,7 +1060,6 @@ public class FileItem extends GenericBean {
     return "";
   }
 
-
   /**
    * Gets the enteredDateTimeString attribute of the FileItem object
    *
@@ -1162,7 +1073,6 @@ public class FileItem extends GenericBean {
     return "";
   }
 
-
   /**
    * Gets the enteredBy attribute of the FileItem object
    *
@@ -1171,7 +1081,6 @@ public class FileItem extends GenericBean {
   public int getEnteredBy() {
     return enteredBy;
   }
-
 
   /**
    * Gets the modified attribute of the FileItem object
@@ -1201,7 +1110,6 @@ public class FileItem extends GenericBean {
     return modifiedBy;
   }
 
-
   /**
    * Gets the downloads attribute of the FileItem object
    *
@@ -1210,7 +1118,6 @@ public class FileItem extends GenericBean {
   public int getDownloads() {
     return downloads;
   }
-
 
   /**
    * Gets the enabled attribute of the FileItem object
@@ -1221,7 +1128,6 @@ public class FileItem extends GenericBean {
     return enabled;
   }
 
-
   /**
    * Gets the versionList attribute of the FileItem object
    *
@@ -1230,7 +1136,6 @@ public class FileItem extends GenericBean {
   public FileItemVersionList getVersionList() {
     return versionList;
   }
-
 
   /**
    * Gets the thumbnailFilename attribute of the FileItem object
@@ -1278,7 +1183,7 @@ public class FileItem extends GenericBean {
       StringBuffer sql = new StringBuffer();
       sql.append(
           "INSERT INTO project_files " +
-              "(folder_id, subject, client_filename, filename, version, size, ");
+          "(folder_id, subject, client_filename, filename, version, size, ");
       sql.append("enabled, downloads, ");
       if (entered != null) {
         sql.append("entered, ");
@@ -1368,7 +1273,6 @@ public class FileItem extends GenericBean {
     return result;
   }
 
-
   /**
    * Description of the Method
    *
@@ -1405,10 +1309,9 @@ public class FileItem extends GenericBean {
       int i = 0;
       PreparedStatement pst = db.prepareStatement(
           "UPDATE project_files " +
-              "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
-              "size = ?, modifiedby = ?, modified = CURRENT_TIMESTAMP, comment = ?, image_width = ?, image_height = ? , featured_file = ? " +
-              "WHERE item_id = ? "
-      );
+          "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
+          "size = ?, modifiedby = ?, modified = CURRENT_TIMESTAMP, comment = ?, image_width = ?, image_height = ? , featured_file = ? " +
+          "WHERE item_id = ? ");
       pst.setString(++i, subject);
       pst.setString(++i, clientFilename);
       pst.setString(++i, filename);
@@ -1441,7 +1344,6 @@ public class FileItem extends GenericBean {
     return result;
   }
 
-
   /**
    * Description of the Method
    *
@@ -1466,9 +1368,8 @@ public class FileItem extends GenericBean {
       // NOTE: Do not update the "modified" field because it is used for file paths
       PreparedStatement pst = db.prepareStatement(
           "UPDATE project_files " +
-              "SET subject = ?, client_filename = ?, default_file = ?, comment = ?, featured_file = ? " +
-              "WHERE item_id = ? "
-      );
+          "SET subject = ?, client_filename = ?, default_file = ?, comment = ?, featured_file = ? " +
+          "WHERE item_id = ? ");
       pst.setString(++i, subject);
       pst.setString(++i, clientFilename);
       pst.setBoolean(++i, defaultFile);
@@ -1507,7 +1408,6 @@ public class FileItem extends GenericBean {
     return resultCount;
   }
 
-
   /**
    * Description of the Method
    *
@@ -1531,10 +1431,9 @@ public class FileItem extends GenericBean {
     int i = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-            "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
-            "size = ?, modifiedby = ?, modified = ?, comment = ?, featured_file = ? " +
-            "WHERE item_id = ? "
-    );
+        "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
+        "size = ?, modifiedby = ?, modified = ?, comment = ?, featured_file = ? " +
+        "WHERE item_id = ? ");
     pst.setString(++i, subject);
     pst.setString(++i, clientFilename);
     pst.setString(++i, filename);
@@ -1549,7 +1448,6 @@ public class FileItem extends GenericBean {
     pst.close();
     return true;
   }
-
 
   /**
    * Description of the Method
@@ -1566,7 +1464,6 @@ public class FileItem extends GenericBean {
     thisLog.setFileSize(size);
     return thisLog.updateCounter(db);
   }
-
 
   /**
    * Description of the Method
@@ -1585,7 +1482,6 @@ public class FileItem extends GenericBean {
     versionList.buildList(db);
     return true;
   }
-
 
   /**
    * Description of the Method
@@ -1633,7 +1529,7 @@ public class FileItem extends GenericBean {
       int i = 0;
       PreparedStatement pst = db.prepareStatement(
           "DELETE FROM project_files_download " +
-              "WHERE item_id = ? ");
+          "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1641,7 +1537,7 @@ public class FileItem extends GenericBean {
       i = 0;
       pst = db.prepareStatement(
           "DELETE FROM project_files_thumbnail " +
-              "WHERE item_id = ? ");
+          "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1649,7 +1545,7 @@ public class FileItem extends GenericBean {
       i = 0;
       pst = db.prepareStatement(
           "DELETE FROM project_files_version " +
-              "WHERE item_id = ? ");
+          "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1657,7 +1553,7 @@ public class FileItem extends GenericBean {
       i = 0;
       pst = db.prepareStatement(
           "DELETE FROM project_files " +
-              "WHERE item_id = ? ");
+          "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1698,7 +1594,6 @@ public class FileItem extends GenericBean {
     return result;
   }
 
-
   /**
    * Gets the valid attribute of the FileItem object
    *
@@ -1716,7 +1611,6 @@ public class FileItem extends GenericBean {
     }
     return !hasErrors();
   }
-
 
   /**
    * Populates the object's properties from the result set
@@ -1757,7 +1651,6 @@ public class FileItem extends GenericBean {
     inappropriateCount = DatabaseUtils.getInt(rs, "inappropriate_count", 0);
   }
 
-
   /**
    * Description of the Method
    *
@@ -1767,7 +1660,7 @@ public class FileItem extends GenericBean {
   private void logUpload(Connection db) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "INSERT INTO usage_log " +
-            "(enteredby, action, record_id, record_size) VALUES (?, ?, ?, ?) ");
+        "(enteredby, action, record_id, record_size) VALUES (?, ?, ?, ?) ");
     int i = 0;
     pst.setInt(++i, enteredBy);
     pst.setInt(++i, 1);
@@ -1776,7 +1669,6 @@ public class FileItem extends GenericBean {
     pst.execute();
     pst.close();
   }
-
 
   /**
    * Description of the Method
@@ -1791,8 +1683,8 @@ public class FileItem extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-            "SET folder_id = ? " +
-            "WHERE item_id = ?");
+        "SET folder_id = ? " +
+        "WHERE item_id = ?");
     int i = 0;
     if (newFolderId > 0) {
       pst.setInt(++i, newFolderId);
@@ -1811,7 +1703,6 @@ public class FileItem extends GenericBean {
     }
   }
 
-
   /**
    * Gets the imageFormat attribute of the FileItem object
    *
@@ -1823,10 +1714,12 @@ public class FileItem extends GenericBean {
         ".jpg".equals(extension) ||
         ".jpeg".equals(extension) ||
         ".png".equals(extension) ||
-        ".bmp".equals(extension)
-    );
+        ".bmp".equals(extension));
   }
 
+  public boolean hasValidImageSize() {
+    return (imageHeight > 0 && imageWidth > 0);
+  }
 
   /**
    * Description of the Method
@@ -1836,7 +1729,6 @@ public class FileItem extends GenericBean {
   public boolean hasThumbnail() {
     return thumbnailFilename != null;
   }
-
 
   /**
    * Description of the Method
@@ -1853,9 +1745,9 @@ public class FileItem extends GenericBean {
     int i = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-            "SET enabled = " + DatabaseUtils.getTrue(db) + " " +
-            "WHERE item_id = ? " +
-            "AND modified = ? ");
+        "SET enabled = " + DatabaseUtils.getTrue(db) + " " +
+        "WHERE item_id = ? " +
+        "AND modified = ? ");
     pst.setInt(++i, this.getId());
     pst.setTimestamp(++i, this.getModified());
     int resultCount = pst.executeUpdate();
@@ -1865,7 +1757,6 @@ public class FileItem extends GenericBean {
     }
     return success;
   }
-
 
   /**
    * Description of the Method
@@ -1882,10 +1773,9 @@ public class FileItem extends GenericBean {
     int i = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files SET " +
-            "enabled = " + DatabaseUtils.getFalse(db) + " " +
-            "WHERE item_id = ? " +
-            "AND modified = ? "
-    );
+        "enabled = " + DatabaseUtils.getFalse(db) + " " +
+        "WHERE item_id = ? " +
+        "AND modified = ? ");
     pst.setInt(++i, this.getId());
     pst.setTimestamp(++i, this.getModified());
     int resultCount = pst.executeUpdate();
@@ -1895,7 +1785,6 @@ public class FileItem extends GenericBean {
     }
     return success;
   }
-
 
   /**
    * Description of the Method
@@ -1910,10 +1799,10 @@ public class FileItem extends GenericBean {
     // Turn off other defaults
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-            "SET default_file = ? " +
-            "WHERE link_module_id = ? " +
-            "AND link_item_id = ? " +
-            "AND default_file = ? ");
+        "SET default_file = ? " +
+        "WHERE link_module_id = ? " +
+        "AND link_item_id = ? " +
+        "AND default_file = ? ");
     int i = 0;
     pst.setBoolean(++i, false);
     pst.setInt(++i, linkModuleId);
@@ -1924,10 +1813,9 @@ public class FileItem extends GenericBean {
     // Turn on this default
     pst = db.prepareStatement(
         "UPDATE project_files " +
-            "SET default_file = ? " +
-            "WHERE item_id = ? " +
-            "AND default_file = ? "
-    );
+        "SET default_file = ? " +
+        "WHERE item_id = ? " +
+        "AND default_file = ? ");
     pst.setBoolean(1, true);
     pst.setInt(2, id);
     pst.setBoolean(3, false);

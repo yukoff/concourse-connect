@@ -260,8 +260,13 @@ public final class FileAttachments extends GenericAction {
         thisItem.setFilename(newFileInfo.getRealFilename());
         thisItem.setSize(newFileInfo.getSize());
         thisItem.setComment(comment);
-        if (thisItem.isImageFormat()) {
+        if (thisItem.isImageFormat() || Constants.PROJECT_IMAGE_FILES == linkModuleId) {
+          // Verify that an image was correctly sent
           thisItem.setImageSize(ImageUtils.getImageSize(newFileInfo.getLocalFile()));
+          if (thisItem.getImageWidth() == 0 || thisItem.getImageHeight() == 0) {
+            // A bad image was sent
+            return ("ImageUploadERROR");
+          }
         }
         // this is a new document
         thisItem.setVersion(1.0);
@@ -270,7 +275,7 @@ public final class FileAttachments extends GenericAction {
         if (!recordInserted) {
           processErrors(context, thisItem.getErrors());
         } else {
-          if (thisItem.isImageFormat()) {
+          if (thisItem.isImageFormat() && thisItem.hasValidImageSize()) {
             // Prepare this image for thumbnail conversion
             ImageResizerBean bean = new ImageResizerBean();
             bean.setFileItemId(thisItem.getId());

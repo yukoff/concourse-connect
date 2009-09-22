@@ -97,13 +97,8 @@
         <fieldset id="">
           <legend>
             Ticket # <%= ticket.getProjectTicketCount() %>
-            <ccp:evaluate if="<%= ticket.isClosed() %>">
-              (<span class="closed"><ccp:label name="projectsCenterTickets.comments.ticketClosedOn">This ticket was closed on</ccp:label> <ccp:tz timestamp="<%= ticket.getClosed() %>"/></span>)
-            </ccp:evaluate>
-            <ccp:evaluate if="<%= !ticket.isClosed() %>">
-              (<span class="open"><ccp:label name="projectsCenterTickets.comments.open">Open</ccp:label></span>)
-            </ccp:evaluate>
-            <ccp:label name="projectsCenterTickets.comments.comments">Comments</ccp:label>
+            <ccp:evaluate if="<%= ticket.isClosed() %>"> (<ccp:label name="projectsCenterTickets.comments.ticketClosedOn">This ticket was closed on</ccp:label> <ccp:tz timestamp="<%= ticket.getClosed() %>"/>)</ccp:evaluate>
+            <ccp:evaluate if="<%= !ticket.isClosed() %>">(<ccp:label name="projectsCenterTickets.comments.open">Open</ccp:label>)</ccp:evaluate>
           </legend>
           <%-- Comments --%>
           <label for="comment"><ccp:label name="projectsCenterTickets.comments.userComments">User Comments</ccp:label></label>

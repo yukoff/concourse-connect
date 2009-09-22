@@ -548,7 +548,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat()) {
+        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -567,7 +567,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat()) {
+        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -583,7 +583,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat()) {
+        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -603,7 +603,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat()) {
+        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -625,7 +625,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat()) {
+        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
           String[] xy = null;
           if (maxDimensions != null) {
             xy = maxDimensions.split("x");
@@ -757,7 +757,7 @@ public final class Portal extends GenericAction {
         if (!recordInserted) {
           processErrors(context, thisItem.getErrors());
         } else {
-          if (thisItem.isImageFormat()) {
+          if (thisItem.isImageFormat() && thisItem.hasValidImageSize()) {
             //Create a thumbnail if this is an image
             File thumbnailFile = new File(newFileInfo.getLocalFile().getPath() + "TH");
             Thumbnail thumbnail = new Thumbnail(ImageUtils.saveThumbnail(newFileInfo.getLocalFile(), thumbnailFile, 133d, 133d, "jpg"));

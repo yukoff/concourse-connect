@@ -125,7 +125,7 @@
         ${counter}. <ccp:label name="fileAttach.selectFile">Choose the file you want to attach...</ccp:label>
       </label>
       <c:set var="counter" value="${counter+1}"/>
-      <input type="file" name="id<%= request.getParameter("pid") %>" size="45" />
+      <input type="file" name="id<%= request.getParameter("pid") %>" size="45"/>
       <ccp:evaluate if="<%= request.getParameter(\"pid\") != null %>">
         <input type="hidden" name="pid" value="<%= request.getParameter("pid") %>" />
       </ccp:evaluate>
@@ -141,13 +141,16 @@
         <input type="text" name="comment" id="comment" value="${param.caption}" maxlength="500" />
         <span class="characterCounter">500 characters max</span>
       </c:if>
-      <input type="submit" value="Attach..." name="attach" class="submit" />
-      <c:if test="${'true' eq param.popup || 'true' eq popup}">
-        <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
-      </c:if>
+      <p>
+        <input type="submit" value="Attach..." name="attach" class="submit" />
+        <ccp:evaluate if="<%= \"single\".equals(selectorMode)  %>">
+          <c:if test="${'true' eq param.popup || 'true' eq popup}">
+            <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
+          </c:if>
+        </ccp:evaluate>
+      </p>
       <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
       <ccp:evaluate if="<%= !\"single\".equals(selectorMode)  %>">
-        <ccp:evaluate if="<%= (fileItemList.size() > 0 && !\"true\".equals(added)) %>">
           <p>${counter}. <ccp:label name="fileAttach.repeatForMoreAttachments">Repeat steps 1 and 2 to add more attachments.</ccp:label></p>
           <c:set var="counter" value="${counter+1}"/>
           <label><ccp:label name="fileAttach.howToRemoveAttachment">To remove an attachment, select it below and choose Remove.</ccp:label></label>
@@ -167,7 +170,6 @@
           <label>${counter}. Choose Finish to attach the files.</label>
           <c:set var="counter" value="${counter+1}"/>
           <input type="button" value="Finish" onClick="finish();" class="submit" />
-        </ccp:evaluate>
       </ccp:evaluate>
     </fieldset>
     <fieldset id="progressBar" style="display:none">

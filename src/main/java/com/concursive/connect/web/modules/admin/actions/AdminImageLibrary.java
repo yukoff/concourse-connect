@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.admin.actions;
 
 import com.concursive.commons.images.ImageUtils;
@@ -96,7 +95,6 @@ public final class AdminImageLibrary extends GenericAction {
     }
   }
 
-
   /**
    * Description of the Method
    *
@@ -109,7 +107,6 @@ public final class AdminImageLibrary extends GenericAction {
     }
     return ("ImageAddOK");
   }
-
 
   /**
    * Description of the Method
@@ -146,6 +143,14 @@ public final class AdminImageLibrary extends GenericAction {
       thisItem.setFilename(newFileInfo.getRealFilename());
       thisItem.setSize(newFileInfo.getSize());
       thisItem.setVersion(1.0);
+      // Verify the integrity of the image
+      if (thisItem.isImageFormat()) {
+        thisItem.setImageSize(ImageUtils.getImageSize(newFileInfo.getLocalFile()));
+        if (thisItem.getImageWidth() == 0 || thisItem.getImageHeight() == 0) {
+          // A bad image was sent
+          return ("ImageUploadERROR");
+        }
+      }
       recordInserted = thisItem.insert(db);
       if (!recordInserted) {
         processErrors(context, thisItem.getErrors());
@@ -173,7 +178,6 @@ public final class AdminImageLibrary extends GenericAction {
       freeConnection(context, db);
     }
   }
-
 
   /**
    * Description of the Method

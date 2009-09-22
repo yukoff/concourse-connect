@@ -68,6 +68,7 @@
     <forward name="Redirect302" resource="/redirect302.jsp"/>
     <forward name="404Error" resource="/redirect404.jsp"/>
     <forward name="SaveItemListPopupOK" resource="/util_edit_list_closepopup_refresh.jsp"/>
+    <forward name="ImageUploadERROR" resource="/file_attachments_error.jsp"/>
   </action>
   <action name="Service" class="com.concursive.connect.web.modules.api.actions.Service" controller="api">
     <forward name="ServiceOK" resource="/service.jsp" />

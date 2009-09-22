@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.wiki.actions;
 
 import com.concursive.commons.images.ImageUtils;
@@ -168,7 +167,6 @@ public final class ProjectManagementWiki extends GenericAction {
     }
   }
 
-
   public String executeCommandUploadImage(ActionContext context) {
     Connection db = null;
     boolean recordInserted = false;
@@ -203,7 +201,12 @@ public final class ProjectManagementWiki extends GenericAction {
         thisItem.setClientFilename(newFileInfo.getClientFileName());
         thisItem.setFilename(newFileInfo.getRealFilename());
         thisItem.setSize(newFileInfo.getSize());
+        // Verify the integrity of the image
         thisItem.setImageSize(ImageUtils.getImageSize(newFileInfo.getLocalFile()));
+        if (thisItem.getImageWidth() == 0 || thisItem.getImageHeight() == 0) {
+          // A bad image was sent
+          return ("ImageUploadERROR");
+        }
         // check to see if this filename already exists for automatic versioning
         FileItemList fileItemList = new FileItemList();
         fileItemList.setLinkModuleId(Constants.PROJECT_WIKI_FILES);
@@ -225,7 +228,7 @@ public final class ProjectManagementWiki extends GenericAction {
         if (!recordInserted) {
           processErrors(context, thisItem.getErrors());
         } else {
-          if (thisItem.isImageFormat()) {
+          if (thisItem.isImageFormat() && thisItem.hasValidImageSize()) {
             // Create a thumbnail if this is an image
             String format = thisItem.getExtension().substring(1);
             File thumbnailFile = new File(newFileInfo.getLocalFile().getPath() + "TH");

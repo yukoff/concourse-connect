@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.cms.portal.actions;
 
 import com.concursive.commons.images.ImageUtils;
@@ -150,8 +149,8 @@ public final class Portal extends GenericAction {
           }
           String queryString =
               "(approved:1) " +
-                  "AND (closed:0) " +
-                  "AND (website:0) ";
+              "AND (closed:0) " +
+              "AND (website:0) ";
           context.getRequest().setAttribute("projectSearcher", projectSearcher);
           context.getRequest().setAttribute("baseQueryString", queryString);
           // Render the pages
@@ -186,7 +185,6 @@ public final class Portal extends GenericAction {
       this.freeConnection(context, db);
     }
   }
-
 
   /**
    * Description of the Method
@@ -227,7 +225,6 @@ public final class Portal extends GenericAction {
       this.freeConnection(context, db);
     }
   }
-
 
   /**
    * Description of the Method
@@ -273,7 +270,6 @@ public final class Portal extends GenericAction {
     }
   }
 
-
   /**
    * Description of the Method
    *
@@ -283,7 +279,6 @@ public final class Portal extends GenericAction {
   public String executeCommandContact(ActionContext context) {
     return "ContactOK";
   }
-
 
   /**
    * Description of the Method
@@ -308,7 +303,6 @@ public final class Portal extends GenericAction {
       freeConnection(context, db);
     }
   }
-
 
   /**
    * Description of the Method
@@ -347,7 +341,6 @@ public final class Portal extends GenericAction {
     return "-none-";
   }
 
-
   /**
    * Description of the Method
    *
@@ -384,7 +377,6 @@ public final class Portal extends GenericAction {
     }
     return "-none-";
   }
-
 
   /**
    * Action for displaying the Image Selector
@@ -460,7 +452,6 @@ public final class Portal extends GenericAction {
       freeConnection(context, db);
     }
   }
-
 
   /**
    * Action for streaming a selected image, based on project permissions
@@ -548,7 +539,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
+        if (fileItem.isImageFormat()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -567,7 +558,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
+        if (fileItem.isImageFormat()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -583,7 +574,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
+        if (fileItem.isImageFormat()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -603,7 +594,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
+        if (fileItem.isImageFormat()) {
           String[] xy = maxDimensions.split("x");
           // Get a reference to the thumbnail, it will be created if it doesn't exist
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, Integer.parseInt(xy[0]), Integer.parseInt(xy[1]), this.getPath(context, "projects"));
@@ -625,7 +616,7 @@ public final class Portal extends GenericAction {
           return "PermissionError";
         }
         // Get the requested thumbnail, if not found, generate it
-        if (fileItem.isImageFormat() && fileItem.hasValidImageSize()) {
+        if (fileItem.isImageFormat()) {
           String[] xy = null;
           if (maxDimensions != null) {
             xy = maxDimensions.split("x");
@@ -699,7 +690,6 @@ public final class Portal extends GenericAction {
     }
     return null;
   }
-
 
   /**
    * Processes an uploaded image
@@ -819,8 +809,8 @@ public final class Portal extends GenericAction {
       }
       String queryString =
           "(approved:1) " +
-              "AND (closed:0) " +
-              "AND (website:0) ";
+          "AND (closed:0) " +
+          "AND (website:0) ";
       context.getRequest().setAttribute("projectSearcher", projectSearcher);
       context.getRequest().setAttribute("baseQueryString", queryString);
       boolean isAction = PortletManager.processPage(context, db, page);

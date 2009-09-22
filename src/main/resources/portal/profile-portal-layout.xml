@@ -61,7 +61,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -431,7 +431,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -638,7 +638,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -844,7 +844,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -1036,7 +1036,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -1247,7 +1247,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -1439,7 +1439,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -1620,7 +1620,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -1765,7 +1765,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
@@ -1929,7 +1929,7 @@
                   <rule>userHasCRMAccess</rule>]]>
               </value>
               <value>
-                <![CDATA[<content>Access Tools</content>
+                <![CDATA[<content>Go to Tools</content>
                   <title>Access the tools for ${project.title:xml}</title>
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>

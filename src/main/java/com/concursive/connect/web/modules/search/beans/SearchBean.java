@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.search.beans;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -63,12 +62,11 @@ import java.util.Map;
  * @created May 17, 2004
  */
 public class SearchBean extends GenericBean {
-  public final static int UNDEFINED = -1;
 
+  public final static int UNDEFINED = -1;
   // constant scopes
   public final static int ALL = 1;
   public final static int THIS = 2;
-
   // constant sections
   public final static int NEWS = 3;
   public final static int DISCUSSION = 4;
@@ -82,7 +80,6 @@ public class SearchBean extends GenericBean {
   public final static int ADS = 12;
   public final static int CLASSIFIEDS = 13;
   public final static int REVIEWS = 14;
-
   // filters
   public final static int BEST_MATCH = -1;
   public final static int HIGHEST_RATED = 1;
@@ -90,7 +87,6 @@ public class SearchBean extends GenericBean {
   public final static int NEWLY_ADDED = 3;
   public final static int NEARBY = 4;
   public final static int MOST_POPULAR = 5;
-
   // search form
   private String query = null;
   private String type = null;
@@ -110,13 +106,11 @@ public class SearchBean extends GenericBean {
   private int numberFound = 0;
   private boolean valid = false;
 
-
   /**
    * Constructor for the SearchBean object
    */
   public SearchBean() {
   }
-
 
   /**
    * Gets the query attribute of the SearchBean object
@@ -126,7 +120,6 @@ public class SearchBean extends GenericBean {
   public String getQuery() {
     return query;
   }
-
 
   /**
    * Sets the query attribute of the SearchBean object
@@ -166,7 +159,6 @@ public class SearchBean extends GenericBean {
     return scope;
   }
 
-
   /**
    * Sets the scope attribute of the SearchBean object
    *
@@ -175,7 +167,6 @@ public class SearchBean extends GenericBean {
   public void setScope(int tmp) {
     this.scope = tmp;
   }
-
 
   /**
    * Gets the section attribute of the SearchBean object
@@ -186,7 +177,6 @@ public class SearchBean extends GenericBean {
     return section;
   }
 
-
   /**
    * Sets the section attribute of the SearchBean object
    *
@@ -195,7 +185,6 @@ public class SearchBean extends GenericBean {
   public void setSection(int tmp) {
     this.section = tmp;
   }
-
 
   /**
    * Sets the section attribute of the SearchBean object
@@ -206,20 +195,24 @@ public class SearchBean extends GenericBean {
     this.section = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the type attribute of the SearchBean object
    *
    * @param tmp The new type value
    */
   public void setType(String tmp) {
-    type = tmp;
-    if (tmp.equals("this")) {
-      scope = THIS;
-    } else if (tmp.equals("all")) {
-      scope = ALL;
-    } else {
-      scope = UNDEFINED;
+    scope = UNDEFINED;
+    type = "";
+    if (tmp != null && tmp.length() > 0) {
+      if ("this".equals(tmp)) {
+        scope = THIS;
+      } else if ("all".equals(tmp)) {
+        scope = ALL;
+      }
+    }
+    // Validate the input
+    if (scope != UNDEFINED) {
+      type = tmp;
     }
   }
 
@@ -234,36 +227,40 @@ public class SearchBean extends GenericBean {
    */
   public void setScope(String tmp) {
     // section
-    if (tmp.endsWith("News")) {
-      section = NEWS;
-    } else if (tmp.endsWith("Discussion")) {
-      section = DISCUSSION;
-    } else if (tmp.endsWith("Documents")) {
-      section = DOCUMENTS;
-    } else if (tmp.endsWith("Lists")) {
-      section = LISTS;
-    } else if (tmp.endsWith("Plan")) {
-      section = PLAN;
-    } else if (tmp.endsWith("Tickets")) {
-      section = TICKETS;
-    } else if (tmp.endsWith("Details")) {
-      section = DETAILS;
-    } else if (tmp.endsWith("Wiki")) {
-      section = WIKI;
-    } else if (tmp.endsWith("Website")) {
-      section = WEBSITE;
-    } else if (tmp.endsWith("Ads")) {
-      section = ADS;
-    } else if (tmp.endsWith("Classifieds")) {
-      section = CLASSIFIEDS;
-    } else if (tmp.endsWith("Reviews")) {
-      section = REVIEWS;
-    } else {
-      section = UNDEFINED;
+    section = UNDEFINED;
+    scopeText = "";
+    if (tmp != null && tmp.length() > 0) {
+      if ("allNews".equals(tmp) || "allBlog".equals(tmp)) {
+        section = NEWS;
+      } else if ("allDiscussion".equals(tmp)) {
+        section = DISCUSSION;
+      } else if ("allDocuments".equals(tmp)) {
+        section = DOCUMENTS;
+      } else if ("allLists".equals(tmp)) {
+        section = LISTS;
+      } else if ("allPlan".equals(tmp)) {
+        section = PLAN;
+      } else if ("allTickets".equals(tmp)) {
+        section = TICKETS;
+      } else if ("allDetails".equals(tmp)) {
+        section = DETAILS;
+      } else if ("allWiki".equals(tmp)) {
+        section = WIKI;
+      } else if ("allWebsite".equals(tmp)) {
+        section = WEBSITE;
+      } else if ("allAds".equals(tmp) || "allPromotions".equals(tmp)) {
+        section = ADS;
+      } else if ("allClassifieds".equals(tmp)) {
+        section = CLASSIFIEDS;
+      } else if ("allReviews".equals(tmp)) {
+        section = REVIEWS;
+      }
     }
-    scopeText = tmp;
+    // Validate the input
+    if (section != UNDEFINED) {
+      scopeText = tmp;
+    }
   }
-
 
   /**
    * Gets the projectId attribute of the SearchBean object
@@ -274,7 +271,6 @@ public class SearchBean extends GenericBean {
     return projectId;
   }
 
-
   /**
    * Sets the projectId attribute of the SearchBean object
    *
@@ -283,7 +279,6 @@ public class SearchBean extends GenericBean {
   public void setProjectId(int tmp) {
     this.projectId = tmp;
   }
-
 
   /**
    * Sets the projectId attribute of the SearchBean object
@@ -335,7 +330,6 @@ public class SearchBean extends GenericBean {
     return valid;
   }
 
-
   /**
    * Gets the parsedQuery attribute of the SearchBean object
    *
@@ -344,7 +338,6 @@ public class SearchBean extends GenericBean {
   public String getParsedQuery() {
     return parsedQuery;
   }
-
 
   /**
    * Sets the parsedQuery attribute of the SearchBean object
@@ -371,7 +364,6 @@ public class SearchBean extends GenericBean {
   public ArrayList<String> getTerms() {
     return terms;
   }
-
 
   /**
    * Sets the terms attribute of the SearchBean object
@@ -410,7 +402,6 @@ public class SearchBean extends GenericBean {
   public void addNumberFound(int count) {
     numberFound += count;
   }
-
 
   /**
    * Description of the Method
@@ -487,11 +478,10 @@ public class SearchBean extends GenericBean {
   }
 
   public String getUrlByFilter(int newFilter) {
-    return "/search?categoryId=" + categoryId + "&query=" + StringUtils.encodeUrl(getQuery()) + "&location=" + StringUtils.encodeUrl(getLocation()) + "&scope=" + getScopeText() + "&type=" + getType() + "&filter=" + newFilter + "&projectId=" + projectId + "&openProjectsOnly=" + openProjectsOnly + "&auto-populate=true";
+    return "/search?categoryId=" + categoryId + "&query=" + StringUtils.encodeUrl(getQuery()) + "&location=" + StringUtils.encodeUrl(getLocation()) + "&scope=" + StringUtils.encodeUrl(getScopeText()) + "&type=" + StringUtils.encodeUrl(getType()) + "&filter=" + newFilter + "&projectId=" + projectId + "&openProjectsOnly=" + openProjectsOnly + "&auto-populate=true";
   }
 
   public String getUrlByCategory(int newCategoryId) {
-    return "/search?categoryId=" + newCategoryId + "&query=" + StringUtils.encodeUrl(getQuery()) + "&location=" + StringUtils.encodeUrl(getLocation()) + "&scope=" + getScopeText() + "&type=" + getType() + "&filter=" + getFilter() + "&projectId=" + projectId + "&openProjectsOnly=" + openProjectsOnly + "&auto-populate=true";
+    return "/search?categoryId=" + newCategoryId + "&query=" + StringUtils.encodeUrl(getQuery()) + "&location=" + StringUtils.encodeUrl(getLocation()) + "&scope=" + StringUtils.encodeUrl(getScopeText()) + "&type=" + StringUtils.encodeUrl(getType()) + "&filter=" + getFilter() + "&projectId=" + projectId + "&openProjectsOnly=" + openProjectsOnly + "&auto-populate=true";
   }
-
 }

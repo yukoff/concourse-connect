@@ -292,7 +292,7 @@
                 </ccp:evaluate>
                 --%>
                 <li class="last">
-                  <a href="http://<%= getServerUrl(request) %>/logout">Sign Out</a>
+                  <a href="${ctx}/logout">Sign Out</a>
                 </li>
               </ccp:evaluate>
               <%-- Display Login and register actions if user is not logged in --%>

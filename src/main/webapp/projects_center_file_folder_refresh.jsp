@@ -47,7 +47,7 @@
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%
   int fid = -1;
-  String folderId = request.getParameter("folderId");
+  String folderId = StringUtils.encodeUrl(request.getParameter("folderId"));
   if (folderId == null) {
     folderId = (String) request.getAttribute("folderId");
   }

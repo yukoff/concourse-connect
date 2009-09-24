@@ -94,16 +94,16 @@
       <input type="hidden" name="popup" value="true" />
     </ccp:evaluate>
     <ccp:evaluate if="<%= request.getParameter(\"form\") != null %>">
-      <input type="hidden" name="form" value="<%= request.getParameter("form") %>" />
+      <input type="hidden" name="form" value="<%= toHtmlValue(request.getParameter("form")) %>" />
     </ccp:evaluate>
     <ccp:evaluate if="<%= request.getParameter(\"field\") != null %>">
-      <input type="hidden" name="field" value="<%= request.getParameter("field") %>" />
+      <input type="hidden" name="field" value="<%= toHtmlValue(request.getParameter("field")) %>" />
     </ccp:evaluate>
     <ccp:evaluate if="<%= request.getParameter(\"projectId\") != null %>">
-      <input type="hidden" name="projectId" value="<%= request.getParameter("projectId") %>" />
+      <input type="hidden" name="projectId" value="<%= toHtmlValue(request.getParameter("projectId")) %>" />
     </ccp:evaluate>
     <ccp:evaluate if="<%= request.getParameter(\"pid\") != null %>">
-      <input type="hidden" name="pid" value="<%= request.getParameter("pid") %>" />
+      <input type="hidden" name="pid" value="<%= toHtmlValue(request.getParameter("pid")) %>" />
     </ccp:evaluate>
     <input type="submit" class="submit" value="<ccp:label name="button.saveChanges">Save Changes</ccp:label>" />
     <ccp:evaluate if="<%= request.getParameter(\"popup\") != null %>">

@@ -150,7 +150,7 @@ function hideSubCats(subCatID, value) {
   <%--
 	<% if (ticket.getClosed() != null) { %>
   <ccp:permission name="project-tickets-close">
-    <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>')">
+    <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>')">
   </ccp:permission>
   <%} else {%>
     <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>">
@@ -158,7 +158,7 @@ function hideSubCats(subCatID, value) {
   <% if ("list".equals(request.getParameter("return")) || ticket.getId() == -1) {%>
     <input type="button" class="submit" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issues'">
   <%} else {%>
-    <input type="button" class="submit" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issue/<%= ticket.getProjectTicketCount() %>?return=<%= request.getParameter("return") %>'">
+    <input type="button" class="submit" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issue/<%= ticket.getProjectTicketCount() %>?return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
   <%}%>
   --%>
   <%= showError(request, "actionError") %>
@@ -384,14 +384,14 @@ function hideSubCats(subCatID, value) {
   --%>
   
   <% if (ticket.getClosed() != null) { %>
-    <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>')">
+    <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>')">
   <%} else {%>
     <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>">
   <%}%>
   <% if ("list".equals(request.getParameter("return")) || ticket.getId() == -1) {%>
     <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issues'">
   <%} else {%>
-    <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issue/<%= ticket.getProjectTicketCount() %>?return=<%= request.getParameter("return") %>'">
+    <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issue/<%= ticket.getProjectTicketCount() %>?return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
   <%}%>
   <input type="hidden" name="modified" value="<%= ticket.getModified() %>">
   <input type="hidden" name="pid" value="<%= project.getId() %>">

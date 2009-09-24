@@ -54,6 +54,7 @@
 <%-- Temp. fix for Weblogic --%>
 <%
 boolean hasPrefsRegister = "true".equals(applicationPrefs.get("REGISTER"));
+boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
 %>
 <div class="portletWindowBackground">
   <div class="portletWrapper accountInfo tableContainer">
@@ -89,6 +90,6 @@ boolean hasPrefsRegister = "true".equals(applicationPrefs.get("REGISTER"));
         </ccp:evaluate>
       </dd>
     </dl>
-    <a class="submit" href="<%= ctx %>/Password.do?command=ChangePassword"><ccp:label name="userProfile.changeMyPassword">Change my password</ccp:label></a>
+    <a class="submit" href="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/Password.do?command=ChangePassword"><ccp:label name="userProfile.changeMyPassword">Change my password</ccp:label></a>
   </div>
 </div>

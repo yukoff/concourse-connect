@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ ConcourseConnect
   ~ Copyright 2009 Concursive Corporation
@@ -44,10 +44,7 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   -->
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-    version="2.4">
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   <display-name>ConcourseConnect</display-name>
   <listener>
     <listener-class>
@@ -75,50 +72,50 @@
     <servlet-name>Controller</servlet-name>
     <servlet-class>com.concursive.commons.web.mvc.servlets.ControllerServlet</servlet-class>
     <init-param>
-          <param-name>PopulateAttributeName</param-name>
-          <param-value>auto-populate</param-value>
+      <param-name>PopulateAttributeName</param-name>
+      <param-value>auto-populate</param-value>
     </init-param>
     <init-param>
-          <param-name>ActionConfig</param-name>
-          <param-value>config.xml</param-value>
+      <param-name>ActionConfig</param-name>
+      <param-value>config.xml</param-value>
     </init-param>
     <init-param>
-          <param-name>UseXSLCache</param-name>
-          <param-value>false</param-value>
+      <param-name>UseXSLCache</param-name>
+      <param-value>false</param-value>
     </init-param>
     <init-param>
-          <param-name>PopulateClassName</param-name>
-          <param-value>com.concursive.connect.web.controller.utils.AutoPopulate</param-value>
+      <param-name>PopulateClassName</param-name>
+      <param-value>com.concursive.connect.web.controller.utils.AutoPopulate</param-value>
     </init-param>
     <!-- ControllerServlet -->
     <init-param>
-          <param-name>Hook</param-name>
-          <param-value>com.concursive.connect.web.controller.hooks.SecurityHook</param-value>
+      <param-name>Hook</param-name>
+      <param-value>com.concursive.connect.web.controller.hooks.SecurityHook</param-value>
     </init-param>
     <!-- FastServlet -->
     <init-param>
-          <param-name>InitFilter</param-name>
-          <param-value>com.concursive.connect.web.controller.hooks.InitHook</param-value>
+      <param-name>InitFilter</param-name>
+      <param-value>com.concursive.connect.web.controller.hooks.InitHook</param-value>
     </init-param>
     <init-param>
-          <param-name>RequestFilter</param-name>
-          <param-value>com.concursive.connect.web.controller.hooks.RequestHook</param-value>
+      <param-name>RequestFilter</param-name>
+      <param-value>com.concursive.connect.web.controller.hooks.RequestHook</param-value>
     </init-param>
     <init-param>
-          <param-name>DestroyFilter</param-name>
-          <param-value>com.concursive.connect.web.controller.hooks.DestroyHook</param-value>
+      <param-name>DestroyFilter</param-name>
+      <param-value>com.concursive.connect.web.controller.hooks.DestroyHook</param-value>
     </init-param>
     <init-param>
-          <param-name>PreloadXSL</param-name>
-          <param-value>false</param-value>
+      <param-name>PreloadXSL</param-name>
+      <param-value>false</param-value>
     </init-param>
     <init-param>
-          <param-name>CacheModules</param-name>
-          <param-value>true</param-value>
+      <param-name>CacheModules</param-name>
+      <param-value>true</param-value>
     </init-param>
     <init-param>
-          <param-name>listings</param-name>
-          <param-value>false</param-value>
+      <param-name>listings</param-name>
+      <param-value>false</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -126,12 +123,12 @@
     <servlet-name>Webdav</servlet-name>
     <servlet-class>com.concursive.connect.web.webdav.servlets.WebdavServlet</servlet-class>
     <init-param>
-          <param-name>listings</param-name>
-          <param-value>false</param-value>
+      <param-name>listings</param-name>
+      <param-value>false</param-value>
     </init-param>
     <init-param>
-          <param-name>readonly</param-name>
-          <param-value>true</param-value>
+      <param-name>readonly</param-name>
+      <param-value>true</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -150,26 +147,26 @@
     <servlet-name>Feed</servlet-name>
     <servlet-class>com.concursive.connect.web.rss.servlets.FeedServlet</servlet-class>
     <init-param>
-          <param-name>listings</param-name>
-          <param-value>false</param-value>
+      <param-name>listings</param-name>
+      <param-value>false</param-value>
     </init-param>
     <init-param>
-          <param-name>readonly</param-name>
-          <param-value>true</param-value>
+      <param-name>readonly</param-name>
+      <param-value>true</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet>
     <servlet-name>Captcha</servlet-name>
-		<servlet-class>nl.captcha.servlet.SimpleCaptchaServlet</servlet-class>
+    <servlet-class>nl.captcha.servlet.SimpleCaptchaServlet</servlet-class>
   </servlet>
   <servlet>
-		<description>Returns the packed resources</description>
-		<display-name>PackServlet</display-name>
-		<servlet-name>PackServlet</servlet-name>
-		<servlet-class>net.sf.packtag.servlet.PackServlet</servlet-class>
-	</servlet>
+    <description>Returns the packed resources</description>
+    <display-name>PackServlet</display-name>
+    <servlet-name>PackServlet</servlet-name>
+    <servlet-class>net.sf.packtag.servlet.PackServlet</servlet-class>
+  </servlet>
   <!-- Portlets -->
   <servlet>
     <servlet-name>AboutPortlet</servlet-name>
@@ -1381,50 +1378,50 @@
   </servlet-mapping>
 
   <servlet-mapping>
-		<servlet-name>Captcha</servlet-name>
-		<url-pattern>/Captcha.png</url-pattern>
-	</servlet-mapping>
+    <servlet-name>Captcha</servlet-name>
+    <url-pattern>/Captcha.png</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>PackServlet</servlet-name>
-		<url-pattern>*.pack</url-pattern>
-	</servlet-mapping>
+    <servlet-name>PackServlet</servlet-name>
+    <url-pattern>*.pack</url-pattern>
+  </servlet-mapping>
 
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/de_DE/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/de_DE/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/en_AU/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/en_AU/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/en_CA/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/en_CA/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/en_IE/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/en_IE/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/en_GB/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/en_GB/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/en_US/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/en_US/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/es_VE/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/es_VE/WelcomeServlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
-		<servlet-name>WelcomeServlet</servlet-name>
-		<url-pattern>/it_IT/WelcomeServlet</url-pattern>
-	</servlet-mapping>
+    <servlet-name>WelcomeServlet</servlet-name>
+    <url-pattern>/it_IT/WelcomeServlet</url-pattern>
+  </servlet-mapping>
 
   <session-config>
     <session-timeout>60</session-timeout>
@@ -1434,4 +1431,32 @@
     <welcome-file>WelcomeServlet</welcome-file>
   </welcome-file-list>
 
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error.jsp</location>
+  </error-page>
+  <error-page>
+    <exception-type>java.lang.Throwable</exception-type>
+    <location>/error.jsp</location>
+  </error-page>
+  <security-constraint>
+    <display-name>Constraint1</display-name>
+    <web-resource-collection>
+      <web-resource-name>Forbidden</web-resource-name>
+      <description/>
+      <url-pattern>/*</url-pattern>
+      <http-method>PUT</http-method>
+      <http-method>OPTIONS</http-method>
+      <http-method>TRACE</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <description/>
+      <role-name>empty_role</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-role>
+    <description/>
+    <role-name>empty_role</role-name>
+  </security-role>
 </web-app>

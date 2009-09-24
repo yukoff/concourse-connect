@@ -77,7 +77,7 @@
       <input type="hidden" name="popup" value="true" />
     </c:if>
     <c:if test="${!empty param.redirectTo}">
-      <input type="hidden" name="redirectTo" value="${param.redirectTo}"/>
+      <input type="hidden" name="redirectTo" value="<%= StringUtils.encodeUrl(request.getParameter("redirectTo")) %>"/>
     </c:if>
     <input type="hidden" name="meetingId" value="<%= request.getAttribute("meetingId") %>"/>
   </form>

@@ -43,6 +43,7 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
-<body onload="parent.refreshPage(<%= request.getParameter("start") %>);">
+<%@ include file="initPage.jsp" %>
+<body onload="parent.refreshPage(<%= StringUtils.jsEscape(request.getParameter("start")) %>);">
 &nbsp;
 </body>

@@ -47,5 +47,5 @@
 <%@ include file="initPage.jsp" %>
 <%
 response.setStatus(302);
-response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId() + "/topic/" + request.getParameter("iid"));
+response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId() + "/topic/" + StringUtils.encodeUrl(request.getParameter("iid")));
 %>

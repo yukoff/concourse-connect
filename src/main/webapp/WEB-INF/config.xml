@@ -365,7 +365,7 @@
   <action name="Password" class="com.concursive.connect.web.modules.userprofile.actions.Profile">
     <bean name="password" class="com.concursive.connect.web.modules.login.beans.Password" scope="request"/>
     <forward name="ChangePasswordOK" resource="/user_profile_password.jsp"/>
-    <forward name="SavePasswordOK" resource="/Profile.do?command=Default"/>
+    <forward name="SavePasswordOK" resource="/settings" redirect="true"/>
     <forward name="SavePasswordError" resource="/user_profile_password.jsp"/>
   </action>
   <action name="Search" class="com.concursive.connect.web.modules.search.actions.Search">

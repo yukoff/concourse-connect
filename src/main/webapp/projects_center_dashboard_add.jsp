@@ -78,7 +78,7 @@
   <%-- Required state fields --%>
   <input type="hidden" name="id" value="<%= dashboard.getId() %>" />
   <input type="hidden" name="modified" value="<%= dashboard.getModified() %>" />
-  <input type="hidden" name="return" value="<%= request.getParameter("return") %>"/>
+  <input type="hidden" name="return" value="<%= StringUtils.toHtmlValue(request.getParameter("return")) %>"/>
   <%-- Trails --%>
   <table border="0" cellpadding="1" cellspacing="0" width="100%">
     <tr class="subtab">

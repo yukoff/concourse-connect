@@ -158,6 +158,6 @@ Build a link to an existing image:<br />
   <br />
   <input type="submit" name="Upload" value="Upload">
   <input type="hidden" name="pid" id="pid" value="<%= project.getId() %>">
-  <input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
+  <input type="hidden" name="popup" value="<%= StringUtils.toHtmlValue(request.getParameter("popup")) %>" />
   <input type="hidden" name="dosubmit" value="true">
 </form>

@@ -115,7 +115,7 @@
         <c:if test="${'true' eq param.popup || 'true' eq popup}">
           <input type="hidden" name="popup" value="true" />
         </c:if>
-        <input type="hidden" name="mode" value="<%= request.getParameter("mode") %>"/>
+        <input type="hidden" name="mode" value="<%= toHtmlValue(request.getParameter("mode")) %>"/>
       </fieldset>
       <input type="submit" class="submit" name="save" value="<ccp:label name="button.savePage">Save Page</ccp:label>" />
       <%--

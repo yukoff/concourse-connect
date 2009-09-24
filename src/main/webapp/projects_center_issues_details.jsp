@@ -312,18 +312,18 @@
       User replyUser = UserUtils.loadUser(thisReply.getEnteredBy());
       request.setAttribute("replyUser", replyUser);
 %>
-
-  <%-- TODO: Add back into layout IF EDITED
-  <ccp:evaluate if="<%= !(thisReply.getModified().equals(thisReply.getEntered())) %>">
-    <ccp:label name="projectsCenterIssues.details.edited">(edited)</ccp:label>
-  </ccp:evaluate>
-  --%>
-  
   <div class="postContainer">
     <div class="postHeader">
-      <h3>
-        <%= toHtml(thisReply.getSubject()) %>
-      </h3>
+      <h3><%= toHtml(thisReply.getSubject()) %></h3>
+      <portlet:renderURL var="modifyReplyUrl">
+        <portlet:param name="portlet-action" value="modify"/>
+        <portlet:param name="portlet-object" value="reply"/>
+        <portlet:param name="portlet-value" value="${thisReply.id}"/>
+      </portlet:renderURL>
+      <portlet:actionURL var="deleteReplyUrl">
+        <portlet:param name="reply" value="${thisReply.id}"/>
+        <portlet:param name="portlet-command" value="reply-delete"/>
+      </portlet:actionURL>
       <ccp:permission name="project-discussion-messages-edit,project-discussion-messages-delete" if="any">
         <div class="portlet-menu">
           <ul>
@@ -427,6 +427,10 @@
 
       <div class="postContent">
         <div id="reply_<%= thisReply.getId() %>"></div>
+        <ccp:evaluate if="<%= !(thisReply.getModified().equals(thisReply.getEntered())) %>">
+          <ccp:label name="projectsCenterIssues.details.edited">(edited)</ccp:label><br />
+          <br />
+        </ccp:evaluate>
         <%= toHtml(thisReply.getBody()) %>
       </div>
     </div>
@@ -439,8 +443,8 @@
           while (files.hasNext()) {
             FileItem thisFile = (FileItem) files.next();
         %>
-                <%= thisFile.getImageTag("-23", ctx) %>
-                <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&rid=<%= thisReply.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a><br />
+            <%= thisFile.getImageTag("-23", ctx) %>
+            <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&rid=<%= thisReply.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a><br />
         <%
           }
         %>
@@ -466,15 +470,6 @@
             <portlet:param name="portlet-object" value="reply"/>
             <portlet:param name="replyTo" value="${thisReply.id}"/>
           </portlet:renderURL>
-          <portlet:renderURL var="modifyReplyUrl">
-            <portlet:param name="portlet-action" value="modify"/>
-            <portlet:param name="portlet-object" value="reply"/>
-            <portlet:param name="portlet-value" value="${thisReply.id}"/>
-          </portlet:renderURL>
-          <portlet:actionURL var="deleteReplyUrl">
-            <portlet:param name="reply" value="${thisReply.id}"/>
-            <portlet:param name="portlet-command" value="reply-delete"/>
-          </portlet:actionURL>
           <ccp:evaluate if="<%= topic.getQuestion() %>">
             <ccp:permission name="project-discussion-messages-reply">
               <ccp:evaluate if="<%= (topic.getEnteredBy() ==  User.getId() || User.getAccessAdmin()) %>">

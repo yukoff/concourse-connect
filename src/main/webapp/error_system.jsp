@@ -78,5 +78,5 @@ An error message was not provided by this action.
   }
 %>
 --%>
-An error message was not provided by this action.
+An error message was not provided by this action, but has been logged.
 </pre>

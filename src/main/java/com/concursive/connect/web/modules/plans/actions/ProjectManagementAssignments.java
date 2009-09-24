@@ -43,14 +43,12 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.plans.actions;
 
 import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.web.controller.actions.GenericAction;
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.plans.dao.*;
@@ -135,7 +133,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     }
   }
 
-
   /**
    * Description of the Method
    *
@@ -217,7 +214,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     return (executeCommandAdd(context));
   }
 
-
   /**
    * Description of the Method
    *
@@ -264,7 +260,6 @@ public final class ProjectManagementAssignments extends GenericAction {
       return ("ProjectCenterOK");
     }
   }
-
 
   /**
    * Description of the Method
@@ -341,7 +336,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     }
   }
 
-
   /**
    * Description of the Method
    *
@@ -372,7 +366,6 @@ public final class ProjectManagementAssignments extends GenericAction {
       return ("ProjectCenterOK");
     }
   }
-
 
   /**
    * Description of the Method
@@ -441,7 +434,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     return (executeCommandAddFolder(context));
   }
 
-
   /**
    * Description of the Method
    *
@@ -475,7 +467,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     }
     return "DeleteOK";
   }
-
 
   /**
    * Description of the Method
@@ -511,7 +502,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     }
     return "MoveOK";
   }
-
 
   /**
    * Description of the Method
@@ -550,7 +540,6 @@ public final class ProjectManagementAssignments extends GenericAction {
       return ("SystemError");
     }
   }
-
 
   /**
    * Description of the Method
@@ -593,7 +582,6 @@ public final class ProjectManagementAssignments extends GenericAction {
       return ("SystemError");
     }
   }
-
 
   /**
    * Description of the Method
@@ -639,7 +627,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     }
   }
 
-
   /**
    * Description of the Method
    *
@@ -676,32 +663,30 @@ public final class ProjectManagementAssignments extends GenericAction {
     }
   }
 
-
   /**
    * Description of the Method
    *
    * @param context Description of the Parameter
    */
   private static void checkReturnPage(ActionContext context) {
-    String returnPage = context.getRequest().getParameter("return");
+    String returnPage = StringUtils.encodeUrl(context.getRequest().getParameter("return"));
     if (returnPage == null) {
       returnPage = (String) context.getRequest().getAttribute("return");
     }
     context.getRequest().setAttribute("return", returnPage);
     //1st param
-    String param = context.getRequest().getParameter("param");
+    String param = StringUtils.encodeUrl(context.getRequest().getParameter("param"));
     if (param == null) {
       param = (String) context.getRequest().getAttribute("param");
     }
     context.getRequest().setAttribute("param", param);
     //2nd param
-    String param2 = context.getRequest().getParameter("param2");
+    String param2 = StringUtils.encodeUrl(context.getRequest().getParameter("param2"));
     if (param2 == null) {
       param2 = (String) context.getRequest().getAttribute("param2");
     }
     context.getRequest().setAttribute("param2", param2);
   }
-
 
   /**
    * Description of the Method
@@ -756,7 +741,6 @@ public final class ProjectManagementAssignments extends GenericAction {
     }
     return "MoveItemOK";
   }
-
 
   /**
    * Description of the Method

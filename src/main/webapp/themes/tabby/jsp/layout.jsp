@@ -466,7 +466,7 @@
     <%-- Allow pages to have a scrollTo... must be at end of html --%>
     <ccp:evaluate if="<%= doScrollTop %>">
       <script type="text/javascript">
-        if (window.scrollTo) window.scrollTo(<%= request.getParameter("scrollLeft") %>, <%= request.getParameter("scrollTop") %>);
+        if (window.scrollTo) window.scrollTo(<%= StringUtils.jsEscape(request.getParameter("scrollLeft")) %>, <%= StringUtils.jsEscape(request.getParameter("scrollTop")) %>);
       </script>
     </ccp:evaluate>
     <div class="yui-skin-sam" id="popupLayer"></div>

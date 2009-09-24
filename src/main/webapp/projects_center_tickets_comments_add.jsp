@@ -110,7 +110,7 @@
           &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
         </fieldset>
         <input type="submit" class="submit" " value="<ccp:label name="button.save">Save</ccp:label>">
-        <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Details&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
+        <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Details&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
         <input type="hidden" name="pid" value="<%= project.getId() %>">
         <input type="hidden" name="id" value="<%= ticket.getId() %>">
         <input type="hidden" name="return" value="<%= toHtmlValue(request.getParameter("return")) %>">

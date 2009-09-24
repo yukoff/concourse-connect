@@ -47,5 +47,5 @@
 <%@ include file="initPage.jsp" %>
 <%
 response.setStatus(302);
-response.setHeader( "Location", request.getScheme() + "://" + getServerUrl(request) + "/ProjectManagement.do?command=ProjectCenter&section=Badges&pid=" + request.getParameter("pid") + (hasText(request.getParameter("id")) ? "&id=" + StringUtils.toHtmlValue(request.getParameter("id")) : ""));
+response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/ProjectManagement.do?command=ProjectCenter&section=Badges&pid=" + StringUtils.encodeUrl(request.getParameter("pid")) + (hasText(request.getParameter("id")) ? "&id=" + StringUtils.encodeUrl(request.getParameter("id")) : ""));
 %>

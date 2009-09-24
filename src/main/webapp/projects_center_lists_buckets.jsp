@@ -77,7 +77,7 @@
     callBucket("${ctx}/ProjectManagementListsBuckets.do?command=Move&pid=<%= project.getId() %>&id=" + itemId + "&columnId=" + columnId + "&key=<%= itemList.getObjectKeyProperty() %>&out=text");
   }
   function handleEditListSaved() {
-    window.location.href = '${ctx}/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${category.id}&trail=<%= trailMap.getTrailParameters() %>&table=<%= request.getParameter("table") %>';
+    window.location.href = '${ctx}/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${category.id}&trail=<%= trailMap.getTrailParameters() %>&table=<%= StringUtils.encodeUrl(request.getParameter("table")) %>';
   }
   function addItem(formFieldValue) {
     var formField = document.getElementById(formFieldValue);
@@ -189,7 +189,7 @@
             }
       %>
           <ccp:evaluate if="<%= iCount > 0 %>">/</ccp:evaluate>
-          <a href="${ctx}/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${category.id}&trail=<%= trailMap.getTrailParameters(thisSubject) %>&table=<%= request.getParameter("table") %>"><%= toHtml(thisSubject) %></a>
+          <a href="${ctx}/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${category.id}&trail=<%= trailMap.getTrailParameters(thisSubject) %>&table=<%= StringUtils.encodeUrl(request.getParameter("table")) %>"><%= toHtml(thisSubject) %></a>
           <ccp:evaluate if="<%= displayValue != null %>">(<%= displayValue %>)</ccp:evaluate>
           <ccp:evaluate if="<%= displayValue == null && thisValue != null %>">(<ccp:username id="<%= thisValue %>"/>)</ccp:evaluate>
       <%
@@ -212,9 +212,9 @@
             </form>
           </div>
         </ccp:evaluate>
-        <ccp:evaluate if="<%= request.getParameter(\"table\") != null && !\"owner\".equals(request.getParameter(\"table\")) %>">
+        <ccp:evaluate if='<%= request.getParameter("table") != null && !"owner".equals(request.getParameter("table")) %>'>
           <div class="workoptionseditor">
-            [<a href="javascript:popURL('${ctx}/ProjectManagementListsConfig.do?command=ConfigureItemList&pid=<%= project.getId() %>&list=<%= request.getParameter("table") %>&popup=true','Edit_List','650','400','yes','yes');">configure list</a>]
+            [<a href="javascript:popURL('${ctx}/ProjectManagementListsConfig.do?command=ConfigureItemList&pid=<%= project.getId() %>&list=<%= StringUtils.encodeUrl(request.getParameter("table")) %>&popup=true','Edit_List','650','400','yes','yes');">configure list</a>]
           </div>
         </ccp:evaluate>
         </div>
@@ -231,7 +231,7 @@
       <div class="workarea<%= (columnCount < 3 ? String.valueOf(columnCount) : "") %>">
         <div>
           <div class="columnheader">
-            <h3><a href="${ctx}/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${category.id}&trail=<%= trailMap.getTrailParameters(itemList.getObjectKeyProperty()) %>&value=<%= itemList.getObjectKeyProperty() %>|<%= thisItem.getId() == -1 ? "0" : String.valueOf(thisItem.getId()) %>&table=<%= request.getParameter("table") %>">
+            <h3><a href="${ctx}/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${category.id}&trail=<%= trailMap.getTrailParameters(itemList.getObjectKeyProperty()) %>&value=<%= itemList.getObjectKeyProperty() %>|<%= thisItem.getId() == -1 ? "0" : String.valueOf(thisItem.getId()) %>&table=<%= StringUtils.encodeUrl(request.getParameter("table")) %>">
             <ccp:evaluate if="<%= !\"owner\".equals(request.getParameter(\"table\")) %>"><%= thisItem.getName() %></ccp:evaluate>
             <ccp:evaluate if="<%= \"owner\".equals(request.getParameter(\"table\")) %>"><ccp:username id="<%= thisItem.getId() %>"/></ccp:evaluate>
             </a></h3>

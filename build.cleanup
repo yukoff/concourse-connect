@@ -161,3 +161,7 @@ WEB-INF/lib/jsr107cache-1.0.jar
 
 # 2009-09-11
 WEB-INF/lib/concursive-commons-20090819.jar
+
+# 2009-09-24
+WEB-INF/lib/concursive-commons-20090911.jar
+

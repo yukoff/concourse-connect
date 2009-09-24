@@ -58,13 +58,13 @@
 %>
 <script language="JavaScript" type="text/javascript">
   var pid="";
-  <ccp:evaluate if="<%= request.getParameter(\"pid\") != null %>">
-    pid = "&pid=<%= request.getParameter("pid") %>";
+  <ccp:evaluate if='<%= request.getParameter("pid") != null %>'>
+    pid = "&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %>";
   </ccp:evaluate>
-  var lmid="&lmid=<%= request.getParameter("lmid") %>";
-  var liid="&liid=<%= request.getParameter("liid") %>";
-  var selectorId="&selectorId=<%= request.getParameter("selectorId") %>";
-  var selectorMode="&selectorMode=<%= selectorMode %>";
+    var lmid="&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>";
+  var liid="&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>";
+  var selectorId="&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>";
+  var selectorMode="&selectorMode=<%= StringUtils.encodeUrl(selectorMode) %>";
 
   <ccp:evaluate if="<%= fileItemList.size() > 0 %>">
   window.opener.setAttachmentList('<%= fileItemList.getValueListing() %>');
@@ -72,7 +72,7 @@
   </ccp:evaluate>
 
   function checkFileForm(form) {
-    if (form.id<%= request.getParameter("pid") %>.value.length < 5) {
+    if (form.id<%= StringUtils.jsEscape(request.getParameter("pid")) %>.value.length < 5) {
       alert("A file must be selected before choosing Attach");
       return false;
     } else {
@@ -118,27 +118,27 @@
 <%= showError(request, "actionError", false) %>
 <c:set var="counter" value="${1}" />
 <div class="formContainer">
-  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if="<%= request.getParameter(\"pid\") != null %>">&pid=<%= request.getParameter("pid") %></ccp:evaluate>&lmid=<%= request.getParameter("lmid") %>&liid=<%= request.getParameter("liid") %>&selectorId=<%= request.getParameter("selectorId") %>&selectorMode=<%= selectorMode %>&added=true&popup=true" enctype="multipart/form-data" onSubmit="try {return checkFileForm(this);}catch(e){return true;}">
+  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if='<%= request.getParameter("pid") != null %>'>&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %></ccp:evaluate>&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>&selectorMode=<%= selectorMode %>&added=true&popup=true" enctype="multipart/form-data" onSubmit="try {return checkFileForm(this);}catch(e){return true;}">
     <fieldset id="fileListing">
       <legend><ccp:label name="fileAttach.title">File Attachments</ccp:label></legend>
       <label>
         ${counter}. <ccp:label name="fileAttach.selectFile">Choose the file you want to attach...</ccp:label>
       </label>
       <c:set var="counter" value="${counter+1}"/>
-      <input type="file" name="id<%= request.getParameter("pid") %>" size="45"/>
-      <ccp:evaluate if="<%= request.getParameter(\"pid\") != null %>">
-        <input type="hidden" name="pid" value="<%= request.getParameter("pid") %>" />
+      <input type="file" name="id<%= toHtml(request.getParameter("pid")) %>" size="45"/>
+      <ccp:evaluate if='<%= request.getParameter("pid") != null %>'>
+        <input type="hidden" name="pid" value="<%= toHtmlValue(request.getParameter("pid")) %>" />
       </ccp:evaluate>
-      <input type="hidden" name="lmid" value="<%= request.getParameter("lmid") %>" />
-      <input type="hidden" name="liid" value="<%= request.getParameter("liid") %>" />
-      <input type="hidden" name="selectorId" value="<%= request.getParameter("selectorId") %>" />
-      <input type="hidden" name="selectorMode" value="<%= selectorMode %>" />
+      <input type="hidden" name="lmid" value="<%= toHtmlValue(request.getParameter("lmid")) %>" />
+      <input type="hidden" name="liid" value="<%= toHtmlValue(request.getParameter("liid")) %>" />
+      <input type="hidden" name="selectorId" value="<%= toHtmlValue(request.getParameter("selectorId")) %>" />
+      <input type="hidden" name="selectorMode" value="<%= toHtmlValue(selectorMode) %>" />
       <input type="hidden" name="added" value="true" />
       <input type="hidden" name="popup" value="true" />
       <c:if test="${param.allowCaption == 'true'}">
         <label>${counter}. <ccp:label name="fileAttach.setCaption">Enter a caption to be displayed</ccp:label></label>
         <c:set var="counter" value="${counter+1}"/>
-        <input type="text" name="comment" id="comment" value="${param.caption}" maxlength="500" />
+        <input type="text" name="comment" id="comment" value="<%= toHtmlValue(request.getParameter("caption")) %>" maxlength="500" />
         <span class="characterCounter">500 characters max</span>
       </c:if>
       <p>

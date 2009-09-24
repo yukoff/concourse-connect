@@ -75,7 +75,7 @@
       </ccp:permission>
     </tbody>
   </table>
-  <input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
+  <input type="hidden" name="popup" value="<%= toHtmlValue(request.getParameter("popup")) %>" />
   <input type="hidden" name="projectId" value="<%= project.getId() %>" />
   <input type="hidden" name="pid" value="<%= project.getId() %>" />
   <input type="hidden" name="rid" value="<%= requirement.getId() %>" />

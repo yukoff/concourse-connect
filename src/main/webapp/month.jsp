@@ -62,10 +62,10 @@
 <%@ include file="initPage.jsp" %>
 <jsp:include page="css_include.jsp" flush="true"/>
 <%
-   String formName = request.getParameter("form");
-   String element = request.getParameter("element");
-   String language = request.getParameter("language");
-   String country = request.getParameter("country");
+   String formName = StringUtils.encodeUrl(request.getParameter("form"));
+   String element = StringUtils.encodeUrl(request.getParameter("element"));
+   String language = StringUtils.encodeUrl(request.getParameter("language"));
+   String country = StringUtils.encodeUrl(request.getParameter("country"));
    if (language == null) {
      language = "en";
      country = "US";
@@ -97,14 +97,14 @@
 <form name="monthBean" action="<%= ctx %>/month.jsp">
 <%
   //Retrieve the parameters
-  String year = request.getParameter("year");
-  String month = request.getParameter("month");
-  String day = request.getParameter("day");
-  String origDay = request.getParameter("origDay");
-  String origYear = request.getParameter("origYear");
-  String origMonth = request.getParameter("origMonth");
-  String dateString = request.getParameter("date");
-  String timeZone = request.getParameter("timeZone");
+  String year = StringUtils.encodeUrl(request.getParameter("year"));
+  String month = StringUtils.encodeUrl(request.getParameter("month"));
+  String day = StringUtils.encodeUrl(request.getParameter("day"));
+  String origDay = StringUtils.encodeUrl(request.getParameter("origDay"));
+  String origYear = StringUtils.encodeUrl(request.getParameter("origYear"));
+  String origMonth = StringUtils.encodeUrl(request.getParameter("origMonth"));
+  String dateString = StringUtils.encodeUrl(request.getParameter("date"));
+  String timeZone = StringUtils.encodeUrl(request.getParameter("timeZone"));
 
   //If the user clicks the next/previous arrow, increment/decrement the month
   //Range checking is not necessary on the month.  The calendar object automatically
@@ -163,7 +163,7 @@
   }
 
   //Configure the month to highlight a date that was passed in
-  String origStatus = request.getParameter("origStatus");
+  String origStatus = StringUtils.toHtmlValue(request.getParameter("origStatus"));
   if ((origStatus == null) && ((day == null) || (day.startsWith("undefined")))) {
     origStatus = "blank";
   } else if (origStatus == null) {

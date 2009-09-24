@@ -43,6 +43,7 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
@@ -69,4 +70,4 @@
 </table>
 <br />
 </ccp:evaluate>
-<input type="button" value="<ccp:label name="button.ok">OK</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/folder/<%= request.getParameter("folderId") %>';">
+<input type="button" value="<ccp:label name="button.ok">OK</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/folder/<c:out value="${param.folderId}" />';">

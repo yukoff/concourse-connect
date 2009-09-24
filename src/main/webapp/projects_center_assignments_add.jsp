@@ -70,7 +70,7 @@
   }
   String onLoad = "refreshUsers();refreshView();";
   if ("true".equals(request.getParameter("donew"))) {
-    onLoad += "window.opener.scrollReload('" + ctx + "/ProjectManagement.do?command=ProjectCenter&section=Assignments&pid=" + project.getId() + "&rid=" +  (Assignment.getId() == -1?request.getParameter("rid"):String.valueOf(Assignment.getRequirementId())) + "')";
+    onLoad += "window.opener.scrollReload('" + ctx + "/ProjectManagement.do?command=ProjectCenter&section=Assignments&pid=" + project.getId() + "&rid=" +  (Assignment.getId() == -1?StringUtils.encodeUrl(request.getParameter("rid")):String.valueOf(Assignment.getRequirementId())) + "')";
   }
   //Only evaluate on an insert
   int maxIndent = 0;
@@ -139,7 +139,7 @@
     }
   }
 </script>
-<form method="POST" name="inputForm" action="<%= ctx %>/ProjectManagementAssignments.do?command=Save&pid=<%= project.getId() %>&rid=<%= (Assignment.getId() == -1?request.getParameter("rid"):String.valueOf(Assignment.getRequirementId())) %>&auto-populate=true<%= (request.getParameter("popup") != null?"&popup=true":"") %>" onSubmit="return checkForm(this);">
+<form method="POST" name="inputForm" action="<%= ctx %>/ProjectManagementAssignments.do?command=Save&pid=<%= project.getId() %>&rid=<%= (Assignment.getId() == -1?StringUtils.encodeUrl(request.getParameter("rid")):String.valueOf(Assignment.getRequirementId())) %>&auto-populate=true<%= (request.getParameter("popup") != null?"&popup=true":"") %>" onSubmit="return checkForm(this);">
   <%= showError(request, "actionError", false) %>
   <table class="pagedList">
     <thead>
@@ -309,16 +309,16 @@
 </ccp:evaluate>
   <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onclick="this.form.dosubmit.value='false';<%= (isPopup(request)?"window.close();":"window.location.href='" + ctx + "/ProjectManagement.do?command=ProjectCenter&section=Assignments&pid=" + project.getId()  + "&rid=" + String.valueOf(Assignment.getRequirementId()) + "';") %>">
   <input type="hidden" name="id" value="<%= Assignment.getId() %>">
-  <input type="hidden" name="folderId" value="<%= (Assignment.getId() == -1?request.getParameter("folderId"):String.valueOf(Assignment.getFolderId())) %>">
+  <input type="hidden" name="folderId" value="<%= (Assignment.getId() == -1?StringUtils.toHtmlValue(request.getParameter("folderId")):String.valueOf(Assignment.getFolderId())) %>">
   <input type="hidden" name="projectId" value="<%= project.getId() %>">
-  <input type="hidden" name="requirementId" value="<%= (Assignment.getId() == -1?request.getParameter("rid"):String.valueOf(Assignment.getRequirementId())) %>">
+  <input type="hidden" name="requirementId" value="<%= (Assignment.getId() == -1?StringUtils.toHtmlValue(request.getParameter("rid")):String.valueOf(Assignment.getRequirementId())) %>">
   <input type="hidden" name="modified" value="<%= Assignment.getModifiedString() %>">
   <input type="hidden" name="dosubmit" value="true">
   <input type="hidden" name="donew" value="false">
   <input type="hidden" name="return" value="<%= request.getAttribute("return") %>">
   <input type="hidden" name="param" value="<%= project.getId() %>">
-  <input type="hidden" name="param2" value="<%= (Assignment.getId() == -1?request.getParameter("rid"):String.valueOf(Assignment.getRequirementId())) %>">
-  <input type="hidden" name="prevIndent" value="<%= Assignment.getPrevIndent() > -1 ? String.valueOf(Assignment.getPrevIndent()) : request.getParameter("prevIndent") %>">
-  <input type="hidden" name="prevMapId" value="<%= Assignment.getPrevMapId() > -1 ? String.valueOf(Assignment.getPrevMapId()) : request.getParameter("prevMapId") %>">
+  <input type="hidden" name="param2" value="<%= (Assignment.getId() == -1?StringUtils.toHtmlValue(request.getParameter("rid")):String.valueOf(Assignment.getRequirementId())) %>">
+  <input type="hidden" name="prevIndent" value="<%= Assignment.getPrevIndent() > -1 ? String.valueOf(Assignment.getPrevIndent()) : StringUtils.toHtmlValue(request.getParameter("prevIndent")) %>">
+  <input type="hidden" name="prevMapId" value="<%= Assignment.getPrevMapId() > -1 ? String.valueOf(Assignment.getPrevMapId()) : StringUtils.toHtmlValue(request.getParameter("prevMapId")) %>">
 </form>
 </body>

@@ -87,7 +87,7 @@
 <body onLoad="init();">
 <form name="addParams" action="<%= ctx %>/Translation.do?command=Update" method="post" onSubmit="return checkForm(this);">
 </ccp:evaluate>
-<input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
+<input type="hidden" name="popup" value="<%= toHtmlValue(request.getParameter("popup")) %>" />
 <a href="<%= ctx %>/Translation.do">Languages</a> >
 <a href="<%= ctx %>/Translation.do?command=Language&languageId=<%= languagePack.getId() %>"><%= toHtml(languagePack.getLanguageName()) %></a> >
 <ccp:evaluate if="<%= \"Search\".equals(request.getParameter(\"action\")) %>">
@@ -170,7 +170,7 @@ Details
     <input type="hidden" name="source" value="Translate">
     <ccp:evaluate if="<%= languagePack.allowsTranslation(User.getId()) %>">
       <center>
-        <input type="button" value="< Previous" <%= (dictionaryListInfo.getCurrentOffset() <= 0 ? "disabled" : "") %> onclick="window.location.href='<%= ctx %>/Translation.do?command=Translate&languageId=<%= languagePack.getId() %>&action=<%= request.getParameter("action") %>&popup=true&offset=<%= (dictionaryListInfo.getCurrentOffset() - dictionaryListInfo.getItemsPerPage()) %>'"/>
+        <input type="button" value="< Previous" <%= (dictionaryListInfo.getCurrentOffset() <= 0 ? "disabled" : "") %> onclick="window.location.href='<%= ctx %>/Translation.do?command=Translate&languageId=<%= languagePack.getId() %>&action=<%= StringUtils.encodeUrl(request.getParameter("action")) %>&popup=true&offset=<%= (dictionaryListInfo.getCurrentOffset() - dictionaryListInfo.getItemsPerPage()) %>'"/>
         <input type="submit" name="buttonNext" value="Next >" />
       </center>
     </ccp:evaluate>
@@ -179,7 +179,7 @@ Details
     <input type="hidden" name="source" value="Approve">
     <ccp:evaluate if="<%= languagePack.allowsApproval(User.getId()) %>">
       <center>
-        <input type="button" value="< Previous" <%= (dictionaryListInfo.getCurrentOffset() <= 0 ? "disabled" : "") %> onclick="window.location.href='<%= ctx %>/Translation.do?command=Translate&languageId=<%= languagePack.getId() %>&action=<%= request.getParameter("action") %>&popup=true&offset=<%= (dictionaryListInfo.getCurrentOffset() - dictionaryListInfo.getItemsPerPage()) %>'"/>
+        <input type="button" value="< Previous" <%= (dictionaryListInfo.getCurrentOffset() <= 0 ? "disabled" : "") %> onclick="window.location.href='<%= ctx %>/Translation.do?command=Translate&languageId=<%= languagePack.getId() %>&action=<%= StringUtils.encodeUrl(request.getParameter("action")) %>&popup=true&offset=<%= (dictionaryListInfo.getCurrentOffset() - dictionaryListInfo.getItemsPerPage()) %>'"/>
         <input type="submit" name="buttonNext" value="Next >" />
       </center>
     </ccp:evaluate>

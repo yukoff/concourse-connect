@@ -46,7 +46,7 @@
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <%
-  String cid = request.getParameter("cid");
+  String cid = StringUtils.encodeUrl(request.getParameter("cid"));
   if (cid == null) {
     cid = (String) request.getAttribute("cid");
   }

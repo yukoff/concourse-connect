@@ -55,11 +55,11 @@
   }
   String param = (String) request.getAttribute("param");
   if (param == null) {
-    param = request.getParameter("param");
+    param = StringUtils.encodeUrl(request.getParameter("param"));
   }
   String param2 = (String) request.getAttribute("param2");
   if (param2 == null) {
-    param2 = request.getParameter("param2");
+    param2 = StringUtils.encodeUrl(request.getParameter("param2"));
   }
   if (returnPage != null) {
     // TODO: separate these out into proper refresh files

@@ -46,5 +46,5 @@
 <%@ include file="initPage.jsp" %>
 <%
 response.setStatus(302);
-response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/ProjectManagementTickets.do?command=Details&pid=" + request.getParameter("pid") + "&id=" + request.getParameter("id") + (request.getParameter("fid") != null ? "#attachments" : ""));
+response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/ProjectManagementTickets.do?command=Details&pid=" + StringUtils.encodeUrl(request.getParameter("pid")) + "&id=" + StringUtils.encodeUrl(request.getParameter("id")) + (request.getParameter("fid") != null ? "#attachments" : ""));
 %>

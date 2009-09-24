@@ -46,6 +46,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
 <%@ include file="initPage.jsp" %>
+<%
+  String redirectTo = request.getParameter("redirectTo");
+  if (redirectTo.contains("\"")) {
+    throw new JspException("Invalid URL: " + redirectTo);
+  }
+%>
 <c:choose>
   <c:when test="${'true' eq param.popup || 'true' eq popup}">
     {"ResultSet":

@@ -116,7 +116,7 @@
         <input type="hidden" name="categoryId" value="<%= forum.getId() %>">
         <input type="hidden" name="id" value="<%= topic.getId() %>">
         <input type="hidden" name="modified" value="<%= topic.getModified() %>">
-        <input type="hidden" name="return" value="<%= request.getParameter("return") %>">
+        <input type="hidden" name="return" value="<%= StringUtils.toHtmlValue(request.getParameter("return")) %>">
         <label for="subject"><ccp:label name="projectsCenterIssues.add.subject">Subject</ccp:label> <span class="required">*</span></label>
         <input type="text" name="subject" id="subject" size="57" maxlength="255" value="<%= toHtmlValue(topic.getSubject()) %>">
         <%= showAttribute(request, "subjectError") %>

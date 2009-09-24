@@ -178,7 +178,7 @@
       </ccp:permission>
     </tbody>
   </table>
-  <input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
+  <input type="hidden" name="popup" value="<%= toHtmlValue(request.getParameter("popup")) %>" />
   <input type="hidden" name="projectId" value="<%= project.getId() %>" />
   <input type="submit" name="<ccp:label name="button.save">Save</ccp:label>" value="<ccp:label name="button.save">Save</ccp:label>" />
   <input type="button" name="<ccp:label name="button.cancel">Cancel</ccp:label>" value="Cancel" onClick="window.close();" />

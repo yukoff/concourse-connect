@@ -294,7 +294,7 @@
             </td>
             <td>
               <ccp:evaluate if="<%= thisFile.isImageFormat() %>">
-                <a href="<%= ctx %>/ProjectManagementFiles.do?command=Download&pid=<%= thisFile.getLinkItemId() %>&fid=<%= thisFile.getId() %>&folderId=<%= request.getParameter("folderId") %>&view=true&ext=<%= thisFile.getExtension() %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getSubject()) %></a><br />
+                <a href="<%= ctx %>/ProjectManagementFiles.do?command=Download&pid=<%= thisFile.getLinkItemId() %>&fid=<%= thisFile.getId() %>&folderId=<%= StringUtils.encodeUrl(request.getParameter("folderId")) %>&view=true&ext=<%= StringUtils.encodeUrl(thisFile.getExtension()) %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getSubject()) %></a><br />
               </ccp:evaluate>
               <ccp:evaluate if="<%= !thisFile.isImageFormat() %>">
                 <a href="<%= ctx %>/ProjectManagementFiles.do?command=Details&pid=<%= thisFile.getLinkItemId() %>&fid=<%= thisFile.getId() %>&folderId=<%= thisFile.getFolderId() %>"><%= toHtml(thisFile.getSubject()) %></a><br />

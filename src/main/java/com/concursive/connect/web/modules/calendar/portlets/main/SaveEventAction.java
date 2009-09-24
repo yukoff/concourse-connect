@@ -94,12 +94,6 @@ public class SaveEventAction implements IPortletAction {
     // Determine the database connection to use
     Connection db = getConnection(request);
 
-    //validate the checkbox and participants textarea contents
-    if (meeting.getByInvitationOnly() && !StringUtils.hasText(meeting.getMeetingInvitees())) {
-      meeting.addError("inviteesError", "Required field");
-      return meeting;
-    }
-
     // Save the record
     boolean recordSaved = false;
     if (meeting.getId() == -1) {

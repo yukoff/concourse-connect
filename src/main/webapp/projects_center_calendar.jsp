@@ -89,7 +89,7 @@
       <portlet:param name="portlet-command" value="agenda-events"/>
       <portlet:param name="out" value="text"/>
     </portlet:renderURL>
-    sendRequest('${calendarUrl}&source=calendardetails<%=returnPage!=null?"&return="+returnPage:""%>','calendarDetails');
+    sendRequest('${calendarUrl}&source=calendardetails<%=returnPage!=null?"&return="+StringUtils.encodeUrl(returnPage):""%>','calendarDetails');
   }
   function showDayEvents(year,month,day){
     //&filter='+document.getElementById('filter').value
@@ -103,7 +103,7 @@
     if (day.length == 1) {
       day = "0" + day;
     }
-    //sendRequest('${calendarUrl}&year='+year+'&month='+month+'&day='+day+'<%=returnPage!=null?"&return="+returnPage:""%>','calendarDetails');
+    //sendRequest('${calendarUrl}&year='+year+'&month='+month+'&day='+day+'<%=returnPage!=null?"&return="+StringUtils.encodeUrl(returnPage):""%>','calendarDetails');
     window.location.href="${calendarUrl}/" + year + "-" + month + "-" + day;
   }
   function showToDaysEvents(month,day,year){

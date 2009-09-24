@@ -46,7 +46,9 @@
 
 package com.concursive.connect.web.modules.userprofile.actions;
 
+import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.beans.Password;
 import com.concursive.connect.web.modules.login.dao.User;
@@ -168,6 +170,15 @@ public final class Profile extends GenericAction {
     if (!getUser(context).getAccessUserSettings()) {
       return "PermissionError";
     }
+    // If SSL, then redirect to SSL
+    ApplicationPrefs prefs = getApplicationPrefs(context);
+    boolean sslEnabled = "true".equals(getPref(context, "SSL"));
+    if (sslEnabled && !"https".equals(context.getRequest().getScheme())) {
+      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/Password.do?command=ChangePassword";
+      context.getRequest().setAttribute("redirectTo", url);
+      return "Redirect301";
+    }
+    // Show the change password form
     return "ChangePasswordOK";
   }
 
@@ -179,6 +190,14 @@ public final class Profile extends GenericAction {
    * @return Description of the Return Value
    */
   public String executeCommandSavePassword(ActionContext context) {
+    // If SSL, then redirect to SSL
+    ApplicationPrefs prefs = getApplicationPrefs(context);
+    boolean sslEnabled = "true".equals(getPref(context, "SSL"));
+    if (sslEnabled && !"https".equals(context.getRequest().getScheme())) {
+      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/Password.do?command=ChangePassword";
+      context.getRequest().setAttribute("redirectTo", url);
+      return "Redirect301";
+    }
     if (getUserId(context) < 0) {
       return "PermissionError";
     }
@@ -279,4 +298,3 @@ public final class Profile extends GenericAction {
     return "ViewTimeOK";
   }
 }
-

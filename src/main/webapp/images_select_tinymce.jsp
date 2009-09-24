@@ -188,9 +188,9 @@ function setImage(imageUrl) {
         <input type="file" name="id<%= imageList.getLinkItemId() %>" size="45" /><br />
         <br />
         <input type="submit" name="Upload" value="Upload" />
-        <input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
+        <input type="hidden" name="popup" value="<%= StringUtils.toHtmlValue(request.getParameter("popup")) %>" />
         <input type="hidden" name="editor" value="tinymce" />
-        <input type="hidden" name="constant" id="constant" value="<%= request.getParameter("constant") %>" />
+        <input type="hidden" name="constant" id="constant" value="<%= StringUtils.toHtmlValue(request.getParameter("constant")) %>" />
         <input type="hidden" name="nid" id="nid" value="<%= newsArticle.getId() %>" />
       </form>
       <br />
@@ -229,9 +229,9 @@ function setImage(imageUrl) {
 </td>
 </tr>
 </table>
-<input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
-<input type="hidden" name="constant" id="constant" value="<%= request.getParameter("constant") %>" />
-<input type="hidden" name="id" id="id" value="<%= request.getParameter("id") %>" />
+<input type="hidden" name="popup" value="<%= StringUtils.toHtmlValue(request.getParameter("popup")) %>" />
+<input type="hidden" name="constant" id="constant" value="<%= StringUtils.toHtmlValue(request.getParameter("constant")) %>" />
+<input type="hidden" name="id" id="id" value="<%= StringUtils.toHtmlValue(request.getParameter("id")) %>" />
 <input type="hidden" name="f_url" id="f_url" value="" />
 <input type="hidden" name="f_horiz" id="f_horiz" value="" />
 <input type="hidden" name="f_vert" id="f_vert" value="" />

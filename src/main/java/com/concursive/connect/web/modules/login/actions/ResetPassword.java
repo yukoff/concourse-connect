@@ -46,7 +46,9 @@
 
 package com.concursive.connect.web.modules.login.actions;
 
+import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
@@ -57,12 +59,28 @@ import java.sql.Connection;
 public final class ResetPassword extends GenericAction {
 
   public String executeCommandDefault(ActionContext context) {
+    // If SSL, then redirect to SSL
+    ApplicationPrefs prefs = getApplicationPrefs(context);
+    boolean sslEnabled = "true".equals(getPref(context, "SSL"));
+    if (sslEnabled && !"https".equals(context.getRequest().getScheme())) {
+      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/ResetPassword.do";
+      context.getRequest().setAttribute("redirectTo", url);
+      return "Redirect301";
+    }
     //Show the need password form
     return "FormOK";
   }
 
 
   public String executeCommandReset(ActionContext context) {
+    // If SSL, then redirect to SSL
+    ApplicationPrefs prefs = getApplicationPrefs(context);
+    boolean sslEnabled = "true".equals(getPref(context, "SSL"));
+    if (sslEnabled && !"https".equals(context.getRequest().getScheme())) {
+      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/ResetPassword.do";
+      context.getRequest().setAttribute("redirectTo", url);
+      return "Redirect301";
+    }
     //Check parameters
     String email = context.getRequest().getParameter("email");
     if (email == null || email.equals("")) {

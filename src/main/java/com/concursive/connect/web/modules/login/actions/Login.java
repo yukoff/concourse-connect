@@ -126,6 +126,19 @@ public final class Login extends GenericAction {
    * @return Description of the Return Value
    */
   public String executeCommandLogin(ActionContext context) {
+    // If SSL, then redirect to SSL
+    ApplicationPrefs prefs = getApplicationPrefs(context);
+    boolean sslEnabled = "true".equals(getPref(context, "SSL"));
+    if (sslEnabled && !"https".equals(context.getRequest().getScheme())) {
+      String redirectTo = "";
+      if (StringUtils.hasText(context.getRequest().getParameter("redirectTo"))) {
+        redirectTo = "?redirectTo=" + context.getRequest().getParameter("redirectTo");
+      }
+      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/login" + redirectTo;
+      context.getRequest().setAttribute("redirectTo", url);
+      return "Redirect301";
+    }
+    // Authenticate the login
     LoginAuthenticatorFactory authenticatorFactory = LoginAuthenticatorFactory.getInstance(context);
     ILoginAuthenticator authenticator = authenticatorFactory.getLoginAuthenticator(context);
     return authenticator.authenticateLogin(context);

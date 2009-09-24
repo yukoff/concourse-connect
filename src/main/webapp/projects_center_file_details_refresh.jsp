@@ -46,7 +46,6 @@
 <%@ include file="initPage.jsp" %>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%
-  String fileId = request.getParameter("fid");
 response.setStatus(302);
-response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId() + "/file/" + fileId);
+response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId() + "/file/" + StringUtils.encodeUrl(request.getParameter("fid")));
 %>

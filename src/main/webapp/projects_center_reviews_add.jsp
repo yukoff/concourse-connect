@@ -169,7 +169,7 @@
           <span>
             <portlet:renderURL var="ratingUrl" windowState="maximized">
               <portlet:param name="portlet-command" value="setProjectRating"/>
-              <portlet:param name="v" value="\${vote}"/>
+              <portlet:param name="v" value='<%= "${vote}" %>'/>
               <portlet:param name="out" value="text"/>
               <c:if test="${'true' eq param.popup || 'true' eq popup}">
                 <portlet:param name="popup" value="true"/>
@@ -222,7 +222,7 @@
           <input type="hidden" name="popup" value="true" />
         </c:if>
         <c:if test="${!empty param.redirectTo}">
-          <input type="hidden" name="redirectTo" value="${param.redirectTo}"/>
+          <input type="hidden" name="redirectTo" value="<%= StringUtils.toHtmlValue(request.getParameter("redirectTo")) %>"/>
         </c:if>
       </fieldset>
       <input type="submit" name="save" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" />

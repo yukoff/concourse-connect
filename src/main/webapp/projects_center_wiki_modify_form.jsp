@@ -102,7 +102,7 @@
       <c:if test="${'true' eq param.popup || 'true' eq popup}">
         <input type="hidden" name="popup" value="true"/>
       </c:if>
-      <input type="hidden" name="form" value="<%= request.getParameter("form") %>"/>
+      <input type="hidden" name="form" value="<%= StringUtils.toHtmlValue(request.getParameter("form")) %>"/>
       <input type="submit" class="submit" name="Save Page" value="<ccp:label name="button.savePage">Save Page</ccp:label>" />
       <input type="button" class="cancel" name="Cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/wiki<ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">/<%= wiki.getSubjectLink() %></ccp:evaluate>';" />
     </form>

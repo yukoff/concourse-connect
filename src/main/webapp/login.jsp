@@ -76,7 +76,7 @@ boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
   <div class="portletWrapper">
     <div class="formContainer">
       <div class="leftColumn">
-        <form name="loginForm" method="post" action="<%= ctx %>/Login.do?command=Login&auto-populate=true" onSubmit="return checkForm(this);">
+        <form name="loginForm" method="post" action="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/Login.do?command=Login&auto-populate=true" onSubmit="return checkForm(this);">
           <%-- Temp. fix for Weblogic --%>
           <% String loginBeanActionError = LoginBean.getError("actionError"); %>
           <ccp:evaluate if="<%= loginBeanActionError != null %>"> <img src="<%= ctx %>/images/error.gif" border="0" align="absmiddle"/> <font color="red"><%= toHtml(LoginBean.getError("actionError")) %></font><br>
@@ -95,7 +95,7 @@ boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
           <input type="password" name="password" id="password">
           <label for="addCookie"><input type="checkbox" class="checkbox" name="addCookie" id="addCookie" value="true" />Keep me logged in for two weeks</label>
           <c:if test="${!empty param.redirectTo}">
-            <input type="hidden" name="redirectTo" value="${param.redirectTo}" />
+            <input type="hidden" name="redirectTo" value="<%= StringUtils.encodeUrl(request.getParameter("redirectTo")) %>" />
             <span><ccp:label name="login.redirectAfterLogin">After login, you will be returned to the previous page</ccp:label></span>
           </c:if>
           </fieldset>
@@ -104,7 +104,7 @@ boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
             <input type="hidden" name="popup" value="true" />
             <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
           </c:if>
-          <span><a href="ResetPassword.do">
+          <span><a href="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/ResetPassword.do">
             <ccp:label name="login.forgotPassword">Forgot your password?</ccp:label>
           </a></span>
         </form>

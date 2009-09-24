@@ -143,5 +143,5 @@
   <input type="hidden" name="id" value="<%= newsArticle.getId() %>" />
   <input type="hidden" name="modified" value="<%= newsArticle.getModified() %>" />
   <input type="hidden" name="newPage" value="false" />
-  <input type="hidden" name="return" value="<%= request.getParameter("return") %>"/>
+  <input type="hidden" name="return" value="<%= toHtmlValue(request.getParameter("return")) %>"/>
 </form>

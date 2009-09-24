@@ -51,7 +51,7 @@
 <%
   String onLoad = "";
   if ("true".equals(request.getParameter("donew"))) {
-    onLoad = "window.opener.scrollReload('" + ctx + "/ProjectManagement.do?command=ProjectCenter&section=Assignments&pid=" + project.getId() + "&rid=" + (assignmentFolder.getId() == -1 ? request.getParameter("rid"):String.valueOf(assignmentFolder.getRequirementId())) + "')";
+    onLoad = "window.opener.scrollReload('" + ctx + "/ProjectManagement.do?command=ProjectCenter&section=Assignments&pid=" + project.getId() + "&rid=" + (assignmentFolder.getId() == -1 ? StringUtils.encodeUrl(request.getParameter("rid")):String.valueOf(assignmentFolder.getRequirementId())) + "')";
   }
   //Only evaluate on an insert
   int maxIndent = 0;
@@ -92,7 +92,7 @@
     }
   }
 </script>
-<form method="POST" name="inputForm" action="<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=SaveFolder&pid=<%= project.getId() %>&rid=<%= (assignmentFolder.getId() == -1 ? request.getParameter("rid"):String.valueOf(assignmentFolder.getRequirementId())) %>&auto-populate=true<%= (request.getParameter("popup") != null?"&popup=true":"") %>" onSubmit="return checkForm(this);">
+<form method="POST" name="inputForm" action="<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=SaveFolder&pid=<%= project.getId() %>&rid=<%= (assignmentFolder.getId() == -1 ? StringUtils.encodeUrl(request.getParameter("rid")):String.valueOf(assignmentFolder.getRequirementId())) %>&auto-populate=true<%= (request.getParameter("popup") != null?"&popup=true":"") %>" onSubmit="return checkForm(this);">
   <%= showError(request, "actionError", false) %>
   <table class="pagedList">
     <thead>
@@ -152,15 +152,15 @@
 </ccp:evaluate>
   <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="<%= (request.getParameter("popup") != null?"window.close();":"window.location.href='" + ctx + "/ProjectManagement.do?command=ProjectCenter&pid=" + project.getId()  + ("Requirements".equals(request.getParameter("return"))?"&section=Requirements":"&section=Assignments") + "';") %>;">
   <input type="hidden" name="id" value="<%= assignmentFolder.getId() %>">
-  <input type="hidden" name="parentId" value="<%= (assignmentFolder.getId() == -1 ? request.getParameter("parentId"):String.valueOf(assignmentFolder.getParentId())) %>">
+  <input type="hidden" name="parentId" value="<%= (assignmentFolder.getId() == -1 ? StringUtils.toHtmlValue(request.getParameter("parentId")):String.valueOf(assignmentFolder.getParentId())) %>">
   <input type="hidden" name="projectId" value="<%= project.getId() %>">
-  <input type="hidden" name="requirementId" value="<%= (assignmentFolder.getId() == -1 ? request.getParameter("rid"):String.valueOf(assignmentFolder.getRequirementId())) %>">
+  <input type="hidden" name="requirementId" value="<%= (assignmentFolder.getId() == -1 ? StringUtils.toHtmlValue(request.getParameter("rid")):String.valueOf(assignmentFolder.getRequirementId())) %>">
   <input type="hidden" name="modified" value="<%= assignmentFolder.getModifiedString() %>">
   <input type="hidden" name="donew" value="false">
   <input type="hidden" name="return" value="<%= request.getAttribute("return") %>">
   <input type="hidden" name="param" value="<%= project.getId() %>">
-  <input type="hidden" name="param2" value="<%= (assignmentFolder.getId() == -1 ? request.getParameter("rid"):String.valueOf(assignmentFolder.getRequirementId())) %>">
-  <input type="hidden" name="prevIndent" value="<%= assignmentFolder.getPrevIndent() > -1 ? String.valueOf(assignmentFolder.getPrevIndent()) : request.getParameter("prevIndent") %>">
-  <input type="hidden" name="prevMapId" value="<%= assignmentFolder.getPrevMapId() > -1 ? String.valueOf(assignmentFolder.getPrevMapId()) : request.getParameter("prevMapId") %>">
+  <input type="hidden" name="param2" value="<%= (assignmentFolder.getId() == -1 ? StringUtils.toHtmlValue(request.getParameter("rid")):String.valueOf(assignmentFolder.getRequirementId())) %>">
+  <input type="hidden" name="prevIndent" value="<%= assignmentFolder.getPrevIndent() > -1 ? String.valueOf(assignmentFolder.getPrevIndent()) : StringUtils.toHtmlValue(request.getParameter("prevIndent")) %>">
+  <input type="hidden" name="prevMapId" value="<%= assignmentFolder.getPrevMapId() > -1 ? String.valueOf(assignmentFolder.getPrevMapId()) : StringUtils.toHtmlValue(request.getParameter("prevMapId")) %>">
 </form>
 </body>

@@ -118,7 +118,7 @@
       <input type="hidden" name="subject" value="<%= toHtmlValue(wiki.getSubject()) %>" />
       <input type="hidden" name="modified" value="<%= wiki.getModified() %>" />
       <ccp:evaluate if='<%= StringUtils.hasText(request.getParameter("section"))%>'>
-        <input type="hidden" name="section" value="<%= request.getParameter("section") %>" />
+        <input type="hidden" name="section" value="<%= StringUtils.toHtmlValue(request.getParameter("section")) %>" />
       </ccp:evaluate>
       <c:if test="${'true' eq param.popup || 'true' eq popup}">
         <input type="hidden" name="popup" value="true"/>

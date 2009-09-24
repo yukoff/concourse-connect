@@ -46,12 +46,13 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="com.concursive.connect.web.utils.HtmlOption" %>
+<%@ page import="com.concursive.commons.text.StringUtils" %>
 <jsp:useBean id="editList" class="com.concursive.connect.web.utils.HtmlSelect" scope="request"/>
 <html>
 <script language="javascript" type="text/javascript">
   function updateParentList() {
     // Get handle to list
-    var list = opener.document.forms['<%= request.getParameter("form") %>'].elements['<%= request.getParameter("field") %>'];
+    var list = opener.document.forms['<%= StringUtils.jsEscape(request.getParameter("form")) %>'].elements['<%= StringUtils.jsEscape(request.getParameter("field")) %>'];
     // TODO: Get the currently selected value
 
     // Set the option count to 0

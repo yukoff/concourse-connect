@@ -46,5 +46,5 @@
 <%@ include file="initPage.jsp" %>
 <%
 response.setStatus(302);
-response.setHeader( "Location", request.getScheme() + "://" + getServerUrl(request) + "/ProjectManagement.do?command=ProjectCenter&section=Tickets&pid=" + request.getParameter("pid"));
+response.setHeader( "Location", request.getScheme() + "://" + getServerUrl(request) + "/ProjectManagement.do?command=ProjectCenter&section=Tickets&pid=" + StringUtils.encodeUrl(request.getParameter("pid")));
 %>

@@ -140,27 +140,27 @@
     <form name="details" action="<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>" method="post">
       <%--<% if (ticket.getClosed() != null) { %>
         <ccp:permission name="project-tickets-close">
-          <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>');">
+          <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>');">
         </ccp:permission>
         <%} else {%>--%>
         <%-- allow user to edit own assigned ticket, and allow anyone to add comments --%>
         <%--<ccp:permission name="project-tickets-edit">
-          <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
-          <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
+          <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
+          <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
         </ccp:permission>
         <ccp:permission name="project-tickets-edit" if="none">
           <ccp:evaluate if="<%= ticket.getAssignedTo() == User.getId() %>">
-            <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
-            <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
+            <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
+            <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
           </ccp:evaluate>
           <ccp:evaluate if="<%= ticket.getAssignedTo() != User.getId() %>">
             <ccp:evaluate if="<%= ticket.getEnteredBy() == User.getId() %>">
-              <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
+              <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
             </ccp:evaluate>
           </ccp:evaluate>
         </ccp:permission>
         <ccp:permission name="project-tickets-delete">
-          <input type="button" class="submit" value="<ccp:label name="button.delete">Delete</ccp:label>" onClick="confirmDelete('<%= ctx %>/ProjectManagementTickets.do?command=Delete&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>');">
+          <input type="button" class="submit" value="<ccp:label name="button.delete">Delete</ccp:label>" onClick="confirmDelete('<%= ctx %>/ProjectManagementTickets.do?command=Delete&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>');">
         </ccp:permission>
       <%}%>
       --%>
@@ -526,27 +526,27 @@
     </table>
     <% if (ticket.getClosed() != null) { %>
     <ccp:permission name="project-tickets-close">
-      <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>');">
+      <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>');">
     </ccp:permission>
     <%} else {%>
     <%-- allow user to edit own assigned ticket, and allow anyone to add comments --%>
     <ccp:permission name="project-tickets-edit">
-      <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
-      <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
+      <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
+      <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
     </ccp:permission>
     <ccp:permission name="project-tickets-edit" if="none">
       <ccp:evaluate if="<%= ticket.getAssignedTo() == User.getId() %>">
-        <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
-        <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
+        <input type="button" class="submit" value="<ccp:label name="button.edit">Edit</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Modify&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
+        <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
       </ccp:evaluate>
       <ccp:evaluate if="<%= ticket.getAssignedTo() != User.getId() %>">
         <ccp:evaluate if="<%= ticket.getEnteredBy() == User.getId() %>">
-          <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>'">
+          <input type="button" class="submit" value="<ccp:label name="button.addComments">Add Comments</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=AddComments&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
         </ccp:evaluate>
       </ccp:evaluate>
     </ccp:permission>
     <ccp:permission name="project-tickets-delete">
-      <input type="button" class="cancel" value="<ccp:label name="button.delete">Delete</ccp:label>" onClick="confirmDelete('<%= ctx %>/ProjectManagementTickets.do?command=Delete&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= request.getParameter("return") %>');">
+      <input type="button" class="cancel" value="<ccp:label name="button.delete">Delete</ccp:label>" onClick="confirmDelete('<%= ctx %>/ProjectManagementTickets.do?command=Delete&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>');">
     </ccp:permission>
     <%}%>
     <%-- Watch Information (2) --%>

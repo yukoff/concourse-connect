@@ -258,7 +258,7 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
         <input type="submit" name="Upload" value="Upload" >
         <span class="characterCounter">Must be a .png, .gif, or .jpg</span>
         <input type="hidden" name="pid" id="pid" value="<%= project.getId() %>">
-        <input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
+        <input type="hidden" name="popup" value="<%= StringUtils.toHtmlValue(request.getParameter("popup")) %>" />
         </form>
       </fieldset>
 

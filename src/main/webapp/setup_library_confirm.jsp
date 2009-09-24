@@ -53,7 +53,7 @@
   }
 </script>
 <form action="${ctx}/Setup.do?command=SaveLibrary&confirm=yes" name="setupForm" method="post" style="margin:0; width:100%; height:100%; background:#efefef; ">
-  <input type="hidden" name="directory" value="<%= request.getParameter("directory") %>" />
+  <input type="hidden" name="directory" value="<%= StringUtils.toHtmlValue(request.getParameter("directory")) %>" />
   <div style="padding:15px 0 0 0; margin:0">
     <div style="width:600px; position:relative; margin:0 auto">
       <img src="${ctx}/images/setup/step-1-header.jpg" alt="Step One" style="margin:0 auto; display:block">

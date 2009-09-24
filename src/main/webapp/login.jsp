@@ -95,7 +95,7 @@ boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
           <input type="password" name="password" id="password">
           <label for="addCookie"><input type="checkbox" class="checkbox" name="addCookie" id="addCookie" value="true" />Keep me logged in for two weeks</label>
           <c:if test="${!empty param.redirectTo}">
-            <input type="hidden" name="redirectTo" value="<%= StringUtils.encodeUrl(request.getParameter("redirectTo")) %>" />
+            <input type="hidden" name="redirectTo" value="<%= StringUtils.toHtmlValue(request.getParameter("redirectTo")) %>" />
             <span><ccp:label name="login.redirectAfterLogin">After login, you will be returned to the previous page</ccp:label></span>
           </c:if>
           </fieldset>

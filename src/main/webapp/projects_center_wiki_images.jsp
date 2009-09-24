@@ -256,6 +256,7 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
         <form action="${ctx}/<%= projectAction %>?command=UploadImage&popup=true&pid=<%= project.getId() %>" name="inputForm" method="post" enctype="multipart/form-data" onSubmit="return checkFileForm(this);">
         <input type="file" name="id<%= project.getId() %>" size="45" />
         <input type="submit" name="Upload" value="Upload" >
+        <span class="characterCounter">Must be a .png, .gif, or .jpg</span>
         <input type="hidden" name="pid" id="pid" value="<%= project.getId() %>">
         <input type="hidden" name="popup" value="<%= request.getParameter("popup") %>" />
         </form>

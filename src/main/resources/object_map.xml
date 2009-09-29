@@ -572,6 +572,7 @@
     </map>
     <map class="com.concursive.connect.web.modules.profile.dao.ProjectFeatures" id="projectFeatures" note="updates only" />
     <map class="com.concursive.connect.web.modules.tools.dao.ProjectCRM" id="projectCRM" note="updates only" />
+    <map class="com.concursive.connect.web.modules.tools.dao.TeamMemberCRM" id="teamMemberCRM" note="updates only" />
     <map class="com.concursive.connect.web.modules.profile.dao.ProjectList" id="projectList"/>
 
     <!-- Permission List -->

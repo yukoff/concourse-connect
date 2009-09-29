@@ -478,6 +478,7 @@ public class TransactionItem {
         String customClassName = syncMappings.getMappedClassName();
         Object customAction = Class.forName(customClassName).newInstance();
         if (customAction instanceof CustomActionHandler) {
+        	ignoredProperties = XMLUtils.populateObject(customAction, objectElement);
           LOG.debug("Processing..." + customAction.getClass().getName());
           Object result = ((CustomActionHandler) customAction).process(this, db);
           checkResult(result);

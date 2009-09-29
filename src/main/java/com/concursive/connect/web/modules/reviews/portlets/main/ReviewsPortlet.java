@@ -65,12 +65,14 @@ public class ReviewsPortlet extends AbstractPortletModule {
   public static final String FORM_VIEW = "form";
   public static final String SET_RATING_AJAX_VIEW = "setRating";
   public static final String SET_PROJECT_RATING_AJAX_VIEW = "setProjectRating";
+  public static final String TAGS_FORM_VIEW = "setTags";
 
   public static final String DEFAULT_VIEW = LIST_VIEW;
 
   // Actions
   public static final String SAVE_FORM_ACTION = "saveForm";
   public static final String DELETE_ACTION = "delete";
+  public static final String SAVE_TAGS_ACTION = "saveTags";
 
   public ReviewsPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -83,9 +85,11 @@ public class ReviewsPortlet extends AbstractPortletModule {
     viewers.put(FORM_VIEW, new ReviewsFormViewer());
     viewers.put(SET_RATING_AJAX_VIEW, new ReviewsSetRatingViewer());
     viewers.put(SET_PROJECT_RATING_AJAX_VIEW, new ReviewsSetProjectRatingViewer());
+    viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
 
     // Actions
     actions.put(SAVE_FORM_ACTION, new SaveReviewAction());
     actions.put(DELETE_ACTION, new DeleteReviewAction());
+    actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
   }
 }

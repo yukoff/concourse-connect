@@ -45,6 +45,8 @@
  */
 package com.concursive.connect.web.modules.blog.portlets.main;
 
+import com.concursive.connect.web.modules.reviews.portlets.main.SaveTagsAction;
+import com.concursive.connect.web.modules.reviews.portlets.main.TagsFormViewer;
 import com.concursive.connect.web.portal.AbstractPortletModule;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,12 +69,14 @@ public class BlogPortlet extends AbstractPortletModule {
   public static final String SET_RATING_AJAX_VIEW = "setRating";
   public static final String SET_COMMENT_RATING_AJAX_VIEW = "comment-setRating";
   public static final String COMMENT_DELETE_VIEW = "comment-delete";
+  public static final String TAGS_FORM_VIEW = "setTags";
 
   // Actions
   public static final String SAVE_FORM_ACTION = "saveForm";
   public static final String SAVE_COMMENTS_ACTION = "saveComments";
   public static final String DELETE_ACTION = "delete";
   public static final String CLONE_ACTION = "clone";
+  public static final String SAVE_TAGS_ACTION = "saveTags";
 
   public BlogPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -86,11 +90,13 @@ public class BlogPortlet extends AbstractPortletModule {
     viewers.put(SET_RATING_AJAX_VIEW, new BlogSetRatingViewer());
     viewers.put(SET_COMMENT_RATING_AJAX_VIEW, new BlogCommentSetRatingViewer());
     viewers.put(COMMENT_DELETE_VIEW, new BlogDeleteCommentViewer());
+    viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
 
     // Actions
     actions.put(SAVE_FORM_ACTION, new SaveBlogAction());
     actions.put(DELETE_ACTION, new DeleteBlogAction());
     actions.put(CLONE_ACTION, new CloneBlogAction());
     actions.put(SAVE_COMMENTS_ACTION, new SaveBlogCommentsAction());
+    actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
   }
 }

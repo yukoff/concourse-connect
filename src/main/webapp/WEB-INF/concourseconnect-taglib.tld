@@ -179,6 +179,11 @@
       <required>no</required>
       <rtexprvalue>no</rtexprvalue>
     </attribute>
+    <attribute>
+      <name>object</name>
+      <required>no</required>
+      <rtexprvalue>yes</rtexprvalue>
+    </attribute>
   </tag>
   <tag>
     <name>folderHierarchy</name> 
@@ -666,6 +671,19 @@
       <name>rss</name>
       <required>no</required>
       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>tags</name>
+    <tag-class>com.concursive.connect.web.taglibs.TagsHandler</tag-class>
+    <body-content>empty</body-content>
+    <display-name>
+      Displays the tags for the specified url item and links to a form for modifying
+    </display-name>
+    <attribute>
+      <name>url</name>
+      <required>yes</required>
+      <rtexprvalue>true</rtexprvalue>      
     </attribute>
   </tag>
 </taglib>

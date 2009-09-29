@@ -47,6 +47,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@page import="com.concursive.connect.web.modules.calendar.utils.DimDimUtils"%>
 <jsp:useBean id="meetingInviteesBean" class="com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
@@ -129,18 +130,21 @@
             </thead>
             <tbody>
             <c:forEach var="membersNotFoundList" items="${meetingInviteesBean.membersNotFoundList}" varStatus="loopStatus">
+            	<c:set var="entered" value="${membersNotFoundList.key}"></c:set>
               <tr>
-                <td><c:out value="${membersNotFoundList.key}"/></td>
-                <td><input type="text" name="firstName"></td>
-                <td><input type="text" name="lastName"></td>
-                <c:choose>
-                  <c:when test="${fn:contains(membersNotFoundList.key, '@')}">
-                    <td><input type="text" name="emailAddress" value="<c:out value="${membersNotFoundList.key}"/>"></td>
-                  </c:when>
-                  <c:otherwise>
-                    <td><input type="text" name="emailAddress"></td>
-                  </c:otherwise>
-                </c:choose>
+              	<% String entered = (String)pageContext.getAttribute("entered");
+              		String strEmail = "", strFirstName = "", strLastName = "";
+              		if (entered.indexOf("@") > 0) {
+              			HashMap<String, String> mapEmail = DimDimUtils.processEmail(entered);
+              			strEmail = StringUtils.hasText(mapEmail.get(DimDimUtils.EMAIL)) ? mapEmail.get(DimDimUtils.EMAIL) : "";
+              			strFirstName = StringUtils.hasText(mapEmail.get(DimDimUtils.FIRST_NAME)) ? mapEmail.get(DimDimUtils.FIRST_NAME) : "";
+              			strLastName = StringUtils.hasText(mapEmail.get(DimDimUtils.LAST_NAME)) ? mapEmail.get(DimDimUtils.LAST_NAME) : "";
+              		}
+              	%>
+                <td><c:out value="${entered}"/></td>
+                <td><input type="text" name="firstName" value="<%= toHtmlValue(strFirstName) %>" /></td>
+                <td><input type="text" name="lastName" value="<%= toHtmlValue(strLastName) %>" /></td>
+                <td><input type="text" name="emailAddress" value="<%= toHtmlValue(strEmail) %>" /></td>
               </tr>
             </c:forEach>
             </tbody>
@@ -163,11 +167,11 @@
 	      <input type="text" name="dimdimUrl" id="dimdimUrl" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUrl}"/>">
 	      --%>
 	      <label for="dimdimUsername">Dimdim Username <span class="required">*</span></label>
-	      <input type="text" name="dimdimUsername" id="dimdimUsername" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUsername}"/>">
+	      <input type="text" name="dimdimUsername" id="dimdimUsername" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimUsername}"/>" />
 	      <label for="dimdimPassword">Dimdim Password <span class="required">*</span></label>
-	      <input type="password" name="dimdimPassword" id="dimdimPassword" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimPassword}"/>" autocomplete="off">
+	      <input type="password" name="dimdimPassword" id="dimdimPassword" size="20" maxlength="255" value="<c:out value="${meetingInviteesBean.meeting.dimdimPassword}"/>" autocomplete="off" />
 	      <c:if test="${meetingInviteesBean.meeting.byInvitationOnly}">
-	      	Meeting key to be used by the participants: ${meetingInviteesBean.meeting.dimdimMeetingKey}
+	      	Meeting key to be used by the participants: <c:out value="${meetingInviteesBean.meeting.dimdimMeetingKey}"/>
 	      </c:if>
       </c:if>
     </fieldset>

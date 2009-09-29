@@ -376,13 +376,14 @@
       </div>
       <div class="ccp-footer">
         <ul>
-          <ccp:tabbedMenu text="<%= \"Home\" %>" key="nokey" value="novalue" url="${ctx}/" type="li"/>
+          <ccp:tabbedMenu text='<%= "Home" %>' key="nokey" value="novalue" url="${ctx}/" type="li" object="requestMainProfile"/>
           <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
             <ccp:tabbedMenu text="${tabCategory.description}"
                                key="nokey"
                                value="novalue"
                                url='${ctx}/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}.shtml'
-                               type="li"/>
+                               type="li"
+                               object="requestMainProfile"/>
           </c:forEach>
           <li>
             <a href="${ctx}/rss" title="RSS Feeds"><em>RSS</em></a>

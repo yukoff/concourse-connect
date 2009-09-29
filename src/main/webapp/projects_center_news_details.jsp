@@ -45,12 +45,14 @@
   --%>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ page import="com.concursive.connect.web.modules.login.dao.User" %>
 <%@ page import="com.concursive.connect.web.modules.login.utils.UserUtils" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.blog.dao.BlogPost" %>
 <%@ page import="com.concursive.connect.web.modules.blog.dao.BlogPostComment" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils"%>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="blog" class="com.concursive.connect.web.modules.blog.dao.BlogPost" scope="request"/>
@@ -150,11 +152,62 @@
           <%= blog.getMessage() %>
         </ccp:evaluate>
       </div>
+      <div class="articleFooter">
+        <span class="comments">
+          <c:set var="commentText">
+            <c:choose>
+              <c:when test="${fn:length(commentList) == 0}">
+                <em>No comments yet</em>
+              </c:when>
+              <c:when test="${fn:length(commentList) == 1}">
+                <em>1 comment</em>
+              </c:when>
+              <c:otherwise>
+                <em><c:out value="${fn:length(commentList)} comments"/></em>
+              </c:otherwise>
+            </c:choose>
+          </c:set>
+          <c:choose>
+            <c:when test="${fn:length(commentList) > 0}">
+              <img src="${ctx}/images/icons/balloons.png" alt="comments icon" align="absmiddle"> <a href="#comments">${commentText}</a>
+            </c:when>
+            <c:otherwise>
+              ${commentText}
+            </c:otherwise>
+          </c:choose>
+        </span>
+        <span class="tagList">
+          <portlet:renderURL var="setTagsUrl" windowState="maximized">
+            <portlet:param name="portlet-command" value="setTags" />
+            <portlet:param name="portlet-object" value="post"/>
+            <portlet:param name="portlet-value" value="${blog.id}"/>
+            <portlet:param name="popup" value="true" />
+          </portlet:renderURL>
+          <%--<ccp:tags url="${setTagsUrl}" linkItemId="${blog.id}" module="<%= ModuleUtils.MODULENAME_BLOG %>" showAddEdit="<%= User.isLoggedIn() %>"  />--%>
+          <ccp:tags url="${setTagsUrl}" />
+        </span>
+      </div>
+      <div class="portlet-menu">
+        <ccp:evaluate if="<%= blog.getId() > -1 && User.isLoggedIn() %>">
+          <div class="actions">
+            <div class="addComment">
+              <ul>
+                <li>
+                  <%-- AJAX Display Add Comment Panel
+                  <a href="javascript:showSpan('thisCommentWindow${blog.id}');window.scrollBy(0,1000);document.getElementById('comment').focus();">Add a comment</a>
+                  --%>
+                  <a href="#addComment" title="Add a comment to this blog post"><img src="${ctx}/images/icons/balloon_plus.png" alt="Add a comment icon" align="top"> Add a Comment</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ccp:evaluate>
+      </div>
       <div class="userInputFooter">
         <ccp:evaluate if="<%= blog.getRatingCount() > 0 %>">
           <p>(<%= blog.getRatingValue() %> out of <%= blog.getRatingCount() %> <%= blog.getRatingCount() == 1 ? " person" : " people"%> found this blog post useful.)</p>
         </ccp:evaluate>
-        <ccp:evaluate if="<%= blog.getInappropriateCount() > 0 && ProjectUtils.hasAccess(blog.getProjectId(), User, \"project-news-edit\")%>">
+        <ccp:evaluate if='<%= blog.getInappropriateCount() > 0 && ProjectUtils.hasAccess(blog.getProjectId(), User, "project-news-edit")%>'>
           <p>(<%= blog.getInappropriateCount() %><%= blog.getInappropriateCount() == 1? " person" : " people"%> found this blog post inappropriate.)</p>
         </ccp:evaluate>
         <%-- any user who is not the author of the blog can mark the blog as useful  --%>
@@ -182,22 +235,6 @@
           <div id="blog_<%= blog.getId() %>"></div>
         </ccp:evaluate>
         </ccp:permission>
-      </div>
-      <div class="portlet-menu">
-        <ccp:evaluate if="<%= blog.getId() > -1 && User.isLoggedIn() %>">
-          <div class="actions">
-            <div class="addComment">
-              <ul>
-                <li>
-                  <%-- AJAX Display Add Comment Panel
-                  <a href="javascript:showSpan('thisCommentWindow${blog.id}');window.scrollBy(0,1000);document.getElementById('comment').focus();">Add a comment</a>
-                  --%>
-                  <a href="#addComment" title="Add a comment to this blog post"><img src="${ctx}/images/icons/balloon_plus.png" alt="Add a comment icon" align="top"> Add a Comment</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </ccp:evaluate>
       </div>
       <a name="comments"></a>
       <div class="userInputContainer">

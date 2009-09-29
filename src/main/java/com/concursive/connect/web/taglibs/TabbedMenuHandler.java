@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.taglibs;
 
 import com.concursive.commons.text.StringUtils;
@@ -71,6 +70,7 @@ public class TabbedMenuHandler extends TagSupport {
   private String key;
   private String value;
   private String type;
+  private String object;
 
   public void release() {
     // Reset each property or else the value gets reused
@@ -79,6 +79,7 @@ public class TabbedMenuHandler extends TagSupport {
     key = null;
     value = null;
     type = null;
+    object = null;
     super.release();
   }
 
@@ -91,7 +92,6 @@ public class TabbedMenuHandler extends TagSupport {
     this.text = tmp;
   }
 
-
   /**
    * Sets the url attribute of the TabbedMenuHandler object
    *
@@ -101,7 +101,6 @@ public class TabbedMenuHandler extends TagSupport {
     this.url = tmp;
   }
 
-
   /**
    * Sets the key attribute of the TabbedMenuHandler object
    *
@@ -110,7 +109,6 @@ public class TabbedMenuHandler extends TagSupport {
   public void setKey(String tmp) {
     this.key = tmp.toLowerCase();
   }
-
 
   /**
    * Sets the value attribute of the TabbedMenuHandler object
@@ -127,6 +125,10 @@ public class TabbedMenuHandler extends TagSupport {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public void setObject(String object) {
+    this.object = object;
   }
 
   /**
@@ -149,9 +151,7 @@ public class TabbedMenuHandler extends TagSupport {
     } else if (value.toLowerCase().startsWith(key.toLowerCase())) {
       selected = true;
     }
-    final ApplicationPrefs prefs =
-        (ApplicationPrefs) pageContext.getServletContext()
-            .getAttribute("applicationPrefs");
+    final ApplicationPrefs prefs = (ApplicationPrefs) pageContext.getServletContext().getAttribute("applicationPrefs");
     final User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
     final String language = (null != user.getLanguage())
         ? user.getLanguage()
@@ -159,7 +159,14 @@ public class TabbedMenuHandler extends TagSupport {
     final String newText = StringUtils.toHtml(StringUtils.getText(prefs.getLabel("tabbedMenu.tab." + text, language), text));
     // use the project title for the href title
     String title = newText;
-    Project project = (Project) pageContext.getRequest().getAttribute("project");
+    Project project = null;
+    if (object != null) {
+      // Use the specified request object
+      project = (Project) pageContext.getRequest().getAttribute(object);
+    } else {
+      // Use the default project profile object
+      project = (Project) pageContext.getRequest().getAttribute("project");
+    }
     if (project != null) {
       title = StringUtils.toHtml(project.getTitle()) + " " + title;
     }
@@ -188,7 +195,6 @@ public class TabbedMenuHandler extends TagSupport {
     }
     return SKIP_BODY;
   }
-
 
   /**
    * Description of the Method

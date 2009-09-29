@@ -47,6 +47,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ page import="com.concursive.commons.text.StringUtils" %>
+<%@page import="com.concursive.connect.web.modules.ModuleUtils"%>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="projectRating" class="com.concursive.connect.web.modules.reviews.dao.ProjectRating" scope="request"/>
 <jsp:useBean id="popularTags" class="com.concursive.connect.web.modules.common.social.tagging.dao.TagList" scope="request"/>
@@ -108,37 +109,6 @@
         return false;
       }
     }
-  }
-
-  function updateTag(tagText) {
-	  var tagsControl = document.getElementById('tags');
-
-	  if (tagsControl.value.trim().length == 0) {
-		  tagsControl.value = tagText;
-		  return;
-	  }
-	  
-	  var arrTags = tagsControl.value.split(",");
-	  var flgFound = false;
-
-	  newTags = "";
-	  var len = arrTags.length;
-	  for (i=0; i<len; i++) {
-		  arrTags[i] = arrTags[i].trim();
-	  	if (arrTags[i] != tagText) {
-	  		newTags += ", " + arrTags[i];
-	  	} else {
-		  	flgFound = true;
-	  	}
-	  }
-	  
-	  if (!flgFound) {
-		  newTags = tagText + newTags;
-	  } else {
-		  newTags = newTags.substr(2);
-	  }
-
-	  tagsControl.value = newTags;
   }
 </script>
   <div class="formContainer">
@@ -207,13 +177,13 @@
         <c:if test="${!empty userRecentTags}">
           <span><ccp:label name="userRecentTags">Recently Used Tags</ccp:label><br/>
 	          <c:forEach items="${userRecentTags}" var="userRecentTag">
-  	          <a href="javascript:updateTag('${userRecentTag.tag}');"><c:out value="${userRecentTag.tag}"/></a>&nbsp;
+  	          <a href="javascript:updateTag('${userRecentTag.tag}','tags');"><c:out value="${userRecentTag.tag}"/></a>&nbsp;
     	      </c:forEach></span>
         </c:if>
         <c:if test="${!empty popularTags}">
           <span><ccp:label name="popularTags">Popular Tags</ccp:label><br/>
 	          <c:forEach items="${popularTags}" var="popularTag">
-  	          <a href="javascript:updateTag('${popularTag.tag}');"><c:out value="${popularTag.tag}"/></a> (<c:out value="${popularTag.tagCount}"/>)&nbsp;
+  	          <a href="javascript:updateTag('${popularTag.tag}','tags');"><c:out value="${popularTag.tag}"/></a> (<c:out value="${popularTag.tagCount}"/>)&nbsp;
     	      </c:forEach></span>
         </c:if>
         <input type="hidden" name="id" value="<%= projectRating.getId() %>" />
@@ -239,17 +209,5 @@
         </c:otherwise>
       </c:choose>
       <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
-<%--
-      <fieldset>
-       	<portlet:renderURL var="setTagsUrl" windowState="maximized">
-	      	<portlet:param name="portlet-command" value="setTags" />
-	      	<portlet:param name="projectId" value="${project.id}" /> 
-	      	<portlet:param name="moduleId" value="1" /> 
-	      	<portlet:param name="userId" value="${projectRating.user.id}" />
-	      	<portlet:param name="popup" value="true" />
-      	</portlet:renderURL>
-      	<ccp:tags url="${setTagsUrl}" userTags="userTags" showAddEdit="true" />
-      </fieldset>
---%>
     </form>
   </div>

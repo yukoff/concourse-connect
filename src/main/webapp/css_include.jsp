@@ -133,6 +133,7 @@
   <src>/javascript/panel.js</src>
   <src>/javascript/carousel_min.js</src>
   <src>/javascript/trackMouse.js</src>
+  <src>/javascript/tags_form_add.js</src>
 </pack:script>
 <%--
 <script src="<%= yuiURL %>/datatable/datatable-beta-min.js" type="text/javascript"></script>

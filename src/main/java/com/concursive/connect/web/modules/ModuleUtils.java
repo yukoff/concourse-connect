@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules;
 
 import com.concursive.commons.text.StringUtils;
@@ -60,7 +59,6 @@ import com.concursive.connect.web.modules.reviews.dao.ProjectRating;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.dao.WikiComment;
 
-
 /**
  * Utilties for working with modules
  *
@@ -68,12 +66,14 @@ import com.concursive.connect.web.modules.wiki.dao.WikiComment;
  * @created February 27, 2009
  */
 public class ModuleUtils {
-  //Module Names
+
+  // Module Names
   public static final String MODULENAME_PROFILE = "profile";
   public static final String MODULENAME_PROFILE_IMAGE = "profileimage";
   public static final String MODULENAME_REVIEWS = "reviews";
   public static final String MODULENAME_BLOG = "blog";
   public static final String MODULENAME_NEWS = "news"; //another alias for blogs
+  public static final String MODULENAME_BLOG_POST = "post";
   public static final String MODULENAME_BLOG_COMMENT = "blogcomment";
   public static final String MODULENAME_CALENDAR = "calendar";
   public static final String MODULENAME_CALENDAR_EVENT = "calendarevent";
@@ -90,7 +90,6 @@ public class ModuleUtils {
   public static final String MODULENAME_INBOX = "inbox";
   public static final String MODULENAME_DOCUMENTS = "documents";
 
-
   public static String getTableFromModuleName(String moduleName) {
     if (!StringUtils.hasText(moduleName)) {
       return null;
@@ -104,7 +103,7 @@ public class ModuleUtils {
       return Wiki.TABLE;
     } else if (MODULENAME_DISCUSSION_TOPIC.equals(moduleName)) {
       return Topic.TABLE;
-    } else if (MODULENAME_NEWS.equals(moduleName) || MODULENAME_BLOG.equals(moduleName)) {
+    } else if (MODULENAME_NEWS.equals(moduleName) || MODULENAME_BLOG.equals(moduleName) || MODULENAME_BLOG_POST.equals(moduleName)) {
       return BlogPost.TABLE;
     } else if (MODULENAME_WIKI_COMMENT.equals(moduleName)) {
       return WikiComment.TABLE;
@@ -133,7 +132,7 @@ public class ModuleUtils {
       return Wiki.PRIMARY_KEY;
     } else if (MODULENAME_DISCUSSION_TOPIC.equals(moduleName)) {
       return Topic.PRIMARY_KEY;
-    } else if (MODULENAME_NEWS.equals(moduleName) || MODULENAME_BLOG.equals(moduleName)) {
+    } else if (MODULENAME_NEWS.equals(moduleName) || MODULENAME_BLOG.equals(moduleName) || MODULENAME_BLOG_POST.equals(moduleName)) {
       return BlogPost.PRIMARY_KEY;
     } else if (MODULENAME_WIKI_COMMENT.equals(moduleName)) {
       return Comment.PRIMARY_KEY;
@@ -154,7 +153,7 @@ public class ModuleUtils {
     int linkModuleId = -1;
     if (MODULENAME_CLASSIFIEDS.equals(moduleName)) {
       linkModuleId = Constants.PROJECT_CLASSIFIEDS_FILES;
-    } else if (MODULENAME_BLOG.equals(moduleName)) {
+    } else if (MODULENAME_BLOG.equals(moduleName) || MODULENAME_NEWS.equals(moduleName) || MODULENAME_BLOG_POST.equals(moduleName)) {
       linkModuleId = Constants.PROJECT_BLOG_FILES;
     } else if (MODULENAME_PROMOTIONS.equals(moduleName)) {
       linkModuleId = Constants.PROJECT_AD_FILES;

@@ -447,7 +447,7 @@ public class MeetingInviteesBean extends GenericBean {
   private boolean checkUserEmail(Connection db, ActionRequest request, String email)
       throws SQLException {
     // Query users for email
-    int userId = User.getIdByEmailAddress(db, email);
+    int userId = User.getIdByEmailAddress(db, (String) DimDimUtils.processEmail(email).get(DimDimUtils.EMAIL));
 
     // user found
     if (userId > -1) {

@@ -90,6 +90,11 @@ public class DimDimUtils {
   public static final String ATTENDEES_TENTATIVE = "attendeesTentative";
   public static final String ATTENDEES_DECLINED = "attendeesDeclined";
   public static final String CURRENT_ATTENDEE = "currentAttendee";
+  public static final String EMAIL = "email";
+  public static final String FIRST_NAME = "firstName";
+  public static final String MIDDLE_NAME = "middleName";
+  public static final String LAST_NAME = "lastName";
+  
   public static final String DIMDIM_CODE_SUCCESS = "200";
 
   /**
@@ -415,5 +420,36 @@ public class DimDimUtils {
       // the password may not be encrypted
       return password;
     }
+  }
+  
+  /**
+   * Separates the email in the form firstName LastName <emailaddress@site.com> to first name, last name and email address 
+   * @param email - input email address to be separated.
+   * @return - Returns a HashMap containing the separated values. The values can be retrieved from the map using the keys:
+   * 						DimDimUtils.FIRST_NAME
+   * 						DimDimUtils.LAST_NAME
+   * 						DimDimUtils.EMAIL
+   */
+  public static HashMap<String, String> processEmail(String email) {
+  	HashMap<String, String> retVal = new HashMap<String, String>();
+  	
+  	//return if there is not first name or last name in the input
+  	if (email.indexOf("<") < 0) {
+  		retVal.put(EMAIL, email);
+  		return retVal;
+  	}
+  	
+  	//extract email address
+  	String[] arrEmail = email.split("<");
+  	arrEmail[1] = arrEmail[1].trim();
+  	arrEmail[1] = arrEmail[1].substring(0, arrEmail[1].indexOf(">") < 0 ? arrEmail[1].length() : arrEmail[1].indexOf(">")).trim();
+  	retVal.put(EMAIL, arrEmail[1]);
+  	
+  	//extract first name and last name
+  	arrEmail[0] = arrEmail[0].trim();
+  	int posSpace = arrEmail[0].indexOf(" ") < 0 ? arrEmail[0].length() : arrEmail[0].indexOf(" ");
+  	retVal.put(FIRST_NAME, arrEmail[0].substring(0, posSpace).trim());
+  	retVal.put(LAST_NAME, arrEmail[0].substring(posSpace).trim());
+  	return retVal;
   }
 }

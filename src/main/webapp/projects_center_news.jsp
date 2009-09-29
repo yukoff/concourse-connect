@@ -51,6 +51,7 @@
 <%@ page import="com.concursive.connect.web.modules.blog.dao.BlogPost" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.login.utils.UserUtils" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils"%>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="newsList" class="com.concursive.connect.web.modules.blog.dao.BlogPostList" scope="request"/>
@@ -166,7 +167,7 @@
         </div>
         <ul>
           <li><span>Posted On:</span> <ccp:tz timestamp="<%= thisArticle.getStartDate() %>"
-                                                 dateFormat="<%= DateFormat.LONG %>" pattern="MM/dd/yy' at 'h:mm a"/>
+                                              dateFormat="<%= DateFormat.LONG %>" pattern="MM/dd/yy' at 'h:mm a"/>
           </li>
           <li><span>Posted By:</span> <ccp:username id="<%= thisArticle.getEnteredBy() %>"/>
           </li>
@@ -183,7 +184,7 @@
     </div>
     <c:if test="${!empty thisArticle.message}">
       <div>
-        (more)
+        (<a href="${detailsUrl}">read more</a>)
       </div>
     </c:if>
     <div class="articleFooter">
@@ -203,15 +204,22 @@
         </c:set>
         <c:choose>
           <c:when test="${thisArticle.numberOfComments > 0}">
-            <%-- TODO: Fix Link
-            <a href="${detailsUrl}/comments">${commentText}</a>
-            --%>
             <img src="${ctx}/images/icons/balloons.png" alt="comments icon" align="absmiddle"> <a href="${detailsUrl}#comments">${commentText}</a>
           </c:when>
           <c:otherwise>
             ${commentText}
           </c:otherwise>
         </c:choose>
+      </span>
+      <span class="tagList">
+        <portlet:renderURL var="setTagsUrl" windowState="maximized">
+          <portlet:param name="portlet-command" value="setTags" />
+          <portlet:param name="portlet-object" value="post"/>
+          <portlet:param name="portlet-value" value="${thisArticle.id}"/>
+          <portlet:param name="popup" value="true" />
+        </portlet:renderURL>
+        <%--<ccp:tags url="${setTagsUrl}" linkItemId="${thisArticle.id}" module="<%= ModuleUtils.MODULENAME_BLOG %>" showAddEdit="<%= User.isLoggedIn() %>"  />--%>
+        <ccp:tags url="${setTagsUrl}" />
       </span>
     </div>
     <div class="portlet-menu">
@@ -229,7 +237,7 @@
       <ccp:evaluate if="<%= thisArticle.getRatingCount() > 0 %>">
         <p>(<%= thisArticle.getRatingValue() %> out of <%= thisArticle.getRatingCount() %> <%= thisArticle.getRatingCount() == 1 ? " person" : " people"%> found this blog post useful.)</p>
       </ccp:evaluate>
-      <ccp:evaluate if="<%= thisArticle.getInappropriateCount() > 0 && ProjectUtils.hasAccess(thisArticle.getProjectId(), User, \"project-news-edit\")%>">
+      <ccp:evaluate if='<%= thisArticle.getInappropriateCount() > 0 && ProjectUtils.hasAccess(thisArticle.getProjectId(), User, "project-news-edit")%>'>
         <p>(<%= thisArticle.getInappropriateCount() %><%= thisArticle.getInappropriateCount() == 1? " person" : " people"%> found this blog post inappropriate.)</p>
       </ccp:evaluate>
         <%-- any user who is not the author of the blog can mark the blog as useful  --%>

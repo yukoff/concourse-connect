@@ -16,7 +16,7 @@
  * These terms must be included in any work that has ConcourseConnect components.
  * If you are developing and distributing open source applications under the
  * GNU Affero General Public License, then you are free to use ConcourseConnect
- * under the GNU Affero General Public License. Ê
+ * under the GNU Affero General Public License.
  *
  * If you are deploying a web site in which users interact with any portion of
  * ConcourseConnect over a network, the complete source code changes must be made
@@ -310,7 +310,7 @@ function createImagePagination(groupName, currentUrl) {
 }
 
 
-function showPanel(title, url, width) {
+function showPanel(title, url, width, id) {
   // Initialize the temporary Panel to display while waiting for external content to load
   var widthWait = 52;
   var posxWait = (YAHOO.util.Dom.getViewportWidth() - widthWait) / 2;
@@ -358,6 +358,9 @@ function showPanel(title, url, width) {
         }
         window.location.href = url;
       }
+    } else if (o.status == 200 && id) {
+      panel.cancel();
+      document.getElementById(id).innerHTML = o.responseText;
     } else if (o.status == 201) {
       // success, content created
       panel.cancel();

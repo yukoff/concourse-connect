@@ -403,13 +403,14 @@
                 <c:set var="tabbedMenuValue" value="${fn:toLowerCase(project.category.description)}"/>
               </c:otherwise>
             </c:choose>
-            <ccp:tabbedMenu text="<%= \"Home\" %>" key="home" value="${tabbedMenuValue}" url="${ctx}/" type="li"/>
+            <ccp:tabbedMenu text='<%= "Home" %>' key="home" value="${tabbedMenuValue}" url="${ctx}/" type="li" object="requestMainProfile"/>
             <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
               <ccp:tabbedMenu text="${tabCategory.description}"
                                  key="${fn:toLowerCase(fn:replace(tabCategory.description,' ','_'))}"
                                  value="${tabbedMenuValue}"
                                  url='${ctx}/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}.shtml'
-                                 type="li"/>
+                                 type="li"
+                                 object="requestMainProfile"/>
             </c:forEach>
             <%--
             <c:choose>
@@ -432,13 +433,14 @@
       </div>
       <div class="ccp-footer">
         <ul>
-          <ccp:tabbedMenu text="<%= \"Home\" %>" key="nokey" value="novalue" url="${ctx}/" type="li"/>
+          <ccp:tabbedMenu text='<%= "Home" %>' key="nokey" value="novalue" url="${ctx}/" type="li" object="requestMainProfile"/>
           <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
             <ccp:tabbedMenu text="${tabCategory.description}"
-                               key="nokey"
-                               value="novalue"
-                               url='${ctx}/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}.shtml'
-                               type="li"/>
+                            key="nokey"
+                            value="novalue"
+                            url='${ctx}/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}.shtml'
+                            type="li"
+                            object="requestMainProfile"/>
           </c:forEach>
           <ccp:permission object="requestMainProfile" name="project-wiki-view">
             <li>

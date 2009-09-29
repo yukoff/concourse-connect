@@ -96,9 +96,13 @@ public class SaveTagsAction implements IPortletAction {
 
     // Check the user's permissions
     User user = getUser(request);
+    if (!user.isLoggedIn()) {
+      throw new PortletException("Unauthorized to add tags");
+    }
+
     // @todo figure out the permission to check!
     if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-view")) {
-      throw new PortletException("Unauthorized to add in this project");
+      throw new PortletException("Unauthorized to access this profile");
     }
 
     // get database connection

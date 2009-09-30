@@ -91,7 +91,7 @@
           <portlet name="ContentPortlet">
             <content>
               <![CDATA[
-                <h3>Who can add or respond to discussions?</h3>
+                <h3>Who can respond to discussions?</h3>
                 <ol>
                   <li>Anyone can respond to a forum topic.</li>
                   <li>A manager can make a new forum.</li>
@@ -203,7 +203,7 @@
           <portlet name="ContentPortlet">
             <content>
               <![CDATA[
-                <h3>Who can add or respond to the Discussion?</h3>
+                <h3>Who can respond to discussions?</h3>
                 <ol>
                   <li>Anyone can respond to a forum topic.</li>
                   <li>A manager can make a new forum.</li>
@@ -311,7 +311,7 @@
           <portlet name="ContentPortlet">
             <content>
               <![CDATA[<div class="portletWrapper marketingInfo">
-                <h3>Who can add or respond to the Discussion?</h3>
+                <h3>Who can respond to discussions?</h3>
                 <ol>
                   <li>Anyone can respond to a forum topic.</li>
                   <li>A manager can make a new forum.</li>

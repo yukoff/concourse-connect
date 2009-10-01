@@ -542,10 +542,13 @@
         <fileset dir="${CATALINA_HOME}/bin">
           <include name="*.jar"/>
         </fileset>
-        <fileset dir="${CATALINA_HOME}/server/lib">
+        <fileset dir="${CATALINA_HOME}/server/lib" erroronmissingdir="false">
           <include name="*.jar"/>
         </fileset>
-        <fileset dir="${CATALINA_HOME}/common/lib"> 
+        <fileset dir="${CATALINA_HOME}/common/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/lib" erroronmissingdir="false">
           <include name="*.jar"/>
         </fileset>
       </classpath>
@@ -663,10 +666,13 @@
         <fileset dir="${dist.dir}/${project.war.finalName}/WEB-INF/lib">
           <include name="*.jar"/>
         </fileset>
-        <fileset dir="${CATALINA_HOME}/common/lib">
+        <fileset dir="${CATALINA_HOME}/common/lib" erroronmissingdir="false">
           <include name="*.jar"/>
         </fileset>
-        <fileset dir="${CATALINA_HOME}/shared/lib">
+        <fileset dir="${CATALINA_HOME}/shared/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/lib" erroronmissingdir="false">
           <include name="*.jar"/>
         </fileset>
         <fileset dir="${CATALINA_HOME}/bin">

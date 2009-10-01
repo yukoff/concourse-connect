@@ -114,10 +114,10 @@ The following software is required to package and test ConcourseConnect:
   Apache Tomcat 6.0, use with Sun J2SE 6.0
   http://tomcat.apache.org
 
-  Apache Ant 1.7
+  Apache Ant 1.7.1
   http://ant.apache.org
 
-  Postgresql 8.3
+  Postgresql 8.3+
   http://www.postgresql.org
 
 Steps for packaging the source:

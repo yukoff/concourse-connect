@@ -51,9 +51,9 @@
 <jsp:useBean id="content" class="java.lang.String" scope="request"/>
 <jsp:useBean id="link" class="java.lang.String" scope="request"/>
 <%@ include file="initPage.jsp" %>
-<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.6/tiny_mce_popup.js?1"></script>
-<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.6/utils/mctabs.js"></script>
-<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.6/utils/validate.js"></script>
+<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/tiny_mce_popup.js?1"></script>
+<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/utils/mctabs.js"></script>
+<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/utils/validate.js"></script>
 <script type="text/javascript">
 var LinkSelect = {
   init : function (ed) {

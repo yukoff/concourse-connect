@@ -69,9 +69,9 @@
       break;
   }
 %>
-<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.6/tiny_mce_popup.js?1"></script>
-<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.6/utils/mctabs.js"></script>
-<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.6/utils/validate.js"></script>
+<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/tiny_mce_popup.js?1"></script>
+<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/utils/mctabs.js"></script>
+<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/utils/validate.js"></script>
 <script type="text/javascript">
 var ImageSelect = {
   init : function (ed) {
@@ -93,6 +93,7 @@ var ImageSelect = {
     </ccp:evaluate>
     <ccp:evaluate if="<%= hasText(uploadedImage) %>">
       imageFilename = '<%= StringUtils.jsEscape(uploadedImage) %>';
+      imageFilename = imageFilename.replace(/%20/g, " ");
     </ccp:evaluate>
       var imageList = document.getElementById('imageList');
       for (var i = 0; i < imageList.options.length; i++) {

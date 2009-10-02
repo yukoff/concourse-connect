@@ -51,7 +51,7 @@
 <jsp:useBean id="newsArticle" class="com.concursive.connect.web.modules.blog.dao.BlogPost" scope="request"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="initPage.jsp" %>
-<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.6/tiny_mce_popup.js?1"></script>
+<script language="javascript" type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/tiny_mce_popup.js?1"></script>
 <script type="text/javascript">
 var FileBrowserDialogue = {
   init : function () {

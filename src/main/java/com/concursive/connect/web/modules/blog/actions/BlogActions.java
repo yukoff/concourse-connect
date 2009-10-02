@@ -499,19 +499,21 @@ public final class BlogActions extends GenericAction {
         if (!recordInserted) {
           processErrors(context, thisItem.getErrors());
         } else {
-          if (thisItem.isImageFormat()) {
+          if (thisItem.isImageFormat() && thisItem.hasValidImageSize()) {
             // Create a thumbnail if this is an image
             String format = thisItem.getExtension().substring(1);
             File thumbnailFile = new File(newFileInfo.getLocalFile().getPath() + "TH");
             Thumbnail thumbnail = new Thumbnail(ImageUtils.saveThumbnail(newFileInfo.getLocalFile(), thumbnailFile, 200d, 200d, format));
-            // Store thumbnail in database
-            thumbnail.setId(thisItem.getId());
-            thumbnail.setFilename(newFileInfo.getRealFilename() + "TH");
-            thumbnail.setVersion(thisItem.getVersion());
-            thumbnail.setSize((int) thumbnailFile.length());
-            thumbnail.setEnteredBy(thisItem.getEnteredBy());
-            thumbnail.setModifiedBy(thisItem.getModifiedBy());
-            recordInserted = thumbnail.insert(db);
+            if (thumbnail != null) {
+              // Store thumbnail in database
+              thumbnail.setId(thisItem.getId());
+              thumbnail.setFilename(newFileInfo.getRealFilename() + "TH");
+              thumbnail.setVersion(thisItem.getVersion());
+              thumbnail.setSize((int) thumbnailFile.length());
+              thumbnail.setEnteredBy(thisItem.getEnteredBy());
+              thumbnail.setModifiedBy(thisItem.getModifiedBy());
+              recordInserted = thumbnail.insert(db);
+            }
           }
         }
         context.getRequest().setAttribute("popup", "true");

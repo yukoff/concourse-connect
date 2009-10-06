@@ -52,7 +52,10 @@
 <jsp:useBean id="added" class="java.lang.String" scope="request" />
 <%
 if (!StringUtils.hasText(pid)) {
-  pid = StringUtils.getNumbersOnly(request.getParameter("pid"));
+  pid = request.getParameter("pid");
+  if (pid != null) {
+    pid = StringUtils.getNumbersOnly(pid);
+  }
 }
 String pidParam = "";
 if (StringUtils.hasText(pid)) {
@@ -66,5 +69,5 @@ if (!StringUtils.hasText(lmid)) {
   added = StringUtils.encodeUrl(request.getParameter("added"));
 }
 response.setStatus(302);
-response.setHeader( "Location", request.getScheme() + "://" + getServerUrl(request) + "/FileAttachments.do?command=ShowForm" + pidParam + "&lmid=" + lmid + "&liid=" + liid + "&selectorId=" + selectorId + "&selectorMode=" + selectorMode + "&added=" + added + "&popup=true");
+response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/FileAttachments.do?command=ShowForm" + pidParam + "&lmid=" + lmid + "&liid=" + liid + "&selectorId=" + selectorId + "&selectorMode=" + selectorMode + "&added=" + added + "&popup=true");
 %>

@@ -84,34 +84,34 @@
             <b><%= showAttribute(request, "purposeError") %></b>
           </label>
           <label style="clear:right">
+            <input type="radio" name="purpose" value="intranet" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
+            <strong>Enterprise social computing</strong> -
+             A private site used for collaboration using features like blogs, wiki, documents, forums, photos, groups and projects
+          </label>
+          <label style="clear:right">
             <input type="radio" name="purpose" value="social" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
-            <strong>Social Networking Site</strong> -
-            Build your own social networking site around a special interest
+            <strong>Social networking</strong> -
+            A special interest site that fosters collaboration around a particular theme
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="directory" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
-            <strong>Commercial Community Site</strong> -
-            Build a directory and open up your site for collaboration
+            <strong>Commercial social community</strong> -
+            A site fostering collaboration around a directory of places, things and people
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="community" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
-            <strong>Corporate Community Site</strong> -
-            Supplement an existing website with a community and idea forum
-          </label>
-          <label style="clear:right">
-            <input type="radio" name="purpose" value="intranet" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
-            <strong>Corporate Intranet</strong> -
-            Internal collaboration using features like wiki, documents, forums, and projects
+            <strong>Customer community</strong> -
+            A site that supplements an existing website with rich community features and an idea forum
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="projects" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
-            <strong>Client Project Site</strong> -
-            Create a private site to exchange documents with clients
+            <strong>Client projects</strong> -
+            A private site to exchange documents with clients
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="web" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
-            <strong>Business Web Site</strong> -
-            Setup a marketing and collaborative web presence
+            <strong>Business web Site</strong> -
+            Setup a marketing and collaborative web presence all in one
           </label>
         </fieldset>
       </div>

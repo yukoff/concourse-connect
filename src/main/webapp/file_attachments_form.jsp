@@ -125,7 +125,7 @@
         ${counter}. <ccp:label name="fileAttach.selectFile">Choose the file you want to attach...</ccp:label>
       </label>
       <c:set var="counter" value="${counter+1}"/>
-      <input type="file" name="id<%= toHtml(request.getParameter("pid")) %>" size="45"/>
+      <input type="file" name="id<%= toHtmlValue(request.getParameter("pid")) %>" size="45"/>
       <ccp:evaluate if='<%= request.getParameter("pid") != null %>'>
         <input type="hidden" name="pid" value="<%= toHtmlValue(request.getParameter("pid")) %>" />
       </ccp:evaluate>

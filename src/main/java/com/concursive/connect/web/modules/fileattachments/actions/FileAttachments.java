@@ -43,10 +43,10 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.fileattachments.actions;
 
 import com.concursive.commons.images.ImageUtils;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
@@ -218,8 +218,10 @@ public final class FileAttachments extends GenericAction {
 
       int projectId = -1;
       String projectIdValue = (String) parts.get("pid");
-      if (projectIdValue != null) {
+      if (StringUtils.hasText(projectIdValue)) {
         projectId = Integer.parseInt(projectIdValue);
+      } else {
+        projectIdValue = "";
       }
       int linkModuleId = Integer.parseInt((String) parts.get("lmid"));
       int linkItemId = Integer.parseInt((String) parts.get("liid"));
@@ -315,7 +317,6 @@ public final class FileAttachments extends GenericAction {
     }
   }
 
-
   public String executeCommandAttachProjectImageFiles(ActionContext context) {
     if (getUser(context).getId() < 0) {
       return "PermissionError";
@@ -368,7 +369,6 @@ public final class FileAttachments extends GenericAction {
     }
   }
 
-
   public String executeCommandRemove(ActionContext context) {
     if (getUser(context).getId() < 0) {
       return "PermissionError";
@@ -392,5 +392,4 @@ public final class FileAttachments extends GenericAction {
       this.freeConnection(context, db);
     }
   }
-
 }

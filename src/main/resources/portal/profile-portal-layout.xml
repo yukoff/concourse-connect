@@ -437,6 +437,14 @@
                   <parameter>returnURL</parameter>
                   <rule>userHasToolsEnabled</rule>]]>
               </value>
+              <value>
+                <![CDATA[<content>Approve this Listing</content>
+                  <title>Approve ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/app/approve_listing</href>
+                  <rel>shadowbox;width=550</rel>
+                  <projectCondition>!approved</projectCondition>
+                  <rule>isAdmin</rule>]]>
+              </value>
               <value><![CDATA[
                 <content>Call Us for Free</content>
                 <title>Call ${project.title:xml} for free</title>

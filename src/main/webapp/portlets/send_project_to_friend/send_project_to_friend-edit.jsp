@@ -50,7 +50,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
-<c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <script language="JavaScript" type="text/javascript">
   function checkForm<portlet:namespace/>(form) {
     var message = "";
@@ -76,7 +75,6 @@
     }
   }
 </script>
-<c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <div class="sendProjectToFriendEdit">
   <c:if test="${!empty actionError}">
     <p><font color="red"><c:out value="${actionError}"/></font></p>

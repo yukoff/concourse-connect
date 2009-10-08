@@ -4215,7 +4215,6 @@
       <row>
         <column>
           <portlet name="EditProjectWikiPortlet">
-            <failureMessage>We could not send this information to your friend...</failureMessage>
             <businesses>
             	<value>pageTitle=Business Information</value>
             </businesses>
@@ -4456,6 +4455,13 @@
               <value>shortDescription=Description</value>
             </products>
           </portlet>
+        </column>
+      </row>
+    </page>
+    <page name="approve_listing">
+      <row>
+        <column>
+          <portlet name="ApproveListingPortlet" isAdmin="true" />
         </column>
       </row>
     </page>

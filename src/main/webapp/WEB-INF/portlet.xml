@@ -904,6 +904,17 @@
       <title>Displays a form for adding a wiki to the current listing</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>ApproveListingPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.profile.portlets.ApproveListingPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Allows an administrator to approve a listing</title>
+    </portlet-info>
+  </portlet>
 
   <custom-portlet-mode>
     <description>Provides administration functions</description>

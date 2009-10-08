@@ -148,8 +148,19 @@ public class ProjectActionsPortlet extends GenericPortlet {
         }
         // See if any conditions fail
         if (url.containsKey("projectCondition")) {
-          boolean meetsCondition = Boolean.parseBoolean(ObjectUtils.getParam(project, url.get("projectCondition")));
-          if (!meetsCondition) {
+          boolean test = true;
+          String condition = url.get("projectCondition");
+          // Check to see if a false condition is being checked
+          if (condition.startsWith("!")) {
+            test = false;
+            condition = condition.substring(1);
+          }
+          boolean meetsCondition = Boolean.parseBoolean(ObjectUtils.getParam(project, condition));
+          if (test && !meetsCondition) {
+            // Expecting a true condition
+            valid = false;
+          } else if (!test && meetsCondition) {
+            // Expecting a false condition
             valid = false;
           }
         }
@@ -210,6 +221,11 @@ public class ProjectActionsPortlet extends GenericPortlet {
             }
             boolean isThisUsersProfile = thisUser != null && thisUser.isLoggedIn() && project.getProfile() && project.getOwner() == thisUser.getId();
             if (isThisUsersProfile) {
+              valid = false;
+            }
+          } else if ("isAdmin".equals(rule)) {
+            boolean isAdmin = thisUser != null && thisUser.getAccessAdmin();
+            if (!isAdmin) {
               valid = false;
             }
           } else if ("isUser".equals(rule)) {

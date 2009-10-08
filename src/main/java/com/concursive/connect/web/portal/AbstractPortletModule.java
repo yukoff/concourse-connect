@@ -105,7 +105,7 @@ public abstract class AbstractPortletModule extends GenericPortlet {
    */
   public void init(PortletConfig portletConfig) throws PortletException {
     super.init(portletConfig);
-    LOG.info("Initializing controller actions and viewers");
+    LOG.info("Initializing: " + this.getClass().getSimpleName());
     doPopulateActionsAndViewers();
   }
 

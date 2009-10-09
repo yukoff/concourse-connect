@@ -9,7 +9,7 @@
  */
 
  body {
-   background:#fff;
+   background:#ddd;
  }
 
 .ccp-container {
@@ -77,6 +77,13 @@
     color:#000;
   }
 
+.ccp-body {
+  background:#fff;
+  border-width:0 2px 2px 2px;
+  border-color:#aaa;
+  border-style:solid;
+}
+
   .ccp-navigation {
     background:#000;
   }
@@ -104,4 +111,13 @@
 .ccp-footer {
 	background: none;
 	border-bottom: none;
+}
+
+.ccp-alert,
+.ccp-alert a {
+  color:#333;
+}
+
+.ccp-alert a:hover {
+  color:#000;
 }

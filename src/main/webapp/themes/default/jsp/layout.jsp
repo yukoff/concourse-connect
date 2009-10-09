@@ -207,7 +207,18 @@
     <p class="access"><a href="#content" accesskey="1">Skip Navigation and Search to Content</a></p>
     <div class="ccp-container">
       <div class="ccp-header">
-        <div class="ccp-user-navigation">
+        <div class="ccp-header-title">
+          <a id="ccp-header-title-link-id" href="${ctx}/" accesskey="h" title="<%= toHtml(applicationPrefs.get("TITLE")) %>">
+            <ccp:evaluate if='<%= !applicationPrefs.has("LOGO") %>'>
+              <h1 id="ccp-header-title-item-id"><%= toHtml(applicationPrefs.get("TITLE")) %></h1>
+            </ccp:evaluate>
+            <ccp:evaluate if='<%= applicationPrefs.has("LOGO") %>'>
+              <c:set var="headerLogo" value='<%= applicationPrefs.get("LOGO") %>'/>
+              <img id="ccp-header-title-image-id" src="${ctx}/image/${headerLogo}/logo.png" width="${fn:endsWith(headerLogo, "-300x100") ? "300":"250" }" height="100" alt="<%= toHtml(applicationPrefs.get("TITLE")) %>" />
+            </ccp:evaluate>
+          </a>
+        </div>
+        <div class="ccp-header-menu">
           <div class="ccp-site-menu">
             <ul>
               <c:set var="isFirst">class="first"</c:set>
@@ -306,90 +317,51 @@
               </ccp:evaluate>
             </ul>
           </div>
-        </div>
-        <%-- TODO: Make this section a portlet
-        <p class="welcome">
-          Welcome <ccp:username id="<%= User.getId() %>"/>
-        --%>
-
-        <ccp:evaluate if="<%= isUserLoggedIn %>">
-          <div class="ccp-alert">
-            <ccp:evaluate
-                if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 0 %>">
-              You have <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>"><%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
-                if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 1 %>">s</a>
+          <ccp:evaluate if="<%= isUserLoggedIn %>">
+            <div class="ccp-alert">
+              <ccp:evaluate
+                  if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 0 %>'>
+                <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
+                  if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 1 %>'>s</a>
+                </ccp:evaluate>
               </ccp:evaluate>
-            </ccp:evaluate>
-            <ccp:evaluate if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 0 %>">
-              You have <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>"><%= (String) request.getAttribute("requestInvitationCount") %> new invitation<ccp:evaluate
-                  if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 1 %>">s</a>
-                </ccp:evaluate>
-            </ccp:evaluate>
-          </div>
-        </ccp:evaluate>
-        <%--
-        <p class="messages">We have <%= Tracker.getGuestCount() %> guest<ccp:evaluate
-            if="<%= Tracker.getGuestCount() != 1 %>">s</ccp:evaluate>
-          and
-          <ccp:evaluate if="<%= User.getAccessAdmin() %>"><a
-              href="javascript:popURL('<%= RequestUtils.getAbsoluteServerUrl(request) %>/AdminMembers.do?popup=true','Web_Members','400','500','yes','yes');">
-            </ccp:evaluate>
-            <%= Tracker.getUserCount() %>
-            member<ccp:evaluate if="<%= Tracker.getUserCount() != 1 %>">s</ccp:evaluate></a> online.
-        </p>
-        --%>
-        <a id="ccp-header-title-link-id" href="${ctx}/" accesskey="h" title="<%= toHtml(applicationPrefs.get("TITLE")) %>">
-          <ccp:evaluate if="<%= !applicationPrefs.has(\"LOGO\") %>">
-            <h1 id="ccp-header-title-item-id"><%= toHtml(applicationPrefs.get("TITLE")) %></h1>
-         </ccp:evaluate>
-          <ccp:evaluate if="<%= applicationPrefs.has(\"LOGO\") %>">
-            <img id="ccp-header-title-image-id" src="${ctx}/image/<%= applicationPrefs.get("LOGO") %>/logo.png" alt="<%= toHtml(applicationPrefs.get("TITLE")) %>" />
-         </ccp:evaluate>
-        </a>
-
-        <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
-          <div class="ccp-search-form">
-            <form action="<%= ctx %>/search" method="get">
-              <fieldset>
-                <legend>Search <%= toHtml(pageTitle) %></legend>
-                <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
-                  <label for="categoryId">Search</label>
-                  <%= menuCategoryList.getHtml("categoryId", searchBean.getCategoryId()) %>
-                </ccp:evaluate>
-                <label for="query">for</label>
-                <%-- TODO: Add id attribute for properly labeling --%>
-                <input type="text" size="20" name="query" value="<%= toHtmlValue(searchBean.getQuery()) %>"/>
-                <ccp:evaluate if="<%= useLocations %>">
-                  <label for="location">near</label>
-                  <%-- TODO: Add id attribute for properly labeling --%>
-                  <input type="text" size="20" name="location" value="<%= toHtmlValue(searchBean.getLocation()) %>" />
-                </ccp:evaluate>
-                <input type="submit" alt="Search" value="Go" />
-                <%-- Removed by popular request
-                <ccp:evaluate if="<%= inProject || searchThis %>">
-                  <input type="radio" onClick="this.form.query.focus()" name="type" value="all" <%= !searchThis ? "checked" : "" %> />
-                  All
-                  <input type="radio" onClick="this.form.query.focus()" name="type" value="this" <%= searchThis ? "checked" : "" %> />
-                  This profile
-                </ccp:evaluate>
-                <ccp:evaluate if="<%= !inProject && !searchThis %>">
-                  <input type="hidden" name="type" value="all" />
-                </ccp:evaluate>
-                --%>
-                <input type="hidden" name="type" value="all"/>
-                <input type="hidden" name="scope" value="<%= searchBean.getScopeText() %>"/>
-                <input type="hidden" name="filter" value="<%= searchBean.getFilter() %>"/>
-                <input type="hidden" name="projectId" value="<%= searchProjectId %>"/>
-                <input type="hidden" name="openProjectsOnly" value="true"/>
-                <input type="hidden" name="auto-populate" value="true"/>
-                <%--
-                <a href="javascript:popURL('<%= ctx %>/Search.do?command=Tips&popup=true','Search_Tips','500','325','yes','yes')">tips</a>
-                --%>
-              </fieldset>
-            </form>
-          </div>
-        </ccp:evaluate>
-
+              <ccp:evaluate if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 0 %>'>
+                <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestInvitationCount") %> new invitation<ccp:evaluate
+                    if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 1 %>'>s</a>
+                  </ccp:evaluate>
+              </ccp:evaluate>
+            </div>
+          </ccp:evaluate>
+          <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
+            <div class="ccp-search-form">
+              <form action="${ctx}/search" method="get">
+                <fieldset>
+                  <legend>Search <%= toHtml(pageTitle) %></legend>
+                  <%--
+                  <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
+                    <label for="categoryId">Search</label>
+                    <%= menuCategoryList.getHtml("categoryId", searchBean.getCategoryId()) %>
+                  </ccp:evaluate>
+                  --%>
+                  <label for="query">Search for</label>
+                  <input type="text" size="20" name="query" value="<%= toHtmlValue(searchBean.getQuery()) %>"/>
+                  <ccp:evaluate if="<%= useLocations %>">
+                    <label for="location">near</label>
+                    <input type="text" size="20" name="location" value="<%= toHtmlValue(searchBean.getLocation()) %>" />
+                  </ccp:evaluate>
+                  <input type="submit" alt="Search" value="Go" />
+                  <input type="hidden" name="categoryId" value="-1"/>
+                  <input type="hidden" name="type" value="all"/>
+                  <input type="hidden" name="scope" value="<%= searchBean.getScopeText() %>"/>
+                  <input type="hidden" name="filter" value="<%= searchBean.getFilter() %>"/>
+                  <input type="hidden" name="projectId" value="<%= searchProjectId %>"/>
+                  <input type="hidden" name="openProjectsOnly" value="true"/>
+                  <input type="hidden" name="auto-populate" value="true"/>
+                </fieldset>
+              </form>
+            </div>
+          </ccp:evaluate>
+        </div>
         <div class="ccp-navigation">
           <ul>
             <c:choose>
@@ -412,18 +384,6 @@
                                  type="li"
                                  object="requestMainProfile"/>
             </c:forEach>
-            <%--
-            <c:choose>
-            	<c:when test="${chosenTab eq \"home.shtml\"}">
-		            <link type="application/rss+xml" rel="alternate" href="${ctx}/feed/rss.xml" title="Home" />
-	                <li><a type="application/rss+xml" rel="alternate" href="${ctx}/feed/rss.xml">Subscribe</a><img src="${ctx}/images/feed-icon-16x16.gif" /></li>
-                </c:when>
-                <c:otherwise>
-		            <link type="application/rss+xml" rel="alternate" href="${ctx}/feed/${fn:toLowerCase(fn:replace(chosenCategory," ","_"))}/rss.xml" title="<c:out value="${chosenCategory}" /> Home" />
-	                <li><a type="application/rss+xml" rel="alternate" href="${ctx}/feed/${fn:toLowerCase(fn:replace(chosenCategory," ","_"))}/rss.xml">Subscribe</a><img src="${ctx}/images/feed-icon-16x16.gif" /></li>
-                </c:otherwise>
-            </c:choose>
-            --%>
           </ul>
         </div>
       </div><%-- End ccp-header --%>
@@ -519,10 +479,8 @@
           </li>
           <c:set var="isFirst" value=""/>
         </ul>
-        <ccp:permission object="requestMainProfile" name="project-wiki-view">
           <p>Powered by <a title="The Open Source Community and Collaboration Solution" href="http://www.concursive.com/show/concourseconnect">Concursive ConcourseConnect</a>,
             <a title="The Open Source Business Social Software Platform" href="http://www.concursive.com">The Open Source Community and Collaboration Solution</a></p>
-        </ccp:permission>
       </div>
     </div>
     <%-- Allow pages to have a scrollTo... must be at end of html --%>

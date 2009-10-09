@@ -13,7 +13,7 @@
  }
 
 .ccp-container {
-
+  _height:1%;
 }
 
 .ccp-header {
@@ -98,16 +98,16 @@
     border-collapse:collapse;
     padding:0;
     margin:0;
-    border-bottom:10px solid #522f15;
+    border-bottom:10px solid #2b2b2b;
   }
 
     .ccp-navigation ul {
       border-collapse:collapse;
-	  bottom:10px;
-	  display:table;
-	  float:right;
-	  position:absolute;
-	  right:5px;
+      bottom:10px;
+      display:table;
+      float:right;
+      position:absolute;
+      right:5px;
     }
 
     .ccp-navigation ul li {
@@ -149,7 +149,7 @@
       -moz-border-radius:none;
       -webkit-border-radius:0;
       color:#eee;
-      background:#522f15 url(../images/SPRITE.gif) 100% -141px no-repeat;
+      background:#2b2b2b url(../images/SPRITE.gif) 100% -141px no-repeat;
     }
 
 .ccp-footer {
@@ -163,7 +163,7 @@
 
 .ccp-alert,
 .ccp-alert a {
-  color:#522f15;
+  color:#2b2b2b;
 }
 
 .ccp-alert a:hover {

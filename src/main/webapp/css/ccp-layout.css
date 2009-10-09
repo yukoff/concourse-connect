@@ -64,18 +64,13 @@ img:after {
   visibility: hidden !important;
 }
 
-/* Input Classes
- * Height
- */
-
 /* @end */
 
 /* Around Entire Portal */
-
-.pageconatiner,
-  .ccp-container {
+.ccp-container {
   _width: 1024px; /* IE6 width fix */
   min-width:935px; /* Page can not shrink beyound 935px */
+  max-width:1200px;
   margin:0 auto;
   padding:0;
 }
@@ -85,8 +80,7 @@ img:after {
 /* @group $_header */
 
 /* Portal Header */
-#header,
-  .ccp-header {
+.ccp-header {
   padding:0;
   margin:0 auto;
   position:relative;
@@ -96,79 +90,31 @@ img:after {
 }
 
 /* $_identity : h1 */
-  #header h1,
   .ccp-header h1 {
     display:inline;
     float:left;
-    padding:45px 0 0 15px;
+    padding:45px 0 30px 15px;
+    *margin-top: 20px;
     font-size:200%;
 }
 
-  #ccp-header-title-image-id {
-  float:left; 
-  margin:30px 0 10px 20px;
+.ccp-header-title {
+  _padding:15px 0 15px 0;
+}
+
+#ccp-header-title-item-id {
+  *cursor:pointer;
 }
 
 /* $_user-navigation : User Navigation  */
 
-  #loggedInHeader,
-    .ccp-user-navigation {
-    float:right;
-    color:#000;
-    text-decoration:none;
-    position:relative;
-    right:-5px;
-  }
-
-    #loggedInHeader a,
-      .ccp-user-navigation a {
-      color:#000;
-    }
-
-    #loggedInHeader p,
-      .ccp-user-navigation p {
-      position: relative;
-      margin: 0;
-      float: left;
-    }
-
-    #loggedInHeader ul,
-    .ccp-user-navigation ul {
-      margin:0;
-      padding:0;
-    }
-
-      #loggedInHeader ul li,
-      .ccp-user-navigation ul li {
-        line-height:27px;
-      }
-
-      #loggedInHeader ul li.first,
-      .ccp-user-navigation ul li.first {
-
-      }
-
-      #loggedInHeader ul li.last,
-      .ccp-user-navigation ul li.last {
-
-      }
-
-      #loggedInHeader ul li a,
-        #loggedInHeader ul li a:hover,
-        #loggedInHeader ul li a:visited
-      .ccp-user-navigation ul li a,
-        .ccp-user-navigation ul li a:hover,
-        .ccp-user-navigation ul li a:visited {
-        
-      }
-
 .ccp-alert {
   background:url(../images/icons/mail_blue.png) center left no-repeat;
+  clear:both;
   float:right;
-  padding:0 0 0 23px;
-  position:relative;
-  right:10px;
-  top:4px;
+  margin-top: 10px;
+  padding:0 30px 0 23px;
+  white-space:nowrap;
 }
 
 /* @end */
@@ -176,14 +122,17 @@ img:after {
 /* @group $_site-menu */
 
 /* Site Menu  */
+    ul.logForm {
+      position:relative;
+    }
     ul.logForm,
       .ccp-site-menu {
       margin:0;
       float:right;
       background:url(../themes/default/images/sprites/login_background_gray_20090301.gif) 0 0 no-repeat;
       height:27px; /* set to height of background image */
-      position:relative;
       left:-5px;
+      z-index:1;
     }
 
       ul.logForm li,
@@ -200,7 +149,7 @@ img:after {
 
         ul.logForm li.last,
         .ccp-site-menu li.last {
-			border: none;
+          border: none;
         }
 
         ul.logForm li a,
@@ -218,6 +167,8 @@ img:after {
       background:url(../themes/default/images/sprites/login_background_gray_20090301.gif) 0 -27px no-repeat;
       height:27px; /* set to height of background image */
       padding-right:15px;
+      margin-right: -5px;
+      margin-top: -1px;
     }
 
       .ccp-user-menu ul {
@@ -236,7 +187,7 @@ img:after {
 		  }
 		  
           .ccp-user-menu li.last {
-			border: none;
+          	border: none;
           }
 
 /* @end */
@@ -251,7 +202,8 @@ img:after {
     margin:30px 0;
     padding:0 5px 0 0; /* IMPORTANT: Off-set input related margin issue */
     width:auto;
-    _width:700px; /* IE Fix */
+    _width:540px; /* IE Fix */
+    white-space:nowrap;
   }
 
     .mainsearch p,
@@ -368,7 +320,7 @@ img:after {
           .tabWrapper ul li a.active em,
             .tabWrapper ul li a:hover em,
           .ccp-navigation ul li a.active em,
-            .ccp-navigation ul li a:hover em, {
+            .ccp-navigation ul li a:hover em {
 
           }
 

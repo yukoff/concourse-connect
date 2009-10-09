@@ -13,14 +13,61 @@
  }
 
 .ccp-container {
-
+  _height:1%;
 }
 
 .ccp-header {
   background:#34b34a url(../images/1x40_green.jpg) 0 0 repeat-x;
   border-left:2px solid #aaa;
   border-right:2px solid #aaa;
+  _width:100%;
 }
+
+    #ccp-header-title-image-id {
+      float:left;
+      margin:35px 0 5px 20px;
+    }
+
+    .ccp-header-menu {
+      position:absolute;
+      right:-15px;
+      top:0;
+      height: 1px;
+    }
+
+        .ccp-header-menu a {
+          color:#000;
+        }
+
+        .ccp-site-menu {
+          height: 17px; /* 5px top + 5px bottom + 17px high = 27px total */
+          padding:5px 20px 5px 5px;
+          position:relative;
+          margin-top: -1px;
+        }
+            .ccp-site-menu ul {
+              padding:0;
+              margin:0;
+            }
+
+        .ccp-user-menu {
+          height: 17px; /* 5px top + 5px bottom + 17px high = 27px total */
+          padding:5px 15px 5px 5px;
+          margin-right: -5px;
+          margin-top: -1px;
+        }
+            .ccp-user-menu ul {
+              padding:0;
+              margin:0;
+            }
+
+        .ccp-search-form {
+          clear:both;
+          float:right;
+          margin-top:15px;
+          padding-right: 30px;
+          color: #000;
+        }
 
   .ccp-header h1,
   .ccp-search-form {

@@ -105,9 +105,9 @@
     var imgNode = document.createElement('img');
     imgNode.setAttribute('id','ccp-header-title-image-id');
     if (isTempImage == 'true'){
-      imgNode.setAttribute('src', teamelements_ctx + '/image/' + '<%= Constants.TEMP_FILES %>' + '-0-' + imageFileId + '-250x100/logo.png');
+      imgNode.setAttribute('src', teamelements_ctx + '/image/' + '<%= Constants.TEMP_FILES %>' + '-0-' + imageFileId + '-300x100/logo.png');
     } else {
-      imgNode.setAttribute('src', teamelements_ctx + '/image/' + '<%= Constants.SITE_LOGO_FILES %>' + '-0-' + imageFileId + '-250x100/logo.png');
+      imgNode.setAttribute('src', teamelements_ctx + '/image/' + '<%= Constants.SITE_LOGO_FILES %>' + '-0-' + imageFileId + '-300x100/logo.png');
     }
   	replaceChildNode("ccp-header-title-link-id",imgNode);
   }
@@ -189,7 +189,7 @@
 	          <input type="hidden" id="attachmentList" name="attachmentList" value="" />
 	          &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
           <%}%>
-		       <span class="characterCounter">Must be a .png, .gif, .jpg with transparency; 250 x 100 pixels</span>
+		       <span class="characterCounter">Must be a .png or .gif with transparency, or .jpg; 300 x 100 pixels</span>
 	          <input type="hidden" id="isTempImage" name="isTempImage" value="false" />
         </fieldset>
         <fieldset id="Themes">

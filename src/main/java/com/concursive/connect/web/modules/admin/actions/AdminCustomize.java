@@ -156,7 +156,7 @@ public final class AdminCustomize extends GenericAction {
         prefs.add(ApplicationPrefs.WEB_PAGE_LOGO, null);
       } else {
         if (StringUtils.hasText(attachmentList)) {
-          String logoName = Constants.SITE_LOGO_FILES + "-0-" + attachmentList + "-250x100";
+          String logoName = Constants.SITE_LOGO_FILES + "-0-" + attachmentList + "-300x100";
           prefs.add(ApplicationPrefs.WEB_PAGE_LOGO, logoName);
         }
       }

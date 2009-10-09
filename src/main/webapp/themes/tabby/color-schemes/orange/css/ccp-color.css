@@ -13,15 +13,25 @@
  }
 
 .ccp-container {
-
+  _height:1%;
 }
 
 .ccp-header {
   background:#fff;
   border-left:2px solid #aaa;
   border-right:2px solid #aaa;
-  overflow:hidden;
+  _width:100%;
 }
+
+    .ccp-header-title {
+      *padding:20px 0 20px 0;
+      _padding:40px 0 40px 0;
+    }
+
+    #ccp-header-title-image-id {
+      float:left;
+      margin:35px 0 5px 20px;
+    }
 
   .ccp-header h1,
   .ccp-search-form {
@@ -40,41 +50,39 @@
   position:absolute;
   right:-15px;
   top:0;
+  height: 1px;
 }
 
 .ccp-user-menu {
-  background:none;
-  padding:5px;
-  background:transparent url(../images/SPRITE.gif) no-repeat scroll 0 -33px;
+  background: none;
+  clear: both;
+  padding: 5px 20px 5px 5px;
   height: 17px; /* 5px top + 5px bottom + 17px high = 27px total */
-  color: #eee;
-  position:relative;
-  width:auto;
+  color: #000;
+  white-space:nowrap;
 }
 
 .ccp-search-form {
   margin:0;
   float:right;
-  clear:none;
-  background:transparent url(../images/SPRITE.gif) no-repeat scroll 0 -60px;
-  color: #eee;
+  color: #000;
   height: 27px;
-  left:-10px;
-  position:relative;
-  width:auto;
-  z-index:1;
+  clear:none;
+  padding-top: 5px;
+  _width:400px;
 }
 
 .ccp-search-form a,
 .ccp-user-menu a {
-  color: #eee;
+  color: #000;
 }
 
 .ccp-site-menu {
+  float:right;
   margin:5px;
-  padding:0;
+  padding:0 10px 0 0;
+  *padding-top: 5px;
   background:none;
-  left:0;
 }
 
 .ccp-site-menu ul {
@@ -82,20 +90,24 @@
   margin:0;
 }
 
+.ccp-site-menu a {
+  color: #000;
+}
+
   .ccp-navigation {
     border-collapse:collapse;
     padding:0;
     margin:0;
-    border-bottom:10px solid #000;
+    border-bottom:10px solid #e2771b;
   }
 
     .ccp-navigation ul {
       border-collapse:collapse;
-	  bottom:10px;
-	  display:table;
-	  float:right;
-	  position:absolute;
-	  right:5px;
+      bottom:10px;
+      display:table;
+      float:right;
+      position:absolute;
+      right:5px;
     }
 
     .ccp-navigation ul li {
@@ -120,7 +132,7 @@
 
     .ccp-navigation ul li a.active,
     .ccp-navigation ul li a:hover {
-      background:url(../images/SPRITE.gif) 0 -141px no-repeat; 
+      background: url(../images/SPRITE.gif) 0 -141px no-repeat;
     }
 
     .ccp-navigation ul li a em {
@@ -137,7 +149,7 @@
       -moz-border-radius:none;
       -webkit-border-radius:0;
       color:#eee;
-      background:url(../images/SPRITE.gif) 100% -141px no-repeat;
+      background:#e2771b url(../images/SPRITE.gif) 100% -141px no-repeat;
     }
 
 .ccp-footer {
@@ -145,8 +157,17 @@
 	border-bottom: none;
 }
 
+.ccp-alert {
+  padding: 0px 20px 0px 23px;
+}
+
+.ccp-alert,
+.ccp-alert a {
+  color:#e2771b;
+}
+
 .ccp-alert a:hover {
-  color:#fff
+  text-decoration:underline;
 }
 
 /* Profile Edits */

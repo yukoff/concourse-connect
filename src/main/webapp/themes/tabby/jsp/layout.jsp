@@ -207,62 +207,114 @@
     <p class="access"><a href="#content" accesskey="1">Skip Navigation and Search to Content</a></p>
     <div class="ccp-container">
       <div class="ccp-header">
-        <a id="ccp-header-title-link-id" href="${ctx}/" accesskey="h" title="<%= toHtml(applicationPrefs.get("TITLE")) %>">
-          <ccp:evaluate if="<%= !applicationPrefs.has(\"LOGO\") %>">
-            <h1 id="ccp-header-title-item-id"><%= toHtml(applicationPrefs.get("TITLE")) %></h1>
-         </ccp:evaluate>
-          <ccp:evaluate if="<%= applicationPrefs.has(\"LOGO\") %>">
-            <img id="ccp-header-title-image-id" src="${ctx}/image/<%= applicationPrefs.get("LOGO") %>/logo.png" alt="<%= toHtml(applicationPrefs.get("TITLE")) %>" />
-         </ccp:evaluate>
-        </a>
+        <div class="ccp-header-title">
+          <a id="ccp-header-title-link-id" href="${ctx}/" accesskey="h" title="<%= toHtml(applicationPrefs.get("TITLE")) %>">
+            <ccp:evaluate if='<%= !applicationPrefs.has("LOGO") %>'>
+              <h1 id="ccp-header-title-item-id"><%= toHtml(applicationPrefs.get("TITLE")) %></h1>
+            </ccp:evaluate>
+            <ccp:evaluate if='<%= applicationPrefs.has("LOGO") %>'>
+              <c:set var="headerLogo" value='<%= applicationPrefs.get("LOGO") %>'/>
+              <img id="ccp-header-title-image-id" src="${ctx}/image/${headerLogo}/logo.png" width="${fn:endsWith(headerLogo, "-300x100") ? "300":"250" }" height="100" alt="<%= toHtml(applicationPrefs.get("TITLE")) %>" />
+            </ccp:evaluate>
+          </a>
+        </div>
         <div class="ccp-header-menu">
+          <div class="ccp-site-menu">
+            <ul class="site-menu">
+              <c:set var="isFirst">class="first"</c:set>
+              <ccp:permission object="requestMainProfile" name="project-wiki-view">
+                <li ${isFirst}>
+                  <a href="<%= ctx %>/show/main-profile" title="Get information about <%= toHtml(applicationPrefs.get("TITLE")) %>">About</a>
+                </li>
+                <c:set var="isFirst" value=""/>
+              </ccp:permission>
+              <ccp:permission object="requestMainProfile" name="project-news-view">
+                <c:if test="${requestMainProfile.features.showBlog}">
+                  <li ${isFirst}>
+                    <a href="<%= ctx %>/show/main-profile/blog" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Blog" object="requestMainProfile"/>">
+                      <ccp:tabLabel name="Blog" object="requestMainProfile"/></a>
+                  </li>
+                  <c:set var="isFirst" value=""/>
+                </c:if>
+              </ccp:permission>
+              <ccp:permission object="requestMainProfile" name="project-wiki-view">
+                <c:if test="${requestMainProfile.features.showWiki}">
+                  <li ${isFirst}>
+                    <a href="<%= ctx %>/show/main-profile/wiki" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Wiki" object="requestMainProfile"/>">
+                      <ccp:tabLabel name="Wiki" object="requestMainProfile"/></a>
+                  </li>
+                  <c:set var="isFirst" value=""/>
+                </c:if>
+              </ccp:permission>
+              <ccp:permission object="requestMainProfile" name="project-calendar-view">
+                <c:if test="${requestMainProfile.features.showCalendar}">
+                  <li ${isFirst}>
+                    <a href="<%= ctx %>/show/main-profile/calendar" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Calendar" object="requestMainProfile"/>">
+                      <ccp:tabLabel name="Calendar" object="requestMainProfile"/></a>
+                  </li>
+                  <c:set var="isFirst" value=""/>
+                </c:if>
+              </ccp:permission>
+              <ccp:permission object="requestMainProfile" name="project-discussion-forums-view">
+                <c:if test="${requestMainProfile.features.showDiscussion}">
+                  <li ${isFirst}>
+                    <a href="<%= ctx %>/show/main-profile/discussion" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Discussion" object="requestMainProfile"/>">
+                      <ccp:tabLabel name="Discussion" object="requestMainProfile"/></a>
+                  </li>
+                  <c:set var="isFirst" value=""/>
+                </c:if>
+              </ccp:permission>
+              <ccp:permission object="requestMainProfile" name="project-classifieds-view">
+                <c:if test="${requestMainProfile.features.showClassifieds}">
+                  <li ${isFirst}>
+                    <a href="<%= ctx %>/show/main-profile/classifieds" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Classifieds" object="requestMainProfile"/>">
+                      <ccp:tabLabel name="Classifieds" object="requestMainProfile"/></a>
+                  </li>
+                  <c:set var="isFirst" value=""/>
+                </c:if>
+              </ccp:permission>
+              <ccp:permission object="requestMainProfile" name="project-tickets-view">
+                <c:if test="${requestMainProfile.features.showIssues}">
+                  <li ${isFirst}>
+                    <a href="<%= ctx %>/show/main-profile/issues" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Issues" object="requestMainProfile"/>">
+                      <ccp:tabLabel name="Issues" object="requestMainProfile"/></a>
+                  </li>
+                  <c:set var="isFirst" value=""/>
+                </c:if>
+              </ccp:permission>
+              <li class="last">
+                <a href="<%= ctx %>/contact-us" title="Contact <%= toHtml(applicationPrefs.get("TITLE")) %>">
+                  Contact Us</a>
+              </li>
+              <c:set var="isFirst" value=""/>
+            </ul>
+          </div>
           <div class="ccp-search-form">
             <form action="<%= ctx %>/search" method="get">
               <fieldset>
                 <legend>Search <%= toHtml(pageTitle) %></legend>
+                <%--
                 <ccp:evaluate if="<%= menuCategoryList.size() > 1 %>">
                   <label for="categoryId">Search</label>
                   <%= menuCategoryList.getHtml("categoryId", searchBean.getCategoryId()) %>
                 </ccp:evaluate>
-                <label for="query">for</label>
-                <%-- TODO: Add id attribute for properly labeling --%>
+                --%>
+                <label for="query">Search for</label>
                 <input type="text" size="17" name="query" value="<%= toHtmlValue(searchBean.getQuery()) %>"/>
                 <ccp:evaluate if="<%= useLocations %>">
                   <label for="location">near</label>
-                  <%-- TODO: Add id attribute for properly labeling --%>
                   <input type="text" size="10" name="location" value="<%= toHtmlValue(searchBean.getLocation()) %>" />
                 </ccp:evaluate>
                 <input type="submit" alt="Search" value="Go" />
-                <%-- Removed by popular request
-                <ccp:evaluate if="<%= inProject || searchThis %>">
-                  <input type="radio" onClick="this.form.query.focus()" name="type" value="all" <%= !searchThis ? "checked" : "" %> />
-                  All
-                  <input type="radio" onClick="this.form.query.focus()" name="type" value="this" <%= searchThis ? "checked" : "" %> />
-                  This profile
-                </ccp:evaluate>
-                <ccp:evaluate if="<%= !inProject && !searchThis %>">
-                  <input type="hidden" name="type" value="all" />
-                </ccp:evaluate>
-                --%>
+                <input type="hidden" name="categoryId" value="-1"/>
                 <input type="hidden" name="type" value="all"/>
                 <input type="hidden" name="scope" value="<%= searchBean.getScopeText() %>"/>
                 <input type="hidden" name="filter" value="<%= searchBean.getFilter() %>"/>
                 <input type="hidden" name="projectId" value="<%= searchProjectId %>"/>
                 <input type="hidden" name="openProjectsOnly" value="true"/>
                 <input type="hidden" name="auto-populate" value="true"/>
-                <%--
-                <a href="javascript:popURL('<%= ctx %>/Search.do?command=Tips&popup=true','Search_Tips','500','325','yes','yes')">tips</a>
-                --%>
               </fieldset>
             </form>
-            <div class="ccp-site-menu">
-            <ul>
-              <li class="first">
-                <a href="<%= ctx %>/show/main-profile" title="Get information about <%= toHtml(applicationPrefs.get("TITLE")) %>">About</a>
-              </li>
-              <li class="last"><a href="<%= ctx %>/contact-us" title="Contact <%= toHtml(applicationPrefs.get("TITLE")) %>">Contact Us</a></li>
-            </ul>
-          </div>
           </div>
           <div class="ccp-user-menu">
             <ul>
@@ -313,27 +365,22 @@
               </ccp:evaluate>
             </ul>
           </div>
-        </div>
-        <%-- TODO: Make this section a portlet
-        <p class="welcome">
-          Welcome <ccp:username id="<%= User.getId() %>"/>
-        --%>
-
-        <ccp:evaluate if="<%= isUserLoggedIn %>">
-          <p class="ccp-alert">
-            <ccp:evaluate
-                if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 0 %>">
-              You have <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>"><%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
-                if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 1 %>">s</a>
-              </ccp:evaluate>
-            </ccp:evaluate>
-            <ccp:evaluate if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 0 %>">
-              You have <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>"><%= (String) request.getAttribute("requestInvitationCount") %> new invitation<ccp:evaluate
-                  if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 1 %>">s</a>
+          <ccp:evaluate if="<%= isUserLoggedIn %>">
+            <div class="ccp-alert">
+              <ccp:evaluate
+                  if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 0 %>">
+                <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
+                  if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 1 %>">s</a>
                 </ccp:evaluate>
-            </ccp:evaluate>
-          </p>
-        </ccp:evaluate>
+              </ccp:evaluate>
+              <ccp:evaluate if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 0 %>">
+                <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestInvitationCount") %> new invitation<ccp:evaluate
+                    if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 1 %>">s</a>
+                  </ccp:evaluate>
+              </ccp:evaluate>
+            </div>
+          </ccp:evaluate>
+        </div>
         <div class="ccp-navigation">
           <ul>
             <c:choose>
@@ -347,26 +394,15 @@
                 <c:set var="tabbedMenuValue" value="${fn:toLowerCase(project.category.description)}"/>
               </c:otherwise>
             </c:choose>
-            <ccp:tabbedMenu text="<%= \"Home\" %>" key="home" value="${tabbedMenuValue}" url="${ctx}/" type="li"/>
+            <ccp:tabbedMenu text='<%= "Home" %>' key="home" value="${tabbedMenuValue}" url="${ctx}/" type="li" object="requestMainProfile"/>
             <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
               <ccp:tabbedMenu text="${tabCategory.description}"
                                  key="${fn:toLowerCase(fn:replace(tabCategory.description,' ','_'))}"
                                  value="${tabbedMenuValue}"
                                  url='${ctx}/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}.shtml'
-                                 type="li"/>
+                                 type="li"
+                                 object="requestMainProfile"/>
             </c:forEach>
-            <%--
-            <c:choose>
-            	<c:when test="${chosenTab eq \"home.shtml\"}">
-		            <link type="application/rss+xml" rel="alternate" href="${ctx}/feed/rss.xml" title="Home" />
-	                <li><a type="application/rss+xml" rel="alternate" href="${ctx}/feed/rss.xml">Subscribe</a><img src="${ctx}/images/feed-icon-16x16.gif" /></li>
-                </c:when>
-                <c:otherwise>
-		            <link type="application/rss+xml" rel="alternate" href="${ctx}/feed/${fn:toLowerCase(fn:replace(chosenCategory," ","_"))}/rss.xml" title="<c:out value="${chosenCategory}" /> Home" />
-	                <li><a type="application/rss+xml" rel="alternate" href="${ctx}/feed/${fn:toLowerCase(fn:replace(chosenCategory," ","_"))}/rss.xml">Subscribe</a><img src="${ctx}/images/feed-icon-16x16.gif" /></li>
-                </c:otherwise>
-            </c:choose>
-            --%>
           </ul>
         </div>
       </div><%-- End ccp-header --%>
@@ -385,83 +421,85 @@
                                type="li"
                                object="requestMainProfile"/>
           </c:forEach>
+          <ccp:permission object="requestMainProfile" name="project-wiki-view">
           <li>
             <a href="${ctx}/rss" title="RSS Feeds"><em>RSS</em></a>
           </li>
           <li class="last">
             <a href="${ctx}/show/main-profile/wiki/Site+Guidelines" rel="nofollow" title="Site Guildlines"><em>Guidelines</em></a>
           </li>
+          </ccp:permission>
         </ul>
         <ul class="site-menu">
-          <li class="first">
-            <a href="<%= ctx %>/show/main-profile" title="Get information about <%= toHtml(applicationPrefs.get("TITLE")) %>">
-              About
-            </a>
-          </li>
+          <c:set var="isFirst">class="first"</c:set>
+          <ccp:permission object="requestMainProfile" name="project-wiki-view">
+            <li ${isFirst}>
+              <a href="<%= ctx %>/show/main-profile" title="Get information about <%= toHtml(applicationPrefs.get("TITLE")) %>">About</a>
+            </li>
+            <c:set var="isFirst" value=""/>
+          </ccp:permission>
           <ccp:permission object="requestMainProfile" name="project-news-view">
             <c:if test="${requestMainProfile.features.showBlog}">
-              <li>
+              <li ${isFirst}>
                 <a href="<%= ctx %>/show/main-profile/blog" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Blog" object="requestMainProfile"/>">
-                  <em><ccp:tabLabel name="Blog" object="requestMainProfile"/></em>
-                </a>
+                  <em><ccp:tabLabel name="Blog" object="requestMainProfile"/></em></a>
               </li>
+              <c:set var="isFirst" value=""/>
             </c:if>
           </ccp:permission>
           <ccp:permission object="requestMainProfile" name="project-wiki-view">
             <c:if test="${requestMainProfile.features.showWiki}">
-              <li>
+              <li ${isFirst}>
                 <a href="<%= ctx %>/show/main-profile/wiki" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Wiki" object="requestMainProfile"/>">
-                  <em><ccp:tabLabel name="Wiki" object="requestMainProfile"/></em>
-                </a>
+                  <em><ccp:tabLabel name="Wiki" object="requestMainProfile"/></em></a>
               </li>
+              <c:set var="isFirst" value=""/>
             </c:if>
           </ccp:permission>
           <ccp:permission object="requestMainProfile" name="project-calendar-view">
             <c:if test="${requestMainProfile.features.showCalendar}">
-              <li>
+              <li ${isFirst}>
                 <a href="<%= ctx %>/show/main-profile/calendar" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Calendar" object="requestMainProfile"/>">
-                  <em><ccp:tabLabel name="Calendar" object="requestMainProfile"/></em>
-                </a>
+                  <em><ccp:tabLabel name="Calendar" object="requestMainProfile"/></em></a>
               </li>
+              <c:set var="isFirst" value=""/>
             </c:if>
           </ccp:permission>
           <ccp:permission object="requestMainProfile" name="project-discussion-forums-view">
             <c:if test="${requestMainProfile.features.showDiscussion}">
-              <li>
+              <li ${isFirst}>
                 <a href="<%= ctx %>/show/main-profile/discussion" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Discussion" object="requestMainProfile"/>">
-                  <em><ccp:tabLabel name="Discussion" object="requestMainProfile"/></em>
-                </a>
+                  <em><ccp:tabLabel name="Discussion" object="requestMainProfile"/></em></a>
               </li>
+              <c:set var="isFirst" value=""/>
             </c:if>
           </ccp:permission>
           <ccp:permission object="requestMainProfile" name="project-classifieds-view">
             <c:if test="${requestMainProfile.features.showClassifieds}">
-              <li>
+              <li ${isFirst}>
                 <a href="<%= ctx %>/show/main-profile/classifieds" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Classifieds" object="requestMainProfile"/>">
-                  <em><ccp:tabLabel name="Classifieds" object="requestMainProfile"/></em>
-                </a>
+                  <em><ccp:tabLabel name="Classifieds" object="requestMainProfile"/></em></a>
               </li>
+              <c:set var="isFirst" value=""/>
             </c:if>
           </ccp:permission>
           <ccp:permission object="requestMainProfile" name="project-tickets-view">
             <c:if test="${requestMainProfile.features.showIssues}">
-              <li>
+              <li ${isFirst}>
                 <a href="<%= ctx %>/show/main-profile/issues" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Issues" object="requestMainProfile"/>">
-                  <em><ccp:tabLabel name="Issues" object="requestMainProfile"/></em>
-                </a>
+                  <em><ccp:tabLabel name="Issues" object="requestMainProfile"/></em></a>
               </li>
+              <c:set var="isFirst" value=""/>
             </c:if>
           </ccp:permission>
           <li class="last">
             <a href="<%= ctx %>/contact-us" title="Contact <%= toHtml(applicationPrefs.get("TITLE")) %>">
-              <em>Contact Us</em>
-            </a>
+              <em>Contact Us</em></a>
           </li>
+          <c:set var="isFirst" value=""/>
         </ul>
-        <p>
-          Powered by <a title="The Open Source Community and Collaboration Solution" href="http://www.concursive.com/show/concourseconnect">Concursive ConcourseConnect</a>,
-          <a title="The Open Source Business Social Software Platform" href="http://www.concursive.com">The Open Source Community and Collaboration Solution</a>
-        </p>
+          <p>Powered by <a title="The Open Source Community and Collaboration Solution" href="http://www.concursive.com/show/concourseconnect">Concursive ConcourseConnect</a>,
+            <a title="The Open Source Business Social Software Platform" href="http://www.concursive.com">The Open Source Community and Collaboration Solution</a></p>
       </div>
     </div>
     <%-- Allow pages to have a scrollTo... must be at end of html --%>

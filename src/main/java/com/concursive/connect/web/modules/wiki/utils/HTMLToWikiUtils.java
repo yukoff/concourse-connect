@@ -80,7 +80,7 @@ public class HTMLToWikiUtils {
 
   public static final String CRLF = "\n";
 
-  public static String htmlToWiki(String html, String contextPath) throws Exception {
+  public static String htmlToWiki(String html, String contextPath, int projectId) throws Exception {
 
     // Strip the nbsp because it gets converted to unicode
     html = StringUtils.replace(html, "&nbsp;", " ");
@@ -101,7 +101,7 @@ public class HTMLToWikiUtils {
       Node n = document.getChildNodes().item(i);
       nodeList.add(n);
     }
-    processChildNodes(nodeList, sb, 0, true, true, false, contextPath);
+    processChildNodes(nodeList, sb, 0, true, true, false, contextPath, projectId);
     if (sb.length() > 0) {
       String content = sb.toString().trim();
       if (!content.endsWith(CRLF)) {
@@ -114,7 +114,7 @@ public class HTMLToWikiUtils {
     }
   }
 
-  public static void processChildNodes(ArrayList<Node> nodeList, StringBuffer sb, int indentLevel, boolean doText, boolean withFormatting, boolean trim, String contextPath) {
+  public static void processChildNodes(ArrayList<Node> nodeList, StringBuffer sb, int indentLevel, boolean doText, boolean withFormatting, boolean trim, String contextPath, int projectId) {
     Iterator nodeI = nodeList.iterator();
     while (nodeI.hasNext()) {
       Node n = (Node) nodeI.next();
@@ -159,25 +159,25 @@ public class HTMLToWikiUtils {
               getNodes(n.getChildNodes(), subNodes, new String[]{"table", "ul", "ol", "object"}, false);
               if (subNodes.size() > 0) {
                 LOG.trace("  nonTextNodes - yes");
-                processChildNodes(subNodes, sb, indentLevel, true, true, false, contextPath);
+                processChildNodes(subNodes, sb, indentLevel, true, true, false, contextPath, projectId);
               } else {
                 LOG.trace("  nonTextNodes - no");
                 startOnNewLine(sb);
-                processChildNodes(getNodeList(n), sb, indentLevel, true, true, false, contextPath);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, true, false, contextPath, projectId);
               }
             }
           } else if ("strong".equals(tag) || "b".equals(tag)) {
             if (n.getChildNodes().getLength() > 0) {
               if ("".equals(StringUtils.fromHtmlValue(n.getTextContent()).trim())) {
-                processChildNodes(getNodeList(n), sb, indentLevel, true, false, false, contextPath);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, false, false, contextPath, projectId);
               } else {
                 if (hasNonTextNodes(n.getChildNodes())) {
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, contextPath);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, contextPath, projectId);
                 } else {
                   if (withFormatting) {
                     sb.append("'''");
                   }
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, contextPath);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, contextPath, projectId);
                   if (withFormatting) {
                     sb.append("'''");
                   }
@@ -187,15 +187,15 @@ public class HTMLToWikiUtils {
           } else if ("em".equals(tag) || "i".equals(tag)) {
             if (n.getChildNodes().getLength() > 0) {
               if ("".equals(StringUtils.fromHtmlValue(n.getTextContent()).trim())) {
-                processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, contextPath);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, contextPath, projectId);
               } else {
                 if (hasNonTextNodes(n.getChildNodes())) {
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath, projectId);
                 } else {
                   if (withFormatting) {
                     sb.append("''");
                   }
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath, projectId);
                   if (withFormatting) {
                     sb.append("''");
                   }
@@ -220,7 +220,7 @@ public class HTMLToWikiUtils {
                     sb.append("''");
                   }
                 }
-                processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath, projectId);
                 if (withFormatting) {
                   if (value.contains("italic")) {
                     sb.append("''");
@@ -245,7 +245,7 @@ public class HTMLToWikiUtils {
             if (indentLevel > 1 && !sb.toString().endsWith(CRLF)) {
               sb.append(CRLF);
             }
-            processChildNodes(getNodeList(n), sb, indentLevel, false, false, trim, contextPath);
+            processChildNodes(getNodeList(n), sb, indentLevel, false, false, trim, contextPath, projectId);
             --indentLevel;
           } else if ("li".equals(tag)) {
             String parentTag = ((Element) element.getParentNode()).getTagName();
@@ -257,19 +257,19 @@ public class HTMLToWikiUtils {
               }
             }
             sb.append(" ");
-            processChildNodes(getNodeList(n), sb, indentLevel, true, false, true, contextPath);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, false, true, contextPath, projectId);
             if (!sb.toString().endsWith(CRLF)) {
               sb.append(CRLF);
             }
           } else if ("dt".equals(tag) || "dd".equals(tag)) {
-            processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, contextPath);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, contextPath, projectId);
             if (!sb.toString().endsWith(CRLF)) {
               sb.append(CRLF);
             }
           } else if ("pre".equals(tag)) {
             startOnNewLine(sb);
             sb.append("<pre>");
-            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, contextPath);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, contextPath, projectId);
             sb.append("</pre>");
             if (nodeI.hasNext()) {
               sb.append(CRLF);
@@ -278,7 +278,7 @@ public class HTMLToWikiUtils {
           } else if ("code".equals(tag)) {
             startOnNewLine(sb);
             sb.append("<code>");
-            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, contextPath);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, contextPath, projectId);
             sb.append("</code>");
             if (nodeI.hasNext()) {
               sb.append(CRLF);
@@ -299,14 +299,14 @@ public class HTMLToWikiUtils {
             CustomForm form = processForm(n);
             convertFormToWiki(form, sb);
           } else if ("a".equals(tag)) {
-            processLink(sb, element, contextPath);
+            processLink(sb, element, contextPath, projectId);
           } else if ("img".equals(tag)) {
             processImage(sb, n, element, contextPath);
           } else if ("object".equals(tag)) {
             startOnNewLine(sb);
             processVideo(sb, n, element, contextPath);
           } else {
-            processChildNodes(getNodeList(n), sb, indentLevel, false, true, trim, contextPath);
+            processChildNodes(getNodeList(n), sb, indentLevel, false, true, trim, contextPath, projectId);
           }
         }
       }
@@ -530,7 +530,7 @@ public class HTMLToWikiUtils {
     }
   }
 
-  public static void processLink(StringBuffer sb, Element element, String contextPath) {
+  public static void processLink(StringBuffer sb, Element element, String contextPath, int projectId) {
     // take the href and rip out the document section
     // output the text associated with the link
     String href = element.getAttribute("href").trim();
@@ -546,9 +546,12 @@ public class HTMLToWikiUtils {
         }
       } else {
         URLControllerBean url = new URLControllerBean(href, contextPath);
-        if ("wiki".equals(url.getDomainObject())) {
+        if ("wiki".equals(url.getDomainObject()) && url.getProjectId() == projectId) {
           String subject = url.getObjectValue();
+          // The incoming link will have a + for a space
           subject = StringUtils.replace(subject, "+", " ");
+          // The incoming link will be url encoded
+          subject = StringUtils.jsUnEscape(subject);
           sb.append(subject);
           // Base the display on the content of the 'a' tag
           if (!subject.equals(StringUtils.fromHtmlValue(value))) {
@@ -569,7 +572,12 @@ public class HTMLToWikiUtils {
           sb.append(url.getProjectId());
           sb.append(":").append(url.getDomainObject());
           sb.append("|");
-          sb.append(url.getObjectValue());
+           String subject = url.getObjectValue();
+          // The incoming link will have a + for a space
+          subject = StringUtils.replace(subject, "+", " ");
+          // The incoming link will be url encoded
+          subject = StringUtils.jsUnEscape(subject);
+          sb.append(subject);
           sb.append("|");
           sb.append(StringUtils.fromHtmlValue(value));
         }

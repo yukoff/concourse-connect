@@ -132,7 +132,7 @@ public class WikiParserTest3 extends TestCase {
 
   public void testHtmlTablesToWiki() throws Exception {
     // Convert html to wiki
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "", -1);
     assertEquals(wikiSample, wiki);
 
     // meyers

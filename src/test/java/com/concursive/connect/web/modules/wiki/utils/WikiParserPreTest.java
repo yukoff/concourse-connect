@@ -166,7 +166,7 @@ public class WikiParserPreTest extends TestCase {
           "test</pre><p>for the contacts module and paste it below the closing menu tag (or where ever else you want to position it.) Rename the title to &quot;Personnel&quot;</p>";
 
   public void testHTMLPreToWiki() throws Exception {
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "", -1);
     assertEquals("" +
         "* In cfs-modules.xml copy the section\n" +
         "\n" +

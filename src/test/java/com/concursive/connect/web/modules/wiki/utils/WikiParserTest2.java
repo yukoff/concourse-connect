@@ -94,7 +94,7 @@ public class WikiParserTest2 extends TestCase {
 
   public void testHtmlToWikiParser() throws Exception {
     // Convert html to wiki
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "", -1);
     assertEquals(wikiSample, wiki);
     /*
     Revision revision = Diff.diff(
@@ -113,7 +113,7 @@ public class WikiParserTest2 extends TestCase {
     WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, 1, false, "");
     String html = WikiToHTMLUtils.getHTML(wikiContext);
     assertEquals(htmlSample, html);
-    String wiki = HTMLToWikiUtils.htmlToWiki(html, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(html, "", -1);
 
     assertNotNull(html);
     assertNotNull(wiki);

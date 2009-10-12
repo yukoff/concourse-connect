@@ -811,18 +811,23 @@ public class WikiToHTMLUtils {
               }
               // Links...
               if ("profile".equalsIgnoreCase(wikiLink.getArea())) {
-                // Project
+                // Links to a profile page
                 cssClass = "wikiLink external";
                 url = context.getContextPath() + "/show/" + thisProject.getUniqueId();
               } else if ("badge".equalsIgnoreCase(wikiLink.getArea())) {
+                // Links to a badge
                 cssClass = "wikiLink external";
                 url = context.getContextPath() + "/badge/" + wikiLink.getEntityId();
               } else if ("wiki".equalsIgnoreCase(wikiLink.getArea())) {
-                // Wiki
+                // Links to another wiki page
                 if (StringUtils.hasText(wikiLink.getEntity())) {
                   url = context.getContextPath() + "/show/" + thisProject.getUniqueId() + "/wiki/" + wikiLink.getEntityTitle();
                 } else {
                   url = context.getContextPath() + "/show/" + thisProject.getUniqueId() + "/wiki";
+                }
+                // Check to see if this is an external wiki
+                if (context.getProjectId() > -1 && context.getProjectId() != thisProject.getId()) {
+                  cssClass = "wikiLink external";
                 }
                 // Check to see if the target wiki exists to draw the wiki entry differently
                 if (!WikiList.checkExistsBySubject(context.getDb(), wikiLink.getEntity(), wikiLink.getProjectId())) {

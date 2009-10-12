@@ -154,7 +154,7 @@ public class WikiParserTest4 extends TestCase {
 
   public void testNestedParagraphs() throws Exception {
     // Convert html to wiki
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "", -1);
 
     assertEquals(targetWikiContent, wiki);
 

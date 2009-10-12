@@ -68,6 +68,7 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
           "<p><img src=\"/show/some-project/wiki-image/Campus-Shield-Logo.gif\" alt=\"Campus-Shield-Logo.gif\" width=\"386\" height=\"117\" /></p>\n" +
           "<p>" +
           "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Technical+Documentation\">Technical Documentation</a><br />" +
+          "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Security%2C+Registration%2C+Invitation\">Installation Options</a><br />" +
           "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Frequently+Asked+Questions\">Frequently Asked Questions</a> " +
           "<a href=\"/show/some-project/topic/3353\">info</a> for you" +
           "</p>\n" +
@@ -82,7 +83,7 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
     // Parse it
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "", project.getId());
     assertEquals("" +
         "ConcourseSuite is a platform and database independent Java web application executing within a Java Servlet Container, " +
         "and is licensed under the [[http://www.centriccrm.com/Portal.do?key=approach&nid=117 Centric Public License]].\n" +
@@ -94,6 +95,7 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
         "[[Image:Campus-Shield-Logo.gif]]\n" +
         "\n" +
         "[[Technical Documentation]]\n" +
+        "[[Security, Registration, Invitation|Installation Options]]\n" +
         "[[Frequently Asked Questions]] " +
         "[[|9999999:topic|3353|info]] for you\n", wiki);
   }

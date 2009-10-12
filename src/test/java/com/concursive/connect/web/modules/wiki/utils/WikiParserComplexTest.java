@@ -100,7 +100,7 @@ public class WikiParserComplexTest extends AbstractConnectionPoolTest {
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
 
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "", project.getId());
     assertEquals("" +
         "= Here's some logo. =\n" +
         "\n" +

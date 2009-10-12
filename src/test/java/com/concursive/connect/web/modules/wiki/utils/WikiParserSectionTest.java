@@ -172,7 +172,7 @@ public class WikiParserSectionTest extends TestCase {
     assertFalse("Unrequested section was incorrectly found", html.contains("Section 4.0"));
     assertFalse("Unrequested text was incorrectly found", html.contains("the end text"));
     // Integrate the same content back in, assuming no changes have been made...
-    String sectionMarkup = HTMLToWikiUtils.htmlToWiki(html, "");
+    String sectionMarkup = HTMLToWikiUtils.htmlToWiki(html, "", -1);
     String mergedContent = WikiUtils.merge(wiki, sectionMarkup, section);
     assertEquals(wikiSample, mergedContent);
 

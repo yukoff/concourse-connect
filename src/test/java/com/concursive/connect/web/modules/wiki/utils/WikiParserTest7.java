@@ -99,7 +99,7 @@ public class WikiParserTest7 extends AbstractConnectionPoolTest {
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_TICKET_ID_CACHE, "9999999-1", new Integer(200));
 
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "", project.getId());
     assertEquals("" +
         "[[Subversion Details]]\n" +
         "[[API examples]]\n" +

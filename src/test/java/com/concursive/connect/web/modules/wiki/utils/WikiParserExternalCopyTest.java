@@ -78,7 +78,7 @@ public class WikiParserExternalCopyTest extends AbstractConnectionPoolTest {
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
 
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "", project.getId());
     assertEquals("" +
         "= Chrysler and Fiat make it official =\n" +
         "\n" +
@@ -117,7 +117,7 @@ public class WikiParserExternalCopyTest extends AbstractConnectionPoolTest {
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
 
-    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample2, "");
+    String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample2, "", project.getId());
     assertEquals("" +
         "[[http://www.usatoday.com/tech/news/2009-06-09-biking-maps-google_N.htm Google map cam heads for the trails]]\n" +
         "\n" +

@@ -104,7 +104,7 @@ public class SaveWikiAction implements IPortletAction {
         if (originalWiki.getProjectId() != project.getId()) {
           throw new PortletException("Mismatched projectId comparing " + originalWiki.getProjectId() + " with " + project.getId());
         }
-        String sectionMarkup = HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath());
+        String sectionMarkup = HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath(), project.getId());
         wiki.setContent(WikiUtils.merge(originalWiki, sectionMarkup, sectionId));
       } else {
         if (wiki.getId() > -1) {
@@ -115,13 +115,13 @@ public class SaveWikiAction implements IPortletAction {
             throw new PortletException("Mismatched projectId comparing " + originalWiki.getProjectId() + " with " + project.getId());
           }
           if (originalWiki.getContent().contains("[{form")) {
-            String wikiMarkup = HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath());
+            String wikiMarkup = HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath(), project.getId());
             wiki.setContent(WikiUtils.merge(originalWiki, wikiMarkup));
           } else {
-            wiki.setContent(HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath()));
+            wiki.setContent(HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath(), project.getId()));
           }
         } else {
-          wiki.setContent(HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath()));
+          wiki.setContent(HTMLToWikiUtils.htmlToWiki(wiki.getContent(), request.getContextPath(), project.getId()));
         }
       }
     }

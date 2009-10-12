@@ -52,7 +52,6 @@ import com.concursive.connect.web.modules.admin.beans.UserSearchBean;
 import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.dao.UserList;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -67,9 +66,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Invite members Portlet
@@ -79,6 +80,7 @@ import java.util.List;
  */
 public class InviteMembersPortlet extends GenericPortlet {
 
+  private static Log LOG = LogFactory.getLog(DimDimUtils.class);
   // Pages
   private static final String ENTER_MEMBERS_FORM = "/portlets/invite_members/enter_members_form-view.jsp";
   private static final String SELECT_MEMBERS_FORM = "/portlets/invite_members/select_members_form-view.jsp";
@@ -154,9 +156,11 @@ public class InviteMembersPortlet extends GenericPortlet {
           String[] accessToTools = (String[]) request.getPortletSession().getAttribute("accessToTools");
           request.setAttribute("matches", matches);
           request.setAttribute("accessToTools", accessToTools);
-          for (String chosenId : matches) {
-            matchUserId.put(chosenId, (String) request.getPortletSession().getAttribute("matchUserId-" + chosenId));
-            matchRole.put(chosenId, (String) request.getPortletSession().getAttribute("matchedRole-" + chosenId));
+          if (matches != null) {
+            for (String chosenId : matches) {
+              matchUserId.put(chosenId, (String) request.getPortletSession().getAttribute("matchUserId-" + chosenId));
+              matchRole.put(chosenId, (String) request.getPortletSession().getAttribute("matchedRole-" + chosenId));
+            }
           }
           request.setAttribute("matchUserId", matchUserId);
           request.setAttribute("matchRole", matchRole);
@@ -171,14 +175,24 @@ public class InviteMembersPortlet extends GenericPortlet {
           request.setAttribute("mismatches", mismatches);
           request.setAttribute("notMatchedAccessToTools", notMatchedAccessToTools);
           for (String unmatchedEntry : mismatches) {
-            if (request.getPortletSession().getAttribute("firstName-" + unmatchedEntry) != null) {
-              noMatchFirstName.put(unmatchedEntry, (String) request.getPortletSession().getAttribute("firstName-" + unmatchedEntry));
+            // Check if the input is in the form: First Last <email@example.com>
+            String strEmail = (String) request.getPortletSession().getAttribute("email-" + unmatchedEntry);
+            String strFirstName = (String) request.getPortletSession().getAttribute("firstName-" + unmatchedEntry);
+            String strLastName = (String) request.getPortletSession().getAttribute("lastName-" + unmatchedEntry);
+            if (StringUtils.hasText(strEmail)) {
+              HashMap<String, String> mapEmail = DimDimUtils.processEmail(strEmail);
+              strEmail = StringUtils.hasText(mapEmail.get(DimDimUtils.EMAIL)) ? mapEmail.get(DimDimUtils.EMAIL) : strEmail;
+              strFirstName = StringUtils.hasText(mapEmail.get(DimDimUtils.FIRST_NAME)) ? mapEmail.get(DimDimUtils.FIRST_NAME) : strFirstName;
+              strLastName = StringUtils.hasText(mapEmail.get(DimDimUtils.LAST_NAME)) ? mapEmail.get(DimDimUtils.LAST_NAME) : strLastName;
             }
-            if (request.getPortletSession().getAttribute("lastName-" + unmatchedEntry) != null) {
-              noMatchLastName.put(unmatchedEntry, (String) request.getPortletSession().getAttribute("lastName-" + unmatchedEntry));
+            if (strFirstName != null) {
+              noMatchFirstName.put(unmatchedEntry, strFirstName);
             }
-            if (request.getPortletSession().getAttribute("email-" + unmatchedEntry) != null) {
-              noMatchEmail.put(unmatchedEntry, (String) request.getPortletSession().getAttribute("email-" + unmatchedEntry));
+            if (strLastName != null) {
+              noMatchLastName.put(unmatchedEntry, strLastName);
+            }
+            if (strEmail != null) {
+              noMatchEmail.put(unmatchedEntry, strEmail);
             }
             if (request.getPortletSession().getAttribute("notMatchedRole-" + unmatchedEntry) != null) {
               noMatchRole.put(unmatchedEntry, (String) request.getPortletSession().getAttribute("notMatchedRole-" + unmatchedEntry));
@@ -504,13 +518,13 @@ public class InviteMembersPortlet extends GenericPortlet {
       String profileId = keyIterator.next();
       if (members.get(profileId).equals(NO_MATCH_FOUND) && (profileId.indexOf("(") != -1)) {
         // Find user by unique profileId
-      	String[] arrNameProfile = profileId.split("\\(");
-      	int endIndex = arrNameProfile[1].indexOf(")") < 0 ? arrNameProfile[1].length() : arrNameProfile[1].indexOf(")");
-      	arrNameProfile[1] = arrNameProfile[1].substring(0, endIndex);
-      	Project project = ProjectUtils.loadProject(arrNameProfile[1]);
-      	if (project == null) {
-      		continue;
-      	}
+        String[] arrNameProfile = profileId.split("\\(");
+        int endIndex = arrNameProfile[1].indexOf(")") < 0 ? arrNameProfile[1].length() : arrNameProfile[1].indexOf(")");
+        arrNameProfile[1] = arrNameProfile[1].substring(0, endIndex);
+        Project project = ProjectUtils.loadProject(arrNameProfile[1]);
+        if (project == null) {
+          continue;
+        }
         int userId = project.getOwner();
         if (userId > -1) {
           members = updateMemberList(request, profileId, String.valueOf(userId), members, membersPresent);
@@ -524,7 +538,10 @@ public class InviteMembersPortlet extends GenericPortlet {
       String email = keyIterator.next();
       if (members.get(email).equals(NO_MATCH_FOUND) && (email.indexOf("@") != -1)) {
         // Find user by email address
-        int userId = User.getIdByEmailAddress(db, email.trim());
+        String strEmail = email.trim();
+        HashMap<String, String> mapEmail = DimDimUtils.processEmail(strEmail);
+        strEmail = StringUtils.hasText(mapEmail.get(DimDimUtils.EMAIL)) ? mapEmail.get(DimDimUtils.EMAIL) : strEmail;
+        int userId = User.getIdByEmailAddress(db, strEmail);
         if (userId > -1) {
           members = updateMemberList(request, email, String.valueOf(userId), members, membersPresent);
         }
@@ -541,8 +558,8 @@ public class InviteMembersPortlet extends GenericPortlet {
         String[] nameParts = name.split(" ");
         UserList userList = new UserList();
         if (nameParts.length == 1) {
-        //search first and last name fields
-          UserSearchBean userSearch = new UserSearchBean(); 
+          //search first and last name fields
+          UserSearchBean userSearch = new UserSearchBean();
           userSearch.setName(nameParts[0]);
           userList.setSearchCriteria(userSearch);
         } else if (nameParts.length == 2) {
@@ -573,9 +590,9 @@ public class InviteMembersPortlet extends GenericPortlet {
   /*
    * checks and removes duplicate entries from the members to be invited list
    */
-  private LinkedHashMap<String, String> updateMemberList(ActionRequest request, String member, String id, 
-  		LinkedHashMap<String, String> memberMap, LinkedHashMap<String, String> memberPresentMap) {
-  	//return if the id passed is not valid or empty
+  private LinkedHashMap<String, String> updateMemberList(ActionRequest request, String member, String id,
+      LinkedHashMap<String, String> memberMap, LinkedHashMap<String, String> memberPresentMap) {
+    //return if the id passed is not valid or empty
     if (NO_MATCH_FOUND.equals(id) || !StringUtils.hasText(id)) {
       return memberMap;
     }
@@ -583,87 +600,87 @@ public class InviteMembersPortlet extends GenericPortlet {
     LinkedHashMap<String, String> members = new LinkedHashMap<String, String>(memberMap);
     //remove the entry if the userid(s) was already added
     if (members.containsValue(id)) {
-    	members.remove(member);
-    	return members;
+      members.remove(member);
+      return members;
     }
-    
+
     User currentUser = PortalUtils.getUser(request);
     Project currentProject = PortalUtils.getProject(request);
-    
+
     String arrUserId[] = id.split(",");
     String userIds = "";
     for (String userId : arrUserId) {
       //discard the userid if added before
       if (members.containsValue(userId)) {
-      	continue;
+        continue;
       }
       //discard the userid if its the current user
       if (Integer.parseInt(userId) == currentUser.getId()) {
-      	continue;
+        continue;
       }
       //discard the userid if the user is already a member
       if (currentProject.getTeam().getTeamMember(Integer.parseInt(userId)) != null) {
-      	continue;
+        continue;
       }
 
       userIds += userId + ",";
     }
     userIds = DimDimUtils.trimComma(userIds);
-    
+
     //check if there are ids not discarded
     if (StringUtils.hasText(userIds)) {
       //if its not a multi match then check if the user was previous added to any multi match list.
       if (arrUserId.length == 1) {
-      	checkDuplicates(members, member, userIds);
+        checkDuplicates(members, member, userIds);
       }
       members.put(member, userIds);
     } else {
-    	//remove from the member list if its not a multi match
+      //remove from the member list if its not a multi match
       if (arrUserId.length == 1) {
-      	memberPresentMap.put(member, id);
+        memberPresentMap.put(member, id);
         members.remove(member);
       } else {
-      	members.put(member, NO_MATCH_FOUND);
+        members.put(member, NO_MATCH_FOUND);
       }
     }
     return members;
   }
-  
+
   /*
    * removes multiple occurrences of userId from comma separated values of members list
    */
   private void checkDuplicates(LinkedHashMap<String, String> members, String member, String userId) {
     Iterator<String> memIterator = members.keySet().iterator();
     while (memIterator.hasNext()) {
-    	String keyName = (String)memIterator.next();
-    	String idValue = members.get(keyName);
-    	
-    	//check only previous values and not entire list
-    	if (keyName == member) {
-    		return;
-    	}
-    	
-    	//check if valid ids
-    	if (NO_MATCH_FOUND.equals(idValue) || !StringUtils.hasText(idValue)) {
-    		continue;
-    	}
-    	
-    	//convert comma separated string to ArrayList and remove duplicates 
-    	ArrayList<String> lstIds = new ArrayList<String>(Arrays.asList(idValue.split(",")));
-    	while (lstIds.contains(userId)) {
-    		lstIds.remove(userId);
-    	}
-    	
-    	//convert the id list to comma separated string and assign it to members list if there ids remaining
-    	if (!lstIds.isEmpty()) {
-    		String ids = lstIds.toString();
-    		ids = ids.replace("[", "");
-    		ids = ids.replace("]", "");
-    		ids = ids.replace(" ", "");
-    		members.put(keyName, ids);
-    	} else {
-    		memIterator.remove();
-    	}
+      String keyName = (String) memIterator.next();
+      String idValue = members.get(keyName);
+
+      //check only previous values and not entire list
+      if (keyName.equals(member)) {
+        return;
+      }
+
+      //check if valid ids
+      if (NO_MATCH_FOUND.equals(idValue) || !StringUtils.hasText(idValue)) {
+        continue;
+      }
+
+      //convert comma separated string to ArrayList and remove duplicates
+      ArrayList<String> lstIds = new ArrayList<String>(Arrays.asList(idValue.split(",")));
+      while (lstIds.contains(userId)) {
+        lstIds.remove(userId);
+      }
+
+      //convert the id list to comma separated string and assign it to members list if there ids remaining
+      if (!lstIds.isEmpty()) {
+        String ids = lstIds.toString();
+        ids = ids.replace("[", "");
+        ids = ids.replace("]", "");
+        ids = ids.replace(" ", "");
+        members.put(keyName, ids);
+      } else {
+        memIterator.remove();
+      }
     }
   }
 }

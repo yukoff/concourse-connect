@@ -43,11 +43,11 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ page import="com.concursive.connect.web.modules.calendar.utils.DimDimUtils"%>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
-<%@page import="com.concursive.connect.web.modules.calendar.utils.DimDimUtils"%>
 <jsp:useBean id="meetingInviteesBean" class="com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>

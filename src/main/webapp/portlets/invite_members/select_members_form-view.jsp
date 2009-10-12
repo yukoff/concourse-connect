@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ page import="com.concursive.connect.web.portal.PortalUtils,javax.portlet.*" %>
+<%@ page import="com.concursive.connect.web.modules.calendar.utils.DimDimUtils"%>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -208,32 +209,49 @@
                       <td valign="top">
                         <c:out value="${member.key}" />&nbsp;
                       </td>
-                      <td>
-                        <input type="text" size="20" maxlength="50" name="firstName-${member.key}" value="<c:out value="${noMatchFirstName[member.key]}" />"/>&nbsp;
-                      </td>
-                      <td>
-                        <input type="text" size="20" maxlength="50" name="lastName-${member.key}" value="<c:out value="${noMatchLastName[member.key]}" />" />&nbsp;
-                      </td>
-                      <td>
-                        <c:choose>
-                          <c:when test="${empty noMatchEmail[member.key] && fn:contains(member.key, '@')}">
-                            <input type="text" size="20" maxlength="255" name="email-${member.key}" value="<c:out value="${member.key}" />" />&nbsp;
-                          </c:when>
-                          <c:otherwise>
+                      <c:choose>
+                        <c:when test="${empty noMatchEmail[member.key] && fn:contains(member.key, '@')}">
+                          <c:set var="strEmail" value="${member.key}" />
+                          <jsp:useBean id="strEmail" type="java.lang.String"/>
+                          <%
+                            String strFirstName = "", strLastName = "";
+                            HashMap<String, String> mapEmail = DimDimUtils.processEmail(strEmail);
+                            strEmail = StringUtils.hasText(mapEmail.get(DimDimUtils.EMAIL)) ? mapEmail.get(DimDimUtils.EMAIL) : "";
+                            strFirstName = StringUtils.hasText(mapEmail.get(DimDimUtils.FIRST_NAME)) ? mapEmail.get(DimDimUtils.FIRST_NAME) : "";
+                            strLastName = StringUtils.hasText(mapEmail.get(DimDimUtils.LAST_NAME)) ? mapEmail.get(DimDimUtils.LAST_NAME) : "";
+                          %>
+                          <td>
+                            <input type="text" size="20" maxlength="50" name="firstName-${member.key}" value="<c:out value="<%= strFirstName %>" />"/>&nbsp;
+                          </td>
+                          <td>
+                            <input type="text" size="20" maxlength="50" name="lastName-${member.key}" value="<c:out value="<%= strLastName %>" />" />&nbsp;
+                          </td>
+                          <td>
+                            <input type="text" size="20" maxlength="255" name="email-${member.key}" value="<c:out value="<%= strEmail %>" />" />&nbsp;
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>
+                            <input type="text" size="20" maxlength="50" name="firstName-${member.key}" value="<c:out value="${noMatchFirstName[member.key]}" />"/>&nbsp;
+                          </td>
+                          <td>
+                            <input type="text" size="20" maxlength="50" name="lastName-${member.key}" value="<c:out value="${noMatchLastName[member.key]}" />" />&nbsp;
+                          </td>
+                          <td>
                             <input type="text" size="20" maxlength="255" name="email-${member.key}" value="<c:out value="${noMatchEmail[member.key]}" />" />&nbsp;
-                          </c:otherwise>
-                        </c:choose>
-                      </td>
+                          </td>
+                        </c:otherwise>
+                      </c:choose>
                       <td valign="top">
-                           <select name="notMatchedRole-${member.key}" class="input selectInput">
-                              <c:forEach items="${roleList}" var="role">
-                                <option value="${role.level}" <c:if test="${(!empty noMatchRole[member.key] and noMatchRole[member.key] == role.level) or role.level == defaultRole}"> selected</c:if>><c:out value="${role.description}"/></option>
-                              </c:forEach>
-                            </select>
-                    </td>
+                         <select name="notMatchedRole-${member.key}" class="input selectInput">
+                            <c:forEach items="${roleList}" var="role">
+                              <option value="${role.level}" <c:if test="${(!empty noMatchRole[member.key] and noMatchRole[member.key] == role.level) or role.level == defaultRole}"> selected</c:if>><c:out value="${role.description}"/></option>
+                            </c:forEach>
+                          </select>
+                      </td>
                       <c:if test="${showAccessToTools eq 'true'}">
                         <td valign="top">
-                    <input type="checkbox" name="notMatchedAccessToTools" value="${member.key}"/>&nbsp;
+                          <input type="checkbox" name="notMatchedAccessToTools" value="${member.key}"/>&nbsp;
                         </td>
                       </c:if>
                   </tr>
@@ -243,17 +261,17 @@
             </c:forEach>
          </table>
          <c:if test="${!empty membersPresent}">
-         Following are already members of the profile:
-         <c:forEach items="${membersPresent}" var="member" varStatus="status">
-         	 <ccp:username id="${member.value}" showProfile="${true}" showPresence="${false}" showCityState="${true}" /><c:if test="${!status.last}">, </c:if>
-         </c:forEach>
+           The following have previously been added:
+           <c:forEach items="${membersPresent}" var="member" varStatus="status">
+             <ccp:username id="${member.value}" showProfile="${true}" showPresence="${false}" showCityState="${true}" /><c:if test="${!status.last}">, </c:if>
+           </c:forEach>
          </c:if> 
        </fieldset>
        <input type="hidden" name="sourcePage" value="getMatches" />
-        <c:if test="${'true' eq param.popup || 'true' eq popup}">
-          <input type="hidden" name="popup" value="true" />
-          <input type="hidden" name="close" value="true" />
-        </c:if>
+         <c:if test="${'true' eq param.popup || 'true' eq popup}">
+           <input type="hidden" name="popup" value="true" />
+           <input type="hidden" name="close" value="true" />
+         </c:if>
        <input type="submit" class="submit" name="save" value="Prepare Message" />
        <%--
         <input type="submit" class="submit" name="Back" class="cancel" value="Back" onClick="javascript:updateTargetAction('getMembers')"/>

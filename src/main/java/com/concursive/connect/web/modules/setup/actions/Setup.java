@@ -650,7 +650,7 @@ public final class Setup extends GenericAction {
   }
 
   /**
-   * Description of the Method
+   * Prepares the page which inquires about the purpose of the site
    *
    * @param context Description of the Parameter
    * @return Description of the Return Value
@@ -697,7 +697,7 @@ public final class Setup extends GenericAction {
   }
 
   /**
-   * Description of the Method
+   * Saves the purpose of the site
    *
    * @param context Description of the Parameter
    * @return Description of the Return Value
@@ -752,6 +752,15 @@ public final class Setup extends GenericAction {
     }
     return "SetupSaveSiteOK";
   }
+
+
+  // @todo Ask the installation user what the security option should be
+
+  // @todo Ask the installation user what the invitation option should be
+
+  // @todo Ask the installation user what the registration option should be
+
+  // @todo Ask the installation user which tabs are enabled and protected
 
   /**
    * Completes the setup process

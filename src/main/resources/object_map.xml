@@ -147,6 +147,7 @@
       <property>parentCategoryId</property>
       <property>topLevelOnly</property>
       <property>enabled</property>
+      <property>sensitive</property>
 	  </map>
     <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" id="projectCategory" shareKey="true">
       <property alias="guid">id</property>
@@ -157,6 +158,7 @@
       <property lookup="projectCategory">parentCategoryId</property>
       <property>style</property>
       <property>styleEnabled</property>
+      <property>sensitive</property>
 	  </map>
     <!-- Project Category File Item List -->
     <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryLogoFile" id="projectCategoryLogoFile" shareKey="true">

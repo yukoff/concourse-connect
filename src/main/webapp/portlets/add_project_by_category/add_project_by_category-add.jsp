@@ -77,16 +77,18 @@
   function checkForm<portlet:namespace/>(form) {
     var formTest = true;
     var messageText = "";
-    if(${requiresStartEndDate}) {
-     if (!document.getElementById("<portlet:namespace/>requestDate").value) {
-      messageText += "- Start Date is a required field\r\n";
-      formTest = false;
-     }
-     if (!document.getElementById("<portlet:namespace/>estimatedCloseDate").value) {
-      messageText += "- End Date is a required field\r\n";
-      formTest = false;
-     }
-    }
+    <%-- Validations --%>
+    <c:if test="${requiresStartEndDate eq 'true'}">
+      if (!document.getElementById("<portlet:namespace/>requestDate").value) {
+        messageText += "- Start Date is a required field\r\n";
+        formTest = false;
+      }
+      if (!document.getElementById("<portlet:namespace/>estimatedCloseDate").value) {
+        messageText += "- End Date is a required field\r\n";
+        formTest = false;
+      }
+    </c:if>
+    <%-- End Validations --%>
     if (!formTest) {
       messageText = "The form could not be submitted.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
       alert(messageText);

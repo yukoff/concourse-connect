@@ -349,7 +349,15 @@
               </ccp:evaluate>
               <%-- Display Login and register actions if user is not logged in --%>
               <ccp:evaluate if="<%= !isUserLoggedIn %>">
-                <li class="first">
+                <c:choose>
+                  <c:when test='<%= "true".equals(applicationPrefs.get("SENSITIVE_INFORMATION")) %>'>
+                    <c:set var="isFirst">class="last"</c:set>
+                  </c:when>
+                  <c:otherwise>
+                    <c:set var="isFirst">class="first"</c:set>
+                  </c:otherwise>
+                </c:choose>
+                <li ${isFirst}>
                   <a
                     href="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/login<ccp:evaluate if='<%= request.getAttribute("requestedURL") != null %>'>?redirectTo=<%= URLEncoder.encode((String)request.getAttribute("requestedURL"), "UTF-8") %></ccp:evaluate>"
                     title="Login to <%= toHtml(applicationPrefs.get("TITLE")) %>" accesskey="s" rel="nofollow">Sign In</a>
@@ -362,20 +370,21 @@
                       rel="nofollow">Register</a>
                   </li>
                 </ccp:evaluate>
+                <c:set var="isFirst" value=""/>
               </ccp:evaluate>
             </ul>
           </div>
           <ccp:evaluate if="<%= isUserLoggedIn %>">
             <div class="ccp-alert">
               <ccp:evaluate
-                  if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 0 %>">
+                  if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 0 %>'>
                 <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
-                  if="<%= (Integer.parseInt((String)request.getAttribute(\"requestPrivateMessageCount\"))) > 1 %>">s</a>
+                  if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 1 %>'>s</a>
                 </ccp:evaluate>
               </ccp:evaluate>
-              <ccp:evaluate if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 0 %>">
+              <ccp:evaluate if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 0 %>'>
                 <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestInvitationCount") %> new invitation<ccp:evaluate
-                    if="<%= (Integer.parseInt((String)request.getAttribute(\"requestInvitationCount\"))) > 1 %>">s</a>
+                    if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 1 %>'>s</a>
                   </ccp:evaluate>
               </ccp:evaluate>
             </div>
@@ -412,7 +421,9 @@
       </div>
       <div class="ccp-footer">
         <ul>
-          <ccp:tabbedMenu text='<%= "Home" %>' key="nokey" value="novalue" url="${ctx}/" type="li" object="requestMainProfile"/>
+          <c:if test="${fn:length(tabCategoryList) > 0}">
+            <ccp:tabbedMenu text='<%= "Home" %>' key="nokey" value="novalue" url="${ctx}/" type="li" object="requestMainProfile"/>
+          </c:if>
           <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
             <ccp:tabbedMenu text="${tabCategory.description}"
                                key="nokey"
@@ -492,10 +503,12 @@
               <c:set var="isFirst" value=""/>
             </c:if>
           </ccp:permission>
-          <li class="last">
-            <a href="<%= ctx %>/contact-us" title="Contact <%= toHtml(applicationPrefs.get("TITLE")) %>">
-              <em>Contact Us</em></a>
-          </li>
+          <c:if test='<%= !"true".equals(applicationPrefs.get("SENSITIVE_INFORMATION")) %>'>
+            <li class="last">
+              <a href="<%= ctx %>/contact-us" title="Contact <%= toHtml(applicationPrefs.get("TITLE")) %>">
+                <em>Contact Us</em></a>
+            </li>
+          </c:if>
           <c:set var="isFirst" value=""/>
         </ul>
           <p>Powered by <a title="The Open Source Community and Collaboration Solution" href="http://www.concursive.com/show/concourseconnect">Concursive ConcourseConnect</a>,

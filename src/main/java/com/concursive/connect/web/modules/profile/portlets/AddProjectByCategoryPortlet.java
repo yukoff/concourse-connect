@@ -467,6 +467,10 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
     if ("false".equals(request.getPreferences().getValue(PREF_SHOW_ALLOW_GUESTS_OPTION, "false"))) {
       project.getFeatures().setAllowGuests(request.getPreferences().getValue(PREF_ALLOW_GUESTS, "false"));
     }
+    // Override the guests option if the site is private
+    if (category.getSensitive()) {
+      project.getFeatures().setAllowGuests(false);
+    }
 
     // Determines if guests are promoted to participant if they are logged in
     project.getFeatures().setUpdateAllowParticipants(true);

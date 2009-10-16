@@ -430,6 +430,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
       for (String thisCategory : categoryArray) {
         ProjectCategory allowedCategory = categories.getFromValue(thisCategory.trim());
         if (allowedCategory != null && project.getCategoryId() == allowedCategory.getId()) {
+          category = allowedCategory;
           categoryFound = true;
         }
       }

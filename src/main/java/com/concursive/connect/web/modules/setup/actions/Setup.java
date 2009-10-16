@@ -795,6 +795,7 @@ public final class Setup extends GenericAction {
     }
     // Tell setup we are done!
     getApplicationPrefs(context).add("CONFIGURING", null);
+    getApplicationPrefs(context).add("AUTO_UPGRADE", true);
     // save the prefs so user can login
     getApplicationPrefs(context).save();
     // startup the rest of the application

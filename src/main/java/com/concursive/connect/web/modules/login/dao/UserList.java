@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.login.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -51,6 +50,8 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.admin.beans.UserSearchBean;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.Connection;
@@ -80,7 +81,6 @@ public class UserList extends ArrayList<User> {
   private String guid = null;
   private boolean firstCriteria = true;
   private int isAdmin = Constants.UNDEFINED;
-
   private String userIds = null;
   private String[] userIdArray = null;
 
@@ -136,7 +136,6 @@ public class UserList extends ArrayList<User> {
     this.groupId = tmp;
   }
 
-
   /**
    * Sets the departmentId attribute of the UserList object
    *
@@ -145,7 +144,6 @@ public class UserList extends ArrayList<User> {
   public void setDepartmentId(int tmp) {
     this.departmentId = tmp;
   }
-
 
   /**
    * Sets the pagedListInfo attribute of the UserList object
@@ -172,7 +170,6 @@ public class UserList extends ArrayList<User> {
     this.searchCriteria = tmp;
   }
 
-
   /**
    * Gets the groupId attribute of the UserList object
    *
@@ -181,7 +178,6 @@ public class UserList extends ArrayList<User> {
   public int getGroupId() {
     return groupId;
   }
-
 
   /**
    * Gets the departmentId attribute of the UserList object
@@ -237,7 +233,6 @@ public class UserList extends ArrayList<User> {
     return null;
   }
 
-
   /**
    * @return the userIds
    */
@@ -275,8 +270,8 @@ public class UserList extends ArrayList<User> {
     // Build a base SQL statement for counting records
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
-            "FROM users u " +
-            "WHERE u.user_id > -1 ");
+        "FROM users u " +
+        "WHERE u.user_id > -1 ");
     createFilter(sqlFilter, db);
     if (pagedListInfo != null) {
       //Get the total number of records matching filter
@@ -318,8 +313,8 @@ public class UserList extends ArrayList<User> {
     }
     sqlSelect.append(
         "u.*, d.description as department " +
-            "FROM users u LEFT JOIN departments d ON (u.department_id = d.code) " +
-            "WHERE u.user_id > -1 ");
+        "FROM users u LEFT JOIN departments d ON (u.department_id = d.code) " +
+        "WHERE u.user_id > -1 ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -340,7 +335,6 @@ public class UserList extends ArrayList<User> {
     rs.close();
     pst.close();
   }
-
 
   /**
    * adds conditions to the sql query
@@ -422,7 +416,8 @@ public class UserList extends ArrayList<User> {
         sqlFilter.append("AND u.access_content_editor = ? ");
       }
       //Process multiple criteria
-      if (searchCriteria.getActiveProjectId() > -1) {
+      if (StringUtils.hasText(searchCriteria.getActiveProject())) {
+        Project activeProject = ProjectUtils.loadProject(searchCriteria.getActiveProject());
         boolean newTerm = true;
         int termsProcessed = 0;
         //Determine TE users that are members of the project under consideration who have specified roles
@@ -457,7 +452,7 @@ public class UserList extends ArrayList<User> {
                 sqlFilter.append("(");
               }
 
-              sqlFilter.append(" (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + searchCriteria.getActiveProjectId() + " AND pt.userlevel " + operator + " " + value + " )) ");
+              sqlFilter.append(" (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() + " AND pt.userlevel " + operator + " " + value + " )) ");
               previousOp = operator;
               termsProcessed++;
             }
@@ -467,7 +462,7 @@ public class UserList extends ArrayList<User> {
             sqlFilter.append(") ");
           }
         }
-        //Determine TE users (both members and non-members of the project under consideration) who have rated the project
+        //Determine users (both members and non-members of the project under consideration) who have rated the project
         if (searchCriteria.getRatings() != null && searchCriteria.getRatings().size() > 0) {
           HashMap ratings = searchCriteria.getRatings();
           Iterator operators = ratings.keySet().iterator();
@@ -499,7 +494,7 @@ public class UserList extends ArrayList<User> {
                 sqlFilter.append("(");
               }
 
-              sqlFilter.append(" (u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + searchCriteria.getActiveProjectId() + " AND pr.rating " + operator + " " + value + " )) ");
+              sqlFilter.append(" (u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + activeProject.getId() + " AND pr.rating " + operator + " " + value + " )) ");
               previousOp = operator;
               termsProcessed++;
             }
@@ -539,7 +534,7 @@ public class UserList extends ArrayList<User> {
                   sqlFilter.append("(");
                 }
 
-                sqlFilter.append(" (u.user_id IN (SELECT pv.user_id FROM projects_view pv WHERE pv.project_id = " + searchCriteria.getActiveProjectId() + " AND pv.view_date " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "')) ");
+                sqlFilter.append(" (u.user_id IN (SELECT pv.user_id FROM projects_view pv WHERE pv.project_id = " + activeProject.getId() + " AND pv.view_date " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "')) ");
                 previousOp = operator;
                 termsProcessed++;
               }
@@ -581,24 +576,24 @@ public class UserList extends ArrayList<User> {
                 }
 
                 //has rated
-                sqlFilter.append(" (u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + searchCriteria.getActiveProjectId() + " AND pr.entered " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "') ");
+                sqlFilter.append(" (u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + activeProject.getId() + " AND pr.entered " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "') ");
                 //has downloaded project files
                 sqlFilter.append(" OR u.user_id IN (" +
                     "SELECT pfd.user_download_id " +
                     "FROM project_files_download pfd " +
                     "LEFT JOIN project_files pf ON (pfd.item_id = pf.item_id) " +
-                    "WHERE pf.link_module_id = " + Constants.PROJECTS_FILES + " AND pf.link_item_id = " + searchCriteria.getActiveProjectId() + " " +
+                    "WHERE pf.link_module_id = " + Constants.PROJECTS_FILES + " AND pf.link_item_id = " + activeProject.getId() + " " +
                     "AND pfd.download_date " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "') ");
                 //has posted discussions
                 sqlFilter.append(" OR u.user_id IN (" +
                     "SELECT pi.enteredby FROM project_issues pi " +
-                    "WHERE pi.project_id = " + searchCriteria.getActiveProjectId() + " " +
+                    "WHERE pi.project_id = " + activeProject.getId() + " " +
                     "AND pi.entered " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "') ");
                 //has posted replies to existing discussions
                 sqlFilter.append(" OR u.user_id IN (" +
                     "SELECT pir.enteredby FROM project_issue_replies pir " +
                     "LEFT JOIN project_issues iss ON (pir.issue_id = iss.issue_id) " +
-                    "WHERE iss.project_id = " + searchCriteria.getActiveProjectId() + " " +
+                    "WHERE iss.project_id = " + activeProject.getId() + " " +
                     "AND pir.entered " + operator + "'" + DatabaseUtils.parseDateToTimestamp(value) + "') ");
                 sqlFilter.append(") ");
                 previousOp = operator;
@@ -627,7 +622,6 @@ public class UserList extends ArrayList<User> {
     }
   }
 
-
   public boolean processElementHeader(StringBuffer sqlFilter, boolean newTerm, int termsProcessed) {
     if (firstCriteria && newTerm) {
       sqlFilter.append(" AND (");
@@ -643,7 +637,6 @@ public class UserList extends ArrayList<User> {
     }
     return newTerm;
   }
-
 
   /**
    * sets sql values for any specified conditions
@@ -731,7 +724,6 @@ public class UserList extends ArrayList<User> {
     return i;
   }
 
-
   /**
    * returns a count of all users in database, without any conditions applied
    *
@@ -742,8 +734,8 @@ public class UserList extends ArrayList<User> {
   public static int buildUserCount(Connection db) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "SELECT COUNT(*) AS recordcount " +
-            "FROM users u " +
-            "WHERE user_id > -1 ");
+        "FROM users u " +
+        "WHERE user_id > -1 ");
     ResultSet rs = pst.executeQuery();
     rs.next();
     int count = rs.getInt("recordcount");

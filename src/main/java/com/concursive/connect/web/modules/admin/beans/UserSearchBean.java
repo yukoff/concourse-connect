@@ -66,7 +66,7 @@ public class UserSearchBean extends GenericBean {
   private int expired = Constants.UNDEFINED;
   private int contentEditor = Constants.UNDEFINED;
 
-  private int activeProjectId = -1; //determines if a user was active under this project
+  private String activeProject = null;
   private HashMap roleIds = null;
   private HashMap ratings = null;
   private HashMap lastViewed = null;
@@ -186,16 +186,12 @@ public class UserSearchBean extends GenericBean {
     return contentEditor;
   }
 
-  public int getActiveProjectId() {
-    return activeProjectId;
+  public String getActiveProject() {
+    return activeProject;
   }
 
-  public void setActiveProjectId(int activeProjectId) {
-    this.activeProjectId = activeProjectId;
-  }
-
-  public void setActiveProjectId(String activeProjectId) {
-    this.activeProjectId = Integer.parseInt(activeProjectId);
+  public void setActiveProject(String activeProject) {
+    this.activeProject = activeProject;
   }
 
   public HashMap getRoleIds() {

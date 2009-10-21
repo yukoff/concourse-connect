@@ -48,11 +48,13 @@ package com.concursive.connect.web.modules.tools.actions;
 import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.utils.LookupList;
 import java.net.URLEncoder;
 import org.aspcfs.apps.transfer.DataRecord;
 import org.aspcfs.utils.CRMConnection;
@@ -107,12 +109,17 @@ public class ProjectManagementTools extends GenericAction {
       } finally {
         freeConnection(context, db);
       }
+
+      // Determine the user's current role
+      LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
+      String role = roleList.getValueFromId(thisMember.getRoleId());
+
       // Then generate token and use CRM API to pass token, and then redirect to CRM
       if (System.getProperty("DEBUG") != null) {
         System.out.println("ProjectManagementTools-> generating token");
       }
       String token = generateRandomToken();
-      if (sendToken(thisProject, getUser(context), token, ownerEmail)) {
+      if (sendToken(thisProject, getUser(context), token, ownerEmail, role)) {
         if (System.getProperty("DEBUG") != null) {
           System.out.println("ProjectManagementTools-> sending redirect");
         }
@@ -144,7 +151,7 @@ public class ProjectManagementTools extends GenericAction {
     return "SystemError";
   }
 
-  private boolean sendToken(Project project, User user, String token, String ownerEmail) {
+  private boolean sendToken(Project project, User user, String token, String ownerEmail, String role) {
     // Connection details
     CRMConnection conn = new CRMConnection();
     conn.setUrl(project.getConcursiveCRMUrl());
@@ -165,8 +172,7 @@ public class ProjectManagementTools extends GenericAction {
       record.addField("userReportsTo", ownerEmail);
     }
     record.addField("userTimeZone", user.getTimeZone());
-    record.addField("hasCRMAdminRole", user.isConnectCRMAdmin());
-    record.addField("hasCRMManagerRole", user.isConnectCRMManager());
+    record.addField("role", role);
     boolean success = conn.save(record);
     if (!success) {
       if (System.getProperty("DEBUG") != null) {

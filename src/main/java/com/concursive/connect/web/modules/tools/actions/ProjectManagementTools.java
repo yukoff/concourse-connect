@@ -112,7 +112,7 @@ public class ProjectManagementTools extends GenericAction {
 
       // Determine the user's current role
       LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
-      String role = roleList.getValueFromId(thisMember.getRoleId());
+      String role = roleList.getValueFromId(thisMember.getUserLevel());
 
       // Then generate token and use CRM API to pass token, and then redirect to CRM
       if (System.getProperty("DEBUG") != null) {

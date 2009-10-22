@@ -20,7 +20,8 @@
      pagination
    $_modal
    $_button-list-vertical
-   $_button-list-horizntal
+   $_button-list-horizontal
+   $_vertical-list-portletWindowBackground
    $_portlet-form
       $_portlet-form-button
    $_tag-cloud
@@ -1451,9 +1452,8 @@ ol.pagination {
   -moz-border-radius:0 0 5px 5px;
   -webkit-border-radius:0 0 5px 5px;
   position:relative;
-  top:-8px;
+  top:-7px;
   _top:-10px;
-  border-top:2px solid #bbb;
   width:auto;
   display:block;
 }
@@ -1461,7 +1461,7 @@ ol.pagination {
 /* @end */
 /* @group $_button-list-horizontal-*/
 
-/* $_button-list-horizntal  */
+/* $_button-list-horizontal  */
 .button-list-horizontal-portletWindowBackground {
 
 }
@@ -1502,6 +1502,17 @@ ol.pagination {
             }
 
 /* @end */
+
+/* @group $_button-list-horizontal-*/
+
+/* $_vertical-list-portletWindowBackground  */
+.vertical-list-portletWindowBackground ul {
+  float: left;
+  clear: none;
+}
+
+/* @end */
+
 
 /* @group $_tag-cloud */
 
@@ -1562,6 +1573,11 @@ ol.pagination {
 .basic-list dd {
   list-style:none;
   line-height:100%;
+}
+
+li.listing {
+  margin:0;
+  padding:5px 5px 5px 0;
 }
 
 /* @end */

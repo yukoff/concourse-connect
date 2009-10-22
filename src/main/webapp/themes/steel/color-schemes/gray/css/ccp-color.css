@@ -1,0 +1,286 @@
+/*
+ * file information
+ * style type: concoursconnect color scheme : gray
+ * version:    1
+ * date:       20091022
+ * author:     concursive.com
+ *
+ */
+
+ body {
+   background:#ddd;
+ }
+
+.ccp-container {
+  _height:1%;
+}
+
+.ccp-header {
+  background:#dedede url(../images/1x40_gray.jpg) 0 0 repeat-x;
+  height:205px;
+  border-left:2px solid #aaa;
+  border-right:2px solid #aaa;
+}
+
+    #ccp-header-title-image-id {
+      float:left;
+      margin: 35px 0px 35px 20px;
+    }
+
+    #ccp-header-title-item-id {
+      padding: 75px 0px 47px 15px;
+      *margin-top: 20px;
+      _margin-top: 60px;
+      *margin-bottom: 10px;
+      _margin-bottom: 40px;
+    }
+
+    .ccp-header-menu {
+      right:-15px;
+      top:0;
+      height: 1px;
+    }
+
+        .ccp-header-menu a {
+          color:#000;
+        }
+
+        .ccp-site-menu {
+          background:none;
+          padding:5px;
+        }
+            .ccp-site-menu ul {
+              padding:0;
+              margin:0;
+            }
+
+              .ccp-site-menu ul li {
+                border:none;
+              }
+
+            .ccp-site-menu a, .ccp-user-menu a {
+              color: rgb(27, 136, 177);
+            }
+
+            .ccp-site-menu a:hover, .ccp-user-menu a:hover {
+              color: rgb(26, 70, 134);
+            }
+
+        .ccp-user-menu {
+          position:absolute;
+          background:none;
+          padding:5px 15px 5px 5px;
+          *margin-left: -265px;
+          _margin-left: -275px;
+        }
+            .ccp-user-menu ul {
+              padding:0;
+              margin:0;
+            }
+
+              .ccp-user-menu ul li {
+                border:none;
+              }
+
+        .ccp-search-form {
+          position:absolute;
+          top:115px;
+          right:10px;
+          *top:110px;
+          _right:-230px;
+        }
+
+    .ccp-header h1,
+    .ccp-search-form{
+      color:#000;
+    }
+
+.ccp-body {
+  background:#fff;
+  border-width:0 2px 2px 2px;
+  border-color:#aaa;
+  border-style:solid;
+}
+
+  .ccp-alert {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+  }
+
+  .ccp-alert,
+  .ccp-alert a {
+    color:rgb(27, 136, 177);
+  }
+
+  .ccp-alert a:hover {
+    color:rgb(26, 70, 134);
+  }
+
+  .ccp-navigation {
+    background:#666 url(../images/1pxBand.jpg) repeat-x top left;
+    height:36px;
+    padding: 0;
+  }
+
+  .ccp-navigation ul {
+    padding-top:5px;
+    margin-left: 5px;
+  }
+
+    .ccp-navigation ul li a {
+      color:#000;
+    }
+
+    .ccp-navigation ul li em {
+      
+    }
+
+    .ccp-navigation ul li a.active {
+      background:#eee;
+      -moz-border-radius:5px;
+      -webkit-border-radius:5px;
+      color:#000;
+    }
+
+    .ccp-navigation ul li a:hover {
+      background:#ddd;
+      -moz-border-radius:5px;
+      -webkit-border-radius:5px;
+      color:#000;
+    }
+
+      .ccp-navigation ul li a.active em {
+        color:#000;
+      }
+
+  .button-list-vertical-portletWindowBackground ul,
+  .actionsContainer ul, .projectActionsContainer ul {
+    width: 200px;
+  }
+
+  .button-list-vertical-portletWindowBackground ul li a,
+  .button-list-vertical-portletWindowBackground ul li a em,
+  .button-list-vertical-portletWindowBackground ul li a:hover,
+  .button-list-vertical-portletWindowBackground ul li a:hover em {
+    background-image:url(../images/sprite.png);
+    height: 27px;
+    border: none;
+    color: #fff;
+    line-height: 27px;
+  }
+
+  .button-list-vertical-portletWindowBackground ul li a {
+    background-position:0 0;
+  }
+
+  .button-list-vertical-portletWindowBackground ul li a em {
+    background-position:-429px 0;
+    *right:-7px;
+  }
+
+  .button-list-vertical-portletWindowBackground ul li a:hover {
+    background-position:0 -27px;
+  }
+
+  .button-list-vertical-portletWindowBackground ul li a:hover em {
+    background-position:-429px -27px;
+  }
+
+  /* center homepage wiki content */
+  .profile-portlet-body.home h2 {
+    color:#383838;
+    font-style:normal;
+    text-align:center;
+  }
+
+  .profile-portlet-body.home p {
+    color:#508f00;
+    text-align: center;
+    font-size:14px;
+  }
+
+  /* center homepage img */
+  .home .articleBody img {
+    margin: 0 auto!important;
+    display: block;
+  }
+
+  /* center flash */
+  .flashportletWindowBackground {
+    padding: 0 5px;
+  }
+
+  .flashportletWindowBackground .portletWrapper {
+    text-align: center;
+    margin: 0 auto!important;
+    display:block;
+    margin:0 5px;
+    border-bottom: none;
+  }
+
+  .neighborhoods .articleBody,
+  .products .articleBody,
+  .services .articleBody,
+  .solutions .articleBody,
+  .committees .articleBody,
+  .departments .articleBody,
+  .partners .articleBody,
+  .businesses .articleBody,
+  .organizations .articleBody,
+  .groups .articleBody,
+  .people .articleBody,
+  .places .articleBody,
+  .events .articleBody,
+  .sponsors .articleBody,
+  .ideas .articleBody,
+  .clusters .articleBody,
+  .projects .articleBody {
+    padding:0 !important;
+  }
+
+  .neighborhoods .articleBody img,
+  .products .articleBody img,
+  .services .articleBody img,
+  .solutions .articleBody img,
+  .committees .articleBody img,
+  .departments .articleBody img,
+  .partners .articleBody img,
+  .businesses .articleBody img,
+  .organizations .articleBody img,
+  .groups .articleBody img,
+  .people .articleBody img,
+  .places .articleBody img,
+  .events .articleBody img,
+  .sponsors .articleBody img,
+  .ideas .articleBody img,
+  .clusters .articleBody img,
+  .projects .articleBody img {
+    margin-left:0;
+  }
+
+  .neighborhoods .articleBody h2,
+  .products .articleBody h2, 
+  .services .articleBody h2,
+  .solutions .articleBody h2,
+  .committees .articleBody h2,
+  .departments .articleBody h2,
+  .partners .articleBody h2,
+  .businesses .articleBody h2,
+  .organizations .articleBody h2,
+  .groups .articleBody h2,
+  .people .articleBody h2,
+  .places .articleBody h2,
+  .events .articleBody h2,
+  .sponsors .articleBody h2,
+  .ideas .articleBody h2,
+  .clusters .articleBody h2,
+  .projects .articleBody h2 {
+    color:#383838;
+    text-align:center;
+  }
+
+.ccp-footer {
+	background: none;
+	border-bottom: none;
+}

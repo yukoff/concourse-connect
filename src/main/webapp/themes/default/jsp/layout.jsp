@@ -210,11 +210,11 @@
         <div class="ccp-header-title">
           <a id="ccp-header-title-link-id" href="${ctx}/" accesskey="h" title="<%= toHtml(applicationPrefs.get("TITLE")) %>">
             <ccp:evaluate if='<%= !applicationPrefs.has("LOGO") %>'>
-              <h1 id="ccp-header-title-item-id"><%= toHtml(applicationPrefs.get("TITLE")) %></h1>
+              <h1 id="ccp-header-title-item-id" class="unitPng"><%= toHtml(applicationPrefs.get("TITLE")) %></h1>
             </ccp:evaluate>
             <ccp:evaluate if='<%= applicationPrefs.has("LOGO") %>'>
               <c:set var="headerLogo" value='<%= applicationPrefs.get("LOGO") %>'/>
-              <img id="ccp-header-title-image-id" src="${ctx}/image/${headerLogo}/logo.png" width="${fn:endsWith(headerLogo, "-300x100") ? "300":"250" }" height="100" alt="<%= toHtml(applicationPrefs.get("TITLE")) %>" />
+              <img id="ccp-header-title-image-id" src="${ctx}/image/${headerLogo}/logo.png" width="${fn:endsWith(headerLogo, "-300x100") ? "300":"250" }" height="100" alt="<%= toHtml(applicationPrefs.get("TITLE")) %>" class="unitPng" />
             </ccp:evaluate>
           </a>
         </div>

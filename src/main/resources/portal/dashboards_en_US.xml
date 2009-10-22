@@ -1101,13 +1101,13 @@
           <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="organizations " isAdmin="true">
+          <portlet name="ProjectWikiContentPortlet" class="committees " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to committees</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="organizations " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="committees " cache="10" isAdmin="false">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to committees</wiki>
             <showTitle>false</showTitle>
@@ -1333,13 +1333,13 @@
           <portlet name="ContentPortlet" isUser="false">
             <xml-include fragment="portal-fragments-unregistered-user"/>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="groups " isAdmin="true">
+          <portlet name="ProjectWikiContentPortlet" class="departments " isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to departments</wiki>
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="groups " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="departments " cache="10" isAdmin="false">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to departments</wiki>
             <showTitle>false</showTitle>

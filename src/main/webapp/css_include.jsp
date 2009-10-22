@@ -147,10 +147,10 @@
 <script type="text/javascript" src="<%= yuiURL %>/autocomplete/autocomplete-min.js"></script>
 <script type="text/javascript" src="<%= yuiURL %>/logger/logger-min.js"></script>
 --%>
-<%--[if lt IE 7]>
+<!--[if lt IE 7]>
   <script type="text/javascript">var clear="${ctx}/images/clear.gif"</script>
   <script type="text/javascript" src="${ctx}/javascript/unitpngfix.js"></script>
-<![endif]--%>
+<![endif]-->
 <%
   if(request.getAttribute("project") == null) {
     pageContext.setAttribute("project",request.getAttribute("Project"));

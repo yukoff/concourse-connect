@@ -31,6 +31,7 @@
     #ccp-header-title-image-id {
       float:left;
       margin:35px 0 5px 20px;
+      *margin:5px 0 5px 20px;
     }
 
   .ccp-header h1,
@@ -47,29 +48,40 @@
 }
 
 .ccp-header-menu {
-  position:absolute;
   right:-15px;
   top:0;
   height: 1px;
 }
 
 .ccp-user-menu {
+  position:absolute;
   background: none;
-  clear: both;
-  padding: 5px 20px 5px 5px;
-  height: 17px; /* 5px top + 5px bottom + 17px high = 27px total */
+  padding: 5px 15px 5px 5px;
   color: #000;
   white-space:nowrap;
+  *margin-left: -315px;
+  _margin-left: -315px;
+  *margin-top: -40px;
+  _margin-top: -75px;
+}
+
+.ccp-user-menu ul li, .ccp-site-menu ul li {
+  padding: 3px 8px 3px 8px;
+}
+
+.ccp-alert {
+  position: absolute;
+  top: 30px;
+  right: 18px;
+  padding: 0 0 0 23px;
 }
 
 .ccp-search-form {
-  margin:0;
-  float:right;
+  position:absolute;
+  top:30px;
+  right:10px;
+  _right:-240px;
   color: #000;
-  height: 27px;
-  clear:none;
-  padding-top: 5px;
-  _width:400px;
 }
 
 .ccp-search-form a,
@@ -79,10 +91,11 @@
 
 .ccp-site-menu {
   float:right;
-  margin:5px;
-  padding:0 10px 0 0;
-  *padding-top: 5px;
+  margin:5px 0 5px 5px;
+  padding:0 5px 0 0;
   background:none;
+  *margin-top: -35px;
+  _margin-top: -75px;
 }
 
 .ccp-site-menu ul {
@@ -108,6 +121,7 @@
 	  float:right;
 	  position:absolute;
 	  right:5px;
+      white-space:nowrap;
     }
 
     .ccp-navigation ul li {
@@ -155,10 +169,6 @@
 .ccp-footer {
 	background: none;
 	border-bottom: none;
-}
-
-.ccp-alert {
-  padding: 0px 20px 0px 23px;
 }
 
 .ccp-alert,

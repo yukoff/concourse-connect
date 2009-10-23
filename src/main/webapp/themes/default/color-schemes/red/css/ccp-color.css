@@ -105,6 +105,10 @@
         color:#000;
       }
 
+.ccp-alert {
+  right:30px;
+  clear:both;
+}
 .ccp-alert a,
 .ccp-alert a:hover {
   color:#fff

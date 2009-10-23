@@ -74,7 +74,7 @@
   <src>/javascript/yui-2.7/build/container/assets/container.css</src>
 </pack:style>
 <c:if test="${!empty templateColorScheme}">
-  <link rel="stylesheet" href="${ctx}/themes/${templateTheme}/color-schemes/${templateColorScheme}/css/ccp-color.css?2" />
+  <link rel="stylesheet" href="${ctx}/themes/${templateTheme}/color-schemes/${templateColorScheme}/css/ccp-color.css?3" />
 </c:if>
 <link rel="stylesheet" href="<%= ctx %>/javascript/yui-2.7/build/menu/assets/skins/sam/menu.css" />
 <%--

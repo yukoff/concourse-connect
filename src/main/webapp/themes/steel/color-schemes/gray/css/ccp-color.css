@@ -12,6 +12,7 @@
  }
 
 .ccp-container {
+  padding: 0px 10px 0px 10px;
   _height:1%;
 }
 
@@ -257,6 +258,7 @@
   .clusters .articleBody img,
   .projects .articleBody img {
     margin-left:0;
+    max-width: inherit !important;
   }
 
   .neighborhoods .articleBody h2,

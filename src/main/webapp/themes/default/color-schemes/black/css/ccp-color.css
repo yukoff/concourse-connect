@@ -111,6 +111,11 @@
 	border-bottom: none;
 }
 
+.ccp-alert {
+  right:30px;
+  clear:both;
+}
+
 .ccp-alert,
 .ccp-alert a {
   color:#eee

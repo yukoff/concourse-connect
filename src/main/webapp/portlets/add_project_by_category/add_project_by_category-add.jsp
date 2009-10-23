@@ -84,7 +84,7 @@
 </c:if>
 <div class="formContainer">
   <portlet:actionURL var="submitContentUrl" portletMode="view" />
-    <form method="POST" id="<portlet:namespace/>inputForm" name="<portlet:namespace/>inputForm" action="<%= pageContext.getAttribute("submitContentUrl") %>" onSubmit="return checkForm<portlet:namespace/>(this);">
+    <form method="POST" id="inputForm" name="inputForm" action="<%= pageContext.getAttribute("submitContentUrl") %>" onSubmit="return checkForm(this);">
       <fieldset id="Basic Information">
         <legend>Basic Information</legend>
           <input type="hidden" name="id" value="<%= project.getId() %>" />
@@ -203,7 +203,7 @@
               <legend>Start Date <c:if test="requiresStartEndDate"><span class="required">*</span></c:if></legend>
               <%= showAttribute(request, "requestDateError") %>
               <input type="text" name="requestDate" id="<portlet:namespace/>requestDate" class="inputDate" value="${requestDate}" onBlur="javascript:calendarTrigger<portlet:namespace/>('<portlet:namespace/>requestDate','<portlet:namespace/>estimatedCloseDate');" />
-              <a href="javascript:popCalendar<portlet:namespace/>('<portlet:namespace/>inputForm', 'requestDate', '${user.locale.language}', '${user.locale.country}', '<portlet:namespace/>requestDate');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
+              <a href="javascript:popCalendar<portlet:namespace/>('inputForm', 'requestDate', '${user.locale.language}', '${user.locale.country}', '<portlet:namespace/>requestDate');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
               <ccp:label name="projectsAddProject.at">at</ccp:label>
               <ccp:timeSelect baseName="requestDate" value="${project.requestDate}" timeZone="${user.timeZone}"/>
               <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
@@ -212,7 +212,7 @@
               <legend>Ends at <c:if test="requiresStartEndDate"><span class="required">*</span></c:if></legend>
               <%= showAttribute(request, "estimatedCloseDateError") %>
               <input type="text" name="estimatedCloseDate" id="<portlet:namespace/>estimatedCloseDate" class="inputDate" value="${estimatedCloseDate}" />
-              <a href="javascript:popCalendar('<portlet:namespace/>inputForm', 'estimatedCloseDate', '${user.locale.language}', '${user.locale.country}');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
+              <a href="javascript:popCalendar('inputForm', 'estimatedCloseDate', '${user.locale.language}', '${user.locale.country}');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
               <ccp:label name="projectsAddProject.at">at</ccp:label>
               <ccp:timeSelect baseName="estimatedCloseDate" value="${project.estimatedCloseDate}" timeZone="${user.timeZone}"/>
               <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
@@ -358,7 +358,7 @@
     return true;
   }
   //focus
-  YAHOO.util.Event.onDOMReady(function() { document.<portlet:namespace/>inputForm.title.focus();} );
+  YAHOO.util.Event.onDOMReady(function() { document.inputForm.title.focus();} );
   <c:choose>
 	  <c:when test="<%= allowedCategoryList.size() <= 3 %>">
 	  	var eventName = 'click';
@@ -412,14 +412,14 @@
     <c:choose>
       <c:when test="<%= allowedCategoryList.size() <= 3 %>">
         var val = 0;
-        for( i = 0; i < document.<portlet:namespace/>inputForm.categoryId.length ; i++ ){
-          if(document.<portlet:namespace/>inputForm.categoryId[i].checked)
-            val = document.<portlet:namespace/>inputForm.categoryId[i].value;
+        for( i = 0; i < document.inputForm.categoryId.length ; i++ ){
+          if(document.inputForm.categoryId[i].checked)
+            val = document.inputForm.categoryId[i].value;
         }
         YAHOO.util.Connect.asyncRequest('GET',"<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=" + val + "&out=text", callbacks);
       </c:when>
       <c:otherwise>
-        YAHOO.util.Connect.asyncRequest('GET','<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=' + document.<portlet:namespace/>inputForm.categoryId.value + '&out=text', callbacks);
+        YAHOO.util.Connect.asyncRequest('GET','<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=' + document.inputForm.categoryId.value + '&out=text', callbacks);
       </c:otherwise>
     </c:choose>
   });

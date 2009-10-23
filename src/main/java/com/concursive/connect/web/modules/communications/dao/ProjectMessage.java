@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.communications.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -62,13 +61,14 @@ import java.util.Iterator;
  * @created Jul 25, 2008
  */
 public class ProjectMessage extends GenericBean {
+
   private int id = -1;
   private String subject = null;
   private String body = null;
+  private String profileUniqueId = null;
   private int projectId = -1;
   private int enteredBy = -1;
   private Timestamp entered = null;
-
   private ProjectMessageRecipientList recipients = null;
   private ContactList contacts = new ContactList();
   private String contactFirstName = "";
@@ -240,6 +240,14 @@ public class ProjectMessage extends GenericBean {
     this.id = Integer.parseInt(id);
   }
 
+  public String getProfileUniqueId() {
+    return profileUniqueId;
+  }
+
+  public void setProfileUniqueId(String profileUniqueId) {
+    this.profileUniqueId = profileUniqueId;
+  }
+
   /**
    * Gets the 'projectId' attribute of the ProjectMessage object
    *
@@ -301,8 +309,8 @@ public class ProjectMessage extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "SELECT * " +
-            "FROM project_message " +
-            "WHERE message_id = ?");
+        "FROM project_message " +
+        "WHERE message_id = ?");
     pst.setInt(1, id);
     ResultSet rs = pst.executeQuery();
     if (rs.next()) {
@@ -317,7 +325,6 @@ public class ProjectMessage extends GenericBean {
 
     buildRecipients(db);
   }
-
 
   public void buildRecipients(Connection db) throws SQLException {
     if (recipients == null) {
@@ -337,6 +344,9 @@ public class ProjectMessage extends GenericBean {
   }
 
   public boolean insert(Connection db) throws SQLException {
+    if (projectId == -1) {
+      throw new SQLException("ProjectId not specified");
+    }
     boolean commit = false;
     try {
       commit = db.getAutoCommit();
@@ -395,9 +405,8 @@ public class ProjectMessage extends GenericBean {
       }
 
       /**
-       method logic goes here 
+      method logic goes here
        */
-
       if (commit) {
         db.commit();
       }
@@ -422,9 +431,8 @@ public class ProjectMessage extends GenericBean {
       }
 
       /**
-       method logic goes here 
+      method logic goes here
        */
-
       if (commit) {
         db.commit();
       }

@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.api.services;
 
 import com.concursive.commons.codec.PrivateString;
@@ -69,7 +68,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.sql.Connection;
-import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Handler invoked on a projectMessage bean using the API...
@@ -86,34 +86,36 @@ import java.util.Iterator;
  */
 public class ProjectProfileInvitesService implements CustomActionHandler {
 
+  private static Log LOG = LogFactory.getLog(ProjectProfileInvitesService.class);
+
   public boolean process(TransactionItem transactionItem, Connection db) throws Exception {
     try {
-      transactionItem.getRecordList().setName("contactEmailAddress");
-
+      // Request parameters and objects
       Object object = transactionItem.getObject();
       ApplicationPrefs prefs = transactionItem.getPacketContext().getApplicationPrefs();
       ActionContext actionContext = transactionItem.getPacketContext().getActionContext();
-
       Key key = (Key) actionContext.getServletContext().getAttribute("TEAM.KEY");
 
+      // Prepare the response, a list of contactEmailAddress with a status will be returned
+      transactionItem.getRecordList().setName("contactEmailAddress");
+
+      // Process the incoming projectMessage object
       if (object != null && object instanceof ProjectMessage) {
-        //Extract the ProjectMessage Bean and save it..
+        // Extract the ProjectMessage Bean and save it..
         ProjectMessage projectMessage = (ProjectMessage) transactionItem.getObject();
 
-        //Populate the Project Profile
-        Project project = ProjectUtils.loadProject(projectMessage.getProjectId());
-
+        // Retrieve the specified profile
+        Project project = ProjectUtils.loadProject(projectMessage.getProfileUniqueId());
+        projectMessage.setProjectId(project.getId());
         projectMessage.setEnteredBy(project.getOwner());
         projectMessage.insert(db);
 
-        //Insert ProjectMessageRecipient records
+        // Insert ProjectMessageRecipient records
         ContactList contacts = projectMessage.getContacts();
-        Iterator i = contacts.iterator();
-        while (i.hasNext()) {
-          Contact contact = (Contact) i.next();
+        for (Contact contact : contacts) {
           int contactId = ContactList.getIdByEmailAddress(db, contact.getEmail1());
           if (contactId == -1) {
-            //contact not found. save the contact record as owned by the project's owner
+            // contact not found. save the contact record as owned by the project's owner
             contact.setOwner(project.getOwner());
             contact.setEnteredBy(project.getOwner());
             contact.setModifiedBy(project.getOwner());
@@ -121,7 +123,7 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
           } else {
             contact = new Contact(db, contactId);
             if (contact.getOwner() != project.getOwner()) {
-              //The contact is not owned by the project owner. Add the contact to a contact share pool
+              // The contact is not owned by the project owner. Add the contact to a contact share pool
               contact.addToShare(db, contact.getOwner(), project.getOwner(), true);
             }
           }
@@ -136,15 +138,15 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
           String data = URLEncoder.encode(PrivateString.encrypt(key, "id=" + recipient.getId() + ",pid=" + project.getId()), "UTF-8");
 
           /*
-           ${invite.name}
-           ${project.name}
-           ${project.description}
-           ${project.ownerName}
-           ${project.profileLink}
-           ${project.unsubscribeLink}
-           ${project.customText}
-           ${link.info}
-          */
+          ${invite.name}
+          ${project.name}
+          ${project.description}
+          ${project.ownerName}
+          ${project.profileLink}
+          ${project.unsubscribeLink}
+          ${project.customText}
+          ${link.info}
+           */
           Template inviteBody = new Template(projectMessage.getBody());
           inviteBody.addParseElement("${invite.name}", ContactUtils.getNameFirstLast(contact.getFirstName(), contact.getLastName()));
           inviteBody.addParseElement("${project.name}", project.getTitle());
@@ -165,7 +167,7 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
           SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
           message.setFrom(prefs.get("EMAILADDRESS"));
           //message.addReplyTo(applicationPrefs.get()contact.getEmail(), getUser(context).getNameFirstLast());
-          message.addTo(contact.getEmail1());
+          message.setTo(contact.getEmail1());
           message.setSubject(projectMessage.getSubject());
           message.setBody(inviteBody.getParsedText());
           message.setType("text/html");
@@ -181,22 +183,22 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
             record.put("type", 1);
             transactionItem.getRecordList().add(record);
           } else {
-            //Record that message was not delivered
+            // Record that message was not delivered
             recipient.setStatusId(ProjectMessageRecipient.STATUS_MAILERROR);
             recipient.setStatus(ProjectMessageRecipient.MAILERROR);
-            //Flag that the recipient DID NOT receive the message
+            // Flag that the recipient DID NOT receive the message
             Record record = new Record("processed");
             record.put("email", contact.getEmail1());
             record.put("type", -1);
             transactionItem.getRecordList().add(record);
-            System.out.println("ProjectProfileInvitesService-> MAIL ERROR: " + message.getErrorMsg());
+            LOG.warn("MAIL ERROR: " + message.getErrorMsg());
           }
           recipient.update(db);
         }
         return true;
       }
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.error("process error", e);
       throw new Exception(e.getMessage());
     }
     return false;
@@ -204,13 +206,13 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
 
   /*
   private String getPath(ActionContext context, ApplicationPrefs applicationPrefs, String folder) {
-    String fs = System.getProperty("file.separator");
-    String fileLibrary = applicationPrefs.get("FILELIBRARY");
-    User user = (User) context.getSession().getAttribute(Constants.SESSION_USER);
+  String fs = System.getProperty("file.separator");
+  String fileLibrary = applicationPrefs.get("FILELIBRARY");
+  User user = (User) context.getSession().getAttribute(Constants.SESSION_USER);
 
-    if (user != null) {
-      return fileLibrary + user.getGroupId() + fs + folder + fs;
-    }
-    return fileLibrary + "1" + fs + folder + fs;
+  if (user != null) {
+  return fileLibrary + user.getGroupId() + fs + folder + fs;
+  }
+  return fileLibrary + "1" + fs + folder + fs;
   } */
 }

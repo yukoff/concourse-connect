@@ -85,6 +85,7 @@ img:after {
   margin:0 auto;
   position:relative;
   max-width:1200px; /* Section can not get larger than 1200px */
+  min-width:935px;
   overflow:hidden; /* scrollbar fix */
   height:1%; /* IE fix */
 }

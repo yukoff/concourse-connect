@@ -1093,8 +1093,10 @@ ol.pagination {
         margin:0 10px 10px 0;
         display: block;
         background: #fff;
-        -moz-border-radius-top-left: 5px;
-        -moz-border-radius-top-right: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
       }
 
     /* portlet styles */
@@ -1400,7 +1402,8 @@ ol.pagination {
               top:0;
               background:#fafafa;
               -moz-border-radius:5px 5px 0 0;
-              -webkit-border-radius:5px 5px 0 0;
+              -webkit-border-top-left-radius: 5px;
+              -webkit-border-top-right-radius: 5px;
               border-bottom:2px solid #eee;
             }
 
@@ -1409,7 +1412,8 @@ ol.pagination {
             .topLeft {
               background:#eee;
               -moz-border-radius:5px 5px 0 0;
-              -webkit-border-radius:5px 5px 0 0;
+              -webkit-border-top-left-radius: 5px;
+              -webkit-border-top-right-radius: 5px;
               border-bottom:2px solid #f7f7f7;
             }
 
@@ -1450,7 +1454,8 @@ ol.pagination {
 .ccp-search-menu-portletColumn {
   background:#ddd;
   -moz-border-radius:0 0 5px 5px;
-  -webkit-border-radius:0 0 5px 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
   position:relative;
   top:-7px;
   _top:-10px;
@@ -2626,8 +2631,8 @@ ul.g_tabsList {
   background: url(../themes/default/images/background/portlet_window_background_20090301.png) repeat-x scroll right bottom;
   -moz-border-radius-topleft: 5px;
   -moz-border-radius-topright: 5px;
-  -webkit-border-radius-top-left: 5px;
-  -webkit-border-radius-top-right: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
   border: 1px solid #D6E0EE;
   border-bottom: none;
   padding: 5px

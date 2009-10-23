@@ -72,123 +72,6 @@
   var ilId = <%= project.getId() %>;
 </script>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<script language="javascript" type="text/javascript">
-  // form validation
-  function checkForm<portlet:namespace/>(form) {
-    var formTest = true;
-    var messageText = "";
-    <%-- Validations --%>
-    <c:if test="${requiresStartEndDate eq 'true'}">
-      if (!document.getElementById("<portlet:namespace/>requestDate").value) {
-        messageText += "- Start Date is a required field\r\n";
-        formTest = false;
-      }
-      if (!document.getElementById("<portlet:namespace/>estimatedCloseDate").value) {
-        messageText += "- End Date is a required field\r\n";
-        formTest = false;
-      }
-    </c:if>
-    <%-- End Validations --%>
-    if (!formTest) {
-      messageText = "The form could not be submitted.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
-      alert(messageText);
-      return false;
-    }
-    return true;
-  }
-  // focus
-  YAHOO.util.Event.onDOMReady(function() { document.<portlet:namespace/>inputForm.title.focus();} );
-  <c:choose>
-	  <c:when test="<%= allowedCategoryList.size() <= 3 %>">
-	  	var eventName = 'click';
-	  </c:when>
-    <c:otherwise>
-	  	var eventName = 'change';
-    </c:otherwise>
-  </c:choose>
-  YAHOO.util.Event.on('<portlet:namespace/>categoryId',eventName,function (e) {
-    // Get the div element in which to report messages from the server
-    var msg_section = YAHOO.util.Dom.get('<portlet:namespace/>subCategory1Id');
-    msg_section.innerHTML = '<p>&nbsp;</p>';
-    // Define the callbacks for the asyncRequest
-    var callbacks = {
-        success : function (o) {
-          var messages = [];
-          try {
-              messages = YAHOO.lang.JSON.parse(o.responseText);
-          }
-          catch (x) {
-              alert("Connection to server failed.");
-              return;
-          }
-          if (messages.length > 0) {
-            msg_section.innerHTML = '&nbsp;';
-            var sel = document.createElement('select');
-            sel.name = 'subCategory1Id';
-            msg_section.appendChild(sel);
-            for (var i = 0, len = messages.length; i < len; ++i) {
-                var m = messages[i];
-                var optionNew = document.createElement('option');
-                optionNew.text = m.text;
-                optionNew.value = m.value;
-                sel.options[i] = optionNew;
-            }
-          } else {
-            msg_section.innerHTML = '<p>None to choose from</p>';
-          }
-        },
-
-        failure : function (o) {
-            if (!YAHOO.util.Connect.isCallInProgress(o)) {
-                alert("Call failed!");
-            }
-        },
-        timeout : 3000
-    }
-    <portlet:renderURL var="urlSubCategories" portletMode="view"  windowState="maximized">
-      <portlet:param name="viewType" value="getSubCategories"/>
-    </portlet:renderURL>
-    <c:choose>
-      <c:when test="<%= allowedCategoryList.size() <= 3 %>">
-        var val = 0;
-        for( i = 0; i < document.<portlet:namespace/>inputForm.categoryId.length ; i++ ){
-          if(document.<portlet:namespace/>inputForm.categoryId[i].checked)
-            val = document.<portlet:namespace/>inputForm.categoryId[i].value;
-        }
-        YAHOO.util.Connect.asyncRequest('GET',"<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=" + val + "&out=text", callbacks);
-      </c:when>
-      <c:otherwise>
-        YAHOO.util.Connect.asyncRequest('GET','<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=' + document.<portlet:namespace/>inputForm.categoryId.value + '&out=text', callbacks);
-      </c:otherwise>
-    </c:choose>
-  });
-  function calendarTrigger<portlet:namespace/>(startDateId, endDateId) {
-    // TODO: i18n
-    <c:if test="${'en' == user.locale.language}">
-      var startDateValue = document.getElementById(startDateId).value;
-      var endDateValue = document.getElementById(endDateId).value;
-      if (Date.parse(startDateValue) > Date.parse(endDateValue)) {
-        document.getElementById(endDateId).value = startDateValue;
-      }
-    </c:if>
-  }
-  function popCalendar<portlet:namespace/>(inputForm, fieldName, language, country, fieldId) {
-     popCalendar(inputForm, fieldName, language, country);
-     document.getElementById(fieldId).focus();
-  }
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.PROJECT_IMAGE_FILES %>';
-    var linkItemId = '&liid=<%= project.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
-  function setAttachmentList(newVal) {
-    document.getElementById("attachmentList").value = newVal;
-  }
-  function setAttachmentText(newVal) {
-    document.getElementById("attachmentText").value = newVal;
-  }
-</script>
 <h2><c:out value="${title}"/></h2>
 <c:if test="${!empty introductionMessage}">
   <p><c:out value="${introductionMessage}"/></p>
@@ -201,7 +84,7 @@
 </c:if>
 <div class="formContainer">
   <portlet:actionURL var="submitContentUrl" portletMode="view" />
-    <form method="POST" id="<portlet:namespace/>inputForm" name="<portlet:namespace/>inputForm" action="<%= pageContext.getAttribute("submitContentUrl") %>" onSubmit="return checkForm<portlet:namespace/>(this)">
+    <form method="POST" id="<portlet:namespace/>inputForm" name="<portlet:namespace/>inputForm" action="<%= pageContext.getAttribute("submitContentUrl") %>" onSubmit="return checkForm<portlet:namespace/>(this);">
       <fieldset id="Basic Information">
         <legend>Basic Information</legend>
           <input type="hidden" name="id" value="<%= project.getId() %>" />
@@ -450,3 +333,120 @@
     <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" />
   </form>
 </div>
+<script language="javascript" type="text/javascript">
+  // form validation
+  function checkForm<portlet:namespace/>(form) {
+    var formTest = true;
+    var messageText = "";
+    <%-- Validations --%>
+    <c:if test="${requiresStartEndDate eq 'true'}">
+      if (!document.getElementById("<portlet:namespace/>requestDate").value) {
+        messageText += "- Start Date is a required field\r\n";
+        formTest = false;
+      }
+      if (!document.getElementById("<portlet:namespace/>estimatedCloseDate").value) {
+        messageText += "- End Date is a required field\r\n";
+        formTest = false;
+      }
+    </c:if>
+    <%-- End Validations --%>
+    if (!formTest) {
+      messageText = "The form could not be submitted.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
+      alert(messageText);
+      return false;
+    }
+    return true;
+  }
+  //focus
+  YAHOO.util.Event.onDOMReady(function() { document.<portlet:namespace/>inputForm.title.focus();} );
+  <c:choose>
+	  <c:when test="<%= allowedCategoryList.size() <= 3 %>">
+	  	var eventName = 'click';
+	  </c:when>
+    <c:otherwise>
+	  	var eventName = 'change';
+    </c:otherwise>
+  </c:choose>
+  YAHOO.util.Event.on('<portlet:namespace/>categoryId',eventName,function (e) {
+    // Get the div element in which to report messages from the server
+    var msg_section = YAHOO.util.Dom.get('<portlet:namespace/>subCategory1Id');
+    msg_section.innerHTML = '<p>&nbsp;</p>';
+    // Define the callbacks for the asyncRequest
+    var callbacks = {
+        success : function (o) {
+          var messages = [];
+          try {
+              messages = YAHOO.lang.JSON.parse(o.responseText);
+          }
+          catch (x) {
+              alert("Connection to server failed.");
+              return;
+          }
+          if (messages.length > 0) {
+            msg_section.innerHTML = '&nbsp;';
+            var sel = document.createElement('select');
+            sel.name = 'subCategory1Id';
+            msg_section.appendChild(sel);
+            for (var i = 0, len = messages.length; i < len; ++i) {
+                var m = messages[i];
+                var optionNew = document.createElement('option');
+                optionNew.text = m.text;
+                optionNew.value = m.value;
+                sel.options[i] = optionNew;
+            }
+          } else {
+            msg_section.innerHTML = '<p>None to choose from</p>';
+          }
+        },
+
+        failure : function (o) {
+            if (!YAHOO.util.Connect.isCallInProgress(o)) {
+                alert("Call failed!");
+            }
+        },
+        timeout : 3000
+    }
+    <portlet:renderURL var="urlSubCategories" portletMode="view"  windowState="maximized">
+      <portlet:param name="viewType" value="getSubCategories"/>
+    </portlet:renderURL>
+    <c:choose>
+      <c:when test="<%= allowedCategoryList.size() <= 3 %>">
+        var val = 0;
+        for( i = 0; i < document.<portlet:namespace/>inputForm.categoryId.length ; i++ ){
+          if(document.<portlet:namespace/>inputForm.categoryId[i].checked)
+            val = document.<portlet:namespace/>inputForm.categoryId[i].value;
+        }
+        YAHOO.util.Connect.asyncRequest('GET',"<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=" + val + "&out=text", callbacks);
+      </c:when>
+      <c:otherwise>
+        YAHOO.util.Connect.asyncRequest('GET','<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=' + document.<portlet:namespace/>inputForm.categoryId.value + '&out=text', callbacks);
+      </c:otherwise>
+    </c:choose>
+  });
+  function calendarTrigger<portlet:namespace/>(startDateId, endDateId) {
+    // TODO: i18n
+    <c:if test="${'en' == user.locale.language}">
+      var startDateValue = document.getElementById(startDateId).value;
+      var endDateValue = document.getElementById(endDateId).value;
+      if (Date.parse(startDateValue) > Date.parse(endDateValue)) {
+        document.getElementById(endDateId).value = startDateValue;
+      }
+    </c:if>
+  }
+  function popCalendar<portlet:namespace/>(inputForm, fieldName, language, country, fieldId) {
+     popCalendar(inputForm, fieldName, language, country);
+     document.getElementById(fieldId).focus();
+  }
+  function fileAttachmentSelector() {
+    var linkModuleId = '&lmid=<%= Constants.PROJECT_IMAGE_FILES %>';
+    var linkItemId = '&liid=<%= project.getId() %>';
+    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
+    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
+  }
+  function setAttachmentList(newVal) {
+    document.getElementById("attachmentList").value = newVal;
+  }
+  function setAttachmentText(newVal) {
+    document.getElementById("attachmentText").value = newVal;
+  }
+</script>

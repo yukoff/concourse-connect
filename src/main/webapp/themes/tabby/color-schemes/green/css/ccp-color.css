@@ -135,8 +135,8 @@
       color:#eee;
       padding:0;
       background:#333;
-      -moz-border-radius:none;
-      -webkit-border-radius:none;
+      -moz-border-radius:0;
+      -webkit-border-radius:0;
       display:block;
       line-height:100%;
       padding:0;
@@ -159,7 +159,7 @@
 
     .ccp-navigation ul li a.active em,
     .ccp-navigation ul li a:hover em {
-      -moz-border-radius:none;
+      -moz-border-radius:0;
       -webkit-border-radius:0;
       color:#eee;
       background:#028e63 url(../images/SPRITE.gif) 100% -141px no-repeat;

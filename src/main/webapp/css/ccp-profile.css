@@ -319,8 +319,8 @@ IE fix
   .projectCenterPortletLinksBackground {
   padding: 5px;
   -moz-border-radius: 0 0 5px 5px!important;
-  -webkit-border-bottom-left-radius:5px;
-  -webkit-border-bottom-right-radius:5px;
+  -webkit-border-bottom-left-radius:5px !important;
+  -webkit-border-bottom-right-radius:5px !important;
   background-image: none;
   border: none;
   background-color: #efefef;
@@ -614,7 +614,8 @@ IE fix
   border-style: solid;
   border-color: #ddd;
   -moz-border-radius: 5px 5px 0 0;
-  -webkit-border-radius-top-left-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
   text-align: center
 }
 
@@ -1023,7 +1024,7 @@ IE fix
 
 .privateMessagesContainer dl dd { margin:0 0 0 190px; width:auto; clear:none; min-height:55px; padding:0!important }
 
-.privateMessages a.reply { float:right; border-top:1px solid #ddd; padding:5px 15px; display:block; background:#e2ecf3; -moz-border-radius:0 0 3px 3px; -webkit-border-radius:0 0 3px 3px; margin:0 5px; }
+.privateMessages a.reply { float:right; border-top:1px solid #ddd; padding:5px 15px; display:block; background:#e2ecf3; -moz-border-radius:0 0 3px 3px; -webkit-border-bottom-left-radius:3px; -webkit-border-bottom-right-radius:3px; margin:0 5px; }
 
 .privateMessages a.reply:hover { background:#0070B1; color:#fff }
 
@@ -1082,7 +1083,7 @@ IE fix
   .privateMessagesNavigation li.active em {
   background: #fff;
   -moz-border-radius: 5px;
-  -webit-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
 .privateMessagesNavigation li a:hover {
@@ -1211,6 +1212,7 @@ IE fix
 .selectedDay {
   background: #fff;
   -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
   border: 1px solid #0070B1;
 }
 
@@ -1288,6 +1290,7 @@ IE fix
 .smallhighlightday {
   background: #fff;
   -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
   border: 1px solid #0070B1;
 }
 
@@ -1374,9 +1377,9 @@ h3.eventName span em {
   margin: 1px;
   background: #fff;
   -moz-border-radius-topleft: 5px;
-  -webkit-border-radius-top-left: 5px;
+  -webkit-border-top-left-radius: 5px;
   -moz-border-radius-topright: 5px;
-  -webkit-border-radius-top-right: 5px
+  -webkit-border-top-right-radius: 5px
 }
 
 .dateCurrent {
@@ -1435,8 +1438,8 @@ h3.eventName span em {
   background: none;
   border: none;
   display: block;
-  -moz-border-radius: none;
-  -webkit-border-radius: none
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
 }
 
 .dateWrapper .dateCurrent .day {
@@ -1632,8 +1635,8 @@ h3.eventName span em {
   position: relative;
   left: -2px;
   min-height: 80px;
-  -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
   border: 2px #D6E0EE solid;
   padding: 10px;
   margin: 0;
@@ -1690,7 +1693,8 @@ h3.eventName span em {
 
 .articleHeader {
   -moz-border-radius: 0 5px 5px 0;
-  -webkit-border-radius: 0 5px 5px 0;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
   position: relative;
   border-bottom: 1px dotted #ddd;
   border-right: 1px solid #ddd;
@@ -2034,7 +2038,8 @@ ul.wikiExtras li a {
   padding: 5px;
   background: #e2ecf3;
   -moz-border-radius: 0 0 3px 3px;
-  -webkit-border-radius: 0 0 3px 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
   margin: 0 0 0 5px;
 }
 
@@ -2209,13 +2214,13 @@ ul.wikiExtras li a {
 
 .postContainer .actions ul li { float:left; padding:0; margin:0 }
 
-.postContainer .actions ul li a { border:1px solid #fff; border-top:none; display:block; padding:5px; background:#e2ecf3;-moz-border-radius:0 0 3px 3px; -webkit-border-radius:0 0 3px 3px; margin:0 0 0 5px;  }
+.postContainer .actions ul li a { border:1px solid #fff; border-top:none; display:block; padding:5px; background:#e2ecf3;-moz-border-radius:0 0 3px 3px; -webkit-border-bottom-left-radius: 3px; -webkit-border-bottom-right-radius: 3px; margin:0 0 0 5px;  }
 
 .postContainer .actions ul li a:hover { background:#e7edf9; border-color:#e2ecf3 }
 
-.postUser { text-align:center; background:#fff; padding:10px; width:120px; display:block; float:left; margin:0 10px 10px 0; border:#ddd 1px solid; -moz-border-radius:5px }
+.postUser { text-align:center; background:#fff; padding:10px; width:120px; display:block; float:left; margin:0 10px 10px 0; border:#ddd 1px solid; -moz-border-radius:5px; -webkit-border-radius:5px }
 
-.postUser p { clear:both; text:align:left }
+.postUser p { clear:both; text-align:left }
 
 .postFooter { clear:both; margin:4px 0; }
 

@@ -18,7 +18,7 @@
 
 .ccp-header {
   background:#dedede url(../images/1x40_gray.jpg) 0 0 repeat-x;
-  height:205px;
+  height:176px;
   border-left:2px solid #aaa;
   border-right:2px solid #aaa;
 }
@@ -71,7 +71,7 @@
           position:absolute;
           background:none;
           padding:5px 15px 5px 5px;
-          *margin-left: -265px;
+          *margin-left: -325px;
           _margin-left: -275px;
         }
             .ccp-user-menu ul {
@@ -85,9 +85,9 @@
 
         .ccp-search-form {
           position:absolute;
-          top:115px;
+          top:75px;
           right:10px;
-          *top:110px;
+          *top:70px;
           _right:-230px;
         }
 
@@ -122,6 +122,9 @@
     background:#666 url(../images/1pxBand.jpg) repeat-x top left;
     height:36px;
     padding: 0;
+    position: absolute;
+    top: 140px;
+    width: 100%;
   }
 
   .ccp-navigation ul {

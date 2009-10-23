@@ -29,7 +29,7 @@
     }
 
     #ccp-header-title-item-id {
-      padding: 75px 0px 47px 15px;
+      padding: 65px 0px 47px 15px;
       *margin-top: 20px;
       _margin-top: 60px;
       *margin-bottom: 10px;
@@ -71,8 +71,7 @@
           position:absolute;
           background:none;
           padding:5px 15px 5px 5px;
-          *margin-left: -325px;
-          _margin-left: -275px;
+          *margin-left: -275px;
         }
             .ccp-user-menu ul {
               padding:0;

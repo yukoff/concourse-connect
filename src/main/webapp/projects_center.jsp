@@ -170,7 +170,7 @@
                               <span class="tel value"><c:out value="${project.businessPhone}"/></span>
                             </c:if>
                             <c:if test="${!empty project.businessFax}">
-                              <span class="tel fax"><c:out value="${project.businessFax}"/></span>
+                              <span class="tel fax"><c:out value="${project.businessFax}"/> fax</span>
                             </c:if>
                             <c:if test="${!empty project.email1}">
                               <span class="email value"><c:out value="${project.email1}"/></span>

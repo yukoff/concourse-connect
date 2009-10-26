@@ -95,7 +95,6 @@ public class SecurityHook implements ControllerHook {
   public final static String fs = System.getProperty("file.separator");
   private ISessionValidator sessionValidator = null;
 
-
   /**
    * Checks to see if a User session object exists, if not then the security
    * check fails.
@@ -221,6 +220,13 @@ public class SecurityHook implements ControllerHook {
         ceSession.setUsername(prefs.get("SITE.USER"));
         ceSession.setPassword(prefs.get("SITE.PASSWORD"));
         request.getSession().setAttribute("ConnectionElement", ceSession);
+      }
+      // Make sure SSL is being used for this connection
+      if (userSession.getId() > 0 && "true".equals(prefs.get("SSL")) && !"https".equals(request.getScheme())) {
+        LOG.info("Redirecting to..." + requestedURL);
+        request.setAttribute("redirectTo", "https://" + request.getServerName() + request.getContextPath() + requestedURL);
+        request.removeAttribute("PageLayout");
+        return "Redirect301";
       }
       // Generate global items
       Connection db = null;

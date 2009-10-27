@@ -646,6 +646,7 @@
         <include name="javascript/**" />
         <include name="themes/**" />
         <include name="WEB-INF/**" />
+        <include name="favicon.ico" />
       </fileset>
     </copy>
     <!-- Compile the JSPs -->

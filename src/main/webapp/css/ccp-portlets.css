@@ -26,6 +26,7 @@
       $_portlet-form-button
    $_tag-cloud
    $_basic-list
+   $_horizontal-list
    $_search-list
    $_detailed-list
 
@@ -177,8 +178,8 @@
   padding:5px 10px;
   font-size: larger;
   -moz-border-radius:5px;
-  -webkit-boder-radius:5px;
-  margin:0 0 5px 0;
+  -webkit-border-radius:5px;
+  margin:5px 0;
 }
 
 .portlet-message-status {
@@ -207,6 +208,14 @@
 .portlet-message-alert img,
 .portlet-message-success img {
   vertical-align:middle;
+}
+
+.portlet-message-status h2, .portlet-message-status h3, .portlet-message-status h4,
+.portlet-message-info h2, .portlet-message-info h3, .portlet-message-info h4,
+.portlet-message-error h2, .portlet-message-error h3, .portlet-message-error h4,
+.portlet-message-alert h2, .portlet-message-alert h3, .portlet-message-alert h4,
+.portlet-message-success h2, .portlet-message-success h3, .portlet-message-success h4 {
+  margin:5px 0;
 }
 
 .portlet-message-status p,
@@ -1173,7 +1182,7 @@ ol.pagination {
 .sponsors .articleBody h2,
 .ideas .articleBody h2,
 .projects .articleBody h2 {
-  padding:25px 0 0 0!important;
+  padding:10px 0 0 0!important;
   margin:0 0 10px 0;
   border-bottom:none;
 }
@@ -1538,6 +1547,8 @@ ol.pagination {
 
       .tag-cloud ul li {
         display:inline;
+        margin: 5px 5px 5px 0px;
+        padding: 1px;
       }
 
     .tag-cloud p {
@@ -1561,7 +1572,7 @@ ol.pagination {
 .basic-list ul,
 .basic-list ol,
 .basic-list dl {
-  margin: 10px 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -1580,12 +1591,48 @@ ol.pagination {
   line-height:100%;
 }
 
+/* @end */
+
+/* @group $_horizontal-list*/
+
+.horizontal-list .portletWindowBackground {
+
+}
+
+/* Clear floats for IE*/
+.horizontal-list .portletWrapper {
+  *display:inline-block;
+}
+
+.horizontal-list ul,
+.horizontal-list ol,
+.horizontal-list dl {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.horizontal-list li,
+.horizontal-list dd,
+.horizontal-list h3,
+.horizontal-list h4 {
+  margin: 0;
+  padding: 5px 0;
+  display:inline;
+}
+
+.horizontal-list dd {
+  list-style:none;
+  line-height:100%;
+}
+
+/* @end */
+
 li.listing {
   margin:0;
   padding:5px 5px 5px 0;
 }
 
-/* @end */
 
 /* @group $_search-list (deprcated) */
 

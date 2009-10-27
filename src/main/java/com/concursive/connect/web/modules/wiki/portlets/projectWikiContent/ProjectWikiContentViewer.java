@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.wiki.portlets.projectWikiContent;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -63,6 +64,8 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.sql.Connection;
 import java.util.HashMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Displays wiki information
@@ -72,22 +75,22 @@ import java.util.HashMap;
  */
 public class ProjectWikiContentViewer implements IPortletViewer {
 
+  private static Log LOG = LogFactory.getLog(ProjectWikiContentViewer.class);
   // Pages
   private static final String VIEW_PAGE = "/portlets/project_wiki_content/project_wiki_content-view.jsp";
-
+  private static final String VIEW_PAGE_MESSAGE = "/portlets/project_wiki_content/project_wiki_content-view-message.jsp";
   // Preferences
   private static final String PREF_WIKI = "wiki";
   private static final String PREF_SHOW_TITLE = "showTitle";
   private static final String PREF_CONTENT_BASED_ON_USER = "contentIsBasedOnUser";
-
   // Object Results
   private static final String WIKI = "wiki";
+  private static final String WIKI_NAME = "wikiName";
   private static final String WIKI_IMAGE_LIST = "imageList";
   private static final String WIKI_HTML = "wikiHtml";
   private static final String SHOW_TITLE = "showTitle";
 
-  public String doView(RenderRequest request, RenderResponse response)
-      throws Exception {
+  public String doView(RenderRequest request, RenderResponse response) throws Exception {
 
     String defaultView = VIEW_PAGE;
 
@@ -100,6 +103,7 @@ public class ProjectWikiContentViewer implements IPortletViewer {
     // Determine the project container to use for accessing the wiki
     Project project = findProject(request);
     if (project == null) {
+      LOG.debug("Skipping... project is null");
       return null;
     }
 
@@ -113,6 +117,7 @@ public class ProjectWikiContentViewer implements IPortletViewer {
       user = PortalUtils.getUser(request);
       // Determine if the user has access to the content
       if (user == null || !ProjectUtils.hasAccess(project.getId(), user, "project-wiki-view")) {
+        LOG.debug("Skipping... user is null or doesn't have access to view the wiki");
         return null;
       }
     }
@@ -122,6 +127,7 @@ public class ProjectWikiContentViewer implements IPortletViewer {
     }
     // Determine if the user has access to the content
     if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-view")) {
+      LOG.debug("Skipping... no access to view the profile");
       return null;
     }
 
@@ -134,12 +140,21 @@ public class ProjectWikiContentViewer implements IPortletViewer {
     HashMap imageList = WikiUtils.buildImageInfo(db, project.getId());
     request.setAttribute(WIKI_IMAGE_LIST, imageList);
 
-    if (wiki.getId() > -1) {
+    if (wiki.getId() > -1 && StringUtils.hasText(wiki.getContent())) {
+      LOG.debug("Wiki found.");
       // Convert the wiki to html for this user
       WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, db, user.getId(), false, request.getContextPath());
       String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext);
       request.setAttribute(WIKI_HTML, wikiHtml);
     } else {
+      LOG.debug("Wiki not found or has no content.");
+      // Check if the current user can modify the target wiki content
+      request.setAttribute(WIKI_NAME, wikiName);
+      if (ProjectUtils.hasAccess(project.getId(), PortalUtils.getUser(request), "project-wiki-add")) {
+        LOG.debug("Showing edit page information");
+        return VIEW_PAGE_MESSAGE;
+      }
+      LOG.debug("Skipping.");
       return null;
     }
 

@@ -179,60 +179,15 @@
   text-decoration:underline;
 }
 
-/* Profile Edits */
+    /* Profile Banner */
+    .profile-header-portletWindowBackground {
+      margin:0 0 5px 0;
+    }
 
-.ccp-body .portletWindow {
-  position:relative;
-}
+    .profile-menu-portletWindowBackground {
+      margin:0 0 10px 0;
+    }
 
-.profile-header-portletWindowBackground {
-  padding:5px 5px 20px 5px;
-}
-
-.profile-menu-portletWindowBackground {
-  position:absolute;
-  top:-27px;
-  padding:0;
-  margin:0!important;
-  -moz-border-radius:0!important;
-  -webkit-border-radius:0!important;
-  white-space:nowrap;
-  border:none;
-  left:5px;
-  background: none!important;
-}
-
-.profile-menu-portletWindowBackground .portlet-menu ul {
-  padding:0;
-  margin:0;
-  display:table;
-  border-collapse:collapse;
-  white-space:nowrap;
-  position:relative;
-}
-
-.profile-menu-portletWindowBackground .portlet-menu ul li {
-  padding:0;
-  margin:0 5px 0 0;
-  line-height:100%;
-  float: left;
-}
-
-.profile-menu-portletWindowBackground .portlet-menu ul li a {
-  padding:7px 7px 3px;
-  -moz-border-radius:5px 5px 0 0;
-  -webkit-border-top-right-radius:5px;
-  -webkit-border-top-left-radius:5px;
-  -webkit-border-bottom-left-radius:0;
-  -webkit-border-bottom-right-radius:0;
-  line-height:100%;
-  display:block;
-}
-
-.profile-menu-portletWindowBackground .portlet-menu ul li a.active,
-.profile-menu-portletWindowBackground .portlet-menu ul li a:hover {
-  background:#fff;
-}
 
 /* Custom Buttons */
 

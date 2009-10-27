@@ -213,7 +213,7 @@
             <title>Recent Discussions</title>
             <limit>5</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
           </portlet>
@@ -402,7 +402,7 @@
             <title>My Featured Downloads</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>My Lists</title>
             <limit>10</limit>
             <showIfEmpty>false</showIfEmpty>
@@ -600,7 +600,7 @@
             <title>Recent Discussions</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
             <showIfEmpty>false</showIfEmpty>
@@ -804,7 +804,7 @@
             <title>Recent Discussions</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
             <showIfEmpty>false</showIfEmpty>
@@ -1002,7 +1002,7 @@
             <title>Recent Discussions</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
             <showIfEmpty>false</showIfEmpty>
@@ -1204,7 +1204,7 @@
             <title>Recent Discussions</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
             <showIfEmpty>false</showIfEmpty>
@@ -1401,7 +1401,7 @@
             <title>Recent Discussions</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
             <showIfEmpty>false</showIfEmpty>
@@ -1582,7 +1582,7 @@
             <title>Recent Discussions</title>
             <limit>3</limit>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
             <showIfEmpty>false</showIfEmpty>
@@ -1871,7 +1871,7 @@
             <minimumRatingAvg>0.66</minimumRatingAvg>
             <filterInappropriate>true</filterInappropriate>
           </portlet>
-          <portlet name="ListsByProjectPortlet" class="basic-list ">
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
             <title>Lists</title>
             <limit>10</limit>
           </portlet>

@@ -157,6 +157,44 @@
         color:#000;
       }
 
+  /* Profile Banner */
+  .profile-header-portletWindowBackground {
+    background: #dedede;
+    color: #000;
+    margin: 0 !important;
+    padding: 5px 5px 5px 5px;
+  }
+
+  .profile-menu-portletWindowBackground {
+    background: #dedede;
+    color: #000;
+    margin: 0 0 10px 0;
+    padding: 0 0 0px 5px;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+  }
+
+  .profile-menu-portletWindowBackground ul {
+    height: 19px;
+    margin: 0px 0px 0px 0px;
+    overflow: hidden;
+    padding: 5px 0px 0px 5px;
+  }
+
+  .profile-menu-portletWindowBackground ul li a {
+    background: #999;
+    -webkit-border-top-left-radius: 5px !important;
+    -webkit-border-top-right-radius: 5px !important;
+    -webkit-border-bottom-left-radius: 0 !important;
+    -webkit-border-bottom-right-radius: 0 !important;
+    -moz-border-radius: 5px 5px 0 0 !important;
+    margin: 0 2px 0 0;
+    padding:7px 5px 5px 5px;
+  }
+
+  .profile-header a { color: #000; }
+
+  /* Action Buttons */
   .button-list-vertical-portletWindowBackground ul,
   .actionsContainer ul, .projectActionsContainer ul {
     width: 200px;

@@ -1,6 +1,15 @@
 /* TinyMCE Editor Styles */
 
-#tinymce pre { max-width:475px; border-left:5px #ddd solid; margin:15px; display:block; line-height:1.1em; overflow:auto; padding:1em; width:auto; background:#f9f9f9 }
+#tinymce pre {
+  border-left:5px #ddd solid;
+  margin:15px;
+  display:block;
+  line-height:1.1em;
+  overflow:auto;
+  padding:1em;
+  background:#f9f9f9;
+  white-space: pre-wrap;
+}
 
 #tinymce li { display:list-item; }
 

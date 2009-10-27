@@ -1829,7 +1829,8 @@ h3.eventName span em {
 /* @group article body */
 
 .articleBody {
-  padding: 5px 0;
+  padding: 0;
+  margin: 0;
 }
 
 .articleBody h2,
@@ -1841,7 +1842,7 @@ h3.eventName span em {
 }
 
 .articleBody .editsection {
-  font-size: smaller;
+  font-size: 12px;
   font-weight:300;
 }
 
@@ -1860,10 +1861,16 @@ h3.eventName span em {
 }
 
 .articleBody pre {
-  max-width: 475px;
-  border-left: 5px #ddd solid;
-  margin: 15px
+  border-left:5px #ddd solid;
+  margin:15px;
+  display:block;
+  line-height:1.1em;
+  overflow:auto;
+  padding:1em;
+  background:#f9f9f9;
+  white-space: pre-wrap;
 }
+
 
 /* Wiki Info Box */
 

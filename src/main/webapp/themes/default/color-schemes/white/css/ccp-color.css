@@ -69,6 +69,15 @@
           color: #000;
         }
 
+    /* Profile Banner */
+    .profile-header-portletWindowBackground {
+      margin:0 0 5px 0;
+    }
+
+    .profile-menu-portletWindowBackground {
+      margin:0 0 10px 0;
+    }
+
 .ccp-footer {
   border-bottom:2px solid #aaa;
 }

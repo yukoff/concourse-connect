@@ -20,6 +20,16 @@ if (bsh.args.length == 0) {
   System.exit(0);
 }
 
+String retrieveValue(String[] nextLine, int position) {
+  if ((nextLine.length - 1) >= position) {
+    String value = nextLine[position];
+    if (value != null) {
+      return value.trim();
+    }
+  }
+  return null;
+}
+
 void geocodeEntry(USAddressGeocoder geo) {
   boolean tryAgain = false;
   do {
@@ -190,20 +200,20 @@ if (csvFile.exists()) {
       System.out.println(count + "...");
     }
 
-    String  projectNameValue = nextLine[projectNameColumn].trim();
-    String  projectAddressValue  = nextLine[projectAddressColumn].trim();
-    String  projectCityValue = nextLine[projectCityColumn].trim();
-    String  projectStateValue = nextLine[projectStateColumn].trim();
-    String  projectZipValue = nextLine[projectZipColumn].trim();
-    String  projectLatitudeValue = nextLine[projectLatitudeColumn].trim();
-    String  projectLongitudeValue = nextLine[projectLongitudeColumn].trim();
-    String  projectPhoneValue = nextLine[projectPhoneColumn].trim();
-    String  projectFaxValue = nextLine[projectFaxColumn].trim();
-    String  projectCategoryValue = nextLine[projectCategoryColumn].trim();
-    String  projectSubCategory1Value = nextLine[projectSubCategory1Column].trim();
-    String  projectSubCategory2Value = nextLine[projectSubCategory2Column].trim();
-    String  projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
-    String  projectSICValue = nextLine[projectSICColumn].trim();
+    String  projectNameValue = retrieveValue(nextLine, projectNameColumn);
+    String  projectAddressValue  = retrieveValue(nextLine, projectAddressColumn);
+    String  projectCityValue = retrieveValue(nextLine, projectCityColumn);
+    String  projectStateValue = retrieveValue(nextLine, projectStateColumn);
+    String  projectZipValue = retrieveValue(nextLine, projectZipColumn);
+    String  projectLatitudeValue = retrieveValue(nextLine, projectLatitudeColumn);
+    String  projectLongitudeValue = retrieveValue(nextLine, projectLongitudeColumn);
+    String  projectPhoneValue = retrieveValue(nextLine, projectPhoneColumn);
+    String  projectFaxValue = retrieveValue(nextLine, projectFaxColumn);
+    String  projectCategoryValue = retrieveValue(nextLine, projectCategoryColumn);
+    String  projectSubCategory1Value = retrieveValue(nextLine, projectSubCategory1Column);
+    String  projectSubCategory2Value = retrieveValue(nextLine, projectSubCategory2Column);
+    String  projectWebsiteValue = retrieveValue(nextLine, projectWebsiteColumn);
+    String  projectSICValue = retrieveValue(nextLine, projectSICColumn);
 
     if ((!hasText(projectLatitudeValue) && !hasText(projectLongitudeValue) &&
         hasText(projectAddressValue) && hasText(projectZipValue)) ||

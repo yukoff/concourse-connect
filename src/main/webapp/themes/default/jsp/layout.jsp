@@ -331,13 +331,11 @@
               <ccp:evaluate
                   if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 0 %>'>
                 <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
-                  if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 1 %>'>s</a>
-                </ccp:evaluate>
+                  if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 1 %>'>s</ccp:evaluate></a>
               </ccp:evaluate>
               <ccp:evaluate if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 0 %>'>
                 <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestInvitationCount") %> new invitation<ccp:evaluate
-                    if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 1 %>'>s</a>
-                  </ccp:evaluate>
+                    if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 1 %>'>s</ccp:evaluate></a>
               </ccp:evaluate>
             </div>
           </ccp:evaluate>

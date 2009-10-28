@@ -49,20 +49,9 @@
 <portlet:defineObjects/>
 <jsp:useBean id="wikiName" class="java.lang.String" scope="request" />
 <%@ include file="../../initPage.jsp" %>
-<portlet:renderURL var="wikiUrl" portletMode="view">
-  <portlet:param name="portlet-action" value="modify"/>
-  <portlet:param name="portlet-object" value="wiki"/>
-  <ccp:evaluate if="${!empty wikiName}">
-    <portlet:param name="portlet-value" value="${wikiName}"/>
-    <portlet:param name="portlet-value" value='<%= StringUtils.replace(StringUtils.jsEscape(wikiName), "%20", "+") %>'/>
-  </ccp:evaluate>
-</portlet:renderURL>
+<c:set var="wikiUrl">${ctx}/modify/${project.uniqueId}/wiki<ccp:evaluate if="${!empty wikiName}">/<%= StringUtils.replace(StringUtils.jsEscape(wikiName), "%20", "+") %></ccp:evaluate></c:set>
 <div class="portlet-message-info">
-<h4>Enhance This Profile</h4>
-  <p>
-    In this space you can add images, videos, links and more.
-  </p>
-  <p>
-    <a href="${wikiUrl}" class="newWiki">Add content now</a>
-  </p>
+<h4>Enhance this space</h4>
+  <p>Here you can add images, videos, links and more.</p>
+  <p><a href="${wikiUrl}" class="newWiki">Add content now</a></p>
 </div>

@@ -194,7 +194,7 @@
             <title>Add a cluster</title>
             <href>/add_cluster.shtml</href>
             <rule>isAdmin</rule>
-            <categoryEnabled>Cluster</categoryEnabled>
+            <categoryEnabled>Clusters</categoryEnabled>
           ]]>
         </value>
       </urls>

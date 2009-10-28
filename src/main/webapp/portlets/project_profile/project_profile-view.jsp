@@ -500,7 +500,7 @@ Can be removed and made into a seperate portlet --%>
 </dl>
   <%--@elvariable id="projectTagList" type="com.concursive.connect.web.modules.common.social.tagging.dao.TagList"--%>
 <c:if test="${!empty projectTagList}">
-  <dl class="portlet-menu">
+  <dl class="horizontal-list">
     <dt>Tag Cloud</dt>
     <c:forEach items="${projectTagList}" var="tag">
       <%--@elvariable id="tag" type="com.concursive.connect.web.modules.common.social.tagging.dao.Tag"--%>

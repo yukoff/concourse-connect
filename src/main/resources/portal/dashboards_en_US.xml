@@ -188,6 +188,15 @@
             <rule>canStartProjects</rule>
           ]]>
         </value>
+        <value>
+          <![CDATA[
+            <content>Add a cluster</content>
+            <title>Add a cluster</title>
+            <href>/add_cluster.shtml</href>
+            <rule>isAdmin</rule>
+            <categoryEnabled>Cluster</categoryEnabled>
+          ]]>
+        </value>
       </urls>
     </fragment>
     <fragment id="portal-fragments-unregistered-user">
@@ -2283,6 +2292,136 @@
       </row>
     </page>
 
+    <page name="clusters.shtml" title="Clusters" description="" category="clusters">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+            <portlet name="TagCloudByProjectPortlet" cache="60" class="tag-cloud ">
+            <title>Popular Tags</title>
+            <category>Clusters</category>
+            <limit>30</limit>
+            <sortByTagCount>true</sortByTagCount>
+            <hasMoreURL>/page/tags/clusters</hasMoreURL>
+            <hasMoreTitle>see all tags</hasMoreTitle>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list ">
+            <title>Promotions</title>
+            <category>Clusters</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+            <title>Classifieds</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+            <hasMoreURL>/page/classifieds/clusters</hasMoreURL>
+            <hasMoreTitle>see more classifieds</hasMoreTitle>
+          </portlet>
+          <portlet name="ProxyPortlet" cache="3700" timeout="3" class="ads">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-230x600</adContext>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <!-- Let the user know that registration is required -->
+          <portlet name="ContentPortlet" isUser="false">
+            <xml-include fragment="portal-fragments-unregistered-user"/>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="clusters " isAdmin="true">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Welcome to clusters</wiki>
+            <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="clusters " cache="10" isAdmin="false">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Welcome to clusters</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body " cache="300">
+			      <title>Featured Cluster</title>
+          	<showGetInvolved>false</showGetInvolved>
+            <randomProject>
+              <value>category=clusters</value>
+              <value>publicOnly=true</value>
+              <value>approvedOnly=true</value>
+              <value>openProjectsOnly=true</value>
+              <value>minimumAverageRating=1</value>
+              <value>daysWithoutBeingFeatured=1</value>
+            </randomProject>
+            <linkTitle>true</linkTitle>
+            <wikiForm>Cluster Information</wikiForm>
+          </portlet>
+          <portlet name="ProjectSubCategoryListByProjectCategoryPortlet" cache="60" class="inline-items ">
+            <title>Browse Clusters by Category</title>
+            <category>Clusters</category>
+            <showSubcategories>true</showSubcategories>
+            <columns>3</columns>
+            <hasMoreURL>/page/categories/clusters</hasMoreURL>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+            <title>Recent Activity</title>
+            <category>Clusters</category>
+            <events>
+            	<value>ad</value>
+            	<value>badge</value>
+            	<value>blog</value>
+              <value>classified</value>
+            	<value>document</value>
+            	<value>image</value>
+              <value>list</value>
+              <!--
+            	<value>meeting</value>
+            	-->
+            	<value>profile</value>
+            	<value>rating</value>
+            	<value>topic</value>
+            	<value>question</value>
+            	<value>reply</value>
+            	<value>wiki</value>
+            </events>
+            <limit>15</limit>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" cache="300">
+            <content><![CDATA[
+            <h4>Browse All Listings</h4>
+            View all <a title="View the complete list of clusters" href="${ctx}/page/lists/clusters">Clusters</a>
+            ]]></content>
+          </portlet>
+          <portlet name="ProxyPortlet"  timeout="3" class="ads" cache="3600">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-280x250</adContext>
+          </portlet>
+          <portlet name="RecentBlogPostsPortlet" cache="10">
+            <title>Recent Blog Posts</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="RecentDiscussionsPortlet" cache="10"
+                   class="detailed-list ">
+            <title>Recent Discussion</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list ">
+            <title>Popular Clusters</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+            <daysLimit>30</daysLimit>
+          </portlet>
+          <portlet name="NewProjectsByCategoryPortlet" cache="10" class="detailed-list ">
+            <title>New Clusters</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+
     <page name="add_product.shtml" title="Add a Product"
           description="Add a product to the web site" category="products">
       <!-- Is a User -->
@@ -3765,6 +3904,102 @@
         </column>
       </row>
     </page>
+    <page name="add_cluster.shtml" title="Add a Cluster"
+          description="Add a cluster"
+          category="clusters">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " cache="10">
+            <title>Promotions</title>
+            <category>Clusters</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" cache="10" class="basic-list ">
+            <title>Classifieds</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+            <hasMoreURL>/page/classifieds/clusters</hasMoreURL>
+            <hasMoreTitle>see more classifieds</hasMoreTitle>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet" isUser="false">
+            <content>
+              <![CDATA[<h3>Add a Cluster</h3>
+                <p>You must be signed in to add a cluster <a href="${ctx}/login?redirectTo=/add_cluster.shtml">Click here to sign in</a></p>
+								<p>Don't have an account? <a href="${ctx}/register">We'll get you set up once you click here.</a></p>
+								]]>
+            </content>
+          </portlet>
+          <portlet name="AddProjectByCategoryPortlet" isUser="true">
+            <category>Clusters</category>
+            <title>Add a Cluster</title>
+            <introductionMessage>Please search to see if the cluster already
+              exists before requesting for it to be added. Next, enter basic
+              information about the cluster. After completing this form, the
+              cluster will be searchable for others to find and
+              start participating.
+            </introductionMessage>
+            <showSubCategories>true</showSubCategories>
+            <labels>
+              <value>title=Cluster Name</value>
+            </labels>
+            <addUserAsOwner>true</addUserAsOwner>
+            <addUserWithRole>Manager</addUserWithRole>
+            <allowGuests>true</allowGuests>
+            <showAllowGuestsOption>false</showAllowGuestsOption>
+            <allowParticipants>true</allowParticipants>
+            <showRequiresMembershipOption>false</showRequiresMembershipOption>
+            <isApproved>true</isApproved>
+            <showLocationName>false</showLocationName>
+            <showAddress>false</showAddress>
+            <showContactInformation>false</showContactInformation>
+            <showShortDescription>true</showShortDescription>
+            <showKeywords>true</showKeywords>
+            <showWebsite>true</showWebsite>
+            <spawnMeeting>true</spawnMeeting>
+            <successMessage>
+              <![CDATA[The cluster is now available in the directory.]]>
+            </successMessage>
+            <failureMessage>The information could not be saved.</failureMessage>
+            <modules>
+              <value>Profile</value>
+              <value>News=Blog</value>
+              <value>Wiki</value>
+              <value>Calendar</value>
+              <value>Discussion</value>
+              <value>Documents</value>
+              <value>Lists</value>
+              <value>Team=Members</value>
+              <value>Badges</value>
+            </modules>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ContentPortlet" cache="60">
+            <content>
+              <![CDATA[
+								<h3>Who can Add a Cluster?</h3>
+                <p>Admins can add a cluster.</p>
+						  ]]>
+            </content>
+          </portlet>
+          <portlet name="ContentPortlet" cache="60">
+            <content>
+              <![CDATA[
+								<h3>Why Add a Cluster?</h3>
+                <ol>
+								<li>Share a cluster with the entire community for details and discussion.</li>
+								</ol>
+							]]>
+            </content>
+          </portlet>
+        </column>
+      </row>
+    </page>
   </portal>
   <pages>
     <page name="register" title="Register">
@@ -4245,6 +4480,12 @@
             <person>
               <value>pageTitle=Profile Information</value>
             </person>
+            <projects>
+              <value>Project Information</value>
+            </projects>
+            <clusters>
+              <value>pageTitle=Cluster Information</value>
+            </clusters>
           </portlet>
         </column>
       </row>
@@ -4261,7 +4502,7 @@
             	<value>subCategory1=Category</value>
             	<value>addressLine1=Street Address</value>
             	<value>city=City</value>
-                <value>state=State</value>
+              <value>state=State</value>
             	<value>postalCode=Postal Code</value>
             	<value>country=Country</value>
             	<value>businessPhone=Phone</value>
@@ -4454,6 +4695,12 @@
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </products>
+            <clusters>
+              <value>Cluster Information</value>
+              <value>title=Cluster Name</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Short description</value>
+            </clusters>
           </portlet>
         </column>
       </row>
@@ -4737,6 +4984,14 @@
               <generates-data>solutionsResultsFound</generates-data>
             </portlet-events>
           </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Clusters</title>
+            <category>Clusters</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>clusterResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
@@ -4754,6 +5009,7 @@
               <consumes-data>productResultsFound</consumes-data>
               <consumes-data>solutionsResultsFound</consumes-data>
               <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="ProxyPortlet" cache="3600" timeout="3" class="ads">
@@ -6859,6 +7115,14 @@
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
           </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Clusters</title>
+            <category>Clusters</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>clusterResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
@@ -6875,6 +7139,7 @@
               <consumes-data>productResultsFound</consumes-data>
               <consumes-data>solutionsResultsFound</consumes-data>
               <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
@@ -7040,6 +7305,14 @@
               <generates-data>groupsResultsFound</generates-data>
             </portlet-events>
           </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Clusters</title>
+            <category>Clusters</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>clusterResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
@@ -7056,6 +7329,7 @@
               <consumes-data>productResultsFound</consumes-data>
               <consumes-data>solutionsResultsFound</consumes-data>
               <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
@@ -7385,6 +7659,196 @@
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+            <title>Related Discussions</title>
+            <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
+    <!-- Clusters Search -->
+    <page name="Clusters" title="Clusters - Search">
+      <row>
+        <column class="ccp-search-menu-">
+          <portlet name="SearchResultsProjectCategoryCountsPortlet"
+                   class="button-list-horizontal-">
+            <portlet-events>
+              <generates-data>hideIfEmpty</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+      <row>
+        <column width="240">
+          <!--Search Filter-->
+          <portlet name="SearchFilterPortlet" class="button-list-vertical-"/>
+          <!--Getting Started-->
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
+            <title>Promotions</title>
+            <category>Events</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ContentPortlet">
+            <content><![CDATA[
+              <h3>No results? Please try another search.</h3>
+              <ul>
+                <li>Try searching a different topic or location.</li>
+                <li>Check the spelling or try alternate spellings.</li>
+                <li>Try a more general search.</li>
+              </ul>
+              ]]></content>
+            <portlet-events>
+              <consumes-data>hideIfEmpty</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Clusters</title>
+            <category>Clusters</category>
+            <limit>10</limit>
+            <portlet-events>
+              <generates-data>clusterResultsFound</generates-data>
+            </portlet-events>
+            <hasPaging>true</hasPaging>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Events</title>
+            <category>Events</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>eventResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Places</title>
+            <category>Places</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>placeResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Ideas</title>
+            <category>Ideas</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Projects</title>
+            <category>Projects</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>projectsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Businesses</title>
+            <category>Businesses</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>businessesResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Organizations</title>
+            <category>Organizations</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>organizationResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
+            <title>Committees</title>
+            <category>Committees</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>committeeResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Sponsors</title>
+            <category>Sponsors</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>sponsorResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Partners</title>
+            <category>Partners</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>partnerResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Products</title>
+            <category>Products</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>productResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
+            <title>Solutions</title>
+            <category>Solutions</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>solutionsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>People</title>
+            <category>People</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Groups</title>
+            <category>Groups</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>groupsResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
+            <title>Neighborhoods</title>
+            <category>Neighborhoods</category>
+            <limit>3</limit>
+            <portlet-events>
+              <generates-data>neighborhoodResultsFound</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="GoogleMapsFromSearchHitsPortlet">
+            <maxResults>3</maxResults>
+            <portlet-events>
+              <consumes-data>groupsResultsFound</consumes-data>
+              <consumes-data>eventResultsFound</consumes-data>
+              <consumes-data>placeResultsFound</consumes-data>
+              <consumes-data>clusterResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>businessesResultsFound</consumes-data>
+              <consumes-data>organizationResultsFound</consumes-data>
+              <consumes-data>sponsorResultsFound</consumes-data>
+              <consumes-data>productResultsFound</consumes-data>
+              <consumes-data>solutionsResultsFound</consumes-data>
+              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>neighborhoodResultsFound</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Blogs</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
+            <title>Related Wikis</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
             <limit>5</limit>

@@ -68,6 +68,13 @@
                   <rule>userHasToolsEnabled</rule>]]>
               </value>
               <value>
+                <![CDATA[<content>Become a Member</content>
+                  <title>Join ${project.title:xml} as a member</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:xml}</title>
                   <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
@@ -454,6 +461,13 @@
                 ]]>
               </value>
               <value>
+                <![CDATA[<content>Become a Fan</content>
+                  <title>Join ${project.title:xml} as a fan</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:xml}</title>
                   <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
@@ -659,6 +673,13 @@
                 <rel>shadowbox;width=600</rel>
                 <service>call</service>
                 ]]>
+              </value>
+              <value>
+                <![CDATA[<content>Become a Fan</content>
+                  <title>Join ${project.title:html} as a fan</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Review This</content>
@@ -867,6 +888,13 @@
                 ]]>
               </value>-->
               <value>
+                <![CDATA[<content>Become a Fan</content>
+                  <title>Join ${project.title:html} as a fan</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:xml}</title>
                   <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
@@ -1057,6 +1085,13 @@
                 <rel>shadowbox;width=600</rel>
                 <service>call</service>
                 ]]>
+              </value>
+              <value>
+                <![CDATA[<content>Become a Member</content>
+                  <title>Join ${project.title:html} as a member</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Review This</content>
@@ -1262,6 +1297,13 @@
                   <rule>userHasToolsEnabled</rule>]]>
               </value>
               <value>
+                <![CDATA[<content>Join Event</content>
+                  <title>Join ${project.title:html} as a member</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Review This</content>
                   <title>Review ${project.title:html}</title>
                   <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
@@ -1452,6 +1494,13 @@
                   <href>/show/${project.uniqueId}/tools</href>
                   <parameter>returnURL</parameter>
                   <rule>userHasToolsEnabled</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Join Group</content>
+                  <title>Join ${project.title:html} as a member</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
               </value>
               <value>
                 <![CDATA[<content>Review This</content>

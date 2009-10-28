@@ -82,13 +82,15 @@
   <c:if test="${empty param.popup && empty popup}">
     <div class="articleHeader">
       <div class="header">
+        <%-- Show the user's current trail --%>
         <ccp:evaluate if="<%= trailMap.size() > 0 %>">
           <portlet:renderURL var="homeUrl" portletMode="view">
             <portlet:param name="portlet-action" value="show"/>
             <portlet:param name="portlet-object" value="wiki"/>
           </portlet:renderURL>
-          <p><a href="${homeUrl}"><ccp:label name="projectsCenterWiki.home">Home</ccp:label></a>
-                <%
+          <p>Your trail:
+            <a href="${homeUrl}"><ccp:label name="projectsCenterWiki.home">Home</ccp:label></a>
+            <%
               Iterator i = trailMap.iterator();
               while (i.hasNext()) {
                 String thisSubject = (String) i.next();

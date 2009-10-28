@@ -162,6 +162,7 @@ public class ProjectManagementTools extends GenericAction {
     DataRecord record = new DataRecord();
     record.setName("map");
     record.setAction("importSessionAuthenticationId");
+    record.addField("userName", user.getUsername());
     record.addField("userEmail", user.getEmail());
     record.addField("sessionToken", token);
     record.addField("userFirstName", user.getFirstName());

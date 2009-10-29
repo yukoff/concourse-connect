@@ -84,10 +84,36 @@ function initializeMap${mapId}(e) {
     <c:forEach var="project" items="${projectList}" varStatus="status">
       <c:set var="project" value="${project}" scope="request"/>
       <jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" />
+      var thisIcon${status.count} = new GIcon();
+      thisIcon${status.count}.shadow = '${ctx}/images/map_markers/marker_shadow.png';
+      thisIcon${status.count}.iconSize = new GSize(33, 37);
+      thisIcon${status.count}.shadowSize = new GSize(57, 33);
+      thisIcon${status.count}.iconAnchor = new GPoint(16, 34);
+      thisIcon${status.count}.infoWindowAnchor = new GPoint(28, 12);
+      <c:choose>
+        <c:when test="${project.category.description eq 'Businesses'}">
+          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_orange_business.png';
+        </c:when>
+        <c:when test="${project.category.description eq 'Organizations'}">
+          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_orange_org.png';
+        </c:when>
+        <c:when test="${project.category.description eq 'People'}">
+          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_blue_people.png';
+        </c:when>
+        <c:when test="${project.category.description eq 'Events'}">
+          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_purple_event.png';
+        </c:when>
+        <c:when test="${project.category.description eq 'Groups'}">
+          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_green_group.png';
+        </c:when>
+        <c:otherwise>
+          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_gray.png';
+        </c:otherwise>
+      </c:choose>
       <c:if test="${status.count == 1}">
         ${mapId}.centerAndZoom(new GPoint(${project.longitude}, ${project.latitude}), 2);
       </c:if>
-      var marker${status.count} = new GMarker(new GPoint(${project.longitude}, ${project.latitude}));
+      var marker${status.count} = new GMarker(new GPoint(${project.longitude}, ${project.latitude}), {icon:thisIcon${status.count}});
       ${mapId}.addOverlay(marker${status.count});
       GEvent.addListener(marker${status.count}, 'click', function() {
         <c:set var="markerContent" scope="request">

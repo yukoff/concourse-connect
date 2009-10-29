@@ -60,9 +60,7 @@
   request.setAttribute("mapId", mapId);
 %>
 <c:set var="mapHeight" value="300px" scope="request"/>
-<%-- 2.73 --%>
 <c:set var="mapVersion" value="2.s" scope="request"/>
-<c:set var="mapZoom" value="2" scope="request"/>
 <script src="http://maps.google.com/maps?file=api&v=${mapVersion}&key=${key}&hl=en" type="text/javascript"></script>
 <style type="text/css">
 	v\:* {
@@ -75,6 +73,50 @@ if(document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#SVG","
 	_mSvgEnabled = true;
 	_mSvgForced = true;
 }
+<c:choose>
+  <c:when test="${empty project.address}">
+    <c:set var="mapZoom" value="4" scope="request"/>
+    var thisIcon = new GIcon();
+    thisIcon.image = '${ctx}/images/map_markers/zone.png';
+    thisIcon.shadow = '${ctx}/images/map_markers/zone.png';
+    thisIcon.iconSize = new GSize(120, 120);
+    thisIcon.shadowSize = new GSize(120, 120);
+    thisIcon.iconAnchor = new GPoint(60, 60);
+    thisIcon.infoWindowAnchor = new GPoint(60, 60);
+  </c:when>
+  <c:otherwise>
+    <%-- set zoom level --%>
+    <c:set var="mapZoom" value="2" scope="request"/>
+    <%-- set icon --%>
+    var thisIcon = new GIcon();
+    thisIcon.shadow = '${ctx}/images/map_markers/marker_shadow.png';
+    thisIcon.iconSize = new GSize(33, 37);
+    thisIcon.shadowSize = new GSize(57, 33);
+    thisIcon.iconAnchor = new GPoint(16, 34);
+    thisIcon.infoWindowAnchor = new GPoint(28, 12);
+    <c:choose>
+      <c:when test="${project.category.description eq 'Businesses'}">
+        thisIcon.image = '${ctx}/images/map_markers/marker_orange_business.png';
+      </c:when>
+      <c:when test="${project.category.description eq 'Organizations'}">
+        thisIcon.image = '${ctx}/images/map_markers/marker_orange_org.png';
+      </c:when>
+      <c:when test="${project.category.description eq 'People'}">
+        thisIcon.image = '${ctx}/images/map_markers/marker_blue_people.png';
+      </c:when>
+      <c:when test="${project.category.description eq 'Events'}">
+        thisIcon.image = '${ctx}/images/map_markers/marker_purple_event.png';
+      </c:when>
+      <c:when test="${project.category.description eq 'Groups'}">
+        thisIcon.image = '${ctx}/images/map_markers/marker_green_group.png';
+      </c:when>
+      <c:otherwise>
+        thisIcon.image = '${ctx}/images/map_markers/marker_gray.png';
+      </c:otherwise>
+    </c:choose>
+  </c:otherwise>
+</c:choose>
+
 function initializeMap${mapId}(e) {
 	if (GBrowserIsCompatible()) {
 		${mapId} = new GMap(document.getElementById("${mapId}"));
@@ -83,8 +125,8 @@ function initializeMap${mapId}(e) {
     <c:set var="markerContent" scope="request">
       <c:if test="${!empty project.category.logo}"><c:choose><c:when test="${!empty project.logo}"><img alt='<c:out value="${project.title}"/> photo' align='absmiddle' src='${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>' /> </c:when><c:otherwise><img alt='Default photo' align='absmiddle' src='${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>'  class='default-photo' /> </c:otherwise></c:choose></c:if><c:out value="${project.title}"/><c:if test="${!empty project.address}"><br /><c:out value="${project.address}"/></c:if><br /><c:out value="${project.location}"/><c:if test="${!empty project.businessPhone}"><br />Phone: <strong><c:out value="${project.businessPhone}"/></strong></c:if><c:if test="${!empty project.businessFax}"><br />Fax: <strong><c:out value="${project.businessFax}"/></strong></c:if>
     </c:set>
-		var marker1 = new GMarker(new GPoint(${project.longitude}, ${project.latitude}));
-		${mapId}.addOverlay(marker1);
+    var marker1 = new GMarker(new GPoint(${project.longitude}, ${project.latitude}), {icon:thisIcon});
+    ${mapId}.addOverlay(marker1);
 		GEvent.addListener(marker1, 'click', function() {
 			marker1.openInfoWindowHtml("<div>${markerContent}</div>");
 		});

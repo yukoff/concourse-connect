@@ -65,8 +65,8 @@ public class USAGeocodeAPITest extends TestCase {
     boolean result = geo.geocode();
     if (result) {
       // Only allows 5,000 tries per day so could fail
-      assertEquals("36.847675", String.valueOf(geo.getLatitude()));
-      assertEquals("-76.290434", String.valueOf(geo.getLongitude()));
+      assertTrue("3rd party comparison failure - lat: " + geo.getLatitude(), String.valueOf(geo.getLatitude()).startsWith("36.84767"));
+      assertTrue("3rd party comparison failure - long: " + geo.getLongitude(), String.valueOf(geo.getLongitude()).startsWith("-76.29043"));
     }
   }
 }

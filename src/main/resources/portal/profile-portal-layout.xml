@@ -156,6 +156,7 @@
         <column width="auto" class="main">
           <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
             <showGetInvolved>false</showGetInvolved>
+            <wikiForm>Profile Information</wikiForm>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
@@ -1733,6 +1734,7 @@
         <column width="auto" class="main">
           <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
             <showGetInvolved>false</showGetInvolved>
+            <wikiForm>Idea Information</wikiForm>
             <showAuthor>true</showAuthor>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
@@ -1877,6 +1879,7 @@
         <column width="auto" class="main">
           <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
             <showGetInvolved>false</showGetInvolved>
+            <wikiForm>Product Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
@@ -2034,6 +2037,7 @@
         <column width="auto" class="main">
           <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
             <showGetInvolved>false</showGetInvolved>
+            <wikiForm>Solutions Information</wikiForm>
             <hideBasicInformation>true</hideBasicInformation>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
@@ -2069,6 +2073,190 @@
           <portlet name="RecentDiscussionsPortlet" class="detailed-list ">
             <title>Recent Discussions</title>
             <limit>3</limit>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <page name="project profile: neighborhoods">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[<content>Go to CRM Account</content>
+                  <title>Access the CRM account record for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/crm-account</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasCRMAccess</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Go to Tools</content>
+                  <title>Access the tools for ${project.title:xml}</title>
+                  <href>/show/${project.uniqueId}/tools</href>
+                  <parameter>returnURL</parameter>
+                  <rule>userHasToolsEnabled</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Become a Member</content>
+                  <title>Join ${project.title:xml} as a member</title>
+                  <href>/page/registration-required</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>isNotUser</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Review This</content>
+                  <title>Review ${project.title:xml}</title>
+                  <href>/create/${project.uniqueId}/review?redirectTo=/show/${project.uniqueId}</href>
+                  <rel>shadowbox;width=600</rel>
+                  <permission>project-reviews-add</permission>
+                  <rule>userCanReview</rule>
+                  ]]>
+              </value>
+              <value>
+                <![CDATA[<content>Send to Friend</content>
+                  <title>Send ${project.title:xml} information to friend</title>
+                  <href>/show/${project.uniqueId}/app/send_to_friend</href>
+                  <rel>shadowbox;width=550</rel>
+                  <rule>projectAllowsGuests</rule>]]>
+              </value>
+              <!--
+              <value><![CDATA[
+                <content>Send to Phone</content>
+                <title>Send ${project.title:xml} information to your phone</title>
+                <href>/create/${project.uniqueId}/review</href>
+                <rel>shadowbox;width=600</rel>
+                <permission>project-profile-view</permission>
+                ]]>
+              </value>
+              -->
+              <value>
+                <![CDATA[<content>Become a Member</content>
+                  <title>Join ${project.title:xml} as a member</title>
+                  <href>/ProjectManagementTeam.do?command=ConfirmJoin&amp;pid=${project.id}</href>
+                  <rel>shadowbox;width=600</rel>
+                  <rule>userCanJoin</rule>]]>
+              </value>
+              <value><![CDATA[
+                <content>Ask to become a member</content>
+                <title>Request to join ${project.title:xml} as a member</title>
+                <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
+                <rel>shadowbox;width=500</rel>
+                <rule>userCanRequestToJoin</rule>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[<content>Add to My Lists</content>
+                  <title>Add ${project.title:xml} to List</title>
+                  <href>/show/${project.uniqueId}/app/bookmark?pidToBookmark=${project.id}</href>
+                  <rel>shadowbox;width=700</rel>
+                  <rule>isUser</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Add Members</content>
+                  <title>Add Members</title>
+                  <href>/show/${project.uniqueId:xml}/app/add_members</href>
+                  <permission>project-profile-admin</permission>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Contact Us</content>
+                  <title>Contact Us</title>
+                  <href>/show/${project.uniqueId}/app/compose_message?module=profile&amp;id=${project.id}</href>
+                  <rel>shadowbox;width=700</rel>
+                  <projectCondition>features.showMessages</projectCondition>
+                  <rule>isUser</rule>]]>
+              </value>
+            </urls>
+          </portlet>
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="ClassifiedListPortlet" class="basic-list ">
+            <title>Classifieds</title>
+            <category>${category}</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="ProxyPortlet" cache="3700" timeout="3" class="ads">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-230x400</adContext>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="ProjectProfilePortlet" class="profile-portlet-body ">
+            <showGetInvolved>false</showGetInvolved>
+            <wikiForm>Neighborhood Information</wikiForm>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" class="articleBody ">
+            <wiki>Profile Message</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
+          <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
+            <title>Write something...</title>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="detailed-list ">
+            <title>Recent Activity</title>
+            <events>
+              <value>ad</value>
+              <value>badge</value>
+              <value>blog</value>
+              <value>classified</value>
+              <value>discussion</value>
+              <value>document</value>
+              <value>image</value>
+              <value>invites</value>
+              <value>member</value>
+              <value>meeting</value>
+              <value>profile</value>
+              <value>rating</value>
+              <value>topic</value>
+            	<value>question</value>
+            	<value>reply</value>
+              <value>wiki</value>
+              <value>wiki-comment</value>
+              <value>user-entry</value>
+            </events>
+            <limit>15</limit>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="PendingPrivateMessagesPortlet" viewer="summary">
+            <title>Inbox</title>
+          </portlet>
+          <portlet name="ProxyPortlet" cache="3650" timeout="3" class="ads">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>ad-280x60</adContext>
+          </portlet>
+          <portlet name="ProjectGoogleMapsPortlet"/>
+          <portlet name="ProxyPortlet">
+            <wsrp_portlet_handle>/weatherportlet/WeatherPortlet</wsrp_portlet_handle>
+            <weatherprefs>
+              <value>${project.postalCode}</value>
+              <value>f</value>
+              <value>Local Weather</value>
+            </weatherprefs>
+          </portlet>
+          <portlet name="ProjectDownloadsPortlet" class="detailed-list ">
+            <title>Featured Downloads</title>
+            <limit>3</limit>
+          </portlet>
+          <portlet name="RecentBlogPostsPortlet" class="detailed-list ">
+            <title>Recent Blog Posts</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="RecentDiscussionsPortlet" class="detailed-list ">
+            <title>Recent Discussions</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="ListsByProjectPortlet" class="horizontal-list ">
+            <title>Lists</title>
+            <limit>10</limit>
+          </portlet>
+          <portlet name="TopContributionsPortlet" class="detailed-list ">
+            <title>Top Contributors</title>
+            <limit>5</limit>
           </portlet>
         </column>
       </row>

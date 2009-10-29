@@ -90,9 +90,8 @@ Deploying from a .war file:
 5. Access the web app using a browser at "http://localhost/connect" and
 follow the web-based instructions
 
-For more detailed instructions, download the Installation and Setup Guide
-from:
-http://www.concursive.com/show/concourseconnect-early-access/documents
+For more detailed instructions, download the Setup Guide from:
+http://www.concursive.com/show/concourseconnect/documents
 
 
 ----------------------------------------------------------------------------
@@ -100,17 +99,15 @@ http://www.concursive.com/show/concourseconnect-early-access/documents
 ----------------------------------------------------------------------------
 
 Source versions of ConcourseConnect can be deployed as an exploded webapp
-directory into Apache Tomcat.  This is the easiest way to develop
-ConcourseConnect.  In this scenario, you can also deploy within your
-preferred Java IDE with embedded Tomcat container, bypassing the ant
-script altogether.
+directory into Apache Tomcat.  This is an easy way to develop
+ConcourseConnect.  You can also deploy within your preferred Java IDE with
+embedded Tomcat container, bypassing the included ant script altogether.
 
 The following software is required to package and test ConcourseConnect:
 
-  Sun J2SE JDK 5 or 6
+  Sun J2SE JDK 6
   http://java.sun.com
 
-  Apache Tomcat 5.5, use with Sun J2SE 5.0
   Apache Tomcat 6.0, use with Sun J2SE 6.0
   http://tomcat.apache.org
 
@@ -126,6 +123,19 @@ Steps for packaging the source:
    edit the new file and update the specified file paths
 2. Execute "ant package"
 3. Look in the "target/concourseconnect" directory for the .war file
+
+
+----------------------------------------------------------------------------
+| RUNNING IN AN IDE                                                        |
+----------------------------------------------------------------------------
+
+Developers are using Eclipse, NetBeans and IntelliJ with Tomcat.
+
+For running tests in the IDE be sure to set the VM property:
+-DPropertyManager.file=/path/to/build.properties
+
+Check the ConcourseConnect Wiki for more information.
+http://www.concursive.com/show/concourseconnect/wiki/Developer+Tools
 
 
 ----------------------------------------------------------------------------
@@ -182,7 +192,6 @@ PostgreSQL JDBC Driver            BSD
 PrettyTime                        LGPL v3.0
 Quartz                            Apache Software License
 ROME                              Apache Software License
-Spring                            Apache Software License v2.0
 TinyMCE                           LGPL
 TMExtractors                      Apache style
 UnitPNGFix by Unit Interactive    Creative Commons Attribution 3.0 Unported

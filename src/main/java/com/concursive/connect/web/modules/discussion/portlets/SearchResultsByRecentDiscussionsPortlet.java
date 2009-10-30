@@ -48,6 +48,7 @@ package com.concursive.connect.web.modules.discussion.portlets;
 import com.concursive.connect.indexer.IIndexerSearch;
 import com.concursive.connect.indexer.IndexerQueryResultList;
 
+import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import javax.portlet.*;
 import java.io.IOException;
 
@@ -61,18 +62,19 @@ public class SearchResultsByRecentDiscussionsPortlet extends GenericPortlet {
 
   // Pages
   private static final String VIEW_PAGE = "/portlets/search_results_by_recent_discussions_portlet/search_results_by_recent_discussions_portlet-view.jsp";
-  // Parameters
+  // Context Parameters
   private static final String SEARCHER = "searcher";
   private static final String BASE_QUERY_STRING = "dataQueryString";
+  private static final String PROJECT_CATEGORY_LIST = "projectCategoryList";
   // Preferences
   private static final String PREFS_TITLE = "title";
   private static final String PREFS_LIMIT = "limit";
   private static final String PREFS_INCLUDE_REPLIES = "includeReplies";
+  private static final String PREFS_CATEGORY_NAME = "category";
   // Object Results
   private static final String TITLE = "title";
   private static final String LIMIT = "limit";
   private static final String HITS = "hits";
-
 
   public void doView(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
@@ -88,6 +90,14 @@ public class SearchResultsByRecentDiscussionsPortlet extends GenericPortlet {
       request.setAttribute(TITLE, request.getPreferences().getValue(PREFS_TITLE, null));
       request.setAttribute(LIMIT, request.getPreferences().getValue(PREFS_LIMIT, "10"));
       boolean includeReplies = "true".equals(request.getPreferences().getValue(PREFS_INCLUDE_REPLIES, "false"));
+      String category = request.getPreferences().getValue(PREFS_CATEGORY_NAME, null);
+      if (category != null) {
+        ProjectCategoryList categories = (ProjectCategoryList) request.getAttribute(PROJECT_CATEGORY_LIST);
+        int categoryId = categories.getIdFromValue(category);
+        if (categoryId > -1) {
+          queryString += " AND (projectCategoryId:" + categoryId + ")";
+        }
+      }
 
       // Customize the query
       if (!includeReplies) {

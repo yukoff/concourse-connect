@@ -5255,9 +5255,6 @@
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>People</title>
@@ -5268,17 +5265,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Ideas</title>
@@ -5289,76 +5280,53 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
               <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
             <title>Related Blogs</title>
+            <category>Products</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
             <title>Related Wikis</title>
+            <category>Products</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
             <title>Related Discussions</title>
+            <category>Products</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -5423,17 +5391,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Ideas</title>
@@ -5444,84 +5406,58 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
               <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
             <title>Related Blogs</title>
+            <category>Solutions</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
             <title>Related Wikis</title>
+            <category>Solutions</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
             <title>Related Discussions</title>
+            <category>Solutions</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -5581,17 +5517,11 @@
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>People</title>
@@ -5602,17 +5532,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Ideas</title>
@@ -5623,68 +5547,48 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>partnerResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
             <title>Related Blogs</title>
+            <category>Partners</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
             <title>Related Wikis</title>
+            <category>Partners</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
             <title>Related Discussions</title>
+            <category>Partners</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -5744,49 +5648,31 @@
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -5797,17 +5683,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -5818,36 +5698,28 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
               <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Businesses</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Businesses</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Businesses</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -5907,33 +5779,21 @@
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -5944,17 +5804,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -5965,52 +5819,38 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
               <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Organizations</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Organizations</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Organizations</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -6070,41 +5910,26 @@
             <title>Departments</title>
             <category>Departments</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>departmentResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -6115,17 +5940,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -6136,25 +5955,16 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
@@ -6162,28 +5972,21 @@
             <maxResults>3</maxResults>
             <portlet-events>
               <consumes-data>committeeResultsFound</consumes-data>
-              <consumes-data>departmentResultsFound</consumes-data>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Committees</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Committees</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Committees</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -6243,42 +6046,27 @@
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
             <hasPaging>true</hasPaging>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -6289,17 +6077,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -6310,52 +6092,38 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>departmentResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Departments</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Departments</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Departments</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -6415,25 +6183,16 @@
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>People</title>
@@ -6444,17 +6203,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Ideas</title>
@@ -6465,52 +6218,38 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
               <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
             <title>Related Blogs</title>
+            <category>Sponsors</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
             <title>Related Wikis</title>
+            <category>Sponsors</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
             <title>Related Discussions</title>
+            <category>Sponsors</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -6570,9 +6309,6 @@
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -6583,57 +6319,36 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -6646,26 +6361,21 @@
             <maxResults>3</maxResults>
             <portlet-events>
               <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Groups</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Groups</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Groups</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -6716,22 +6426,21 @@
             <category>People</category>
             <limit>10</limit>
             <hasPaging>true</hasPaging>
+            <!--
+            <portlet-events>
+              <generates-data>peopleResultsFound</generates-data>
+            </portlet-events>
+            -->
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -6742,49 +6451,31 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
@@ -6801,6 +6492,32 @@
               <consumes-data>solutionsResultsFound</consumes-data>
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <!--
+          <portlet name="GoogleMapsFromSearchHitsPortlet">
+            <maxResults>3</maxResults>
+            <portlet-events>
+              <consumes-data>peopleResultsFound</consumes-data>
+            </portlet-events>
+          </portlet>
+          -->
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Blogs</title>
+            <category>People</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
+            <title>Related Wikis</title>
+            <category>People</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Discussions</title>
+            <category>People</category>
+            <includeReplies>false</includeReplies>
+            <limit>5</limit>
           </portlet>
         </column>
       </row>
@@ -6863,65 +6580,41 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -6932,36 +6625,28 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
               <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Events</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Events</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Events</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -7021,17 +6706,11 @@
             <title>Neighborhoods</title>
             <category>Neighborhoods</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>neighborhoodResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -7042,65 +6721,41 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -7111,47 +6766,33 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Clusters</title>
             <category>Clusters</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>clusterResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
               <consumes-data>placeResultsFound</consumes-data>
-              <consumes-data>neighborhoodResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Places</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Places</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Places</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -7180,7 +6821,7 @@
           </portlet>
           <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
-            <category>Events</category>
+            <category>Neighborhoods</category>
             <limit>3</limit>
           </portlet>
         </column>
@@ -7211,17 +6852,11 @@
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Places</title>
             <category>Places</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>placeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -7232,65 +6867,41 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -7301,47 +6912,33 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Clusters</title>
             <category>Clusters</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>clusterResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>placeResultsFound</consumes-data>
               <consumes-data>neighborhoodResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Neighborhoods</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Neighborhoods</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Neighborhoods</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -7393,70 +6990,49 @@
             <category>Ideas</category>
             <limit>5</limit>
             <hasPaging>true</hasPaging>
+            <portlet-events>
+              <generates-data>ideasResultsFound</generates-data>
+            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -7467,44 +7043,33 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
+              <consumes-data>ideasResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Ideas</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Ideas</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Ideas</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -7564,49 +7129,31 @@
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>People</title>
@@ -7617,17 +7164,11 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Ideas</title>
@@ -7639,27 +7180,22 @@
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
             <title>Related Blogs</title>
+            <category>Projects</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
             <title>Related Wikis</title>
+            <category>Projects</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
             <title>Related Discussions</title>
+            <category>Projects</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
@@ -7688,7 +7224,7 @@
           </portlet>
           <portlet name="ProjectPromotionsPortlet" class="basic-list " isSensitive="true">
             <title>Promotions</title>
-            <category>Events</category>
+            <category>Clusters</category>
             <limit>3</limit>
           </portlet>
         </column>
@@ -7719,17 +7255,11 @@
             <title>Events</title>
             <category>Events</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>eventResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Places</title>
             <category>Places</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>placeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Ideas</title>
@@ -7740,65 +7270,41 @@
             <title>Projects</title>
             <category>Projects</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>projectsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Businesses</title>
             <category>Businesses</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>businessesResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Organizations</title>
             <category>Organizations</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>organizationResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list "  isSensitive="true">
             <title>Committees</title>
             <category>Committees</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>committeeResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Sponsors</title>
             <category>Sponsors</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>sponsorResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Partners</title>
             <category>Partners</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>partnerResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Products</title>
             <category>Products</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>productResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list ">
             <title>Solutions</title>
             <category>Solutions</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>solutionsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>People</title>
@@ -7809,47 +7315,33 @@
             <title>Groups</title>
             <category>Groups</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>groupsResultsFound</generates-data>
-            </portlet-events>
           </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Neighborhoods</title>
             <category>Neighborhoods</category>
             <limit>3</limit>
-            <portlet-events>
-              <generates-data>neighborhoodResultsFound</generates-data>
-            </portlet-events>
           </portlet>
         </column>
         <column width="300">
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
-              <consumes-data>groupsResultsFound</consumes-data>
-              <consumes-data>eventResultsFound</consumes-data>
-              <consumes-data>placeResultsFound</consumes-data>
               <consumes-data>clusterResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>businessesResultsFound</consumes-data>
-              <consumes-data>organizationResultsFound</consumes-data>
-              <consumes-data>sponsorResultsFound</consumes-data>
-              <consumes-data>productResultsFound</consumes-data>
-              <consumes-data>solutionsResultsFound</consumes-data>
-              <consumes-data>projectsResultsFound</consumes-data>
-              <consumes-data>neighborhoodResultsFound</consumes-data>
             </portlet-events>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
+            <category>Clusters</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
+            <category>Clusters</category>
             <limit>5</limit>
           </portlet>
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
+            <category>Clusters</category>
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>

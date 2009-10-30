@@ -49,6 +49,7 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.indexer.IIndexerSearch;
 import com.concursive.connect.indexer.IndexerQueryResultList;
 
+import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import javax.portlet.*;
 import java.io.IOException;
 
@@ -62,12 +63,14 @@ public class SearchResultsByWikiPortlet extends GenericPortlet {
 
   // Pages
   private static final String VIEW_PAGE = "/portlets/search_results_by_wiki_portlet/search_results_by_wiki_portlet-view.jsp";
-  // Parameters
+  // Context Parameters
   private static final String SEARCHER = "searcher";
   private static final String BASE_QUERY_STRING = "dataQueryString";
+  private static final String PROJECT_CATEGORY_LIST = "projectCategoryList";
   // Preferences
   private static final String PREFS_TITLE = "title";
   private static final String PREFS_LIMIT = "limit";
+  private static final String PREFS_CATEGORY_NAME = "category";
   // Object Results
   private static final String TITLE = "title";
   private static final String LIMIT = "limit";
@@ -86,6 +89,14 @@ public class SearchResultsByWikiPortlet extends GenericPortlet {
       int limit = Integer.parseInt(request.getPreferences().getValue(PREFS_LIMIT, "10"));
       request.setAttribute(TITLE, request.getPreferences().getValue(PREFS_TITLE, null));
       request.setAttribute(LIMIT, request.getPreferences().getValue(PREFS_LIMIT, "10"));
+      String category = request.getPreferences().getValue(PREFS_CATEGORY_NAME, null);
+      if (category != null) {
+        ProjectCategoryList categories = (ProjectCategoryList) request.getAttribute(PROJECT_CATEGORY_LIST);
+        int categoryId = categories.getIdFromValue(category);
+        if (categoryId > -1) {
+          queryString += " AND (projectCategoryId:" + categoryId + ")";
+        }
+      }
 
       // Customize the string
       queryString += " AND (type:wiki) ";

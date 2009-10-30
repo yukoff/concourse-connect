@@ -2501,6 +2501,18 @@
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </products>
+            <clusters>
+              <value>pageTitle=Cluster Information</value>
+              <value>title=Cluster Name</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Description</value>
+            </clusters>
+            <voices>
+              <value>pageTitle=Voice Information</value>
+              <value>title=Voice Name</value>
+              <value>keywords=Keywords</value>
+              <value>shortDescription=Description</value>
+            </voices>
           </portlet>
         </column>
         <column width="300">

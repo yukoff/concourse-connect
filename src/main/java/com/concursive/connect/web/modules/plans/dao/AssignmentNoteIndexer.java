@@ -128,6 +128,7 @@ public class AssignmentNoteIndexer implements Indexer {
     document.add(new Field("assignmentNoteId", String.valueOf(assignmentNote.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("assignmentId", String.valueOf(assignmentNote.getAssignmentId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(assignmentNote.getProjectId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    document.add(new Field("projectCategoryId", String.valueOf(project.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("guests", (project.getFeatures().getAllowGuests() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     // determine if membership is needed for this content based on a guest's access to the data

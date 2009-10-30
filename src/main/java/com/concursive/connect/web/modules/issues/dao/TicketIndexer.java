@@ -129,6 +129,7 @@ public class TicketIndexer implements Indexer {
     document.add(new Field("ticketId", String.valueOf(ticket.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectTicketId", String.valueOf(ticket.getProjectTicketCount()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(ticket.getProjectId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    document.add(new Field("projectCategoryId", String.valueOf(project.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("guests", (project.getFeatures().getAllowGuests() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("membership", (project.getFeatures().getMembershipRequired() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));

@@ -126,6 +126,7 @@ public class WikiIndexer implements Indexer {
     document.add(new Field("type", "wiki", Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("wikiId", String.valueOf(wiki.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(wiki.getProjectId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    document.add(new Field("projectCategoryId", String.valueOf(project.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     // use the project to determine when this data can be viewed...
     document.add(new Field("guests", (project.getFeatures().getAllowGuests() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));

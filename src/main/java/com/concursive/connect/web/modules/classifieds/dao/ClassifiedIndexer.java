@@ -128,6 +128,7 @@ public class ClassifiedIndexer implements Indexer {
     if (classified.getProjectId() > -1) {
       // use the project's general access to speedup guest projects
       Project project = ProjectUtils.loadProject(classified.getProjectId());
+      document.add(new Field("projectCategoryId", String.valueOf(project.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
       document.add(new Field("guests", (project.getFeatures().getAllowGuests() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
       document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
       // determine if membership is needed for this content based on a guest's access to the data

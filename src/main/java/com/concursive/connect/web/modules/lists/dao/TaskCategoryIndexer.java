@@ -124,6 +124,7 @@ public class TaskCategoryIndexer implements Indexer {
     document.add(new Field("listCategoryKeyId", String.valueOf(taskCategory.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("listCategoryId", String.valueOf(taskCategory.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(taskCategory.getLinkItemId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    document.add(new Field("projectCategoryId", String.valueOf(project.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("guests", (project.getFeatures().getAllowGuests() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("participants", (project.getFeatures().getAllowParticipants() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("membership", (project.getFeatures().getMembershipRequired() ? "1" : "0"), Field.Store.YES, Field.Index.UN_TOKENIZED));

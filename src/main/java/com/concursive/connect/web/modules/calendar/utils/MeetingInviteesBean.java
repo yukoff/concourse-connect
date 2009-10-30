@@ -723,7 +723,7 @@ public class MeetingInviteesBean extends GenericBean {
    */
   private void addToMailUserList(String userIds, UserList userList) {
     //check if ids are empty
-    if ("".equals(userIds) || userIds == null) {
+    if (!StringUtils.hasText(userIds)) {
       return;
     }
 
@@ -734,7 +734,7 @@ public class MeetingInviteesBean extends GenericBean {
     //add them to the member found list
     for (String userId : arrId) {
       userId = userId.trim();
-      if (!"".equals(userId)) {
+      if (StringUtils.isNumber(userId)) {
         userList.add(UserUtils.loadUser(Integer.parseInt(userId)));
       }
     }
@@ -749,7 +749,7 @@ public class MeetingInviteesBean extends GenericBean {
     addToMailUserList(changedUserIds, meetingChangeUsers);
 
     //add to member found list
-    if ("".equals(invitedUserIds) || invitedUserIds == null) {
+    if (!StringUtils.hasText(invitedUserIds)) {
       return;
     }
 
@@ -760,7 +760,7 @@ public class MeetingInviteesBean extends GenericBean {
     //add them to the member found list
     for (String userId : arrId) {
       userId = userId.trim();
-      if (!"".equals(userId)) {
+      if (StringUtils.isNumber(userId)) {
         membersFoundList.put(UserUtils.loadUser(Integer.parseInt(userId)), "");
       }
     }

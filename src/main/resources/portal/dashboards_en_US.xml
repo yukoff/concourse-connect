@@ -4868,13 +4868,6 @@
             <category>People</category>
             <limit>3</limit>
           </portlet>
-          <portlet name="ProxyPortlet" cache="3600" timeout="3" class="ads">
-            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
-            <adContext>ad-395x90</adContext>
-            <portlet-events>
-              <consumes-data>hideIfEmpty</consumes-data>
-            </portlet-events>
-          </portlet>
           <portlet name="SearchResultsByProjectPortlet" class="detailed-list " isSensitive="true">
             <title>Groups</title>
             <category>Groups</category>
@@ -5011,10 +5004,6 @@
               <consumes-data>projectsResultsFound</consumes-data>
               <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
-          </portlet>
-          <portlet name="ProxyPortlet" cache="3600" timeout="3" class="ads">
-            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
-            <adContext>ad-280x250</adContext>
           </portlet>
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>

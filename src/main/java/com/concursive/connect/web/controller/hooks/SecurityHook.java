@@ -337,7 +337,7 @@ public class SecurityHook implements ControllerHook {
           int invitationCount = InvitationList.queryCount(db, userSession.getId());
           request.setAttribute(Constants.REQUEST_INVITATION_COUNT, String.valueOf(invitationCount));
 
-          int newMailCount = PrivateMessageList.queryRolledupUnreadCountForUser(db, userSession.getId());
+          int newMailCount = PrivateMessageList.queryUnreadCountForUser(db, userSession.getId());
           request.setAttribute(Constants.REQUEST_PRIVATE_MESSAGE_COUNT, String.valueOf(newMailCount));
           // NOTE: removed because not currently used
           // Check the number of what's new

@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.messages.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -70,6 +69,7 @@ public class PrivateMessage extends GenericBean {
   private int id = -1;
   private int projectId = -1;
   private int parentId = -1;
+  private String module = null;
   private int linkModuleId = -1;
   private int linkItemId = -1;
   private String body = null;
@@ -81,18 +81,15 @@ public class PrivateMessage extends GenericBean {
   private boolean deletedByUserId = false;
   private Timestamp lastReplyDate = null;
   private int linkProjectId = -1;
-
   //helper constants
   public static final String FOLDER_SENT = "sent";
   public static final String FOLDER_INBOX = "inbox";
-
 
   /**
    * Constructor for the ProjectRating
    */
   public PrivateMessage() {
   }
-
 
   /**
    * Constructor for the ProjectRating object
@@ -115,7 +112,6 @@ public class PrivateMessage extends GenericBean {
     queryRecord(db, thisId);
   }
 
-
   /**
    * Description of the Method
    *
@@ -127,8 +123,8 @@ public class PrivateMessage extends GenericBean {
     StringBuffer sql = new StringBuffer();
     sql.append(
         "SELECT * " +
-            "FROM project_private_message ppm " +
-            "WHERE ppm.message_id = ? ");
+        "FROM project_private_message ppm " +
+        "WHERE ppm.message_id = ? ");
 
     PreparedStatement pst = db.prepareStatement(sql.toString());
     int i = 0;
@@ -240,13 +236,12 @@ public class PrivateMessage extends GenericBean {
     int resultCount = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE  project_private_message SET " +
-            (readDate != null ? "read_date = ? , " : "") +
-            (readBy > -1 ? "read_by = ? , " : "") +
-            (lastReplyDate != null ? "last_reply_date = ? , " : "") +
-            " deleted_by_entered_by = ? , " +
-            " deleted_by_user_id = ? " +
-
-            "WHERE message_id = ? ");
+        (readDate != null ? "read_date = ? , " : "") +
+        (readBy > -1 ? "read_by = ? , " : "") +
+        (lastReplyDate != null ? "last_reply_date = ? , " : "") +
+        " deleted_by_entered_by = ? , " +
+        " deleted_by_user_id = ? " +
+        "WHERE message_id = ? ");
     int i = 0;
     if (readDate != null) {
       pst.setTimestamp(++i, readDate);
@@ -278,7 +273,7 @@ public class PrivateMessage extends GenericBean {
       //Delete the private message
       PreparedStatement pst = db.prepareStatement(
           "DELETE FROM project_private_message " +
-              "WHERE message_id = ? ");
+          "WHERE message_id = ? ");
       pst.setInt(1, id);
       recordCount = pst.executeUpdate();
       pst.close();
@@ -304,7 +299,6 @@ public class PrivateMessage extends GenericBean {
     }
   }
 
-
   /**
    * Sets the Id attribute of the ProjectRating object
    *
@@ -313,7 +307,6 @@ public class PrivateMessage extends GenericBean {
   public void setId(int tmp) {
     this.id = tmp;
   }
-
 
   /**
    * Sets the id attribute of the ProjectRating object
@@ -324,7 +317,6 @@ public class PrivateMessage extends GenericBean {
     this.id = Integer.parseInt(tmp);
   }
 
-
   /**
    * Sets the enteredBy attribute of the Project object
    *
@@ -333,7 +325,6 @@ public class PrivateMessage extends GenericBean {
   public void setEnteredBy(int tmp) {
     this.enteredBy = tmp;
   }
-
 
   /**
    * Sets the entered attribute of the Project object
@@ -344,7 +335,6 @@ public class PrivateMessage extends GenericBean {
     this.entered = DatabaseUtils.parseTimestamp(tmp);
   }
 
-
   /**
    * Sets the entered attribute of the Project object
    *
@@ -353,7 +343,6 @@ public class PrivateMessage extends GenericBean {
   public void setEntered(Timestamp tmp) {
     entered = tmp;
   }
-
 
   /**
    * Sets the enteredBy attribute of the Project object
@@ -364,7 +353,6 @@ public class PrivateMessage extends GenericBean {
     this.enteredBy = Integer.parseInt(tmp);
   }
 
-
   /**
    * @param projectId the projectId to set
    */
@@ -372,14 +360,12 @@ public class PrivateMessage extends GenericBean {
     this.projectId = projectId;
   }
 
-
   /**
    * @param projectId the projectId to set
    */
   public void setProjectId(String projectId) {
     this.projectId = Integer.parseInt(projectId);
   }
-
 
   /**
    * Gets the Id attribute of the Project object
@@ -390,7 +376,6 @@ public class PrivateMessage extends GenericBean {
     return id;
   }
 
-
   /**
    * Gets the entered attribute of the Project object
    *
@@ -399,7 +384,6 @@ public class PrivateMessage extends GenericBean {
   public Timestamp getEntered() {
     return entered;
   }
-
 
   /**
    * Gets the enteredBy attribute of the Project object
@@ -410,14 +394,12 @@ public class PrivateMessage extends GenericBean {
     return enteredBy;
   }
 
-
   /**
    * @return the projectId
    */
   public int getProjectId() {
     return projectId;
   }
-
 
   /**
    * @return the parentId
@@ -426,7 +408,6 @@ public class PrivateMessage extends GenericBean {
     return parentId;
   }
 
-
   /**
    * @param parentId the parentId to set
    */
@@ -434,11 +415,17 @@ public class PrivateMessage extends GenericBean {
     this.parentId = parentId;
   }
 
-
   public void setParentId(String parentId) {
     this.parentId = Integer.parseInt(parentId);
   }
 
+  public String getModule() {
+    return module;
+  }
+
+  public void setModule(String module) {
+    this.module = module;
+  }
 
   /**
    * @return the linkModuleId
@@ -447,14 +434,12 @@ public class PrivateMessage extends GenericBean {
     return linkModuleId;
   }
 
-
   /**
    * @param linkModuleId the linkModuleId to set
    */
   public void setLinkModuleId(int linkModuleId) {
     this.linkModuleId = linkModuleId;
   }
-
 
   public void setLinkModuleId(String linkModuleId) {
     this.linkModuleId = Integer.parseInt(linkModuleId);
@@ -467,7 +452,6 @@ public class PrivateMessage extends GenericBean {
     return linkItemId;
   }
 
-
   /**
    * @param linkItemId the linkItemId to set
    */
@@ -475,11 +459,11 @@ public class PrivateMessage extends GenericBean {
     this.linkItemId = linkItemId;
   }
 
-
   public void setLinkItemId(String linkItemId) {
-    this.linkItemId = Integer.parseInt(linkItemId);
+    if (StringUtils.hasText(linkItemId)) {
+      this.linkItemId = Integer.parseInt(linkItemId);
+    }
   }
-
 
   /**
    * @return the body
@@ -487,7 +471,6 @@ public class PrivateMessage extends GenericBean {
   public String getBody() {
     return body;
   }
-
 
   public String getHtmlBody() {
     if (StringUtils.hasText(body)) {
@@ -504,14 +487,12 @@ public class PrivateMessage extends GenericBean {
     this.body = body;
   }
 
-
   /**
    * @return the readDate
    */
   public Timestamp getReadDate() {
     return readDate;
   }
-
 
   /**
    * @param read the readDate to set
@@ -520,11 +501,9 @@ public class PrivateMessage extends GenericBean {
     this.readDate = readDate;
   }
 
-
   public void setReadDate(String readDate) {
     this.readDate = DatabaseUtils.parseTimestamp(readDate);
   }
-
 
   /**
    * @return the readBy
@@ -533,14 +512,12 @@ public class PrivateMessage extends GenericBean {
     return readBy;
   }
 
-
   /**
    * @param readBy the readBy to set
    */
   public void setReadBy(int readBy) {
     this.readBy = readBy;
   }
-
 
   public void setReadBy(String readBy) {
     this.readBy = Integer.parseInt(readBy);
@@ -553,7 +530,6 @@ public class PrivateMessage extends GenericBean {
     return deletedByEnteredBy;
   }
 
-
   /**
    * @param deletedByEnteredBy the deletedByEnteredBy to set
    */
@@ -561,11 +537,9 @@ public class PrivateMessage extends GenericBean {
     this.deletedByEnteredBy = deletedByEnteredBy;
   }
 
-
   public void setDeletedByEnteredBy(String deletedByEnteredBy) {
     this.deletedByEnteredBy = DatabaseUtils.parseBoolean(deletedByEnteredBy);
   }
-
 
   /**
    * @return the deletedByUserId
@@ -574,14 +548,12 @@ public class PrivateMessage extends GenericBean {
     return deletedByUserId;
   }
 
-
   /**
    * @param deletedByUserId the deletedByUserId to set
    */
   public void setDeletedByUserId(boolean deletedByUserId) {
     this.deletedByUserId = deletedByUserId;
   }
-
 
   public void setDeletedByUserId(String deletedByUserId) {
     this.deletedByUserId = DatabaseUtils.parseBoolean(deletedByUserId);
@@ -594,7 +566,6 @@ public class PrivateMessage extends GenericBean {
     return lastReplyDate;
   }
 
-
   /**
    * @param lastReplyDate the lastReplyDate to set
    */
@@ -602,11 +573,9 @@ public class PrivateMessage extends GenericBean {
     this.lastReplyDate = lastReplyDate;
   }
 
-
   public void setLastReplyDate(String lastReplyDate) {
     this.lastReplyDate = DatabaseUtils.parseTimestamp(lastReplyDate);
   }
-
 
   /**
    * @return the linkProjectId
@@ -614,7 +583,6 @@ public class PrivateMessage extends GenericBean {
   public int getLinkProjectId() {
     return linkProjectId;
   }
-
 
   /**
    * @param linkProjectId the linkProjectId to set

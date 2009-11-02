@@ -45,8 +45,12 @@
  */
 package com.concursive.connect.web.modules.messages.portlets.composePrivateMessage;
 
+import com.concursive.commons.text.StringUtils;
+import com.concursive.connect.Constants;
+import com.concursive.connect.web.modules.ModuleUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.messages.dao.PrivateMessage;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -69,19 +73,15 @@ public class ComposePrivateMessageForm implements IPortletViewer {
 
   // Pages
   private static final String VIEW_PAGE = "/portlets/compose_private_message/compose_private_message-form.jsp";
-
   // Preferences
   private static final String PREF_TITLE = "title";
-
   // Object Results
+  private static final String PRIVATE_MESSAGE = "privateMessage";
   private static final String TITLE = "title";
-  private static final String PROJECT = "project";
-  private static final String LINK_ITEM_ID = "linkItemId";
-  private static final String LINK_MODULE = "linkModule";
   private static final String MESSAGE_TO = "messageTo";
+  private static final String NEEDS_PERMISSION = "needsPermission";
 
-  public String doView(RenderRequest request, RenderResponse response)
-      throws Exception {
+  public String doView(RenderRequest request, RenderResponse response) throws Exception {
     // The JSP to show upon success
     String defaultView = VIEW_PAGE;
 
@@ -91,30 +91,35 @@ public class ComposePrivateMessageForm implements IPortletViewer {
     // Determine the project container to use
     Project project = findProject(request);
 
-    request.setAttribute(PROJECT, project);
-
     // Check if the user is logged in
     User user = getUser(request);
     if (!user.isLoggedIn()) {
       throw new PortletException("User needs to be logged in to compose a message");
     }
 
+    // Check the request for the record and provide a value for the request scope
+    PrivateMessage privateMessage = (PrivateMessage) PortalUtils.getFormBean(request, PRIVATE_MESSAGE, PrivateMessage.class);
+
     //Set the context
-    String itemId = PortalUtils.getQueryParameter(request, "id");
-    request.setAttribute(LINK_ITEM_ID, itemId);
+    String linkItemId = PortalUtils.getQueryParameter(request, "id");
+    if (StringUtils.hasText(linkItemId)) {
+      privateMessage.setLinkItemId(linkItemId);
+    }
 
     String module = PortalUtils.getQueryParameter(request, "module");
+    if (StringUtils.hasText(module)) {
+      privateMessage.setModule(module);
+      privateMessage.setLinkModuleId(ModuleUtils.getLinkModuleIdFromModuleName(module));
+    }
 
-    //replying to message
-    if (PrivateMessage.FOLDER_INBOX.equals(module)) {
+    // Determine the database connection
+    Connection db = getConnection(request);
+
+    // replying to message
+    if (privateMessage.getLinkModuleId() == Constants.PROJECT_MESSAGES_FILES) {
       //determine if the user has access to reply to the message
-
-      // Determine the database connection
-      Connection db = getConnection(request);
-
-      PrivateMessage inboxPrivateMessage = new PrivateMessage(db, Integer.parseInt(itemId));
+      PrivateMessage inboxPrivateMessage = new PrivateMessage(db, privateMessage.getLinkItemId());
       int projectId = inboxPrivateMessage.getProjectId();
-
       if (!ProjectUtils.hasAccess(projectId, user, "project-private-messages-reply")) {
         throw new PortletException("Unauthorized to reply to message in project");
       }
@@ -125,9 +130,13 @@ public class ComposePrivateMessageForm implements IPortletViewer {
         request.setAttribute(MESSAGE_TO, UserUtils.loadUser(inboxPrivateMessage.getEnteredBy()).getNameFirstLastInitial());
       }
     } else {
+      // Since this is a direct message, indicate if this user is a friend
+      if (project.getProfile() && !TeamMemberList.isOnTeam(db, project.getId(), user.getId())) {
+        request.setAttribute(NEEDS_PERMISSION, "true");
+      }
+      // Show who this message is being sent to
       request.setAttribute(MESSAGE_TO, project.getTitle());
     }
-    request.setAttribute(LINK_MODULE, module);
 
     // JSP view
     return defaultView;

@@ -96,8 +96,18 @@
         <%= showAttribute(request, "bodyError") %>
         <textarea id="<portlet:namespace/>body" name="body"><c:out value="${privateMessage.body}" /></textarea>
         <span class="characterCounter">1000 characters max</span>
-        <input type="hidden" name="linkItemId" value="${linkItemId}" />
-        <input type="hidden" name="linkModule" value="${linkModule}" />
+        <c:if test="${needsPermission eq 'true'}">
+          <label for="captcha">Since you haven't become a 
+            friend,
+            please input the disguised word to help validate this form</label>
+          <%= showAttribute(request, "captchaError") %>
+          <img width="200" height="50" src="${ctx}/Captcha.png?<%= Math.random() %>" id="captimg" name="captimg" />
+          <input type="text" name="captcha" id="captcha" class="twoHundredPixels">
+          <p>Trouble reading? <a href="javascript:newCaptcha('captimg');" class="lightBlue noUnderline">Try another word</a></p>
+        </c:if>
+        <input type="hidden" name="module" value="${privateMessage.module}" />
+        <input type="hidden" name="linkModuleId" value="${privateMessage.linkModuleId}" />
+        <input type="hidden" name="linkItemId" value="${privateMessage.linkItemId}" />
         <c:if test="${'true' eq param.popup || 'true' eq popup}">
           <input type="hidden" name="popup" value="true"/>
         </c:if>
@@ -109,11 +119,11 @@
         </c:when>
         <c:otherwise>
         	<c:choose>
-	        <c:when test="${empty linkModule or linkModule eq 'profile'}">
+	        <c:when test="${empty privateMessage.module || privateMessage.module eq 'profile'}">
 		        <a href="${ctx}/show/${project.uniqueId}" class="cancel">Cancel</a>
-			</c:when>
+          </c:when>
 	        <c:otherwise>
-		        <a href="${ctx}/show/${project.uniqueId}/${linkModule}" class="cancel">Cancel</a>
+		        <a href="${ctx}/show/${project.uniqueId}/${privateMessage.module}" class="cancel">Cancel</a>
 	        </c:otherwise>
 			</c:choose>        
         </c:otherwise>

@@ -4342,6 +4342,9 @@
         <column>
           <portlet name="ComposePrivateMessagePortlet">
             <title>Compose Message</title>
+            <portlet-events>
+              <consumes-session-data>simpleCaptcha</consumes-session-data>
+            </portlet-events>
           </portlet>
         </column>
       </row>

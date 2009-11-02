@@ -45,12 +45,13 @@
  */
 package com.concursive.connect.web.modules.messages.portlets.composePrivateMessage;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.Constants;
-import com.concursive.connect.web.modules.ModuleUtils;
 import com.concursive.connect.web.modules.blog.dao.BlogPost;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.messages.dao.PrivateMessage;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.portal.IPortletAction;
@@ -63,6 +64,10 @@ import javax.portlet.PortletException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import javax.portlet.PortletSession;
+import nl.captcha.Captcha;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Action for saving a user's review
@@ -71,6 +76,8 @@ import java.sql.Timestamp;
  * @created December 22, 2008
  */
 public class SavePrivateMessageAction implements IPortletAction {
+
+  private static Log LOG = LogFactory.getLog(SavePrivateMessageAction.class);
 
   public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
     // Determine the project container to use
@@ -87,27 +94,22 @@ public class SavePrivateMessageAction implements IPortletAction {
 
     // Determine the database connection to use
     Connection db = getConnection(request);
-    String body = request.getParameter("body");
-    String moduleName = request.getParameter("linkModule");
-    int linkModuleId = ModuleUtils.getLinkModuleIdFromModuleName(moduleName);
-    String linkItemId = request.getParameter("linkItemId");
 
+    // Track replies to previous messages
     PrivateMessage inboxPrivateMessage = null;
-    PrivateMessage privateMessage = new PrivateMessage();
-    privateMessage.setBody(body);
-    privateMessage.setLinkItemId(linkItemId);
-    privateMessage.setLinkModuleId(linkModuleId);
-    if (linkModuleId != Constants.PROJECT_MESSAGES_FILES) {
+
+    // Populate all values from the request
+    PrivateMessage privateMessage = (PrivateMessage) PortalUtils.getFormBean(request, PrivateMessage.class);
+    if (privateMessage.getLinkModuleId() != Constants.PROJECT_MESSAGES_FILES) {
       privateMessage.setProjectId(project.getId());
-      int linkProjectId = getLinkProjectId(db, linkItemId, linkModuleId);
+      int linkProjectId = getLinkProjectId(db, privateMessage.getLinkItemId(), privateMessage.getLinkModuleId());
       if (linkProjectId == -1) {
         linkProjectId = project.getId();
       }
       privateMessage.setLinkProjectId(linkProjectId);
-
     } else {
       //reply to a message from the inbox, so the project id needs to be the profile of user who sent the message
-      inboxPrivateMessage = new PrivateMessage(db, Integer.parseInt(linkItemId));
+      inboxPrivateMessage = new PrivateMessage(db, privateMessage.getLinkItemId());
       int profileProjectIdOfEnteredByUser = UserUtils.loadUser(inboxPrivateMessage.getEnteredBy()).getProfileProjectId();
       privateMessage.setProjectId(profileProjectIdOfEnteredByUser);
       privateMessage.setParentId(inboxPrivateMessage.getId());
@@ -116,25 +118,45 @@ public class SavePrivateMessageAction implements IPortletAction {
       inboxPrivateMessage.setLastReplyDate(new Timestamp(System.currentTimeMillis()));
     }
     privateMessage.setEnteredBy(user.getId());
+
+    // Validate the form
+    if (!StringUtils.hasText(privateMessage.getBody())) {
+      privateMessage.getErrors().put("bodyError", "Message body is required");
+      return privateMessage;
+    }
+
+    // Check for captcha if going to another user that is not a friend
+    if (privateMessage.getProjectId() > -1) {
+      if (privateMessage.getProject().getProfile() && !TeamMemberList.isOnTeam(db, privateMessage.getProjectId(), user.getId())) {
+        LOG.debug("Verifying the captcha...");
+        String captcha = request.getParameter("captcha");
+        PortletSession session = request.getPortletSession();
+        Captcha captchaValue = (Captcha) session.getAttribute(Captcha.NAME);
+        session.removeAttribute(Captcha.NAME);
+        if (captchaValue == null || captcha == null ||
+            !captchaValue.isCorrect(captcha)) {
+          privateMessage.getErrors().put("captchaError", "Text did not match image");
+          return privateMessage;
+        }
+      }
+    } else {
+      LOG.debug("Captcha not required");
+    }
+
+    // Insert the private message
     boolean inserted = privateMessage.insert(db);
-
     if (inserted) {
-
+      // Update the message replied to
       if (inboxPrivateMessage != null && inboxPrivateMessage.getId() != -1) {
         inboxPrivateMessage.update(db);
       }
-
+      // Send email notice
       PortalUtils.processInsertHook(request, privateMessage);
     }
-    // This call will close panels and perform redirects
     // Close the panel, everything went well
-    //TODO: Kailash: Need to find out why PortalUtils.performRefresh did not work
     String ctx = request.getContextPath();
     response.sendRedirect(ctx + "/close_panel_refresh.jsp");
     return null;
-    //return (PortalUtils.performRefresh(request, response, "/show" + ("profile".equals(linkModule)?"":"/" + linkModule)));
-    //return (PortalUtils.performRefresh(request, response, "/show/reviews"));
-
   }
 
   /**
@@ -145,10 +167,10 @@ public class SavePrivateMessageAction implements IPortletAction {
    * @param linkModuleId
    * @return
    */
-  private int getLinkProjectId(Connection db, String linkItemId, int linkModuleId) throws SQLException {
+  private int getLinkProjectId(Connection db, int linkItemId, int linkModuleId) throws SQLException {
     int linkProjectId = -1;
     if (linkModuleId == Constants.PROJECT_BLOG_FILES) {
-      BlogPost blogPost = new BlogPost(db, Integer.parseInt(linkItemId));
+      BlogPost blogPost = new BlogPost(db, linkItemId);
       linkProjectId = blogPost.getProjectId();
     }
     return linkProjectId;

@@ -330,7 +330,7 @@
             <div class="ccp-alert">
               <ccp:evaluate
                   if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 0 %>'>
-                <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>">You have <%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
+                <a href="${ctx}/show/<%= User.getProfileProject().getUniqueId() %>/messages">You have <%= (String) request.getAttribute("requestPrivateMessageCount") %> new message<ccp:evaluate
                   if='<%= (Integer.parseInt((String)request.getAttribute("requestPrivateMessageCount"))) > 1 %>'>s</ccp:evaluate></a>
               </ccp:evaluate>
               <ccp:evaluate if='<%= (Integer.parseInt((String)request.getAttribute("requestInvitationCount"))) > 0 %>'>

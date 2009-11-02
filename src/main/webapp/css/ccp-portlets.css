@@ -1132,6 +1132,11 @@ ol.pagination {
 .events .portletWrapper,
 .sponsors .portletWrapper,
 .ideas .portletWrapper,
+.committees .portletWrapper,
+.departments .portletWrapper,
+.neighorhoods .portletWrapper,
+.clusters .portletWrapper,
+.voices .portletWrapper,
 .projects .portletWrapper {
   background: #e4e4e5!important;
   margin-top:0;
@@ -1163,6 +1168,11 @@ ol.pagination {
 .events .articleBody,
 .sponsors .articleBody,
 .ideas .articleBody,
+.committees .articleBody,
+.departments .articleBody,
+.neighborhoods .articleBody,
+.clusters .articleBody,
+.voices .articleBody,
 .projects .articleBody {
   margin:0;
   padding:0 0 30px 30px!important;
@@ -1181,6 +1191,11 @@ ol.pagination {
 .events .articleBody h2,
 .sponsors .articleBody h2,
 .ideas .articleBody h2,
+.committees .articleBody h2,
+.departments .articleBody h2,
+.neighborhoods .articleBody h2,
+.clusters .articleBody h2,
+.voices .articleBody h2,
 .projects .articleBody h2 {
   padding:10px 0 0 0!important;
   margin:0 0 10px 0;
@@ -1203,6 +1218,11 @@ ol.pagination {
 .events .articleBody img,
 .sponsors .articleBody img,
 .ideas .articleBody img,
+.committees .articleBody img,
+.departments .articleBody img,
+.neighborhoods .articleBody img,
+.clusters .articleBody img,
+.voices .articleBody img,
 .projects .articleBody img {
   margin-left:15px;
 }
@@ -1220,6 +1240,11 @@ ol.pagination {
 .events .articleBody ul,
 .sponsors .articleBody ul,
 .ideas .articleBody ul,
+.committees .articleBody ul,
+.departments .articleBody ul,
+.neighborhoods .articleBody ul,
+.clusters .articleBody ul,
+.voices .articleBody ul,
 .projects .articleBody ul,
 .home .articleBody ol,
 .products .articleBody ol,
@@ -1234,6 +1259,11 @@ ol.pagination {
 .events .articleBody ol,
 .sponsors .articleBody ol,
 .ideas .articleBody ol,
+.committees .articleBody ol,
+.departments .articleBody ol,
+.neighorhoods .articleBody ol,
+.clusters .articleBody ol,
+.voices .articleBody ol,
 .projects .articleBody ol {
   padding-right:10px;
 }

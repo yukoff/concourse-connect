@@ -1903,7 +1903,7 @@ li.listing {
   outline:0;
 }
 
-  /* Clear online status imgage */
+  /* Clear online status image */
   .detailed-list p img,
   .detailed-list cite img,
   .detailed-list h3 img,
@@ -1962,11 +1962,11 @@ li.listing {
 
 /* @end */
 
-/* @group $_detailed-list */
+/* @group $_file-list */
 
-/* @group $_detailed-list */
+/* @group $_file-list */
 
-/* $_detailed-list */
+/* $_file-list */
 
 .file-list .portlet-section:after {
   content: "." !important;
@@ -2083,7 +2083,7 @@ li.listing {
   overflow:hidden;
 }
 
-  /* Clear online status imgage */
+  /* Clear online status image */
   .file-list .portlet-section-body p img,
   .file-list .portlet-section-body cite img,
   .file-list .portlet-section-body h3 img,
@@ -2172,7 +2172,7 @@ li.listing {
 
 /* @end */
 
-/* @group $_detailed-list */
+/* @group $_search-list */
 
 /* $_search-list */
 
@@ -2277,7 +2277,7 @@ li.listing {
     outline:1px solid #bbb;
   }
 
-  /* Clear online status imgage */
+  /* Clear online status image */
   .search-list p img,
   .search-list cite img,
   .search-list h3 img,
@@ -2326,6 +2326,152 @@ li.listing {
 
 .search-list .star-rating,
 .search-list cite {
+      float: right;
+      clear: right;
+      white-space:nowrap;
+}
+
+/* @end */
+
+/* @group $_activity-list */
+
+/* $_activity-list */
+
+.activity-list ul,
+.activity-list ol {
+  padding:10px;
+  margin:0 0 10px 0;
+  position: relative;
+  vertical-align: top;
+  width: auto;
+  top: 0;
+  list-style:none;
+  background: #eee;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.activity-list h2 {
+  margin-top:2px;
+}
+
+.activity-list ol li,
+.activity-list ul li {
+  clear: both;
+  *display:inline-block; /* IE Fix */
+  margin:2px 0 3px 0;
+  position:relative;
+}
+
+.activity-list ol li:after,
+.activity-list ul li:after {
+    content: "." !important;
+    display: block !important;
+    height: 0 !important;
+    clear: both !important;
+    visibility: hidden !important;
+  }
+
+.activity-list ol ul,
+.activity-list ol ol {
+  float: left;
+  display: block;
+  width: auto;
+}
+
+.activity-list ol ul li,
+.activity-list ol ol li {
+  clear: none;
+  margin:0;
+}
+
+.activity-list ol ul li:after,
+.activity-list ol ol li:after {
+  clear: none;
+}
+
+.activity-list ol li .portlet-section-body,
+.activity-list ul li .portlet-section-body {
+  float:left;
+  width:80%;
+}
+
+.activity-list .external,
+.activity-list .denied {
+  padding: 0; /* Clear wiki styles */
+  background:none;
+}
+
+.activity-list .portlet-section-alternate,
+.activity-list li img {
+  float: left;
+  display: block;
+  width: 45px;
+  height: 45px;
+  margin: 0 5px 2px 0;
+  _display: inline-block; /* IE Fix */
+  background:#f0f0f0;
+  padding: 2px;
+  border: 1px solid #bbb;
+  overflow:hidden;
+}
+
+  .activity-list .portlet-section-alternate .default-photo,
+  .activity-list li img.default-photo {
+    background:#999;
+    border:2px solid #fff;
+    outline:1px solid #bbb;
+  }
+
+.activity-list .file-type {
+  background:none;
+  border:none;
+  outline:0;
+}
+
+  /* Clear online status image */
+  .activity-list p img,
+  .activity-list cite img,
+  .activity-list h3 img,
+  .activity-list h4 img,
+  .activity-list h5 img {
+    float:none;
+    clear:none;
+    display:inline;
+    width:auto;
+    height:auto;
+    margin:0;
+    background:none;
+    vertical-align:text-top;
+    border:none;
+    padding: 0;
+  }
+
+
+ .activity-list ol ul li img,
+ .activity-list ol ol li img {
+    float: none;
+    width: auto;
+    height: auto;
+    border: none;
+    background:none;
+    margin: 0;
+    padding: 0;
+  }
+
+.activity-list li h2,
+  .activity-list li h3,
+  .activity-list li h4,
+  .activity-list li p {
+    vertical-align: top;
+    clear: none;
+    margin: 0;
+    padding: 0;
+    top: 0
+  }
+
+.activity-list .star-rating,
+.activity-list cite {
       float: right;
       clear: right;
       white-space:nowrap;

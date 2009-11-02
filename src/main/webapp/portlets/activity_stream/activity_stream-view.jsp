@@ -71,7 +71,10 @@
         <c:if test="${!empty drawDay}">
           <c:remove var="drawDay"/>
           <div class="portlet-section-subheader">
-            <h4><ccp:tz timestamp="${projectHistory.entered}" pattern="MMMM dd" /></h4>
+            <h4>
+              <ccp:tz timestamp="${projectHistory.entered}" pattern="MMMM dd" /> -
+              <ccp:tz timestamp="${projectHistory.entered}" pattern="relative" />
+            </h4>
           </div>
         </c:if>
         <%-- Draw the owner --%>

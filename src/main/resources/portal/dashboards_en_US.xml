@@ -282,7 +282,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Group Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <events>
             	<value>badge</value>
@@ -409,7 +409,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Product Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Products</category>
             <events>
@@ -525,7 +525,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Service Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Services</category>
             <events>
@@ -641,7 +641,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>Solution Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Solutions</category>
             <events>
@@ -764,7 +764,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/partners</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Partners</category>
             <events>
@@ -892,7 +892,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/businesses</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Businesses</category>
             <events>
@@ -1019,7 +1019,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/organizations</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Organizations</category>
             <events>
@@ -1128,7 +1128,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/committees</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Committees</category>
             <events>
@@ -1246,7 +1246,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/sponsors</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Sponsors</category>
             <events>
@@ -1374,7 +1374,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/departments</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Departments</category>
             <events>
@@ -1501,7 +1501,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/groups</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Groups</category>
             <events>
@@ -1622,7 +1622,7 @@
             <linkTitle>true</linkTitle>
             <wikiForm>My Information</wikiForm>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>People</category>
             <events>
@@ -1747,7 +1747,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/places</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Places</category>
             <events>
@@ -1875,7 +1875,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/neighborhoods</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Neighborhoods</category>
             <events>
@@ -2003,7 +2003,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/events</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Events</category>
             <events>
@@ -2148,7 +2148,7 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Ideas</category>
             <events>
@@ -2233,7 +2233,7 @@
             <wiki>Welcome to projects</wiki>
             <showTitle>false</showTitle>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " isSensitive="true">
             <title>Recent Activity</title>
             <category>Projects</category>
             <events>
@@ -2360,7 +2360,7 @@
             <columns>3</columns>
             <hasMoreURL>/page/categories/clusters</hasMoreURL>
           </portlet>
-          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="10" isSensitive="true">
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
             <title>Recent Activity</title>
             <category>Clusters</category>
             <events>

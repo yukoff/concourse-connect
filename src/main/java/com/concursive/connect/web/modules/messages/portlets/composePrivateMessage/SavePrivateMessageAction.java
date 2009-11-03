@@ -48,6 +48,7 @@ package com.concursive.connect.web.modules.messages.portlets.composePrivateMessa
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.Constants;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.blog.dao.BlogPost;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
@@ -126,7 +127,8 @@ public class SavePrivateMessageAction implements IPortletAction {
     }
 
     // Check for captcha if this is a direct message (not a reply)
-    if (privateMessage.getLinkModuleId() != Constants.PROJECT_MESSAGES_FILES &&
+    if ("true".equals(PortalUtils.getApplicationPrefs(request).get(ApplicationPrefs.USERS_CAN_REGISTER)) &&
+        privateMessage.getLinkModuleId() != Constants.PROJECT_MESSAGES_FILES &&
         privateMessage.getProjectId() > -1) {
       if (privateMessage.getProject().getProfile() && !TeamMemberList.isOnTeam(db, privateMessage.getProjectId(), user.getId())) {
         LOG.debug("Verifying the captcha...");

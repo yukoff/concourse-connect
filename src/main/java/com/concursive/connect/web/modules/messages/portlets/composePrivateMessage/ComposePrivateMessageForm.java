@@ -47,6 +47,7 @@ package com.concursive.connect.web.modules.messages.portlets.composePrivateMessa
 
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.ModuleUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
@@ -131,7 +132,8 @@ public class ComposePrivateMessageForm implements IPortletViewer {
       }
     } else {
       // Since this is a direct message, indicate if this user is a friend
-      if (project.getProfile() && !TeamMemberList.isOnTeam(db, project.getId(), user.getId())) {
+      if ("true".equals(PortalUtils.getApplicationPrefs(request).get(ApplicationPrefs.USERS_CAN_REGISTER)) &&
+          project.getProfile() && !TeamMemberList.isOnTeam(db, project.getId(), user.getId())) {
         request.setAttribute(NEEDS_PERMISSION, "true");
       }
       // Show who this message is being sent to

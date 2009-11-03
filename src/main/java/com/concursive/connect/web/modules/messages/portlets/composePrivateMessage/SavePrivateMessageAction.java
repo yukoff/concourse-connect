@@ -125,8 +125,9 @@ public class SavePrivateMessageAction implements IPortletAction {
       return privateMessage;
     }
 
-    // Check for captcha if going to another user that is not a friend
-    if (privateMessage.getProjectId() > -1) {
+    // Check for captcha if this is a direct message (not a reply)
+    if (privateMessage.getLinkModuleId() != Constants.PROJECT_MESSAGES_FILES &&
+        privateMessage.getProjectId() > -1) {
       if (privateMessage.getProject().getProfile() && !TeamMemberList.isOnTeam(db, privateMessage.getProjectId(), user.getId())) {
         LOG.debug("Verifying the captcha...");
         String captcha = request.getParameter("captcha");

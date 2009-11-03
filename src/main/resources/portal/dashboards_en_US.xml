@@ -1668,14 +1668,12 @@
             <category>People</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentBlogPostsPortlet" cache="10"
-                   class="detailed-list " isSensitive="true">
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Blog Posts</title>
             <category>People</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentDiscussionsPortlet" cache="10"
-                   class="detailed-list " isSensitive="true">
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Discussions</title>
             <category>People</category>
             <limit>5</limit>
@@ -1782,13 +1780,12 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="RecentBlogPostsPortlet" cache="10">
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list ">
             <title>Recent Blog Posts</title>
             <category>Places</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentDiscussionsPortlet" cache="10"
-                   class="detailed-list ">
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list ">
             <title>Recent Discussion</title>
             <category>Places</category>
             <limit>5</limit>
@@ -1910,13 +1907,12 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="RecentBlogPostsPortlet" cache="10">
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list ">
             <title>Recent Blog Posts</title>
             <category>Neighborhoods</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentDiscussionsPortlet" cache="10"
-                   class="detailed-list ">
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list ">
             <title>Recent Discussion</title>
             <category>Neighborhoods</category>
             <limit>5</limit>
@@ -2038,7 +2034,7 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="RecentBlogPostsPortlet" cache="10" isSensitive="true">
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Blog Posts</title>
             <category>Events</category>
             <limit>5</limit>
@@ -2395,13 +2391,12 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
-          <portlet name="RecentBlogPostsPortlet" cache="10">
+          <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list ">
             <title>Recent Blog Posts</title>
             <category>Clusters</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="RecentDiscussionsPortlet" cache="10"
-                   class="detailed-list ">
+          <portlet name="RecentDiscussionsPortlet" cache="10" class="detailed-list ">
             <title>Recent Discussion</title>
             <category>Clusters</category>
             <limit>5</limit>

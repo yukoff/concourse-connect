@@ -44,6 +44,7 @@
  * by Concursive Corporation
  */
 
+var panel;
 var imagePanel;
 var panelGroups = {}; // stores data on all links with group names in the rel attribute (i.e. <a rel='shadowbox[images]'/>)
 var pagingIndex;
@@ -218,7 +219,6 @@ function showImage(title, url, width, imageHeight, imageWidth, groupName) {
   }
 
   imagePanel.show();
-//  imagePanel.cfg.refireEvent("zIndex");
 
   pagingGroupName = groupName;
   if(paginationString != "") {
@@ -329,7 +329,7 @@ function showPanel(title, url, width, id) {
 
   // Prepare the target panel
   var posx = (YAHOO.util.Dom.getViewportWidth() - width) / 2;
-  var panel = new YAHOO.widget.Dialog("dynamic-panel", {
+  panel = new YAHOO.widget.Dialog("dynamic-panel", {
     width:width + "px",
     x:posx,
     y:0,

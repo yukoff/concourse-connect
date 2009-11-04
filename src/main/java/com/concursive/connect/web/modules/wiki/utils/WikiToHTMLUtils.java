@@ -1058,7 +1058,7 @@ public class WikiToHTMLUtils {
         // Output with a calendar control
         String language = System.getProperty("LANGUAGE");
         String country = System.getProperty("COUNTRY");
-        return ("<input type=\"text\" name=\"" + fieldName + "\" size=\"10\" value=\"" + StringUtils.toHtmlValue(calendarValue) + "\" > " +
+        return ("<input type=\"text\" name=\"" + fieldName + "\" id=\"" + fieldName + "\" size=\"10\" value=\"" + StringUtils.toHtmlValue(calendarValue) + "\" > " +
             "<a href=\"javascript:popCalendar('inputForm', '" + fieldName + "','" + language + "','" + country + "');\">" + "<img src=\"" + contextPath + "/images/icons/stock_form-date-field-16.gif\" " + "border=\"0\" align=\"absmiddle\" height=\"16\" width=\"16\"/></a>");
       case CustomFormField.PERCENT:
         return ("<input type=\"text\" name=\"" + fieldName + "\" size=\"5\" value=\"" + StringUtils.toHtmlValue(field.getValue()) + "\"> " + "%");

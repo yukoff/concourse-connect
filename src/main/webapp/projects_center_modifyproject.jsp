@@ -114,7 +114,7 @@
           </ccp:evaluate>
           <fieldset id="projectStartTime">
             <legend><ccp:label name="projectsCenterModifyProject.startDate">Start Date</ccp:label></legend>
-              <input type="text" name="requestDate" size="10" value="<ccp:tz timestamp="<%= project.getRequestDate() %>" dateOnly="true"/>">
+              <input type="text" name="requestDate" id="requestDate" size="10" value="<ccp:tz timestamp="<%= project.getRequestDate() %>" dateOnly="true"/>">
               <a href="javascript:popCalendar('inputForm', 'requestDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
               <ccp:label name="projectsCenterModifyProject.at">at</ccp:label>
               <ccp:timeSelect baseName="requestDate" value="<%= project.getRequestDate() %>" timeZone="<%= User.getTimeZone() %>"/>
@@ -124,7 +124,7 @@
           </fieldset>
           <fieldset id="projectCloseDate">
             <legend><ccp:label name="projectsCenterModifyProject.estimatedCloseDate">Estimated Close Date</ccp:label></legend>
-            <input type="text" name="estimatedCloseDate" size="10" value="<ccp:tz timestamp="<%= project.getEstimatedCloseDate() %>" dateOnly="true"/>">
+            <input type="text" name="estimatedCloseDate" id="estimatedCloseDate" size="10" value="<ccp:tz timestamp="<%= project.getEstimatedCloseDate() %>" dateOnly="true"/>">
             <a href="javascript:popCalendar('inputForm', 'estimatedCloseDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
             <ccp:label name="projectsCenterModifyProject.at">at</ccp:label>
             <ccp:timeSelect baseName="estimatedCloseDate" value="<%= project.getEstimatedCloseDate() %>" timeZone="<%= User.getTimeZone() %>"/>

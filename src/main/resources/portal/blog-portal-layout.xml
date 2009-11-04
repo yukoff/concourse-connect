@@ -75,8 +75,8 @@
           	<title>${project.features.labelBlog}</title>
 		      </portlet>
         </column>
-        <column width="300" class="basic-list ">
-          <portlet name="BlogListCounterPortlet" />
+        <column width="300">
+          <portlet name="BlogListCounterPortlet" class="basic-list "/>
         </column>
       </row>
     </page>

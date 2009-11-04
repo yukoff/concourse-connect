@@ -184,7 +184,7 @@
           <%= toHtml(thisTicket.getPriorityName()) %>
         </td>
         <td>
-          <ccp:username id="<%= thisTicket.getAssignedTo() %>"/>
+          <ccp:username id="<%= thisTicket.getAssignedTo() %>" />&nbsp;
         </td>
         <td align="right" nowrap>
           <%= thisTicket.getAgeOf() %>

@@ -51,7 +51,7 @@
 <portlet:actionURL var="processAction" portletMode="view" />
 <form method="post" name="inputForm" action="<%= pageContext.getAttribute("processAction") %>">
   Start Date:
-  <input type="text" name="startDate" size="10" value="<ccp:tz timestamp="${startDate}" dateOnly="true"/>">
+  <input type="text" name="startDate" id="startDate" size="10" value="<ccp:tz timestamp="${startDate}" dateOnly="true"/>">
   <a href="javascript:popCalendar('inputForm', 'startDate', '${user.locale.language}', '${user.locale.country}');"><img src="${ctx}/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a><br />
   <input type="text" name="daysToShow" value="<c:out value="${daysToShow}" />" size="5" />days to work on release<br />
   <input type="text" name="estimatedHours" value="<c:out value="${estimatedHours}" />" size="5" />hours this release will take<br />

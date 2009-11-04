@@ -500,6 +500,9 @@
         if (window.scrollTo) window.scrollTo(<%= StringUtils.jsEscape(request.getParameter("scrollLeft")) %>, <%= StringUtils.jsEscape(request.getParameter("scrollTop")) %>);
       </script>
     </ccp:evaluate>
-    <div class="yui-skin-sam" id="popupLayer"></div>
+    <div class="yui-skin-sam">
+      <div id="popupLayer"></div>
+      <div id="popupCalendar"></div>
+    </div>
   </body>
 </html>

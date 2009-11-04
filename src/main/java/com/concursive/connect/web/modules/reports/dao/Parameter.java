@@ -543,7 +543,7 @@ public class Parameter extends GenericBean {
       String language = user.getLocale().getLanguage();
       String country = user.getLocale().getCountry();
 
-      return "<input type='text' size='10' name='" + name + "' " +
+      return "<input type='text' size='10' name='" + name + "' id='" + name + "' " +
           "value='" + StringUtils.toHtmlValue(value) + "'/>\r\n" +
           "<a href=\"javascript:popCalendar('inputForm', '" + name + "','" +
           language + "','" + country + "');\">" +

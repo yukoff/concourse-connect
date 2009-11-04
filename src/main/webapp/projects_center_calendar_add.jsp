@@ -89,7 +89,7 @@
           <ccp:label name="projectsCenterCalendar.add.startTime">Start Time</ccp:label> <span class="required">*</span>
           <%= showAttribute(request, "startDateError") %>
         </legend>
-        <input type="text" name="startDate" size="10" value="<ccp:tz timestamp="<%= meeting.getStartDate() %>" dateOnly="true"/>" onBlur="calendarTrigger('', 'startDate', '', <%= User.getLocale().getLanguage().equals("en") %>);">
+        <input type="text" name="startDate" id="startDate" size="10" onchange="calendarTrigger('startDate');" value="<ccp:tz timestamp="<%= meeting.getStartDate() %>" dateOnly="true"/>">
         <a href="javascript:popCalendar('inputForm', 'startDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
         at
         <ccp:timeSelect baseName="startDate" value="<%= meeting.getStartDate() %>" timeZone="<%= User.getTimeZone() %>"/>
@@ -100,7 +100,7 @@
           <ccp:label name="projectsCenterCalendar.add.endTime">End Time</ccp:label> <span class="required">*</span>
           <%= showAttribute(request, "endDateError") %>
         </legend>
-        <input type="text" name="endDate" size="10" value="<ccp:tz timestamp="<%= meeting.getEndDate() %>" dateOnly="true"/>">
+        <input type="text" name="endDate" id="endDate" size="10" onchange="calendarTrigger('endDate');" value="<ccp:tz timestamp="<%= meeting.getEndDate() %>" dateOnly="true"/>">
         <a href="javascript:popCalendar('inputForm', 'endDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
         at
         <ccp:timeSelect baseName="endDate" value="<%= meeting.getEndDate() %>" timeZone="<%= User.getTimeZone() %>"/>
@@ -133,7 +133,7 @@
           </c:forEach>
         </fieldset>
     </fieldset>
-    <input type="submit" name="save" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" onclick="calendarTrigger('inputForm', 'startDate', '', <%= User.getLocale().getLanguage().equals("en") %>); return checkFormEventMeetingAdd(this.form);" />
+    <input type="submit" name="save" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" onclick="calendarTrigger('startDate'); return checkFormEventMeetingAdd(this.form);" />
     <c:choose>
       <c:when test="${'true' eq param.popup || 'true' eq popup}">
         <input type="button" value="Cancel" class="cancel" id="panelCloseButton">

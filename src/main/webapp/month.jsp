@@ -71,7 +71,7 @@
      country = "US";
    }
 %>
-<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<script LANGUAGE="javascript" TYPE="text/javascript">
   function openWindow(month, day, year) {
     width = 600;
     height = 400;
@@ -103,7 +103,7 @@
   String origDay = StringUtils.encodeUrl(request.getParameter("origDay"));
   String origYear = StringUtils.encodeUrl(request.getParameter("origYear"));
   String origMonth = StringUtils.encodeUrl(request.getParameter("origMonth"));
-  String dateString = StringUtils.encodeUrl(request.getParameter("date"));
+  String dateString = request.getParameter("date");
   String timeZone = StringUtils.encodeUrl(request.getParameter("timeZone"));
 
   //If the user clicks the next/previous arrow, increment/decrement the month
@@ -146,6 +146,7 @@
       day = String.valueOf(parseCal.get(Calendar.DAY_OF_MONTH));
       year = String.valueOf(parseCal.get(Calendar.YEAR));
     } catch (Exception e) {
+      System.out.println("*** Could not parse date: " + dateString);
     }
   }
 

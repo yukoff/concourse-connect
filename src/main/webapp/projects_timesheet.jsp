@@ -58,8 +58,8 @@
     frames['sliderView'].location.href='<%= ctx %>/Timesheet.do?command=Slider&start=' + start + '&popup=true';
     frames['weekView'].location.href='<%= ctx %>/Timesheet.do?command=Week&start=' + start + '&popup=true';
   }
-  function calendarTrigger(formName, fieldName, fieldValue) {
-    window.location.href='<%= ctx %>/Timesheet.do?goToDate=' + fieldValue;
+  function calendarTrigger(fieldName) {
+    window.location.href='<%= ctx %>/Timesheet.do?goToDate=' + document.getElementById(fieldName).value;;
   }
 </script>
 <form name="inputForm" method="post" action="<%= ctx %>/Timesheet.do">
@@ -68,7 +68,7 @@
 <ccp:username id="<%= User.getId() %>"/>
 <br />
 <ccp:label name="projectsTimesheets.weekOf">Week of:</ccp:label>
-<input type="text" disabled size="10" name="goToDate" value="<ccp:tz timestamp="<%= new Timestamp(Long.parseLong(thisWeekStartDate)) %>" dateOnly="true" default="&nbsp;"/>" />
+<input type="text" disabled size="10" name="goToDate" id="goToDate" onchange="calendarTrigger('goToDate');" value="<ccp:tz timestamp="<%= new Timestamp(Long.parseLong(thisWeekStartDate)) %>" dateOnly="true" default="&nbsp;"/>" />
 <a href="javascript:popCalendar('inputForm', 'goToDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
 <br />
 </form>

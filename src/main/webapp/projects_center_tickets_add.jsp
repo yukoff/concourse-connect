@@ -269,9 +269,9 @@ function hideSubCats(subCatID, value) {
             }
         %>
         <%= team.getHtml("assignedTo", ticket.getAssignedTo()) %>
-        <fieldset id="estimatedResolutionDate">
+        <fieldset>
           <legend><ccp:label name="projectsCenterTickets.add.estimatedResolutionDate">Estimated Resolution Date</ccp:label></legend>
-          <input type="text" name="estimatedResolutionDate" size="10" value="<ccp:tz timestamp="<%= ticket.getEstimatedResolutionDate() %>" dateOnly="true"/>">
+          <input type="text" name="estimatedResolutionDate" id="estimatedResolutionDate" size="10" value="<ccp:tz timestamp="<%= ticket.getEstimatedResolutionDate() %>" dateOnly="true"/>">
           <a href="javascript:popCalendar('ticketForm', 'estimatedResolutionDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle" /></a>
           <ccp:label name="projectsCenterTickets.add.at">at</ccp:label>
           <ccp:timeSelect baseName="estimatedResolutionDate" value="<%= ticket.getEstimatedResolutionDate() %>" timeZone="<%= User.getTimeZone() %>"/>

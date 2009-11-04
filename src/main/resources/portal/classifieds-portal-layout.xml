@@ -76,7 +76,7 @@
 		      </portlet>
         </column>
         <column width="300">
-          <portlet name="ClassifiedsPortlet" viewer="summary" />
+          <portlet name="ClassifiedsPortlet" viewer="summary" class="basic-list "/>
         </column>
       </row>
     </page>
@@ -108,11 +108,6 @@
         <column width="auto" class="main">
           <portlet name="ClassifiedsPortlet" viewer="details">
             <title>${project.features.labelClassifieds}</title>
-          </portlet>
-        </column>
-        <column width="300">
-          <portlet name="ContentPortlet">
-            <content>Placeholder content</content>
           </portlet>
         </column>
       </row>

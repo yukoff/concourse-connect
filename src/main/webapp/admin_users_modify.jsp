@@ -189,7 +189,7 @@ User Details<br />
     <tr class="containerBody">
       <td nowrap class="formLabel">Access Expiration</td>
       <td>
-        <input type="text" name="expiration" size="10" value="<ccp:tz timestamp="<%= thisUser.getExpiration() %>" dateOnly="true"/>">
+        <input type="text" name="expiration" id="expiration" size="10" value="<ccp:tz timestamp="<%= thisUser.getExpiration() %>" dateOnly="true"/>">
         <a href="javascript:popCalendar('detailForm', 'expiration', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
         at
         <ccp:timeSelect baseName="expiration" value="<%= thisUser.getExpiration() %>" timeZone="<%= User.getTimeZone() %>"/>

@@ -112,23 +112,23 @@
 	          </c:set>
 	        </c:if>
 			<c:if test="${!empty preferenceMap.requestDate}">
-	         <label for="<portlet:namespace/>requestDate"><c:out value="${preferenceMap.requestDate}"/><c:if test="${preferenceMap.requiresStartEndDate eq 'true'}"><span class="required">*</span></c:if></label>
-	         <input type="text" name="requestDate" id="<portlet:namespace/>requestDate" class="inputDate" value="${requestDate}" onBlur="javascript:calendarTrigger<portlet:namespace/>('<portlet:namespace/>requestDate','<portlet:namespace/>estimatedCloseDate');" />
-	         <a href="javascript:popCalendar('<portlet:namespace/>updateProjectForm', 'requestDate', '${user.locale.language}', '${user.locale.country}', '<portlet:namespace/>requestDate');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
+	         <label for="requestDate"><c:out value="${preferenceMap.requestDate}"/><c:if test="${preferenceMap.requiresStartEndDate eq 'true'}"><span class="required">*</span></c:if></label>
+	         <input type="text" name="requestDate" id="requestDate" class="inputDate" value="${requestDate}" />
+	         <a href="javascript:popCalendar('<portlet:namespace/>updateProjectForm', 'requestDate', '${user.locale.language}', '${user.locale.country}', 'requestDate');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
 	         <ccp:label name="projectsAddProject.at">at</ccp:label>
 	         <ccp:timeSelect baseName="requestDate" value="${projectBean.requestDate}" timeZone="${user.timeZone}"/>
 	         <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
 	         <div class="error"><%= showAttribute(request, "requestDateError") %></div>
-	       </c:if>
+	    </c:if>
 			<c:if test="${!empty preferenceMap.estimatedCloseDate}">
-	         <label for="<portlet:namespace/>estimatedCloseDate"><c:out value="${preferenceMap.estimatedCloseDate}"/><c:if test="${preferenceMap.requiresStartEndDate eq 'true'}"><span class="required">*</span></c:if></label>
-	         <input type="text" name="estimatedCloseDate" id="<portlet:namespace/>estimatedCloseDate" class="inputDate" value="${estimatedCloseDate}" >
+	         <label for="estimatedCloseDate"><c:out value="${preferenceMap.estimatedCloseDate}"/><c:if test="${preferenceMap.requiresStartEndDate eq 'true'}"><span class="required">*</span></c:if></label>
+	         <input type="text" name="estimatedCloseDate" id="estimatedCloseDate" class="inputDate" value="${estimatedCloseDate}" >
 	         <a href="javascript:popCalendar('<portlet:namespace/>updateProjectForm', 'estimatedCloseDate', '${user.locale.language}', '${user.locale.country}');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
 	         <ccp:label name="projectsAddProject.at">at</ccp:label>
 	         <ccp:timeSelect baseName="estimatedCloseDate" value="${projectBean.estimatedCloseDate}" timeZone="${user.timeZone}"/>
 	         <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
 	         <%= showAttribute(request, "estimatedCloseDateError") %>
-	       </c:if>
+	    </c:if>
 		    <div class="leftColumn">
 		    	<c:if test="${!empty preferenceMap.subCategory1}">
 		    		<c:if test="${!empty subCategoryList}">

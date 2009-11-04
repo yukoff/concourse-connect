@@ -94,7 +94,7 @@
       <tr class="containerBody">
         <td nowrap class="formLabel"><ccp:label name="projectsClone.startDate">Start Date</ccp:label></td>
         <td nowrap>
-          <input type="text" name="requestDate" size="10" value="<ccp:tz timestamp="<%= project.getRequestDate() %>" dateOnly="true"/>">
+          <input type="text" name="requestDate" id="requestDate" size="10" value="<ccp:tz timestamp="<%= project.getRequestDate() %>" dateOnly="true"/>">
           <a href="javascript:popCalendar('inputForm', 'requestDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
           <ccp:label name="projectsClone.at">at</ccp:label>
           <ccp:timeSelect baseName="requestDate" value="<%= project.getRequestDate() %>" timeZone="<%= User.getTimeZone() %>"/>

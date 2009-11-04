@@ -202,8 +202,8 @@
             <fieldset>
               <legend>Start Date <c:if test="requiresStartEndDate"><span class="required">*</span></c:if></legend>
               <%= showAttribute(request, "requestDateError") %>
-              <input type="text" name="requestDate" id="<portlet:namespace/>requestDate" class="inputDate" value="${requestDate}" onBlur="javascript:calendarTrigger<portlet:namespace/>('<portlet:namespace/>requestDate','<portlet:namespace/>estimatedCloseDate');" />
-              <a href="javascript:popCalendar<portlet:namespace/>('inputForm', 'requestDate', '${user.locale.language}', '${user.locale.country}', '<portlet:namespace/>requestDate');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
+              <input type="text" name="requestDate" id="requestDate" class="inputDate" onchange="calendarTrigger('requestDate');" value="${requestDate}" />
+              <a href="javascript:popCalendar('inputForm','requestDate','${user.locale.language}','${user.locale.country}');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
               <ccp:label name="projectsAddProject.at">at</ccp:label>
               <ccp:timeSelect baseName="requestDate" value="${project.requestDate}" timeZone="${user.timeZone}"/>
               <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
@@ -211,7 +211,7 @@
             <fieldset class="projectEndTime">
               <legend>Ends at <c:if test="requiresStartEndDate"><span class="required">*</span></c:if></legend>
               <%= showAttribute(request, "estimatedCloseDateError") %>
-              <input type="text" name="estimatedCloseDate" id="<portlet:namespace/>estimatedCloseDate" class="inputDate" value="${estimatedCloseDate}" />
+              <input type="text" name="estimatedCloseDate" id="estimatedCloseDate" class="inputDate" onchange="calendarTrigger('estimatedCloseDate');" value="${estimatedCloseDate}" />
               <a href="javascript:popCalendar('inputForm', 'estimatedCloseDate', '${user.locale.language}', '${user.locale.country}');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
               <ccp:label name="projectsAddProject.at">at</ccp:label>
               <ccp:timeSelect baseName="estimatedCloseDate" value="${project.estimatedCloseDate}" timeZone="${user.timeZone}"/>
@@ -220,7 +220,7 @@
           </c:if>
           <%-- End Start And Stop Time--%>
           <%-- Site Categories --%>
-          <ccp:evaluate if="<%= \"true\".equals(isSubCategoryModifiable) %>">
+          <ccp:evaluate if='<%= "true".equals(isSubCategoryModifiable) %>'>
             <ccp:evaluate if="<%= allowedCategoryList.size() <= 1 %>">
               <ccp:evaluate if="<%= subCategoryList.size() > 0 %>">
                 <label for="subCategory1Id">
@@ -335,16 +335,16 @@
 </div>
 <script language="javascript" type="text/javascript">
   // form validation
-  function checkForm<portlet:namespace/>(form) {
+  function checkForm(form) {
     var formTest = true;
     var messageText = "";
     <%-- Validations --%>
     <c:if test="${requiresStartEndDate eq 'true'}">
-      if (!document.getElementById("<portlet:namespace/>requestDate").value) {
+      if (!document.getElementById("requestDate").value) {
         messageText += "- Start Date is a required field\r\n";
         formTest = false;
       }
-      if (!document.getElementById("<portlet:namespace/>estimatedCloseDate").value) {
+      if (!document.getElementById("estimatedCloseDate").value) {
         messageText += "- End Date is a required field\r\n";
         formTest = false;
       }
@@ -423,19 +423,18 @@
       </c:otherwise>
     </c:choose>
   });
-  function calendarTrigger<portlet:namespace/>(startDateId, endDateId) {
-    // TODO: i18n
-    <c:if test="${'en' == user.locale.language}">
-      var startDateValue = document.getElementById(startDateId).value;
-      var endDateValue = document.getElementById(endDateId).value;
-      if (Date.parse(startDateValue) > Date.parse(endDateValue)) {
-        document.getElementById(endDateId).value = startDateValue;
+  function calendarTrigger(fieldName) {
+    var startDateEl = document.getElementById('requestDate');
+    var endDateEl = document.getElementById('estimatedCloseDate');
+    if (fieldName == 'requestDate') {
+      if (dateIsLaterThan(startDateEl, endDateEl)) {
+        endDateEl.value = startDateEl.value;
       }
-    </c:if>
-  }
-  function popCalendar<portlet:namespace/>(inputForm, fieldName, language, country, fieldId) {
-     popCalendar(inputForm, fieldName, language, country);
-     document.getElementById(fieldId).focus();
+    } else if (fieldName == 'estimatedCloseDate') {
+      if (dateIsLaterThan(startDateEl, endDateEl)) {
+        startDateEl.value = endDateEl.value;
+      }
+    }
   }
   function fileAttachmentSelector() {
     var linkModuleId = '&lmid=<%= Constants.PROJECT_IMAGE_FILES %>';

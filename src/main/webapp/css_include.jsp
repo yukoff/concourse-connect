@@ -61,6 +61,10 @@
   if (clientType.getType() == -1) {
     clientType.setParameters(request);
   }
+  String pattern = ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, User.getLocale())).toLocalizedPattern();
+  String patternDel = "/";
+  if (pattern.contains(".")) { patternDel = "."; }
+  if (pattern.contains("-")) { patternDel = "-"; }
 %>
 <pack:style>
   <src>/css/carousel.css</src>
@@ -70,6 +74,7 @@
   <src>/css/ccp-profile.css</src>
   <src>/css/star_rating.css</src>
   <src>/css/bucketlist.css</src>
+  <src>/javascript/yui-2.7/build/calendar/assets/skins/sam/calendar.css</src>
   <src>/javascript/yui-2.7/build/container/assets/skins/sam/container.css</src>
   <src>/javascript/yui-2.7/build/container/assets/container.css</src>
 </pack:style>
@@ -106,6 +111,12 @@
 <%-- Global Javascript --%>
 <script type="text/javascript">
   var teamelements_ctx = '<%= ctx %>';
+  var connect_startDayOfWeek = <%= Calendar.getInstance(User.getLocale()).getFirstDayOfWeek() - 1 %>;
+  var connect_datePattern = '<%= pattern %>';
+  var connect_dateFieldDelimiter = '<%= patternDel %>';
+  var connect_dateDayPosition = '<%= pattern.indexOf("d") < pattern.indexOf("M") ? 1 : 2 %>';
+  var connect_dateMonthPosition = '<%= pattern.indexOf("d") < pattern.indexOf("M") ? 2 : 1 %>';
+  var connect_dateYearPosition = '3';
 </script>
 <pack:script>
   <src>/javascript/ajax.js</src>
@@ -126,6 +137,7 @@
   <src>/javascript/captcha.js</src>
   <src>/javascript/AC_RunActiveContent.js</src>
   <src>/javascript/yui-2.7/build/utilities/utilities.js</src>
+  <src>/javascript/yui-2.7/build/calendar/calendar-min.js</src>
   <src>/javascript/yui-2.7/build/container/container-min.js</src>
   <src>/javascript/yui-2.7/build/datasource/datasource-min.js</src>
   <src>/javascript/yui-2.7/build/json/json-min.js</src>

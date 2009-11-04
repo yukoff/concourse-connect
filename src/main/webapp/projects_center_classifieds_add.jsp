@@ -71,11 +71,11 @@
         formTest = false;
       }
       //Check date fields
-      if ((document.inputForm.publishDate.value != "") && (!checkDate(document.inputForm.publishDate.value))) {
+      if (document.inputForm.publishDate && (document.inputForm.publishDate.value != "") && (!checkDate(document.inputForm.publishDate.value))) {
         messageText += "- Publish date was not properly entered\r\n";
         formTest = false;
       }
-      if ((document.inputForm.expirationDate.value != "") && (!checkDate(document.inputForm.expirationDate.value))) {
+      if (document.inputForm.expirationDate && (document.inputForm.expirationDate.value != "") && (!checkDate(document.inputForm.expirationDate.value))) {
         messageText += "- Expiration date was not properly entered\r\n";
         formTest = false;
       }
@@ -135,7 +135,7 @@
                 <ccp:label name="projectsCenterClassifieds.add.startDate">Publish Date/Time</ccp:label>
               </legend>
               <%= showAttribute(request, "publishDateError") %>
-              <input type="text" name="publishDate" size="10" value="<ccp:tz timestamp="<%= classified.getPublishDate() %>" dateOnly="true"/>">
+              <input type="text" name="publishDate" id="publishDate" size="10" value="<ccp:tz timestamp="<%= classified.getPublishDate() %>" dateOnly="true"/>">
               <a href="javascript:popCalendar('inputForm', 'publishDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
               <ccp:label name="projectsCenterClassifieds.add.at">at</ccp:label>
               <ccp:timeSelect baseName="publishDate" value="<%= classified.getPublishDate() %>" timeZone="<%= User.getTimeZone() %>"/>
@@ -146,7 +146,7 @@
                 <ccp:label name="projectsCenterClassifieds.add.archiveTime">Expiration Date/Time</ccp:label>
               </legend>
               <%= showAttribute(request, "expirationDateError") %>
-              <input type="text" name="expirationDate" size="10" value="<ccp:tz timestamp="<%= classified.getExpirationDate() %>" dateOnly="true"/>">
+              <input type="text" name="expirationDate" id="expirationDate" size="10" value="<ccp:tz timestamp="<%= classified.getExpirationDate() %>" dateOnly="true"/>">
               <a href="javascript:popCalendar('inputForm', 'expirationDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
               <ccp:label name="projectsCenterClassifieds.add.at">at</ccp:label>
               <ccp:timeSelect baseName="expirationDate" value="<%= classified.getExpirationDate() %>" timeZone="<%= User.getTimeZone() %>"/>

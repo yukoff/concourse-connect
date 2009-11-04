@@ -16,7 +16,7 @@
  * These terms must be included in any work that has ConcourseConnect components.
  * If you are developing and distributing open source applications under the
  * GNU Affero General Public License, then you are free to use ConcourseConnect
- * under the GNU Affero General Public License. Ê
+ * under the GNU Affero General Public License. ï¿½
  *
  * If you are deploying a web site in which users interact with any portion of
  * ConcourseConnect over a network, the complete source code changes must be made
@@ -59,9 +59,9 @@ function popURL(filename, title, width, height, resize, bars) {
   
   var params = 'WIDTH=' + width + ',HEIGHT=' + height + ',RESIZABLE=' + resize + ',SCROLLBARS=' + bars + ',STATUS=0,LEFT=' + posx + ',TOP=' + posy + ',screenX=' + posx + ',screenY=' + posy;
   var newwin=window.open(filename, title, params);
-  newwin.focus();
-  if (newwin != null) {
-    if (newwin.opener == null)
-      newwin.opener = self;
+    newwin.focus();
+    if (newwin != null) {
+      if (newwin.opener == null)
+        newwin.opener = self;
+    }
   }
-}

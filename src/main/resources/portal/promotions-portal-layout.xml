@@ -76,7 +76,7 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="PromotionsListCounterPortlet" />
+          <portlet name="PromotionsListCounterPortlet" class="basic-list "/>
           <portlet name="ContentPortlet">
             <content>
                 <![CDATA[

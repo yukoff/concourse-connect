@@ -201,7 +201,7 @@
                 <ccp:label name="projectsCenterRequirements.add.start">Start:</ccp:label>
               </td>
               <td>
-                <input type="text" name="startDate" size="10" onChange="checkDate(this.value)" value="<ccp:tz timestamp="<%= Requirement.getStartDate() %>" dateOnly="true"/>">
+                <input type="text" name="startDate" id="startDate" size="10" onChange="checkDate(this.value)" value="<ccp:tz timestamp="<%= Requirement.getStartDate() %>" dateOnly="true"/>">
                 <a href="javascript:popCalendar('inputForm', 'startDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
                 <%=showAttribute(request,"startDateError")%>
               </td>
@@ -211,7 +211,7 @@
                 <ccp:label name="projectsCenterRequirements.add.finish">Finish:</ccp:label>
               </td>
               <td>
-                <input type="text" name="deadline" size="10" onChange="checkDate(this.value)" value="<ccp:tz timestamp="<%= Requirement.getDeadline() %>" dateOnly="true"/>">
+                <input type="text" name="deadline" id="deadline" size="10" onChange="checkDate(this.value)" value="<ccp:tz timestamp="<%= Requirement.getDeadline() %>" dateOnly="true"/>">
                 <a href="javascript:popCalendar('inputForm', 'deadline', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
                 <%= showAttribute(request,"deadlineError") %>
               </td>

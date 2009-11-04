@@ -214,12 +214,14 @@ public class DateTimeHandler extends TagSupport {
           if (dateOnly) {
             formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(
                 dateFormat, locale);
+            formatter.applyPattern(DateUtils.get4DigitYearDateFormat(formatter.toLocalizedPattern()));
           } else if (timeOnly) {
             formatter = (SimpleDateFormat) SimpleDateFormat.getTimeInstance(
                 timeFormat, locale);
           } else {
             formatter = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance(
                 dateFormat, timeFormat, locale);
+            formatter.applyPattern(DateUtils.get4DigitYearDateFormat(formatter.toLocalizedPattern()));
           }
 
           // Use a Java formatter pattern

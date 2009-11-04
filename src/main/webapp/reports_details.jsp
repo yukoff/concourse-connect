@@ -139,7 +139,7 @@ Configure the parameters for this report...<br />
         at
         <ccp:timeSelect baseName="scheduleTime" value="<%= new Timestamp(System.currentTimeMillis()) %>" timeZone="<%= User.getTimeZone() %>"/>
         <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/><br />
-        Starting <input type="text" name="scheduleTime" size="10" value="<ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" dateOnly="true"/>">
+        Starting <input type="text" name="scheduleTime" id="scheduleTime" size="10" value="<ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" dateOnly="true"/>">
         <a href="javascript:popCalendar('inputForm', 'scheduleTime', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
       </td>
     </tr>

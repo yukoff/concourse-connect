@@ -61,7 +61,11 @@
   if (clientType.getType() == -1) {
     clientType.setParameters(request);
   }
-  String pattern = ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, User.getLocale())).toLocalizedPattern();
+  Locale locale = User.getLocale();
+  if (locale == null) {
+    locale = new Locale(clientType.getLanguage());
+  }
+  String pattern = ((SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, locale)).toLocalizedPattern();
   String patternDel = "/";
   if (pattern.contains(".")) { patternDel = "."; }
   if (pattern.contains("-")) { patternDel = "-"; }
@@ -111,7 +115,7 @@
 <%-- Global Javascript --%>
 <script type="text/javascript">
   var teamelements_ctx = '<%= ctx %>';
-  var connect_startDayOfWeek = <%= Calendar.getInstance(User.getLocale()).getFirstDayOfWeek() - 1 %>;
+  var connect_startDayOfWeek = <%= Calendar.getInstance(locale).getFirstDayOfWeek() - 1 %>;
   var connect_datePattern = '<%= pattern %>';
   var connect_dateFieldDelimiter = '<%= patternDel %>';
   var connect_dateDayPosition = '<%= pattern.indexOf("d") < pattern.indexOf("M") ? 1 : 2 %>';

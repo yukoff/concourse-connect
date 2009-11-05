@@ -1940,7 +1940,7 @@ h3.eventName span em {
 
 /* @group Wiki Stuff */
 .articleBody img {
-  max-width: 95%!important
+  max-width: 100%!important
 }
 
 .external {

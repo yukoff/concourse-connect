@@ -150,7 +150,7 @@ public class ProjectWikiContentViewer implements IPortletViewer {
       LOG.debug("Wiki not found or has no content.");
       // Check if the current user can modify the target wiki content
       request.setAttribute(WIKI_NAME, wikiName);
-      if (ProjectUtils.hasAccess(project.getId(), PortalUtils.getUser(request), "project-wiki-add")) {
+      if (ProjectUtils.hasAccess(project.getId(), user, "project-wiki-add")) {
         LOG.debug("Showing edit page information");
         return VIEW_PAGE_MESSAGE;
       }

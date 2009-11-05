@@ -247,6 +247,9 @@ public class ProjectProfilePortlet extends GenericPortlet {
         projectBadgeList.buildList(db);
         request.setAttribute(PROJECT_BADGE_LIST, projectBadgeList);
 
+        // Record view
+        PortalUtils.processSelectHook(request, project);
+
         // JSP view
         PortletContext context = getPortletContext();
         PortletRequestDispatcher requestDispatcher =

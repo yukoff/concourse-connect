@@ -494,7 +494,11 @@ public class UserList extends ArrayList<User> {
                 sqlFilter.append("(");
               }
 
-              sqlFilter.append(" (u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + activeProject.getId() + " AND pr.rating " + operator + " " + value + " )) ");
+              sqlFilter.append("(u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + activeProject.getId() + " AND pr.rating " + operator + " " + value + " )) ");
+              if (searchCriteria.getIsTeamMember() == Constants.TRUE){
+                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId()  + " )) ");
+              }
+              
               previousOp = operator;
               termsProcessed++;
             }
@@ -534,7 +538,10 @@ public class UserList extends ArrayList<User> {
                   sqlFilter.append("(");
                 }
 
-                sqlFilter.append(" (u.user_id IN (SELECT pv.user_id FROM projects_view pv WHERE pv.project_id = " + activeProject.getId() + " AND pv.view_date " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "')) ");
+                sqlFilter.append("(u.user_id IN (SELECT pv.user_id FROM projects_view pv WHERE pv.project_id = " + activeProject.getId() + " AND pv.view_date " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "') )");
+                if (searchCriteria.getIsTeamMember() == Constants.TRUE){
+                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId()  + " )) ");
+                }
                 previousOp = operator;
                 termsProcessed++;
               }
@@ -596,6 +603,9 @@ public class UserList extends ArrayList<User> {
                     "WHERE iss.project_id = " + activeProject.getId() + " " +
                     "AND pir.entered " + operator + "'" + DatabaseUtils.parseDateToTimestamp(value) + "') ");
                 sqlFilter.append(") ");
+                if (searchCriteria.getIsTeamMember() == Constants.TRUE){
+                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId()  + " )) ");
+                }
                 previousOp = operator;
                 termsProcessed++;
               }

@@ -67,6 +67,7 @@ public class UserSearchBean extends GenericBean {
   private int contentEditor = Constants.UNDEFINED;
 
   private String activeProject = null;
+  private int isTeamMember = Constants.UNDEFINED;
   private HashMap roleIds = null;
   private HashMap ratings = null;
   private HashMap lastViewed = null;
@@ -194,6 +195,24 @@ public class UserSearchBean extends GenericBean {
     this.activeProject = activeProject;
   }
 
+  /**
+   * @return the teamMember
+   */
+  public int getIsTeamMember() {
+  	return isTeamMember;
+  }
+
+	/**
+   * @param teamMember the teamMember to set
+   */
+  public void setIsTeamMember(int teamMember) {
+  	this.isTeamMember = isTeamMember;
+  }
+
+  public void setIsTeamMember(String teamMember) {
+  	this.isTeamMember = ("true".equals(teamMember)?Constants.TRUE:Constants.FALSE);
+  }
+
   public HashMap getRoleIds() {
     return roleIds;
   }
@@ -264,6 +283,7 @@ public class UserSearchBean extends GenericBean {
     if (lastViewed == null) {
       lastViewed = new HashMap();
     }
+    
     StringTokenizer st1 = new StringTokenizer(criteria, "[|]");
     String operator = st1.nextToken();
     String value = st1.nextToken();

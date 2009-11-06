@@ -324,6 +324,17 @@
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-280x250</adContext>
           </portlet>
+          <portlet name="ProjectWikiContentPortlet" isAdmin="true">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Message of the day</wiki>
+            <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" cache="50" isAdmin="false">
+            <project>${main-profile.uniqueId}</project>
+            <wiki>Message of the day</wiki>
+            <showTitle>false</showTitle>
+          </portlet>
           <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
             <title>Popular Ideas</title>
             <category>Ideas</category>

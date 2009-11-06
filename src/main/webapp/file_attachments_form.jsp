@@ -58,7 +58,7 @@
 %>
 <%= showError(request, "actionError", false) %>
 <div class="formContainer">
-  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if='<%= request.getParameter("pid") != null %>'>&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %></ccp:evaluate>&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>&selectorMode=<%= selectorMode %>&added=true&popup=true&out=text" enctype="multipart/form-data">
+  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if='<%= request.getParameter("pid") != null %>'>&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %></ccp:evaluate>&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>&selectorMode=<%= selectorMode %>&added=true&out=text" enctype="multipart/form-data">
     <fieldset id="fileListing">
       <legend><ccp:label name="fileAttach.title">File Attachments</ccp:label></legend>
       <c:choose>

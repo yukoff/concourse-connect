@@ -156,11 +156,11 @@
   <input type="button" name="Download" value="Download" onclick="downloadWebImage();" class="submit" />
   <input type="submit" name="Delete" value="Delete" class="cancel" />
 </form>
-<form action="<%= ctx %>/ProjectManagement<%= projectAction %>.do?command=<%= projectCommand %>&pid=<%= project.getId() %>" name="inputForm" method="post" enctype="multipart/form-data" onSubmit="return checkFileForm(this);" >
+<form action="<%= ctx %>/ProjectManagement<%= projectAction %>.do?command=<%= projectCommand %>&pid=<%= project.getId() %>&added=true" name="inputForm" method="post" enctype="multipart/form-data" onSubmit="return checkFileForm(this);" >
   <fieldset>
     <legend>Upload an image</legend>
-    <input type="file" id="uploadFile" name="id<%= project.getId() %>" size="45" />
+    <input type="file" name="id<%= project.getId() %>" size="45" onchange="YAHOO.util.Dom.setStyle(document.getElementById('progressBar'), 'display', 'inline');this.form.submit();" />
+    <img id="progressBar" src="<%= ctx %>/images/loading16.gif" alt="loading..." style="display:none"/>
     <input type="hidden" name="pid" id="pid" value="<%= project.getId() %>" />         
   </fieldset>
-  <input type="submit" name="Upload" value="Upload" class="submit" />
 </form> 

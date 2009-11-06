@@ -100,13 +100,6 @@
       return true;
     }
   }
-  function fileAttachmentSelector() {
-    var projectId = '&pid=<%= project.getId() %>';
-    var linkModuleId = '&lmid=<%= Constants.PROJECT_REQUIREMENT_FILES %>';
-    var linkItemId = '&liid=<%= Requirement.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + projectId + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -177,7 +170,9 @@
         <td nowrap class="formLabel">Wiki Link</td>
         <td>
           <input type="text" name="wikiLink" size="34" maxlength="255" value="<%= toHtmlValue(Requirement.getWikiLink()) %>">
+          <%-- @todo BROKEN
           <a href="javascript:popWiki('inputForm','wikiLink','<%= Requirement.getProjectId() %>');"><img src="<%= ctx %>/images/icons/stock_macro-objects-16.gif" border="0" align="absmiddle"></a>
+          --%>
         </td>
       </tr>
       <tr class="containerBody">
@@ -272,9 +267,10 @@
             %>
             <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
             <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-            <a href="javascript:fileAttachmentSelector();">Attach Files</a>
+            <a href="${ctx}/FileAttachments.do?command=ShowForm&pid=<%= project.getId() %>&lmid=<%= Constants.PROJECT_REQUIREMENT_FILES %>&liid=<%= Requirement.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+             rel="shadowbox" title="Share an attachment">Attach File</a>
             <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-            &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+            <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
             <a href="javascript:showTemplates()">templates</a>
           </td>
         </tr>

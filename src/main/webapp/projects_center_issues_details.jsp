@@ -111,13 +111,6 @@
       }
     }
   }
-  function fileAttachmentSelector() {
-    var projectId = '&pid=${project.id}';
-    var linkModuleId = '&lmid=<%= Constants.DISCUSSION_FILES_REPLY %>';
-    var linkItemId = '&liid=${reply.id}';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + projectId + linkModuleId + linkItemId + selectorId + '&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -269,7 +262,7 @@
         <ccp:evaluate if="<%= topic.getRatingCount() > 0 %>">
           <p>(<%= topic.getRatingValue() %> out of <%= topic.getRatingCount() %> <%= topic.getRatingCount() == 1 ? " person" : " people"%> found this post useful.)</p>
         </ccp:evaluate>
-        <ccp:evaluate if="<%= topic.getInappropriateCount() > 0 && ProjectUtils.hasAccess(topic.getProjectId(), User, \"project-reviews-admin\")%>">
+        <ccp:evaluate if='<%= topic.getInappropriateCount() > 0 && ProjectUtils.hasAccess(topic.getProjectId(), User, "project-reviews-admin")%>'>
           <p>(<%= topic.getInappropriateCount() %><%= topic.getInappropriateCount() == 1? " person" : " people"%> found this post inappropriate.)</p>
         </ccp:evaluate>
           <ccp:permission name="project-discussion-topics-view">
@@ -508,22 +501,22 @@
         </portlet:actionURL>
         <form method="POST" name="inputForm" action="${saveFormUrl}" onSubmit="return checkForm(this);">
           <input type="hidden" name="issueId" value="${topic.id}">
-          <fieldset id="<ccp:label name="projectsCenterIssues.reply.messageReplyingTo">Message replying to...</ccp:label>">
+          <fieldset>
             <legend><ccp:label name="projectsCenterIssues.reply.postAReply">Post a Reply</ccp:label></legend>
             <label for="name"><ccp:label name="projectsCenterIssues.reply.subject">Reply Subject</ccp:label> <span class="required">*</span></label>
             <input type="text" id="name" name="subject" size="57" maxlength="255" value="RE: <%= toHtmlValue(topic.getSubject()) %>">
             <label for="messageBody"><ccp:label name="projectsCenterIssues.reply.message">Message <span class="required">*</span></ccp:label></label>
             <textarea rows="10" name="body" id="messageBody" cols="70"></textarea>
             <ccp:evaluate if="<%= forum.getAllowFileAttachments() %>">
-              <fieldset id="<ccp:label name="projectsCenterIssues.reply.fileAttachments">File attachments</ccp:label>">
-                <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-                <label for="attachmentText"><a href="javascript:fileAttachmentSelector();"><ccp:label name="projectsCenterIssues.reply.attachFile">Attach Files</ccp:label></a>
-                <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-                <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" /></label>
-              </fieldset>
+              <label>File Attachments</label>
+              <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" alt="Attachments" />
+              <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.DISCUSSION_FILES_REPLY %>&pid=${project.id}&liid=${reply.id}&selectorId=<%= FileItem.createUniqueValue() %>"
+                 rel="shadowbox" title="Share an attachment">Attach Files</a>
+              <input type="hidden" id="attachmentList" name="attachmentList" value="" />
+              <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
             </ccp:evaluate>
           </fieldset>
-          <input type="submit" value="<ccp:label name="button.save">Save</ccp:label>" name="Save" class="submit">
+          <input type="submit" value="<ccp:label name="button.save">Save</ccp:label>" name="save" class="submit">
         </form>
       </div>
     </ccp:permission>

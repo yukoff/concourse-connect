@@ -91,14 +91,6 @@
   function quoteThisMessage() {
   	document.getElementById('messageBody').value = '<%= StringUtils.jsStringEscape(messageToQuote) %>' + document.getElementById('messageBody').value + '\r\n';
   }
-  
-  function fileAttachmentSelector() {
-    var projectId = '&pid=${project.id}';
-    var linkModuleId = '&lmid=<%= Constants.DISCUSSION_FILES_REPLY %>';
-    var linkItemId = '&liid=${reply.id}';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + projectId + linkModuleId + linkItemId + selectorId + '&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -123,7 +115,7 @@
       <fieldset id="<ccp:label name="projectsCenterIssues.reply.messageReplyingTo">Message replying to...</ccp:label>">
         <legend><ccp:label name="projectsCenterIssues.reply.replyToMessage">Reply to Message</ccp:label></legend>
         <%-- Original message --%>
-        <ccp:evaluate if="<%= \"true\".equals(quoteMessage)%>">
+        <ccp:evaluate if='<%= "true".equals(quoteMessage)%>'>
           <fieldset id="<ccp:label name="projectsCenterIssues.reply.messageReplyingTo">Message replying to...</ccp:label>">
 					  <legend><ccp:label name="projectsCenterIssues.reply.messageReplyingTo">Message replying to...</ccp:label></legend>
 						<textarea disabled="true"><%= toString(messageToQuote) %></textarea>
@@ -159,23 +151,22 @@
         <%= showAttribute(request, "bodyError") %>
         <textarea rows="10" name="body" id="messageBody" cols="70"><%= toString(reply.getBody()) %></textarea>
         <ccp:evaluate if="<%= forum.getAllowFileAttachments() && reply.getId() == -1 %>">
-          <fieldset id="<ccp:label name="projectsCenterIssues.reply.fileAttachments">File attachments</ccp:label>">
-            <legend><ccp:label name="projectsCenterIssues.reply.fileAttachments">File attachments</ccp:label></legend>
-						<%
-              Iterator files = reply.getFiles().iterator();
-              while (files.hasNext()) {
-                FileItem thisFile = (FileItem)files.next();
-            %>
-                  <%= toHtml(thisFile.getClientFilename()) %><ccp:evaluate if="<%= files.hasNext() %>">;</ccp:evaluate>
-            <%
-              }
-            %>
-            <%-- <ccp:evaluate if="<%= reply.getFiles().size() > 0 %>"><br /></ccp:evaluate> --%>
-            <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-            <label for="attachmentText"><a href="javascript:fileAttachmentSelector();"><ccp:label name="projectsCenterIssues.reply.attachFile">Attach Files</ccp:label></a>
-            <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-            <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" /></label>
-          </fieldset>
+          <label>File Attachments</label>
+          <%
+            Iterator files = reply.getFiles().iterator();
+            while (files.hasNext()) {
+              FileItem thisFile = (FileItem)files.next();
+          %>
+                <%= toHtml(thisFile.getClientFilename()) %><ccp:evaluate if="<%= files.hasNext() %>">;</ccp:evaluate>
+          <%
+            }
+          %>
+          <%-- <ccp:evaluate if="<%= reply.getFiles().size() > 0 %>"><br /></ccp:evaluate> --%>
+          <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+          <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.DISCUSSION_FILES_REPLY %>&pid=${project.id}&liid=${reply.id}&selectorId=<%= FileItem.createUniqueValue() %>"
+             rel="shadowbox" title="Share a file"><ccp:label name="projectsCenterIssues.reply.attachFile">Attach Files</ccp:label></a>
+          <input type="hidden" id="attachmentList" name="attachmentList" value="" />
+          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
         </ccp:evaluate>
         <%--<ccp:evaluate if="<%= reply.getId() == -1 || !distributionList.hasKey(String.valueOf(User.getId())) %>">
           <label for="emailUpdates"><input type="checkbox" name="emailUpdates" id="emailUpdates" value="ON" class="checkbox" /> Send me an email every time this message is replied to</label>

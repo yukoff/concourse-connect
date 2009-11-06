@@ -76,8 +76,7 @@
     <div class="eventsListItemContainer">
       <span class="permissions">
         <%-- Use the unique id for opening the menu, and toggling the graphics --%>
-         <a href="javascript:displayProjectTicketMenu('select-arrow<%= menuCount %>','menuProjectTicket','<%=  thisTicket.getId() %>','<%= thisTicket.getContactId() %>');"
-         onMouseOver="over(0, <%= menuCount %>)" onmouseout="out(0, <%= menuCount %>);hideMenu('menuProjectTicket');"><img
+         <a href="javascript:displayProjectTicketMenu('select-arrow<%= menuCount %>','menuProjectTicket','<%=  thisTicket.getId() %>','<%= thisTicket.getContactId() %>');"><img
          src="<%= ctx %>/images/calendar/calendar__pencil.png" name="select-arrow<%= menuCount %>" id="select-arrow<%= menuCount %>" align="absmiddle" border="0" /></a>
       </span>
 

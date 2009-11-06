@@ -342,9 +342,24 @@ function showPanel(title, url, width, id) {
 
   // Define various event handlers for Dialog
   var handleUpload = function(o) {
-    panel.cancel();
-    var url = window.location.href;
-    window.location.href = url;
+    if (o.responseText.indexOf("\"location\":") > -1) {
+      // success, found a redirect location
+      panel.cancel();
+      var url = o.responseText.substring(o.responseText.indexOf('\"location\":') + 12, o.responseText.lastIndexOf('\"'));
+      if (url) {
+        if (url.indexOf("\r") > -1) {
+          url = url.substring(0, url.indexOf("\r"));
+        }
+        window.location.href = url;
+      }
+    } else if (o.responseText.indexOf("\"action\":") > -1) {
+      var action = o.responseText.substring(o.responseText.indexOf('\"action\":') + 10, o.responseText.lastIndexOf('\"'));
+      eval(action);
+    } else {
+      panel.setBody(o.responseText);
+      panel.render();
+      attachEvents(panel);
+    }
   };
 
   var handleSuccess = function(o) {

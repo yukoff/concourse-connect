@@ -191,6 +191,10 @@ public final class FileAttachments extends GenericAction {
       fileItemList.addItems(existingFiles, "id", "clientFilename");
       context.getRequest().setAttribute("fileItemList", fileItemList);
       context.getRequest().setAttribute("fileSize", String.valueOf(temporaryFiles.getFileSize() + existingFiles.getFileSize()));
+      // Now that the request contains the info to close the form... close the single attachment form
+      if ("single".equals(selectorMode) && "true".equals(context.getRequest().getParameter("added"))) {
+        return "AttachSingleOK";
+      }
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return ("SystemError");
@@ -360,7 +364,7 @@ public final class FileAttachments extends GenericAction {
       }
 
       CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, projectId);
-      return "Attach201OK";
+      return "Attach302OK";
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return ("SystemError");

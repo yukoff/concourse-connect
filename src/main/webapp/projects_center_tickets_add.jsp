@@ -104,13 +104,6 @@ function updateSubList3() {
   window.frames['server_commands'].location.href=url;
 	hideSubCats(3, value);
 }
-function fileAttachmentSelector() {
-  var projectId = '&pid=<%= project.getId() %>';
-  var linkModuleId = '&lmid=<%= Constants.PROJECT_TICKET_FILES %>';
-  var linkItemId = '&liid=<%= ticket.getId() %>';
-  var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-  popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + projectId + linkModuleId + linkItemId + selectorId + '&popup=true','File_Attachments','480','520','yes','yes');
-}
 function setAttachmentList(newVal) {
   document.getElementById("attachmentList").value = newVal;
 }
@@ -192,23 +185,22 @@ function hideSubCats(subCatID, value) {
       </ccp:evaluate>
       <label for="severityCode"><ccp:label name="projectsCenterTickets.add.severity">Severity</ccp:label></label>
       <%= SeverityList.getHtmlSelect("severityCode", ticket.getSeverityCode()) %>
-      <fieldset id="supportingFiles">
-        <legend><ccp:label name="projectsCenterTickets.add.supportingFiles">Supporting Files</ccp:label></legend>
-				<%
-          Iterator files = ticket.getFiles().iterator();
-          while (files.hasNext()) {
-            FileItem thisFile = (FileItem)files.next();
-        %>
-              <%= toHtml(thisFile.getClientFilename()) %><ccp:evaluate if="<%= files.hasNext() %>">;</ccp:evaluate>
-        <%
-          }
-        %>
-        <ccp:evaluate if="<%= ticket.getFiles().size() > 0 %>"></ccp:evaluate>
-        <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-        <label for="attachmentList"><a href="javascript:fileAttachmentSelector();"><ccp:label name="projectsCenterTickets.add.attachFile">Attach Files</ccp:label></a></label>
-        <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-        &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
-      </fieldset>
+      <label>Supporting File Attachments</label>
+      <%
+        Iterator files = ticket.getFiles().iterator();
+        while (files.hasNext()) {
+          FileItem thisFile = (FileItem)files.next();
+      %>
+            <%= toHtml(thisFile.getClientFilename()) %><ccp:evaluate if="<%= files.hasNext() %>">;</ccp:evaluate>
+      <%
+        }
+      %>
+      <ccp:evaluate if="<%= ticket.getFiles().size() > 0 %>"></ccp:evaluate>
+      <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+      <a href="${ctx}/FileAttachments.do?command=ShowForm&pid=<%= project.getId() %>&lmid=<%= Constants.PROJECT_TICKET_FILES %>&liid=<%= ticket.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&popup=true"
+         rel="shadowbox" title="Share an attachment">Attach Files</a>
+      <input type="hidden" id="attachmentList" name="attachmentList" value="" />
+      <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
     </fieldset>
     <%-- Evaluation --%>
     <ccp:permission name="project-tickets-assign,project-tickets-edit" if="any">

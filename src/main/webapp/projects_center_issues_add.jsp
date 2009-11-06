@@ -84,13 +84,6 @@
       }
     }
   }
-  function fileAttachmentSelector() {
-    var projectId = '&pid=<%= project.getId() %>';
-    var linkModuleId = '&lmid=<%= Constants.DISCUSSION_FILES_TOPIC %>';
-    var linkItemId = '&liid=<%= topic.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + projectId + linkModuleId + linkItemId + selectorId + '&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -130,7 +123,7 @@
         <%= showAttribute(request, "bodyError") %>
         <textarea rows="10" name="body" id="body" cols="70"><%= toString(topic.getBody()) %></textarea>
         <ccp:evaluate if="<%= forum.getAllowFileAttachments() && topic.getId() == -1 %>">
-          <label for="projectsCenterIssues.add.fileAttachments"><ccp:label name="projectsCenterIssues.add.fileAttachments">File attachments</ccp:label>
+          <label for="projectsCenterIssues.add.fileAttachments"><ccp:label name="projectsCenterIssues.add.fileAttachments">File attachments</ccp:label></label>
           <%
             Iterator files = topic.getFiles().iterator();
             while (files.hasNext()) {
@@ -140,11 +133,11 @@
           <%
             }
           %>
-          <ccp:evaluate if="<%= topic.getFiles().size() > 0 %>"><br /></ccp:evaluate>
           <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-          <label for="attachmentList"><a href="javascript:fileAttachmentSelector();"><ccp:label name="projectsCenterIssues.add.attachFile">Attach Files</ccp:label></a>
+          <a href="${ctx}/FileAttachments.do?command=ShowForm&pid=<%= project.getId() %>&lmid=<%= Constants.DISCUSSION_FILES_TOPIC %>&liid=<%= topic.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&popup=true"
+             rel="shadowbox" title="Share an attachment">Attach Files</a>
           <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" /></label>
+          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
         </ccp:evaluate>
         <%--
         <tr class="containerBody">

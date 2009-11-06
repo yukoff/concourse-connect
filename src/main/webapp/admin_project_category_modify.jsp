@@ -62,20 +62,12 @@ Add Site Category
 <br /><br />
 <script language="JavaScript" type="text/javascript">
   YAHOO.util.Event.onDOMReady(function() { document.inputForm.description.focus();} );
-
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.PROJECT_CATEGORY_FILES %>';
-    var linkItemId = '&liid=<%= projectCategory.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
   function setAttachmentText(newVal) {
     document.getElementById("attachmentText").value = newVal;
   }
-  
   function checkForm(form) {
     if (form.dosubmit.value == "false") {
       return true;
@@ -131,29 +123,32 @@ Add Site Category
           Image
         </td>
         <td>
-              <%
-                Iterator files = fileItemList.iterator();
-                while (files.hasNext()) {
-                  FileItem thisFile = (FileItem)files.next();
-                  if (thisFile.getId() == projectCategory.getLogoId()){
-              %>
-            <%= thisFile.getFullImageFromAdmin(ctx) %>&nbsp;
-              <%
-                  }
-                }
-              %>
-              <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
-              <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+          <%
+            Iterator files = fileItemList.iterator();
+            while (files.hasNext()) {
+              FileItem thisFile = (FileItem)files.next();
+              if (thisFile.getId() == projectCategory.getLogoId()){
+          %>
+              <%= thisFile.getFullImageFromAdmin(ctx) %>&nbsp;
+          <%
+              }
+            }
+          %>
+          <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
+          <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+          <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.PROJECT_CATEGORY_FILES %>&liid=<%= projectCategory.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+             rel="shadowbox" title="Share an attachment">
           <% if (projectCategory.getLogoId() != -1) { %>
-                <a href="javascript:fileAttachmentSelector();">Replace Image</a>
+                Replace Image
           <%} else {%>
-                <a href="javascript:fileAttachmentSelector();">Attach Image</a>
+                Attach Image
               <%}%>
-              <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-              &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+          </a>
+          <input type="hidden" id="attachmentList" name="attachmentList" value="" />
+          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
           <% if (projectCategory.getLogoId() != -1) { %>
             <input type="hidden" name="logoId" value="<%= projectCategory.getLogoId() %>" />
-              <%}%>
+          <%}%>
         </td>
        </tr>
       <tr class="containerBody">

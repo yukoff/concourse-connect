@@ -67,18 +67,11 @@
     document.forms['editForm'].title.focus();
   }
 
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.SITE_LOGO_FILES %>';
-    var linkItemId = '&liid=<%= mainProfile.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
     document.getElementById("isTempImage").value = "true";
     setWebLogo(newVal);
-  }
-  
+  }  
   function setAttachmentText(newVal) {
     document.getElementById("attachmentText").value = newVal;
   }
@@ -180,17 +173,19 @@
           %>
           <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
           <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-		  <% if (fileItemList.size() > 0) { %>
-	          <a href="javascript:fileAttachmentSelector();">Replace Logo</a>&nbsp;|&nbsp;Remove Logo <input type="checkbox" name="removeLogo" value="true" onClick="javascript:resetWebsiteLogo()"/>
+          <% if (fileItemList.size() > 0) { %>
+            <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.SITE_LOGO_FILES %>&liid=<%= mainProfile.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+               rel="shadowbox" title="Share an attachment">Replace Logo</a>&nbsp;|&nbsp;Remove Logo <input type="checkbox" name="removeLogo" value="true" onClick="javascript:resetWebsiteLogo()"/>
 	          <input type="hidden" id="attachmentList" name="attachmentList" value="<%= fileItemList.get(0).getId() %>" />
-	          &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="<%= fileItemList.get(0).getClientFilename() %>" size="45" disabled="true" />
-		  <%} else {%>
-	          <a href="javascript:fileAttachmentSelector();">Attach Logo</a>
+	          <input type="text" id="attachmentText" name="attachmentText" value="<%= fileItemList.get(0).getClientFilename() %>" size="45" disabled="true" />
+          <%} else {%>
+	          <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.SITE_LOGO_FILES %>&liid=<%= mainProfile.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+               rel="shadowbox" title="Share an attachment">Attach Logo</a>
 	          <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-	          &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+	          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
           <%}%>
-		       <span class="characterCounter">Must be a .png or .gif with transparency, or .jpg; 300 x 100 pixels</span>
-	          <input type="hidden" id="isTempImage" name="isTempImage" value="false" />
+	        <span class="characterCounter">Must be a .png or .gif with transparency, or .jpg; 300 x 100 pixels</span>
+          <input type="hidden" id="isTempImage" name="isTempImage" value="false" />
         </fieldset>
         <fieldset id="Themes">
           <legend>Themes</legend>

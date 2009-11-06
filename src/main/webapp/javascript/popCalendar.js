@@ -87,14 +87,14 @@ function popCalendar(formname, element, language, country) {
 	cal.selectEvent.subscribe(setCalendarValue, cal, true);
 
   // Make sure the calendar closes if any panel is closed
-  if (panel) {
+  if (panel && panel.cfg.getProperty("visible") == 'true') {
     panel.cancelEvent.subscribe(function() { cal.hide(); });
   }
 
   // Show the calendar
   cal.render();
   Dom.setStyle('popupCalendar', 'display', 'block');
-  Dom.setStyle('popupCalendar', 'z-index', '999');
+  Dom.setStyle('popupCalendar', 'z-index', '2147483647');
 
   // Determine the onscreen position
   var el = document.getElementById(element);

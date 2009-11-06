@@ -224,10 +224,15 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
   </div>
 <%-- TODO: Impliment formContainer 
 <div class="formContainer">--%>
-  <div class="panel_wrapper" style="height:380px">
+  <div class="panel_wrapper" style="height:415px">
 
-    <%-- Wiki Image --%>
+    <%-- Image Library Image --%>
     <div id="wikiimage_panel" class="panel">
+      <c:if test="${!empty param.added}">
+        <div class="portlet-message-success">
+          File added.
+        </div>
+      </c:if>
       <fieldset>
         <legend>Image Library</legend>
         <table cellpadding="1" cellspacing="0" width="100%">
@@ -254,12 +259,12 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
 
       <fieldset>
         <legend>Upload an image</legend>
-        <form action="${ctx}/<%= projectAction %>?command=UploadImage&popup=true&pid=<%= project.getId() %>" name="inputForm" method="post" enctype="multipart/form-data" onSubmit="return checkFileForm(this);">
-        <input type="file" name="id<%= project.getId() %>" size="45" />
-        <input type="submit" name="Upload" value="Upload" >
-        <span class="characterCounter">Must be a .png, .gif, or .jpg</span>
-        <input type="hidden" name="pid" id="pid" value="<%= project.getId() %>">
-        <input type="hidden" name="popup" value="<%= StringUtils.toHtmlValue(request.getParameter("popup")) %>" />
+        <form action="${ctx}/<%= projectAction %>?command=UploadImage&popup=true&pid=<%= project.getId() %>&added=true" name="inputForm" method="post" enctype="multipart/form-data" onSubmit="return checkFileForm(this);">
+          <input type="file" name="id<%= project.getId() %>" size="45" onchange="YAHOO.util.Dom.setStyle(document.getElementById('progressBar'), 'display', 'inline');this.form.submit();" />
+          <img id="progressBar" src="<%= ctx %>/images/loading16.gif" alt="loading..." style="display:none"/>
+          <span class="characterCounter">Must be a .png, .gif, or .jpg</span>
+          <input type="hidden" name="pid" id="pid" value="<%= project.getId() %>">
+          <input type="hidden" name="popup" value="<%= StringUtils.toHtmlValue(request.getParameter("popup")) %>" />
         </form>
       </fieldset>
 

@@ -16,7 +16,7 @@
  * These terms must be included in any work that has ConcourseConnect components.
  * If you are developing and distributing open source applications under the
  * GNU Affero General Public License, then you are free to use ConcourseConnect
- * under the GNU Affero General Public License. Ê
+ * under the GNU Affero General Public License.
  *
  * If you are deploying a web site in which users interact with any portion of
  * ConcourseConnect over a network, the complete source code changes must be made
@@ -48,11 +48,11 @@ function teamElementsFileBrowser (field_name, url, type, win) {
   // NOTE: global teamelements_ctx variable must exist
   var cmsURL = teamelements_ctx + "/Portal.do?command=ImageSelect&popup=true&editor=tinymce&constant=" + ilConstant + "&id=" + ilId;
   var width = 640;
-	var height = 480;
+	var height = 510;
   tinyMCE.activeEditor.windowManager.open({
       file : cmsURL,
       width : 640,
-      height : 480,
+      height : 510,
       resizable : "yes",
       inline : "yes",
       close_previous : "no"

@@ -90,10 +90,7 @@
           <span class="permissions">
             <%-- Use the unique id for opening the menu, and toggling the graphics --%>
            <a
-             href="javascript:displayProjectOutlineMenu('select-arrow<%= menuCount %>','menuProjectOutline','<%=  thisRequirement.getId() %>', '<%= thisRequirement.getProjectId() %>');"
-             onMouseOver="over(0, <%= menuCount %>)"
-             onmouseout="out(0, <%= menuCount %>);hideMenu('menuProjectOutline');">
-             <img
+             href="javascript:displayProjectOutlineMenu('select-arrow<%= menuCount %>','menuProjectOutline','<%=  thisRequirement.getId() %>', '<%= thisRequirement.getProjectId() %>');"><img
              src="<%= ctx %>/images/calendar/calendar__pencil.png" name="select-arrow<%= menuCount %>"
              id="select-arrow<%= menuCount %>" align="absmiddle" border="0" alt="Edit" title="edit"/>
            </a>

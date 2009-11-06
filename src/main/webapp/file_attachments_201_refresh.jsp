@@ -44,6 +44,6 @@
   ~ by Concursive Corporation
   --%>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/><%@ include file="initPage.jsp" %><%
-    response.setStatus(302);
+    response.setStatus(201);
     response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId());
 %>

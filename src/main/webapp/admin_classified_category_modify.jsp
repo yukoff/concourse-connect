@@ -58,13 +58,7 @@ Modify Classified Category
 Add Classified Category
 <% } %>
 <br /><br />
-<script language="JavaScript">
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.CLASSIFIED_CATEGORY_FILES %>';
-    var linkItemId = '&liid=<%= classifiedCategory.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
+<script language="JavaScript" type="text/javascript">
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -121,29 +115,32 @@ Add Classified Category
           Image
         </td>
         <td>
-              <%
-                Iterator files = fileItemList.iterator();
-                while (files.hasNext()) {
-                  FileItem thisFile = (FileItem)files.next();
-                  if (thisFile.getId() == classifiedCategory.getLogoId()){
-              %>
-            <%= thisFile.getFullImageFromAdmin(ctx) %>&nbsp;
-              <%
-                  }
-                }
-              %>
-              <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
-              <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+          <%
+            Iterator files = fileItemList.iterator();
+            while (files.hasNext()) {
+              FileItem thisFile = (FileItem)files.next();
+              if (thisFile.getId() == classifiedCategory.getLogoId()){
+          %>
+        <%= thisFile.getFullImageFromAdmin(ctx) %>&nbsp;
+          <%
+              }
+            }
+          %>
+          <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
+          <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+          <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.CLASSIFIED_CATEGORY_FILES %>&liid=<%= classifiedCategory.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+             rel="shadowbox" title="Share an attachment">
           <% if (classifiedCategory.getLogoId() != -1) { %>
-                <a href="javascript:fileAttachmentSelector();">Replace Image</a>
+            Replace Image
           <%} else {%>
-                <a href="javascript:fileAttachmentSelector();">Attach Image</a>
-              <%}%>
-              <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-              &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+            Attach Image
+          <%}%>
+          </a>
+          <input type="hidden" id="attachmentList" name="attachmentList" value="" />
+          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
           <% if (classifiedCategory.getLogoId() != -1) { %>
             <input type="hidden" name="logoId" value="<%= classifiedCategory.getLogoId() %>" />
-              <%}%>
+          <%}%>
         </td>
        </tr>
         <tr class="containerBody">

@@ -66,7 +66,7 @@
           ed.windowManager.open({
             file : teamelements_ctx + "/BlogActions.do?command=ImageSelect&popup=true&pid=" + ilId,
             width : 640 + parseInt(ed.getLang('advimage.delta_width', 0)),
-            height : 480 + parseInt(ed.getLang('advimage.delta_height', 0)),
+            height : 510 + parseInt(ed.getLang('advimage.delta_height', 0)),
             inline : 1
           }, {
             plugin_url : url

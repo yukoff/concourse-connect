@@ -58,13 +58,7 @@ Modify Badge Category
 Add Badge Category
 <% } %>
 <br /><br />
-<script language="JavaScript">
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.BADGE_CATEGORY_FILES %>';
-    var linkItemId = '&liid=<%= badgeCategory.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
+<script language="JavaScript" type="text/javascript">
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -134,11 +128,14 @@ Add Badge Category
               %>
               <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
               <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+              <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.BADGE_CATEGORY_FILES %>&liid=<%= badgeCategory.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+                 rel="shadowbox" title="Share an attachment">
           <% if (badgeCategory.getLogoId() != -1) { %>
-                <a href="javascript:fileAttachmentSelector();">Replace Image</a>
+                  Replace Image
           <%} else {%>
-                <a href="javascript:fileAttachmentSelector();">Attach Image</a>
+                  Attach Image
               <%}%>
+              </a>
               <input type="hidden" id="attachmentList" name="attachmentList" value="" />
               &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
           <% if (badgeCategory.getLogoId() != -1) { %>

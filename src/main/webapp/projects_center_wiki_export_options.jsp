@@ -51,25 +51,6 @@
 <jsp:useBean id="wiki" class="com.concursive.connect.web.modules.wiki.dao.Wiki" scope="request" />
 <portlet:defineObjects/>
 <%@ include file="initPage.jsp" %>
-<script language="JavaScript" type="text/javascript">
-  function checkForm(form) {
-    var formTest = true;
-    var messageText = "";
-    if (!formTest) {
-      messageText = "The form could not be submitted.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
-      alert(messageText);
-      return false;
-    } else {
-      if (form.Export.value != 'Please Wait...') {
-        form.Export.value='Please Wait...';
-        form.Export.disabled = true;
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-</script>
 <div class="portletWrapper">
   <h1><%= toHtml(project.getTitle()) %></h1>
   <h2>Wiki to export:
@@ -84,7 +65,7 @@
    <portlet:actionURL var="exportUrl">
       <portlet:param name="portlet-command" value="export"/>
     </portlet:actionURL>
-    <form name="inputForm" action="${exportUrl}" method="post" onSubmit="return checkForm(this);">
+    <form name="inputForm" action="${exportUrl}" method="post">
       <fieldset id="wikiExportOptions">
         <legend>Export a wiki for download</legend>
         <label for="includeTitle"><input type="checkbox" class="checkbox" name="includeTitle" id="includeTitle" value="ON" />Include a title page</label>

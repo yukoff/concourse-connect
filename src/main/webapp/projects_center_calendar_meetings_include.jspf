@@ -96,9 +96,7 @@
             <span class="permissions">
              <%-- Use the unique id for opening the menu, and toggling the graphics --%>
              <a
-               href="javascript:displayProjectMeetingMenu('select-arrow<%= menuCount %>','menuProjectMeeting','<%=  thisMeeting.getId() %>', '<%= thisMeeting.getProjectId() %>');"
-               onMouseOver="over(0, <%= menuCount %>);"
-               onmouseout="out(0, <%= menuCount %>);hideMenu('menuProjectMeeting');"><img
+               href="javascript:displayProjectMeetingMenu('select-arrow<%= menuCount %>','menuProjectMeeting','<%=  thisMeeting.getId() %>', '<%= thisMeeting.getProjectId() %>');"><img
                src="<%= ctx %>/images/calendar/calendar__pencil.png" name="select-arrow<%= menuCount %>"
                id="select-arrow<%= menuCount %>" align="absmiddle" border="0" alt="Edit" title="Edit"/></a>
             </span>

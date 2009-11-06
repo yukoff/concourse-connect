@@ -501,8 +501,10 @@
       </script>
     </ccp:evaluate>
     <div class="yui-skin-sam">
-      <div id="popupLayer"></div>
       <div id="popupCalendar"></div>
+    </div>
+    <div class="yui-skin-sam">
+      <div id="popupLayer"></div>
     </div>
   </body>
 </html>

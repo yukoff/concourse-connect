@@ -94,13 +94,6 @@
         }
       }
     }
-    function fileAttachmentSelector() {
-      var projectId = '&pid=<%= project.getId() %>';
-      var linkModuleId = '&lmid=<%= Constants.PROJECT_CLASSIFIEDS_FILES %>';
-      var linkItemId = '&liid=<%= classified.getId() %>';
-      var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-      popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + projectId + linkModuleId + linkItemId + selectorId + '&popup=true','File_Attachments','480','520','yes','yes');
-    }
     function setAttachmentList(newVal) {
       document.getElementById("attachmentList").value = newVal;
     }
@@ -159,7 +152,7 @@
             <%= showAttribute(request, "categoryIdError") %>
             <%= categoryList.getHtmlSelect("categoryId", classified.getCategoryId()) %>
           </c:if>
-          <label><ccp:label name="projectsCenterIssues.add.fileAttachments">File attachments</ccp:label></label>
+          <label>File Attachments</label>
           <%
             if (classified.getFiles() != null) {
               Iterator files = classified.getFiles().iterator();
@@ -171,10 +164,9 @@
               }
             }
           %>
-          <label for="attachmentText">
-            <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-            <a href="javascript:fileAttachmentSelector();"><ccp:label name="projectsCenterIssues.add.attachFile">Attach Files</ccp:label></a>
-          </label>
+          <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+          <a href="${ctx}/FileAttachments.do?command=ShowForm&pid=<%= project.getId() %>&lmid=<%= Constants.PROJECT_CLASSIFIEDS_FILES %>&liid=<%= classified.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&popup=true"
+             rel="shadowbox" title="Share an attachment">Attach Files</a>
           <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
           <input type="hidden" id="attachmentList" name="attachmentList" value="" />
         </fieldset>

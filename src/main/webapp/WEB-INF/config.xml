@@ -654,10 +654,12 @@
   </action>
   <action name="FileAttachments" class="com.concursive.connect.web.modules.fileattachments.actions.FileAttachments">
     <forward name="FormOK" resource="/file_attachments_form.jsp"/>
-    <forward name="AttachOK" resource="/file_attachments_refresh.jsp"/>
+    <forward name="AttachOK" resource="/FileAttachments.do?command=ShowForm"/>
     <forward name="AttachProjectImageFilesOK" resource="/FileAttachments.do?command=AttachProjectImageFiles"/>
+    <forward name="AttachSingleOK" resource="/file_attachments_attach.jsp"/>
     <forward name="Attach201OK" resource="/file_attachments_201_refresh.jsp"/>
-    <forward name="RemoveOK" resource="/file_attachments_refresh.jsp"/>
+    <forward name="Attach302OK" resource="/file_attachments_302_refresh.jsp"/>
+    <forward name="RemoveOK" resource="/FileAttachments.do?command=ShowForm"/>
   </action>
 
 </mvc-app>

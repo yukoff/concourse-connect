@@ -43,44 +43,20 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
-<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="initPage.jsp" %>
-<%
-  response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-  response.setHeader("Cache-Control", "no-cache"); // HTTP 1.1
-  response.setDateHeader ("Expires", 0); //prevents caching at the proxy server
-%>
-<html>
-<head>
-  <title>Window</title>
-  <jsp:include page="css_include.jsp" flush="true"/>
-</head>
-<body style="background-color: #FFFFFF !important; margin: 0 !important; padding: 0 !important">
-  <% boolean isPrintButton = "true".equals(request.getParameter("printButton")); %>
-  <ccp:evaluate if="<%= isPrintButton %>">
-    <table border="0" cellpadding="4" cellspacing="0" id="noPrint" width="100%">
-      <tr>
-        <td align="right">
-          <img src="<%= ctx %>/images/icons/stock_print-16.gif" align="absmiddle" alt="" border="0"/>
-          <a href="javascript:window.print();">Print</a>
-        </td>
-      </tr>
-    </table>
-  </ccp:evaluate>
-  <div class="yui-content">
-    <div class="projectCenterPortalContainer">
-      <% String body = (String) request.getAttribute("PageBody"); %>
-      <jsp:include page="<%= body %>" flush="true"/>
-    </div>
-  </div>
-  <div class="yui-skin-sam">
-    <div id="popupCalendar"></div>
-  </div>
-  <div class="yui-skin-sam">
-    <div id="popupLayer"></div>
-  </div>
-</body>
-</html>
+<c:choose>
+  <c:when test="${'true' eq param.popup || 'true' eq popup}">
+    {"ResultSet":
+      {"location":"<%= request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId() %>"}
+    }
+  </c:when>
+  <c:otherwise>
+    <%
+      response.setStatus(302);
+      response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId());
+    %>
+  </c:otherwise>
+</c:choose>

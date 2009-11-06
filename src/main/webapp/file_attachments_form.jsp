@@ -56,76 +56,33 @@
   String selectorMode = request.getParameter("selectorMode");
   String added = request.getParameter("added");
 %>
-<script language="JavaScript" type="text/javascript">
-  var pid="";
-  <ccp:evaluate if='<%= request.getParameter("pid") != null %>'>
-    pid = "&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %>";
-  </ccp:evaluate>
-    var lmid="&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>";
-  var liid="&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>";
-  var selectorId="&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>";
-  var selectorMode="&selectorMode=<%= StringUtils.encodeUrl(selectorMode) %>";
-
-  <ccp:evaluate if="<%= fileItemList.size() > 0 %>">
-  window.opener.setAttachmentList('<%= fileItemList.getValueListing() %>');
-  window.opener.setAttachmentText('<%= fileItemList.getTextListing() %>');
-  </ccp:evaluate>
-
-  function checkFileForm(form) {
-    if (form.id<%= StringUtils.jsEscape(request.getParameter("pid")) %>.value.length < 5) {
-      alert("A file must be selected before choosing Attach");
-      return false;
-    } else {
-      if (form.attach.value != 'Please Wait...') {
-        form.attach.value='Please Wait...';
-        form.attach.disabled = true;
-        hideSpan('fileListing');
-        showSpan('progressBar');
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-      
-  function removeItem() {
-    var sel = document.forms['inputForm'].elements['selFileItemList'];
-    if (sel.selectedIndex > -1) {
-      var value = sel.options[sel.selectedIndex].value;
-      var removeButton = document.forms['inputForm'].elements['remove'];
-      if (removeButton.value != 'Please Wait...') {
-          removeButton.value='Please Wait...';
-          removeButton.disabled = true;
-          hideSpan('fileListing');
-          showSpan('progressBar');
-          window.location.href=
-            "FileAttachments.do?command=Remove" + pid + lmid + liid + selectorId + "&fid=" + value + selectorMode + '&popup=true';
-      }
-    } else {
-      alert("An item must be selected before choosing Remove");
-    }
-  }
-
-  function finish() {
-    window.close();
-  }
-
-  <ccp:evaluate if="<%= \"single\".equals(selectorMode) && \"true\".equals(added) %>">
-    finish();
-  </ccp:evaluate>
-
-</script>
 <%= showError(request, "actionError", false) %>
-<c:set var="counter" value="${1}" />
 <div class="formContainer">
-  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if='<%= request.getParameter("pid") != null %>'>&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %></ccp:evaluate>&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>&selectorMode=<%= selectorMode %>&added=true&popup=true" enctype="multipart/form-data" onSubmit="try {return checkFileForm(this);}catch(e){return true;}">
+  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if='<%= request.getParameter("pid") != null %>'>&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %></ccp:evaluate>&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>&selectorMode=<%= selectorMode %>&added=true&popup=true&out=text" enctype="multipart/form-data">
     <fieldset id="fileListing">
       <legend><ccp:label name="fileAttach.title">File Attachments</ccp:label></legend>
-      <label>
-        ${counter}. <ccp:label name="fileAttach.selectFile">Choose the file you want to attach...</ccp:label>
-      </label>
-      <c:set var="counter" value="${counter+1}"/>
-      <input type="file" name="id<%= toHtmlValue(request.getParameter("pid")) %>" size="45"/>
+      <c:choose>
+        <c:when test="${!empty param.added}">
+          <div class="portlet-message-success">
+            File added.
+            <ccp:evaluate if='<%= !"single".equals(selectorMode)  %>'>
+              Add another?<br />
+              <input type="file" name="id<%= toHtmlValue(request.getParameter("pid")) %>" id="id<%= toHtmlValue(request.getParameter("pid")) %>" size="45" onChange="panel.submit();"/>
+            </ccp:evaluate>
+          </div>
+        </c:when>
+        <c:otherwise>
+          <p>
+            <label>
+              <ccp:label name="fileAttach.selectFile">Choose the file you want to attach...</ccp:label>
+              <ccp:evaluate if='<%= !"single".equals(selectorMode)  %>'>
+                You can add more files after this one.
+              </ccp:evaluate>
+            </label>
+              <input type="file" name="id<%= toHtmlValue(request.getParameter("pid")) %>" id="id<%= toHtmlValue(request.getParameter("pid")) %>" size="45" <c:if test="${param.allowCaption != 'true'}">onChange="panel.submit();"</c:if>/>
+          </p>
+        </c:otherwise>
+      </c:choose>
       <ccp:evaluate if='<%= request.getParameter("pid") != null %>'>
         <input type="hidden" name="pid" value="<%= toHtmlValue(request.getParameter("pid")) %>" />
       </ccp:evaluate>
@@ -136,26 +93,31 @@
       <input type="hidden" name="added" value="true" />
       <input type="hidden" name="popup" value="true" />
       <c:if test="${param.allowCaption == 'true'}">
-        <label>${counter}. <ccp:label name="fileAttach.setCaption">Enter a caption to be displayed</ccp:label></label>
-        <c:set var="counter" value="${counter+1}"/>
-        <input type="text" name="comment" id="comment" value="<%= toHtmlValue(request.getParameter("caption")) %>" maxlength="500" />
-        <span class="characterCounter">500 characters max</span>
+        <p>
+          <label><ccp:label name="fileAttach.setCaption">Enter a caption to be displayed</ccp:label></label>
+          <input type="text" name="comment" id="comment" value="<%= toHtmlValue(request.getParameter("caption")) %>" maxlength="500" />
+          <span class="characterCounter">500 characters max</span>
+        </p>
       </c:if>
-      <p>
-        <input type="submit" value="Attach..." name="attach" class="submit" />
-        <ccp:evaluate if="<%= \"single\".equals(selectorMode)  %>">
-          <c:if test="${'true' eq param.popup || 'true' eq popup}">
-            <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
-          </c:if>
-        </ccp:evaluate>
-      </p>
-      <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
-      <ccp:evaluate if="<%= !\"single\".equals(selectorMode)  %>">
-          <p>${counter}. <ccp:label name="fileAttach.repeatForMoreAttachments">Repeat steps 1 and 2 to add more attachments.</ccp:label></p>
-          <c:set var="counter" value="${counter+1}"/>
-          <label><ccp:label name="fileAttach.howToRemoveAttachment">To remove an attachment, select it below and choose Remove.</ccp:label></label>
-          <%= fileItemList.getHtml("selFileItemList", 0) %>
-          <input type="button" name="remove" value="Remove" onClick="removeItem();" class="cancel" />
+      <ccp:evaluate if='<%= "single".equals(selectorMode)  %>'>
+        <c:if test="${'true' eq param.popup || 'true' eq popup}">
+          <p>
+            <c:if test="${param.allowCaption == 'true'}">
+              <input type="button" value="Submit" class="submit" id="panelSubmitButton" onClick="panel.submit();"/>
+            </c:if>
+            <input type="button" value="Cancel" class="cancel" id="panelCloseButton" />
+          </p>
+        </c:if>
+      </ccp:evaluate>
+      <fieldset id="progressBar" style="display:none" class="submitSpinner">
+        <div class="portlet-message-info">
+          <legend>Please Wait</legend>
+          <img src="<%= ctx %>/images/loading16.gif" alt="loading..." />
+          <span><ccp:label name="fileAttach.largeFileWarning">Large files may take awhile to upload.</ccp:label></span>
+          <span><ccp:label name="fileAttach.pleaseWaitForConfirmation">Please wait for a confirmation message before continuing.</ccp:label></span>
+        </div>
+      </fieldset>
+      <ccp:evaluate if='<%= !"single".equals(selectorMode)  %>'>
 <%
   long newSize = 0;
   if (fileItemList.size() > 0) {
@@ -165,18 +127,17 @@
     }
   }
 %>
-          <label>Total:</label>
-          <span><%= newSize %>KB</span>
-          <label>${counter}. Choose Finish to attach the files.</label>
-          <c:set var="counter" value="${counter+1}"/>
-          <input type="button" value="Finish" onClick="finish();" class="submit" />
+        <c:if test="<%= fileItemList.size() > 0 %>">
+          <label>Added Attachments: (<%= newSize %> KB)</label><br />
+          <%= fileItemList.getHtml("selFileItemList", 0) %><br />
+        </c:if>
+        <p>
+          <c:if test="<%= fileItemList.size() > 0 %>">
+            <input type="button" value="Finish" class="submit" id="panelCloseButton" onclick="setAttachmentList('<%= fileItemList.getValueListing() %>');setAttachmentText('<%= fileItemList.getTextListing() %>');panel.cancel();"/>
+          </c:if>
+          <input type="button" value="Cancel" class="submit" id="panelCloseButton" onclick="panel.cancel()"/>
+        </p>
       </ccp:evaluate>
-    </fieldset>
-    <fieldset id="progressBar" style="display:none">
-      <legend>Please Wait</legend>
-      <img src="<%= ctx %>/images/loading32.gif" alt="loading..." />
-      <span><ccp:label name="fileAttach.largeFileWarning">Large files may take a while to upload.</ccp:label></span>
-      <span><ccp:label name="fileAttach.pleaseWaitForConfirmation">Please wait for confirmation message before continuing.</ccp:label></span>
     </fieldset>
   </form>
 </div>

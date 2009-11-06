@@ -67,20 +67,12 @@
       return true;
     }
   }
-  function fileAttachmentSelector() {
-    var projectId = '&pid=<%= project.getId() %>';
-    var linkModuleId = '&lmid=<%= Constants.PROJECT_TICKET_FILES %>';
-    var linkItemId = '&liid=<%= ticket.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + projectId + linkModuleId + linkItemId + selectorId + '&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
   function setAttachmentText(newVal) {
     document.getElementById("attachmentText").value = newVal;
   }
-
 </script>
 <body onLoad="document.ticketForm.comment.focus();">
   <div class="portletWrapper">
@@ -103,13 +95,14 @@
           <%-- Comments --%>
           <label for="comment"><ccp:label name="projectsCenterTickets.comments.userComments">User Comments</ccp:label></label>
           <textarea name="comment" cols="55" rows="5"></textarea>
-          <label for="attachmentList"><ccp:label name="projectsCenterTickets.comments.supportingFiles">Supporting Files</ccp:label></label>
+          <label for="attachmentList"><ccp:label name="projectsCenterTickets.comments.supportingFiles">Supporting File Attachments</ccp:label></label>
           <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-          <a href="javascript:fileAttachmentSelector();"><ccp:label name="projectsCenterTickets.comments.attachFiles">Attach Files</ccp:label></a>
+          <a href="${ctx}/FileAttachments.do?command=ShowForm&pid=<%= project.getId() %>&lmid=<%= Constants.PROJECT_TICKET_FILES %>&liid=<%= ticket.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&popup=true"
+             rel="shadowbox" title="Share an attachment">Attach Files</a>
           <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-          &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
         </fieldset>
-        <input type="submit" class="submit" " value="<ccp:label name="button.save">Save</ccp:label>">
+        <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>">
         <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagementTickets.do?command=Details&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
         <input type="hidden" name="pid" value="<%= project.getId() %>">
         <input type="hidden" name="id" value="<%= ticket.getId() %>">

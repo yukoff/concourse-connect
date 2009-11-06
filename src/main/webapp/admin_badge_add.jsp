@@ -71,12 +71,6 @@
       return true;
     }
   }
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.BADGE_FILES %>';
-    var linkItemId = '&liid=<%= badge.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -141,15 +135,18 @@
             %>
             <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
             <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-        <% if (badge.getLogoId() != -1) { %>
-              <a href="javascript:fileAttachmentSelector();">Replace Image</a>
-        <%} else {%>
-              <a href="javascript:fileAttachmentSelector();">Attach Image</a>
+            <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.BADGE_FILES %>&liid=<%= badge.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single"
+               rel="shadowbox" title="Share an attachment">
+            <% if (badge.getLogoId() != -1) { %>
+              Replace Image
+            <%} else {%>
+              Attach Image
             <%}%>
+            </a>
             <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-            &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
-        <% if (badge.getLogoId() != -1) { %>
-          <input type="hidden" name="logoId" value="<%= badge.getLogoId() %>" />
+            <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+            <% if (badge.getLogoId() != -1) { %>
+              <input type="hidden" name="logoId" value="<%= badge.getLogoId() %>" />
             <%}%>
           </td>
         </tr>

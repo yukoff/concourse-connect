@@ -290,16 +290,19 @@
           %>
           <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
           <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-      <% if (project.getLogoId() != -1) { %>
-            <a href="javascript:fileAttachmentSelector();">Replace Image</a>
-      <%} else {%>
-            <a href="javascript:fileAttachmentSelector();">Attach Image</a>
-          <%}%>
+          <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.PROJECT_IMAGE_FILES %>&liid=<%= project.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+             rel="shadowbox" title="Share an attachment">
+            <% if (project.getLogoId() != -1) { %>
+              Replace Image
+            <%} else {%>
+              Attach Image
+            <%}%>
+          </a>
           </label>
           <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-          &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
-      <% if (project.getLogoId() != -1) { %>
-        <input type="hidden" name="logoId" value="<%= project.getLogoId() %>" />
+          <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+          <% if (project.getLogoId() != -1) { %>
+            <input type="hidden" name="logoId" value="<%= project.getLogoId() %>" />
           <%}%>
      </c:if>
     <%-- End Project Description --%>
@@ -435,12 +438,6 @@
         startDateEl.value = endDateEl.value;
       }
     }
-  }
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.PROJECT_IMAGE_FILES %>';
-    var linkItemId = '&liid=<%= project.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
   }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;

@@ -59,12 +59,6 @@ Add Ad Category
 <% } %>
 <br /><br />
 <script type="text/javascript" language="JavaScript">
-  function fileAttachmentSelector() {
-    var linkModuleId = '&lmid=<%= Constants.AD_CATEGORY_FILES %>';
-    var linkItemId = '&liid=<%= adCategory.getId() %>';
-    var selectorId = '&selectorId=<%= FileItem.createUniqueValue() %>';
-    popURL('<%= ctx %>/FileAttachments.do?command=ShowForm' + linkModuleId + linkItemId + selectorId + '&selectorMode=single&popup=true','File_Attachments','480','520','yes','yes');
-  }
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -126,22 +120,25 @@ Add Ad Category
               FileItem thisFile = (FileItem)files.next();
               if (thisFile.getId() == adCategory.getLogoId()){
           %>
-          <%= thisFile.getFullImageFromAdmin(ctx) %>&nbsp;
+              <%= thisFile.getFullImageFromAdmin(ctx) %>&nbsp;
             <%
                 }
               }
             %>
             <ccp:evaluate if="<%= fileItemList.size() > 0 %>"><br /></ccp:evaluate>
             <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
-        <% if (adCategory.getLogoId() != -1) { %>
-              <a href="javascript:fileAttachmentSelector();">Replace Image</a>
-        <%} else {%>
-              <a href="javascript:fileAttachmentSelector();">Attach Image</a>
+            <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.AD_CATEGORY_FILES %>&liid=<%= adCategory.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&popup=true"
+               rel="shadowbox" title="Share an attachment">
+            <% if (adCategory.getLogoId() != -1) { %>
+                  Replace Image
+            <%} else {%>
+                  Attach Image
             <%}%>
+            </a>
             <input type="hidden" id="attachmentList" name="attachmentList" value="" />
-            &nbsp;&nbsp;<input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
-        <% if (adCategory.getLogoId() != -1) { %>
-          <input type="hidden" name="logoId" value="<%= adCategory.getLogoId() %>" />
+            <input type="text" id="attachmentText" name="attachmentText" value="" size="45" disabled="true" />
+            <% if (adCategory.getLogoId() != -1) { %>
+              <input type="hidden" name="logoId" value="<%= adCategory.getLogoId() %>" />
             <%}%>
       </td>
      </tr>

@@ -345,7 +345,8 @@ function showPanel(title, url, width, id) {
     if (o.responseText.indexOf("\"location\":") > -1) {
       // success, found a redirect location
       panel.cancel();
-      var url = o.responseText.substring(o.responseText.indexOf('\"location\":') + 12, o.responseText.lastIndexOf('\"'));
+      var lStart = o.responseText.indexOf('\"location\":') + 12;
+      var url = o.responseText.substring(lStart, o.responseText.indexOf('\"', lStart + 1));
       if (url) {
         if (url.indexOf("\r") > -1) {
           url = url.substring(0, url.indexOf("\r"));
@@ -353,7 +354,8 @@ function showPanel(title, url, width, id) {
         window.location.href = url;
       }
     } else if (o.responseText.indexOf("\"action\":") > -1) {
-      var action = o.responseText.substring(o.responseText.indexOf('\"action\":') + 10, o.responseText.lastIndexOf('\"'));
+      var aStart = o.responseText.indexOf('\"action\":') + 10;
+      var action = o.responseText.substring(aStart, o.responseText.indexOf('\"', aStart + 1));
       eval(action);
     } else {
       panel.setBody(o.responseText);
@@ -366,7 +368,9 @@ function showPanel(title, url, width, id) {
     if (o.status == 200 && o.responseText.indexOf("\"location\":") > -1) {
       // success, found a redirect location
       panel.cancel();
-      var url = o.responseText.substring(o.responseText.indexOf('\"location\":') + 12, o.responseText.lastIndexOf('\"'));
+
+      var lStart = o.responseText.indexOf('\"location\":') + 12;
+      var url = o.responseText.substring(lStart, o.responseText.indexOf('\"', lStart + 1));
       if (url) {
         if (url.indexOf("\r") > -1) {
           url = url.substring(0, url.indexOf("\r"));

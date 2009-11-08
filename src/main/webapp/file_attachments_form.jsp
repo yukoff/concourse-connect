@@ -92,6 +92,7 @@
       <input type="hidden" name="selectorMode" value="<%= toHtmlValue(selectorMode) %>" />
       <input type="hidden" name="added" value="true" />
       <input type="hidden" name="popup" value="true" />
+      <input type="hidden" name="out" value="text" />
       <c:if test="${param.allowCaption == 'true'}">
         <p>
           <label><ccp:label name="fileAttach.setCaption">Enter a caption to be displayed</ccp:label></label>

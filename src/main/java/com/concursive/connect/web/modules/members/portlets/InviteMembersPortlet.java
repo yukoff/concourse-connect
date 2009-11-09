@@ -412,7 +412,7 @@ public class InviteMembersPortlet extends GenericPortlet {
         thisUser.setStartPage(1);
         thisUser.setRegistered(false);
         thisUser.setAccountSize(prefs.get("ACCOUNT.SIZE"));
-        thisUser.setAccessAddProjects(prefs.get("START_PROJECTS"));
+        thisUser.setAccessAddProjects(prefs.get(ApplicationPrefs.USERS_CAN_START_PROJECTS));
         thisUser.insert(db, PortalUtils.getServerDomainNameAndPort(request), prefs);
 
         //Insert user into project as pending

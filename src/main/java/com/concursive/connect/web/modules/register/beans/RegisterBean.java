@@ -478,7 +478,7 @@ public class RegisterBean extends GenericBean {
       user.setRegistered(true);
       user.setTerms(terms);
       user.setAccountSize(prefs.get("ACCOUNT.SIZE"));
-      user.setAccessAddProjects(prefs.get("START_PROJECTS"));
+      user.setAccessAddProjects(prefs.get(ApplicationPrefs.USERS_CAN_START_PROJECTS));
       user.setCity(city);
       user.setState(state);
       user.setCountry(country);

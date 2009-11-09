@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.setup.beans;
 
 import com.concursive.commons.db.DatabaseUtils;
@@ -69,13 +68,11 @@ public class SiteSettingsBean {
   private String invitationSubject = null;
   private String invitationMessage = null;
 
-
   /**
    * Constructor for the SiteSettingsBean object
    */
   public SiteSettingsBean() {
   }
-
 
   /**
    * Sets the isLoaded attribute of the SiteSettingsBean object
@@ -86,7 +83,6 @@ public class SiteSettingsBean {
     this.isLoaded = tmp;
   }
 
-
   /**
    * Sets the isLoaded attribute of the SiteSettingsBean object
    *
@@ -95,7 +91,6 @@ public class SiteSettingsBean {
   public void setIsLoaded(String tmp) {
     this.isLoaded = DatabaseUtils.parseBoolean(tmp);
   }
-
 
   /**
    * Sets the accountSize attribute of the SiteSettingsBean object
@@ -106,7 +101,6 @@ public class SiteSettingsBean {
     this.accountSize = tmp;
   }
 
-
   /**
    * Sets the accountSize attribute of the SiteSettingsBean object
    *
@@ -115,7 +109,6 @@ public class SiteSettingsBean {
   public void setAccountSize(String tmp) {
     this.accountSize = Integer.parseInt(tmp);
   }
-
 
   /**
    * Sets the timeZone attribute of the SiteSettingsBean object
@@ -126,7 +119,6 @@ public class SiteSettingsBean {
     this.timeZone = tmp;
   }
 
-
   /**
    * Sets the allowRegistration attribute of the SiteSettingsBean object
    *
@@ -135,7 +127,6 @@ public class SiteSettingsBean {
   public void setAllowRegistration(boolean tmp) {
     this.allowRegistration = tmp;
   }
-
 
   /**
    * Sets the allowRegistration attribute of the SiteSettingsBean object
@@ -146,7 +137,6 @@ public class SiteSettingsBean {
     this.allowRegistration = DatabaseUtils.parseBoolean(tmp);
   }
 
-
   /**
    * Sets the allowInvitations attribute of the SiteSettingsBean object
    *
@@ -155,7 +145,6 @@ public class SiteSettingsBean {
   public void setAllowInvitations(boolean tmp) {
     this.allowInvitations = tmp;
   }
-
 
   /**
    * Sets the allowInvitations attribute of the SiteSettingsBean object
@@ -166,7 +155,6 @@ public class SiteSettingsBean {
     this.allowInvitations = DatabaseUtils.parseBoolean(tmp);
   }
 
-
   /**
    * Sets the invitationSubject attribute of the SiteSettingsBean object
    *
@@ -175,7 +163,6 @@ public class SiteSettingsBean {
   public void setInvitationSubject(String tmp) {
     this.invitationSubject = tmp;
   }
-
 
   /**
    * Sets the invitationMessage attribute of the SiteSettingsBean object
@@ -186,7 +173,6 @@ public class SiteSettingsBean {
     this.invitationMessage = tmp;
   }
 
-
   /**
    * Gets the allowAddProjects attribute of the SiteSettingsBean object
    *
@@ -195,7 +181,6 @@ public class SiteSettingsBean {
   public boolean getAllowAddProjects() {
     return allowAddProjects;
   }
-
 
   /**
    * Sets the allowAddProjects attribute of the SiteSettingsBean object
@@ -206,7 +191,6 @@ public class SiteSettingsBean {
     this.allowAddProjects = tmp;
   }
 
-
   /**
    * Sets the allowAddProjects attribute of the SiteSettingsBean object
    *
@@ -215,7 +199,6 @@ public class SiteSettingsBean {
   public void setAllowAddProjects(String tmp) {
     this.allowAddProjects = DatabaseUtils.parseBoolean(tmp);
   }
-
 
   /**
    * Gets the loaded attribute of the SiteSettingsBean object
@@ -226,7 +209,6 @@ public class SiteSettingsBean {
     return isLoaded;
   }
 
-
   /**
    * Gets the accountSize attribute of the SiteSettingsBean object
    *
@@ -235,7 +217,6 @@ public class SiteSettingsBean {
   public int getAccountSize() {
     return accountSize;
   }
-
 
   /**
    * Gets the timeZone attribute of the SiteSettingsBean object
@@ -246,7 +227,6 @@ public class SiteSettingsBean {
     return timeZone;
   }
 
-
   /**
    * Gets the allowRegistration attribute of the SiteSettingsBean object
    *
@@ -255,7 +235,6 @@ public class SiteSettingsBean {
   public boolean getAllowRegistration() {
     return allowRegistration;
   }
-
 
   /**
    * Gets the allowInvitations attribute of the SiteSettingsBean object
@@ -266,7 +245,6 @@ public class SiteSettingsBean {
     return allowInvitations;
   }
 
-
   /**
    * Gets the invitationSubject attribute of the SiteSettingsBean object
    *
@@ -275,7 +253,6 @@ public class SiteSettingsBean {
   public String getInvitationSubject() {
     return invitationSubject;
   }
-
 
   /**
    * Gets the invitationMessage attribute of the SiteSettingsBean object
@@ -286,7 +263,6 @@ public class SiteSettingsBean {
     return invitationMessage;
   }
 
-
   /**
    * Description of the Method
    *
@@ -296,14 +272,13 @@ public class SiteSettingsBean {
    */
   public void load(ApplicationPrefs prefs, String filePath) throws IOException {
     accountSize = Integer.parseInt(prefs.get("ACCOUNT.SIZE"));
-    allowRegistration = "true".equals(prefs.get("REGISTER"));
-    allowInvitations = "true".equals(prefs.get("INVITE"));
-    allowAddProjects = "true".equals(prefs.get("START_PROJECTS"));
+    allowRegistration = "true".equals(prefs.get(ApplicationPrefs.USERS_CAN_REGISTER));
+    allowInvitations = "true".equals(prefs.get(ApplicationPrefs.USERS_CAN_INVITE));
+    allowAddProjects = "true".equals(prefs.get(ApplicationPrefs.USERS_CAN_START_PROJECTS));
     // @todo load templates from freemarker for review
     //invitationSubject = StringUtils.loadText(filePath + prefs.get("INVITE.SUBJECT"));
     //invitationMessage = StringUtils.loadText(filePath + prefs.get("INVITE.MESSAGE"));
     isLoaded = true;
   }
-
 }
 

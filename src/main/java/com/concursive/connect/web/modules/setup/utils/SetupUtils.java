@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.setup.utils;
 
 import bsh.Interpreter;
@@ -93,7 +92,6 @@ import java.util.LinkedHashMap;
 public class SetupUtils {
 
   private static Log LOG = LogFactory.getLog(SetupUtils.class);
-
   public final static String fs = System.getProperty("file.separator");
 
   /**
@@ -213,7 +211,7 @@ public class SetupUtils {
       Statement st = db.createStatement();
       ResultSet rs = st.executeQuery(
           "SELECT count(*) AS recordcount " +
-              "FROM database_version ");
+          "FROM database_version ");
       rs.next();
       count = rs.getInt("recordcount");
       rs.close();
@@ -234,8 +232,8 @@ public class SetupUtils {
     try {
       PreparedStatement pst = db.prepareStatement(
           "SELECT count(*) AS recordcount " +
-              "FROM users " +
-              "WHERE access_admin = ? ");
+          "FROM users " +
+          "WHERE access_admin = ? ");
       pst.setBoolean(1, true);
       ResultSet rs = pst.executeQuery();
       rs.next();
@@ -258,8 +256,8 @@ public class SetupUtils {
     try {
       PreparedStatement pst = db.prepareStatement(
           "SELECT count(*) AS recordcount " +
-              "FROM projects " +
-              "WHERE system_default = ? ");
+          "FROM projects " +
+          "WHERE system_default = ? ");
       pst.setBoolean(1, true);
       ResultSet rs = pst.executeQuery();
       rs.next();
@@ -422,6 +420,7 @@ public class SetupUtils {
       prefs.add(ApplicationPrefs.INFORMATION_IS_SENSITIVE, "true");
       prefs.add(ApplicationPrefs.USERS_CAN_REGISTER, "false");
       prefs.add(ApplicationPrefs.USERS_CAN_INVITE, "false");
+      prefs.add(ApplicationPrefs.USERS_CAN_START_PROJECTS, "true");
       validCategoryList.add(categoryList.getFromValue("Groups"));
       validCategoryList.add(categoryList.getFromValue("People"));
       validCategoryList.add(categoryList.getFromValue("Events"));

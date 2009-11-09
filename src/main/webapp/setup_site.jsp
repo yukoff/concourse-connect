@@ -91,17 +91,17 @@
           <label style="clear:right">
             <input type="radio" name="purpose" value="social" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
             <strong>Social networking</strong> -
-            A special interest site that fosters collaboration around a particular theme
+            A public special interest site that fosters collaboration around a particular theme
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="directory" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
             <strong>Commercial social community</strong> -
-            A site fostering collaboration around a directory of places, things and people
+            A public site fostering collaboration around a directory of places, things and people highlighting reviews as an important feature
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="community" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
             <strong>Customer community</strong> -
-            A site that supplements an existing website with rich community features and an idea forum
+            A public site that supplements an existing website with rich community features and an idea forum
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="projects" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
@@ -111,7 +111,7 @@
           <label style="clear:right">
             <input type="radio" name="purpose" value="web" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
             <strong>Business web Site</strong> -
-            Setup a marketing and collaborative web presence all in one
+            Setup a public marketing and collaborative web presence all in one
           </label>
         </fieldset>
       </div>

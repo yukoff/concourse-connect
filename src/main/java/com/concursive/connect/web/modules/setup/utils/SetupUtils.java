@@ -159,14 +159,14 @@ public class SetupUtils {
         adminUser.setEmail(useremail);
         adminUser.setPassword1(userpass);
         adminUser.setPassword2(userpass);
-        insertDefaultAdmin(db, adminUser, null);
+        insertDefaultAdmin(db, adminUser, null, null);
       }
       // The default system profile
       Project project = new Project();
       project.setTitle(title);
       project.setShortDescription(description);
       project.setKeywords(keywords);
-      insertDefaultSiteConfig(db, fileLibraryPath, project, purpose);
+      insertDefaultSiteConfig(db, fileLibraryPath, project, purpose, new ApplicationPrefs());
       // The default profile content
       insertDefaultContent(db, syncTableList, fileLibraryPath, project);
     } catch (Exception e) {
@@ -305,7 +305,7 @@ public class SetupUtils {
     }
   }
 
-  public static void insertDefaultAdmin(Connection db, User thisUser, String ip) throws Exception {
+  public static void insertDefaultAdmin(Connection db, User thisUser, String ip, ApplicationPrefs prefs) throws Exception {
     if (thisUser.getUsername() == null || thisUser.getPassword1() == null) {
       throw new Exception("Missing required fields");
     }
@@ -323,7 +323,7 @@ public class SetupUtils {
     thisUser.setStartPage(1);
     thisUser.setEnabled(true);
     thisUser.setAccountSize("-1");
-    thisUser.insert(db, ip, null);
+    thisUser.insert(db, ip, prefs);
   }
 
   /**
@@ -379,7 +379,7 @@ public class SetupUtils {
     LOG.debug("Finished.");
   }
 
-  public static void insertDefaultSiteConfig(Connection db, String fileLibraryPath, Project project, String purpose) throws Exception {
+  public static void insertDefaultSiteConfig(Connection db, String fileLibraryPath, Project project, String purpose, ApplicationPrefs prefs) throws Exception {
     LOG.debug("insertDefaultSiteConfig");
     // Validate the pre-reqs
     if (!StringUtils.hasText(project.getTitle()) ||
@@ -397,6 +397,7 @@ public class SetupUtils {
     int categoryId = categoryList.getIdFromValue("Groups");
 
     // Determine the tabs
+    boolean isPrivate = false;
     ProjectCategoryList validCategoryList = new ProjectCategoryList();
     if ("social".equals(purpose)) {
       validCategoryList.add(categoryList.getFromValue("Groups"));
@@ -417,12 +418,20 @@ public class SetupUtils {
       validCategoryList.add(categoryList.getFromValue("People"));
       validCategoryList.add(categoryList.getFromValue("Ideas"));
     } else if ("intranet".equals(purpose)) {
+      isPrivate = true;
+      prefs.add(ApplicationPrefs.INFORMATION_IS_SENSITIVE, "true");
+      prefs.add(ApplicationPrefs.USERS_CAN_REGISTER, "false");
+      prefs.add(ApplicationPrefs.USERS_CAN_INVITE, "false");
       validCategoryList.add(categoryList.getFromValue("Groups"));
       validCategoryList.add(categoryList.getFromValue("People"));
       validCategoryList.add(categoryList.getFromValue("Events"));
       validCategoryList.add(categoryList.getFromValue("Ideas"));
       validCategoryList.add(categoryList.getFromValue("Projects"));
     } else if ("projects".equals(purpose)) {
+      isPrivate = true;
+      prefs.add(ApplicationPrefs.INFORMATION_IS_SENSITIVE, "true");
+      prefs.add(ApplicationPrefs.USERS_CAN_REGISTER, "false");
+      prefs.add(ApplicationPrefs.USERS_CAN_INVITE, "false");
       validCategoryList.add(categoryList.getFromValue("Groups"));
       validCategoryList.add(categoryList.getFromValue("People"));
       validCategoryList.add(categoryList.getFromValue("Projects"));
@@ -440,13 +449,14 @@ public class SetupUtils {
     if (validCategoryList.size() > 0) {
       for (ProjectCategory category : categoryList) {
         category.setEnabled(validCategoryList.get(category) != null);
+        category.setSensitive(isPrivate);
         category.update(db);
       }
     }
 
     // Determine the profile visibility
     project.setUpdateAllowGuests(true);
-    project.setAllowGuests(true);
+    project.setAllowGuests(isPrivate ? false : true);
     project.setUpdateAllowParticipants(true);
     project.setAllowParticipants(true);
     project.setUpdateMembershipRequired(true);

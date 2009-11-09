@@ -636,7 +636,7 @@ public final class Setup extends GenericAction {
       String ip = context.getRequest().getRemoteAddr();
       // Insert the new admin account
       thisUser.setUsername(thisUser.getEmail());
-      SetupUtils.insertDefaultAdmin(db, thisUser, ip);
+      SetupUtils.insertDefaultAdmin(db, thisUser, ip, getApplicationPrefs(context));
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to create the account, the " +
@@ -732,7 +732,7 @@ public final class Setup extends GenericAction {
       project.setTitle(bean.getTitle());
       project.setShortDescription(bean.getShortDescription());
       project.setKeywords(bean.getKeywords());
-      SetupUtils.insertDefaultSiteConfig(db, ApplicationPrefs.FILE_LIBRARY_PATH, project, bean.getPurpose());
+      SetupUtils.insertDefaultSiteConfig(db, ApplicationPrefs.FILE_LIBRARY_PATH, project, bean.getPurpose(), prefs);
 
       // The default profile content
       SetupUtils.insertDefaultContent(db, syncTableList, prefs.get(ApplicationPrefs.FILE_LIBRARY_PATH) + "1" + fs + "projects" + fs, project);

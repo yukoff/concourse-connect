@@ -131,6 +131,7 @@ public class User extends GenericBean {
   private int showLocationTo = Constants.WITH_ANYONE;
   private int showCompanyTo = Constants.WITH_ANYONE;
   private int points = 0;
+  private String profileUniqueId = null;
 
   // Helper properties
   private boolean apiRestore = false;
@@ -277,6 +278,12 @@ public class User extends GenericBean {
     }
     //cleanup
     idRange = String.valueOf(id);
+    
+    if (getProfileProject() != null){
+    	this.profileUniqueId = getProfileProject().getUniqueId();
+    	System.out.println("profileUniqueId ==> " + profileUniqueId);
+    }
+    
   }
 
   public int getInstanceId() {
@@ -1609,7 +1616,23 @@ public class User extends GenericBean {
     this.points = Integer.parseInt(points);
   }
 
-  public boolean isApiRestore() {
+  /**
+   * @return the profileUniqueId
+   */
+  public String getProfileUniqueId() {
+  	return profileUniqueId;
+  }
+
+
+	/**
+   * @param profileUniqueId the profileUniqueId to set
+   */
+  public void setProfileUniqueId(String profileUniqueId) {
+  	this.profileUniqueId = profileUniqueId;
+  }
+
+
+	public boolean isApiRestore() {
     return apiRestore;
   }
 

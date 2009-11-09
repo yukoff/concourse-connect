@@ -92,6 +92,7 @@
       <property>htPasswdDate</property>
       <property>accessContactsViewAll</property>
       <property>accessContactsEditAll</property>
+      <property>profileUniqueId</property>
     </map>
     <map class="com.concursive.connect.web.modules.login.dao.UserList" id="userList"/>
 

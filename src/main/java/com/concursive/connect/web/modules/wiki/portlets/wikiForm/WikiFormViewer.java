@@ -73,6 +73,7 @@ public class WikiFormViewer implements IPortletViewer {
   private static final String VIEW_PAGE_FORM = "/portlets/wiki_form/wiki_form-view.jsp";
   private static final String VIEW_PAGE_SUCCESS = "/portlets/wiki_form/wiki_form_success-view.jsp";
   // Preferences
+  private static final String PREF_PROJECT = "project";
   private static final String PREF_TITLE = "title";
   private static final String PREF_INTRODUCTION_MESSAGE = "introductionMessage";
   private static final String PREF_FORM_CONTENT = "form";
@@ -100,9 +101,10 @@ public class WikiFormViewer implements IPortletViewer {
     }
 
     // Determine the project container to use for accessing the wiki
+    String uniqueId = request.getPreferences().getValue(PREF_PROJECT, null);
     Project project = findProject(request);
-    if (project == null) {
-      LOG.debug("Skipping... project is null");
+    if (project == null || !uniqueId.equals(project.getUniqueId())) {
+      LOG.debug("Skipping...");
       return null;
     }
 

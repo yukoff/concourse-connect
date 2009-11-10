@@ -46,7 +46,9 @@
 package com.concursive.connect.web.modules.members.portlets;
 
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
+import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -103,19 +105,40 @@ public class PendingInvitationsPortlet extends GenericPortlet {
         if ("setAccept".equals(viewType)) {
           String projectId = request.getParameter("projectId");
           String accept = request.getParameter("accept");
-          Project thisProject = PortalUtils.retrieveAuthorizedProject(Integer.parseInt(projectId), request);
-          TeamMember previousMember = new TeamMember(db, thisProject.getId(), project.getOwner());
+          Project targetProject = PortalUtils.retrieveAuthorizedProject(Integer.parseInt(projectId), request);
+          TeamMember previousMember = new TeamMember(db, targetProject.getId(), project.getOwner());
           if ("true".equals(accept)) {
             // Update the user's status
-            ProjectUtils.accept(db, thisProject.getId(), project.getOwner());
-            TeamMember thisMember = new TeamMember(db, thisProject.getId(), project.getOwner());
+            ProjectUtils.accept(db, targetProject.getId(), project.getOwner());
+            TeamMember thisMember = new TeamMember(db, targetProject.getId(), project.getOwner());
             // Let the workflow know
             PortalUtils.processUpdateHook(request, previousMember, thisMember);
 
+            //Reciprocate membership in the accepting users profile if the target project is a user profile
+            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+              Project thisUserProfileProject = user.getProfileProject();
+              TeamMemberList teamMemberList = thisUserProfileProject.getTeam();
+              if (!teamMemberList.hasUserId(targetProject.getOwner())) {
+              	TeamMember reciprocatingTeamMember = new TeamMember();
+              	reciprocatingTeamMember.setProjectId(thisUserProfileProject.getId());
+              	reciprocatingTeamMember.setUserId(targetProject.getOwner());
+                if (thisUserProfileProject.getFeatures().getAllowParticipants()) {
+                	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.PARTICIPANT));
+                } else {
+                	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.GUEST));
+                }
+              	reciprocatingTeamMember.setStatus(TeamMember.STATUS_JOINED);
+              	reciprocatingTeamMember.setEnteredBy(user.getId());
+              	reciprocatingTeamMember.setModifiedBy(user.getId());
+              	reciprocatingTeamMember.insert(db);
+              }
+            }
+            
           } else {
             // Update the user's status
-            ProjectUtils.reject(db, thisProject.getId(), project.getOwner());
-            TeamMember thisMember = new TeamMember(db, thisProject.getId(), project.getOwner());
+            ProjectUtils.reject(db, targetProject.getId(), project.getOwner());
+            TeamMember thisMember = new TeamMember(db, targetProject.getId(), project.getOwner());
             // Let the workflow know
             PortalUtils.processUpdateHook(request, previousMember, thisMember);
           }

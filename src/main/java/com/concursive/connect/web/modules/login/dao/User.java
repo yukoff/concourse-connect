@@ -281,7 +281,6 @@ public class User extends GenericBean {
     
     if (getProfileProject() != null){
     	this.profileUniqueId = getProfileProject().getUniqueId();
-    	System.out.println("profileUniqueId ==> " + profileUniqueId);
     }
     
   }

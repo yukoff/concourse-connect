@@ -391,6 +391,7 @@ public class ContactUsBean extends GenericBean {
           "First Name: " + nameFirst + lf +
           "Last Name: " + nameLast + lf +
           "Email Address: " + email + lf +
+          "Phone Number: " + businessPhone + lf +
           "Organization: " + organization + lf +
           (language != null ? "Language: " + language + lf : "") +
           "Question/Comments: " + description + lf);

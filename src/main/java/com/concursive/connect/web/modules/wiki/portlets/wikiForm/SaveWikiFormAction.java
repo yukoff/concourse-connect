@@ -134,6 +134,7 @@ public class SaveWikiFormAction implements IPortletAction {
       return bean;
     }
     // Everything is there... save it
+    bean.setEmailCopy(true);
     bean.save(PortalUtils.getConnection(request), PortalUtils.getApplicationPrefs(request), ipAddress, browser);
 
     // Show the success message

@@ -43,7 +43,6 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-
 package com.concursive.connect.web.modules.wiki.utils;
 
 import com.concursive.commons.text.StringUtils;
@@ -69,6 +68,14 @@ public class CustomFormUtils {
   // Logger
   private static Log LOG = LogFactory.getLog(CustomFormUtils.class);
 
+  /**
+   * Returns the named form from the wiki
+   *
+   * @param wiki
+   * @param formName
+   * @return
+   * @throws Exception
+   */
   public static CustomForm retrieveForm(Wiki wiki, String formName) throws Exception {
     if (wiki == null || formName == null || !StringUtils.hasText(wiki.getContent())) {
       return null;
@@ -76,7 +83,7 @@ public class CustomFormUtils {
     BufferedReader in = new BufferedReader(new StringReader(wiki.getContent()));
     String line = null;
     while ((line = in.readLine()) != null && !line.startsWith("[{form name=\"" + formName + "\"}]")) {
-      line = in.readLine();
+      // Looking for the start
     }
     if (line != null) {
       CustomForm form = WikiToHTMLUtils.retrieveForm(in, line);
@@ -84,6 +91,33 @@ public class CustomFormUtils {
         if (formName.equals(form.getName())) {
           return form;
         }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Generates a CustomForm object from the provided wiki form content fragment
+   * 
+   * @param content
+   * @return
+   * @throws Exception
+   */
+  public static CustomForm createForm(String content) throws Exception {
+    if (content == null) {
+      LOG.debug("Content is NULL");
+      return null;
+    }
+    BufferedReader in = new BufferedReader(new StringReader(content));
+    String line = null;
+    while ((line = in.readLine()) != null && !line.contains("[{form name=\"")) {
+      // Looking for the start
+    }
+    if (line != null) {
+      LOG.debug("Form line: " + line);
+      CustomForm form = WikiToHTMLUtils.retrieveForm(in, line);
+      if (form != null) {
+        return form;
       }
     }
     return null;
@@ -104,7 +138,6 @@ public class CustomFormUtils {
     wiki.setContent(populateForm(wiki.getContent(), request.getParameterMap()));
   }
 
-
   /**
    * Creates the wiki content when creating a new wiki from a template that has a form
    *
@@ -124,8 +157,8 @@ public class CustomFormUtils {
   public static String populateForm(String wikiContent, Map parameterMap) throws Exception {
     BufferedReader in = new BufferedReader(new StringReader(wikiContent));
     String line = null;
-    while ((line = in.readLine()) != null && !line.startsWith("[{form")) {
-      line = in.readLine();
+    while ((line = in.readLine()) != null && !line.contains("[{form")) {
+      // Keep looking
     }
     // Let the Wiki utils create the form objects
     CustomForm form = WikiToHTMLUtils.retrieveForm(in, line);

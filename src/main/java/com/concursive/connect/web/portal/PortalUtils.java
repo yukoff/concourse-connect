@@ -185,7 +185,6 @@ public class PortalUtils {
     return (Key) request.getAttribute("TEAM.KEY");
   }
 
-
   public static String getApplicationUrl(PortletRequest request) {
     if (request.getAttribute("secureUrl") != null) {
       return (String) request.getAttribute("secureUrl");
@@ -317,7 +316,6 @@ public class PortalUtils {
     ObjectHookManager hookManager = (ObjectHookManager) request.getAttribute("objectHookManager");
     hookManager.process(action, previousObject, object, userId, url, secureUrl);
   }
-
 
   public static Scheduler getScheduler(PortletRequest request) {
     return (Scheduler) request.getAttribute("scheduler");
@@ -612,10 +610,9 @@ public class PortalUtils {
   }
 
   public static String getFileLibraryPath(PortletRequest request, String moduleFolderName) {
-    return (
-        getApplicationPrefs(request).get("FILELIBRARY") +
-            getUser(request).getGroupId() + fs +
-            moduleFolderName + fs);
+    return (getApplicationPrefs(request).get("FILELIBRARY") +
+        getUser(request).getGroupId() + fs +
+        moduleFolderName + fs);
   }
 
   public static Configuration getFreemarkerConfiguration(PortletRequest request) {
@@ -725,6 +722,17 @@ public class PortalUtils {
   public static GenericBean goToViewer(ActionRequest request, ActionResponse response, String viewer, GenericBean genericBean) throws java.io.IOException {
     request.setAttribute("portlet-command", viewer);
     return genericBean;
+  }
+
+  /**
+   * The portletCommand is set after the AbstractPortletModule has determined
+   * the view for the portlet.
+   * 
+   * @param request
+   * @return
+   */
+  public static String getViewer(PortletRequest request) {
+    return (String) request.getAttribute("portletCommand");
   }
 
   public static String getPortletUniqueKey(PortletRequest request) {

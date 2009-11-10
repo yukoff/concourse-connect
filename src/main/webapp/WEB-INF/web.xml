@@ -881,6 +881,15 @@
     <load-on-startup>0</load-on-startup>
   </servlet>
   <servlet>
+    <servlet-name>WikiFormPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>WikiFormPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet>
     <servlet-name>ApproveListingPortlet</servlet-name>
     <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
     <init-param>
@@ -1212,6 +1221,10 @@
   <servlet-mapping>
     <servlet-name>AddWikiPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/AddWikiPortlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>WikiFormPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/WikiFormPortlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ApproveListingPortlet</servlet-name>

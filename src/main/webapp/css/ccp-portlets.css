@@ -506,20 +506,12 @@
 
 	  td.formLabel {
 	    padding: 10px;
-      width: 150px;
+      white-space: nowrap;
 	  }
 
 	  .formContainer th {
 	    padding: 10px;
 	  }
-
-
-
-	  /*.formContainer span {
-	    display: block;
-	    clear: both;
-	    margin: 10px 0;
-	  }*/
 
 	  .formContainer legend span {
 	    display: inherit

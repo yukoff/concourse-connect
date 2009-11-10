@@ -595,22 +595,25 @@ public class WikiToHTMLUtils {
     // Convert wiki to objects...
     CustomForm form = new CustomForm();
     form.setName(extractValue("name", line));
-    int row = 0;
+    LOG.debug("Form name: " + form.getName());
     CustomFormGroup currentGroup = null;
     while (line != null && !line.startsWith("+++") && (line = in.readLine()) != null) {
       if (line.startsWith("[{group")) {
+        LOG.debug("found group");
         // Process the line as a group
         currentGroup = new CustomFormGroup();
         currentGroup.setName(extractValue("value", line));
         currentGroup.setDisplay(extractValue("display", line));
         form.add(currentGroup);
       } else if (line.startsWith("[{label")) {
+        LOG.debug("found a field label");
         // Process this block as a field
         CustomFormField field = new CustomFormField();
         field.setLabel(extractValue("value", line));
         field.setLabelDisplay(extractValue("display", line));
-        while (!line.startsWith("---") && !line.startsWith("+++") && (line = in.readLine()) != null) {
+        while (!line.startsWith("---") && !line.startsWith("___") && !line.startsWith("+++") && (line = in.readLine()) != null) {
           if (line.startsWith("[{field")) {
+            LOG.debug("  found field");
             field.setType(extractValue("type", line));
             field.setName(extractValue("name", line));
             field.setRequired(extractValue("required", line));
@@ -621,8 +624,10 @@ public class WikiToHTMLUtils {
             field.setRows(extractValue("rows", line));
             field.setOptions(extractValue("options", line));
           } else if (line.startsWith("[{description")) {
+            LOG.debug("  found description");
             field.setAdditionalText(extractValue("value", line));
           } else if (line.startsWith("[{entry")) {
+            LOG.debug("  found entry");
             field.setValue(extractValue("value", line));
             field.setValueCurrency(extractValue("currency", line));
           }
@@ -671,10 +676,12 @@ public class WikiToHTMLUtils {
         sb.append(CRLF);
       } else {
         // Construct HTML output for viewing the form data
+        LOG.debug("constructing html output...");
         boolean dataOutput = false;
         sb.append("<div class=\"infobox\">");
         sb.append("<table class=\"pagedList\">");
         for (CustomFormGroup group : form) {
+          LOG.debug(" group...");
           if (group.getDisplay() && StringUtils.hasText(group.getName())) {
             if (!dataOutput) {
               dataOutput = true;
@@ -682,17 +689,20 @@ public class WikiToHTMLUtils {
             sb.append("<tr><th colspan=\"2\">").append(StringUtils.toHtml(group.getName())).append("</th></tr>");
           }
           for (CustomFormField field : group) {
+            LOG.debug("  field...");
             if (field.hasValue()) {
               if (!dataOutput) {
                 dataOutput = true;
               }
               sb.append("<tr class=\"containerBody\">");
               if (field.getLabelDisplay()) {
+                LOG.debug("   output w/label");
                 sb.append("<td class=\"formLabel\">").append(StringUtils.toHtml(field.getLabel())).append("</td>");
                 sb.append("<td>");
                 sb.append(toHtml(field, context.getWiki(), context.getContextPath()));
                 sb.append("</td>");
               } else {
+                LOG.debug("   output");
                 sb.append("<td colspan=\"2\">");
                 sb.append("<center>");
                 sb.append(toHtml(field, context.getWiki(), context.getContextPath()));
@@ -705,6 +715,7 @@ public class WikiToHTMLUtils {
         }
         // Show the group names to the user if there are no fields to show
         if (!dataOutput) {
+          LOG.debug("!dataOutput");
           sb.append("<tr><td colspan=\"2\" align=\"center\">");
           int count = 0;
           for (CustomFormGroup group : form) {
@@ -716,7 +727,8 @@ public class WikiToHTMLUtils {
           }
           sb.append("</td></tr>");
         }
-        if (hasUserProjectAccess(context.getDb(), context.getUserId(), context.getProject().getId(), "wiki", "add")) {
+        LOG.debug("Check permissions");
+        if (context.getProject() != null && hasUserProjectAccess(context.getDb(), context.getUserId(), context.getProject().getId(), "wiki", "add")) {
           sb.append("<tr><td colspan=\"2\" align=\"center\">");
           sb.append("<a href=\"" + context.getContextPath() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?form=1\">Fill out this form</a>");
           sb.append("</td></tr>");
@@ -725,6 +737,7 @@ public class WikiToHTMLUtils {
         sb.append("</div>");
       }
     }
+    LOG.debug("finished with form.");
     context.foundFormEnd();
     return null;
   }

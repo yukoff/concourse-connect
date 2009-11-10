@@ -113,206 +113,165 @@ public class ContactUsBean extends GenericBean {
     this.nameFirst = tmp;
   }
 
-
   public void setNameLast(String tmp) {
     this.nameLast = tmp;
   }
-
 
   public void setEmail(String tmp) {
     this.email = tmp;
   }
 
-
   public void setOrganization(String tmp) {
     this.organization = tmp;
   }
-
 
   public void setDescription(String tmp) {
     this.description = tmp;
   }
 
-
   public void setEmailCopy(boolean tmp) {
     this.emailCopy = tmp;
   }
-
 
   public void setEmailCopy(String tmp) {
     this.emailCopy = DatabaseUtils.parseBoolean(tmp);
   }
 
-
   public int getId() {
     return id;
   }
-
 
   public String getNameFirst() {
     return nameFirst;
   }
 
-
   public String getNameLast() {
     return nameLast;
   }
-
 
   public String getEmail() {
     return email;
   }
 
-
   public String getOrganization() {
     return organization;
   }
-
 
   public String getDescription() {
     return description;
   }
 
-
   public boolean getEmailCopy() {
     return emailCopy;
   }
-
 
   public String getLanguage() {
     return language;
   }
 
-
   public void setLanguage(String language) {
     this.language = language;
   }
-
 
   public String getCaptcha() {
     return captcha;
   }
 
-
   public void setCaptcha(String captcha) {
     this.captcha = captcha;
   }
-
 
   public String getJobTitle() {
     return jobTitle;
   }
 
-
   public void setJobTitle(String jobTitle) {
     this.jobTitle = jobTitle;
   }
-
 
   public String getBusinessPhone() {
     return businessPhone;
   }
 
-
   public void setBusinessPhone(String businessPhone) {
     this.businessPhone = businessPhone;
   }
-
 
   public String getBusinessPhoneExt() {
     return businessPhoneExt;
   }
 
-
   public void setBusinessPhoneExt(String businessPhoneExt) {
     this.businessPhoneExt = businessPhoneExt;
   }
-
 
   public String getAddressLine1() {
     return addressLine1;
   }
 
-
   public void setAddressLine1(String addressLine1) {
     this.addressLine1 = addressLine1;
   }
-
 
   public String getAddressLine2() {
     return addressLine2;
   }
 
-
   public void setAddressLine2(String addressLine2) {
     this.addressLine2 = addressLine2;
   }
-
 
   public String getAddressLine3() {
     return addressLine3;
   }
 
-
   public void setAddressLine3(String addressLine3) {
     this.addressLine3 = addressLine3;
   }
-
 
   public String getCity() {
     return city;
   }
 
-
   public void setCity(String city) {
     this.city = city;
   }
-
 
   public String getState() {
     return state;
   }
 
-
   public void setState(String state) {
     this.state = state;
   }
-
 
   public String getCountry() {
     return country;
   }
 
-
   public void setCountry(String country) {
     this.country = country;
   }
-
 
   public String getPostalCode() {
     return postalCode;
   }
 
-
   public void setPostalCode(String postalCode) {
     this.postalCode = postalCode;
   }
-
 
   public String getCompanySize() {
     return companySize;
   }
 
-
   public String getCompanyRevenue() {
     return companyRevenue;
   }
 
-
   public String[] getFormData() {
     return formData;
   }
-
 
   public void setFormData(String[] formData) {
     StringBuffer sbf = new StringBuffer();
@@ -326,11 +285,9 @@ public class ContactUsBean extends GenericBean {
     this.formData = formData;
   }
 
-
   public String getFormDataString() {
     return formDataString;
   }
-
 
   public String getFormData(String key) {
     if (formDataList == null) {
@@ -347,7 +304,6 @@ public class ContactUsBean extends GenericBean {
     }
     return null;
   }
-
 
   public boolean isValid(HttpSession session) {
     Captcha captchaValue = (Captcha) session.getAttribute(Captcha.NAME);
@@ -371,19 +327,22 @@ public class ContactUsBean extends GenericBean {
     return (!hasErrors());
   }
 
-
   public HashMap<String, String> getError() {
     return errors;
   }
 
-
   public boolean save(ActionContext context, Connection db) throws SQLException {
+    ApplicationPrefs prefs = (ApplicationPrefs) context.getServletContext().getAttribute("applicationPrefs");
+    return save(db, prefs, context.getIpAddress(), context.getBrowser());
+  }
+
+  public boolean save(Connection db, ApplicationPrefs prefs, String ipAddress, String browser) throws SQLException {
     //store message in database
     PreparedStatement pst = db.prepareStatement(
         "INSERT INTO contact_us (instance_id, first_name, last_name, email, organization, description, copied, ip_address, browser, language, " +
-            "job_title, business_phone, business_phone_ext, addrline1, addrline2, addrline3, " +
-            "city, state, country, postalcode, form_data) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+        "job_title, business_phone, business_phone_ext, addrline1, addrline2, addrline3, " +
+        "city, state, country, postalcode, form_data) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
     StringBuffer sbf = new StringBuffer();
     if (formData != null) {
       for (int m = 0; m < formData.length; m++) {
@@ -398,8 +357,8 @@ public class ContactUsBean extends GenericBean {
     pst.setString(++i, organization);
     pst.setString(++i, description);
     pst.setBoolean(++i, emailCopy);
-    pst.setString(++i, context.getIpAddress());
-    pst.setString(++i, context.getBrowser());
+    pst.setString(++i, ipAddress);
+    pst.setString(++i, browser);
     pst.setString(++i, language);
     pst.setString(++i, jobTitle);
     pst.setString(++i, businessPhone);
@@ -421,8 +380,7 @@ public class ContactUsBean extends GenericBean {
       if (language != null) {
         form = "Language Application";
       }
-      ApplicationPrefs prefs = (ApplicationPrefs) context.getServletContext().getAttribute(
-          "applicationPrefs");
+      // Send an email to the user admins...
       SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
       message.setTo(UserAdmins.getEmailAddresses(db));
       message.addReplyTo(email);
@@ -430,12 +388,12 @@ public class ContactUsBean extends GenericBean {
       message.setSubject(form + " Form");
       message.setBody(
           "The following information was submitted using the \"" + form + "\" form: " + lf + lf +
-              "First Name: " + nameFirst + lf +
-              "Last Name: " + nameLast + lf +
-              "Email Address: " + email + lf +
-              "Organization: " + organization + lf +
-              (language != null ? "Language: " + language + lf : "") +
-              "Question/Comments: " + description + lf);
+          "First Name: " + nameFirst + lf +
+          "Last Name: " + nameLast + lf +
+          "Email Address: " + email + lf +
+          "Organization: " + organization + lf +
+          (language != null ? "Language: " + language + lf : "") +
+          "Question/Comments: " + description + lf);
       message.send();
     }
     return true;

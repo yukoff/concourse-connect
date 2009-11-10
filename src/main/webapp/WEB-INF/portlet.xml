@@ -905,6 +905,17 @@
     </portlet-info>
   </portlet>
   <portlet>
+    <portlet-name>WikiFormPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.wiki.portlets.wikiForm.WikiFormPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Displays a custom form based on wiki markup</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
     <portlet-name>ApproveListingPortlet</portlet-name>
     <portlet-class>com.concursive.connect.web.modules.profile.portlets.ApproveListingPortlet</portlet-class>
     <supports>

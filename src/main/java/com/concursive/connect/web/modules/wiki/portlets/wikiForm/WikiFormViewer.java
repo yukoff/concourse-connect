@@ -53,7 +53,6 @@ import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import java.util.HashMap;
-import static com.concursive.connect.web.portal.PortalUtils.findProject;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -100,9 +99,9 @@ public class WikiFormViewer implements IPortletViewer {
       return VIEW_PAGE_SUCCESS;
     }
 
-    // Determine the project container to use for accessing the wiki
+    // Determine the project container to use for comparison
     String uniqueId = request.getPreferences().getValue(PREF_PROJECT, null);
-    Project project = findProject(request);
+    Project project = PortalUtils.getProject(request);
     if (project == null || !uniqueId.equals(project.getUniqueId())) {
       LOG.debug("Skipping...");
       return null;

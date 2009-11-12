@@ -56,6 +56,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.profile.dao.ProjectFeatures;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.StateSelect;
@@ -534,7 +535,8 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
         thisMember.setModifiedBy(PortalUtils.getUser(request).getId());
         thisMember.insert(db);
       }
-      // Send to the rules engine for any additional workflow
+      // Send to the rules engine for any additional workflow after reloading the project
+      project = ProjectUtils.loadProject(project.getId());
       PortalUtils.processInsertHook(request, project);
     } else {
       LOG.debug("Listing was not added -- Form did not validate");

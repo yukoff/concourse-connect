@@ -67,6 +67,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 /**
  * HTML form bean for the registration process
@@ -95,8 +96,12 @@ public class RegisterBean extends GenericBean {
   private String captcha = null;
   private String postalCode = null;
   private String data = null;
+  private Timestamp entered = null;
+  private Timestamp modified = null;
+  
   // Resulting user
   private User user = null;
+  
 
   /**
    * Constructor for the RegisterBean object
@@ -365,6 +370,42 @@ public class RegisterBean extends GenericBean {
   }
 
   /**
+   * @return the entered
+   */
+  public Timestamp getEntered() {
+  	return entered;
+  }
+
+	/**
+   * @param entered the entered to set
+   */
+  public void setEntered(Timestamp entered) {
+  	this.entered = entered;
+  }
+
+  public void setEntered(String entered) {
+  	this.entered = DatabaseUtils.parseTimestamp(entered);
+  }
+
+  /**
+   * @return the modified
+   */
+  public Timestamp getModified() {
+  	return modified;
+  }
+
+	/**
+   * @param modified the modified to set
+   */
+  public void setModified(Timestamp modified) {
+  	this.modified = modified;
+  }
+
+  public void setModified(String modified) {
+  	this.modified = DatabaseUtils.parseTimestamp(modified);
+  }
+
+  /**
    * Gets the valid attribute of the RegisterBean object
    *
    * @param session http session for captcha check
@@ -495,6 +536,10 @@ public class RegisterBean extends GenericBean {
       }
       // Reload the complete user record
       user = UserUtils.loadUser(user.getId());
+
+      this.setEntered(user.getEntered());
+      this.setModified(user.getModified());
+      
     } catch (Exception e) {
       if (commit) {
         db.rollback();

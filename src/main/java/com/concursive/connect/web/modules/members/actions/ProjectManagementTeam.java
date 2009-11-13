@@ -334,26 +334,34 @@ public final class ProjectManagementTeam extends GenericAction {
         TeamMember prevMember = new TeamMember(db, members.get(0).getId());
         boolean updated = TeamMember.handleMembershipRequest(db, member, approval, user.getId());
         if (updated) {
-          processUpdateHook(context, prevMember, member);
-
-          //Reciprocate in the requesting users profile
-          //Reciprocate membership in the requesting users profile if the target project is a user profile
-          User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
-          if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-            User requestingUser = UserUtils.loadUser(Integer.parseInt(idStr));
-            Project requestingUsersProfileProject = requestingUser.getProfileProject();
-            TeamMemberList teamMemberList = requestingUsersProfileProject.getTeam();
-            if (teamMemberList.hasUserId(targetProject.getOwner())) {
-              TeamMember teamMember = teamMemberList.getTeamMember(targetProject.getOwner());
-              if (approval) {
-                teamMember.setStatus(TeamMember.STATUS_JOINED);
-              } else {
-                teamMember.setStatus(TeamMember.STATUS_REFUSED);
-              }
-              teamMember.setModifiedBy(user.getId());
-              teamMember.update(db);
-            }
-          }
+        	if (approval){
+	          processUpdateHook(context, prevMember, member);
+	          //Reciprocate in the requesting users profile
+	          //Reciprocate membership in the requesting users profile if the target project is a user profile
+	          User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+	          if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+	          	Project requestingUserProfileProject = UserUtils.loadUser(Integer.parseInt(idStr)).getProfileProject();
+	            TeamMemberList teamMembersOfRequestingUser = new TeamMemberList();
+	            teamMembersOfRequestingUser.setProjectId(requestingUserProfileProject.getId());
+	            teamMembersOfRequestingUser.setUserId(ownerOfTargetProject.getId());
+	            teamMembersOfRequestingUser.buildList(db);
+	            if (teamMembersOfRequestingUser.size() == 0){
+		          	TeamMember reciprocatingTeamMember = new TeamMember();
+		          	reciprocatingTeamMember.setUserId(ownerOfTargetProject.getId());
+		          	reciprocatingTeamMember.setProjectId(requestingUserProfileProject.getId());
+		            if (requestingUserProfileProject.getFeatures().getAllowParticipants()) {
+		            	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.PARTICIPANT));
+		            } else {
+		            	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.GUEST));
+		            }
+		          	reciprocatingTeamMember.setEnteredBy(user.getId());
+		          	reciprocatingTeamMember.setModifiedBy(user.getId());
+		          	reciprocatingTeamMember.insert(db);
+	            }         
+	          }
+	        } else {
+	        	processDeleteHook(context, prevMember);
+	        }
         }
       } else {
         context.getRequest().setAttribute("actionError", "The member has already been approved or denied.");
@@ -424,27 +432,6 @@ public final class ProjectManagementTeam extends GenericAction {
           member.insert(db);
           processInsertHook(context, member);
 
-          // Reciprocate membership in the requesting users profile if the target project is a user profile
-          User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
-          if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-            Project requestingUsersProfileProject = user.getProfileProject();
-            TeamMemberList teamMemberList = requestingUsersProfileProject.getTeam();
-            if (!teamMemberList.hasUserId(targetProject.getOwner())) {
-              TeamMember teamMember = new TeamMember();
-              teamMember.setProjectId(requestingUsersProfileProject.getId());
-              teamMember.setUserId(targetProject.getOwner());
-              if (requestingUsersProfileProject.getFeatures().getAllowParticipants()) {
-                teamMember.setUserLevel(getUserLevel(TeamMember.PARTICIPANT));
-              } else {
-                teamMember.setUserLevel(getUserLevel(TeamMember.GUEST));
-              }
-              teamMember.setStatus(TeamMember.STATUS_INVITING);
-              teamMember.setEnteredBy(user.getId());
-              teamMember.setModifiedBy(user.getId());
-              teamMember.setNotification(isNotify);
-              teamMember.insert(db);
-            }
-          }
         } else if (members.size() > 0) {
           context.getRequest().setAttribute("actionError", "You are already a team member");
           return "TeamERROR";

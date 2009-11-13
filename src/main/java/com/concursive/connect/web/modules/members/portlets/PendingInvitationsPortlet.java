@@ -108,9 +108,11 @@ public class PendingInvitationsPortlet extends GenericPortlet {
           Project targetProject = PortalUtils.retrieveAuthorizedProject(Integer.parseInt(projectId), request);
           TeamMember previousMember = new TeamMember(db, targetProject.getId(), project.getOwner());
           if ("true".equals(accept)) {
-            // Update the user's status
-            ProjectUtils.accept(db, targetProject.getId(), project.getOwner());
+          	TeamMember.handleMembershipRequest(db, previousMember, true, project.getOwner());
+          	
+          	// Update the user's team member status
             TeamMember thisMember = new TeamMember(db, targetProject.getId(), project.getOwner());
+            
             // Let the workflow know
             PortalUtils.processUpdateHook(request, previousMember, thisMember);
 
@@ -128,7 +130,6 @@ public class PendingInvitationsPortlet extends GenericPortlet {
                 } else {
                 	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.GUEST));
                 }
-              	reciprocatingTeamMember.setStatus(TeamMember.STATUS_JOINED);
               	reciprocatingTeamMember.setEnteredBy(user.getId());
               	reciprocatingTeamMember.setModifiedBy(user.getId());
               	reciprocatingTeamMember.insert(db);
@@ -137,10 +138,9 @@ public class PendingInvitationsPortlet extends GenericPortlet {
             
           } else {
             // Update the user's status
-            ProjectUtils.reject(db, targetProject.getId(), project.getOwner());
-            TeamMember thisMember = new TeamMember(db, targetProject.getId(), project.getOwner());
+          	TeamMember.handleMembershipRequest(db, previousMember, false, project.getOwner());
             // Let the workflow know
-            PortalUtils.processUpdateHook(request, previousMember, thisMember);
+            PortalUtils.processDeleteHook(request, previousMember);
           }
           response.setContentType("text/html");
           PrintWriter out = response.getWriter();

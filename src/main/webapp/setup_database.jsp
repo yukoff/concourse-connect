@@ -75,7 +75,7 @@
           <b><%= showAttribute(request, "typeError") %></b>
           <select name="type" onChange="setPort();">
             <option value="none"></option>
-            <option value="postgresql" <%= "postgresql".equals(databaseBean.getType()) ? "selected" : "" %>>PostgreSQL 8.3/8.2/8.1/8.0</option>
+            <option value="postgresql" <%= "postgresql".equals(databaseBean.getType()) ? "selected" : "" %>>PostgreSQL</option>
             <%--
             <option value="mssql" <%= "mssql".equals(databaseBean.getType()) ? "selected" : "" %>>Microsoft SQL Server 2005/2000/MSDE</option>
             --%>

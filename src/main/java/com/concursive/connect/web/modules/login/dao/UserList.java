@@ -453,6 +453,14 @@ public class UserList extends ArrayList<User> {
               }
 
               sqlFilter.append(" (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() + " AND pt.userlevel " + operator + " " + value + " )) ");
+              if (searchCriteria.getIsTeamMember() == Constants.TRUE){
+                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() );
+                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+                  sqlFilter.append(" AND notification = ? ");
+                }
+                sqlFilter.append("))");
+              }
+
               previousOp = operator;
               termsProcessed++;
             }
@@ -496,9 +504,12 @@ public class UserList extends ArrayList<User> {
 
               sqlFilter.append("(u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + activeProject.getId() + " AND pr.rating " + operator + " " + value + " )) ");
               if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId()  + " )) ");
+                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() );
+                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+                  sqlFilter.append(" AND notification = ? ");
+                }
+                sqlFilter.append("))");
               }
-              
               previousOp = operator;
               termsProcessed++;
             }
@@ -540,7 +551,11 @@ public class UserList extends ArrayList<User> {
 
                 sqlFilter.append("(u.user_id IN (SELECT pv.user_id FROM projects_view pv WHERE pv.project_id = " + activeProject.getId() + " AND pv.view_date " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "') )");
                 if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId()  + " )) ");
+                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() );
+                  if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+                    sqlFilter.append(" AND notification = ? ");
+                  }
+                  sqlFilter.append("))");
                 }
                 previousOp = operator;
                 termsProcessed++;
@@ -720,6 +735,31 @@ public class UserList extends ArrayList<User> {
       }
       if (searchCriteria.getContentEditor() != Constants.UNDEFINED) {
         pst.setBoolean(++i, searchCriteria.getContentEditor() == Constants.TRUE);
+      }
+      
+      
+      if (StringUtils.hasText(searchCriteria.getActiveProject())) {
+        if (searchCriteria.getRoleIds() != null && searchCriteria.getRoleIds().size() > 0) {
+          if (searchCriteria.getIsTeamMember() == Constants.TRUE){
+            if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+              pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+            }
+          }
+        }
+        if (searchCriteria.getRatings() != null && searchCriteria.getRatings().size() > 0) {
+          if (searchCriteria.getIsTeamMember() == Constants.TRUE){
+            if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+              pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+            }
+          }
+        }
+        if (searchCriteria.getLastViewed() != null && searchCriteria.getLastViewed().size() > 0) {
+          if (searchCriteria.getIsTeamMember() == Constants.TRUE){
+            if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+              pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+            }
+          }
+        }        
       }
     }
     if (guid != null) {

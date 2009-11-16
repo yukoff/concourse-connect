@@ -68,6 +68,7 @@ public class UserSearchBean extends GenericBean {
 
   private String activeProject = null;
   private int isTeamMember = Constants.UNDEFINED;
+  private int isNotificationEnabled = Constants.UNDEFINED;
   private HashMap roleIds = null;
   private HashMap ratings = null;
   private HashMap lastViewed = null;
@@ -211,6 +212,24 @@ public class UserSearchBean extends GenericBean {
 
   public void setIsTeamMember(String teamMember) {
   	this.isTeamMember = ("true".equals(teamMember)?Constants.TRUE:Constants.FALSE);
+  }
+
+  /**
+   * @return the isNotificationEnabled
+   */
+  public int getIsNotificationEnabled() {
+  	return isNotificationEnabled;
+  }
+
+	/**
+   * @param isNotificationEnabled the isNotificationEnabled to set
+   */
+  public void setIsNotificationEnabled(int isNotificationEnabled) {
+  	this.isNotificationEnabled = isNotificationEnabled;
+  }
+
+  public void setIsNotificationEnabled(String isNotificationEnabled) {
+  	this.isNotificationEnabled = ("true".equals(isNotificationEnabled)?Constants.TRUE:Constants.FALSE);;
   }
 
   public HashMap getRoleIds() {

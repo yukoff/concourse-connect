@@ -72,8 +72,8 @@
           <c:remove var="drawDay"/>
           <div class="portlet-section-subheader">
             <h4>
-              <ccp:tz timestamp="${projectHistory.entered}" pattern="MMMM dd" /> -
-              <ccp:tz timestamp="${projectHistory.entered}" pattern="relative" />
+              <ccp:tz timestamp="${projectHistory.entered}" pattern="MMMM dd" />
+              (<ccp:tz timestamp="${projectHistory.entered}" pattern="relative" />)
             </h4>
           </div>
         </c:if>
@@ -88,22 +88,22 @@
               <c:choose>
                 <c:when test="${!empty projectHistory.project.logo}">
                 <img alt="<c:out value="${projectHistory.project.title}"/> photo"
-                     src="${ctx}/image/<%= projectHistory.getProject().getLogo().getUrlName(45,45) %>"/>
+                     src="${ctx}/image/<%= projectHistory.getProject().getLogo().getUrlName(45,45) %>" width="45" height="45" />
                 </c:when>
                 <c:when test="${!empty projectHistory.project.category.logo}">
                   <img alt="Default user photo"
-                       src="${ctx}/image/<%= projectHistory.getProject().getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
+                       src="${ctx}/image/<%= projectHistory.getProject().getCategory().getLogo().getUrlName(45,45) %>" width="45" height="45" class="default-photo" />
                 </c:when>
               </c:choose>
             </c:when>
             <%-- use the user's logo --%>
             <c:when test="${!empty projectHistory.user.profileProject.logo}">
               <img alt="<c:out value="${projectHistory.user.profileProject.title}"/> photo"
-                   src="${ctx}/image/<%= projectHistory.getUser().getProfileProject().getLogo().getUrlName(45,45) %>"/>
+                   src="${ctx}/image/<%= projectHistory.getUser().getProfileProject().getLogo().getUrlName(45,45) %>" width="45" height="45" />
             </c:when>
             <c:when test="${!empty projectHistory.user.profileProject.category.logo}">
               <img alt="Default user photo"
-                   src="${ctx}/image/<%= projectHistory.getUser().getProfileProject().getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
+                   src="${ctx}/image/<%= projectHistory.getUser().getProfileProject().getCategory().getLogo().getUrlName(45,45) %>" width="45" height="45" class="default-photo" />
             </c:when>
           </c:choose>
         </c:if>

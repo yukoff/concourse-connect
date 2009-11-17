@@ -1884,7 +1884,7 @@ li.listing {
   .detailed-list .portlet-section-alternate .default-photo,
   .detailed-list li img.default-photo {
     background:#999;
-    border:2px solid #fff;
+    border:1px solid #fff;
     outline:1px solid #bbb;
   }
 
@@ -2264,7 +2264,7 @@ li.listing {
   .search-list .portlet-section-alternate .default-photo,
   .search-list li img.default-photo {
     background:#999;
-    border:2px solid #fff;
+    border:1px solid #fff;
     outline:1px solid #bbb;
   }
 
@@ -2410,7 +2410,7 @@ li.listing {
   .activity-list .portlet-section-alternate .default-photo,
   .activity-list li img.default-photo {
     background:#999;
-    border:2px solid #fff;
+    border:1px solid #fff;
     outline:1px solid #bbb;
   }
 

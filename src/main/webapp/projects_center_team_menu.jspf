@@ -83,6 +83,10 @@
     </c:when>
   </c:choose>
       <ccp:permission name="project-team-edit">
+        if (thisNeedsApproval) {
+          oMenu.addItem({ text: "Approve Membership", onclick: { fn: approveMembership } });
+          oMenu.addItem({ text: "Deny Membership", onclick: { fn: denyMembership } });
+        }
         oMenu.addItem({ text: "Change Role",
           submenu: {
             id: loc + "submenu1",
@@ -121,10 +125,6 @@
             }
           </ccp:permission>
         </c:if>
-        if (thisNeedsApproval) {
-          oMenu.addItem({ text: "Approve Membership", onclick: { fn: approveMembership } });
-          oMenu.addItem({ text: "Deny Membership", onclick: { fn: denyMembership } });
-        }
         oMenu.addItem({ text: "Remove", onclick: { fn: removeFromProfile } });
       </ccp:permission>
       oMenu.render(document.getElementById("popupLayer"));

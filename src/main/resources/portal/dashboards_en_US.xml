@@ -335,6 +335,20 @@
             <wiki>Message of the day</wiki>
             <showTitle>false</showTitle>
           </portlet>
+          <portlet name="ActivityInputPortlet" class="detailed-list " isUser="true">
+            <title>Chatter: Write something...</title>
+            <project>${main-profile.uniqueId}</project>
+            <allowUsers>true</allowUsers>
+            <event>site-chatter</event>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="detailed-list " isSensitive="true">
+            <title>Chatter</title>
+            <project>${main-profile.uniqueId}</project>
+            <events>
+              <value>site-chatter</value>
+            </events>
+            <limit>10</limit>
+          </portlet>
           <portlet name="PopularProjectsByCategoryPortlet" cache="60" class="detailed-list " isSensitive="true">
             <title>Popular Ideas</title>
             <category>Ideas</category>
@@ -3059,12 +3073,10 @@
               <value>Wiki</value>
               <value>Discussion</value>
               <value>Calendar</value>
-              <value>Reviews</value>
               <value>Ads=Promotions</value>
               <value>Classifieds</value>
               <value>Documents</value>
               <value>Lists</value>
-              <value>Badges</value>
               <value>Team=Members</value>
               <value>Messages</value>
             </modules>

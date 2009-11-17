@@ -53,21 +53,21 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <portlet:defineObjects/>
-<jsp:include page="../../tinymce_comments_include.jsp" flush="true"/>
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <%@ include file="../../initPage.jsp" %>
+<jsp:include page="../../tinymce_comments_include.jsp" flush="true"/>
 <%
   boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
 %>
 <%--@elvariable id="project" type="com.concursive.connect.web.modules.profile.dao.Project"--%>
 <c:set var="project" value="${project}" scope="request"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
-<c:if test="${!empty project.logo}">
+<c:if test="${!empty project.images}">
   <%-- use the carousel --%>
   <script type="text/javascript">
-    var <portlet:namespace/>currentImage = "<%= project.getLogo().getUrlName(210,150)%>";
-    var <portlet:namespace/>isOwner = (<%= project.getLogo().getEnteredBy() == User.getId() %><ccp:permission name="project-profile-images-delete"> || true
+    var <portlet:namespace/>currentImage = "<%= project.getImages().get(0).getUrlName(210,150)%>";
+    var <portlet:namespace/>isOwner = (<%= project.getImages().get(0).getEnteredBy() == User.getId() %><ccp:permission name="project-profile-images-delete"> || true
     </ccp:permission>)
     ;
     var <portlet:namespace/>handlePrevButtonState = function(type, args) {
@@ -175,11 +175,26 @@
 
 <%-- Image Carousel for profile
 Can be removed and made into a seperate portlet --%>
+<c:set var="user" value="<%= User %>" scope="request" />
+<c:choose>
+  <c:when test="${!empty project.images}">
+    <c:set var="startImage" value="<%= project.getImages().get(0) %>" scope="request"/>
+    <c:set var="startImageUrlName0" scope="request">
+      <%= project.getImages().get(0).getUrlName(0,0) %>
+    </c:set>
+    <c:set var="startImageUrlName210" scope="request">
+      <%= project.getImages().get(0).getUrlName(210,150) %>
+    </c:set>
+  </c:when>
+  <c:otherwise>
+    <c:set var="startImage" value="<%= new FileItem() %>" scope="request"/>
+  </c:otherwise>
+</c:choose>
 <div class="portlet-menu">
   <div class="portlet-menu-cascade">
     <ul>
       <%-- Show any administrative links --%>
-      <c:if test="${!empty project.logo}">
+      <c:if test="${!empty project.images}">
         <ccp:permission name="project-profile-images-add">
           <li>
             <a href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.PROJECT_IMAGE_FILES %>&pid=${project.id}&liid=${project.id}&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&allowCaption=true"
@@ -188,8 +203,6 @@ Can be removed and made into a seperate portlet --%>
             </a>
           </li>
         </ccp:permission>
-      </c:if>
-      <c:if test="${!empty project.logo}">
         <ccp:permission name="project-profile-admin">
           <li>
             <a href="javascript:<portlet:namespace/>makeDefault()" title="Make this current photo the default">
@@ -199,7 +212,7 @@ Can be removed and made into a seperate portlet --%>
         </ccp:permission>
         <%-- Determine the initial state of the delete button since it changes when an image is clicked --%>
         <c:choose>
-          <c:when test="<%= project.hasLogo() && project.getLogo().getEnteredBy() == User.getId() %>">
+          <c:when test="${startImage.enteredBy == user.id}">
             <c:set value="true" var="showDelete"/>
           </c:when>
           <c:otherwise>
@@ -214,18 +227,6 @@ Can be removed and made into a seperate portlet --%>
             <img src="${ctx}/images/imageCarousel/grfx_pc_DeletePhoto.png" alt="Delete"/>
           </a>
         </li>
-      </c:if>
-      <c:choose>
-        <c:when test="${!empty project.logo}">
-          <c:set var="startImage" value="${project.logo}"/>
-        </c:when>
-        <c:when test="${!empty project.images}">
-          <c:set var="startImage">
-            <%= project.getImages().get(0) %>
-          </c:set>
-        </c:when>
-      </c:choose>
-      <c:if test="${!empty startImage}">
         <c:choose>
           <c:when test="${!empty startImage.comment}">
             <c:set var="siTitle" value="${startImage.comment}"/>
@@ -237,21 +238,20 @@ Can be removed and made into a seperate portlet --%>
             </c:set>
           </c:otherwise>
         </c:choose>
-      </c:if>
-      <c:if test="${User.loggedIn eq true && !empty project.logo}">
-        <li><a
-            href="javascript:showPanel('Mark this image as Inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=profileimage&pid=${project.id}&id=${startImage.id}',700)""
-          title="Flag if inappropriate"><img src="${ctx}/images/imageCarousel/grfx_pc_InappPhoto.png"
-                                             alt="Flag if inappropriate"></a></li>
+        <c:if test="${user.loggedIn}">
+          <li><a
+              href="javascript:showPanel('Mark this image as Inappropriate','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=profileimage&pid=${project.id}&id=${startImage.id}',700)"
+              title="Flag if inappropriate"><img src="${ctx}/images/imageCarousel/grfx_pc_InappPhoto.png"
+                                               alt="Flag if inappropriate"></a></li>
+        </c:if>
       </c:if>
     </ul>
     <%-- TODO: Add current image number here;
          <p>1 / <%= project.getImages().size() %></p>
     --%>
     <c:if test="${!empty project.images}">
-      <jsp:useBean id="startImage" class="com.concursive.connect.web.modules.documents.dao.FileItem" scope="page"/>
       <p>
-        <a href="javascript:showImage('<c:out value="${siTitle}" />','${ctx}/show/${project.uniqueId}/image/<%= startImage.getUrlName(0,0) %>', null, ${startImage.imageHeight}, ${startImage.imageWidth}, '<portlet:namespace/>images');"
+        <a href="javascript:showImage('<c:out value="${siTitle}" />','${ctx}/show/${project.uniqueId}/image/${startImageUrlName0}', null, ${startImage.imageHeight}, ${startImage.imageWidth}, '<portlet:namespace/>images');"
            title="Start Slideshow">
           <img src="${ctx}/images/imageCarousel/grfx_pc_Slideshow.png"
                alt="<ccp:label name="profile.enlargeImages">Enlarge images</ccp:label>"> Enlarge images
@@ -260,9 +260,9 @@ Can be removed and made into a seperate portlet --%>
     </c:if>
   </div>
   <%-- Background from Profile Image --%>
-  <div class="portlet-menu-item-selected<c:if test="${empty project.logo}">-empty</c:if>">
+  <div class="portlet-menu-item-selected<c:if test="${empty project.images}">-empty</c:if>">
     <%-- If no photo, show no photo text --%>
-    <c:if test="${empty project.logo}">
+    <c:if test="${empty project.images}">
       <div class="portlet-menu-caption">
         <img src="${ctx}/images/imageCarousel/no_photo_image.png" alt="no image">
 
@@ -289,33 +289,33 @@ Can be removed and made into a seperate portlet --%>
       </div>
     </c:if>
     <%-- show the main image --%>
-    <c:if test="${!empty project.logo}">
+    <c:if test="${!empty project.images}">
+      <c:choose>
+        <c:when test="${!empty startImage.comment}">
+          <c:set var="imageCaption" value="${startImage.comment}"/>
+        </c:when>
+        <c:otherwise>
+          <c:set var="imageCaption">
+            <c:if test="${!empty startImage.subject}"><c:out value='${startImage.subject} -'/></c:if><c:out
+              value='${project.title}'/> image
+          </c:set>
+        </c:otherwise>
+      </c:choose>
       <div id="<portlet:namespace/>profileImage">
-        <a title="<c:out value='${logoTitle}'/>"
-           href="javascript:showImage('<c:out value="${logoTitle}" />','${ctx}/show/${project.uniqueId}/image/<%= project.getLogo().getUrlName(0,0) %>', null, ${project.logo.imageHeight}, ${project.logo.imageWidth}, '<portlet:namespace/>images');">
-          <img alt="<c:out value='${project.logo.subject} - ${project.title}'/> image"
-               src="<%= ctx %>/show/${project.uniqueId}/image/<%= project.getLogo().getUrlName(210,150) %>"/>
+        <a title="<c:out value='${imageCaption}'/>"
+           href="javascript:showImage('<c:out value="${imageCaption}" />','${ctx}/show/${project.uniqueId}/image/${startImageUrlName0}',null,${startImage.imageHeight},${startImage.imageWidth}, '<portlet:namespace/>images');">
+          <img alt="<c:out value='${startImage.subject} - ${project.title}'/> image"
+               src="<%= ctx %>/show/${project.uniqueId}/image/${startImageUrlName210}"/>
         </a>
           <%-- TODO: Fix Comment region
                      Currently no comments submitted on image upload are being shown
           --%>
-        <c:choose>
-          <c:when test="${!empty project.logo.comment}">
-            <c:set var="logoTitle" value="${project.logo.comment}"/>
-          </c:when>
-          <c:otherwise>
-            <c:set var="logoTitle">
-              <c:if test="${!empty project.logo.subject}"><c:out value='${project.logo.subject} -'/></c:if><c:out
-                value='${project.title}'/> image
-            </c:set>
-          </c:otherwise>
-        </c:choose>
       </div>
     </c:if>
   </div>
   <%-- show the controls for working with images --%>
   <%-- show the image scroller if images exist --%>
-  <c:if test="${!empty project.logo}">
+  <c:if test="${!empty project.images}">
     <div id="<portlet:namespace/>mycarousel" class="carousel-component">
       <c:choose>
         <c:when test="<%= project.getImages().size() > 3 %>">

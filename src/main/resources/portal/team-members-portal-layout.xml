@@ -97,21 +97,24 @@
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
+              <!--
               <value>
-                <![CDATA[<content>Become a Member</content>
-                  <title>Join ${project.title:html} as a member</title>
+                <![CDATA[<content>Become a Friend</content>
+                  <title>Become a friend of ${project.title:html}</title>
                   <href>/ProjectManagementTeam.do?command=ConfirmJoin&amp;pid=${project.id}</href>
                   <rel>shadowbox;width=600</rel>
                   <rule>userCanJoin</rule>]]>
               </value>
+              -->
               <value><![CDATA[
-                <content>Ask to become a member</content>
-                <title>Request to join ${project.title:html} as a member</title>
+                <content>Ask to become a friend</content>
+                <title>Request to become a friend of ${project.title:html}</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
                 <rule>userCanRequestToJoin</rule>
                 ]]>
               </value>
+              <!--
               <value>
                 <![CDATA[<content>Add Friends</content>
                   <title>Add Friends</title>
@@ -119,6 +122,7 @@
                   <rel-off>shadowbox;width=600</rel-off>
                   <permission>project-profile-admin</permission>]]>
               </value>
+              -->
             </urls>
           </portlet>
           <!-- Display Ads -->

@@ -122,7 +122,7 @@
                         <c:set var="projectBadge" value="${projectBadge}" scope="request"/>
                         <jsp:useBean id="projectBadge" class="com.concursive.connect.web.modules.badges.dao.ProjectBadge" scope="request"/>
                         <ccp:evaluate if="<%= projectBadge.getBadge().getLogoId() != -1 %>">
-                          <li><a href="${ctx}/badge/${projectBadge.badge.id}" rel="shadowbox"><img alt="<c:out value="${projectBadge.badge.title}"/>" title="<c:out value="${projectBadge.badge.title}"/>" src="${ctx}/image/<%= projectBadge.getBadge().getLogo().getUrlName(45,45) %>" class="badgeImage" /></a></li>
+                          <li><a href="${ctx}/badge/${projectBadge.badge.id}" rel="shadowbox"><img alt="<c:out value="${projectBadge.badge.title}"/>" title="<c:out value="${projectBadge.badge.title}"/>" src="${ctx}/image/<%= projectBadge.getBadge().getLogo().getUrlName(45,45) %>" width="45" height="45" class="badgeImage" /></a></li>
                         </ccp:evaluate>
                       </c:forEach>
                     </ul>
@@ -133,7 +133,7 @@
                 <ccp:evaluate if="<%= project.hasCategoryId() && project.getCategory().hasLogoId() %>">
                   <div class="portlet-section-footer">
                     <div class="icon">
-                      <img alt="Default photo" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(50,50) %>" class="default-photo" />
+                      <img alt="Default photo" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(50,50) %>" width="50" height="50" class="default-photo" />
                     </div>
                   </div>
                 </ccp:evaluate>

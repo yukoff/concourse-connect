@@ -127,10 +127,10 @@
               <div class="imageContainer">
                 <c:choose>
                   <c:when test="${!empty thisUser.profileProject.logo}">
-                    <img alt="<c:out value="${thisUser.profileProject.title}"/> photo" src="${ctx}/image/<%= thisUser.getProfileProject().getLogo().getUrlName(50,50) %>" />
+                    <img alt="<c:out value="${thisUser.profileProject.title}"/> photo" src="${ctx}/image/<%= thisUser.getProfileProject().getLogo().getUrlName(50,50) %>" width="50" height="50" />
                   </c:when>
                   <c:when test="${!empty thisUser.profileProject.category.logo}">
-                    <img alt="Default user photo" src="${ctx}/image/<%= thisUser.getProfileProject().getCategory().getLogo().getUrlName(50,50) %>" class="default-photo" />
+                    <img alt="Default user photo" src="${ctx}/image/<%= thisUser.getProfileProject().getCategory().getLogo().getUrlName(50,50) %>" width="50" height="50" class="default-photo" />
                   </c:when>
                 </c:choose>
               </div>

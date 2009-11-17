@@ -48,6 +48,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
+<jsp:useBean id="profile" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <script language="JavaScript" type="text/javascript">
@@ -88,13 +89,13 @@
     <ol>
       <li>
         <c:choose>
-          <c:when test="${!empty project.logo}">
-            <img alt="<c:out value="${project.title}"/> photo"
-                 src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>"/>
+          <c:when test="${!empty profile.logo}">
+            <img alt="<c:out value="${profile.title}"/> photo" width="45" height="45"
+                 src="${ctx}/image/<%= profile.getLogo().getUrlName(45,45) %>"/>
           </c:when>
-          <c:when test="${!empty project.category.logo}">
-            <img alt="Default user photo"
-                 src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
+          <c:when test="${!empty profile.category.logo}">
+            <img alt="Default user photo" width="45" height="45"
+                 src="${ctx}/image/<%= profile.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
           </c:when>
         </c:choose>
         <div class="portlet-section-body">

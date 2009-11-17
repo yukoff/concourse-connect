@@ -48,6 +48,7 @@ package com.concursive.connect.web.modules.profile.cache;
 import com.concursive.connect.cache.CacheContext;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.utils.PagedListInfo;
 import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
 
 import java.sql.Connection;
@@ -79,8 +80,14 @@ public class ProjectCacheEntryFactory implements CacheEntryFactory {
       Project project = new Project(db, Integer.parseInt(key.toString()));
       project.buildTeamMemberList(db);
       project.buildPermissionList(db);
-      project.buildImages(db);
       project.buildServices(db);
+
+      // Sort the images by newest first
+      PagedListInfo imagePaging = new PagedListInfo();
+      imagePaging.setDefaultSort("f.default_file, f.item_id desc", null);
+      project.getImages().setPagedListInfo(imagePaging);
+      project.buildImages(db);
+
       return project;
     } catch (Exception e) {
       throw new Exception(e);

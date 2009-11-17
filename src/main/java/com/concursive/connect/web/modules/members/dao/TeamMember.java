@@ -87,11 +87,13 @@ public class TeamMember extends GenericBean {
   public final static int GUEST = 100;
   //Constants that control invitations
   public final static int STATUS_ADDED = -1;
+  // @todo remove STATUS_ACCEPTED as it means the same as STATUS_ADDED
   public final static int STATUS_ACCEPTED = -1;
   public final static int STATUS_INVITING = 1;
   public final static int STATUS_MAILERROR = 2;
   public final static int STATUS_PENDING = 3;
   public final static int STATUS_REFUSED = 4;
+  // @todo this is the only other status that means joined... suggest changes?
   public final static int STATUS_JOINED = 5;
   public final static int STATUS_JOINED_NEEDS_APPROVAL = 6;
   public final static int STATUS_JOINED_APPROVED = 7;

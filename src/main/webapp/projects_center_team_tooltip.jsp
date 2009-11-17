@@ -68,7 +68,7 @@
           <c:if test="${empty profileProject.logo}">
             <c:choose>
               <c:when test="${!empty profileProject.category.logo}">
-                <img src="${ctx}/image/<%= profileProject.getCategory().getLogo().getUrlName(50,50) %>" class="default-photo" />
+                <img src="${ctx}/image/<%= profileProject.getCategory().getLogo().getUrlName(50,50) %>" width="50" height="50" class="default-photo" />
               </c:when>
               <c:otherwise>
                 <div class="noPhoto"><p><span>no image</span></p></div>
@@ -77,7 +77,7 @@
           </c:if>
           <%-- show the main image --%>
           <c:if test="${!empty profileProject.logo}">
-            <img src="${ctx}/show/${profileProject.uniqueId}/image/<%= profileProject.getLogo().getUrlName(50,50) %>" />
+            <img src="${ctx}/show/${profileProject.uniqueId}/image/<%= profileProject.getLogo().getUrlName(50,50) %>" width="50" height="50" />
           </c:if>
         </div>
       </div>

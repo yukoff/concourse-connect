@@ -79,16 +79,23 @@ public class ActivityInputForm implements IPortletViewer {
     // Determine the project to store the event against
     Project project = findProject(request);
 
+    // Determine the profile to display next to the input
+    Project profile = project;
+
     // Check the user's permissions
     User user = getUser(request);
     if (Boolean.parseBoolean(request.getPreferences().getValue(ALLOW_USERS, "false"))) {
       if (!user.isLoggedIn()) {
         return null;
       }
+      // Since users are allowed to post, use their profile instead
+      profile = user.getProfileProject();
     } else if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-activity-add")) {
       return null;
     }
-
+    // Set the profile that will be displayed
+    request.setAttribute("profile", profile);
+    
     return VIEW_PAGE;
   }
 }

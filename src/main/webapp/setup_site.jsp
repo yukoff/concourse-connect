@@ -100,7 +100,7 @@
           </label>
           <label style="clear:right">
             <input type="radio" name="purpose" value="community" <ccp:evaluate if="<%= siteBean.getPurpose() %>" >checked</ccp:evaluate> />
-            <strong>Customer community</strong> -
+            <strong>Customer support community</strong> -
             A public site that supplements an existing website with rich community features and an idea forum
           </label>
           <label style="clear:right">

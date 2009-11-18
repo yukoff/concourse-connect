@@ -180,7 +180,13 @@ public class ProjectListByTagViewer implements IPortletViewer {
           }
         }
         projectList.setPagedListInfo(projectListInfo);
-        projectList.setPublicOnly(true);
+        // Show only the listings that the user has access to
+        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+          projectList.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          projectList.setPublicOnly(true);
+        }
         projectList.setProfileEnabled(Constants.TRUE);
         projectList.setBuildImages(true);
         projectList.buildList(db);

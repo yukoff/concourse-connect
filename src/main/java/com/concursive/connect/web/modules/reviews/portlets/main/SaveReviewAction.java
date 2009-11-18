@@ -128,7 +128,7 @@ public class SaveReviewAction implements IPortletAction {
     // Get the user's old tags and merge them with any new ones
     UserTagLogList tagLogList = new UserTagLogList();
     tagLogList.setUserId(thisProjectRating.getEnteredBy());
-    tagLogList.setLinkModuleId(Constants.PROJECTS_FILES);
+    tagLogList.setLinkModuleId(Constants.PROJECT_REVIEW_FILES);
     tagLogList.setLinkItemId(project.getId());
     tagLogList.buildList(db);
 

@@ -61,8 +61,11 @@ public class CalendarPortlet extends AbstractPortletModule {
   public static final String EVENT_DETAILS_VIEW = "details";
   public static final String EVENT_FORM_VIEW = "form";
   public static final String SET_EVENT_RATING_AJAX_VIEW = "event-setRating";
+  public static final String TAGS_FORM_VIEW = "setTags";
+  
   // Default viewer
   public static final String DEFAULT_VIEW = CALENDAR_VIEW;
+  
   // Actions
   public static final String SAVE_EVENT_FORM_ACTION = "saveForm";
   public static final String DELETE_EVENT_ACTION = "delete";
@@ -70,6 +73,7 @@ public class CalendarPortlet extends AbstractPortletModule {
   public static final String DIMDIM_EVENT_ACTION = "dimdimAction";
   public static final String EVENT_INVITEES_CONFIRM_ACTION = "saveInvitees";
   public static final String SAVE_EVENT_JOIN_ACTION = "saveJoinEvent";
+  public static final String SAVE_TAGS_ACTION = "saveTags";
 
   public CalendarPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -82,6 +86,7 @@ public class CalendarPortlet extends AbstractPortletModule {
     viewers.put(EVENT_DETAILS_VIEW, new EventDetailsViewer());
     viewers.put(EVENT_FORM_VIEW, new EventFormViewer());
     viewers.put(SET_EVENT_RATING_AJAX_VIEW, new EventSetInappropriateViewer());
+    viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
 
     // Actions
     actions.put(SAVE_EVENT_FORM_ACTION, new SaveEventAction());
@@ -89,6 +94,7 @@ public class CalendarPortlet extends AbstractPortletModule {
     actions.put(DELETE_EVENT_ACTION, new DeleteEventAction());
     actions.put(DIMDIM_EVENT_ACTION, new EventDimdimAction());
     actions.put(SAVE_EVENT_JOIN_ACTION, new SaveEventJoinAction());
+    actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
 //    actions.put(CLONE_EVENT_ACTION, new CloneEventAction());
   }
 }

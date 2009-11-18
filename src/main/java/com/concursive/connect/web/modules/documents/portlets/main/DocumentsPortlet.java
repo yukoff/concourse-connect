@@ -67,6 +67,7 @@ public class DocumentsPortlet extends AbstractPortletModule {
   public static final String MOVE_FOLDER_VIEW = "moveFolder";
   public static final String MOVE_FILE_VIEW = "moveFile";
   public static final String SET_RATING_AJAX_VIEW = "setRating";
+  public static final String TAGS_FORM_VIEW = "setTags";
 
   // Set the default view
   public static final String DEFAULT_VIEW = LIST_VIEW;
@@ -78,6 +79,7 @@ public class DocumentsPortlet extends AbstractPortletModule {
   public static final String DELETE_FILE_ACTION = "deleteFile";
   public static final String MOVE_FOLDER_ACTION = "moveFolder";
   public static final String MOVE_FILE_ACTION = "moveFile";
+  public static final String SAVE_TAGS_ACTION = "saveTags";
 
   public DocumentsPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -92,6 +94,7 @@ public class DocumentsPortlet extends AbstractPortletModule {
     viewers.put(MOVE_FOLDER_VIEW, new DocumentsMoveFolderViewer());
     viewers.put(MOVE_FILE_VIEW, new DocumentsMoveFileViewer());
     viewers.put(SET_RATING_AJAX_VIEW, new DocumentSetInappropriateViewer());
+    viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
 
     // Actions
     actions.put(SAVE_FOLDER_ACTION, new SaveFolderAction());
@@ -100,5 +103,6 @@ public class DocumentsPortlet extends AbstractPortletModule {
     actions.put(DELETE_FILE_ACTION, new DeleteFileAction());
     actions.put(MOVE_FOLDER_ACTION, new MoveFolderAction());
     actions.put(MOVE_FILE_ACTION, new MoveFileAction());
+    actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
   }
 }

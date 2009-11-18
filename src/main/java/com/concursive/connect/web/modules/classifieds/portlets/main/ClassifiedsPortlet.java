@@ -62,12 +62,14 @@ public class ClassifiedsPortlet extends AbstractPortletModule {
   public static final String DETAILS_VIEW = "details";
   public static final String FORM_VIEW = "form";
   public static final String SET_RATING_AJAX_VIEW = "setRating";
+  public static final String TAGS_FORM_VIEW = "setTags";
 
   // Actions
   public static final String SAVE_FORM_ACTION = "saveForm";
   public static final String DELETE_ACTION = "delete";
   public static final String CLONE_ACTION = "clone";
   public static final String EXPIRE_ACTION = "expire";
+  public static final String SAVE_TAGS_ACTION = "saveTags";
 
   public ClassifiedsPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -80,11 +82,13 @@ public class ClassifiedsPortlet extends AbstractPortletModule {
     viewers.put(DETAILS_VIEW, new ClassifiedsDetailsViewer());
     viewers.put(FORM_VIEW, new ClassifiedsFormViewer());
     viewers.put(SET_RATING_AJAX_VIEW, new ClassifiedsSetRatingViewer());
+    viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
 
     // Actions
     actions.put(SAVE_FORM_ACTION, new SaveClassifiedAdAction());
     actions.put(DELETE_ACTION, new DeleteClassifiedAdAction());
     actions.put(CLONE_ACTION, new CloneClassifiedAdAction());
     actions.put(EXPIRE_ACTION, new ExpireClassifiedAdAction());
+    actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
   }
 }

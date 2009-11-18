@@ -51,6 +51,7 @@
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.documents.dao.FileItem" %>
 <%@ page import="com.concursive.connect.web.modules.discussion.dao.Reply" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils" %>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="forum" class="com.concursive.connect.web.modules.discussion.dao.Forum" scope="request"/>
@@ -224,12 +225,11 @@
             <ccp:label name="projectsCenterIssues.details.by">By</ccp:label> <ccp:username id="<%= topic.getEnteredBy() %>"/>
           </p>
         </div>
-
-
         <div class="postContent">
           <%= toHtml(topic.getBody()) %>
         </div>
       </div>
+      
       <%-- file list --%>
       <div class="postFooter<ccp:evaluate if="<%= topic.hasFiles() %>">Files</ccp:evaluate>" >
         <ccp:evaluate if="<%= topic.hasFiles() %>">
@@ -246,6 +246,15 @@
           %>
         </ccp:evaluate>
       </div>
+    	<span class="tagList">
+      	<portlet:renderURL var="setTagsUrl" windowState="maximized">
+        	<portlet:param name="portlet-command" value="setTagsTopic" />
+        	<portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_DISCUSSION_TOPIC %>"/>
+        	<portlet:param name="portlet-value" value="${topic.id}"/>
+        	<portlet:param name="popup" value="true" />
+      	</portlet:renderURL>
+      	<ccp:tags url="${setTagsUrl}" />
+    	</span>
       <ccp:permission name="project-discussion-messages-reply">
         <div class="actions">
           <ul>
@@ -443,6 +452,15 @@
         %>
       </ccp:evaluate>
     </div>
+    <span class="tagList">
+      <portlet:renderURL var="setTagsUrl" windowState="maximized">
+        <portlet:param name="portlet-command" value="setTagsReply" />
+        <portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_DISCUSSION_REPLY %>"/>
+        <portlet:param name="portlet-value" value="${thisReply.id}"/>
+        <portlet:param name="popup" value="true" />
+      </portlet:renderURL>
+      <ccp:tags url="${setTagsUrl}" />
+    </span>
     <ccp:permission name="project-discussion-messages-reply">
       <div class="actions">
         <ul>

@@ -50,6 +50,7 @@
 <%@ page import="com.concursive.connect.web.modules.classifieds.dao.Classified" %>
 <%@ page import="com.concursive.connect.web.modules.documents.dao.FileItem" %>
 <%@ page import="com.concursive.connect.web.modules.documents.dao.FileItemList" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils" %>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="classifiedList" class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedList" scope="request"/>
 <jsp:useBean id="projectClassifiedsInfo" class="com.concursive.connect.web.utils.PagedListInfo" scope="session"/>
@@ -225,6 +226,16 @@
             </c:forEach>
           </ul>
         </c:if>
+        <span class="tagList">
+      		<portlet:renderURL var="setTagsUrl" windowState="maximized">
+      			<portlet:param name="portlet-action" value="modify"/>
+        		<portlet:param name="portlet-command" value="setTags" />
+        		<portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_CLASSIFIEDS %>"/>
+        		<portlet:param name="portlet-value" value="${thisClassified.id}"/>
+        		<portlet:param name="popup" value="true" />
+	      	</portlet:renderURL>
+  	    	<ccp:tags url="${setTagsUrl}" />
+    		</span>
         </div>
       </div>
       <% pageContext.removeAttribute("nonImageList"); %>

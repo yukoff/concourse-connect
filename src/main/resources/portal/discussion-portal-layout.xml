@@ -368,5 +368,16 @@
         </column>-->
       </row>
     </page>
+    
+    <!-- Popup Details -->
+    <page name="reply-list-popup">
+      <row>
+        <column width="auto">
+          <portlet name="DiscussionPortlet" class="modal">
+            <title>${project.features.labelDiscussion}</title>
+          </portlet>
+        </column>
+      </row>
+    </page>
   </navigation>
 </module>

@@ -56,8 +56,10 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import com.concursive.connect.web.modules.ModuleUtils;
-import com.concursive.connect.web.modules.common.social.tagging.dao.TagLogList;
+import com.concursive.connect.web.modules.common.social.tagging.dao.TagList;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.utils.PagedListInfo;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -69,9 +71,6 @@ import javax.servlet.http.HttpServletRequest;
 public class TagsHandler extends TagSupport {
 
   private String url = null;
-//  private boolean showAddEdit = false;
-//  private int linkItemId = -1;
-//  private String moduleName = null;
 
   public TagsHandler() {
   }
@@ -83,30 +82,6 @@ public class TagsHandler extends TagSupport {
   public String getUrl() {
     return url;
   }
-
-//  public boolean isShowAddEdit() {
-//    return showAddEdit;
-//  }
-//
-//  public void setShowAddEdit(boolean showAddEdit) {
-//    this.showAddEdit = showAddEdit;
-//  }
-//
-//  public void setLinkItemId(int linkItemId) {
-//    this.linkItemId = linkItemId;
-//  }
-//
-//  public int getLinkItemId() {
-//    return linkItemId;
-//  }
-//
-//  public void setModule(String module) {
-//    this.moduleName = module;
-//  }
-//
-//  public String getModule() {
-//    return moduleName;
-//  }
 
   public int doStartTag() throws JspException {
     try {
@@ -123,19 +98,26 @@ public class TagsHandler extends TagSupport {
       int linkItemId = Integer.parseInt(bean.getObjectValue());
 
       // Show a list of tags for this item
-      TagLogList tagLogList = new TagLogList();
-      tagLogList.setTableName(ModuleUtils.getTableFromModuleName(moduleName));
-      tagLogList.setUniqueField(ModuleUtils.getPrimaryKeyFromModuleName(moduleName));
-      //tagLogList.setUserId(currentUserId);
-      tagLogList.setLinkItemId(linkItemId);
-      tagLogList.buildList(db);
+      TagList moduleTagList = new TagList();
+      moduleTagList.setTableName(ModuleUtils.getTableFromModuleName(moduleName));
+      moduleTagList.setUniqueField(ModuleUtils.getPrimaryKeyFromModuleName(moduleName));
+      moduleTagList.setLinkItemId(linkItemId);
+      PagedListInfo tagListInfo = new PagedListInfo();
+      tagListInfo.setColumnToSortBy("tag_count DESC, tag");
+      moduleTagList.setPagedListInfo(tagListInfo);
+      moduleTagList.buildList(db);
+      String tagsAsString = moduleTagList.getTagsAsString(",");
 
+      if (!StringUtils.hasText(tagsAsString) && !user.isLoggedIn()) {
+      	return SKIP_BODY;
+      }
+      
       // Generate and output the HTML
       String html = "Tags: " +
-          "<span id='message_" + linkItemId + "'>" +
-          StringUtils.toHtml(tagLogList.getTagsAsString()) +
+          "<span id='messageTags_" + moduleName + linkItemId + "'>" +
+          StringUtils.toHtml(tagsAsString) +
           "</span>" +
-          (user.isLoggedIn() ? " <a href=\"javascript:showPanel('Set Tags','" + url + "',500,'message_" + linkItemId + "');\">(add/edit)</a>" : "");
+          (user.isLoggedIn() ? " <a href=\"javascript:showPanel('Set Tags','" + url + "',500,'messageTags_" + moduleName + linkItemId + "');\">(add/edit)</a>" : "");
       pageContext.getOut().print(html);
     } catch (Exception e) {
       e.printStackTrace();

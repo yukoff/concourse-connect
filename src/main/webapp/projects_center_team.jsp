@@ -132,7 +132,7 @@
                       <div class="profileImageBackground">
                         <c:choose>
                           <c:when test="${!empty profileProject.category.logo}">
-                            <img src="${ctx}/image/<%= profileProject.getCategory().getLogo().getUrlName(100,100) %>" class="default-photo" />
+                            <img src="${ctx}/image/<%= profileProject.getCategory().getLogo().getUrlName(100,100) %>" width="100" height="100" class="default-photo" />
                           </c:when>
                           <c:otherwise>
                             <div class="noPhoto">
@@ -150,16 +150,16 @@
                     <div class="profileImageContainer">
                       <div class="profileImageBackground">
                         <div class="profileImageContainer">
-                      		<img src="<%= ctx %>/show/${profileProject.uniqueId}/image/<%= profileProject.getLogo().getUrlName(100,100) %>" />
+                      		<img src="<%= ctx %>/show/${profileProject.uniqueId}/image/<%= profileProject.getLogo().getUrlName(100,100) %>" width="100" height="100" />
                         </div>
                       </div>
                     </div>
                   </c:if>
                   <div class="portlet-section-footer">
                     <div id="tooltip_${teamMember.id}" class="toolTip">
-                      <ccp:username id="${teamMember.userId}" idTag="teamMemberLink_${teamMember.id}" showLinkTitle="false"/>
-                      <c:if test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}">&nbsp;(Not Approved)</c:if>
-                      <c:if test="${teamMember.userId == project.owner}">&nbsp;(Owner)</c:if>
+                      <p><ccp:username id="${teamMember.userId}" idTag="teamMemberLink_${teamMember.id}" showLinkTitle="false"/></p>
+                      <c:if test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}"><p>(Not Approved)</p></c:if>
+                      <c:if test="${teamMember.userId == project.owner}"><p>(Owner)</p></c:if>
                     </div>
                     <c:if test="${profileProject.id > 0}"></a></c:if>
                     <%-- prepare the drop-down menu to this specific user --%>

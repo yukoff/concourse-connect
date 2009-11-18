@@ -224,5 +224,16 @@
         </column>
       </row>
     </page>
+    
+    <!-- Popup Details -->
+    <page name="list-popup">
+      <row>
+        <column width="auto">
+          <portlet name="DocumentsPortlet" viewer="details" class="modal">
+            <title>${project.features.labelDocuments}</title>
+          </portlet>
+        </column>
+      </row>
+    </page>
   </navigation>
 </module>

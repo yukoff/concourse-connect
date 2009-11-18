@@ -300,7 +300,11 @@ public class UserTagLogList extends ArrayList<UserTagLog> {
       // Trim() the values
       ArrayList<String> submittedTagList = new ArrayList<String>();
       for (String thisTag : tagListAsIs) {
-        submittedTagList.add(thisTag.trim().toLowerCase());
+        String tagValue = thisTag.trim().toLowerCase();
+        // Do not add duplicates
+        if (!submittedTagList.contains(tagValue)) {
+          submittedTagList.add(tagValue);
+        }
       }
       // Check and see if the tag is being added or removed
       for (UserTagLog tag : this) {

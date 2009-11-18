@@ -2000,8 +2000,10 @@ ul.wikiExtras li a {
   margin: 15px 30px 0 0;
   color: rgb(136, 136, 136);
 }
-.articleFooter .tagList {
-
+.articleFooter .tagList, .tagList {
+	color: #666;
+	text-align: left;
+  float: left;
 }
 .articleFooter .comments {
   float:right;

@@ -1,4 +1,4 @@
-/**
+/*
  * ConcourseConnect
  * Copyright 2009 Concursive Corporation
  * http://www.concursive.com

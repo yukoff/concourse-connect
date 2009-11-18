@@ -63,6 +63,7 @@
       <url name="/modify" object="/post" page="form"/>
     </module>
     <module name="calendar" layout="calendar-portal-layout.xml" permission="project-calendar-view">
+    	<url name="/modify" object="/calendar" page="form"/>
       <url name="/show" object="/calendar" page="agenda"/>
       <url name="/show" object="/event" page="details"/>
       <url name="/create" object="/event" page="form"/>
@@ -86,6 +87,7 @@
       <url name="/create" object="/topic" page="topic-form"/>
       <url name="/modify" object="/topic" page="topic-form"/>
       <url name="/show" object="/topic" page="reply-list"/>
+      <url name="/show" object="/reply" page="reply-list"/>
       <url name="/create" object="/reply" page="reply-form"/>
       <url name="/modify" object="/reply" page="reply-form"/>
     </module>
@@ -96,6 +98,7 @@
       <url name="/modify" object="/promotion" page="form"/>
     </module>
     <module name="classifieds" layout="classifieds-portal-layout.xml" permission="project-classifieds-view">
+      <url name="/modify" object="/classifieds" page="form"/>
       <url name="/show" object="/classifieds" page="list"/>
       <url name="/show" object="/classified-ad" page="details"/>
       <url name="/create" object="/classified-ad" page="form"/>

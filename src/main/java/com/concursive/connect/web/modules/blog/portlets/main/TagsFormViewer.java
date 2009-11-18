@@ -43,7 +43,7 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.reviews.portlets.main;
+package com.concursive.connect.web.modules.blog.portlets.main;
 
 import static com.concursive.connect.web.portal.PortalUtils.*;
 
@@ -53,6 +53,7 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import com.concursive.connect.web.modules.ModuleUtils;
+import com.concursive.connect.web.modules.blog.dao.BlogPost;
 import com.concursive.connect.web.modules.common.social.tagging.dao.TagList;
 import com.concursive.connect.web.modules.common.social.tagging.dao.TagLogList;
 import com.concursive.connect.web.modules.login.dao.User;
@@ -72,6 +73,7 @@ import javax.portlet.PortletException;
  */
 public class TagsFormViewer implements IPortletViewer {
   // pages
+
   private static final String TAGS_FORM_ADD = "/tags_form_add.jsp";
   // attributes
   private static final String POPUP = "popup";
@@ -87,8 +89,10 @@ public class TagsFormViewer implements IPortletViewer {
     // set the request attributes
     request.setAttribute(POPUP, request.getParameter(POPUP));
 
-    // get database connection
-    Connection db = getConnection(request);
+    //validate the object being tagged
+    if (!ModuleUtils.MODULENAME_BLOG_POST.equals(moduleName)) {
+      throw new PortletException("Module mismatch while tagging object");
+    }
 
     // Determine the project container to use
     Project project = findProject(request);
@@ -98,9 +102,9 @@ public class TagsFormViewer implements IPortletViewer {
 
     // Check the user's permissions
     User user = getUser(request);
-    
-    // @todo figure out the permission to check!
-    
+
+    //TODO figure out the permission to check!
+
     // For example, load the blog linkItemId and check to see if the user has
     // access to the blog and to the current state of the blog (draft, published, etc).
 
@@ -108,21 +112,43 @@ public class TagsFormViewer implements IPortletViewer {
       throw new PortletException("Unauthorized to access this profile");
     }
 
+    if (!ProjectUtils.hasAccess(project.getId(), user, "project-news-view")) {
+      throw new PortletException("Unauthorized to view this record");
+    }
+
+    // get database connection
+    Connection db = getConnection(request);
+
+    //Load the object being tagged to make sure it exists
+    BlogPost thisArticle = null;
+    try {
+      thisArticle = new BlogPost(db, linkItemId, project.getId());
+    } catch (Exception e) {
+      throw new Exception(e.getMessage());
+    }
+
+    // Check record to see if user has permission to view this type
+    if ((thisArticle.getStatus() == BlogPost.DRAFT || thisArticle.getStatus() == BlogPost.UNAPPROVED) &&
+        !ProjectUtils.hasAccess(project.getId(), user, "project-news-view-unreleased")) {
+      throw new PortletException("Unauthorized to view this record");
+    }
+
     // get popular tags for the module
     TagList popularTagList = new TagList();
-    popularTagList.setTableName(ModuleUtils.getTableFromModuleName(moduleName));
-    popularTagList.setUniqueField(ModuleUtils.getPrimaryKeyFromModuleName(moduleName));
+    popularTagList.setTableName(BlogPost.TABLE);
+    popularTagList.setUniqueField(BlogPost.PRIMARY_KEY);
     popularTagList.setLinkItemId(linkItemId);
     PagedListInfo tagListInfo = new PagedListInfo();
     tagListInfo.setColumnToSortBy("tag_count DESC, tag");
+    tagListInfo.setItemsPerPage(10);
     popularTagList.setPagedListInfo(tagListInfo);
     popularTagList.buildList(db);
     request.setAttribute(POPULAR_TAGS, popularTagList);
 
     // get the user's tags used for this item
     TagLogList tagLogList = new TagLogList();
-    tagLogList.setTableName(ModuleUtils.getTableFromModuleName(moduleName));
-    tagLogList.setUniqueField(ModuleUtils.getPrimaryKeyFromModuleName(moduleName));
+    tagLogList.setTableName(BlogPost.TABLE);
+    tagLogList.setUniqueField(BlogPost.PRIMARY_KEY);
     tagLogList.setUserId(user.getId());
     tagLogList.setLinkItemId(linkItemId);
     tagLogList.buildList(db);

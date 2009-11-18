@@ -47,6 +47,7 @@
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.calendar.dao.Meeting" %>
 <%@ page import="com.concursive.connect.web.modules.calendar.utils.MeetingEventList" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils"%>
 <%@ page import="com.concursive.connect.web.modules.calendar.utils.DimDimUtils,com.concursive.connect.web.modules.calendar.dao.MeetingAttendee" %>
 <%-- draws the Meeting events for a specific day --%>
 <%
@@ -266,6 +267,16 @@
 		        </ccp:evaluate>
 		      </ccp:permission>
 		    </div>
+		    <span class="tagList">
+      		<portlet:renderURL var="setTagsUrl" windowState="maximized">
+        		<portlet:param name="portlet-command" value="setTags" />
+        		<portlet:param name="portlet-action" value="modify" />
+        		<portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_CALENDAR %>"/>
+        		<portlet:param name="portlet-value" value="${thisMeeting.id}"/>
+        		<portlet:param name="popup" value="true" />
+	      	</portlet:renderURL>
+  	    	<ccp:tags url="${setTagsUrl}" />
+    		</span>
       </li>
       <% }
       } %>

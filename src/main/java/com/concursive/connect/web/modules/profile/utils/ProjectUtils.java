@@ -671,6 +671,7 @@ public class ProjectUtils {
     popularTagList.setLinkItemId(projectId);
     PagedListInfo tagListInfo = new PagedListInfo();
     tagListInfo.setColumnToSortBy("tag_count DESC, tag");
+    tagListInfo.setItemsPerPage(10);
     popularTagList.setPagedListInfo(tagListInfo);
     popularTagList.buildList(db);
     return popularTagList;

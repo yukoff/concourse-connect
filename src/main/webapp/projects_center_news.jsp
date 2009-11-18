@@ -51,7 +51,7 @@
 <%@ page import="com.concursive.connect.web.modules.blog.dao.BlogPost" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.login.utils.UserUtils" %>
-<%@ page import="com.concursive.connect.web.modules.ModuleUtils"%>
+<%@page import="com.concursive.connect.web.modules.ModuleUtils"%>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="newsList" class="com.concursive.connect.web.modules.blog.dao.BlogPostList" scope="request"/>
@@ -214,11 +214,10 @@
       <span class="tagList">
         <portlet:renderURL var="setTagsUrl" windowState="maximized">
           <portlet:param name="portlet-command" value="setTags" />
-          <portlet:param name="portlet-object" value="post"/>
+          <portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_BLOG_POST %>"/>
           <portlet:param name="portlet-value" value="${thisArticle.id}"/>
           <portlet:param name="popup" value="true" />
         </portlet:renderURL>
-        <%--<ccp:tags url="${setTagsUrl}" linkItemId="${thisArticle.id}" module="<%= ModuleUtils.MODULENAME_BLOG %>" showAddEdit="<%= User.isLoggedIn() %>"  />--%>
         <ccp:tags url="${setTagsUrl}" />
       </span>
     </div>

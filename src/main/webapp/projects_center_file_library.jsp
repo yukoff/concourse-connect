@@ -49,6 +49,7 @@
 <%@ page import="com.concursive.commons.files.FileUtils" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.documents.dao.FileItem" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils" %>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="fileItemList" class="com.concursive.connect.web.modules.documents.dao.FileItemList" scope="request"/>
@@ -224,6 +225,15 @@
                   </p>
                 </div>
               </ccp:permission>
+            	<span class="tagList">
+        				<portlet:renderURL var="setTagsUrl" windowState="maximized">
+          				<portlet:param name="portlet-command" value="setTags" />
+	          			<portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_DOCUMENTS %>"/>
+  	        			<portlet:param name="portlet-value" value="${thisFile.id}"/>
+    	      			<portlet:param name="popup" value="true" />
+      	  			</portlet:renderURL>
+        				<ccp:tags url="${setTagsUrl}" />
+      				</span>              
             </div>
             <div class="portlet-section-menu">
               <ul>

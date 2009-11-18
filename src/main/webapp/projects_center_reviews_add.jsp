@@ -181,7 +181,7 @@
     	      </c:forEach></span>
         </c:if>
         <c:if test="${!empty popularTags}">
-          <span><ccp:label name="popularTags">Popular Tags</ccp:label><br/>
+          <span><ccp:label name="popularTags">How others tagged this item</ccp:label><br/>
 	          <c:forEach items="${popularTags}" var="popularTag">
   	          <a href="javascript:updateTag('${popularTag.tag}','tags');"><c:out value="${popularTag.tag}"/></a> (<c:out value="${popularTag.tagCount}"/>)&nbsp;
     	      </c:forEach></span>

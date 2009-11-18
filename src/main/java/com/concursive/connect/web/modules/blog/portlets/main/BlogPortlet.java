@@ -45,8 +45,6 @@
  */
 package com.concursive.connect.web.modules.blog.portlets.main;
 
-import com.concursive.connect.web.modules.reviews.portlets.main.SaveTagsAction;
-import com.concursive.connect.web.modules.reviews.portlets.main.TagsFormViewer;
 import com.concursive.connect.web.portal.AbstractPortletModule;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

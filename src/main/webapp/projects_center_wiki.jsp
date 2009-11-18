@@ -52,6 +52,7 @@
 <%@ page import="com.concursive.connect.web.modules.wiki.dao.WikiComment"%>
 <%@ page import="com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils" %>
 <jsp:useBean id="SKIN" class="java.lang.String" scope="application"/>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
@@ -301,6 +302,15 @@
           </li>
         </ccp:evaluate>
       </ul>
+      <span class="tagList">
+        <portlet:renderURL var="setTagsUrl" windowState="maximized">
+          <portlet:param name="portlet-command" value="setTags" />
+          <portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_WIKI %>"/>
+          <portlet:param name="portlet-value" value="${wiki.id}"/>
+          <portlet:param name="popup" value="true" />
+        </portlet:renderURL>
+        <ccp:tags url="${setTagsUrl}" />
+      </span>
     </div>
   </ccp:evaluate>
 </div>

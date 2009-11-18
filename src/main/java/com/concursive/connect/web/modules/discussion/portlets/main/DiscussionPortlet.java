@@ -68,6 +68,8 @@ public class DiscussionPortlet extends AbstractPortletModule {
   public static final String REPLIES_FORM_VIEW = "reply-form";
   public static final String REPLIES_SET_INAPPROPRIATE_AJAX_VIEW = "reply-setInappropriate";
   public static final String SET_RATING_AJAX_VIEW = "topic-setRating";
+  public static final String TAGS_TOPIC_FORM_VIEW = "setTagsTopic";
+  public static final String TAGS_REPLY_FORM_VIEW = "setTagsReply";
 
   // Actions
   public static final String SAVE_FORUM_FORM_ACTION = "forum-saveForm";
@@ -78,6 +80,8 @@ public class DiscussionPortlet extends AbstractPortletModule {
 
   public static final String SAVE_REPLY_FORM_ACTION = "reply-saveForm";
   public static final String DELETE_REPLY_ACTION = "reply-delete";
+  public static final String SAVE_TAGS_TOPIC_ACTION = "saveTagsTopic";
+  public static final String SAVE_TAGS_REPLY_ACTION = "saveTagsReply";
 
   public DiscussionPortlet() {
     defaultCommand = DEFAULT_VIEW;
@@ -93,6 +97,8 @@ public class DiscussionPortlet extends AbstractPortletModule {
     viewers.put(REPLIES_FORM_VIEW, new ReplyFormViewer());
     viewers.put(REPLIES_SET_INAPPROPRIATE_AJAX_VIEW, new ReplySetInappropriateViewer());
     viewers.put(SET_RATING_AJAX_VIEW, new TopicSetInappropriateViewer());
+    viewers.put(TAGS_TOPIC_FORM_VIEW, new TagsTopicFormViewer());
+    viewers.put(TAGS_REPLY_FORM_VIEW, new TagsReplyFormViewer());
 
     // Actions
     actions.put(SAVE_FORUM_FORM_ACTION, new SaveForumAction());
@@ -101,5 +107,7 @@ public class DiscussionPortlet extends AbstractPortletModule {
     actions.put(DELETE_TOPIC_ACTION, new DeleteTopicAction());
     actions.put(SAVE_REPLY_FORM_ACTION, new SaveReplyAction());
     actions.put(DELETE_REPLY_ACTION, new DeleteReplyAction());
+    actions.put(SAVE_TAGS_TOPIC_ACTION, new SaveTagsTopicAction());
+    actions.put(SAVE_TAGS_REPLY_ACTION, new SaveTagsReplyAction());
   }
 }

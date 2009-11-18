@@ -57,6 +57,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A collection of Tags
@@ -363,5 +364,17 @@ public class TagList extends ArrayList<Tag> {
       }
     }
     return i;
+  }
+  
+  public String getTagsAsString(String delimiter) {
+    StringBuffer tagAsStringBuffer = new StringBuffer();
+    Iterator<Tag> itr = this.iterator();
+    while (itr.hasNext()) {
+      tagAsStringBuffer.append(itr.next().getTag());
+      if (itr.hasNext()) {
+        tagAsStringBuffer.append(delimiter + " ");
+      }
+    }
+    return tagAsStringBuffer.toString();
   }
 }

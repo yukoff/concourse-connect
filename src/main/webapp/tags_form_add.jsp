@@ -49,6 +49,7 @@
 <jsp:useBean id="popularTags" class="com.concursive.connect.web.modules.common.social.tagging.dao.TagList" scope="request"/>
 <jsp:useBean id="userTags" class="com.concursive.connect.web.modules.common.social.tagging.dao.TagLogList" scope="request"/>
 <jsp:useBean id="userRecentTags" class="com.concursive.connect.web.modules.common.social.tagging.dao.TagList" scope="request"/>
+<jsp:useBean id="actionSuffix" class="java.lang.String" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
 <script language="JavaScript" type="text/javascript">
@@ -94,7 +95,7 @@
 </script>
 <div class="formContainer">
   <portlet:actionURL var="saveFormUrl">
-    <portlet:param name="portlet-command" value="saveTags"/>
+    <portlet:param name="portlet-command" value="saveTags${actionSuffix}"/>
   </portlet:actionURL>
   <form method="POST" name="inputForm" action="${saveFormUrl}" onSubmit="try {return checkForm(this);}catch(e){return true;}">
 		<fieldset>
@@ -117,7 +118,7 @@
 			</c:if>
       <c:if test="${!empty popularTags}">
 				<span>
-					Popular Tags<br />
+					How others tagged this item<br />
 	        <c:forEach items="${popularTags}" var="popularTag">
             <c:set var="popularTagValue" value="${popularTag.tag}" />
             <jsp:useBean id="popularTagValue" type="java.lang.String"/>

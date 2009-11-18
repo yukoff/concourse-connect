@@ -52,6 +52,7 @@ import com.concursive.connect.web.modules.blog.dao.BlogPostComment;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
 import com.concursive.connect.web.modules.classifieds.dao.Classified;
 import com.concursive.connect.web.modules.common.social.comments.dao.Comment;
+import com.concursive.connect.web.modules.discussion.dao.Reply;
 import com.concursive.connect.web.modules.discussion.dao.Topic;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
 import com.concursive.connect.web.modules.promotions.dao.Ad;
@@ -80,6 +81,7 @@ public class ModuleUtils {
   public static final String MODULENAME_WIKI = "wiki";
   public static final String MODULENAME_WIKI_COMMENT = "wikicomment";
   public static final String MODULENAME_DISCUSSION_TOPIC = "topic";
+  public static final String MODULENAME_DISCUSSION_REPLY = "reply";
   public static final String MODULENAME_PROMOTIONS = "promotions";
   public static final String MODULENAME_ADS = "ads"; //another alias for promotions
   public static final String MODULENAME_CLASSIFIEDS = "classifieds";
@@ -111,10 +113,12 @@ public class ModuleUtils {
       return BlogPostComment.TABLE;
     } else if (MODULENAME_DOCUMENTS.equals(moduleName)) {
       return FileItem.TABLE;
-    } else if (MODULENAME_CALENDAR_EVENT.equals(moduleName)) {
+    } else if (MODULENAME_CALENDAR_EVENT.equals(moduleName) || MODULENAME_CALENDAR.equals(moduleName)) {
       return Meeting.TABLE;
     } else if (MODULENAME_PROFILE_IMAGE.equals(moduleName)) {
       return FileItem.TABLE;
+    } if (MODULENAME_DISCUSSION_REPLY.equals(moduleName)) {
+      return Reply.TABLE;
     }
     return null;
   }
@@ -140,10 +144,12 @@ public class ModuleUtils {
       return Comment.PRIMARY_KEY;
     } else if (MODULENAME_DOCUMENTS.equals(moduleName)) {
       return FileItem.PRIMARY_KEY;
-    } else if (MODULENAME_CALENDAR_EVENT.equals(moduleName)) {
+    } else if (MODULENAME_CALENDAR_EVENT.equals(moduleName) || MODULENAME_CALENDAR.equals(moduleName)) {
       return Meeting.PRIMARY_KEY;
     } else if (MODULENAME_PROFILE_IMAGE.equals(moduleName)) {
       return FileItem.PRIMARY_KEY;
+    } else if (MODULENAME_DISCUSSION_REPLY.equals(moduleName)) {
+      return Reply.PRIMARY_KEY;
     }
 
     return null;
@@ -177,10 +183,12 @@ public class ModuleUtils {
       linkModuleId = Constants.BLOG_POST_COMMENT_FILES;
     } else if (MODULENAME_DOCUMENTS.equals(moduleName)) {
       linkModuleId = Constants.PROJECTS_FILES;
-    } else if (MODULENAME_CALENDAR_EVENT.equals(moduleName)) {
+    } else if (MODULENAME_CALENDAR_EVENT.equals(moduleName) || MODULENAME_CALENDAR.equals(moduleName)) {
       linkModuleId = Constants.PROJECTS_CALENDAR_EVENT_FILES;
     } else if (MODULENAME_PROFILE_IMAGE.equals(moduleName)) {
       linkModuleId = Constants.PROJECT_IMAGE_FILES;
+    } else if (MODULENAME_DISCUSSION_REPLY.equals(moduleName)) {
+      linkModuleId = Constants.DISCUSSION_FILES_REPLY;
     }
     return linkModuleId;
   }

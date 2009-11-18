@@ -67,16 +67,16 @@ public class UserTagLogSQLTest extends AbstractConnectionPoolTest {
 
   public void testProjectTagCRUD() throws SQLException {
 
-  	UserTagLogList userTagLogList = new UserTagLogList();
-  	userTagLogList.buildList(db);
-  	for (UserTagLog userTagLog : userTagLogList){
-  		userTagLog.delete(db);
-  	}
-  	
+    UserTagLogList userTagLogList = new UserTagLogList();
+    userTagLogList.buildList(db);
+    for (UserTagLog userTagLog : userTagLogList) {
+      userTagLog.delete(db);
+    }
+
     // Insert a tag
     UserTagLog userTagLogForProject = new UserTagLog();
     userTagLogForProject.setUserId(USER_ID);
-    userTagLogForProject.setLinkModuleId(Constants.PROJECTS_FILES);
+    userTagLogForProject.setLinkModuleId(Constants.PROJECT_REVIEW_FILES);
     userTagLogForProject.setLinkItemId(1);
     userTagLogForProject.setTag("project tag");
     assertNotNull(userTagLogForProject);
@@ -84,18 +84,18 @@ public class UserTagLogSQLTest extends AbstractConnectionPoolTest {
     assertTrue("The project tag was not inserted", result);
 
     //Load the inserted tag from table
-    userTagLogList = new UserTagLogList(); 
+    userTagLogList = new UserTagLogList();
     userTagLogList.setUserId(userTagLogForProject.getUserId());
     userTagLogList.setLinkModuleId(userTagLogForProject.getLinkModuleId());
     userTagLogList.setLinkItemId(userTagLogForProject.getLinkItemId());
     userTagLogList.setTag(userTagLogForProject.getTag().toLowerCase());
     userTagLogList.buildList(db);
     assertTrue("The user tag log was not inserted", (userTagLogList.size() == 1));
-    if (userTagLogList.size() == 1){
-      assertNotNull("Tag date not default to current timestamp",userTagLogList.get(0).getTagDate());
+    if (userTagLogList.size() == 1) {
+      assertNotNull("Tag date not default to current timestamp", userTagLogList.get(0).getTagDate());
     }
-    
-    //Load the inserted tag from view project_tag_log
+
+    //Load the inserted tag from view projects_tag_log
     TagLogList projectTagLogList = new TagLogList();
     projectTagLogList.setUserId(userTagLogForProject.getUserId());
     projectTagLogList.setLinkItemId(userTagLogForProject.getLinkItemId());
@@ -103,7 +103,7 @@ public class UserTagLogSQLTest extends AbstractConnectionPoolTest {
     projectTagLogList.setUniqueField(Project.PRIMARY_KEY);
     projectTagLogList.setTag(userTagLogForProject.getTag().toLowerCase());
     projectTagLogList.buildList(db);
-    assertTrue("The project tag log could not be fetched", (projectTagLogList.size() == 1));
+    assertTrue("The project tag log could not be fetched (" + projectTagLogList.size() + ")", (projectTagLogList.size() == 1));
 
     //Test record in the view project_tag
     TagList projectTagList = new TagList();
@@ -113,12 +113,12 @@ public class UserTagLogSQLTest extends AbstractConnectionPoolTest {
     projectTagList.setTag(userTagLogForProject.getTag().toLowerCase());
     projectTagList.buildList(db);
     assertTrue("The project tag could not be fetched", (projectTagList.size() == 1));
-    
+
     //Delete test tag
     userTagLogForProject.delete(db);
 
     //Test that it has been deleted from table
-    userTagLogList = new UserTagLogList(); 
+    userTagLogList = new UserTagLogList();
     userTagLogList.setUserId(userTagLogForProject.getUserId());
     userTagLogList.setLinkModuleId(userTagLogForProject.getLinkModuleId());
     userTagLogList.setLinkItemId(userTagLogForProject.getLinkItemId());
@@ -127,7 +127,7 @@ public class UserTagLogSQLTest extends AbstractConnectionPoolTest {
     assertTrue("The project tag log was not deleted", (userTagLogList.size() == 0));
 
     //Test that the record does not exist in the view.
-    projectTagLogList = new TagLogList(); 
+    projectTagLogList = new TagLogList();
     projectTagLogList.setUserId(userTagLogForProject.getUserId());
     projectTagLogList.setLinkItemId(userTagLogForProject.getLinkItemId());
     projectTagLogList.setTableName(Project.TABLE);
@@ -135,8 +135,8 @@ public class UserTagLogSQLTest extends AbstractConnectionPoolTest {
     projectTagLogList.setTag(userTagLogForProject.getTag());
     projectTagLogList.buildList(db);
     assertTrue("The project tag log was not deleted", (projectTagLogList.size() == 0));
-   
-    projectTagList = new TagList(); 
+
+    projectTagList = new TagList();
     projectTagList.setLinkItemId(userTagLogForProject.getLinkItemId());
     projectTagList.setTableName(Project.TABLE);
     projectTagList.setUniqueField(Project.PRIMARY_KEY);

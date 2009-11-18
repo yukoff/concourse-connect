@@ -59,6 +59,9 @@
   <%= ProjectHistoryList.ADD_ACTIVITY_ENTRY_EVENT %>
 </c:set>
 <h3><c:out value="${title}"/></h3>
+<c:if test="${!empty content}">
+  <h4><c:out value="${content}"/></h4>
+</c:if>
 <c:if test="${!empty projectHistoryArrayList}">
   <c:forEach items="${projectHistoryArrayList}" var="dayList" varStatus="dayStatus">
     <c:set var="drawDay" value="true"/>

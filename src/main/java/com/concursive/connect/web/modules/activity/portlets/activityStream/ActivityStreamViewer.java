@@ -77,12 +77,14 @@ public class ActivityStreamViewer implements IPortletViewer {
 
   // Preferences
   private static final String PREF_TITLE = "title";
+  private static final String PREF_CONTENT = "content";
   private static final String PREF_LIMIT = "limit";
   private static final String PREF_EVENTS = "events";//An array list
   private static final String PREF_CATEGORY = "category";//An array list
 
   // Object Results
   private static final String TITLE = "title";
+  private static final String CONTENT = "content";
   private static final String PROJECT_HISTORY_ARRAY_LIST = "projectHistoryArrayList";
 
   public String doView(RenderRequest request, RenderResponse response)
@@ -93,6 +95,7 @@ public class ActivityStreamViewer implements IPortletViewer {
     String limit = request.getPreferences().getValue(PREF_LIMIT, "10");
     // General display preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, "Recent Activity"));
+    request.setAttribute(CONTENT, request.getPreferences().getValue(PREF_CONTENT, null));
 
     Project project = PortalUtils.findProject(request);
     Connection db = PortalUtils.getConnection(request);

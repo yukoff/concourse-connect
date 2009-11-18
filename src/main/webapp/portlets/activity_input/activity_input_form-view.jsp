@@ -107,7 +107,7 @@
         </div>
       </li>
     </ol>
-    <input type="submit" name="save" class="submit" value="<ccp:label name="button.submit">Submit</ccp:label>" />
+    <input type="submit" name="save" class="submit" value="Share" />
     <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
   </form>
 </div>

@@ -336,13 +336,14 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list " isUser="true">
-            <title>Write something for everyone to see...</title>
+            <title>Write what others should know...</title>
             <project>${main-profile.uniqueId}</project>
             <allowUsers>true</allowUsers>
             <event>site-chatter</event>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="detailed-list " isSensitive="true">
             <title>Chatter</title>
+            <content>Here's what others are saying...</content>
             <project>${main-profile.uniqueId}</project>
             <events>
               <value>site-chatter</value>
@@ -2744,7 +2745,7 @@
       </row>
     </page>
     <page name="add_partner.shtml" title="Add a Partner"
-          description="Add a partner or organization for reviews, ratings, maps, discussions, tools and more"
+          description="Add a partner for reviews, ratings, maps, discussions, tools and more"
           category="partners">
       <row>
         <column width="240">
@@ -2769,7 +2770,7 @@
             <content>
               <![CDATA[
                 <h3>Add a Partner</h3>
-                <p>You must be signed in to add a partner or organization. <a href="${ctx}/login?redirectTo=/add_partner.shtml">Click here to sign in</a></p>
+                <p>You must be signed in to add a partner. <a href="${ctx}/login?redirectTo=/add_partner.shtml">Click here to sign in</a></p>
 				        <p>Don't have an account? <a href="${ctx}/register">We'll get you set up once you click here.</a></p>
               ]]>
             </content>
@@ -2865,8 +2866,8 @@
               <![CDATA[
 								<h3>Who can Manage a Partner Profile?</h3>
                 <ol>
-                <li>Only the owner or authorized representative of a partner or organization can manage its profile.</li>
-                <li>We confirm your relationship to the partner or organization through email and/or phone.</li>
+                <li>Only the owner or authorized representative of a partner can manage its profile.</li>
+                <li>We confirm your relationship to the partner through email and/or phone.</li>
                 </ol>
                 ]]>
             </content>

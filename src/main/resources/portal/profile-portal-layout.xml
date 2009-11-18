@@ -1930,7 +1930,7 @@
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>Write something...</title>
           </portlet>          
-          <portlet name="ActivityStreamPortlet" class="activity-list ">
+          <portlet name="ActivityStreamPortlet" class="detailed-list ">
             <title>Recent Activity</title>
             <events>
               <value>ad</value>

@@ -82,6 +82,9 @@ public class WikiPortlet extends AbstractPortletModule {
   //public static final String EXPORT_CHECK_QUEUE_AJAX_VIEW = "checkQueue";
   public static final String CONFIGURE_VIEW = "configure";
   public static final String COMMENT_DELETE_VIEW = "comment-delete";
+  public static final String TAGS_FORM_VIEW = "setTags";
+  public static final String SEARCH_VIEW = "search";
+  public static final String SEARCH_RESULTS_VIEW = "search-results";
 
   // Actions
   public static final String SAVE_WIKI_ACTION = "save";
@@ -93,6 +96,8 @@ public class WikiPortlet extends AbstractPortletModule {
   public static final String EXPORT_ACTION = "export";
   //public static final String DELETE_ACTION = "delete";
   //public static final String CLONE_ACTION = "clone";
+  public static final String SAVE_TAGS_ACTION = "saveTags";
+  public static final String SEARCH_ACTION = "search";
 
   // Shared variables
   public static final String QUEUE_VALUE = "queueValue";
@@ -115,6 +120,9 @@ public class WikiPortlet extends AbstractPortletModule {
     viewers.put(EXPORT_QUEUE_VIEW, new WikiExportQueueViewer());
     viewers.put(CONFIGURE_VIEW, new WikiConfigViewer());
     viewers.put(COMMENT_DELETE_VIEW, new WikiDeleteCommentViewer());
+    viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
+//    viewers.put(SEARCH_VIEW, new WikiSearchViewer());
+//    viewers.put(SEARCH_RESULTS_VIEW, new WikiSearchResultsViewer());
 
     // Actions
     actions.put(SAVE_WIKI_ACTION, new SaveWikiAction());
@@ -124,8 +132,10 @@ public class WikiPortlet extends AbstractPortletModule {
     actions.put(LOCK_ACTION, new LockWikiAction());
     actions.put(UNLOCK_ACTION, new UnlockWikiAction());
     actions.put(EXPORT_ACTION, new ExportAction());
+    actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
     //actions.put(DELETE_ACTION, new DeleteWikiAction());
     //actions.put(CLONE_ACTION, new CloneWikiAction());
+    //actions.put(SEARCH_ACTION, new SearchWikiAction());
   }
 
   // This module has the following configuration tables

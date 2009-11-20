@@ -49,6 +49,7 @@ import com.concursive.commons.objects.ObjectUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.text.Template;
 import com.concursive.commons.xml.XMLUtils;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -105,6 +106,10 @@ public class ProjectActionsPortlet extends GenericPortlet {
         project = PortalUtils.getProject(request);
       }
 
+      // The applicationPrefs
+      //ApplicationPrefs applicationPrefs = PortalUtils.getApplicationPrefs(request);
+
+      // The user performing the action
       User thisUser = PortalUtils.getUser(request);
       TeamMember member = project.getTeam().getTeamMember(thisUser.getId());
 
@@ -179,9 +184,9 @@ public class ProjectActionsPortlet extends GenericPortlet {
           } else if ("userCanRequestToJoin".equals(rule)) {
             boolean canRequestToJoin =
                 (thisUser != null && thisUser.getId() > 0 &&
-                (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
-                project.getFeatures().getMembershipRequired() &&
-                (member == null || member.getId() == -1));
+                    (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
+                    project.getFeatures().getMembershipRequired() &&
+                    (member == null || member.getId() == -1));
             if (!canRequestToJoin) {
               valid = false;
             }

@@ -59,18 +59,14 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.LookupElement;
 import com.concursive.connect.web.utils.LookupList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.*;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.*;
 
 /**
  * Invite members Portlet
@@ -91,6 +87,7 @@ public class InviteMembersPortlet extends GenericPortlet {
   private static final String PREF_TITLE = "title";
   private static final String PREF_MESSAGE_SUBJECT = "messageSubject";
   private static final String PREF_MESSAGE_BODY = "messageBody";
+  private static final String PREF_MAX_ROLE = "maxRole";
   // Attribute names for objects available in the view
   private static final String TITLE = "title";
   private static final String ERROR_MESSAGE = "errorMessage";
@@ -116,6 +113,7 @@ public class InviteMembersPortlet extends GenericPortlet {
   private static final String NO_MATCH_FOUND = "noMatchFound";
   private static final String HAS_MULTIPLE_MATCHES = "hasMultipleMatches";
   private static final String ACTION_ERROR = "actionError";
+  private static final String CAN_INVITE_NONMEMBERS = "canInviteNonMembers";
 
   public void doView(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
@@ -130,8 +128,16 @@ public class InviteMembersPortlet extends GenericPortlet {
       User user = PortalUtils.getUser(request);
       request.setAttribute(USER, user);
 
-      //Test if the user has access to the project 
-      if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-admin")) {
+      ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+
+      boolean canInviteNonMembers = true;
+      if (!("true".equals(prefs.get(ApplicationPrefs.USERS_CAN_INVITE)) || PortalUtils.getUser(request).getAccessInvite() || PortalUtils.getUser(request).getAccessAdmin())) {
+        canInviteNonMembers = false;
+        request.setAttribute(CAN_INVITE_NONMEMBERS, "false");
+      }
+
+      //Test if the user has access to the project
+      if (!ProjectUtils.hasAccess(project.getId(), user, "project-team-edit")) {
         request.setAttribute(HAS_PROJECT_ACCESS, "false");
       } else if (CLOSE.equals(viewType)) {
 
@@ -145,7 +151,7 @@ public class InviteMembersPortlet extends GenericPortlet {
         request.setAttribute(MEMBERS, request.getPortletSession().getAttribute(MEMBERS));
         request.setAttribute(MEMBERS_PRESENT, request.getPortletSession().getAttribute(MEMBERS_PRESENT));
         //build request attributes to show what the user has entered.
-        request.setAttribute(HAS_MULTIPLE_MATCHES, (String) request.getPortletSession().getAttribute(HAS_MULTIPLE_MATCHES));
+        request.setAttribute(HAS_MULTIPLE_MATCHES, request.getPortletSession().getAttribute(HAS_MULTIPLE_MATCHES));
 
         if (StringUtils.hasText((String) request.getPortletSession().getAttribute(ACTION_ERROR))) {
           request.setAttribute(ACTION_ERROR, request.getPortletSession().getAttribute(ACTION_ERROR));
@@ -204,17 +210,28 @@ public class InviteMembersPortlet extends GenericPortlet {
           request.setAttribute("noMatchRole", noMatchRole);
         }
 
-        //Determine if the access to tools option needs to be shown
+        // Determine if the access to tools option needs to be shown
         if (ProjectUtils.hasAccess(project.getId(), user, "project-team-tools") && (StringUtils.hasText(project.getConcursiveCRMUrl()))) {
           request.setAttribute(SHOW_ACCESS_TO_TOOLS, "true");
         }
-        //Determine the allowed roles
+
+        // Determine the allowed roles, based on this user
         TeamMember member = project.getTeam().getTeamMember(user.getId());
         int userLevel = -1;
         if (member != null) {
           userLevel = member.getUserLevel();
         }
+
+        // This cachedList can be used
         LookupList cachedRoleList = CacheUtils.getLookupList("lookup_project_role");
+
+        // If a maxRole has been defined, use it instead
+        String maxRole = request.getPreferences().getValue(PREF_MAX_ROLE, null);
+        if (maxRole != null) {
+          userLevel = cachedRoleList.getIdFromValue(maxRole);
+        }
+
+        // Generate the list of roles to display
         LookupList roleList = new LookupList();
         int userAccessLevel = cachedRoleList.getLevelFromId(userLevel);
         for (LookupElement role : cachedRoleList) {
@@ -290,7 +307,7 @@ public class InviteMembersPortlet extends GenericPortlet {
   public void processAction(ActionRequest request, ActionResponse response)
       throws PortletException, IOException {
     try {
-      if (!ProjectUtils.hasAccess(PortalUtils.getProject(request).getId(), PortalUtils.getUser(request), "project-profile-admin")) {
+      if (!ProjectUtils.hasAccess(PortalUtils.getProject(request).getId(), PortalUtils.getUser(request), "project-team-edit")) {
         request.setAttribute(HAS_PROJECT_ACCESS, "false");
       } else {
         String actionType = request.getParameter("actionType");
@@ -336,12 +353,38 @@ public class InviteMembersPortlet extends GenericPortlet {
   private void sendInvitation(ActionRequest request) throws Exception {
     Connection db = PortalUtils.getConnection(request);
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
-    //Get message body and subject
+
+    Project project = PortalUtils.getProject(request);
+    User user = PortalUtils.getUser(request);
+
+    // Get message body and subject
     String optionalMessage = request.getParameter(OPTIONAL_MESSAGE);
 
-    //Get invitation list
+    // Get invitation list
     String[] matches = (String[]) request.getPortletSession().getAttribute("matches");
     String[] accessToTools = (String[]) request.getPortletSession().getAttribute("accessToTools");
+
+    // Determine which kinds of users this user can invite
+    boolean canInviteMembers = true;
+    boolean canInviteNonMembers = true;
+    if (!("true".equals(prefs.get(ApplicationPrefs.USERS_CAN_INVITE)) || user.getAccessInvite() || user.getAccessAdmin())) {
+      canInviteNonMembers = false;
+    }
+
+    // Determine if a maxRole has been defined, enforce it
+    int maxUserId = -1;
+    String maxRole = request.getPreferences().getValue(PREF_MAX_ROLE, null);
+    if (maxRole != null && !PortalUtils.getUser(request).getAccessAdmin()) {
+      // This cachedList can be used
+      LookupList cachedRoleList = CacheUtils.getLookupList("lookup_project_role");
+      maxUserId = cachedRoleList.getIdFromValue(maxRole);
+    }
+
+    // Determine if tools are allowed when adding a user
+    boolean toolsEnabled = true;
+    if (!(ProjectUtils.hasAccess(project.getId(), user, "project-team-tools") && (StringUtils.hasText(project.getConcursiveCRMUrl())))) {
+      toolsEnabled = false;
+    }
 
     if (matches != null) {
       for (String chosenId : matches) {
@@ -363,14 +406,20 @@ public class InviteMembersPortlet extends GenericPortlet {
         TeamMember thisMember = new TeamMember();
         thisMember.setProjectId(PortalUtils.getProject(request).getId());
         thisMember.setUserId(matchedUserId);
-        thisMember.setTools(provideAccessToTools);
-        thisMember.setUserLevel(PortalUtils.getUserLevel(Integer.parseInt(matchedRole)));
+        if (toolsEnabled) {
+          thisMember.setTools(provideAccessToTools);
+        }
+        if (maxUserId > -1) {
+          thisMember.setUserLevel(maxUserId);
+        } else {
+          thisMember.setUserLevel(PortalUtils.getUserLevel(Integer.parseInt(matchedRole)));
+        }
         thisMember.setEnteredBy(PortalUtils.getUser(request).getId());
         thisMember.setModifiedBy(PortalUtils.getUser(request).getId());
         thisMember.setStatus(TeamMember.STATUS_PENDING);
         thisMember.setCustomInvitationMessage(optionalMessage);
         if (!TeamMemberList.isOnTeam(db, PortalUtils.getProject(request).getId(), Integer.parseInt(matchedUserId))) {
-          if ("true".equals(prefs.get(ApplicationPrefs.USERS_CAN_INVITE)) || PortalUtils.getUser(request).getAccessInvite() || PortalUtils.getUser(request).getAccessAdmin()) {
+          if (canInviteMembers) {
             if (thisMember.insert(db)) {
               PortalUtils.processInsertHook(request, thisMember);
             }
@@ -379,65 +428,73 @@ public class InviteMembersPortlet extends GenericPortlet {
       }
     }
 
-    String[] mismatches = (String[]) request.getPortletSession().getAttribute("mismatches");
-    String[] notMatchedAccessToTools = (String[]) request.getPortletSession().getAttribute("notMatchedAccessToTools");
-    if (mismatches != null) {
-      for (String unmatchedEntry : mismatches) {
-        String firstName = (String) request.getPortletSession().getAttribute("firstName-" + unmatchedEntry);
-        String lastName = (String) request.getPortletSession().getAttribute("lastName-" + unmatchedEntry);
-        String email = (String) request.getPortletSession().getAttribute("email-" + unmatchedEntry);
-        String notMatchedRole = (String) request.getPortletSession().getAttribute("notMatchedRole-" + unmatchedEntry);
-        Project thisProject = PortalUtils.getProject(request);
+    if (canInviteNonMembers) {
+      String[] mismatches = (String[]) request.getPortletSession().getAttribute("mismatches");
+      String[] notMatchedAccessToTools = (String[]) request.getPortletSession().getAttribute("notMatchedAccessToTools");
+      if (mismatches != null) {
+        for (String unmatchedEntry : mismatches) {
+          String firstName = (String) request.getPortletSession().getAttribute("firstName-" + unmatchedEntry);
+          String lastName = (String) request.getPortletSession().getAttribute("lastName-" + unmatchedEntry);
+          String email = (String) request.getPortletSession().getAttribute("email-" + unmatchedEntry);
+          String notMatchedRole = (String) request.getPortletSession().getAttribute("notMatchedRole-" + unmatchedEntry);
+          Project thisProject = PortalUtils.getProject(request);
 
-        request.getPortletSession().removeAttribute("email-" + unmatchedEntry);
-        request.getPortletSession().removeAttribute("firstName-" + unmatchedEntry);
-        request.getPortletSession().removeAttribute("lastName-" + unmatchedEntry);
-        request.getPortletSession().removeAttribute("notMatchedRole-" + notMatchedRole);
+          request.getPortletSession().removeAttribute("email-" + unmatchedEntry);
+          request.getPortletSession().removeAttribute("firstName-" + unmatchedEntry);
+          request.getPortletSession().removeAttribute("lastName-" + unmatchedEntry);
+          request.getPortletSession().removeAttribute("notMatchedRole-" + notMatchedRole);
 
-        //insert user
-        User thisUser = new User();
-        thisUser.setInstanceId(PortalUtils.getInstance(request).getId());
-        thisUser.setGroupId(1);
-        thisUser.setDepartmentId(1);
-        thisUser.setFirstName(firstName);
-        thisUser.setLastName(lastName);
-        //company?
-        thisUser.setEmail(email);
-        thisUser.setUsername(email);
-        thisUser.setPassword("unregistered");
-        thisUser.setEnteredBy(PortalUtils.getUser(request).getId());
-        thisUser.setModifiedBy(PortalUtils.getUser(request).getId());
+          //insert user
+          User thisUser = new User();
+          thisUser.setInstanceId(PortalUtils.getInstance(request).getId());
+          thisUser.setGroupId(1);
+          thisUser.setDepartmentId(1);
+          thisUser.setFirstName(firstName);
+          thisUser.setLastName(lastName);
+          //company?
+          thisUser.setEmail(email);
+          thisUser.setUsername(email);
+          thisUser.setPassword("unregistered");
+          thisUser.setEnteredBy(PortalUtils.getUser(request).getId());
+          thisUser.setModifiedBy(PortalUtils.getUser(request).getId());
 
-        //enabled?
-        thisUser.setStartPage(1);
-        thisUser.setRegistered(false);
-        thisUser.setAccountSize(prefs.get("ACCOUNT.SIZE"));
-        thisUser.setAccessAddProjects(prefs.get(ApplicationPrefs.USERS_CAN_START_PROJECTS));
-        thisUser.insert(db, PortalUtils.getServerDomainNameAndPort(request), prefs);
+          //enabled?
+          thisUser.setStartPage(1);
+          thisUser.setRegistered(false);
+          thisUser.setAccountSize(prefs.get("ACCOUNT.SIZE"));
+          thisUser.setAccessAddProjects(prefs.get(ApplicationPrefs.USERS_CAN_START_PROJECTS));
+          thisUser.insert(db, PortalUtils.getServerDomainNameAndPort(request), prefs);
 
-        //Insert user into project as pending
-        TeamMember thisMember = new TeamMember();
-        thisMember.setProjectId(thisProject.getId());
-        thisMember.setUserId(thisUser.getId());
-        thisMember.setUserLevel(PortalUtils.getUserLevel(Integer.parseInt(notMatchedRole)));
-        thisMember.setStatus(TeamMember.STATUS_INVITING);
-        thisMember.setEnteredBy(PortalUtils.getUser(request).getId());
-        thisMember.setModifiedBy(PortalUtils.getUser(request).getId());
-        thisMember.setCustomInvitationMessage(optionalMessage);
+          //Insert user into project as pending
+          TeamMember thisMember = new TeamMember();
+          thisMember.setProjectId(thisProject.getId());
+          thisMember.setUserId(thisUser.getId());
+          if (maxUserId > -1) {
+            thisMember.setUserLevel(maxUserId);
+          } else {
+            thisMember.setUserLevel(PortalUtils.getUserLevel(Integer.parseInt(notMatchedRole)));
+          }
+          thisMember.setStatus(TeamMember.STATUS_INVITING);
+          thisMember.setEnteredBy(PortalUtils.getUser(request).getId());
+          thisMember.setModifiedBy(PortalUtils.getUser(request).getId());
+          thisMember.setCustomInvitationMessage(optionalMessage);
 
-        //Determine if this user needs to be provided access to tools
-        boolean provideAccessToTools = false;
-        if (notMatchedAccessToTools != null) {
-          for (String notMatchedToolsEntry : notMatchedAccessToTools) {
-            if (notMatchedToolsEntry.equals(unmatchedEntry)) {
-              provideAccessToTools = true;
-              break;
+          //Determine if this user needs to be provided access to tools
+          boolean provideAccessToTools = false;
+          if (notMatchedAccessToTools != null) {
+            for (String notMatchedToolsEntry : notMatchedAccessToTools) {
+              if (notMatchedToolsEntry.equals(unmatchedEntry)) {
+                provideAccessToTools = true;
+                break;
+              }
             }
           }
-        }
-        thisMember.setTools(provideAccessToTools);
-        if (thisMember.insert(db)) {
-          PortalUtils.processInsertHook(request, thisMember);
+          if (toolsEnabled) {
+            thisMember.setTools(provideAccessToTools);
+          }
+          if (thisMember.insert(db)) {
+            PortalUtils.processInsertHook(request, thisMember);
+          }
         }
       }
     }
@@ -591,7 +648,7 @@ public class InviteMembersPortlet extends GenericPortlet {
    * checks and removes duplicate entries from the members to be invited list
    */
   private LinkedHashMap<String, String> updateMemberList(ActionRequest request, String member, String id,
-      LinkedHashMap<String, String> memberMap, LinkedHashMap<String, String> memberPresentMap) {
+                                                         LinkedHashMap<String, String> memberMap, LinkedHashMap<String, String> memberPresentMap) {
     //return if the id passed is not valid or empty
     if (NO_MATCH_FOUND.equals(id) || !StringUtils.hasText(id)) {
       return memberMap;

@@ -126,7 +126,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId:xml}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>
@@ -534,7 +534,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>
@@ -741,7 +741,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId:html}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>
@@ -954,7 +954,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>
@@ -1159,7 +1159,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId:html}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>
@@ -1362,7 +1362,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId:html}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>
@@ -1554,7 +1554,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId:html}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>
@@ -2157,7 +2157,7 @@
                 <![CDATA[<content>Add Members</content>
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId:xml}/app/add_members</href>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Contact Us</content>

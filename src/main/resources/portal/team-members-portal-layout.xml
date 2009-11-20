@@ -73,7 +73,7 @@
                   <title>Add Members</title>
                   <href>/show/${project.uniqueId:html}/app/add_members</href>
                   <rel-off>shadowbox;width=600</rel-off>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
             </urls>
           </portlet>
@@ -120,7 +120,7 @@
                   <title>Add Friends</title>
                   <href>/show/${project.uniqueId:html}/app/add_members</href>
                   <rel-off>shadowbox;width=600</rel-off>
-                  <permission>project-profile-admin</permission>]]>
+                  <permission>project-team-edit</permission>]]>
               </value>
               -->
             </urls>

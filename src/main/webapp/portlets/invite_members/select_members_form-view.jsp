@@ -155,14 +155,25 @@
                     </c:choose>
                   </td>
                   <td valign="top">
-                    <select name="matchedRole-${member.key}" class="input selectInput">
-                      <c:forEach items="${roleList}" var="role">
-                        <option value="${role.level}" <c:if test="${(!empty matchRole[member.key] and matchRole[member.key] == role.level) or role.level == defaultRole}"> selected</c:if>><c:out value="${role.description}"/></option>
-                      </c:forEach>
-                    </select>
+                    <%-- Either show the only option, or show a drop-down --%>
+                    <c:choose>
+                      <c:when test="${fn:length(roleList) == 1}">
+                        <c:forEach items="${roleList}" var="role">
+                          <input type="hidden" name="matchedRole-${member.key}" value="${role.level}" />
+                          <c:out value="${role.description}"/>
+                        </c:forEach>
+                      </c:when>
+                      <c:otherwise>
+                        <select name="matchedRole-${member.key}" class="input selectInput">
+                          <c:forEach items="${roleList}" var="role">
+                            <option value="${role.level}" <c:if test="${(!empty matchRole[member.key] and matchRole[member.key] == role.level) or role.level == defaultRole}"> selected</c:if>><c:out value="${role.description}"/></option>
+                          </c:forEach>
+                        </select>
+                      </c:otherwise>
+                    </c:choose>
                   </td>
                   <c:if test="${showAccessToTools eq 'true'}">
-                      <td valign="top">
+                    <td valign="top">
                       <input type="checkbox" name="accessToTools" value="${member.key}" />&nbsp;
                     </td>
                   </c:if>
@@ -180,6 +191,11 @@
               <c:choose>
                 <c:when test="${member.value eq 'noMatchFound'}">
                     <c:if test="${foundToDisplay eq 'false'}">
+                      <c:if test='${canInviteNonMembers eq "false"}'>
+                        <div class="portlet-message-alert">
+                          The following members will not be added because they are not members of the system and you do not have access to invite them.  You can continue without inviting them or cancel and make changes.
+                        </div>
+                      </c:if>
                       <c:if test="${showAccessToTools eq 'true'}">
                         <caption>No matches were found for the following entries:</caption>
                       </c:if>
@@ -204,7 +220,7 @@
                     <c:set var="foundToDisplay" value="true" />
                     <tr>
                       <td valign="top">
-                        <input type="checkbox" name="mismatches" value="${member.key}" checked />&nbsp;
+                        <input type="checkbox" name="mismatches" value="${member.key}" <c:if test='${canInviteNonMembers ne "false"}'>checked</c:if> />&nbsp;
                       </td>
                       <td valign="top">
                         <c:out value="${member.key}" />&nbsp;
@@ -243,11 +259,22 @@
                         </c:otherwise>
                       </c:choose>
                       <td valign="top">
-                         <select name="notMatchedRole-${member.key}" class="input selectInput">
+                        <%-- Either show the only option, or show a drop-down --%>
+                        <c:choose>
+                          <c:when test="${fn:length(roleList) == 1}">
                             <c:forEach items="${roleList}" var="role">
-                              <option value="${role.level}" <c:if test="${(!empty noMatchRole[member.key] and noMatchRole[member.key] == role.level) or role.level == defaultRole}"> selected</c:if>><c:out value="${role.description}"/></option>
+                              <input type="hidden" name="notMatchedRole-${member.key}" value="${role.level}" />
+                              <c:out value="${role.description}"/>
                             </c:forEach>
-                          </select>
+                          </c:when>
+                          <c:otherwise>
+                            <select name="notMatchedRole-${member.key}" class="input selectInput">
+                               <c:forEach items="${roleList}" var="role">
+                                 <option value="${role.level}" <c:if test="${(!empty noMatchRole[member.key] and noMatchRole[member.key] == role.level) or role.level == defaultRole}"> selected</c:if>><c:out value="${role.description}"/></option>
+                               </c:forEach>
+                             </select>
+                          </c:otherwise>
+                        </c:choose>
                       </td>
                       <c:if test="${showAccessToTools eq 'true'}">
                         <td valign="top">

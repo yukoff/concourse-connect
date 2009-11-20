@@ -4384,6 +4384,7 @@
         <column>
           <portlet name="InviteMembersPortlet">
             <title>Send Invites</title>
+            <!--<maxRole>Participant</maxRole>-->
             <failureMessage>Invitation failed</failureMessage>
             <messageSubject>
               <![CDATA[You have received an invitation to join ${project.title}]]>

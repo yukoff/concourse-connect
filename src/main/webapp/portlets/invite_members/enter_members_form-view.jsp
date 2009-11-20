@@ -105,7 +105,13 @@
 	 <form method="POST" name="<portlet:namespace/>inputForm" action="${submitContentUrl}" onSubmit="try {return checkForm<portlet:namespace/>(this);}catch(e){return true;}">
     	<fieldset id="InviteMembers">
         <legend><c:out value="Enter Members" /></legend>
-	    	<label>Use this page to add people you know.</label><br />
+	    	<label><h3>Use this page to add people you know.</h3></label>
+        <div class="portlet-message-info">
+          <c:if test='${canInviteNonMembers eq "false"}'>
+            You are only allowed to invite users that are members of this site.  An administrator can invite non-members.<br />
+          </c:if>
+          Become friends with users on this site to easily add them in the future.
+        </div>
 	    	<label for="<portlet:namespace/>membersToInvite">
 		    	Enter names or email addresses of recipients
 		    	<span class="required">*</span>

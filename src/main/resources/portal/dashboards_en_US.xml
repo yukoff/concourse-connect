@@ -336,7 +336,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list " isUser="true">
-            <title>Write what others should know...</title>
+            <title>Write something for others to see...</title>
             <project>${main-profile.uniqueId}</project>
             <allowUsers>true</allowUsers>
             <event>site-chatter</event>

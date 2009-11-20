@@ -67,7 +67,7 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
           "<p>The <a class=\"wikiLink\" href=\"/show/some-project/wiki/Subversion+code+repository\">Subversion code repository</a> is where you will find the latest code.</p>\n" +
           "<p><img src=\"/show/some-project/wiki-image/Campus-Shield-Logo.gif\" alt=\"Campus-Shield-Logo.gif\" width=\"386\" height=\"117\" /></p>\n" +
           "<p>" +
-          "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Technical+Documentation\">Technical Documentation</a><br />" +
+          "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Technical+Documentation\">Technical Documentation</a> (Owner)<br />" +
           "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Security%2C+Registration%2C+Invitation\">Installation Options</a><br />" +
           "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Frequently+Asked+Questions\">Frequently Asked Questions</a> " +
           "<a href=\"/show/some-project/topic/3353\">info</a> for you" +
@@ -94,7 +94,7 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
         "\n" +
         "[[Image:Campus-Shield-Logo.gif]]\n" +
         "\n" +
-        "[[Technical Documentation]]\n" +
+        "[[Technical Documentation]] (Owner)\n" +
         "[[Security, Registration, Invitation|Installation Options]]\n" +
         "[[Frequently Asked Questions]] " +
         "[[|9999999:topic|3353|info]] for you\n", wiki);

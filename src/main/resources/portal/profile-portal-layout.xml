@@ -163,7 +163,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -324,7 +324,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>What are you thinking or doing?</title>
+            <title>What's happening?</title>
           </portlet> 
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -572,7 +572,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -779,7 +779,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -992,7 +992,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -1197,7 +1197,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -1405,7 +1405,7 @@
             <successMessage>You have successfully joined this event!</successMessage>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -1592,7 +1592,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -1743,7 +1743,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>
@@ -1928,7 +1928,7 @@
             <limit>10</limit>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>          
           <portlet name="ActivityStreamPortlet" class="detailed-list ">
             <title>Recent Activity</title>
@@ -2194,7 +2194,7 @@
             <showTitle>false</showTitle>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
-            <title>Write something...</title>
+            <title>What's happening?</title>
           </portlet>
           <portlet name="ActivityStreamPortlet" class="activity-list ">
             <title>Recent Activity</title>

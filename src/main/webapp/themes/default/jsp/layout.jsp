@@ -93,29 +93,6 @@
       ((Project) request.getAttribute("project")).getId() > -1 &&
       !((Project) request.getAttribute("project")).getPortal();
 
-  String mainTab = portal.getPortalKey();
-  if (mainTab == null) {
-    mainTab = "none";
-  }
-  if (PageBody.indexOf("/projects_overview") > -1 ||
-      PageBody.indexOf("/projects_dashboard") > -1 ||
-      PageBody.indexOf("/projects_assignments") > -1 ||
-      PageBody.indexOf("/rss") > -1 ||
-      PageBody.indexOf("/reports_") > -1) {
-    mainTab = "user_home";
-  } else if (PageBody.indexOf("/projects_discussion") > -1) {
-    mainTab = "discussions";
-  } else if (PageBody.indexOf("/user_") > -1) {
-    mainTab = "profile";
-  } else if (PageBody.indexOf("/contacts_") > -1) {
-    mainTab = "contacts";
-  } else if (inProject ||
-      request.getAttribute("projectList") != null ||
-      PageBody.indexOf("/projects_timesheet") > -1 ||
-      PageBody.indexOf("/projects_resources") > -1) {
-    mainTab = "projects";
-  }
-
   boolean isMaximized = "MAXIMIZED".equals(projectView);
   boolean isUserLoggedIn = User.isLoggedIn();
   boolean doScrollTop = request.getParameter("scrollTop") != null;
@@ -204,6 +181,7 @@
     <link rel="SHORTCUT ICON" href="${ctx}/favicon.ico"/>
   </head>
   <body>
+    <c:set var="userProfile" value='<%= User.getProfileProject() %>'/>
     <p class="access"><a href="#content" accesskey="1">Skip Navigation and Search to Content</a></p>
     <div class="ccp-container">
       <div class="ccp-header">
@@ -378,11 +356,17 @@
               <c:when test="${!empty dashboardPageCategory}">
                 <c:set var="tabbedMenuValue" value="${dashboardPageCategory}"/>
               </c:when>
+              <c:when test="${project.id == userProfile.id}">
+                <c:set var="tabbedMenuValue" value="me"/>
+              </c:when>
               <c:otherwise>
                 <c:set var="tabbedMenuValue" value="${fn:toLowerCase(project.category.description)}"/>
               </c:otherwise>
             </c:choose>
             <ccp:tabbedMenu text='<%= "Home" %>' key="home" value="${tabbedMenuValue}" url="${ctx}/" type="li" object="requestMainProfile"/>
+            <ccp:evaluate if="<%= isUserLoggedIn %>">
+              <ccp:tabbedMenu text='<%= "Me" %>' key="me" value="${tabbedMenuValue}" url="${ctx}/show/${userProfile.uniqueId}" type="li" object="requestMainProfile"/>
+            </ccp:evaluate>
             <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
               <ccp:tabbedMenu text="${tabCategory.description}"
                                  key="${fn:toLowerCase(fn:replace(tabCategory.description,' ','_'))}"
@@ -403,6 +387,9 @@
           <c:if test="${fn:length(tabCategoryList) > 0}">
             <ccp:tabbedMenu text='<%= "Home" %>' key="nokey" value="novalue" url="${ctx}/" type="li" object="requestMainProfile"/>
           </c:if>
+          <ccp:evaluate if="<%= isUserLoggedIn %>">
+            <ccp:tabbedMenu text='<%= "Me" %>' key="nokey" value="novalue" url="${ctx}/show/${userProfile.uniqueId}" type="li" object="requestMainProfile"/>
+          </ccp:evaluate>
           <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
             <ccp:tabbedMenu text="${tabCategory.description}"
                             key="nokey"

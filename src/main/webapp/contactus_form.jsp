@@ -47,7 +47,7 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <jsp:useBean id="contactUs" class="com.concursive.connect.web.modules.contactus.dao.ContactUsBean" scope="request"/>
 <%@ include file="initPage.jsp" %>
-<script language="JavaScript">
+<script type="text/javascript" language="JavaScript">
   function checkForm(form) {
     var message = "";
     var formTest = true;

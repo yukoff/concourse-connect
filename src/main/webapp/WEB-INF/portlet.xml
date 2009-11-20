@@ -926,6 +926,17 @@
       <title>Allows an administrator to approve a listing</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>MemberRequestsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.members.portlets.memberRequests.MemberRequestsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Allows a profile owner to approve or deny membership requests</title>
+    </portlet-info>
+  </portlet>
 
   <custom-portlet-mode>
     <description>Provides administration functions</description>

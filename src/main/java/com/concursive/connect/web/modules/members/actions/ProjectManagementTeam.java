@@ -61,6 +61,8 @@ import com.concursive.connect.web.modules.members.dao.InvitationList;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.LookupList;
 import freemarker.template.Template;
 
@@ -332,36 +334,54 @@ public final class ProjectManagementTeam extends GenericAction {
       if (members.size() == 1) {
         TeamMember member = members.get(0);
         TeamMember prevMember = new TeamMember(db, members.get(0).getId());
-        boolean updated = TeamMember.handleMembershipRequest(db, member, approval, user.getId());
-        if (updated) {
-        	if (approval){
-	          processUpdateHook(context, prevMember, member);
-	          //Reciprocate in the requesting users profile
-	          //Reciprocate membership in the requesting users profile if the target project is a user profile
-	          User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
-	          if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-	          	Project requestingUserProfileProject = UserUtils.loadUser(Integer.parseInt(idStr)).getProfileProject();
-	            TeamMemberList teamMembersOfRequestingUser = new TeamMemberList();
-	            teamMembersOfRequestingUser.setProjectId(requestingUserProfileProject.getId());
-	            teamMembersOfRequestingUser.setUserId(ownerOfTargetProject.getId());
-	            teamMembersOfRequestingUser.buildList(db);
-	            if (teamMembersOfRequestingUser.size() == 0){
-		          	TeamMember reciprocatingTeamMember = new TeamMember();
-		          	reciprocatingTeamMember.setUserId(ownerOfTargetProject.getId());
-		          	reciprocatingTeamMember.setProjectId(requestingUserProfileProject.getId());
-		            if (requestingUserProfileProject.getFeatures().getAllowParticipants()) {
-		            	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.PARTICIPANT));
-		            } else {
-		            	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.GUEST));
-		            }
-		          	reciprocatingTeamMember.setEnteredBy(user.getId());
-		          	reciprocatingTeamMember.setModifiedBy(user.getId());
-		          	reciprocatingTeamMember.insert(db);
-	            }         
-	          }
-	        } else {
-	        	processDeleteHook(context, prevMember);
-	        }
+      	if (approval){
+          TeamMember teamMember = new TeamMember(db, targetProject.getId(), Integer.parseInt(idStr));
+          teamMember.setStatus(TeamMember.STATUS_JOINED);
+          teamMember.setModifiedBy(user.getId());
+          teamMember.update(db);
+          processUpdateHook(context, prevMember, teamMember);
+
+          //Reciprocate membership in the requesting users profile if the target project is a user profile
+          User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+          if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+          	Project requestingUserProfileProject = UserUtils.loadUser(Integer.parseInt(idStr)).getProfileProject();
+            TeamMemberList teamMembersOfRequestingUser = requestingUserProfileProject.getTeam();
+          	TeamMember reciprocatingTeamMember = null;
+          	//Determine if the reciprocal already exists, then update if necessary
+            if (teamMembersOfRequestingUser.hasUserId(targetProject.getOwner())) {
+            	reciprocatingTeamMember = teamMembersOfRequestingUser.getTeamMember(targetProject.getOwner());
+          		if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED){
+          			// DO Nothing
+          		} else {
+  	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
+  	            reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+  	            reciprocatingTeamMember.update(db);
+          		}
+            } else {
+            	//Reciprocal does not exist, therefore create one
+            	reciprocatingTeamMember = new TeamMember();
+	          	reciprocatingTeamMember.setUserId(ownerOfTargetProject.getId());
+	          	reciprocatingTeamMember.setProjectId(requestingUserProfileProject.getId());
+	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
+	            reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+	          	reciprocatingTeamMember.setEnteredBy(user.getId());
+	          	reciprocatingTeamMember.setModifiedBy(user.getId());
+	          	reciprocatingTeamMember.insert(db);
+            }         
+          }
+        } else {
+          User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+          if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+          	//Remove team member if request to become a friend of a user profile is denied
+          	prevMember.delete(db);
+            processDeleteHook(context, prevMember);
+          } else {
+          	//Change user status to refused
+            TeamMember teamMember = new TeamMember(db, targetProject.getId(), Integer.parseInt(idStr));
+            teamMember.setStatus(TeamMember.STATUS_REFUSED);
+            teamMember.update(db);
+            processUpdateHook(context, prevMember, teamMember);
+          }
         }
       } else {
         context.getRequest().setAttribute("actionError", "The member has already been approved or denied.");
@@ -425,6 +445,11 @@ public final class ProjectManagementTeam extends GenericAction {
           } else {
             member.setUserLevel(getUserLevel(TeamMember.GUEST));
           }
+          //if a user profile, set to TeamMember.MEMBER
+          User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+          if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+            member.setUserLevel(getUserLevel(TeamMember.MEMBER));
+          }          
           member.setStatus(TeamMember.STATUS_JOINED_NEEDS_APPROVAL);
           member.setEnteredBy(user.getId());
           member.setModifiedBy(user.getId());
@@ -513,6 +538,37 @@ public final class ProjectManagementTeam extends GenericAction {
             processInsertHook(context, thisMember);
           }
         }
+        
+        //Handle reciprocate membership if the user has accepted to be member of a user profile
+        Project targetProject = ProjectUtils.loadProject((projectId));
+        User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+        if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+          Project thisUserProfileProject = user.getProfileProject();
+          TeamMemberList teamMemberList = thisUserProfileProject.getTeam();
+          TeamMember reciprocatingTeamMember = null;
+        	//Determine if the reciprocal already exists, then update if necessary
+          if (teamMemberList.hasUserId(targetProject.getOwner())) {
+        		reciprocatingTeamMember = thisUserProfileProject.getTeam().getTeamMember(user.getId());
+        		if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED){
+        			// DO Nothing
+        		} else {
+	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
+	            if (reciprocatingTeamMember.getUserLevel() > TeamMember.MEMBER ) {
+		          	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+	            }
+	            reciprocatingTeamMember.update(db);
+        		}
+          } else {
+        		//Reciprocal does not exist, therefore create one
+          	reciprocatingTeamMember = new TeamMember();
+          	reciprocatingTeamMember.setProjectId(thisUserProfileProject.getId());
+          	reciprocatingTeamMember.setUserId(targetProject.getOwner());
+          	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+          	reciprocatingTeamMember.setEnteredBy(user.getId());
+          	reciprocatingTeamMember.setModifiedBy(user.getId());
+          	reciprocatingTeamMember.insert(db);
+          }
+        }        
       }
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);

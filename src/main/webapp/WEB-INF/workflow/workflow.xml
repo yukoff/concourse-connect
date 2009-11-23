@@ -773,7 +773,7 @@ ${this.message:html}<br />
         <component id="3" parent="2" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatusChanged">
           <parameters>
             <parameter name="teammember.oldstatus" value="6" />
-            <parameter name="teammember.newstatus" value="-1" />
+            <parameter name="teammember.newstatus" value="5" />
           </parameters>
         </component>
         <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">

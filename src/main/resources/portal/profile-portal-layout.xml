@@ -406,6 +406,9 @@
           <portlet name="PendingInvitationsPortlet" isUser="true">
             <title>My Invites</title>
           </portlet>
+          <portlet name="MemberRequestsPortlet" isUser="true">
+            <title>Member Requests</title>
+          </portlet>
           <portlet name="ProjectDownloadsPortlet" class="detailed-list ">
             <title>My Featured Downloads</title>
             <limit>3</limit>

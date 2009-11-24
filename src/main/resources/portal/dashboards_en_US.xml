@@ -1671,11 +1671,6 @@
             </events>
             <limit>15</limit>
           </portlet>
-          <portlet name="TopContributionsPortlet" class="detailed-list " isSensitive="true">
-            <title>Top Site Contributors</title>
-            <limit>5</limit>
-            <daysLimit>60</daysLimit>
-          </portlet>
         </column>
         <column width="300">
           <portlet name="ContentPortlet" cache="300" isSensitive="true">
@@ -1694,6 +1689,12 @@
             <category>People</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="RecentProjectReviewsPortlet" class="detailed-list " cache="10">
+            <title>Recent Reviews People Have Written</title>
+            <category>neighborhoods,businesses,organizations,groups,events,ideas,clusters,places,voices</category>
+            <limit>5</limit>
+            <showProjectTitle>true</showProjectTitle>
+          </portlet>
           <portlet name="RecentBlogPostsPortlet" cache="10" class="detailed-list " isSensitive="true">
             <title>Recent Blog Posts</title>
             <category>People</category>
@@ -1703,6 +1704,11 @@
             <title>Recent Discussions</title>
             <category>People</category>
             <limit>5</limit>
+          </portlet>
+          <portlet name="TopContributionsPortlet" class="detailed-list " isSensitive="true">
+            <title>Top Site Contributors</title>
+            <limit>5</limit>
+            <daysLimit>60</daysLimit>
           </portlet>
         </column>
       </row>

@@ -144,17 +144,17 @@ public class PendingInvitationsPortlet extends GenericPortlet {
             }
           } else {
             User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+            TeamMember teamMember = new TeamMember(db, targetProject.getId(), project.getOwner());
+            teamMember.setStatus(TeamMember.STATUS_REFUSED);
             if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
             	//Remove team member if request to become a friend of a user profile is denied
-            	prevMember.delete(db);
-              PortalUtils.processDeleteHook(request, prevMember);
+            	//Change user status to refused for workflow to use
+              teamMember.delete(db);
             } else {
             	//Change user status to refused
-              TeamMember teamMember = new TeamMember(db, targetProject.getId(), project.getOwner());
-              teamMember.setStatus(TeamMember.STATUS_REFUSED);
               teamMember.update(db);
-              PortalUtils.processUpdateHook(request, prevMember, teamMember);
             }
+            PortalUtils.processUpdateHook(request, prevMember, teamMember);
           }
           response.setContentType("text/html");
           PrintWriter out = response.getWriter();

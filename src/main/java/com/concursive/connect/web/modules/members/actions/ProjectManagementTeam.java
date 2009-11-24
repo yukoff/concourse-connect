@@ -371,17 +371,17 @@ public final class ProjectManagementTeam extends GenericAction {
           }
         } else {
           User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+          TeamMember teamMember = new TeamMember(db, targetProject.getId(), Integer.parseInt(idStr));
+          teamMember.setStatus(TeamMember.STATUS_REFUSED);
           if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
           	//Remove team member if request to become a friend of a user profile is denied
+          	//Change user status to refused for workflow to use
           	prevMember.delete(db);
-            processDeleteHook(context, prevMember);
           } else {
-          	//Change user status to refused
-            TeamMember teamMember = new TeamMember(db, targetProject.getId(), Integer.parseInt(idStr));
-            teamMember.setStatus(TeamMember.STATUS_REFUSED);
+          	//Change user status to refused and save
             teamMember.update(db);
-            processUpdateHook(context, prevMember, teamMember);
           }
+          processUpdateHook(context, prevMember, teamMember);
         }
       } else {
         context.getRequest().setAttribute("actionError", "The member has already been approved or denied.");

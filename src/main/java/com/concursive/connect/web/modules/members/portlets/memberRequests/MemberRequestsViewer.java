@@ -62,6 +62,7 @@ import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 
@@ -97,10 +98,8 @@ public class MemberRequestsViewer implements IPortletViewer {
     // Set global preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
 
-    // Determine the current profile
-
     // Determine if the invites can be shown to the current user
-    if (project.getProfile() && user.getId() == project.getOwner()) {
+    if (ProjectUtils.hasAccess(project.getId(), user, "project-team-edit")) {
     	String approve = request.getParameter("approve");
     	
       // Determine the database connection to use
@@ -146,16 +145,15 @@ public class MemberRequestsViewer implements IPortletViewer {
           	}
           }
         } else {
+          teamMember.setStatus(TeamMember.STATUS_REFUSED);
           if (project.getProfile() && user.getId() == project.getOwner()) {
           	//Remove team member if request to become a friend of a user profile is denied
             teamMember.delete(db);
-            PortalUtils.processDeleteHook(request, prevMember);
           } else {
           	//Change user status to refused
-            teamMember.setStatus(TeamMember.STATUS_REFUSED);
             teamMember.update(db);
-            PortalUtils.processUpdateHook(request, prevMember, teamMember);
           }
+            PortalUtils.processUpdateHook(request, prevMember, teamMember);
         }
 
     		response.setContentType("text/html");

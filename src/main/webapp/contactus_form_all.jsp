@@ -192,7 +192,7 @@
 %>
 <c:set var="mapHeight" value="300px" scope="request"/>
 <c:set var="mapVersion" value="2.s" scope="request"/>
-<script src="http://maps.google.com/maps?file=api&v=${mapVersion}&key=${key}&hl=en" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&v=${mapVersion}&key=${applicationPrefs.prefs["GOOGLE_MAPS.KEY"]}&hl=en" type="text/javascript"></script>
 <style type="text/css">
 	v\:* {
 		behavior:url(#default#VML);

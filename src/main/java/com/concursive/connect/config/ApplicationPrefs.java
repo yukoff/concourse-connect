@@ -474,6 +474,7 @@ public class ApplicationPrefs {
    * @param context Description of the Parameter
    */
   public void configureConnectionPool(ServletContext context) {
+    LOG.info("configureConnectionPool");
     //Define the ConnectionPool, else defaults from the ContextListener will be used
     ConnectionPool cp = (ConnectionPool) context.getAttribute(Constants.CONNECTION_POOL);
     if (cp != null) {
@@ -623,6 +624,7 @@ public class ApplicationPrefs {
 
 
   private void configureWebdavManager(ServletContext context) {
+    LOG.info("configureWebdavManager");
     WebdavManager webdavManager = (WebdavManager) context.getAttribute(Constants.WEBDAV_MANAGER);
     if (webdavManager != null) {
       webdavManager.setFileLibraryPath(this.get(FILE_LIBRARY_PATH));
@@ -630,6 +632,7 @@ public class ApplicationPrefs {
   }
 
   private void configureSystemSettings(ServletContext context) {
+    LOG.info("configureSystemSettings");
     SystemSettings systemSettings = new SystemSettings();
     try {
       // Load the settings...
@@ -785,6 +788,7 @@ public class ApplicationPrefs {
   }
 
   private void configureCache(ServletContext context) {
+    LOG.info("configureCache");
     CacheContext cacheContext = new CacheContext();
     // Give the cache manager its own connection pool... this can speed up the web-tier
     // when background processing is occurring
@@ -803,15 +807,18 @@ public class ApplicationPrefs {
         cacheContext.setConnectionPool(cacheCP);
       }
     }
-    ConnectionElement ce = new ConnectionElement();
-    ce.setDriver(this.get(CONNECTION_DRIVER));
-    ce.setUrl(this.get(CONNECTION_URL));
-    ce.setUsername(this.get(CONNECTION_USER));
-    ce.setPassword(this.get(CONNECTION_PASSWORD));
-    cacheContext.setConnectionElement(ce);
-    cacheContext.setApplicationPrefs(this);
-    cacheContext.setKey((Key) context.getAttribute(TEAM_KEY));
-    Caches.addCaches(cacheContext);
+    if (cacheContext.getConnectionPool() != null) {
+      // The cacheContext is ready to be finalized
+      ConnectionElement ce = new ConnectionElement();
+      ce.setDriver(this.get(CONNECTION_DRIVER));
+      ce.setUrl(this.get(CONNECTION_URL));
+      ce.setUsername(this.get(CONNECTION_USER));
+      ce.setPassword(this.get(CONNECTION_PASSWORD));
+      cacheContext.setConnectionElement(ce);
+      cacheContext.setApplicationPrefs(this);
+      cacheContext.setKey((Key) context.getAttribute(TEAM_KEY));
+      Caches.addCaches(cacheContext);
+    }
   }
 
   private void configureIndexer() {
@@ -833,6 +840,7 @@ public class ApplicationPrefs {
    * @param context the servlet context to store the configuration
    */
   private void configureFreemarker(ServletContext context) {
+    LOG.info("configureFreemarker");
     try {
       Configuration freemarkerConfiguration = new Configuration();
       // Customized templates are stored here

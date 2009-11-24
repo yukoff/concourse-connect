@@ -56,10 +56,10 @@
     <ol>
       <c:choose>
         <c:when test="${fn:length(memberRequests) == 1}">
-          There is 1 member request.
+          There is 1 friend request.
         </c:when>
         <c:otherwise>
-          There are <c:out value="${fn:length(memberRequests)}" /> member requests.
+          There are <c:out value="${fn:length(memberRequests)}" /> friend requests.
         </c:otherwise>
       </c:choose>
       <br />
@@ -83,11 +83,11 @@
           </c:set>
           <div id="approvedRequest_${memberRequest.id}" class="menu">Approved</div>
           <div id="declinedRequest_${memberRequest.id}" class="menu">Declined</div>
-          <div id="<portlet:namespace/>approveOrDecline_${memberRequest.id}"><a href="${approveRequestURL}">Approve</a> or <a href="${declineRequestURL}">Decline</a></div>
+          <div id="<portlet:namespace/>approveOrDecline_${memberRequest.id}"><a href="${approveRequestURL}">Accept</a> or <a href="${declineRequestURL}">Decline</a></div>
         <br />
       </c:forEach>
     </ol>
   </c:if>
   <c:if test="${empty memberRequests}">
-    <p>There are no member requests</p>
+    <p>There are no friend requests</p>
   </c:if>

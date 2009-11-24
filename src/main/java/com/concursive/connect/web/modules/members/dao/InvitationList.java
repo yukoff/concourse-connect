@@ -130,15 +130,17 @@ public class InvitationList extends ArrayList<Invitation> {
    * @return Description of the Return Value
    * @throws SQLException Description of the Exception
    */
-  public static int queryCount(Connection db, int userId) throws SQLException {
+  public static int queryCount(Connection db, int userId, int userProfileProjectId) throws SQLException {
     int count = 0;
     PreparedStatement pst = db.prepareStatement(
         "SELECT count(user_id) AS nocols " +
             "FROM project_team " +
-            "WHERE user_id = ? " +
-            "AND status = ? ");
+            "WHERE (user_id = ? AND status = ?) OR " +
+            "(project_id = ? AND status = ?)");
     pst.setInt(1, userId);
     pst.setInt(2, TeamMember.STATUS_PENDING);
+    pst.setInt(3, userProfileProjectId);
+    pst.setInt(4, TeamMember.STATUS_JOINED_NEEDS_APPROVAL);
     ResultSet rs = pst.executeQuery();
     if (rs.next()) {
       count = rs.getInt("nocols");

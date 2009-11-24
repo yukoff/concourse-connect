@@ -154,7 +154,7 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
         }
         if (!upgradeMode) {
           // Check invitatons to redirect them on login
-          hasInvitations = (InvitationList.queryCount(db, thisUser.getId()) > 0);
+          hasInvitations = (InvitationList.queryCount(db, thisUser.getId(), thisUser.getProfileProjectId()) > 0);
           // Determine content editing capability
           thisUser.getWebSiteLanguageList().setMemberId(thisUser.getId());
           thisUser.getWebSiteLanguageList().buildList(db);

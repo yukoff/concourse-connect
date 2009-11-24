@@ -334,7 +334,7 @@ public class SecurityHook implements ControllerHook {
         // TODO: Implement cache since every hit needs this list
         if (db != null) {
           // Check the # of invitations
-          int invitationCount = InvitationList.queryCount(db, userSession.getId());
+          int invitationCount = InvitationList.queryCount(db, userSession.getId(), userSession.getProfileProjectId());
           request.setAttribute(Constants.REQUEST_INVITATION_COUNT, String.valueOf(invitationCount));
 
           int newMailCount = PrivateMessageList.queryUnreadCountForUser(db, userSession.getId());

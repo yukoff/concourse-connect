@@ -85,6 +85,7 @@ public class WikiPortlet extends AbstractPortletModule {
   public static final String TAGS_FORM_VIEW = "setTags";
   public static final String SEARCH_VIEW = "search";
   public static final String SEARCH_RESULTS_VIEW = "search-results";
+  public static final String TABLE_OF_CONTENTS_VIEW = "tableOfContents";
 
   // Actions
   public static final String SAVE_WIKI_ACTION = "save";
@@ -123,6 +124,7 @@ public class WikiPortlet extends AbstractPortletModule {
     viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
 //    viewers.put(SEARCH_VIEW, new WikiSearchViewer());
 //    viewers.put(SEARCH_RESULTS_VIEW, new WikiSearchResultsViewer());
+    viewers.put(TABLE_OF_CONTENTS_VIEW, new WikiTableOfContentsViewer());
 
     // Actions
     actions.put(SAVE_WIKI_ACTION, new SaveWikiAction());

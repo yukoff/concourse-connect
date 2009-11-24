@@ -60,9 +60,9 @@ public class WikiParserTest2 extends TestCase {
 
   protected final static String htmlSample = "<p>This is a new example.</p>\n" +
       "<p>Second paragraph</p>\n" +
-      "<h2><span>Beginning a header</span></h2>\n" +
+      "<h2 id=\"Beginning_a_header\"><span>Beginning a header</span></h2>\n" +
       "<p>some text</p>\n" +
-      "<h2><span>Beginning a new header</span></h2>\n" +
+      "<h2 id=\"Beginning_a_new_header\"><span>Beginning a new header</span></h2>\n" +
       "<p>some other text</p>\n" +
       "<pre>pre1</pre>\n" +
       "<p>and something else</p>\n" +
@@ -110,8 +110,8 @@ public class WikiParserTest2 extends TestCase {
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, 1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), 1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertEquals(htmlSample, html);
     String wiki = HTMLToWikiUtils.htmlToWiki(html, "", -1);
 

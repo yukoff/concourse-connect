@@ -74,8 +74,8 @@ public class WikiParserVideoTest extends AbstractConnectionPoolTest {
     // Convert wiki to html
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample);
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, -1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertNotNull(html);
     assertEquals(htmlSample, html);
   }
@@ -84,8 +84,8 @@ public class WikiParserVideoTest extends AbstractConnectionPoolTest {
     // Convert wiki to html
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample2);
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, -1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertNotNull(html);
     assertEquals(htmlSample, html);
   }

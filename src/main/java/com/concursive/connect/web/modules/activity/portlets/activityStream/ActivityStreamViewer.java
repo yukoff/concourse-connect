@@ -186,8 +186,8 @@ public class ActivityStreamViewer implements IPortletViewer {
       if (thisUser != null) {
         userId = thisUser.getId();
       }
-      WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(db, userId, request.getContextPath());
-      String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, projectHistory.getDescription());
+      WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(userId, request.getContextPath());
+      String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, projectHistory.getDescription());
       projectHistory.setHtmlLink(wikiLinkString);
       // Add the activity stream item to the person
       eventList.add(projectHistory);

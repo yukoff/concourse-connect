@@ -120,7 +120,7 @@ public class WikiIndexer implements Indexer {
     // use the project's general access to speedup guest projects
     Project project = ProjectUtils.loadProject(wiki.getProjectId());
     // Use the wiki context
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), null, -1, false, "");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, false, "");
     // add the document
     Document document = new Document();
     document.add(new Field("type", "wiki", Field.Store.YES, Field.Index.UN_TOKENIZED));
@@ -142,7 +142,7 @@ public class WikiIndexer implements Indexer {
         new Field(
             "contents",
             wiki.getSubject() + " " +
-                ContentUtils.toText(ContentUtils.stripHTML(StringUtils.fromHtmlValue(WikiToHTMLUtils.getHTML(wikiContext)))), Field.Store.YES, Field.Index.TOKENIZED));
+                ContentUtils.toText(ContentUtils.stripHTML(StringUtils.fromHtmlValue(WikiToHTMLUtils.getHTML(wikiContext, null)))), Field.Store.YES, Field.Index.TOKENIZED));
     document.add(new Field("subjectLink", wiki.getSubjectLink(), Field.Store.YES, Field.Index.TOKENIZED));
     if (modified) {
       document.add(new Field("modified", String.valueOf(System.currentTimeMillis()), Field.Store.YES, Field.Index.UN_TOKENIZED));

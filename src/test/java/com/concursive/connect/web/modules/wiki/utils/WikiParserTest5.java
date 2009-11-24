@@ -108,8 +108,8 @@ public class WikiParserTest5 extends TestCase {
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, -1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertNotNull(html);
 
     Revision revision = Diff.diff(

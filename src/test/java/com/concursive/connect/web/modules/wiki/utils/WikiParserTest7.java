@@ -73,8 +73,8 @@ public class WikiParserTest7 extends AbstractConnectionPoolTest {
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, -1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertEquals(
         "<p><a class=\"wikiLink newWiki\" href=\"/show//wiki/Subversion+Details\">Subversion Details</a><br />" +
             "<a class=\"wikiLink newWiki\" href=\"/show//wiki/API+examples\">API examples</a><br />" +

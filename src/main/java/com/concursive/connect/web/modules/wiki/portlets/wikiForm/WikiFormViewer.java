@@ -111,8 +111,8 @@ public class WikiFormViewer implements IPortletViewer {
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(request.getPreferences().getValue(PREF_FORM_CONTENT, null));
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, -1, true, request.getContextPath());
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, true, request.getContextPath());
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
 
     // Set the portlet preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));

@@ -107,8 +107,8 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
     Wiki wiki = new Wiki();
     wiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), null, -1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertEquals(htmlSample, html);
   }
 }

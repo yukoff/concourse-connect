@@ -134,13 +134,18 @@ public class WikiDetailsViewer implements IPortletViewer {
       request.setAttribute(WIKI_COMMENT_LIST, commentList);
 
       // Convert the wiki to html for this user
-      WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, db, user.getId(), false, request.getContextPath());
-      String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext);
+      WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, user.getId(), false, request.getContextPath());
+      String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext, db);
       request.setAttribute(WIKI_HTML, wikiHtml);
 
       // Load this user's rating of the wiki
       String userRating = String.valueOf(Rating.queryUserRating(db, user.getId(), wiki.getId(), Wiki.TABLE, Wiki.PRIMARY_KEY));
       request.setAttribute(WIKI_USER_RATING, userRating);
+
+      // This portlet can provide data to other portlets
+      for (String event : PortalUtils.getDashboardPortlet(request).getGenerateDataEvents()) {
+        PortalUtils.setGeneratedData(request, event, wikiContext);
+      }
     }
 
     // Load the states

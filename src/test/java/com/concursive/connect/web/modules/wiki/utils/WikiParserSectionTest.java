@@ -129,14 +129,14 @@ public class WikiParserSectionTest extends TestCase {
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), null, -1, true, "");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, true, "");
     wikiContext.setEditSectionId(5);
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertNotNull(html);
     assertFalse("Unrequested section was incorrectly found", html.contains("Section 2.2"));
     assertTrue("Requested section not found", html.contains("Section 3.0"));
     assertEquals(
-        "<h2><span>Section 3.0 (5)</span></h2>\n" +
+        "<h2 id=\"Section_3.0_(5)\"><span>Section 3.0 (5)</span></h2>\n" +
             "<p>some section text and lots of it 3.0.1<br />" +
             "some section text and lots of it 3.0.2<br />" +
             "some section text and lots of it 3.0.3<br />" +
@@ -162,9 +162,9 @@ public class WikiParserSectionTest extends TestCase {
     Wiki wiki = new Wiki();
     wiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), null, -1, true, "");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, true, "");
     wikiContext.setEditSectionId(section);
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     // Initial tests
     assertNotNull(html);
     assertFalse("Unrequested section was incorrectly found", html.contains("Section 2.2"));

@@ -116,8 +116,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[Standard link]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink newWiki\" href=\"/modify/" + project.getUniqueId() + "/wiki/Standard+link\">Standard link</a></p>\n", html);
         // Test the link
@@ -131,8 +131,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[Standard link|Renamed]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink newWiki\" href=\"/modify/" + project.getUniqueId() + "/wiki/Standard+link\">Renamed</a></p>\n", html);
         // Test the link
@@ -147,8 +147,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|" + project.getId() + ":issue|" + ticket.getId() + "|Some Ticket]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         //============ WikiLink ============
         //project: 11714
         //area: issue
@@ -176,8 +176,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|" + project.getId() + ":issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
         // Test the link
@@ -194,8 +194,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|" + project.getUniqueId() + ":issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
         // Test the link
@@ -212,8 +212,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|:issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
         // Test the link
@@ -230,8 +230,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
         // Test the link
@@ -248,8 +248,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[http://www.concursive.com?hello=0&world=1 test]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), db, user.getId(), false, "");
-        String html = WikiToHTMLUtils.getHTML(wikiContext);
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" target=\"_blank\" href=\"http://www.concursive.com?hello=0&world=1\">test</a></p>\n", html);
         // Test the link

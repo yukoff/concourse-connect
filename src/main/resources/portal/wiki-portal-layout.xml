@@ -84,6 +84,12 @@
             <showTemplates>true</showTemplates>
             <exclude>Home</exclude>
           </portlet>
+          <portlet name="WikiPortlet" viewer="tableOfContents">
+            <title>Table of Contents</title>
+            <portlet-events>
+              <consumes-data>wikiContext</consumes-data>
+            </portlet-events>
+          </portlet>
           <!-- Display Ads -->
           <portlet name="ProjectPromotionsPortlet" class="basic-list ">
             <title>Promotions</title>
@@ -92,8 +98,14 @@
           </portlet>
         </column>
         <column width="auto" class="main">
+          <!--
+          <portlet name="WikiPortlet" viewer="search"/>
+          -->
           <portlet name="WikiPortlet">
             <title>${project.features.labelWiki}</title>
+            <portlet-events>
+              <generates-data>wikiContext</generates-data>
+            </portlet-events>
           </portlet>
         </column>
       </row>
@@ -499,6 +511,49 @@
           <portlet name="WikiPortlet" viewer="configure">
             <title>${project.features.labelWiki}</title>
           </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Search Results -->
+    <page name="search-results">
+      <row>
+        <column width="250">
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Show wiki index</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show my wiki exports</content>
+                  <title>Show wiki index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                ]]>
+              </value>
+            </urls>
+          </portlet>
+          <portlet name="AddWikiPortlet">
+            <title>Add a Page</title>
+            <showTemplates>true</showTemplates>
+            <exclude>Home</exclude>
+          </portlet>
+          <!-- Display Ads -->
+          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
+            <title>Promotions</title>
+            <category>${category}</category>
+            <limit>3</limit>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <!--
+          <portlet name="WikiPortlet" viewer="search-results"/>
+          -->
         </column>
       </row>
     </page>

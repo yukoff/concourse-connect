@@ -43,34 +43,57 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.wiki.utils;
+package com.concursive.connect.web.modules.wiki.portlets.main;
 
-import com.concursive.commons.db.AbstractConnectionPoolTest;
+import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
+import com.concursive.connect.web.portal.IPortletViewer;
+import com.concursive.connect.web.portal.PortalUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
- * Tests wiki parser functions
+ * Displays a Table of Contents using a generated WikiToHtmlContext
  *
  * @author matt rajkowski
- * @created March 27, 2008
+ * @created November 24, 2009
  */
-public class WikiParserTest8 extends AbstractConnectionPoolTest {
+public class WikiTableOfContentsViewer implements IPortletViewer {
 
-  protected final static String history =
-      "[[|-1:profile||John Smith]] granted the [[|-1:badge|-1|Awesome]] badge to [[|-1:profile||A new group]]";
+  // Logger
+  private static Log LOG = LogFactory.getLog(WikiTableOfContentsViewer.class);
 
-  public void testWikiToHtmlHistoryItem() throws Exception {
-    // The user id
-    int userId = -1;
-    // Create a context based on the current user, and the application web context
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(userId, "/community");
-    // Convert the wiki to html for this user
-    String html = WikiToHTMLUtils.getHTML(wikiContext, db, history);
-    // Test the output
-    assertEquals("Wiki text mismatch",
-        "<p>" +
-            "<a class=\"wikiLink external\" href=\"/community/show/\">John Smith</a> " +
-            "granted the <a class=\"wikiLink external\" href=\"/community/badge/-1\">Awesome</a> " +
-            "badge to <a class=\"wikiLink external\" " +
-            "href=\"/community/show/\">A new group</a></p>\n", html);
+  // Pages
+  private static final String VIEW_PAGE = "/projects_center_wiki_table_of_contents.jsp";
+
+  // Preferences
+  private static final String PREF_TITLE = "title";
+
+  // Object Results
+  private static final String TITLE = "title";
+  private static final String WIKI_CONTEXT = "wikiContext";
+
+  public String doView(RenderRequest request, RenderResponse response) throws Exception {
+    // The JSP to show upon success
+    String defaultView = VIEW_PAGE;
+
+    // General Display Preferences
+    request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, "Wiki"));
+
+    // Find the wiki to show the table of contents
+    WikiToHTMLContext wikiContext = null;
+    for (String event : PortalUtils.getDashboardPortlet(request).getConsumeDataEvents()) {
+      wikiContext = (WikiToHTMLContext) PortalUtils.getGeneratedData(request, event);
+      request.setAttribute(WIKI_CONTEXT, wikiContext);
+    }
+
+    // Show the table of contents if there are any
+    if (wikiContext != null && wikiContext.getHeaderAnchors().size() > 1) {
+      return defaultView;
+    }
+
+    return null;
   }
 }

@@ -143,8 +143,8 @@ public class ProjectWikiContentViewer implements IPortletViewer {
     if (wiki.getId() > -1 && StringUtils.hasText(wiki.getContent())) {
       LOG.debug("Wiki found.");
       // Convert the wiki to html for this user
-      WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, db, user.getId(), false, request.getContextPath());
-      String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext);
+      WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, user.getId(), false, request.getContextPath());
+      String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext, db);
       request.setAttribute(WIKI_HTML, wikiHtml);
     } else {
       LOG.debug("Wiki not found or has no content.");

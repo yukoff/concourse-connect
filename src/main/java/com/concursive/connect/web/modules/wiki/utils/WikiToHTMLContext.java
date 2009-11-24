@@ -51,8 +51,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.dao.CustomForm;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 
-import java.sql.Connection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Encapsulates objects used by the parser
@@ -64,7 +64,7 @@ public class WikiToHTMLContext {
   // properties used for parsing a wiki
   private Wiki wiki;
   private HashMap imageList;
-  private Connection db;
+  private LinkedHashMap<String, String> headerAnchors = new LinkedHashMap<String, String>();
   private int userId;
   private String contextPath;
   private int sectionIdCount = 0;
@@ -76,19 +76,17 @@ public class WikiToHTMLContext {
   private int editSectionHeaderLevel = -1;
   private int editFormId = -1;
 
-  public WikiToHTMLContext(Wiki wiki, HashMap imageList, Connection db, int userId, boolean editMode, String contextPath) {
+  public WikiToHTMLContext(Wiki wiki, HashMap imageList, int userId, boolean editMode, String contextPath) {
     this.wiki = wiki;
     this.imageList = imageList;
-    this.db = db;
     this.userId = userId;
     this.editMode = editMode;
     this.contextPath = contextPath;
   }
 
-  public WikiToHTMLContext(Connection db, int userId, String contextPath) {
+  public WikiToHTMLContext(int userId, String contextPath) {
     this.wiki = null;
     this.imageList = new HashMap();
-    this.db = db;
     this.userId = userId;
     this.editMode = false;
     this.contextPath = contextPath;
@@ -110,12 +108,12 @@ public class WikiToHTMLContext {
     this.imageList = imageList;
   }
 
-  public Connection getDb() {
-    return db;
+  public LinkedHashMap<String, String> getHeaderAnchors() {
+    return headerAnchors;
   }
 
-  public void setDb(Connection db) {
-    this.db = db;
+  public void setHeaderAnchors(LinkedHashMap<String, String> headerAnchors) {
+    this.headerAnchors = headerAnchors;
   }
 
   public int getUserId() {

@@ -92,7 +92,7 @@ public class WikiToHTMLUtils {
   public static String CONTENT_PRE = "pre-preformatted";
   public static String CONTENT_CODE = "code-preformatted";
 
-  public static String getHTML(WikiToHTMLContext context) {
+  public static String getHTML(WikiToHTMLContext context, Connection db) {
     String content = context.getWiki().getContent();
     if (content == null) {
       return null;
@@ -121,7 +121,7 @@ public class WikiToHTMLUtils {
         }
         sb.append(CRLF);
       } else if (type.endsWith(CONTENT_NEEDS_FORMATTING)) {
-        String formatted = getHTML(context, chunk);
+        String formatted = getHTML(context, db, chunk);
         LOG.trace(formatted);
         sb.append(formatted);
       }
@@ -237,7 +237,7 @@ public class WikiToHTMLUtils {
     return chunks;
   }
 
-  public static String getHTML(WikiToHTMLContext context, String content) {
+  public static String getHTML(WikiToHTMLContext context, Connection db, String content) {
     boolean inParagraph = false;
     boolean unorderedList = false;
     int unorderedIndent = 0;
@@ -278,7 +278,7 @@ public class WikiToHTMLUtils {
           }
           // parseTable operates over all the lines that make of the table
           // it will have to look forward so it returns an unparsed line
-          line = parseTable(context, in, line, sb);
+          line = parseTable(context, db, in, line, sb);
           if (line == null) {
             continue;
           }
@@ -309,7 +309,7 @@ public class WikiToHTMLUtils {
           }
           // parseTable operates over all the lines that make of the table
           // it will have to look forward so it returns an unparsed line
-          parseForm(context, in, line, sb);
+          parseForm(context, db, in, line, sb);
           continue;
         }
 
@@ -343,10 +343,16 @@ public class WikiToHTMLUtils {
           String section = line.substring(line.indexOf("=") + hCount, line.lastIndexOf("=") - hCount + 1);
           header = true;
           context.foundHeader(hCount);
-          append(context, sb, "<h" + hCount + ">");
+          String headerAnchor = null;
+          // Store the h2's with anchors
+          if (hCount == 2) {
+            headerAnchor = StringUtils.toHtmlValue(section).replace(" ", "_");
+            context.getHeaderAnchors().put(headerAnchor, section);
+          }
+          append(context, sb, "<h" + hCount + (headerAnchor != null ? " id=\"" + headerAnchor + "\"" : "") + ">");
           if (context.canAppend()) {
             if (!context.isEditMode()) {
-              if (hasUserProjectAccess(context.getDb(), context.getUserId(), context.getProjectId(), "wiki", "add")) {
+              if (hasUserProjectAccess(db, context.getUserId(), context.getProjectId(), "wiki", "add")) {
                 sb.append("<span class=\"editsection\"><a href=\"" + context.getContextPath() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?section=" + context.getSectionIdCount() + "\">edit</a></span>");
               }
             }
@@ -383,7 +389,7 @@ public class WikiToHTMLUtils {
             unorderedIndent = hCount;
           }
           append(context, sb, "<li>");
-          parseLine(context, line.substring(hCount), sb);
+          parseLine(context, db, line.substring(hCount), sb);
           append(context, sb, "</li>");
           append(context, sb, CRLF);
           continue;
@@ -415,7 +421,7 @@ public class WikiToHTMLUtils {
             orderedIndent = hCount;
           }
           append(context, sb, "<li>");
-          parseLine(context, line.substring(hCount), sb);
+          parseLine(context, db, line.substring(hCount), sb);
           append(context, sb, "</li>");
           append(context, sb, CRLF);
           continue;
@@ -446,7 +452,7 @@ public class WikiToHTMLUtils {
             inParagraph = false;
           }
         } else {
-          boolean hasReturn = parseLine(context, line, sb);
+          boolean hasReturn = parseLine(context, db, line, sb);
           if (hasReturn) {
             //append(context, sb, "<br />");
           } else {
@@ -493,7 +499,7 @@ public class WikiToHTMLUtils {
     return 1;
   }
 
-  protected static String parseTable(WikiToHTMLContext context, BufferedReader in, String line, StringBuffer sb) throws Exception {
+  protected static String parseTable(WikiToHTMLContext context, Connection db, BufferedReader in, String line, StringBuffer sb) throws Exception {
     if (line == null) {
       return line;
     }
@@ -541,7 +547,7 @@ public class WikiToHTMLUtils {
           if (" ".equals(token)) {
             append(context, sb, "&nbsp;");
           } else {
-            parseLine(context, token, sb);
+            parseLine(context, db, token, sb);
           }
           append(context, sb, "</th>");
         }
@@ -566,7 +572,7 @@ public class WikiToHTMLUtils {
           if (" ".equals(token) || " ".equals(token)) {
             append(context, sb, "&nbsp;");
           } else {
-            parseLine(context, token, sb);
+            parseLine(context, db, token, sb);
           }
           append(context, sb, "</td>");
         }
@@ -642,7 +648,7 @@ public class WikiToHTMLUtils {
     return form;
   }
 
-  protected static String parseForm(WikiToHTMLContext context, BufferedReader in, String line, StringBuffer sb) throws Exception {
+  protected static String parseForm(WikiToHTMLContext context, Connection db, BufferedReader in, String line, StringBuffer sb) throws Exception {
     if (line == null) {
       return line;
     }
@@ -728,7 +734,7 @@ public class WikiToHTMLUtils {
           sb.append("</td></tr>");
         }
         LOG.debug("Check permissions");
-        if (context.getProject() != null && hasUserProjectAccess(context.getDb(), context.getUserId(), context.getProject().getId(), "wiki", "add")) {
+        if (context.getProject() != null && hasUserProjectAccess(db, context.getUserId(), context.getProject().getId(), "wiki", "add")) {
           sb.append("<tr><td colspan=\"2\" align=\"center\">");
           sb.append("<a href=\"" + context.getContextPath() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?form=1\">Fill out this form</a>");
           sb.append("</td></tr>");
@@ -742,7 +748,7 @@ public class WikiToHTMLUtils {
     return null;
   }
 
-  protected static boolean parseLine(WikiToHTMLContext context, String line, StringBuffer main) throws Exception {
+  protected static boolean parseLine(WikiToHTMLContext context, Connection db, String line, StringBuffer main) throws Exception {
     if (!context.canAppend()) {
       return false;
     }
@@ -843,10 +849,10 @@ public class WikiToHTMLUtils {
                   cssClass = "wikiLink external";
                 }
                 // Check to see if the target wiki exists to draw the wiki entry differently
-                if (!WikiList.checkExistsBySubject(context.getDb(), wikiLink.getEntity(), wikiLink.getProjectId())) {
+                if (!WikiList.checkExistsBySubject(db, wikiLink.getEntity(), wikiLink.getProjectId())) {
                   cssClass = "wikiLink newWiki";
                   // If user has access to edit, then use an edit link
-                  if (hasUserProjectAccess(context.getDb(), context.getUserId(), wikiLink.getProjectId(), wikiLink.getArea(), "edit")) {
+                  if (hasUserProjectAccess(db, context.getUserId(), wikiLink.getProjectId(), wikiLink.getArea(), "edit")) {
                     String wikiSubject = StringUtils.hasText(wikiLink.getEntity()) ? "/" + wikiLink.getEntityTitle() : "";
                     url = context.getContextPath() + "/modify/" + thisProject.getUniqueId() + "/wiki" + wikiSubject;
                   }
@@ -856,7 +862,7 @@ public class WikiToHTMLUtils {
                 url = context.getContextPath() + "/show/" + thisProject.getUniqueId() + "/" + wikiLink.getArea().toLowerCase() + (StringUtils.hasText(wikiLink.getEntity()) ? "/" + wikiLink.getEntityId() : "");
               }
               // Display the resulting URL
-              if (wikiLink.getProjectId() == -1 || wikiLink.getProjectId() == context.getProjectId() || hasUserProjectAccess(context.getDb(), context.getUserId(), wikiLink.getProjectId(), wikiLink.getPermissionArea(), "view")) {
+              if (wikiLink.getProjectId() == -1 || wikiLink.getProjectId() == context.getProjectId() || hasUserProjectAccess(db, context.getUserId(), wikiLink.getProjectId(), wikiLink.getPermissionArea(), "view")) {
                 sb.append("<a class=\"" + cssClass + "\" href=\"" + url + "\">" + StringUtils.toHtml(wikiLink.getName()) + "</a>");
               } else {
                 cssClass = "wikiLink denied";

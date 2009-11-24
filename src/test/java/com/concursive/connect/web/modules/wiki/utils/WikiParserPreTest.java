@@ -83,8 +83,8 @@ public class WikiParserPreTest extends TestCase {
     Wiki wiki = new Wiki();
     wiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), null, -1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertEquals("<ul><li> In cfs-modules.xml copy the section </li>\n" +
         "</ul>\n" +
         "<pre>  &lt;menu&gt;\n" +
@@ -128,9 +128,9 @@ public class WikiParserPreTest extends TestCase {
     Wiki wiki = new Wiki();
     wiki.setContent(wikiSample2);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), null, -1, false, "");
-    String html = WikiToHTMLUtils.getHTML(wikiContext);
-    assertEquals("<h2><span>Accessing from a JSP</span></h2>\n" +
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
+    assertEquals("<h2 id=\"Accessing_from_a_JSP\"><span>Accessing from a JSP</span></h2>\n" +
         "<p>With the LookupList object in the request, the method " +
         "<strong>getHtmlSelect(&quot;formFieldName&quot;, defaultId)</strong> " +
         "can be used to render an HTML Select field with the options.</p>\n" +

@@ -136,7 +136,7 @@ public class WikiEditorViewer implements IPortletViewer {
     request.setAttribute(WIKI_IMAGE_LIST, imageList);
 
     // Create a wiki context to manage sections and forms being edited
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, db, user.getId(), true, request.getContextPath());
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, user.getId(), true, request.getContextPath());
     // Determine the wiki editor to use
     if ("raw".equals(mode)) {
       defaultView = MARKUP_VIEW_PAGE;
@@ -154,7 +154,7 @@ public class WikiEditorViewer implements IPortletViewer {
       defaultView = WIKI_FORM_VIEW_PAGE;
     }
     // Convert the wiki to HTML
-    String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext);
+    String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext, db);
     request.setAttribute(WIKI_HTML, wikiHtml);
 
     // JSP view

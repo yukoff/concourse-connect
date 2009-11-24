@@ -138,11 +138,11 @@ public class EditProjectWikiPortlet extends GenericPortlet {
         // Load wiki image library dimensions (cache in future)
         HashMap imageList = WikiUtils.buildImageInfo(db, project.getId());
         request.setAttribute(IMAGE_LIST, imageList);
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, db, PortalUtils.getUser(request).getId(), true, request.getContextPath());
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, PortalUtils.getUser(request).getId(), true, request.getContextPath());
 
         wikiContext.setEditFormId(1);
         // Convert wiki to HTML
-        String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext);
+        String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext, db);
         request.setAttribute(WIKI_HTML, wikiHtml);
       }
 

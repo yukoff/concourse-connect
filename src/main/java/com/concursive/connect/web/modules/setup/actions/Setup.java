@@ -216,7 +216,11 @@ public final class Setup extends GenericAction {
         getApplicationPrefs(context).add("CONFIGURING", "true");
         getApplicationPrefs(context).add(ApplicationPrefs.FILE_LIBRARY_PATH, fileLibrary);
         // save the temporary prefs so user can return
-        getApplicationPrefs(context).save(fileLibrary + "build.properties");
+        boolean isSaved = getApplicationPrefs(context).save(fileLibrary + "build.properties");
+        if (!isSaved) {
+          context.getRequest().setAttribute("actionError", "The path could not be created or copied to: " + fileLibrary);
+          return "SetupSaveLibraryERROR";
+        }
         // save the location
         String thisPath = ApplicationPrefs.getRealPath(context.getServletContext());
         if (thisPath == null) {
@@ -263,7 +267,7 @@ public final class Setup extends GenericAction {
     bean.setJava(System.getProperty("java.version"));
     bean.setWebserver(HTTPUtils.getServerName(
         context.getRequest().getScheme() + "://" +
-        RequestUtils.getServerUrl(context.getRequest())));
+            RequestUtils.getServerUrl(context.getRequest())));
     return "SetupRegistrationFormOK";
   }
 
@@ -288,7 +292,7 @@ public final class Setup extends GenericAction {
     bean.setJava(System.getProperty("java.version"));
     bean.setWebserver(HTTPUtils.getServerName(
         context.getRequest().getScheme() + "://" +
-        RequestUtils.getServerUrl(context.getRequest())));
+            RequestUtils.getServerUrl(context.getRequest())));
     // Set key for exchanging info
     Key key = PrivateString.generateKey();
     bean.setKey(PrivateString.encodeHex(key));
@@ -406,7 +410,7 @@ public final class Setup extends GenericAction {
       } catch (Exception e) {
         context.getRequest().setAttribute("actionError",
             "An error occurred while trying to connect to the database, the " +
-            "following error was provided by the database driver: " + e.getMessage());
+                "following error was provided by the database driver: " + e.getMessage());
       } finally {
         DriverManager.setLoginTimeout(timeout);
         if (db != null) {
@@ -485,7 +489,7 @@ public final class Setup extends GenericAction {
       e.printStackTrace(System.out);
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to install the database, the " +
-          "following error was provided: " + e.getMessage());
+              "following error was provided: " + e.getMessage());
       return "SetupInstallDatabaseERROR";
     } finally {
       freeConnection(context, db);
@@ -597,7 +601,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to verify the account, the " +
-          "following error was provided: " + e.getMessage());
+              "following error was provided: " + e.getMessage());
       LOG.error("configureAdmin", e);
       return "SetupConfigureAdminERROR";
     } finally {
@@ -640,7 +644,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to create the account, the " +
-          "following error was provided: " + e.getMessage());
+              "following error was provided: " + e.getMessage());
       LOG.error("userInsert", e);
       return "SetupSaveAdminERROR";
     } finally {
@@ -671,7 +675,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to verify the site, the " +
-          "following error was provided: " + e.getMessage());
+              "following error was provided: " + e.getMessage());
       return "SetupConfigureSiteERROR";
     } finally {
       freeConnection(context, db);
@@ -744,7 +748,7 @@ public final class Setup extends GenericAction {
     } catch (Exception e) {
       context.getRequest().setAttribute("actionError",
           "An error occurred while trying to create the account, the " +
-          "following error was provided: " + e.getMessage());
+              "following error was provided: " + e.getMessage());
       LOG.error("userInsert", e);
       return "SetupSaveSiteERROR";
     } finally {

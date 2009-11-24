@@ -921,6 +921,7 @@ public class ApplicationPrefs {
       out.close();
       return true;
     } catch (Exception e) {
+      LOG.error("save", e);
       return false;
     }
   }

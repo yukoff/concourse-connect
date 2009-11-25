@@ -50,7 +50,11 @@ import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.portal.PortalUtils;
 
 import java.security.Key;
 import java.sql.Connection;
@@ -142,7 +146,20 @@ public final class LoginReject extends GenericAction {
       context.getRequest().setAttribute("teamMember", thisMember);
       // Update the project to indicate a rejection
       thisMember.setStatus(TeamMember.STATUS_REFUSED);
-      thisMember.updateStatus(db);
+      
+      //Determine if the project was a profile project
+      Project targetProject = ProjectUtils.loadProject((projectId));
+      if (targetProject.getOwner() != -1){
+	      User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+	      if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+	      	//Remove team member if request to become a friend of a user profile is denied
+	      	thisMember.delete(db);
+	      } else {
+		      thisMember.updateStatus(db);
+	      }
+      } else {
+	      thisMember.updateStatus(db);
+      }
       // Send an email to the invitee
       processUpdateHook(context, previousMemberStatus, thisMember);
       return ("RejectOK");

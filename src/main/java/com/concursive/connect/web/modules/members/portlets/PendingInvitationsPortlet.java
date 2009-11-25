@@ -115,41 +115,49 @@ public class PendingInvitationsPortlet extends GenericPortlet {
             PortalUtils.processUpdateHook(request, prevMember, teamMember);
 
             //Reciprocate membership in the accepting users profile if the target project is a user profile
-            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
-            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-              Project thisUserProfileProject = user.getProfileProject();
-              TeamMemberList teamMemberList = thisUserProfileProject.getTeam();
-              TeamMember reciprocatingTeamMember = null;
-            	//Determine if the reciprocal already exists, then update if necessary
-              if (teamMemberList.hasUserId(targetProject.getOwner())) {
-            		reciprocatingTeamMember = thisUserProfileProject.getTeam().getTeamMember(user.getId());
-            		if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED){
-            			// DO Nothing
-            		} else {
-    	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
-    	            reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-    	            reciprocatingTeamMember.update(db);
-            		}
-              } else {
-            		//Reciprocal does not exist, therefore create one
-              	reciprocatingTeamMember = new TeamMember();
-              	reciprocatingTeamMember.setProjectId(thisUserProfileProject.getId());
-              	reciprocatingTeamMember.setUserId(targetProject.getOwner());
-              	reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
-  	          	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-              	reciprocatingTeamMember.setEnteredBy(user.getId());
-              	reciprocatingTeamMember.setModifiedBy(user.getId());
-              	reciprocatingTeamMember.insert(db);
-              }
+            
+            if (targetProject.getOwner() != -1) {
+	            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+	            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+	              Project thisUserProfileProject = user.getProfileProject();
+	              TeamMemberList teamMemberList = thisUserProfileProject.getTeam();
+	              TeamMember reciprocatingTeamMember = null;
+	            	//Determine if the reciprocal already exists, then update if necessary
+	              if (teamMemberList.hasUserId(targetProject.getOwner())) {
+	            		reciprocatingTeamMember = thisUserProfileProject.getTeam().getTeamMember(user.getId());
+	            		if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED){
+	            			// DO Nothing
+	            		} else {
+	    	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
+	    	            reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+	    	            reciprocatingTeamMember.update(db);
+	            		}
+	              } else {
+	            		//Reciprocal does not exist, therefore create one
+	              	reciprocatingTeamMember = new TeamMember();
+	              	reciprocatingTeamMember.setProjectId(thisUserProfileProject.getId());
+	              	reciprocatingTeamMember.setUserId(targetProject.getOwner());
+	              	reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
+	  	          	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+	              	reciprocatingTeamMember.setEnteredBy(user.getId());
+	              	reciprocatingTeamMember.setModifiedBy(user.getId());
+	              	reciprocatingTeamMember.insert(db);
+	              }
+	            }
             }
           } else {
-            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
             TeamMember teamMember = new TeamMember(db, targetProject.getId(), project.getOwner());
             teamMember.setStatus(TeamMember.STATUS_REFUSED);
-            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-            	//Remove team member if request to become a friend of a user profile is denied
-            	//Change user status to refused for workflow to use
-              teamMember.delete(db);
+            if (targetProject.getOwner() != -1) {
+	            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
+	            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
+	            	//Remove team member if request to become a friend of a user profile is denied
+	            	//Change user status to refused for workflow to use
+	              teamMember.delete(db);
+	            } else {
+	            	//Change user status to refused
+	              teamMember.update(db);
+	            }
             } else {
             	//Change user status to refused
               teamMember.update(db);

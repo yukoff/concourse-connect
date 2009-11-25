@@ -61,11 +61,11 @@
 </script>
 <%-- Temp. fix for Weblogic --%>
 <%
-String detailsUrl = ctx + "AdminUserDetails.do?command=Details&id=" + thisUser.getId();
-String projectsUrl = ctx + "AdminUserDetails.do?command=Projects&id=" + thisUser.getId();
-String loginsUrl = ctx + "AdminUserDetails.do?command=Logins&id=" + thisUser.getId();
-String languagesUrl = ctx + "AdminUserDetails.do?command=Languages&id=" + thisUser.getId();
-String webSitesUrl = ctx + "AdminUserDetails.do?command=WebSites&id=" + thisUser.getId();
+String detailsUrl = ctx + "/AdminUserDetails.do?command=Details&id=" + thisUser.getId();
+String projectsUrl = ctx + "/AdminUserDetails.do?command=Projects&id=" + thisUser.getId();
+String loginsUrl = ctx + "/AdminUserDetails.do?command=Logins&id=" + thisUser.getId();
+String languagesUrl = ctx + "/AdminUserDetails.do?command=Languages&id=" + thisUser.getId();
+String webSitesUrl = ctx + "/AdminUserDetails.do?command=WebSites&id=" + thisUser.getId();
 %>
 <a href="<%= ctx %>/admin">System Administration</a> >
 <a href="<%= ctx %>/AdminUsers.do">Manage Users</a> >

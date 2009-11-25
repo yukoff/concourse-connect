@@ -254,9 +254,10 @@ public class AdCategory extends GenericBean {
   public void queryRecord(Connection db, int adId) throws SQLException {
     StringBuffer sql = new StringBuffer();
     sql.append(
-        "SELECT a.* " +
+        "SELECT a.*, lpc.description " +
             "FROM ad_category a " +
-            "WHERE code = ? ");
+            "LEFT JOIN lookup_project_category lpc ON (lpc.code = a.project_category_id) " +
+            "WHERE a.code = ? ");
     PreparedStatement pst = db.prepareStatement(sql.toString());
     int i = 0;
     pst.setInt(++i, adId);

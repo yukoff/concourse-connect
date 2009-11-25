@@ -43,53 +43,34 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ page import="com.concursive.connect.web.modules.profile.dao.ProjectCategory" %>
+<%@ page import="com.concursive.commons.text.StringUtils" %>
+<%@ page import="java.util.Iterator" %>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
+<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
-<%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
-<%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
-<jsp:useBean id="adList" class="com.concursive.connect.web.modules.promotions.dao.AdList" scope="request"/>
-<%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<%--@elvariable id="title" type="java.lang.String"--%>
-<%--@elvariable id="ad" type="com.concursive.connect.web.modules.promotions.dao.Ad"--%>
-  <h3><c:out value="${title}"/></h3>
-  <c:if test="${!empty adList}">
-    <ul>
-      <c:forEach items="${adList}" var="ad">
-        <jsp:useBean id="ad" type="com.concursive.connect.web.modules.promotions.dao.Ad" />
-<%
-  Project project = ProjectUtils.loadProject(ad.getProjectId());
-  request.setAttribute("thisProject", project);
-%>
-        <li>
-          <dl>
-            <dt><a href="${ctx}/show/${thisProject.uniqueId}/promotion/${ad.id}" title="<c:out value="${thisProject.title}"/> promotion details"><c:out value="${ad.heading}"/></a></dt>
-            <c:if test="${!empty ad.briefDescription1}"><dd><c:out value="${ad.briefDescription1}"/></dd></c:if>
-            <c:if test="${!empty ad.briefDescription2}"><dd><c:out value="${ad.briefDescription2}"/></dd></c:if>
-            <c:if test="<%= adList.getProjectId() == -1 %>">
-              <cite><c:out value="${thisProject.title}"/></cite>
-            </c:if>
-            <c:if test="<%= adList.getProjectId() > -1 %>">
-              <c:if test="${!empty ad.expirationDate}">
-                <c:set var="expirationDate"><ccp:tz timestamp="<%= ad.getExpirationDate() %>" dateOnly="true"/></c:set>
-                <dd>expires ${expirationDate}</dd>
-              </c:if>
-              <c:if test="${!empty ad.webPage && !empty ad.destinationUrl && fn:startsWith(ad.destinationUrl, 'http')}">
-                <cite><a href="<c:out value="${ad.destinationUrl}"/>"><c:out value="${ad.webPage}"/></a></cite>
-              </c:if>
-            </c:if>
-          </dl>
-        </li>
-      </c:forEach>
-    </ul>
-  </c:if>
-  <c:if test="${empty adList}">
-    <p>There are no promotions at this time, please check back later.</p>
-  </c:if>
-<c:if test="${hasMore eq 'true'}">
-  <p class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>"><c:out value="${hasMoreTitle}"/></a></p>
-</c:if>
-  
+<c:choose>
+	<c:when test="${empty sortOrder}">
+		<c:set var="sortURL" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="sortURL">?sort=${sortOrder}</c:set>
+	</c:otherwise>
+</c:choose>
+<ul>
+  <li>
+	<a href="${ctx}${pageURL}/all${sortURL}" <c:if test="${chosenCategory eq 'all'}"> class="active"</c:if>>
+		<em>All Categories (${total})</em>
+	</a>
+  </li>
+  <c:forEach items="${promotionsCountMap}" var="category" varStatus="status">
+  <li>
+    <a href="${ctx}${pageURL}/${category.key.normalizedCategoryName}${sortURL}"<c:if test="${! empty chosenCategory and chosenCategory eq category.key.description}"> class="active"</c:if>>
+      <em><c:out value="${category.key.description}" /><c:if test="${category.value > 0 }">(${category.value})</c:if></em>
+    </a>
+  </li>
+  </c:forEach>
+</ul>

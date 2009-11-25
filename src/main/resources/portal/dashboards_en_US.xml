@@ -229,6 +229,8 @@
           <portlet name="ProjectPromotionsPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Promotions</title>
             <limit>3</limit>
+            <hasMoreURL>/page/promotions/all</hasMoreURL>
+            <hasMoreTitle>see more promotions</hasMoreTitle>
           </portlet>
           <portlet name="ClassifiedListPortlet" cache="10" class="basic-list " isSensitive="true">
             <title>Classifieds</title>
@@ -4234,8 +4236,53 @@
         </column>
       </row>
     </page>
+    <page name="promotions" title="Promotions">
+      <row>
+        <column width="auto" class="ccp-search-menu-">
+          <portlet name="PromotionResultsCategoryCountsPortlet" class="button-list-horizontal-" isSensitive="true">
+            <pageURL>/page/promotions</pageURL>
+          </portlet>
+        </column>
+      </row>
+      <row>
+        <column width="240">
+          <portlet name="PromotionResultsSorterPortlet" class="button-list-vertical-" isSensitive="true">
+            <pageURL>/page/promotions</pageURL>
+          </portlet>
+          <portlet name="ActionsPortlet" class="button-list-vertical-" isSensitive="true">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="PromotionListByPromotionCategoryPortlet" class="basic-list " isSensitive="true">
+            <autoSetPageTitle>true</autoSetPageTitle>
+            <title>Promotions</title>
+            <hasMoreURL>/page/promotions/${category}</hasMoreURL>
+            <showPromotions>true</showPromotions>
+            <showPromotionCategories>true</showPromotionCategories>
+            <limit>5</limit>
+            <hasPaging>true</hasPaging>
+            <portlet-events>
+              <generates-data>category</generates-data>
+              <generates-data>promotioncategory</generates-data>
+              <generates-request-data>requestGeneratedTitle</generates-request-data>
+              <generates-request-data>requestGeneratedCategory</generates-request-data>
+            </portlet-events>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="PromotionListByPromotionCategoryPortlet" class="basic-list " isSensitive="true">
+            <title>Filter by Category</title>
+            <showPromotionCategories>true</showPromotionCategories>
+            <hasMoreURL>/page/promotions/${category}</hasMoreURL>
+            <portlet-events>
+              <consumes-data>promotioncategory</consumes-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+    </page>
  </pages>
-
   <!-- Application Navigation Portals -->
   <navigation>
     <page name="User Dashboard">

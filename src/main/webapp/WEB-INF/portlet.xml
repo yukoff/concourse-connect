@@ -937,7 +937,39 @@
       <title>Allows a profile owner to approve or deny membership requests</title>
     </portlet-info>
   </portlet>
-
+  <portlet>
+    <portlet-name>PromotionListByPromotionCategoryPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.promotionListByPromotionCategory.PromotionListByPromotionCategoryPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Lists promotions by category</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>PromotionResultsCategoryCountsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.promotionResultsCategoryCounts.PromotionResultsCategoryCountsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Counts promotions by category</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>PromotionResultsSorterPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.promotionResultsSorter.PromotionResultsSorterPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Sorts promotions</title>
+    </portlet-info>
+  </portlet>
   <custom-portlet-mode>
     <description>Provides administration functions</description>
     <name>config</name>

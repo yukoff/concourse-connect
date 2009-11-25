@@ -52,6 +52,7 @@ import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
 import com.concursive.connect.web.modules.documents.dao.FileItemList;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 
 import java.sql.*;
 
@@ -76,6 +77,8 @@ public class AdCategory extends GenericBean {
   private AdList adList = null;
   private FileItem logo = null;
   private String attachmentList = null;
+
+  private String projectCategoryDescription = null;
 
   public AdCategory() {
   }
@@ -166,6 +169,23 @@ public class AdCategory extends GenericBean {
 
   public void setProjectCategoryId(String tmp) {
     this.projectCategoryId = Integer.parseInt(tmp);
+  }
+
+  /**
+   * @return the projectCategoryDescription
+   */
+  public String getProjectCategoryDescription() {
+    if (projectCategoryDescription == null) {
+      return "-- None --";
+    }
+    return projectCategoryDescription;
+  }
+
+  public String getNormalizedProjectCategoryDescription() {
+    if (projectCategoryDescription == null) {
+      return "--none--";
+    }
+    return ProjectCategory.getNormalizedCategoryName(projectCategoryDescription);
   }
 
   /**
@@ -265,6 +285,9 @@ public class AdCategory extends GenericBean {
     entered = rs.getTimestamp("entered");
     level = rs.getInt("level");
     enabled = rs.getBoolean("enabled");
+
+    //From lookup_project_category
+    projectCategoryDescription = rs.getString("description");
   }
 
   public boolean insert(Connection db) throws SQLException {
@@ -480,4 +503,19 @@ public class AdCategory extends GenericBean {
     }
   }
 
+  public String getNormalizedCategoryName() {
+    if (StringUtils.hasText(itemName)) {
+      return StringUtils.replace(itemName.toLowerCase(), " ", "_");
+    }
+
+    return null;
+  }
+
+  public static String getNormalizedCategoryName(String adCategoryName) {
+    if (StringUtils.hasText(adCategoryName)) {
+      return StringUtils.replace(adCategoryName.toLowerCase(), " ", "_");
+    }
+
+    return null;
+  }
 }

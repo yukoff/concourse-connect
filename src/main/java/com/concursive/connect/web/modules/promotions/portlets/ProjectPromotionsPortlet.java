@@ -50,6 +50,7 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.promotions.dao.AdList;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
@@ -73,11 +74,16 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
   private static final String PREF_TITLE = "title";
   private static final String PREF_LIMIT = "limit";
   private static final String PREF_CATEGORY = "category";
+  private static final String PREF_HAS_MORE_URL = "hasMoreURL";
+  private static final String PREF_HAS_MORE_TITLE = "hasMoreTitle";
 
   // Request Attributes
   private static final String PROJECT_AD_LIST = "adList";
   private static final String PROJECT_CATEGORY_LIST = "projectCategoryList";
   private static final String TITLE = "title";
+  private static final String HAS_MORE = "hasMore";
+  private static final String HAS_MORE_URL = "hasMoreURL";
+  private static final String HAS_MORE_TITLE = "hasMoreTitle";
 
   public void doView(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
@@ -91,6 +97,10 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
       // General display preferences
       request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, ""));
       String limit = request.getPreferences().getValue(PREF_LIMIT, "-1");
+
+      String hasMoreURL = request.getPreferences().getValue(PREF_HAS_MORE_URL, null);
+      request.setAttribute(HAS_MORE_URL, hasMoreURL);
+      request.setAttribute(HAS_MORE_TITLE, request.getPreferences().getValue(PREF_HAS_MORE_TITLE, "more"));
 
       // Check for a specific category
       String categoryName = request.getPreferences().getValue(PREF_CATEGORY, "");
@@ -163,6 +173,13 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
       adList.setEnabled(Constants.TRUE);
       adList.buildList(db);
       request.setAttribute(PROJECT_AD_LIST, adList);
+
+      // Decide if the url to show more classifieds needs to be displayed
+      if (StringUtils.hasText(hasMoreURL) &&
+      		adList.size() < pagedListInfo.getMaxRecords() &&
+          (project == null || ProjectUtils.hasAccess(project.getId(), thisUser, "project-ads-view"))) {
+        request.setAttribute(HAS_MORE, "true");
+      }
 
       // JSP view
       if (adList.size() > 0) {

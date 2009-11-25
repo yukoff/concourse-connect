@@ -51,6 +51,8 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.common.social.rating.dao.Rating;
 import com.concursive.connect.web.modules.common.social.viewing.utils.Viewing;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -179,6 +181,13 @@ public class Ad extends GenericBean {
 
   public void setProjectId(String tmp) {
     this.projectId = Integer.parseInt(tmp);
+  }
+
+  public Project getProject() {
+    if (projectId != -1) {
+      return ProjectUtils.loadProject(projectId);
+    }
+    return null;
   }
 
   public String getHeading() {

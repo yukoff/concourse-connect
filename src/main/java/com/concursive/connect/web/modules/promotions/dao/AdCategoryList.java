@@ -73,6 +73,8 @@ public class AdCategoryList extends ArrayList<AdCategory> {
   private boolean onlyWithoutProjectCategory = false;
   private int enabled = Constants.UNDEFINED;
   private boolean buildLogos = false;
+  private String categoryLowercaseName = null;
+  private int projectCategoryEnabled = Constants.UNDEFINED;
 
 
   /**
@@ -217,6 +219,41 @@ public class AdCategoryList extends ArrayList<AdCategory> {
 
 
   /**
+   * @return the categoryLowercaseName
+   */
+  public String getCategoryLowercaseName() {
+  	return categoryLowercaseName;
+  }
+
+
+	/**
+   * @param categoryLowercaseName the categoryLowercaseName to set
+   */
+  public void setCategoryLowercaseName(String categoryLowercaseName) {
+  	this.categoryLowercaseName = categoryLowercaseName;
+  }
+
+
+	/**
+   * @return the projectCategoryEnabled
+   */
+  public int getProjectCategoryEnabled() {
+  	return projectCategoryEnabled;
+  }
+
+
+	/**
+   * @param projectCategoryEnabled the projectCategoryEnabled to set
+   */
+  public void setProjectCategoryEnabled(int projectCategoryEnabled) {
+  	this.projectCategoryEnabled = projectCategoryEnabled;
+  }
+
+  public void setProjectCategoryEnabled(String projectCategoryEnabled) {
+  	this.projectCategoryEnabled = Integer.parseInt(projectCategoryEnabled);
+  }
+
+	/**
    * Populate this object
    *
    * @param db Connection
@@ -236,8 +273,9 @@ public class AdCategoryList extends ArrayList<AdCategory> {
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
             "FROM ad_category ac " +
-            "WHERE code > -1 ");
-    createFilter(sqlFilter);
+            "LEFT JOIN lookup_project_category lpc ON (lpc.code = ac.project_category_id) " +
+            "WHERE ac.code > -1 ");
+    createFilter(db, sqlFilter);
     if (pagedListInfo == null) {
       pagedListInfo = new PagedListInfo();
       pagedListInfo.setItemsPerPage(0);
@@ -312,7 +350,7 @@ public class AdCategoryList extends ArrayList<AdCategory> {
    *
    * @param sqlFilter Description of Parameter
    */
-  private void createFilter(StringBuffer sqlFilter) {
+  private void createFilter(Connection db, StringBuffer sqlFilter) {
     if (sqlFilter == null) {
       sqlFilter = new StringBuffer();
     }
@@ -327,6 +365,12 @@ public class AdCategoryList extends ArrayList<AdCategory> {
     }
     if (onlyWithoutProjectCategory) {
       sqlFilter.append("AND ac.project_category_id IS NOT NULL ");
+    }
+    if (categoryLowercaseName != null) {
+      sqlFilter.append("AND " + DatabaseUtils.toLowerCase(db, "ac.item_name") + " = ?  ");
+    }
+    if (projectCategoryEnabled != Constants.UNDEFINED) {
+      sqlFilter.append("AND lpc.enabled = ? ");
     }
   }
 
@@ -347,6 +391,12 @@ public class AdCategoryList extends ArrayList<AdCategory> {
       pst.setInt(++i, projectCategoryId);
     }
     if (enabled != Constants.UNDEFINED) {
+      pst.setBoolean(++i, (enabled == Constants.TRUE));
+    }
+    if (categoryLowercaseName != null) {
+      pst.setString(++i, categoryLowercaseName);
+    }
+    if (projectCategoryEnabled != Constants.UNDEFINED) {
       pst.setBoolean(++i, (enabled == Constants.TRUE));
     }
     return i;

@@ -44,52 +44,59 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
+<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
-<%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
-<%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
-<jsp:useBean id="adList" class="com.concursive.connect.web.modules.promotions.dao.AdList" scope="request"/>
-<%@ include file="../../initPage.jsp" %>
+<%@ page import="com.concursive.commons.text.StringUtils" %>
+<jsp:useBean id="promotionList" class="com.concursive.connect.web.modules.promotions.dao.AdList" scope="request"/>
+<jsp:useBean id="promotionCategory" class="com.concursive.connect.web.modules.promotions.dao.AdCategory" scope="request"/>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<%--@elvariable id="title" type="java.lang.String"--%>
-<%--@elvariable id="ad" type="com.concursive.connect.web.modules.promotions.dao.Ad"--%>
-  <h3><c:out value="${title}"/></h3>
-  <c:if test="${!empty adList}">
+  <c:if test="${empty promotionCategory.itemName}">
+    <h3><c:out value="${title}"/></h3>
+  </c:if>
+  <c:if test="${!empty promotionCategory.itemName}">
+    <h3>Promotions (<c:out value="${promotionCategory.itemName}"/>)</h3>
+  </c:if>
+  <c:if test="${empty promotionList}">
+    No promotions found.
+  </c:if>
+  <c:if test="${!empty promotionList}">
     <ul>
-      <c:forEach items="${adList}" var="ad">
-        <jsp:useBean id="ad" type="com.concursive.connect.web.modules.promotions.dao.Ad" />
 <%
-  Project project = ProjectUtils.loadProject(ad.getProjectId());
-  request.setAttribute("thisProject", project);
+    request.setAttribute("promotionListInfo", promotionList.getPagedListInfo());
 %>
-        <li>
-          <dl>
-            <dt><a href="${ctx}/show/${thisProject.uniqueId}/promotion/${ad.id}" title="<c:out value="${thisProject.title}"/> promotion details"><c:out value="${ad.heading}"/></a></dt>
-            <c:if test="${!empty ad.briefDescription1}"><dd><c:out value="${ad.briefDescription1}"/></dd></c:if>
-            <c:if test="${!empty ad.briefDescription2}"><dd><c:out value="${ad.briefDescription2}"/></dd></c:if>
-            <c:if test="<%= adList.getProjectId() == -1 %>">
-              <cite><c:out value="${thisProject.title}"/></cite>
-            </c:if>
-            <c:if test="<%= adList.getProjectId() > -1 %>">
-              <c:if test="${!empty ad.expirationDate}">
-                <c:set var="expirationDate"><ccp:tz timestamp="<%= ad.getExpirationDate() %>" dateOnly="true"/></c:set>
-                <dd>expires ${expirationDate}</dd>
-              </c:if>
-              <c:if test="${!empty ad.webPage && !empty ad.destinationUrl && fn:startsWith(ad.destinationUrl, 'http')}">
-                <cite><a href="<c:out value="${ad.destinationUrl}"/>"><c:out value="${ad.webPage}"/></a></cite>
-              </c:if>
-            </c:if>
-          </dl>
-        </li>
-      </c:forEach>
+      <c:if test="${!empty promotionList}">
+        <c:forEach items="${promotionList}" var="promotion">
+          <li>
+	          <dl>
+    	      	<dt><a href="${ctx}/show/${promotion.project.uniqueId}/promotion/${promotion.id}" title="<c:out value="${promotion.heading}"/>"><c:out value="${promotion.heading}"/></a></dt>
+	            <c:if test="${!empty promotion.content}">
+	            	<dd><c:out value="${promotion.content}"/></dd>
+	            </c:if>
+	          </dl>  
+        </c:forEach>
+      </c:if>
     </ul>
+    <c:if test="${hasPaging eq 'true'}">
+	    <c:if test="${!empty promotionListInfo && promotionListInfo.numberOfPages > 1}">
+	      <jsp:useBean id="hasMoreURL" class="java.lang.String" scope="request"/>
+		  	<c:choose>
+		  		<c:when test="${empty sortOrder}">
+		  			<c:set var="sortURL" />
+		  		</c:when>
+		  		<c:otherwise>
+		  			<c:set var="sortURL">
+		  				?sort=${sortOrder}
+		  			</c:set>
+		  		</c:otherwise>
+		  	</c:choose>
+	      <c:if test="${!empty promotionCategory.itemName}">
+	        <ccp:paginationControl object="promotionListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(StringUtils.replace(promotionCategory.getItemName().toLowerCase()," ", "_")) %>' urlSuffix='${sortURL}' />
+	      </c:if>
+	      <c:if test="${empty promotionCategory.itemName}">
+	        <ccp:paginationControl object="promotionListInfo" url='<%= hasMoreURL %>' urlSuffix='${sortURL}' />
+	      </c:if>
+	    </c:if>
+	  </c:if>
   </c:if>
-  <c:if test="${empty adList}">
-    <p>There are no promotions at this time, please check back later.</p>
-  </c:if>
-<c:if test="${hasMore eq 'true'}">
-  <p class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>"><c:out value="${hasMoreTitle}"/></a></p>
-</c:if>
-  

@@ -53,7 +53,7 @@ import org.apache.commons.logging.LogFactory;
  * Promotion counts by tag by project category
  *
  * @author Kailash Bhoopalam
- * @created October 25, 2009
+ * @created November 25, 2009
  */
 public class PromotionResultsCategoryCountsPortlet extends AbstractPortletModule {
 

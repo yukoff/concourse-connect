@@ -180,7 +180,11 @@ public final class Setup extends GenericAction {
               thisPath = potentialPath;
             }
           }
-          ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
+          boolean saved = ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
+          if (!saved) {
+            context.getRequest().setAttribute("actionError", "The java preferences could not be stored: " + thisPath + "=" + fileLibrary);
+            return "SetupSaveLibraryERROR";
+          }
           // Load the specified prefs...
           getApplicationPrefs(context).initializePrefs(context.getServletContext());
 
@@ -231,7 +235,11 @@ public final class Setup extends GenericAction {
             thisPath = potentialPath;
           }
         }
-        ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
+        boolean saved = ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
+        if (!saved) {
+          context.getRequest().setAttribute("actionError", "The java preferences could not be stored: " + thisPath + "=" + fileLibrary);
+          return "SetupSaveLibraryERROR";
+        }
         // Test to see if registration of services is enabled
         try {
           Class clientClass = Class.forName("com.concursive.connect.plugins.services.Client");

@@ -177,6 +177,9 @@ public class ApplicationPrefs {
   private Map<String, Dictionary> dictionaries = new HashMap<String, Dictionary>();
   private Map<String, String> prefs = new LinkedHashMap<String, String>();
   private Map<String, String> nodePrefs = new LinkedHashMap<String, String>();
+  
+  // Twitter properties
+  public final static String TWITTER_HASH = "TWITTER_HASH";
 
 
   /**
@@ -978,7 +981,13 @@ public class ApplicationPrefs {
    */
   public static boolean saveFileLibraryLocation(String instanceName, String fileLibraryLocation) {
     try {
+      if (instanceName == null || fileLibraryLocation == null) {
+        LOG.error("Invalid parameters: " + instanceName + "=" + fileLibraryLocation);
+      }
       Preferences javaPrefs = Preferences.userNodeForPackage(ApplicationPrefs.class);
+      if (javaPrefs == null) {
+        LOG.error("Couldn't create java preferences for: " + ApplicationPrefs.class);
+      }
       if (instanceName.length() <= Preferences.MAX_KEY_LENGTH) {
         javaPrefs.put(instanceName, fileLibraryLocation);
       } else {

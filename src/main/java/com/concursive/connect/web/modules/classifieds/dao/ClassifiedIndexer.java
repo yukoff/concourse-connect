@@ -146,8 +146,8 @@ public class ClassifiedIndexer implements Indexer {
         classified.getTitle() + " " +
             ContentUtils.toText(classified.getDescription()), Field.Store.YES, Field.Index.TOKENIZED));
     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-    document.add(new Field("modified", String.valueOf(formatter.format(classified.getModified())), Field.Store.YES, Field.Index.UN_TOKENIZED));
     if (classified.getPublishDate() != null) {
+      document.add(new Field("modified", String.valueOf(formatter.format(classified.getPublishDate())), Field.Store.YES, Field.Index.UN_TOKENIZED));
       document.add(new Field("published", String.valueOf(formatter.format(classified.getPublishDate())), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     if (classified.getExpirationDate() != null) {

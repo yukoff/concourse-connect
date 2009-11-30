@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.classifieds.portlets.searchResultsByClassifieds;
 
+
 import com.concursive.connect.Constants;
 import com.concursive.connect.indexer.IIndexerSearch;
 import com.concursive.connect.indexer.IndexerQueryResultList;
@@ -55,6 +56,8 @@ import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * Sort Filter for classifieds
@@ -100,10 +103,13 @@ public class SearchResultsByClassified implements IPortletViewer {
           queryString += " AND (projectCategoryId:" + categoryId + ")";
         }
       }
+      Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+      
       //Fetch only those that have are published
-      //queryString += " AND (published:?*) ";
+      //queryString += " AND (published:[MIN TO " + String.valueOf(formatter.format(currentTimestamp) + "])");
       //Fetch only those that have not expired
-      //queryString += " AND NOT (expired:?*) ";
+      //queryString += " AND (expired:{" + String.valueOf(formatter.format(currentTimestamp) + " TO MAX})");
       
       
       // Customize the string

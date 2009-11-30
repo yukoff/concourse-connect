@@ -86,7 +86,7 @@ public class ClassifiedIndexer implements Indexer {
   public void add(IIndexerService writer, Connection db, IndexerContext context) throws SQLException, IOException {
     int count = 0;
     PreparedStatement pst = db.prepareStatement(
-        "SELECT classified_id, project_id, title, description, publish_date " +
+        "SELECT classified_id, project_id, title, description, publish_date, expiration_date, modified " +
             "FROM project_classified " +
             "WHERE project_id > -1 ");
     ResultSet rs = pst.executeQuery();
@@ -99,6 +99,8 @@ public class ClassifiedIndexer implements Indexer {
       classified.setTitle(rs.getString("title"));
       classified.setDescription(rs.getString("description"));
       classified.setPublishDate(rs.getTimestamp("publish_date"));
+      classified.setExpirationDate(rs.getTimestamp("expiration_date"));
+      classified.setModified(rs.getTimestamp("modified"));
       // add to index
       writer.indexAddItem(classified, false);
     }
@@ -143,9 +145,13 @@ public class ClassifiedIndexer implements Indexer {
     document.add(new Field("contents",
         classified.getTitle() + " " +
             ContentUtils.toText(classified.getDescription()), Field.Store.YES, Field.Index.TOKENIZED));
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+    document.add(new Field("modified", String.valueOf(formatter.format(classified.getModified())), Field.Store.YES, Field.Index.UN_TOKENIZED));
     if (classified.getPublishDate() != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
       document.add(new Field("published", String.valueOf(formatter.format(classified.getPublishDate())), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    }
+    if (classified.getExpirationDate() != null) {
+      document.add(new Field("expired", String.valueOf(formatter.format(classified.getExpirationDate())), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     writer.addDocument(document);
     if (System.getProperty("DEBUG") != null && modified) {

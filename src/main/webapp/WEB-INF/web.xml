@@ -934,6 +934,15 @@
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
+  <servlet>
+    <servlet-name>SearchResultsByClassifiedsPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>SearchResultsByClassifiedsPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
   <!-- Portlet Mappings -->
   <servlet-mapping>
     <servlet-name>AboutPortlet</servlet-name>
@@ -1281,6 +1290,10 @@
   <servlet-mapping>
     <servlet-name>PromotionResultsSorterPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/PromotionResultsSorterPortlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchResultsByClassifiedsPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/SearchResultsByClassifiedsPortlet</url-pattern>
   </servlet-mapping>
   <!-- All iteam requests go through the framework controller -->
   <servlet-mapping>

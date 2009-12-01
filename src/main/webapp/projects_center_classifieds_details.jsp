@@ -88,9 +88,11 @@
               <ccp:tz timestamp="<%= classified.getExpirationDate() %>" dateFormat="<%= DateFormat.LONG %>" />
             </div>
           </ccp:evaluate>
+          <ccp:permission name="project-classifieds-admin">
            <div>
     	    	by <ccp:username id="<%= classified.getEnteredBy() %>"/>
 	        </div>
+          </ccp:permission>
       </div>
    	  <ccp:evaluate if="<%= classified.getId() > -1 && User.isLoggedIn() %>">
 	   	  <div>

@@ -65,12 +65,32 @@
     <div class="listingHeaderContainer">
       <h3><%= toHtml(classified.getTitle()) %></h3>
       <div class="version">
-        <ccp:evaluate if="<%= classified.getPublishDate() == null %>"><ccp:label name="projectsCenterClassifieds.byClassified.draft">(Draft)</ccp:label></ccp:evaluate>
-        <ccp:evaluate if="<%= classified.getPublishDate() != null %>"><ccp:label name="projectsCenterClassifieds.byClassified.approved">(Approved)</ccp:label></ccp:evaluate>&nbsp;
+        <ccp:evaluate if="<%= classified.getPublishDate() == null %>">
+        	<ccp:label name="projectsCenterClassifieds.byClassified.draft">(Draft)</ccp:label>
+        </ccp:evaluate>
+            <ccp:evaluate if="<%= classified.isExpired() %>">
+              <ccp:label name="classified.expired">Expired</ccp:label>
+            </ccp:evaluate>
+            <ccp:evaluate if="<%= classified.isScheduledInFuture() %>">
+              <ccp:label name="classified.expired">Scheduled in future</ccp:label>
+            </ccp:evaluate>
       </div>
       <div class="details">
-        <ccp:tz timestamp="<%= classified.getPublishDate() %>" dateFormat="<%= DateFormat.LONG %>" />
-        by <ccp:username id="<%= classified.getEnteredBy() %>"/>
+          <ccp:evaluate if="<%= classified.getPublishDate() != null %>">
+            <div>
+              <ccp:label name="classified.starts">Starts</ccp:label>
+              <ccp:tz timestamp="<%= classified.getPublishDate() %>" dateFormat="<%= DateFormat.LONG %>" />
+            </div>
+          </ccp:evaluate>
+          <ccp:evaluate if="<%= classified.getExpirationDate() != null %>">
+            <div>
+              <ccp:label name="classified.expires">Expires</ccp:label>
+              <ccp:tz timestamp="<%= classified.getExpirationDate() %>" dateFormat="<%= DateFormat.LONG %>" />
+            </div>
+          </ccp:evaluate>
+           <div>
+    	    	by <ccp:username id="<%= classified.getEnteredBy() %>"/>
+	        </div>
       </div>
    	  <ccp:evaluate if="<%= classified.getId() > -1 && User.isLoggedIn() %>">
 	   	  <div>

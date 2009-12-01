@@ -196,6 +196,8 @@ public class LuceneIndexerSearch implements IIndexerSearch {
       responseItem.setObjectId(doc.getField("assignmentNoteId").stringValue());
     } else if ("classifieds".equals(responseItem.getType())) {
       responseItem.setObjectId(doc.getField("classifiedId").stringValue());
+    } else if ("ads".equals(responseItem.getType())) {
+      responseItem.setObjectId(doc.getField("adId").stringValue());
     } else if ("issuecategory".equals(responseItem.getType())) {
       responseItem.setObjectId(doc.getField("issueCategoryId").stringValue());
     } else if ("issuereply".equals(responseItem.getType())) {

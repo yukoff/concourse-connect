@@ -981,6 +981,17 @@
       <title>Search results by classifieds</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>SearchResultsByPromotionPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.searchResultsByPromotion.SearchResultsByPromotionPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search results by promotions</title>
+    </portlet-info>
+  </portlet>
   <custom-portlet-mode>
     <description>Provides administration functions</description>
     <name>config</name>

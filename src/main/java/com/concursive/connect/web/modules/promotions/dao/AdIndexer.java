@@ -86,7 +86,7 @@ public class AdIndexer implements Indexer {
   public void add(IIndexerService writer, Connection db, IndexerContext context) throws Exception {
     int count = 0;
     PreparedStatement pst = db.prepareStatement(
-        "SELECT ad_id, project_id, heading, content, publish_date " +
+        "SELECT ad_id, project_id, heading, content, publish_date, expiration_date, modified " +
             "FROM ad " +
             "WHERE project_id > -1 ");
     ResultSet rs = pst.executeQuery();
@@ -99,6 +99,8 @@ public class AdIndexer implements Indexer {
       ad.setHeading(rs.getString("heading"));
       ad.setContent(rs.getString("content"));
       ad.setPublishDate(rs.getTimestamp("publish_date"));
+      ad.setExpirationDate(rs.getTimestamp("expiration_date"));
+      ad.setModified(rs.getTimestamp("modified"));
       // add to index
       writer.indexAddItem(ad, false);
     }
@@ -143,9 +145,13 @@ public class AdIndexer implements Indexer {
     document.add(new Field("contents",
         ad.getHeading() + " " +
             ContentUtils.toText(ad.getContent()), Field.Store.YES, Field.Index.TOKENIZED));
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
     if (ad.getPublishDate() != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+    document.add(new Field("modified", String.valueOf(formatter.format(ad.getPublishDate())), Field.Store.YES, Field.Index.UN_TOKENIZED));
       document.add(new Field("published", String.valueOf(formatter.format(ad.getPublishDate())), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    }
+    if (ad.getExpirationDate() != null) {
+      document.add(new Field("expired", String.valueOf(formatter.format(ad.getExpirationDate())), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     writer.addDocument(document);
     if (System.getProperty("DEBUG") != null && modified) {

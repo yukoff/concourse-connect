@@ -66,7 +66,7 @@
     Project project = ProjectUtils.loadProject(projectId);
 %>
     <li>
-      <a href="${ctx}/show/<%= project.getUniqueId() %>/classified-ad/<%= document.getObjectId() %>"><ccp:evaluate if="<%= StringUtils.hasText(document.getTitle()) %>"><%= StringUtils.toHtml(document.getTitle()) %></ccp:evaluate><ccp:evaluate if="<%= !StringUtils.hasText(document.getTitle()) %>"><ccp:project id="<%= document.getProjectId() %>"/></ccp:evaluate></a><br />
+      <a href="${ctx}/show/<%= project.getUniqueId() %>/promotion/<%= document.getObjectId() %>"><ccp:evaluate if="<%= StringUtils.hasText(document.getTitle()) %>"><%= StringUtils.toHtml(document.getTitle()) %></ccp:evaluate><ccp:evaluate if="<%= !StringUtils.hasText(document.getTitle()) %>"><ccp:project id="<%= document.getProjectId() %>"/></ccp:evaluate></a><br />
     </li>
 <%
   }

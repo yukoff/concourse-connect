@@ -43,7 +43,7 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.classifieds.portlets.searchResultsByClassifieds;
+package com.concursive.connect.web.modules.promotions.portlets.searchResultsByPromotion;
 
 
 import com.concursive.connect.Constants;
@@ -60,15 +60,15 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 /**
- * Search results for classifieds
+ * search results for promotions
  *
  * @author Kailash Bhoopalam
- * @created November 27, 2009
+ * @created November 30, 2009
  */
-public class SearchResultsByClassified implements IPortletViewer {
+public class SearchResultsByPromotion implements IPortletViewer {
 
   // Pages
-  private static final String VIEW_PAGE = "/portlets/search_results_by_classifieds/search_results_by_classifieds-view.jsp";
+  private static final String VIEW_PAGE = "/portlets/search_results_by_promotion/search_results_by_promotion-view.jsp";
 
   // Context Parameters
   private static final String SEARCHER = "searcher";
@@ -113,7 +113,7 @@ public class SearchResultsByClassified implements IPortletViewer {
       
       
       // Customize the string
-      queryString += " AND (type:classifieds) ";
+      queryString += " AND (type:ads) ";
 
       // Search results will be set in query object...
       IndexerQueryResultList query = new IndexerQueryResultList(queryString);

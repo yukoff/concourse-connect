@@ -128,6 +128,8 @@ public class ApplicationPrefs {
   // Google Maps Properties
   public final static String GOOGLE_MAPS_API_DOMAIN = "GOOGLE_MAPS.DOMAIN";
   public final static String GOOGLE_MAPS_API_KEY = "GOOGLE_MAPS.KEY";
+  // Twitter Properties
+  public final static String TWITTER_HASH = "TWITTER_HASH";
   // Services Properties
   public final static String CONCURSIVE_SERVICES_SERVER = "CONCURSIVE_SERVICES.SERVER";
   public final static String CONCURSIVE_SERVICES_ID = "CONCURSIVE_SERVICES.ID";
@@ -177,10 +179,6 @@ public class ApplicationPrefs {
   private Map<String, Dictionary> dictionaries = new HashMap<String, Dictionary>();
   private Map<String, String> prefs = new LinkedHashMap<String, String>();
   private Map<String, String> nodePrefs = new LinkedHashMap<String, String>();
-  
-  // Twitter properties
-  public final static String TWITTER_HASH = "TWITTER_HASH";
-
 
   /**
    * Constructor for the ApplicationPrefs object

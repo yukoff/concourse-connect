@@ -97,6 +97,16 @@
           <input type="text" name="googleMapsAPIKey" value="<%= toHtmlValue(detailsBean.getGoogleMapsAPIKey()) %>" size="40" />
           <b><%= showAttribute(request, "googleMapsAPIKeyError") %></b>
 
+          <label>Twitter Hashtag</label>
+          <input type="text" name="twitterHashtag" value="<%= toHtmlValue(detailsBean.getTwitterHashtag()) %>" size="40" />
+          <b><%= showAttribute(request, "twitterHashtagError") %></b>
+          <span class="characterCount">
+            Come up with a hashtag so that users can post to your site using Twitter.<br />
+            For example, use 'connect' and then when a Twitter Id is linked to a profile, and that Twitter user<br />
+            posts to #connect then that post will be imported.  Come up with a unique tag for your site!<br />
+            (no spaces or special characters allowed)
+          </span>
+
           <label><font color="red">*</font>Default Storage Limit (per user)</label>
           <b><%= showAttribute(request, "storageError") %></b>
           <input type="text" name="storage" value="<%= toHtmlValue(detailsBean.getStorage()) %>" size="10" /> MB

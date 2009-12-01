@@ -252,7 +252,8 @@ CREATE TABLE projects (
   messages_description VARCHAR(255),
   system_default BIT DEFAULT 0 NOT NULL,
   shortdescription VARCHAR(1000) NOT NULL,
-  instance_id INTEGER REFERENCES instances(instance_id)
+  instance_id INTEGER REFERENCES instances(instance_id),
+  twitter_id  VARCHAR(255)
 );
 CREATE INDEX "projects_idx"
   ON "projects"
@@ -896,3 +897,14 @@ CREATE OR REPLACE VIEW project_issue_replies_tag_log AS
 SELECT link_item_id AS reply_id, user_id, tag, tag_date
 FROM user_tag_log
 WHERE link_module_id = 20050201;
+
+CREATE OR REPLACE VIEW ad_tag AS
+SELECT link_item_id AS ad_id, tag, count(*) AS tag_count, max(tag_date) AS tag_date
+FROM user_tag_log
+WHERE link_module_id = 2008071715
+GROUP BY link_item_id, tag;
+
+CREATE OR REPLACE VIEW ad_tag_log AS
+SELECT link_item_id AS ad_id, user_id, tag, tag_date
+FROM user_tag_log
+WHERE link_module_id = 2008071715;

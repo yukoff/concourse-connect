@@ -43,48 +43,26 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.promotions.portlets.main;
+package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.portal.AbstractPortletModule;
+import junit.framework.TestCase;
 
 /**
- * Project Promotions mvc portlet
+ * Tests wiki parser functions
  *
  * @author matt rajkowski
- * @created November 7, 2008
+ * @created March 27, 2008
  */
-public class PromotionsPortlet extends AbstractPortletModule {
+public class WikiUtilsTest extends TestCase {
 
-  // Viewers
-  public static final String DEFAULT_VIEW = "list";
-  public static final String LIST_VIEW = "list";
-  public static final String DETAILS_VIEW = "details";
-  public static final String FORM_VIEW = "form";
-  public static final String SET_RATING_AJAX_VIEW = "setRating";
-  public static final String TAGS_FORM_VIEW = "setTags";
-
-  // Actions
-  public static final String SAVE_FORM_ACTION = "saveForm";
-  public static final String DELETE_ACTION = "delete";
-  public static final String CLONE_ACTION = "clone";
-  public static final String SAVE_TAGS_ACTION = "saveTags";
-
-  public PromotionsPortlet() {
-    defaultCommand = DEFAULT_VIEW;
-  }
-
-  protected void doPopulateActionsAndViewers() {
-    // Viewers
-    viewers.put(LIST_VIEW, new PromotionsListViewer());
-    viewers.put(DETAILS_VIEW, new PromotionsDetailsViewer());
-    viewers.put(FORM_VIEW, new PromotionsFormViewer());
-    viewers.put(SET_RATING_AJAX_VIEW, new PromotionsSetRatingViewer());
-    viewers.put(TAGS_FORM_VIEW, new TagsFormViewer());
-
-    // Actions
-    actions.put(SAVE_FORM_ACTION, new SavePromotionAction());
-    actions.put(DELETE_ACTION, new DeletePromotionAction());
-    actions.put(CLONE_ACTION, new ClonePromotionAction());
-    actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
+  public void testWikiAddLinks() throws Exception {
+    assertEquals("Link to [[http://www.cnn.com]]", WikiUtils.addWikiLinks("Link to http://www.cnn.com"));
+    assertEquals("Link to [[http://www.cnn.com]] and [[http://www.java.com]]", WikiUtils.addWikiLinks("Link to http://www.cnn.com and http://www.java.com"));
+    assertEquals("[[http://www.cnn.com]] is a news site", WikiUtils.addWikiLinks("http://www.cnn.com is a news site"));
+    assertEquals("[[http://www.cnn.com]] and [[http://www.java.com]]", WikiUtils.addWikiLinks("http://www.cnn.com and http://www.java.com"));
+    assertEquals("[[http://www.cnn.com]] and [[https://www.java.com]]", WikiUtils.addWikiLinks("http://www.cnn.com and https://www.java.com"));
+    assertEquals("[[http://www.cnn.com]]", WikiUtils.addWikiLinks("http://www.cnn.com"));
+    assertEquals("[[https://www.cnn.com]]", WikiUtils.addWikiLinks("https://www.cnn.com"));
+    assertEquals("[[http://www.concursive.com/show/community/post/681 http://www.concursive.com/s...]]", WikiUtils.addWikiLinks("http://www.concursive.com/show/community/post/681"));
   }
 }

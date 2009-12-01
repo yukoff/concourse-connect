@@ -1848,7 +1848,7 @@ li.listing {
   display:block;
   vertical-align: top;
   clear: none;
-  margin: 0;
+  margin: 0 0 0 60px;
   padding: 0;
   top: 0;
   width: 100%;
@@ -1930,7 +1930,7 @@ li.listing {
   .detailed-list li p {
     vertical-align: top;
     clear: none;
-    margin: 0;
+    margin: 0 0 0 60px;
     padding: 0;
     top: 0
   }
@@ -2456,7 +2456,7 @@ li.listing {
   .activity-list li p {
     vertical-align: top;
     clear: none;
-    margin: 0;
+    margin: 0 0 0 60px;
     padding: 0;
     top: 0
   }

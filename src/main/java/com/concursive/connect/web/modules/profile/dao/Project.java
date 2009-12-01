@@ -177,6 +177,7 @@ public class Project extends GenericBean {
   private String carPhone = null;
   private String radioPhone = null;
   private String webPage = null;
+  private String twitterId = null;
   private String addressTo = null;
   private String addressLine1 = null;
   private String addressLine2 = null;
@@ -1972,7 +1973,21 @@ public class Project extends GenericBean {
     this.webPage = webPage;
   }
 
-  public String getAddressTo() {
+  /**
+	 * @param twitterId the twitterId to set
+	 */
+	public void setTwitterId(String twitterId) {
+		this.twitterId = twitterId;
+	}
+
+	/**
+	 * @return the twitterId
+	 */
+	public String getTwitterId() {
+		return twitterId;
+	}
+
+	public String getAddressTo() {
     return addressTo;
   }
 
@@ -2383,7 +2398,7 @@ public class Project extends GenericBean {
           "email1, email2, email3, " +
           "home_phone, home_phone_ext, home2_phone, home2_phone_ext, home_fax, " +
           "business_phone, business_phone_ext, business2_phone, business2_phone_ext, business_fax, " +
-          "mobile_phone, pager_number, car_phone, radio_phone, web_page, " +
+          "mobile_phone, pager_number, car_phone, radio_phone, web_page, twitter_id, " +
           "subcategory1_id, subcategory2_id, subcategory3_id, keywords, profile, source) " +
           "VALUES (?, ?, ?, ?, ?, " +
           (features.getUpdateAllowGuests() ? "?," : "") +
@@ -2403,7 +2418,7 @@ public class Project extends GenericBean {
         sql.append("?, ");
       }
       sql.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?," +
-          "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+          "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       int i = 0;
       PreparedStatement pst = db.prepareStatement(sql.toString());
       if (id > -1) {
@@ -2510,6 +2525,7 @@ public class Project extends GenericBean {
       pst.setString(++i, carPhone);
       pst.setString(++i, radioPhone);
       pst.setString(++i, webPage);
+      pst.setString(++i, twitterId);
       DatabaseUtils.setInt(pst, ++i, subCategory1Id);
       DatabaseUtils.setInt(pst, ++i, subCategory2Id);
       DatabaseUtils.setInt(pst, ++i, subCategory3Id);
@@ -2800,7 +2816,7 @@ public class Project extends GenericBean {
         "email1 = ?, email2 = ?, email3 = ?, " +
         "home_phone = ?, home_phone_ext = ?, home2_phone = ?, home2_phone_ext = ?, home_fax = ?, " +
         "business_phone = ?, business_phone_ext = ?, business2_phone = ?, business2_phone_ext = ?, business_fax = ?, " +
-        "mobile_phone = ?, pager_number = ?, car_phone = ?, radio_phone = ?, web_page = ?, " +
+        "mobile_phone = ?, pager_number = ?, car_phone = ?, radio_phone = ?, web_page = ?, twitter_id = ?, " +
         "subcategory1_id = ?, subcategory2_id = ?, subcategory3_id = ?, keywords = ?, " +
         "modifiedby = ?, modified = CURRENT_TIMESTAMP " +
         "WHERE project_id = ? " +
@@ -2879,6 +2895,7 @@ public class Project extends GenericBean {
     pst.setString(++i, carPhone);
     pst.setString(++i, radioPhone);
     pst.setString(++i, webPage);
+    pst.setString(++i, twitterId);
     DatabaseUtils.setInt(pst, ++i, subCategory1Id);
     DatabaseUtils.setInt(pst, ++i, subCategory2Id);
     DatabaseUtils.setInt(pst, ++i, subCategory3Id);
@@ -3182,6 +3199,7 @@ public class Project extends GenericBean {
     systemDefault = rs.getBoolean("system_default");
     shortDescription = rs.getString("shortdescription");
     instanceId = DatabaseUtils.getInt(rs, "instance_id", -1);
+    twitterId = rs.getString("twitter_id");
 
     //Set the related objects
     team.setProjectId(this.getId());

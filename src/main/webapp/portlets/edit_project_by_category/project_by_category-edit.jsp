@@ -192,6 +192,10 @@
 		             <input type="text" name="webPage" id="<portlet:namespace/>webPage" maxlength="200" value="<c:out value="${projectBean.webPage}"/>">
                  <span class="characterCounter">200 characters max</span>
 				</c:if>
+        <c:if test="${!empty preferenceMap.twitterId}">
+		             <label for="<portlet:namespace/>twitterId"><c:out value="${preferenceMap.twitterId}"/></label>
+		             <input type="text" name="twitterId" id="<portlet:namespace/>twitterId" maxlength="80" value="<c:out value="${projectBean.twitterId}"/>">
+        </c:if>
 		    </div>
 	    	<c:if test="${!empty preferenceMap.keywords}">
 		        <label for="<portlet:namespace/>keywords"><c:out value="${preferenceMap.keywords}"/></label> (comma-separated)

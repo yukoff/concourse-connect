@@ -67,6 +67,7 @@ public class SetupDetailsBean extends GenericBean {
   private String storage = "-1";
   private String googleMapsAPIDomain = null;
   private String googleMapsAPIKey = null;
+  private String twitterHashtag = null;
 
 
   /**
@@ -179,6 +180,14 @@ public class SetupDetailsBean extends GenericBean {
     this.googleMapsAPIKey = googleMapsAPIKey;
   }
 
+  public String getTwitterHashtag() {
+    return twitterHashtag;
+  }
+
+  public void setTwitterHashtag(String twitterHashtag) {
+    this.twitterHashtag = twitterHashtag;
+  }
+
   /**
    * Gets the valid attribute of the SetupDetailsBean object
    *
@@ -198,4 +207,3 @@ public class SetupDetailsBean extends GenericBean {
   }
 
 }
-

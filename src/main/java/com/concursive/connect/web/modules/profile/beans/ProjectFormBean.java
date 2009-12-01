@@ -85,6 +85,7 @@ public class ProjectFormBean extends GenericBean {
   private String postalCode = null;
   private String country = null;
   private String webPage = null;
+  private String twitterId = null;
   private String phone = null;
   private String fax = null;
   private String comments = null;
@@ -242,7 +243,21 @@ public class ProjectFormBean extends GenericBean {
     this.webPage = webPage;
   }
 
-  public String getPhone() {
+  /**
+	 * @param twitterId the twitterId to set
+	 */
+	public void setTwitterId(String twitterId) {
+		this.twitterId = twitterId;
+	}
+
+	/**
+	 * @return the twitterId
+	 */
+	public String getTwitterId() {
+		return twitterId;
+	}
+
+	public String getPhone() {
     return phone;
   }
 
@@ -445,6 +460,7 @@ public class ProjectFormBean extends GenericBean {
     this.country = project.getCountry();
     this.postalCode = project.getPostalCode();
     this.webPage = project.getWebPage();
+    this.twitterId=project.getTwitterId();
     this.phone = project.getBusinessPhone();
     this.fax = project.getBusinessFax();
     this.email = project.getEmail1();
@@ -467,6 +483,7 @@ public class ProjectFormBean extends GenericBean {
     project.setCountry(this.country);
     project.setPostalCode(this.postalCode);
     project.setWebPage(this.webPage);
+    project.setTwitterId(this.twitterId);
     project.setBusinessPhone(this.phone);
     project.setBusinessFax(this.fax);
     project.setEmail1(this.email);
@@ -514,6 +531,9 @@ public class ProjectFormBean extends GenericBean {
     }
     if (preferenceMap.get("webPage") != null) {
       project.setWebPage(this.webPage);
+    }
+    if (preferenceMap.get("twitterId") != null) {
+      project.setTwitterId(this.twitterId);  
     }
     if (preferenceMap.get("businessPhone") != null) {
       project.setBusinessPhone(this.phone);

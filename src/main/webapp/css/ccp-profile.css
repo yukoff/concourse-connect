@@ -2135,6 +2135,10 @@ ul.wikiExtras li a {
   visibility: hidden !important;
 }
 
+.tagListAd {
+	color: #666;
+}
+
 /* @end */
 
 /* @group Discussions */

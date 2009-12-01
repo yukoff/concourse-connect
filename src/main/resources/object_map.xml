@@ -501,6 +501,7 @@
       <property>carPhone</property>
       <property>radioPhone</property>
       <property>webPage</property>
+      <property>twitterId</property>
       <property>addressTo</property>
       <property>addressLine1</property>
       <property>addressLine2</property>

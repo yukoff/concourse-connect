@@ -537,13 +537,16 @@ public final class Setup extends GenericAction {
       if (hasPref(context, ApplicationPrefs.EMAILADDRESS)) {
         bean.setAddress(getPref(context, ApplicationPrefs.EMAILADDRESS));
       } else {
-        bean.setAddress("Example Company <noreply@example.com>");
+        bean.setAddress("Example Company <community@example.com>");
       }
       if (hasPref(context, ApplicationPrefs.GOOGLE_MAPS_API_DOMAIN)) {
         bean.setGoogleMapsAPIDomain(getPref(context, ApplicationPrefs.GOOGLE_MAPS_API_DOMAIN));
       }
       if (hasPref(context, ApplicationPrefs.GOOGLE_MAPS_API_KEY)) {
         bean.setGoogleMapsAPIKey(getPref(context, ApplicationPrefs.GOOGLE_MAPS_API_KEY));
+      }
+      if (hasPref(context, ApplicationPrefs.TWITTER_HASH)) {
+        bean.setTwitterHashtag(getPref(context, ApplicationPrefs.TWITTER_HASH));
       }
       if (hasPref(context, "ACCOUNT.SIZE")) {
         bean.setStorage(getPref(context, "ACCOUNT.SIZE"));
@@ -576,10 +579,19 @@ public final class Setup extends GenericAction {
     prefs.add(ApplicationPrefs.MAILSERVER_SSL, bean.getServerSsl());
     prefs.add(ApplicationPrefs.EMAILADDRESS, bean.getAddress());
     prefs.add("ACCOUNT.SIZE", bean.getStorage());
+    // Are all the google params available?
     if (StringUtils.hasText(bean.getGoogleMapsAPIDomain()) &&
         StringUtils.hasText(bean.getGoogleMapsAPIKey())) {
       prefs.add(ApplicationPrefs.GOOGLE_MAPS_API_DOMAIN, RequestUtils.getDomainName(bean.getGoogleMapsAPIDomain()).trim());
       prefs.add(ApplicationPrefs.GOOGLE_MAPS_API_KEY, bean.getGoogleMapsAPIKey().trim());
+    }
+    // Is a twitter hashtag defined?
+    if (StringUtils.hasText(bean.getTwitterHashtag())) {
+      String hashtag = bean.getTwitterHashtag();
+      if (hashtag.startsWith("#")) {
+        hashtag = hashtag.substring(1);
+      }
+      prefs.add(ApplicationPrefs.TWITTER_HASH, hashtag);
     }
     // save the temporary prefs so user can return
     prefs.save();

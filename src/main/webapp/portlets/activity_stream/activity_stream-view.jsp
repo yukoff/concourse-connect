@@ -46,11 +46,17 @@
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.concursive.connect.web.modules.activity.dao.ProjectHistoryList" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.commons.date.DateUtils" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
 <%@ page import="java.sql.Timestamp" %>
+<jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
+<jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
+<c:set var="user" value="<%= User %>" scope="request" />
+<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
+<jsp:useBean id="projectHistoryList" class="com.concursive.connect.web.modules.activity.dao.ProjectHistoryList" scope="request"/>
 <jsp:useBean id="projectHistoryArrayList" class="java.util.ArrayList" scope="request"/>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
@@ -119,6 +125,73 @@
       </c:forEach>
     </c:forEach>
   </c:forEach>
+  <%-- Show info about twitter, if the capability is enabled --%>
+  <c:if test='${!empty applicationPrefs.prefs["TWITTER_HASH"] && fn:contains(eventArrayList, "twitter")}'>
+    <c:set var="projectId" value="<%= projectHistoryList.getProjectId() %>"/>
+    <c:set var="projectCategoryId" value="<%= projectHistoryList.getProjectCategoryId() %>"/>
+    <c:set var="isProfile" value="<%= project.getId() > -1 && project.getProfile() %>"/>
+    <c:set var="userProfileProjectId" value="<%= User.getProfileProjectId() %>"/>
+<%--
+    Proj:<c:out value="${projectId}"/>
+    Cat:<c:out value="${projectCategoryId}"/>
+    IsUser:<c:out value="${isProfile}"/>
+    UsedId:<c:out value="${userProfileProjectId}"/>
+--%>
+      <c:choose>
+        <c:when test="${dashboardPortlet.cached}">
+          <%-- Show simple cacheable message --%>
+          <p>
+            Post to <a href="http://twitter.com" target="_blank">Twitter</a> using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.<br />
+            Be sure to login and link your profile to Twitter.
+          </p>
+        </c:when>
+        <c:otherwise>
+          <%-- Show personalized message --%>
+          <c:choose>
+            <%-- Users profile page --%>
+            <c:when test="${isProfile eq 'true'}">
+              <c:if test="${userProfileProjectId eq project.id}">
+                <p>
+                  Post to Twitter using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.<br />
+                  <c:if test="${empty user.profileProject.twitterId}">
+                    <a href="javascript:showPanel('','${ctx}/show/${user.profileProject.uniqueId}/app/edit_profile','600')">Link your Twitter id</a> |
+                    <a href="http://twitter.com" target="_blank">Need a Twitter account?</a>
+                  </c:if>
+                </p>
+              </c:if>
+            </c:when>
+            <%-- Non-Users profile page and access to post --%>
+            <c:when test="${projectId ne -1}">
+              <ccp:permission if="all" name="project-profile-activity-add">
+                <p>
+                  Post to <a href="http://twitter.com" target="_blank">Twitter</a> using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.<br />
+                  <a href="javascript:showPanel('','${ctx}/show/${project.uniqueId}/app/edit_profile','600')">Link your Twitter id</a> |
+                  <a href="http://twitter.com" target="_blank">Need a Twitter account?</a>
+                </p>
+              </ccp:permission>
+            </c:when>
+            <%-- Category page --%>
+            <c:when test="${projectCategoryId ne -1}">
+              <%--Category tab... TBD--%>
+            </c:when>
+            <%-- Home page --%>
+            <c:otherwise>
+              <p>
+                Post to <a href="http://twitter.com" target="_blank">Twitter</a> using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.<br />
+                <c:choose>
+                  <c:when test="${user.profileProjectId eq -1}">
+                    Login to link your Twitter id.
+                  </c:when>
+                  <c:when test="${empty user.profileProject.twitterId}">
+                    <a href="javascript:showPanel('','${ctx}/show/${user.profileProject.uniqueId}/app/edit_profile','600')">Link your Twitter id</a>.
+                  </c:when>
+                </c:choose>
+              </p>
+            </c:otherwise>
+          </c:choose>
+        </c:otherwise>
+      </c:choose>
+  </c:if>
 </c:if>
 <c:if test="${empty projectHistoryArrayList}">
   <p>There are no activities to report at this time.</p>

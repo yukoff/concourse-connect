@@ -363,4 +363,53 @@ public class WikiUtils {
     }
     return sb.toString();
   }
+
+  /**
+   * Takes a string of text and if there are any http:// or https:// links, then turns them
+   * into wiki links.
+   *
+   * @param content
+   * @return
+   */
+  public static String addWikiLinks(String content) {
+    // Convert links to wiki links...
+    ArrayList<String> terms = new ArrayList<String>();
+    terms.add("http://");
+    terms.add("https://");
+    // Parse through and add the wiki links...
+    int begin = -1;
+    for (String term : terms) {
+      while ((begin = content.indexOf(term, begin)) > -1) {
+        int end = content.indexOf(" ", begin);
+        if (end == -1) {
+          // content goes to the length of the string
+          end = content.length();
+        }
+
+        // Determine the URL rendering
+        String url = content.substring(begin, end);
+        // If the URL is lengthy, shorten it...
+        String displayUrl = "";
+        if (url.length() > 30) {
+          displayUrl = url;
+          int slash = displayUrl.indexOf("/", 9);
+          if (slash > -1 && slash < 29) {
+            displayUrl = " " + displayUrl.substring(0, slash + 2) + "...";
+          } else {
+            displayUrl = " " + displayUrl.substring(0, 28) + "...";
+          }
+        }
+
+        // Insert the wiki brackets around the link
+        if (begin == 0) {
+          content = "[[" + url + displayUrl + "]]" + content.substring(end);
+        } else {
+          content = content.substring(0, begin) + "[[" + url + displayUrl + "]]" + content.substring(end);
+        }
+        // Reset the begin position and account for the new brackets
+        begin = (end + 4);
+      }
+    }
+    return content;
+  }
 }

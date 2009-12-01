@@ -90,6 +90,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static String WIKI_OBJECT = "wiki";
   public final static String WIKI_COMMENT_OBJECT = "wiki-comment";
   public final static String ACTIVITY_ENTRY_OBJECT = "user-entry";
+  public final static String TWITTER_OBJECT = "twitter";
 
   //Event constants
   public final static int ADD_PROFILE_EVENT = 2009022601; //profile
@@ -125,6 +126,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static int CREATE_PROFILE_FOLDER_EVENT = 2009022629; //folder
   public final static int GRANT_PROFILE_BADGE_EVENT = 2009022630; //badge
   public final static int ADD_ACTIVITY_ENTRY_EVENT = 2009033118; //badge
+  public final static int TWITTER_EVENT = 2009110514; //twitter
 
   private PagedListInfo pagedListInfo = null;
   private int projectId = -1;

@@ -287,3 +287,12 @@ CREATE TABLE lookup_contribution (
 	points_awarded INTEGER DEFAULT 1 NOT NULL
 );
 
+CREATE TABLE process_log (
+  code INT IDENTITY PRIMARY KEY,
+  description VARCHAR(300) NOT NULL,
+  long_value INTEGER,
+  enabled BOOLEAN DEFAULT true,
+  entered DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  modified DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  processed DATETIME
+);

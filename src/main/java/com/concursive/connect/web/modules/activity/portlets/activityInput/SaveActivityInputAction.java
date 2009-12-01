@@ -52,6 +52,7 @@ import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiLink;
+import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
 import com.concursive.connect.web.portal.IPortletAction;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
@@ -99,7 +100,12 @@ public class SaveActivityInputAction implements IPortletAction {
       throw new PortletException("User does not have access to add activity");
     }
 
+    // Determine the content to save
     String body = request.getParameter("body");
+
+    // Turn content links into wiki links
+    body = WikiUtils.addWikiLinks(body);
+
     ProjectHistory projectHistory = new ProjectHistory();
     projectHistory.setProjectId(project.getId());
 

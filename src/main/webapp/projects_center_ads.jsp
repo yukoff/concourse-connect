@@ -49,6 +49,7 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ page import="com.concursive.connect.web.utils.CounterPair" %>
 <%@ page import="com.concursive.connect.web.modules.promotions.dao.Ad" %>
+<%@ page import="com.concursive.connect.web.modules.ModuleUtils" %>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="promotionsList" class="com.concursive.connect.web.modules.promotions.dao.AdList" scope="request"/>
 <jsp:useBean id="projectPromotionsInfo" class="com.concursive.connect.web.utils.PagedListInfo" scope="request"/>
@@ -181,6 +182,16 @@
       <c:if test="${!empty promotion.webPage && !empty promotion.destinationUrl && fn:startsWith(promotion.destinationUrl, 'http')}">
         <cite><a target="_blank" rel="nofollow" href="<c:out value="${promotion.destinationUrl}"/>"><c:out value="${promotion.webPage}"/></a></cite>
       </c:if>
+      <span class="tagListAd">
+      	<portlet:renderURL var="setTagsUrl" windowState="maximized">
+      	  <portlet:param name="portlet-action" value="modify" />
+        	<portlet:param name="portlet-command" value="setTags" />
+        	<portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_PROMOTIONS %>"/>
+        	<portlet:param name="portlet-value" value="${promotion.id}"/>
+        	<portlet:param name="popup" value="true" />
+	      </portlet:renderURL>
+      	<br/><ccp:tags url="${setTagsUrl}" />
+      </span>
     </div>
   </div>
 <%

@@ -85,7 +85,9 @@ public class ActivityStreamViewer implements IPortletViewer {
   // Object Results
   private static final String TITLE = "title";
   private static final String CONTENT = "content";
+  private static final String PROJECT_HISTORY_LIST = "projectHistoryList";
   private static final String PROJECT_HISTORY_ARRAY_LIST = "projectHistoryArrayList";
+  private static final String EVENT_ARRAY_LIST = "eventArrayList";
 
   public String doView(RenderRequest request, RenderResponse response)
       throws Exception {
@@ -99,12 +101,14 @@ public class ActivityStreamViewer implements IPortletViewer {
 
     Project project = PortalUtils.findProject(request);
     Connection db = PortalUtils.getConnection(request);
+    ArrayList eventArrayList = getEventPreferences(request);
 
+    // Query the activity stream data
     ProjectHistoryList projectHistoryList = new ProjectHistoryList();
     PagedListInfo projectHistoryListInfo = PortalUtils.getPagedListInfo(request, "projectHistoryListInfo");
     projectHistoryListInfo.setItemsPerPage(Integer.parseInt(limit));
     projectHistoryList.setPagedListInfo(projectHistoryListInfo);
-    projectHistoryList.setObjectPreferences(getEventPreferences(request));
+    projectHistoryList.setObjectPreferences(eventArrayList);
     projectHistoryList.setUntilLinkStartDate(new Timestamp(System.currentTimeMillis()));
 
     // Determine if the portlet is on a project page
@@ -152,6 +156,8 @@ public class ActivityStreamViewer implements IPortletViewer {
       projectHistoryList.setForUser(thisUser.getId());
     }
     projectHistoryList.buildList(db);
+    request.setAttribute(PROJECT_HISTORY_LIST, projectHistoryList);
+
     // Go through the activities and organize into lists for the view to render
     ArrayList<ArrayList> activityStreamList = new ArrayList<ArrayList>();
     // A new list for each day
@@ -199,12 +205,13 @@ public class ActivityStreamViewer implements IPortletViewer {
     // Determine if the portlet should be shown
     if (activityStreamList.size() > 0) {
       request.setAttribute(PROJECT_HISTORY_ARRAY_LIST, activityStreamList);
+      request.setAttribute(EVENT_ARRAY_LIST, eventArrayList);
+      // Show the view
       return defaultView;
     } else {
       return null;
     }
   }
-
 
   private ArrayList<String> getEventPreferences(RenderRequest request) {
     ArrayList<String> objectPreference = null;

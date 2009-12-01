@@ -92,6 +92,7 @@ public class ProjectList extends ArrayList<Project> {
   private int subCategory2Id = -1;
   private int subCategory3Id = -1;
   private String title = null;
+  private String twitterId = null;
   private String keywords = null;
   private double latitude = -1;
   private double longitude = -1;
@@ -102,6 +103,7 @@ public class ProjectList extends ArrayList<Project> {
   private String excludeProjectIdsString = null;
   private double minimumAverageRating = -1;
   private int forParticipant = Constants.UNDEFINED;
+
 
   // filters that go into sub-objects
   private boolean buildPermissions = false;
@@ -130,6 +132,9 @@ public class ProjectList extends ArrayList<Project> {
   private String[] excludeProjectIdString = null;
   private String[] categoryIdString = null;
   private String[] badgeIdString = null;
+
+  // Twitter filters
+  private boolean hasTwitterId = false;
 
 
   /**
@@ -470,6 +475,22 @@ public class ProjectList extends ArrayList<Project> {
   public void setTitle(String title) {
     this.title = title;
   }
+
+  /**
+   * @param twitterId the twitterId to set
+   */
+  public void setTwitterId(String twitterId) {
+    this.twitterId = twitterId;
+  }
+
+
+  /**
+   * @return the twitterId
+   */
+  public String getTwitterId() {
+    return twitterId;
+  }
+
 
   public String getKeywords() {
     return keywords;
@@ -987,6 +1008,26 @@ public class ProjectList extends ArrayList<Project> {
     this.minimumAverageRating = Double.parseDouble(minimumAverageRating);
   }
 
+  /**
+   * @param hasTwitterId the hasTwitterId to set
+   */
+  public void setHasTwitterId(boolean hasTwitterId) {
+    this.hasTwitterId = hasTwitterId;
+  }
+
+  /**
+   * @param hasTwitterId the hasTwitterId to set
+   */
+  public void setHasTwitterId(String hasTwitterId) {
+    this.hasTwitterId = DatabaseUtils.parseBoolean(hasTwitterId);
+  }
+
+  /**
+   * @return the hasTwitterId
+   */
+  public boolean getHasTwitterIdy() {
+    return hasTwitterId;
+  }
 
   /**
    * Gets the htmlSelect attribute of the ProjectList object
@@ -1140,6 +1181,9 @@ public class ProjectList extends ArrayList<Project> {
     if (sqlFilter == null) {
       sqlFilter = new StringBuffer();
     }
+    if (hasTwitterId) {
+      sqlFilter.append("AND (twitter_id IS NOT NULL AND twitter_id <> '') ");
+    }
     if (groupId > -1) {
       sqlFilter.append("AND group_id = ? ");
     }
@@ -1230,6 +1274,9 @@ public class ProjectList extends ArrayList<Project> {
     if (title != null) {
       sqlFilter.append("AND lower(title) = ? ");
     }
+    if (twitterId != null) {
+      sqlFilter.append("AND lower(twitter_id) = ? ");
+    }
     if (keywords != null) {
       sqlFilter.append("AND lower(keywords) = ? ");
     }
@@ -1312,7 +1359,7 @@ public class ProjectList extends ArrayList<Project> {
     }
 
     if (minimumAverageRating != -1) {
-      sqlFilter.append("AND  rating_avg > ? ");
+      sqlFilter.append("AND rating_avg > ? ");
     }
     if (alertRangeStart != null) {
       sqlFilter.append("AND p.entered >= ? ");
@@ -1420,6 +1467,9 @@ public class ProjectList extends ArrayList<Project> {
     }
     if (title != null) {
       pst.setString(++i, title.toLowerCase());
+    }
+    if (twitterId != null) {
+      pst.setString(++i, twitterId.toLowerCase());
     }
     if (keywords != null) {
       pst.setString(++i, keywords.toLowerCase());
@@ -1661,4 +1711,3 @@ public class ProjectList extends ArrayList<Project> {
     return id;
   }
 }
-

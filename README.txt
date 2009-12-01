@@ -194,6 +194,7 @@ Quartz                            Apache Software License
 ROME                              Apache Software License
 TinyMCE                           LGPL
 TMExtractors                      Apache style
+Twitter4J                         BSD style
 UnitPNGFix by Unit Interactive    Creative Commons Attribution 3.0 Unported
  http://labs.unitinteractive.com/unitinteractive.com
 Xerces                            Apache Software License

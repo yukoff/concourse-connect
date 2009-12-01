@@ -93,6 +93,7 @@
     </module>
     <module name="promotions" layout="promotions-portal-layout.xml" permission="project-ads-view">
       <url name="/show" object="/promotions" page="list"/>
+      <url name="/modify" object="/promotions" page="form"/>
       <url name="/show" object="/promotion" page="details"/>
       <url name="/create" object="/promotion" page="form"/>
       <url name="/modify" object="/promotion" page="form"/>

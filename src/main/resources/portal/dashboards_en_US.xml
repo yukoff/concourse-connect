@@ -346,9 +346,9 @@
           <portlet name="ActivityStreamPortlet" class="detailed-list " isSensitive="true">
             <title>Chatter</title>
             <content>Here's what others are saying...</content>
-            <project>${main-profile.uniqueId}</project>
             <events>
               <value>site-chatter</value>
+              <value>twitter</value>
             </events>
             <limit>10</limit>
           </portlet>
@@ -1706,6 +1706,14 @@
             <title>Recent Discussions</title>
             <category>People</category>
             <limit>5</limit>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="detailed-list " cache="180" isSensitive="true">
+            <title>Recent Tweets</title>
+            <category>People</category>
+            <events>
+            	<value>twitter</value>
+            </events>
+            <limit>15</limit>
           </portlet>
           <portlet name="TopContributionsPortlet" class="detailed-list " isSensitive="true">
             <title>Top Site Contributors</title>
@@ -4585,6 +4593,7 @@
             	<value>businessFax=Fax</value>
             	<value>email1=Email</value>
             	<value>webPage=Website</value>
+              <value>twitterId=Link your Twitter Id</value>
             	<value>keywords=Keywords</value>
             	<value>shortDescription=Description</value>
             </businesses>
@@ -4601,6 +4610,7 @@
               <value>businessFax=Fax</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </partners>
@@ -4617,6 +4627,7 @@
               <value>businessFax=Fax</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </organizations>
@@ -4632,6 +4643,7 @@
               <value>businessPhone=Phone</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </committees>
@@ -4662,6 +4674,7 @@
               <value>businessPhone=Phone</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </groups>
@@ -4684,6 +4697,7 @@
               <value>businessFax=Fax</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </events>
@@ -4695,6 +4709,7 @@
               <value>postalCode=Postal Code</value>
               <value>country=Country</value>
               <value>webPage=Personal Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>shortDescription=Description</value>
             </people>
             <ideas>
@@ -4728,6 +4743,7 @@
               <value>country=Country</value>
               <value>businessPhone=Phone</value>
               <value>webPage=Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Short description</value>
             </places>
@@ -4769,12 +4785,14 @@
               <value>pageTitle=Product Information</value>
               <value>title=Product Name</value>
               <value>keywords=Keywords</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>shortDescription=Description</value>
             </products>
             <clusters>
               <value>Cluster Information</value>
               <value>title=Cluster Name</value>
               <value>keywords=Keywords</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>shortDescription=Short description</value>
             </clusters>
           </portlet>

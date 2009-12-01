@@ -204,6 +204,9 @@
           <label>Web Site</label>
           <input type="text" name="webPage" size="35" maxlength="80"
                    value="<%= toHtmlValue(project.getWebPage()) %>">
+          <label for="twitterId">Link your Twitter Id</label>
+          <input type="text" name="twitterId" id="twitterId" size="35" maxlength="80"
+                   value="<%= toHtmlValue(project.getTwitterId()) %>">
         </fieldset>
         <fieldset>
           <legend><ccp:label name="projectsCenterModifyProject.Location">Location</ccp:label></legend>

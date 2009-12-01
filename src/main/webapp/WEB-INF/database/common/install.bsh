@@ -4,6 +4,7 @@ import java.util.*;
 import com.concursive.connect.web.modules.login.dao.*;
 import com.concursive.connect.web.modules.reports.dao.*;
 import com.concursive.connect.web.modules.translation.dao.*;
+import com.concursive.connect.web.modules.processes.dao.Process;
 import com.concursive.connect.web.modules.upgrade.utils.UpgradeUtils;
 
 // System Defaults
@@ -107,3 +108,8 @@ if (databaseVersionsFile.exists()) {
     }
   }
 }
+
+// Twitter Query job process log
+Process process = new Process();
+process.setDescription("TwitterQueryJob");
+process.insert(db);

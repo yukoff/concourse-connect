@@ -188,6 +188,7 @@
               <value>wiki</value>
               <value>wiki-comment</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -348,6 +349,7 @@
             	<value>reply</value>
               <value>wiki</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -599,6 +601,7 @@
             	<value>reply</value>
               <value>wiki</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -806,6 +809,7 @@
             	<value>reply</value>
               <value>wiki</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -1019,6 +1023,7 @@
             	<value>reply</value>
             	<value>wiki</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -1224,6 +1229,7 @@
             	<value>reply</value>
               <value>wiki</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -1432,6 +1438,7 @@
             	<value>reply</value>
             	<value>wiki</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -1620,6 +1627,7 @@
               <value>wiki</value>
               <value>wiki-comment</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -1771,6 +1779,7 @@
               <value>wiki</value>
               <value>wiki-comment</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -1961,6 +1970,7 @@
             	-->
               <value>wiki</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -2220,6 +2230,7 @@
               <value>wiki</value>
               <value>wiki-comment</value>
               <value>user-entry</value>
+              <value>twitter</value>
             </events>
             <limit>15</limit>
           </portlet>
@@ -2428,6 +2439,7 @@
               <value>postalCode=Postal Code</value>
               <value>country=Country</value>
               <value>webPage=Personal Website</value>
+              <value>twitterId=Link your Twitter Id</value>
               <value>shortDescription=Description</value>
             </people>
             <ideas>

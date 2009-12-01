@@ -5094,6 +5094,14 @@
             <includeReplies>false</includeReplies>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
       <row>

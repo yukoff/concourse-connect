@@ -105,6 +105,9 @@ public class ExpireClassifiedAdAction implements IPortletAction {
     classified.setExpirationDate(new Timestamp(Calendar.getInstance(user.getLocale()).getTimeInMillis()));
     classified.update(db);
 
+    // Index the record
+    PortalUtils.indexAddItem(request, classified);
+
     // This call will close panels and perform redirects
     return (PortalUtils.performRefresh(request, response, "/show/classifieds"));
   }

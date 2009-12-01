@@ -107,14 +107,14 @@ public class SearchResultsByClassified implements IPortletViewer {
       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
       
       //Fetch only those that are published. TODO: performance testing as this results in a query explosion
-      //queryString += " AND (published:[* TO " + String.valueOf(formatter.format(currentTimestamp) + "])");
+      queryString += " AND (published:[20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "])");
       //Fetch only those that have not expired
-      //queryString += " AND (expired:{" + String.valueOf(formatter.format(currentTimestamp) + " TO *})");
+      queryString += " NOT (expired:{20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "})");
       
       
       // Customize the string
       queryString += " AND (type:classifieds) ";
-
+      
       // Search results will be set in query object...
       IndexerQueryResultList query = new IndexerQueryResultList(queryString);
       query.setQueryIndexType(Constants.INDEXER_FULL);

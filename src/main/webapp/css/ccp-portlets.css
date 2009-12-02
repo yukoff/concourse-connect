@@ -887,7 +887,7 @@ ol li .leftColumn { clear:both }
 .toolTip {  }
 
 #tabWrapper .yui-nav .toolsTab a {
-  background: #EA9C46 url(../../../images/connect321/toolsTabBG.png) top left repeat-x;
+  /*background: #EA9C46 url(../../../images/connect321/toolsTabBG.png) top left repeat-x;*/
   border: 1px solid #EA9C46;
 }
 
@@ -1844,14 +1844,8 @@ li.listing {
 }
 
 .detailed-list li address {
-  position: relative;
-  display:block;
-  vertical-align: top;
-  clear: none;
   margin: 0 0 0 60px;
   padding: 0;
-  top: 0;
-  width: 100%;
 }
 
 .detailed-list .external,

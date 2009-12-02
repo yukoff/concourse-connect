@@ -55,7 +55,6 @@
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <c:set var="hits" value="${hits}"/>
 <jsp:useBean id="hits" type="com.concursive.connect.indexer.IndexerQueryResultList"/>
-<div class="portletWrapper">
 <h3><c:out value="${title}"/></h3>
 <ul>
 <%
@@ -72,4 +71,3 @@
   }
 %>
 </ul>
-</div>

@@ -238,6 +238,14 @@
             <hasMoreURL>/page/classifieds/all</hasMoreURL>
             <hasMoreTitle>see more classifieds</hasMoreTitle>
           </portlet>
+          <!--
+          <portlet name="RssPortlet" timeout="5" class="basic-list " cache="900">
+            <title>Sample News</title>
+            <feed><![CDATA[http://www.wavy.com/feeds/rssFeed?siteId=20003&obfType=RSS_FEED&categoryId=30382]]></feed>
+            <limit>5</limit>
+            <showDescription>false</showDescription>
+          </portlet>
+          -->
           <portlet name="ProxyPortlet" cache="3700" timeout="3" class="ads">
             <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
             <adContext>ad-230x600</adContext>
@@ -322,10 +330,6 @@
           </portlet>
         </column>
         <column width="300">
-          <portlet name="ProxyPortlet"  timeout="3" class="ads" cache="3600">
-            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
-            <adContext>ad-280x250</adContext>
-          </portlet>
           <portlet name="ProjectWikiContentPortlet" isAdmin="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Message of the day</wiki>

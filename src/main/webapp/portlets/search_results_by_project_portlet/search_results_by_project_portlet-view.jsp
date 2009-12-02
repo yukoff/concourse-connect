@@ -45,6 +45,7 @@
   --%>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.indexer.IndexerQueryResult" %>
+<%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -64,21 +65,28 @@
       <c:forEach var="document" items="${hits}">
         <c:set var="projectId">${document.projectId}</c:set>
         <c:set var="title">${document.title}</c:set>
-        <% pageContext.setAttribute("project",ProjectUtils.loadProject((Integer.parseInt((String)pageContext.getAttribute("projectId"))))); %>
+        <%
+          Project project = ProjectUtils.loadProject((Integer.parseInt((String)pageContext.getAttribute("projectId"))));
+          pageContext.setAttribute("project",project);
+        %>
         <li>
-          <div class="leftColumn">
-            <h3><a href="${ctx}/show/${project.uniqueId}"><c:out value="${title}"/></a></h3>
-            <c:if test="${!empty project.location}">
-              <address><c:out value="${project.location}"/></address>
-            </c:if>
-          </div>
-          <div class="rightColumn">
+          <c:choose>
+            <c:when test="${!empty project.logo}">
+              <img alt="<c:out value="${project.title}"/> photo" src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>" />
+            </c:when>
+            <c:when test="${!empty project.category.logo}">
+              <img alt="Default photo" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
+            </c:when>
+          </c:choose>
           <ccp:rating id='${projectId}'
                    showText='false'
                       count='${project.ratingCount}'
                       value='${project.ratingValue}'
                         url=''/>
-          </div>
+          <h3><a href="${ctx}/show/${project.uniqueId}"><c:out value="${title}"/></a></h3>
+          <c:if test="${!empty project.location}">
+            <address><c:out value="${project.location}"/></address>
+          </c:if>
         </li>
       </c:forEach>
       <c:if test='${!empty hasMoreRecords && !empty hasMoreURL}'>

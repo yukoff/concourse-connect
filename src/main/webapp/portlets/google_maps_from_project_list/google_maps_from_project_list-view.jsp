@@ -43,11 +43,10 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
-<%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
-<%@ page import="com.concursive.commons.text.StringUtils" %>
-<%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <jsp:useBean id="projectList" class="com.concursive.connect.web.modules.profile.dao.ProjectList" scope="request"/>
@@ -61,9 +60,8 @@
   request.setAttribute("key", key);
 %>
 <c:set var="mapHeight" value="300px" scope="request"/>
-<%-- 2.73 --%>
 <c:set var="mapVersion" value="2.s" scope="request"/>
-<c:set var="mapZoom" value="2" scope="request"/>
+<c:set var="mapZoom" value="4" scope="request"/>
 <script src="http://maps.google.com/maps?file=api&v=${mapVersion}&key=${key}&hl=en" type="text/javascript"></script>
 <style type="text/css">
 	v\:* {
@@ -84,30 +82,43 @@ function initializeMap${mapId}(e) {
     <c:forEach var="project" items="${projectList}" varStatus="status">
       <c:set var="project" value="${project}" scope="request"/>
       <jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" />
-      var thisIcon${status.count} = new GIcon();
-      thisIcon${status.count}.shadow = '${ctx}/images/map_markers/marker_shadow.png';
-      thisIcon${status.count}.iconSize = new GSize(33, 37);
-      thisIcon${status.count}.shadowSize = new GSize(57, 33);
-      thisIcon${status.count}.iconAnchor = new GPoint(16, 34);
-      thisIcon${status.count}.infoWindowAnchor = new GPoint(28, 12);
       <c:choose>
-        <c:when test="${project.category.description eq 'Businesses'}">
-          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_orange_business.png';
-        </c:when>
-        <c:when test="${project.category.description eq 'Organizations'}">
-          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_orange_org.png';
-        </c:when>
-        <c:when test="${project.category.description eq 'People'}">
-          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_blue_people.png';
-        </c:when>
-        <c:when test="${project.category.description eq 'Events'}">
-          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_purple_event.png';
-        </c:when>
-        <c:when test="${project.category.description eq 'Groups'}">
-          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_green_group.png';
+        <c:when test="${empty project.address}">
+          var thisIcon${status.count} = new GIcon();
+          thisIcon${status.count}.image = '${ctx}/images/map_markers/zone.png';
+          thisIcon${status.count}.shadow = '${ctx}/images/map_markers/zone.png';
+          thisIcon${status.count}.iconSize = new GSize(120, 120);
+          thisIcon${status.count}.shadowSize = new GSize(120, 120);
+          thisIcon${status.count}.iconAnchor = new GPoint(60, 60);
+          thisIcon${status.count}.infoWindowAnchor = new GPoint(60, 60);
         </c:when>
         <c:otherwise>
-          thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_gray.png';
+          var thisIcon${status.count} = new GIcon();
+          thisIcon${status.count}.shadow = '${ctx}/images/map_markers/marker_shadow.png';
+          thisIcon${status.count}.iconSize = new GSize(33, 37);
+          thisIcon${status.count}.shadowSize = new GSize(57, 33);
+          thisIcon${status.count}.iconAnchor = new GPoint(16, 34);
+          thisIcon${status.count}.infoWindowAnchor = new GPoint(28, 12);
+          <c:choose>
+            <c:when test="${project.category.description eq 'Businesses'}">
+              thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_orange_business.png';
+            </c:when>
+            <c:when test="${project.category.description eq 'Organizations'}">
+              thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_orange_org.png';
+            </c:when>
+            <c:when test="${project.category.description eq 'People'}">
+              thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_blue_people.png';
+            </c:when>
+            <c:when test="${project.category.description eq 'Events'}">
+              thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_purple_event.png';
+            </c:when>
+            <c:when test="${project.category.description eq 'Groups'}">
+              thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_green_group.png';
+            </c:when>
+            <c:otherwise>
+              thisIcon${status.count}.image = '${ctx}/images/map_markers/marker_gray.png';
+            </c:otherwise>
+          </c:choose>
         </c:otherwise>
       </c:choose>
       <c:if test="${status.count == 1}">

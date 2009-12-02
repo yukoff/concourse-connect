@@ -112,6 +112,7 @@ public class TwitterQueryJob implements StatefulJob {
 
       // Create Query Object for searching twitter
       Query query = new Query("#" + twitterHash);
+      query.setRpp(99);
       if (sinceId > 0) {
         // Set since_id in the query
         query.setSinceId(sinceId);

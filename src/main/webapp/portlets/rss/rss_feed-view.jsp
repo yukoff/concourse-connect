@@ -68,7 +68,7 @@
           </c:choose>
         </h4>
         <c:if test="${!empty feed.publishedDate}">
-          <cite><ccp:tz date="${feed.publishedDate}" pattern="relative"/></cite>
+          <i><ccp:tz date="${feed.publishedDate}" pattern="relative"/></i>
         </c:if>
       </c:if>
       <c:if test="${showDescription eq 'true' && !empty feed.description.value}">

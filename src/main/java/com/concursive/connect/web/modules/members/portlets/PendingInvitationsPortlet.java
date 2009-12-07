@@ -108,61 +108,17 @@ public class PendingInvitationsPortlet extends GenericPortlet {
           Project targetProject = PortalUtils.retrieveAuthorizedProject(Integer.parseInt(projectId), request);
           TeamMember prevMember = new TeamMember(db, targetProject.getId(), project.getOwner());
           if ("true".equals(accept)) {
-            TeamMember teamMember = new TeamMember(db, targetProject.getId(), project.getOwner());
-            teamMember.setStatus(TeamMember.STATUS_JOINED);
-            teamMember.setModifiedBy(user.getId());
-            teamMember.update(db);
-            PortalUtils.processUpdateHook(request, prevMember, teamMember);
-
-            //Reciprocate membership in the accepting users profile if the target project is a user profile
-            
-            if (targetProject.getOwner() != -1) {
-	            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
-	            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-	              Project thisUserProfileProject = user.getProfileProject();
-	              TeamMemberList teamMemberList = thisUserProfileProject.getTeam();
-	              TeamMember reciprocatingTeamMember = null;
-	            	//Determine if the reciprocal already exists, then update if necessary
-	              if (teamMemberList.hasUserId(targetProject.getOwner())) {
-	            		reciprocatingTeamMember = thisUserProfileProject.getTeam().getTeamMember(user.getId());
-	            		if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED){
-	            			// DO Nothing
-	            		} else {
-	    	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
-	    	            reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-	    	            reciprocatingTeamMember.update(db);
-	            		}
-	              } else {
-	            		//Reciprocal does not exist, therefore create one
-	              	reciprocatingTeamMember = new TeamMember();
-	              	reciprocatingTeamMember.setProjectId(thisUserProfileProject.getId());
-	              	reciprocatingTeamMember.setUserId(targetProject.getOwner());
-	              	reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
-	  	          	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-	              	reciprocatingTeamMember.setEnteredBy(user.getId());
-	              	reciprocatingTeamMember.setModifiedBy(user.getId());
-	              	reciprocatingTeamMember.insert(db);
-	              }
-	            }
-            }
+            // The user accepted becoming a member of a project
+            ProjectUtils.accept(db, targetProject.getId(), project.getOwner());
+            TeamMember thisMember = new TeamMember(db, targetProject.getId(), project.getOwner());
+            // Let the workflow know
+            PortalUtils.processUpdateHook(request, prevMember, thisMember);
           } else {
-            TeamMember teamMember = new TeamMember(db, targetProject.getId(), project.getOwner());
-            teamMember.setStatus(TeamMember.STATUS_REFUSED);
-            if (targetProject.getOwner() != -1) {
-	            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
-	            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-	            	//Remove team member if request to become a friend of a user profile is denied
-	            	//Change user status to refused for workflow to use
-	              teamMember.delete(db);
-	            } else {
-	            	//Change user status to refused
-	              teamMember.update(db);
-	            }
-            } else {
-            	//Change user status to refused
-              teamMember.update(db);
-            }
-            PortalUtils.processUpdateHook(request, prevMember, teamMember);
+            // The user declined becoming a member of a project
+            ProjectUtils.reject(db, targetProject.getId(),  project.getOwner());
+            TeamMember thisMember = new TeamMember(db, targetProject.getId(), project.getOwner());
+            // Let the workflow know
+            PortalUtils.processUpdateHook(request, prevMember, thisMember);
           }
           response.setContentType("text/html");
           PrintWriter out = response.getWriter();

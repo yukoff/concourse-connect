@@ -333,7 +333,7 @@ public class ProjectUtils {
             "WHERE project_id = ? " +
             "AND user_id = ? " +
             "AND status = ? ");
-    DatabaseUtils.setInt(pst, 1, TeamMember.STATUS_ACCEPTED);
+    DatabaseUtils.setInt(pst, 1, TeamMember.STATUS_ADDED);
     pst.setInt(2, projectId);
     pst.setInt(3, userId);
     pst.setInt(4, TeamMember.STATUS_PENDING);
@@ -352,17 +352,16 @@ public class ProjectUtils {
    * @throws SQLException Description of the Exception
    */
   public static void reject(Connection db, int projectId, int userId) throws SQLException {
+    // Remove the user...
     PreparedStatement pst = db.prepareStatement(
-        "UPDATE project_team " +
-            "SET status = ? " +
+        "DELETE FROM project_team " +
             "WHERE project_id = ? " +
             "AND user_id = ? " +
             "AND status = ? ");
-    pst.setInt(1, TeamMember.STATUS_REFUSED);
-    pst.setInt(2, projectId);
-    pst.setInt(3, userId);
-    pst.setInt(4, TeamMember.STATUS_PENDING);
-    pst.executeUpdate();
+    pst.setInt(1, projectId);
+    pst.setInt(2, userId);
+    pst.setInt(3, TeamMember.STATUS_PENDING);
+    pst.execute();
     pst.close();
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, projectId);
   }

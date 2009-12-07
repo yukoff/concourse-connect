@@ -400,11 +400,12 @@
     <forward name="UpdateProjectOK" resource="/projects_center_details_refresh.jsp"/>
     <forward name="DeleteProjectOK" resource="/ProjectManagement.do?command=ProjectList"/>
     <forward name="DeleteProjectERROR" resource="/projects_center_details_refresh.jsp"/>
-    <forward name="CustomizeProjectOK" resource="/ProjectManagement.do?command=ProjectCenter&amp;command=CustomizeProject"/>
+    <forward name="CustomizeProjectOK" resource="/ProjectManagement.do?command=CustomizeProject"/>
     <forward name="UpdateFeaturesOK" resource="/projects_center_setup_refresh.jsp"/>
     <forward name="UpdatePermissionsOK" resource="/projects_center_setup_refresh.jsp"/>
     <forward name="AcceptProjectOK" resource="/invites" redirect="true"/>
     <forward name="RejectProjectOK" resource="/invites" redirect="true"/>
+    <forward name="ConfirmationPendingOK" resource="/ProjectManagementTeam.do?command=ConfirmationPending"/>
     <forward name="ResizeOK" resource="/projects_center_resize.jsp"/>
     <forward name="RSSOK" resource="/rss.jsp"/>
     <forward name="MakeWatchOK" resource="/projects_make_watch.jsp"/>
@@ -470,6 +471,7 @@
     <forward name="ResendInvitationOK" resource="/projects_center.jsp"/>
     <forward name="ConfirmJoinOK" resource="/project_join_form.jsp"/>
     <forward name="ConfirmAskToBecomeMemberOK" resource="/project_ask_to_become_member.jsp"/>
+    <forward name="ConfirmationPendingOK" resource="/project_ask_to_become_member_pending.jsp"/>
     <forward name="AskToBecomeMemberOK" resource="/projects_center_team_refresh.jsp"/>
     <forward name="UpdateToolsOK" resource="/projects_center_team_refresh.jsp"/>
     <forward name="TooltipOK" resource="/projects_center_team_tooltip.jsp"/>

@@ -1177,9 +1177,30 @@ public final class ProjectManagement extends GenericAction {
     }
 
     try {
-      db = getConnection(context);
       // Determine the project
       thisProject = retrieveAuthorizedProject(Integer.parseInt(projectId), context);
+
+      // Determine the user viewing this page
+      User thisUser = getUser(context);
+
+      // If this project requires membership, and guests are not allowed, then show an information page...
+      if (!thisProject.getProfile() && !thisUser.getAccessAdmin() &&
+          thisProject.getFeatures().getMembershipRequired() && !thisProject.getFeatures().getAllowGuests()) {
+        // Check the status of this user...
+        if (!thisProject.getTeam().hasUserId(thisUser.getId())) {
+          // You must ask to join
+          redirect = "/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&pid=" + thisProject.getId();
+          context.getRequest().setAttribute("redirectTo", redirect);
+          context.getRequest().removeAttribute("PageLayout");
+          return "Redirect301";
+        } else if (thisProject.getTeam().getTeamMember(thisUser.getId()).getStatus() != TeamMember.STATUS_ADDED) {
+          // Your request is pending...
+          return "ConfirmationPendingOK";
+        }
+      }
+
+      // Determine the database connection to use
+      db = getConnection(context);
 
       // Get this project's badges
       ProjectBadgeList projectBadgeList = new ProjectBadgeList();
@@ -1204,9 +1225,6 @@ public final class ProjectManagement extends GenericAction {
         if (LOG.isTraceEnabled()) {
           LOG.trace(portalBean.toString());
         }
-
-        // Determine the user viewing this page
-        User thisUser = getUser(context);
 
         // Get the dashboard page with the portlets
         DashboardPage page = ProjectPortalUtils.retrieveDashboardPage(portalBean);
@@ -1694,7 +1712,9 @@ public final class ProjectManagement extends GenericAction {
       LOG.error("error", errorMessage);
       return "404Error";
     } finally {
-      this.freeConnection(context, db);
+      if (db != null) {
+        freeConnection(context, db);
+      }
     }
   }
 

@@ -61,6 +61,15 @@
         </value>
         <value>
           <![CDATA[
+            <content>Sign In</content>
+            <title>Sign in with an existing account</title>
+            <href>/login?redirectTo=%2F</href>
+            <rule>isLoggedOut</rule>
+            <secure>true</secure>
+          ]]>
+        </value>
+        <value>
+          <![CDATA[
             <content>Add a product</content>
             <title>Add a product</title>
             <href>/add_product.shtml</href>
@@ -262,7 +271,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="profile-portlet-body home " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="profile-portlet-body home " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to the site</wiki>
             <showTitle>false</showTitle>
@@ -336,7 +345,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" cache="50" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" cache="50" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Message of the day</wiki>
             <showTitle>false</showTitle>
@@ -422,7 +431,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="products " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="products " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to products</wiki>
             <showTitle>false</showTitle>
@@ -538,7 +547,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="services " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="services " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to services</wiki>
             <showTitle>false</showTitle>
@@ -654,7 +663,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="solutions " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="solutions " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to solutions</wiki>
             <showTitle>false</showTitle>
@@ -770,7 +779,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="partners " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="partners " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to partners</wiki>
             <showTitle>false</showTitle>
@@ -898,7 +907,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="businesses " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="businesses " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to businesses</wiki>
             <showTitle>false</showTitle>
@@ -1025,7 +1034,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="organizations " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="organizations " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to organizations</wiki>
             <showTitle>false</showTitle>
@@ -1148,7 +1157,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="committees " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="committees " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to committees</wiki>
             <showTitle>false</showTitle>
@@ -1252,7 +1261,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="sponsors " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="sponsors " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to sponsors</wiki>
             <showTitle>false</showTitle>
@@ -1380,7 +1389,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="departments " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="departments " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to departments</wiki>
             <showTitle>false</showTitle>
@@ -1507,7 +1516,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="groups " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="groups " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to groups</wiki>
             <showTitle>false</showTitle>
@@ -1635,7 +1644,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="people " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="people " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to people</wiki>
             <showTitle>false</showTitle>
@@ -1765,7 +1774,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="places " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="places " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to places</wiki>
             <showTitle>false</showTitle>
@@ -1892,7 +1901,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="neighborhoods " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="neighborhoods " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to neighborhoods</wiki>
             <showTitle>false</showTitle>
@@ -2019,7 +2028,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="events " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="events " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to events</wiki>
             <showTitle>false</showTitle>
@@ -2147,7 +2156,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="ideas " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="ideas " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to ideas</wiki>
             <showTitle>false</showTitle>
@@ -2270,7 +2279,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="projects " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="projects " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to projects</wiki>
             <showTitle>false</showTitle>
@@ -2376,7 +2385,7 @@
             <showTitle>false</showTitle>
             <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
-          <portlet name="ProjectWikiContentPortlet" class="clusters " cache="10" isAdmin="false">
+          <portlet name="ProjectWikiContentPortlet" class="clusters " cache="10" isAdmin="false" isSensitive="true">
             <project>${main-profile.uniqueId}</project>
             <wiki>Welcome to clusters</wiki>
             <showTitle>false</showTitle>
@@ -3244,7 +3253,10 @@
             <allowGuests>true</allowGuests>
             <showAllowGuestsOption>false</showAllowGuestsOption>
             <allowParticipants>true</allowParticipants>
-            <showRequiresMembershipOption>false</showRequiresMembershipOption>
+            <showRequiresMembershipOption>true</showRequiresMembershipOption>
+            <!--
+            <requiresMembership>true</requiresMembership>
+            -->
             <isApproved>true</isApproved>
             <showAddress>true</showAddress>
             <showShortDescription>true</showShortDescription>
@@ -3355,20 +3367,18 @@
         <column width="auto" class="main">
           <portlet name="ContentPortlet" isUser="false">
             <content>
-              <![CDATA[<h3>Start a Group</h3>
-                <p>You must be signed in to start a group. <a href="${ctx}/login?redirectTo=/start_group.shtml">Click here to sign in</a></p>
+              <![CDATA[<h3>Start a Department</h3>
+                <p>You must be signed in to start a department. <a href="${ctx}/login?redirectTo=/start_group.shtml">Click here to sign in</a></p>
 								<p>Don't have an account? <a href="${ctx}/register">We'll get you set up once you click here.</a></p>]]>
             </content>
           </portlet>
           <portlet name="ContentPortlet" isUser="false">
             <content>
               <![CDATA[
-								<h3>Why Start a Group?</h3>
+								<h3>Why Start a Department?</h3>
                 <ol>
-                <li>Connect with others that share your interests or cause</li>
-                <li>Get tools to manage your own community around your group, like blogs, wikis and forums</li>
-                <li>Grow your group with new members from the community</li>
-                <li>It's FREE to get started!</li>
+                <li>Connect with others that are in your department</li>
+                <li>Get tools to manage your own community around your department, like blogs, wikis and forums</li>
                 </ol>
                 ]]>
             </content>
@@ -4295,6 +4305,7 @@
       </row>
     </page>
  </pages>
+
   <!-- Application Navigation Portals -->
   <navigation>
     <page name="User Dashboard">
@@ -4597,7 +4608,7 @@
             	<value>businessFax=Fax</value>
             	<value>email1=Email</value>
             	<value>webPage=Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
             	<value>keywords=Keywords</value>
             	<value>shortDescription=Description</value>
             </businesses>
@@ -4614,7 +4625,7 @@
               <value>businessFax=Fax</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </partners>
@@ -4631,7 +4642,7 @@
               <value>businessFax=Fax</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </organizations>
@@ -4647,7 +4658,7 @@
               <value>businessPhone=Phone</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </committees>
@@ -4678,7 +4689,7 @@
               <value>businessPhone=Phone</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </groups>
@@ -4701,7 +4712,7 @@
               <value>businessFax=Fax</value>
               <value>email1=Email</value>
               <value>webPage=Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Description</value>
             </events>
@@ -4713,7 +4724,7 @@
               <value>postalCode=Postal Code</value>
               <value>country=Country</value>
               <value>webPage=Personal Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>shortDescription=Description</value>
             </people>
             <ideas>
@@ -4747,7 +4758,7 @@
               <value>country=Country</value>
               <value>businessPhone=Phone</value>
               <value>webPage=Website</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>keywords=Keywords</value>
               <value>shortDescription=Short description</value>
             </places>
@@ -4789,14 +4800,14 @@
               <value>pageTitle=Product Information</value>
               <value>title=Product Name</value>
               <value>keywords=Keywords</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>shortDescription=Description</value>
             </products>
             <clusters>
               <value>Cluster Information</value>
               <value>title=Cluster Name</value>
               <value>keywords=Keywords</value>
-              <value>twitterId=Link your Twitter Id</value>
+              <value>twitterId=Twitter Id</value>
               <value>shortDescription=Short description</value>
             </clusters>
           </portlet>

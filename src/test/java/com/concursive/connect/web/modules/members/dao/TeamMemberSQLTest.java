@@ -93,7 +93,7 @@ public class TeamMemberSQLTest extends AbstractConnectionPoolTest {
     member.setProjectId(project.getId());
     member.setUserId(USER_ID);
     member.setUserLevel(roleList.getIdFromLevel(TeamMember.PROJECT_ADMIN));
-    member.setStatus(TeamMember.STATUS_ACCEPTED);
+    member.setStatus(TeamMember.STATUS_ADDED);
     member.setEnteredBy(USER_ID);
     member.setModifiedBy(USER_ID);
     boolean memberResult = member.insert(db);

@@ -248,12 +248,7 @@ public class InviteMembersPortlet extends GenericPortlet {
           }
         }
         request.setAttribute(ROLE_LIST, roleList);
-
-        if (project.getFeatures().getAllowParticipants()) {
-          request.setAttribute(DEFAULT_ROLE, new Integer(TeamMember.PARTICIPANT));
-        } else {
-          request.setAttribute(DEFAULT_ROLE, new Integer(TeamMember.GUEST));
-        }
+        request.setAttribute(DEFAULT_ROLE, new Integer(TeamMember.MEMBER));
         // Cleanup other session attributes
         request.getPortletSession().removeAttribute(HAS_MULTIPLE_MATCHES);
         request.getPortletSession().removeAttribute(ACTION_ERROR);

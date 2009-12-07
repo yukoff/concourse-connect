@@ -122,6 +122,7 @@ public class FeedServlet extends HttpServlet {
       // Generate the RSS and replace the cache for all public projects
       SyndFeed feed = new SyndFeedImpl();
       if (path.endsWith("/rss.xml")) {
+        // @todo /feed/products/name_of_product/rss.xml
         // Use the purpose of the site for determining what is included in the feed
         String purpose = prefs.get(ApplicationPrefs.PURPOSE);
 

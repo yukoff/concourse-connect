@@ -127,6 +127,15 @@
     <entry>rating</entry>
   </feed>
   -->
+  <feed url="category,products" limit="50" useDefaultProfile="true">
+    <entry>blog</entry>
+  </feed>
+  <feed url="category,solutions" limit="50" useDefaultProfile="true">
+    <entry>blog</entry>
+  </feed>
+  <feed url="category,partners" limit="50" useDefaultProfile="true">
+    <entry>blog</entry>
+  </feed>
   <feed url="category" limit="50">
     <entry>topic</entry>
     <entry>question</entry>

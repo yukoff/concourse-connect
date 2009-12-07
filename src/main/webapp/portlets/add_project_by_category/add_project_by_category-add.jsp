@@ -264,16 +264,16 @@
               <ccp:label name="projectsAddProject.allowGuests">Allow others to search for and view this listing information in the directory, otherwise the listing is private and by invitation only</ccp:label>
             </label>
           </c:if>
+          <c:if test='${showWebsite == "true"}'>
+            <label for="webPage">Website</label>
+            <input type="text" id="webPage" name="webPage" class="input longInput" maxlength="200" value="<%= toHtmlValue(project.getWebPage()) %>" />
+            <span class="characterCounter">200 characters max</span>
+          </c:if>
           <c:if test='${showRequiresMembershipOption == "true"}'>
             <label for="features_membershipRequired">
               <input type="checkbox" class="checkbox" name="features_membershipRequired" id="features_membershipRequired" value="ON" />
               <ccp:label name="projectsAddProject.membershipRequired">Require authorization by you for other users to join and participate, otherwise anyone can join and immediately collaborate</ccp:label>
             </label>
-          </c:if>
-          <c:if test='${showWebsite == "true"}'>
-            <label for="webPage">Website</label>
-            <input type="text" id="webPage" name="webPage" class="input longInput" maxlength="200" value="<%= toHtmlValue(project.getWebPage()) %>" />
-            <span class="characterCounter">200 characters max</span>
           </c:if>
           <c:if test='${showSingleImageAttachment == "true"}'>
             <label for="singleAttachment">Image

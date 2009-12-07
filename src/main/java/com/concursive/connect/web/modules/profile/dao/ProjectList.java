@@ -87,6 +87,7 @@ public class ProjectList extends ArrayList<Project> {
   private int daysLastAccessed = -1;
   private int daysLastApproved = -1;
   private boolean includeGuestProjects = false;
+  private int requiresMembership = Constants.UNDEFINED;
   private int categoryId = -1;
   private int subCategory1Id = -1;
   private int subCategory2Id = -1;
@@ -381,6 +382,26 @@ public class ProjectList extends ArrayList<Project> {
    */
   public void setIncludeGuestProjects(String tmp) {
     this.includeGuestProjects = DatabaseUtils.parseBoolean(tmp);
+  }
+
+  public int getRequiresMembership() {
+    return requiresMembership;
+  }
+
+  public void setRequiresMembership(int requiresMembership) {
+    this.requiresMembership = requiresMembership;
+  }
+
+  public void setRequiresMembership(String requiresMembership) {
+    this.requiresMembership = Integer.parseInt(requiresMembership);
+  }
+
+  public void setRequiresMembership(boolean requiresMembership) {
+    if (requiresMembership) {
+      this.requiresMembership = Constants.TRUE;
+    } else {
+      this.requiresMembership = Constants.FALSE;
+    }
   }
 
 
@@ -1217,6 +1238,9 @@ public class ProjectList extends ArrayList<Project> {
           (includeGuestProjects ? "OR (allow_guests = ? AND approvaldate IS NOT NULL) " : "") +
           ") ");
     }
+    if (requiresMembership != Constants.UNDEFINED) {
+      sqlFilter.append("AND p.membership_required = ? ");
+    }
     if (daysLastApproved > -1) {
       sqlFilter.append("AND approvaldate IS NOT NULL AND approvaldate > ? ");
     }
@@ -1418,6 +1442,9 @@ public class ProjectList extends ArrayList<Project> {
       if (includeGuestProjects) {
         pst.setBoolean(++i, true);
       }
+    }
+    if (requiresMembership != Constants.UNDEFINED) {
+      pst.setBoolean(++i, requiresMembership == Constants.TRUE);
     }
     if (daysLastApproved > -1) {
       Calendar cal = Calendar.getInstance();

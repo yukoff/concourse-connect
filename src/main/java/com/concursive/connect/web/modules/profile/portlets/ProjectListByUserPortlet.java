@@ -147,7 +147,7 @@ public class ProjectListByUserPortlet extends GenericPortlet {
             // Fetch JUST the user's team member entry
             TeamMemberList teamMemberList = new TeamMemberList();
             teamMemberList.setUserId(userId);
-            teamMemberList.setIncludeAddedOrJoinedOrApproved(true);
+            teamMemberList.setStatus(TeamMember.STATUS_ADDED);
             teamMemberList.setBuildProject(true);
             teamMemberList.setCategoryId((category != null) ? category.getId() : null);
             teamMemberList.setPagedListInfo(pagedListInfo);

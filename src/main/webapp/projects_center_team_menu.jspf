@@ -84,48 +84,58 @@
   </c:choose>
       <ccp:permission name="project-team-edit">
         if (thisNeedsApproval) {
-          oMenu.addItem({ text: "Approve Membership", onclick: { fn: approveMembership } });
-          oMenu.addItem({ text: "Deny Membership", onclick: { fn: denyMembership } });
-        }
-        oMenu.addItem({ text: "Change Role",
-          submenu: {
-            id: loc + "submenu1",
-            itemdata: [
-              <c:if test="${currentMember.roleId <= PROJECT_ADMIN || currentMember.user.accessAdmin}">
-                { text: "Admin", onclick: { fn: changeRole, obj: "${PROJECT_ADMIN}" } },
-              </c:if>
-              <c:if test="${currentMember.roleId <= MANAGER || currentMember.user.accessAdmin}">
-                { text: "Manager", onclick: { fn: changeRole, obj: "${MANAGER}" } },
-              </c:if>
-              <c:if test="${currentMember.roleId <= CHAMPION || currentMember.user.accessAdmin}">
-                { text: "Champion", onclick: { fn: changeRole, obj: "${CHAMPION}" } },
-              </c:if>
-              <c:if test="${currentMember.roleId <= VIP || currentMember.user.accessAdmin}">
-                { text: "VIP", onclick: { fn: changeRole, obj: "${VIP}" } },
-              </c:if>
-              <c:if test="${currentMember.roleId <= MEMBER || currentMember.user.accessAdmin}">
-                { text: "Member", onclick: { fn: changeRole, obj: "${MEMBER}" } },
-              </c:if>
-              <c:if test="${currentMember.roleId <= PARTICIPANT || currentMember.user.accessAdmin}">
-                { text: "Participant", onclick: { fn: changeRole, obj: "${PARTICIPANT}" } },
-              </c:if>
-              { text: "Guest", onclick: { fn: changeRole, obj: "${GUEST}" } }
-            ]
+          <c:choose>
+            <c:when test="${project.profile}">
+              oMenu.addItem({ text: "Add as Friend", onclick: { fn: approveMembership } });
+              oMenu.addItem({ text: "Not a Friend", onclick: { fn: denyMembership } });            
+            </c:when>
+            <c:otherwise>
+              oMenu.addItem({ text: "Approve Membership", onclick: { fn: approveMembership } });
+              oMenu.addItem({ text: "Deny Membership", onclick: { fn: denyMembership } });
+            </c:otherwise>
+          </c:choose>
+        } else {
+          if (thisShowResendInvite) {
+            oMenu.addItem({ text: "Resend Invitation", onclick: { fn: resendInvitation } });
+          } else {
+            oMenu.addItem({ text: "Change Role",
+              submenu: {
+                id: loc + "submenu1",
+                itemdata: [
+                  <c:if test="${currentMember.roleId <= PROJECT_ADMIN || currentMember.user.accessAdmin}">
+                    { text: "Admin", onclick: { fn: changeRole, obj: "${PROJECT_ADMIN}" } },
+                  </c:if>
+                  <c:if test="${currentMember.roleId <= MANAGER || currentMember.user.accessAdmin}">
+                    { text: "Manager", onclick: { fn: changeRole, obj: "${MANAGER}" } },
+                  </c:if>
+                  <c:if test="${currentMember.roleId <= CHAMPION || currentMember.user.accessAdmin}">
+                    { text: "Champion", onclick: { fn: changeRole, obj: "${CHAMPION}" } },
+                  </c:if>
+                  <c:if test="${currentMember.roleId <= VIP || currentMember.user.accessAdmin}">
+                    { text: "VIP", onclick: { fn: changeRole, obj: "${VIP}" } },
+                  </c:if>
+                  <c:if test="${currentMember.roleId <= MEMBER || currentMember.user.accessAdmin}">
+                    { text: "Member", onclick: { fn: changeRole, obj: "${MEMBER}" } },
+                  </c:if>
+                  <c:if test="${currentMember.roleId <= PARTICIPANT || currentMember.user.accessAdmin}">
+                    { text: "Participant", onclick: { fn: changeRole, obj: "${PARTICIPANT}" } },
+                  </c:if>
+                  { text: "Guest", onclick: { fn: changeRole, obj: "${GUEST}" } }
+                ]
+              }
+            });
+            <c:if test="${!empty project.concursiveCRMUrl}">
+              <ccp:permission name="project-team-tools">
+                if (!thisHasTools) {
+                    oMenu.addItem({ text: "Add Access to Tools", onclick: { fn: addAccessToTools } });
+                } else {
+                    oMenu.addItem({ text: "Revoke Access to Tools", onclick: { fn: revokeAccessToTools } });
+                }
+              </ccp:permission>
+            </c:if>
           }
-        });
-        if (thisShowResendInvite) {
-          oMenu.addItem({ text: "Resend Invitation", onclick: { fn: resendInvitation } });
+          oMenu.addItem({ text: "Remove", onclick: { fn: removeFromProfile } });
         }
-        <c:if test="${!empty project.concursiveCRMUrl}">
-          <ccp:permission name="project-team-tools">
-            if (!thisHasTools) {
-                oMenu.addItem({ text: "Add Access to Tools", onclick: { fn: addAccessToTools } });
-            } else {
-                oMenu.addItem({ text: "Revoke Access to Tools", onclick: { fn: revokeAccessToTools } });
-            }
-          </ccp:permission>
-        </c:if>
-        oMenu.addItem({ text: "Remove", onclick: { fn: removeFromProfile } });
       </ccp:permission>
       oMenu.render(document.getElementById("popupLayer"));
     }

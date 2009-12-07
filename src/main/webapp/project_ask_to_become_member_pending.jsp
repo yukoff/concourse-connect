@@ -44,46 +44,26 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
-<%@ page import="com.concursive.connect.web.modules.login.dao.User" %>
-<%@ page import="com.concursive.connect.web.modules.members.dao.Invitation" %>
-<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
-<jsp:useBean id="invitationList" class="com.concursive.connect.web.modules.members.dao.InvitationList" scope="request"/>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="com.concursive.commons.http.RequestUtils" %>
+<jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
+<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request" />
 <%@ include file="initPage.jsp" %>
-<div class="portletWrapper">
-  <h3><ccp:label name="projectsCenterTeam.inviteStatus.invitationResults">Invitation results</ccp:label></h3>
-  <table class="pagedList">
-    <thead>
-      <tr>
-        <th>
-          <ccp:label name="projectsCenterTeam.inviteStatus.name">Name</ccp:label>
-        </th>
-        <th>
-          <ccp:label name="projectsCenterTeam.inviteStatus.status">Status</ccp:label>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <%
-        int rowId = 0;
-        int count = 0;
-        Iterator i = invitationList.iterator();
-        while (i.hasNext()) {
-          rowId = (rowId != 1?1:2);
-          ++count;
-          Invitation thisInvitation = (Invitation) i.next();
-      %>
-        <tr class="row<%= rowId %>">
-          <td>
-            <%= toHtml(thisInvitation.getFirstName()) %>
-            <%= toHtml(thisInvitation.getLastName()) %>
-          </td>
-          <td nowrap>
-            <ccp:evaluate if="<%= thisInvitation.getSentMail() %>"><font color="green"><ccp:label name="projectsCenterTeam.inviteStatus.invitationSent">Invitation Sent</ccp:label></font></ccp:evaluate>
-            <ccp:evaluate if="<%= !thisInvitation.getSentMail() %>"><font color="red"><ccp:label name="projectsCenterTeam.inviteSTatus.emailError">Email Error</ccp:label></font></ccp:evaluate>
-          </td>
-        </tr>
-      <% } %>
-    </tbody>
-  </table>
-  <input type="button" value="<ccp:label name="button.ok">OK</ccp:label>" class="submit" onclick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/members'"/>
+<div class="portletWrapper projectAskToBecomeMemberContainer">
+  <h2>Your request to become a member is pending.</h2>
+  <p>
+    You should receive an email once a decision has been made.
+    <c:if test="${!project.features.allowGuests}">
+      Until then, the content in this profile is unavailable.
+    </c:if>
+  </p>
+  <c:choose>
+    <c:when test="${'true' eq param.popup || 'true' eq popup}">
+      <input type="button" value="Ok" class="cancel" id="panelCloseButton">
+    </c:when>
+    <c:otherwise>
+      <a href="${ctx}/${fn:toLowerCase(project.category.description)}.shtml" class="submit">Ok</a>
+    </c:otherwise>
+  </c:choose>
 </div>

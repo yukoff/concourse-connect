@@ -52,7 +52,6 @@
 <jsp:useBean id="profileProject" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request" />
 <c:set var="STATUS_ADDED"><%= TeamMember.STATUS_ADDED %></c:set>
-<c:set var="STATUS_JOINED"><%= TeamMember.STATUS_JOINED %></c:set>
 <c:set var="STATUS_PENDING"><%= TeamMember.STATUS_PENDING %></c:set>
 <c:set var="STATUS_INVITING"><%= TeamMember.STATUS_INVITING %></c:set>
 <c:set var="STATUS_MAILERROR"><%= TeamMember.STATUS_MAILERROR %></c:set>
@@ -86,9 +85,6 @@
   <div class="rightColumn">
     <c:if test="${teamMember.status == STATUS_ADDED}">
       <p><ccp:username id="${teamMember.userId}"/> was added on <ccp:tz timestamp="${teamMember.modified}" dateOnly="true"/>.</p>
-    </c:if>
-    <c:if test="${teamMember.status == STATUS_JOINED}">
-      <p><ccp:username id="${teamMember.userId}"/> joined on <ccp:tz timestamp="${teamMember.modified}" dateOnly="true"/>.</p>
     </c:if>
     <c:if test="${teamMember.status == STATUS_PENDING}">
       <p><ccp:username id="${teamMember.userId}"/> was invited on <ccp:tz timestamp="${teamMember.modified}" dateOnly="true"/>.</p>

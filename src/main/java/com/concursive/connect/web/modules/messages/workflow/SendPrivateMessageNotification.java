@@ -150,13 +150,16 @@ public class SendPrivateMessageNotification extends ObjectHookComponent implemen
           subjectMappings.put("user", senderUser);
 
           Map bodyMappings = new HashMap();
+          bodyMappings.put("site", new HashMap());
+          ((Map) bodyMappings.get("site")).put("title", context.getApplicationPrefs().get("TITLE"));
           bodyMappings.put("project", thisProject);
           bodyMappings.put("user", senderUser);
-          bodyMappings.put("link", new HashMap());
           bodyMappings.put("teamMember", teamMemberUser);
-          bodyMappings.put("private", new HashMap());
 
+          bodyMappings.put("private", new HashMap());
           ((Map) bodyMappings.get("private")).put("message", StringUtils.toHtmlValue(thisPrivateMessage.getBody()));
+
+          bodyMappings.put("link", new HashMap());
           ((Map) bodyMappings.get("link")).put("info", url);
           ((Map) bodyMappings.get("link")).put("projectMessages", url + "/show/" + thisProject.getUniqueId() + "/message/inbox/" + thisPrivateMessage.getId());
 

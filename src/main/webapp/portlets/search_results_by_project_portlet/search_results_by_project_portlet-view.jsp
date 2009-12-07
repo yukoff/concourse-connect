@@ -72,10 +72,10 @@
         <li>
           <c:choose>
             <c:when test="${!empty project.logo}">
-              <img alt="<c:out value="${project.title}"/> photo" src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>" />
+              <img alt="<c:out value="${project.title}"/> photo" width="45" height="45" src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>" />
             </c:when>
             <c:when test="${!empty project.category.logo}">
-              <img alt="Default photo" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
+              <img alt="Default photo" width="45" height="45" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
             </c:when>
           </c:choose>
           <ccp:rating id='${projectId}'

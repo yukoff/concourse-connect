@@ -218,7 +218,7 @@ public class SaveTeamMemberAddEventsTest extends AbstractWorkflowManagerTest {
     thisMember.setUserLevel(PortalUtils.getUserLevel(TeamMember.MEMBER));
     thisMember.setEnteredBy(USER_ID);
     thisMember.setModifiedBy(USER_ID);
-    thisMember.setStatus(TeamMember.STATUS_JOINED);
+    thisMember.setStatus(TeamMember.STATUS_ADDED);
     thisMember.setCustomInvitationMessage("");
     thisMember.insert(db);
 

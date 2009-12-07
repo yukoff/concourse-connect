@@ -45,8 +45,10 @@
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/><jsp:useBean id="register" class="com.concursive.connect.web.modules.register.beans.RegisterBean" scope="request"/><%@ include file="initPage.jsp" %>
+<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request" />
 <div class="portletWrapper projectAskToBecomeMemberContainer">
   <div class="formContainer">
     <form name="join" method="post" action="<%= ctx %>/ProjectManagementTeam.do?command=AskToBecomeMember&pid=${project.id}">
@@ -55,18 +57,52 @@
       </c:if>
       <%= showError(request, "actionError", false) %>
       <fieldset>
-        <legend>You are requesting to become a member of <c:out value="${project.title}"/></legend>
-        <p>You will be informed by email once your request has been approved or denied.</p>
-      </fieldset>    
-      <input type="submit" class="submit" value="Submit" />
-        <c:choose>
-          <c:when test="${'true' eq param.popup || 'true' eq popup}">
-            <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
-          </c:when>
-          <c:otherwise>
-            <a href="${ctx}/show/${project.uniqueId}" class="cancel">Cancel</a>
-          </c:otherwise>
-        </c:choose>
+        <legend><c:out value="${project.title}"/></legend>
+        <c:if test="${!project.profile && !project.features.allowGuests}">
+          <div class="portlet-message-status">
+            <p>This profile requires approval from a manager before you can view content or collaborate.</p>
+          </div>
+        </c:if>
+        <div class="detailed-list">
+          <ol>
+            <li>
+              <c:choose>
+                <c:when test="${!empty project.logo}">
+                  <img alt="<c:out value="${project.title}"/> photo" width="45" height="45" src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>" />
+                </c:when>
+                <c:when test="${!empty project.category.logo}">
+                  <img alt="Default photo" width="45" height="45" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
+                </c:when>
+              </c:choose>
+              <h3><c:out value="${project.title}"/></h3>
+              <c:if test="${!empty project.shortDescription}">
+                <p><c:out value="${project.shortDescription}"/></p>
+              </c:if>
+              <c:if test="${!empty project.location}">
+                <address><c:out value="${project.location}"/></address>
+              </c:if>
+            </li>
+          </ol>
+        </div>
+      </fieldset>
+      <c:choose>
+        <c:when test="${project.profile}">
+          <p><c:out value="${project.title}"/> will confirm that you are friends.</p>
+          <input type="submit" class="submit" value="Add as Friend" />
+        </c:when>
+        <c:otherwise>
+          <p>If you decide to join, you will be notified by email once your request has been approved or denied.</p>
+          <input type="submit" class="submit" value="Ask to Join" />
+        </c:otherwise>
+      </c:choose>
+      <c:choose>
+        <c:when test="${'true' eq param.popup || 'true' eq popup}">
+          <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
+        </c:when>
+        <c:otherwise>
+          <a href="${ctx}/${fn:toLowerCase(project.category.description)}.shtml" class="cancel">Cancel</a>
+        </c:otherwise>
+      </c:choose>
     </form>
   </div>
 </div>

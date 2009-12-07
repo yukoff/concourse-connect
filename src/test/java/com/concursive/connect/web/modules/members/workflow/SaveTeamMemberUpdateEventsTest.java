@@ -211,7 +211,7 @@ public class SaveTeamMemberUpdateEventsTest extends AbstractWorkflowManagerTest 
     admin.setUserLevel(PortalUtils.getUserLevel(TeamMember.MANAGER));
     admin.setEnteredBy(USER_ID);
     admin.setModifiedBy(USER_ID);
-    admin.setStatus(TeamMember.STATUS_ACCEPTED);
+    admin.setStatus(TeamMember.STATUS_ADDED);
     admin.setCustomInvitationMessage("");
     admin.insert(db);
     assertTrue("Unable to add a new admin team member", admin.getId() != -1);
@@ -223,7 +223,7 @@ public class SaveTeamMemberUpdateEventsTest extends AbstractWorkflowManagerTest 
     prevMember.setUserLevel(PortalUtils.getUserLevel(TeamMember.MEMBER));
     prevMember.setEnteredBy(USER_ID);
     prevMember.setModifiedBy(USER_ID);
-    prevMember.setStatus(TeamMember.STATUS_ACCEPTED);
+    prevMember.setStatus(TeamMember.STATUS_ADDED);
     prevMember.setCustomInvitationMessage("");
     prevMember.insert(db);
     assertTrue("Unable to add a new team member", prevMember.getId() != -1);
@@ -303,7 +303,7 @@ public class SaveTeamMemberUpdateEventsTest extends AbstractWorkflowManagerTest 
     prevMember.setUserLevel(PortalUtils.getUserLevel(TeamMember.MEMBER));
     prevMember.setEnteredBy(USER_ID);
     prevMember.setModifiedBy(USER_ID);
-    prevMember.setStatus(TeamMember.STATUS_ACCEPTED);
+    prevMember.setStatus(TeamMember.STATUS_ADDED);
     prevMember.setCustomInvitationMessage("");
     prevMember.insert(db);
     assertTrue("Unable to add a new team member", prevMember.getId() != -1);

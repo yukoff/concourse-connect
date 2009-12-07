@@ -198,15 +198,17 @@
                     </ccp:include>
                   </div>
                   <%-- End vcard --%>
-                  <ccp:include name="projects-projectcenter-header-project-status">
-                    <%--
-                    <ccp:evaluate if="<%= project.getFeatures().getAllowGuests() %>">
-                      <img src="${ctx}/images/public.gif" border="0" alt="" align="absmiddle" title="Publicly accessible to all users"/>
-                    </ccp:evaluate>
-                    --%>
-                    <ccp:evaluate if="<%= project.getFeatures().getMembershipRequired() %>"> <img src="${ctx}/images/members_only.gif" border="0" alt="" align="absmiddle" title="Requires membership to participate"/> </ccp:evaluate>
-                    <ccp:evaluate if="<%= project.getApprovalDate() == null %>"> <img src="${ctx}/images/unapproved.gif" border="0" alt="" align="absmiddle" title="Not yet visible or ready for participation"/> </ccp:evaluate>
-                  </ccp:include>
+                  <c:if test="${!project.profile}">
+                    <ccp:include name="projects-projectcenter-header-project-status">
+                      <%--
+                      <ccp:evaluate if="<%= project.getFeatures().getAllowGuests() %>">
+                        <img src="${ctx}/images/public.gif" border="0" alt="" align="absmiddle" title="Publicly accessible to all users"/>
+                      </ccp:evaluate>
+                      --%>
+                      <ccp:evaluate if="<%= project.getFeatures().getMembershipRequired() %>"> <img src="${ctx}/images/members_only.gif" border="0" alt="" align="absmiddle" title="Requires membership to participate"/> </ccp:evaluate>
+                      <ccp:evaluate if="<%= project.getApprovalDate() == null %>"> <img src="${ctx}/images/unapproved.gif" border="0" alt="" align="absmiddle" title="Not yet visible or ready for participation"/> </ccp:evaluate>
+                    </ccp:include>
+                  </c:if>
                 </ccp:include>
               </div>
               <c:if test="${project.features.showReviews && project.ratingCount > 0 && !empty project.category && project.category.description ne 'People'}">

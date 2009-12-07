@@ -719,7 +719,7 @@ ${this.message:html}<br />
             <parameter name="teammember.status" value="6" />
           </parameters>
         </component>
-        <component id="2" parent="1"  if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+        <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
           <parameters>
             <parameter name="userId" value="${this.userId}" />
           </parameters>
@@ -730,28 +730,98 @@ ${this.message:html}<br />
             <parameter name="projectId" value="${this.projectId}" />
           </parameters>
       	</component>
-        <component id="4" parent="3"  if="true" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
+        <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
           <parameters>
             <parameter name="projectId" value="${this.projectId}" />
           </parameters>
         </component>
-        <component id="5" parent="4" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+        <component id="5" parent="4" if="true" class="com.concursive.commons.workflow.components.RunScript" description="Is a user profile?">
           <parameters>
-            <parameter name="notification.subject">Request to become member from ${userInfo.nameFirstLast}</parameter>
+            <parameter name="runscript.script"><![CDATA[
+              import com.concursive.commons.workflow.components.RunScriptException;
+              import com.concursive.commons.workflow.ComponentContext;
+              import com.concursive.connect.web.modules.profile.dao.Project;
+
+              Project thisProject = (Project) context.getAttribute("project");
+              if (!thisProject.getProfile()) {
+                throw new RunScriptException("Listing is a non-user's profile");
+              }
+              ]]>
+            </parameter>
+          </parameters>
+        </component>
+        <component id="6" parent="5" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.userToNotify" value="${project.owner}"/>
+            <parameter name="notification.subject">Friend request from ${userInfo.nameFirstLast}</parameter>
             <parameter name="notification.body"><![CDATA[
-              <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#ddd">
-                <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
-                  <tr>
-                    <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
-                      Hello,<br />
-                      <br />
-                      <p>${userInfo.nameFirstLast} has requested to be added to ${project.title}.</p>
-                      <p>You can view the status of all users, including those whose membership is pending <a href="${secureUrl}/show/${project.uniqueId}/members">here</a>.</p>
-                      <p>You may approve or deny their request for membership by clicking on the edit link by their name.</p>
-                    </td>
-                  </tr>
-                </table>
-                </body>]]>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <body bgcolor="#f1f4f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#f1f4f8; height:100%; width:100%; font-family:Arial, Helvetica, sans-serif;">
+    <table width="648" border="0" cellpadding="0" cellspacing="0" style="margin:25px auto; " align="center">
+      <tr>
+        <td>
+          <h1>${applicationTitle?html}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
+          <p>Hello,</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
+          <p>${userInfo.nameFirstLast?html} would like to be your friend!</p>
+          <p>Visit <a href="${secureUrl}/show/${project.uniqueId}">your profile</a> where you can manage all of your friend requests.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+          <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect, the Business Social Software Platform by Concursive">ConcourseConnect - Business Social Software</a></p>
+          <br/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>]]>
+            </parameter>
+          </parameters>
+        </component>
+        <component id="7" parent="5" if="false" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.addProjectLeads" value="true"/>
+            <parameter name="notification.subject">Member request from ${userInfo.nameFirstLast}</parameter>
+            <parameter name="notification.body"><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <body bgcolor="#f1f4f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#f1f4f8; height:100%; width:100%; font-family:Arial, Helvetica, sans-serif;">
+    <table width="648" border="0" cellpadding="0" cellspacing="0" style="margin:25px auto; " align="center">
+      <tr>
+        <td>
+          <h1>${applicationTitle?html}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
+          <p>Hello,</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
+          <p>${userInfo.nameFirstLast?html} has requested to be added to <strong>${project.title?html}</strong>.</p>
+          <p>Visit <a href="${secureUrl}/show/${project.uniqueId}/members">${project.title?html}</a>, where you can view the status of all users, including those whose membership is pending.</p>
+          <p>You can approve or deny their request by clicking on the edit link next to their name.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+          <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect, the Business Social Software Platform by Concursive">ConcourseConnect - Business Social Software</a></p>
+          <br/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>]]>
             </parameter>
           </parameters>
         </component>
@@ -759,134 +829,322 @@ ${this.message:html}<br />
 	</process>
 
 	<process name="concursive.teamMember.sendReplyToRequestToBecomeMember" description="Send email to user if he has been accepted or denied membership to a project" startId="1">
-     <components>
+      <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
           <parameters>
             <parameter name="projectId" value="${this.projectId}" />
           </parameters>
         </component>
-        <component id="2" parent="1"  class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+        <component id="2" parent="1" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
           <parameters>
             <parameter name="userId" value="${this.userId}" />
           </parameters>
         </component>
+        <!-- Check if user request was approved -->
         <component id="3" parent="2" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatusChanged">
           <parameters>
             <parameter name="teammember.oldstatus" value="6" />
-            <parameter name="teammember.newstatus" value="5" />
+            <parameter name="teammember.newstatus" value="-1" />
           </parameters>
         </component>
-        <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+        <component id="4" parent="3" if="true" class="com.concursive.commons.workflow.components.RunScript" description="Is a user profile?">
           <parameters>
-            <parameter name="notification.userToNotify" value="${this.userId}"/>
-            <parameter name="notification.subject">Request to become member from ${project.title}</parameter>
-            <parameter name="notification.body"><![CDATA[
-                <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
-                  <tr>
-                    <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
-                      Hello ${userInfo.nameFirstLast:html},<br />
-                      <br />
-                      <p>Your request to become a member of ${project.title:html} has been approved.</p>
-                      <p>You can visit the listing at:<br />
-                      <a href="${secureUrl}/show/${project.uniqueId:html}" target="_blank">${secureUrl}/show/${project.uniqueId:html}</a></p>
-                      </td>
-                    </tr>
-                </table>
+            <parameter name="runscript.script"><![CDATA[
+              import com.concursive.commons.workflow.components.RunScriptException;
+              import com.concursive.commons.workflow.ComponentContext;
+              import com.concursive.connect.web.modules.profile.dao.Project;
+
+              Project thisProject = (Project) context.getAttribute("project");
+              if (!thisProject.getProfile()) {
+                throw new RunScriptException("Listing is not a user's profile");
+              }
               ]]>
             </parameter>
           </parameters>
         </component>
-        <component id="5" parent="3" if="false" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatusChanged">
+        <component id="5" parent="4" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.userToNotify" value="${this.userId}"/>
+            <parameter name="notification.subject">Friend request confirmed by ${project.title}</parameter>
+            <parameter name="notification.body"><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <body bgcolor="#f1f4f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#f1f4f8; height:100%; width:100%; font-family:Arial, Helvetica, sans-serif;">
+    <table width="648" border="0" cellpadding="0" cellspacing="0" style="margin:25px auto; " align="center">
+      <tr>
+        <td>
+          <h1>${applicationTitle?html}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
+          <p>Hello ${userInfo.nameFirstLast?html},</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
+          <p>You are now friends with ${project.title?html}.</p>
+          <p>You can visit your friend's profile at:<br />
+          <a href="${secureUrl}/show/${project.uniqueId?html}" target="_blank">${secureUrl}/show/${project.uniqueId?html}</a></p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+          <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect, the Business Social Software Platform by Concursive">ConcourseConnect - Business Social Software</a></p>
+          <br/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+]]>
+            </parameter>
+          </parameters>
+        </component>
+        <component id="6" parent="4" if="false" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.userToNotify" value="${this.userId}"/>
+            <parameter name="notification.subject">Request approved for ${project.title}</parameter>
+            <parameter name="notification.body"><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <body bgcolor="#f1f4f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#f1f4f8; height:100%; width:100%; font-family:Arial, Helvetica, sans-serif;">
+    <table width="648" border="0" cellpadding="0" cellspacing="0" style="margin:25px auto; " align="center">
+      <tr>
+        <td>
+          <h1>${applicationTitle?html}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
+          <p>Hello ${userInfo.nameFirstLast?html},</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
+          <p>Your request to become a member of <strong>${project.title?html}</strong> has been approved.</p>
+          <p>You can visit the profile at:<br />
+          <a href="${secureUrl}/show/${project.uniqueId?html}" target="_blank">${secureUrl}/show/${project.uniqueId?html}</a></p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+          <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect, the Business Social Software Platform by Concursive">ConcourseConnect - Business Social Software</a></p>
+          <br/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+]]>
+            </parameter>
+          </parameters>
+        </component>
+        <!-- Check if user request was declined -->
+        <component id="7" parent="3" if="false" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatusChanged">
           <parameters>
             <parameter name="teammember.oldstatus" value="6" />
             <parameter name="teammember.newstatus" value="4" />
           </parameters>
         </component>
-        <component id="6" parent="5" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+        <component id="8" parent="7" if="true" class="com.concursive.commons.workflow.components.RunScript" description="Is a user profile?">
+          <parameters>
+            <parameter name="runscript.script"><![CDATA[
+              import com.concursive.commons.workflow.components.RunScriptException;
+              import com.concursive.commons.workflow.ComponentContext;
+              import com.concursive.connect.web.modules.profile.dao.Project;
+
+              Project thisProject = (Project) context.getAttribute("project");
+              if (!thisProject.getProfile()) {
+                throw new RunScriptException("Listing is not a user's profile");
+              }
+              ]]>
+            </parameter>
+          </parameters>
+        </component>
+        <component id="9" parent="8" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
           <parameters>
             <parameter name="notification.userToNotify" value="${this.userId}"/>
-            <parameter name="notification.subject">Request to become a member of ${project.title}</parameter>
+            <parameter name="notification.subject">Friend request declined by ${project.title}</parameter>
             <parameter name="notification.body"><![CDATA[
-              <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
-                <tr>
-                  <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
-                    Hello ${userInfo.nameFirstLast:html},<br />
-                    <br />
-                    <p>Your request to become a member of ${project.title:html} has been denied.
-                    This means that the authorized individual chose not to approve your request.</p>
-                  </td>
-                </tr>
-              </table>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <body bgcolor="#f1f4f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#f1f4f8; height:100%; width:100%; font-family:Arial, Helvetica, sans-serif;">
+    <table width="648" border="0" cellpadding="0" cellspacing="0" style="margin:25px auto; " align="center">
+      <tr>
+        <td>
+          <h1>${applicationTitle?html}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
+          <p>Hello ${userInfo.nameFirstLast?html},</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
+          <p>${project.title?html} has declined your friend request.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+          <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect, the Business Social Software Platform by Concursive">ConcourseConnect - Business Social Software</a></p>
+          <br/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+]]>
+            </parameter>
+          </parameters>
+        </component>
+        <component id="10" parent="8" if="false" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+          <parameters>
+            <parameter name="notification.userToNotify" value="${this.userId}"/>
+            <parameter name="notification.subject">Request denied for ${project.title}</parameter>
+            <parameter name="notification.body"><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <body bgcolor="#f1f4f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#f1f4f8; height:100%; width:100%; font-family:Arial, Helvetica, sans-serif;">
+    <table width="648" border="0" cellpadding="0" cellspacing="0" style="margin:25px auto; " align="center">
+      <tr>
+        <td>
+          <h1>${applicationTitle?html}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
+          <p>Hello ${userInfo.nameFirstLast?html},</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
+          <p>Your request to become a member of <strong>${project.title?html}</strong> has been denied.<br />
+          This means that the authorized individual chose not to approve your request.</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+          <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect, the Business Social Software Platform by Concursive">ConcourseConnect - Business Social Software</a></p>
+          <br/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
             ]]></parameter>
           </parameters>
         </component>
      </components>
 	</process>
-    <process name="concursive.teamMember.sendInvitationToUser" description="Send Invitation To user" startId="1">
-	    <components>
-	        <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
-	          <parameters>
-	            <parameter name="teammember.status" value="3" />
-	          </parameters>
-	        </component>
-		    <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.members.workflow.SendInvitationMessageToTeamMember">
-	          <parameters>
-	            <parameter name="url" value="${secureUrl}"/>
-	          </parameters>
-	        </component>
-	        <component id="3" parent="1" if="false" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
-	          <parameters>
-	            <parameter name="teammember.status" value="1" />
-	          </parameters>
-	        </component>
-		    <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.members.workflow.SendInvitationMessageToTeamMember">
-	          <parameters>
-	            <parameter name="url" value="${secureUrl}"/>
-	          </parameters>
-	        </component>
-	    </components>
+  <process name="concursive.teamMember.sendInvitationToUser" description="Send Invitation To user" startId="1">
+    <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
+          <parameters>
+            <parameter name="teammember.status" value="3" />
+          </parameters>
+        </component>
+      <component id="2" parent="1" if="true" class="com.concursive.connect.web.modules.members.workflow.SendInvitationMessageToTeamMember">
+          <parameters>
+            <parameter name="url" value="${secureUrl}"/>
+          </parameters>
+        </component>
+        <component id="3" parent="1" if="false" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
+          <parameters>
+            <parameter name="teammember.status" value="1" />
+          </parameters>
+        </component>
+      <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.members.workflow.SendInvitationMessageToTeamMember">
+          <parameters>
+            <parameter name="url" value="${secureUrl}"/>
+          </parameters>
+        </component>
+    </components>
 	</process>
-    <process name="concursive.teamMember.sendNotifications" description="Notify the group managers" startId="1">
-      <components>
-      	<component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberNotificationEnabled" />
-        <component id="2" parent="1" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
-          <parameters>
-            <!-- Only send notification when the user has successfully joined on their own -->
-            <parameter name="teammember.status" value="5" />
-          </parameters>
-        </component>
-        <component id="3" parent="2" if="true" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberProjectCategory">
-          <parameters>
-            <parameter name="project.category" value="People" />
-          </parameters>
-        </component>
-        <component id="4" parent="3"  if="false" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
-          <parameters>
-            <parameter name="projectId" value="${this.projectId}" />
-          </parameters>
-        </component>
-        <component id="5" parent="4"  if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
-          <parameters>
-            <parameter name="userId" value="${this.userId}" />
-          </parameters>
-        </component>
-        <component id="6" parent="5" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
-          <parameters>
-            <parameter name="notification.addProjectLeads" value="true"/>
-            <parameter name="notification.subject">New member: ${userInfo.firstName} ${userInfo.lastName} [${project.title}]</parameter>
-            <parameter name="notification.body"><![CDATA[The following user has joined ${project.title:html}:<br />
-<br />
-<strong>${userInfo.firstName:html} ${userInfo.lastName:html}</strong><br />
-<br />
---- RESOURCES FOR THIS MESSAGE ---<br />
-<a href="${secureUrl}/show/${userInfo.profileProject.uniqueId}"><b>View the user profile for ${userInfo.firstName:html} ${userInfo.lastName:html} online</b></a><br />
-<a href="${secureUrl}/show/${project.uniqueId}"><b>View ${project.title} online</b></a><br />
-<br />
+  <process name="concursive.teamMember.sendNotifications" description="Notify the group managers" startId="1">
+    <components>
+      <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberNotificationEnabled" />
+      <component id="2" parent="1" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberStatus">
+        <parameters>
+          <!-- Send notification when the user has successfully joined on their own -->
+          <parameter name="teammember.status" value="-1" />
+        </parameters>
+      </component>
+      <component id="3" parent="2" if="true" class="com.concursive.commons.workflow.components.RunScript" description="Did user add themself?">
+        <parameters>
+          <parameter name="runscript.script"><![CDATA[
+            import com.concursive.commons.workflow.components.RunScriptException;
+            import com.concursive.commons.workflow.ComponentContext;
+            import com.concursive.connect.web.modules.members.dao.TeamMember;
+
+            TeamMember thisMember = (TeamMember) context.getThisObject();
+            if (thisMember.getEnteredBy() != thisMember.getUserId()) {
+              throw new RunScriptException("User was added by someone else");
+            }
+            ]]>
+          </parameter>
+        </parameters>
+      </component>
+      <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.members.workflow.TestTeamMemberProjectCategory">
+        <parameters>
+          <parameter name="project.category" value="People" />
+        </parameters>
+      </component>
+      <component id="5" parent="4" if="false" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
+        <parameters>
+          <parameter name="projectId" value="${this.projectId}" />
+        </parameters>
+      </component>
+      <component id="6" parent="5" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+        <parameters>
+          <parameter name="userId" value="${this.userId}" />
+        </parameters>
+      </component>
+      <component id="7" parent="6" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
+        <parameters>
+          <parameter name="notification.addProjectLeads" value="true"/>
+          <parameter name="notification.subject">New member: ${userInfo.nameFirstLast} [${project.title}]</parameter>
+          <parameter name="notification.body"><![CDATA[
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <body bgcolor="#f1f4f8" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="background:#f1f4f8; height:100%; width:100%; font-family:Arial, Helvetica, sans-serif;">
+    <table width="648" border="0" cellpadding="0" cellspacing="0" style="margin:25px auto; " align="center">
+      <tr>
+        <td>
+          <h1>${applicationTitle?html}</h1>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
+          <p>Hello,</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
+          <p>The following user has joined <strong>${project.title?html}</strong>:</p>
+          <p><strong>${userInfo.nameFirstLast?html}</strong></p>
+          <p>
+            --- RESOURCES FOR THIS MESSAGE ---<br />
+            <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId}"><b>View the user profile for ${userInfo.nameFirstLast?html} online</b></a><br />
+            <a href="${secureUrl}/show/${project.uniqueId}"><b>View ${project.title?html} online</b></a>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+          <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect, the Business Social Software Platform by Concursive">ConcourseConnect - Business Social Software</a></p>
+          <br/>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
 ]]></parameter>
-          </parameters>
-        </component>
-      </components>
-    </process>
+        </parameters>
+      </component>
+    </components>
+  </process>
 
     <process name="concursive.teamMember.saveAsLeadInSuite" description="Update Concourse Suite" startId="1">
       <components>
@@ -901,17 +1159,17 @@ ${this.message:html}<br />
             <parameter name="project.category" value="Businesses, Organizations, Groups" />
           </parameters>
         </component>
-        <component id="4" parent="3"  if="true" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
+        <component id="4" parent="3" if="true" class="com.concursive.connect.web.modules.profile.workflow.LoadProjectDetails">
           <parameters>
             <parameter name="projectId" value="${this.projectId}" />
           </parameters>
         </component>
-        <component id="5" parent="4"  if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
+        <component id="5" parent="4" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.LoadUserDetails">
           <parameters>
             <parameter name="userId" value="${this.userId}" />
           </parameters>
         </component>
-        <component id="6" parent="5"  if="true" class="com.concursive.connect.workflow.components.crm.SaveAsLead">
+        <component id="6" parent="5" if="true" class="com.concursive.connect.workflow.components.crm.SaveAsLead">
           <parameters>
         	<parameter name="suite.url" value="${project.concursiveCRMUrl}" />
         	<parameter name="suite.code" value="${project.concursiveCRMCode}" />
@@ -1004,12 +1262,12 @@ User Notes: ${this.comments}]]></parameter>
 <br />
 <b>--- Message Posted ---</b><br />
 <br />
-<b>Project:</b> ${project.title:html}<br />
-<b>Forum:</b> ${issueCategory.subject:html}<br />
-<b>Topic:</b> ${this.subject:html}<br />
-<b>Posted By:</b> ${issueEnteredByContact:html}<br />
+<b>Project:</b> ${project.title?html}<br />
+<b>Forum:</b> ${issueCategory.subject?html}<br />
+<b>Topic:</b> ${this.subject?html}<br />
+<b>Posted By:</b> ${issueEnteredByContact?html}<br />
 <br />
-${this.body:html}<br />
+${this.body?html}<br />
 <br />
 --- RESOURCES FOR THIS POST ---<br />
 <a href="${secureUrl}/show/${project.uniqueId}/topic/${this.id}"><b>View this topic online</b></a><br />
@@ -1038,19 +1296,19 @@ ${this.body:html}<br />
 <br />
 <strong>--- Message Reply Posted ---</strong><br />
 <br />
-<b>Project:</b> ${project.title:html}<br />
-<b>Forum:</b> ${issueCategory.subject:html}<br />
-<b>Topic:</b> ${this.subject:html}<br />
-<b>Posted By:</b> ${issueReplyEnteredByContact:html}<br />
+<b>Project:</b> ${project.title?html}<br />
+<b>Forum:</b> ${issueCategory.subject?html}<br />
+<b>Topic:</b> ${this.subject?html}<br />
+<b>Posted By:</b> ${issueReplyEnteredByContact?html}<br />
 <br />
-${this.body:html}<br />
+${this.body?html}<br />
 <br />
 <b>--- Original Message ---</b><br />
-<b>Posted By:</b> ${issueEnteredByContact:html}<br />
-<b>Posted On:</b> ${issue.enteredDateTimeString:html}<br />
-<b>Topic:</b> ${issue.subject:html}<br />
+<b>Posted By:</b> ${issueEnteredByContact?html}<br />
+<b>Posted On:</b> ${issue.enteredDateTimeString?html}<br />
+<b>Topic:</b> ${issue.subject?html}<br />
 <br />
-${issue.body:html}<br />
+${issue.body?html}<br />
 <br />
 --- RESOURCES FOR THIS POST ---<br />
 <a href="${secureUrl}/show/${project.uniqueId}/topic/${issue.id}"><b>View this topic online</b></a><br />
@@ -1076,7 +1334,7 @@ ${issue.body:html}<br />
               <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                 <tr>
                   <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
-                    Hello ${this.nameFirst:html}, <br />
+                    Hello ${this.nameFirst?html}, <br />
                     <br />
                     Thank you for signing up.<br />
                     <br />
@@ -1084,12 +1342,12 @@ ${issue.body:html}<br />
                     <br />
                     If you follow this link you will automatically login with your temporary password.<br />
                     <br />
-                    <a href="${secureUrl}/login/auto?username=${this.email:html}&password=${this.password:html}&auto-populate=true" target="_blank">${secureUrl}/login/auto?username=${this.email:html}&password=${this.password:html}&auto-populate=true</a><br />
+                    <a href="${secureUrl}/login/auto?username=${this.email?html}&password=${this.password?html}&auto-populate=true" target="_blank">${secureUrl}/login/auto?username=${this.email?html}&password=${this.password?html}&auto-populate=true</a><br />
                     <br />
                     Once logged in, please take a moment to change your password to something you can easily remember. Just click on "Settings" link at the top of the page, then select the "Change my password" link.<br />
                     <br />
-                    User name: ${this.email:html}<br />
-                    Temporary Password: ${this.password:html}<br />
+                    User name: ${this.email?html}<br />
+                    Temporary Password: ${this.password?html}<br />
                     <br />
                     For additional help or to find out more about all of the things you can do at our site, click the "Learn More" link at the top right of any page.<br />
                     <br />
@@ -1107,12 +1365,12 @@ ${issue.body:html}<br />
             <parameter name="notification.subject">User # ${this.user.id} registered with the site</parameter>
             <parameter name="notification.body"><![CDATA[The following user has just registered: <br />
 <br />
-First Name: ${this.user.firstName:html}<br />
-Last Name: ${this.user.lastName:html}<br />
-Email Address: ${this.user.email:html}<br />
-Organization: ${this.user.company:html}<br />
+First Name: ${this.user.firstName?html}<br />
+Last Name: ${this.user.lastName?html}<br />
+Email Address: ${this.user.email?html}<br />
+Organization: ${this.user.company?html}<br />
 Profile:
-<a href="${secureUrl}/show/${this.project.uniqueId:html}" target="_blank">${secureUrl}/show/${this.project.uniqueId:html}</a><br />
+<a href="${secureUrl}/show/${this.project.uniqueId?html}" target="_blank">${secureUrl}/show/${this.project.uniqueId?html}</a><br />
 <br />
 ]]></parameter>
           </parameters>
@@ -1125,22 +1383,22 @@ Profile:
         <component id="1" parent="0" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
           <parameters>
             <parameter name="notification.addAdmins" value="true"/>
-            <parameter name="notification.subject">Web site inquiry - ${this.formDataString:html}</parameter>
+            <parameter name="notification.subject">Web site inquiry - ${this.formDataString?html}</parameter>
             <parameter name="notification.body"><![CDATA[The following information was filled out:<br />
 <br />--- Contact Us Inquiry ---<br />
 <br />
-First Name: ${this.nameFirst:html}<br />
-Last Name: ${this.nameLast:html}<br />
-Email: ${this.email:html}<br />
-Company: ${this.organization:html}<br />
-Business Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br /><br />
-Address: ${this.addressLine1:html} &nbsp; ${this.addressLine2:html}<br />
-City: ${this.city:html}<br />
-State: ${this.state:html}<br />
-Country: ${this.country:html}<br />
-Postal Code: ${this.postalCode:html}<br /><br />
-Other: ${this.formDataString:html}<br /><br />
-Comments: ${this.description:html}<br />
+First Name: ${this.nameFirst?html}<br />
+Last Name: ${this.nameLast?html}<br />
+Email: ${this.email?html}<br />
+Company: ${this.organization?html}<br />
+Business Phone: ${this.businessPhone?html} - (${this.businessPhoneExt?html})<br /><br />
+Address: ${this.addressLine1?html} &nbsp; ${this.addressLine2?html}<br />
+City: ${this.city?html}<br />
+State: ${this.state?html}<br />
+Country: ${this.country?html}<br />
+Postal Code: ${this.postalCode?html}<br /><br />
+Other: ${this.formDataString?html}<br /><br />
+Comments: ${this.description?html}<br />
                         ]]></parameter>
           </parameters>
         </component>

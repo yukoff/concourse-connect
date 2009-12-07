@@ -650,7 +650,7 @@ public class PrivateMessageList extends ArrayList<PrivateMessage> {
     // Get the list of projects to which the user has accepted invitations
     TeamMemberList teamMemberList = new TeamMemberList();
     teamMemberList.setUserId(userId);
-    teamMemberList.setStatus(TeamMember.STATUS_ACCEPTED);
+    teamMemberList.setStatus(TeamMember.STATUS_ADDED);
     teamMemberList.buildList(db);
     StringBuffer projectIdStringBuffer = new StringBuffer();
 

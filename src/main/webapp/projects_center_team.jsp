@@ -57,7 +57,6 @@
 <jsp:useBean id="currentMember" class="com.concursive.connect.web.modules.members.dao.TeamMember" scope="request"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request" />
 <c:set var="STATUS_ADDED"><%= TeamMember.STATUS_ADDED %></c:set>
-<c:set var="STATUS_JOINED"><%= TeamMember.STATUS_JOINED %></c:set>
 <c:set var="STATUS_PENDING"><%= TeamMember.STATUS_PENDING %></c:set>
 <c:set var="STATUS_INVITING"><%= TeamMember.STATUS_INVITING %></c:set>
 <c:set var="STATUS_MAILERROR"><%= TeamMember.STATUS_MAILERROR %></c:set>
@@ -65,9 +64,9 @@
 <c:set var="STATUS_JOINED_NEEDS_APPROVAL"><%= TeamMember.STATUS_JOINED_NEEDS_APPROVAL %></c:set>
 <%-- user specific variables --%>
 <c:set var="userId"><%= User.getId() %></c:set>
-<c:set var="joinedFlag"><%= TeamMember.STATUS_JOINED %></c:set>
+<c:set var="addedFlag"><%= TeamMember.STATUS_ADDED %></c:set>
 <c:set var="inviteFlag"><%= TeamMember.STATUS_INVITING %></c:set>
-<c:set var="canJoinFlag"><%= project.getFeatures().getAllowParticipants() && !project.getFeatures().getMembershipRequired() && project.getTeam().getTeamMember(User.getId()) == null %></c:set>
+<c:set var="canJoinFlag"><%= project.getFeatures().getAllowParticipants() && !project.getFeatures().getMembershipRequired() && !project.getTeam().hasUserId(User.getId()) %></c:set>
 <%-- Initialize the drop-down menus --%>
 <c:choose>
   <c:when test="${project.owner > -1}">
@@ -90,11 +89,11 @@
   <h1><ccp:tabLabel name="Team" object="project"/></h1>
   <c:choose>
     <%-- if user logged in and is not a member or has been invited but not joined display join link --%>
-    <c:when test="${userId > 0  && canJoinFlag && (currentMember.id == -1 || (currentMember.status != joinedFlag && currentMember.status != inviteFlag))}">
+    <c:when test="${userId > 0  && canJoinFlag && (currentMember.id == -1 || (currentMember.status != addedFlag && currentMember.status != inviteFlag))}">
         <a rel="shadowbox" href="<%= ctx %>/ProjectManagementTeam.do?command=ConfirmJoin&pid=<%= project.getId() %>"><ccp:label name="user.joinTeam">Become a member</ccp:label></a>
     </c:when>
-    <c:when test="${currentMember.status == joinedFlag}">
-        <a href="<%= ctx%>/ProjectManagementTeam.do?command=Leave&pid=<%= project.getId()%>"><ccp:label name="user.leaveTeam">Discontinue your membership in this profile</ccp:label></a>
+    <c:when test="${!project.profile && currentMember.id > -1 && currentMember.status == addedFlag}">
+        <a href="<%= ctx%>/ProjectManagementTeam.do?command=Leave&pid=<%= project.getId()%>">Remove yourself from <c:out value="${project.title}"/></a>
     </c:when>
   </c:choose>
   <c:if test="${userId < 0 && canJoinFlag}">
@@ -158,8 +157,9 @@
                   <div class="portlet-section-footer">
                     <div id="tooltip_${teamMember.id}" class="toolTip">
                       <p><ccp:username id="${teamMember.userId}" idTag="teamMemberLink_${teamMember.id}" showLinkTitle="false"/></p>
-                      <c:if test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}"><p>(Not Approved)</p></c:if>
-                      <c:if test="${teamMember.userId == project.owner}"><p>(Owner)</p></c:if>
+                      <c:if test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}"><p>(Needs Approval)</p></c:if>
+                      <c:if test="${teamMember.status == STATUS_PENDING}"><p>(Invitation Pending)</p></c:if>
+                      <c:if test="${teamMember.userId == project.owner}"><p>(Profile Owner)</p></c:if>
                     </div>
                     <c:if test="${profileProject.id > 0}"></a></c:if>
                     <%-- prepare the drop-down menu to this specific user --%>

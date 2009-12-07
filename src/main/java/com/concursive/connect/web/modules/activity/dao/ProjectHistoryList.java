@@ -351,7 +351,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     }
 
     //Determine column to sort by
-    pagedListInfo.setDefaultSort("entered DESC", null);
+    pagedListInfo.setDefaultSort("link_start_date DESC", null);
     pagedListInfo.appendSqlTail(db, sqlOrder);
 
     //Need to build a base SQL statement for returning records

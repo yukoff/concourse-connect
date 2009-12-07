@@ -369,7 +369,7 @@ public class ProjectProfilePortlet extends GenericPortlet {
             projectList.setExcludeProjectIdsString(excludeProjectIdsStringBuffer.toString());
           }
         }
-
+        // Determine which projects can be shown
         if (publicOnly != null) {
           projectList.setPublicOnly("true".equals(publicOnly));
         }
@@ -382,6 +382,9 @@ public class ProjectProfilePortlet extends GenericPortlet {
         if (minimumAverageRating != null) {
           projectList.setMinimumAverageRating(minimumAverageRating);
         }
+        // Leave off the member based ones due to exposing images and such
+        projectList.setRequiresMembership(false);
+
         PagedListInfo randomProjectListInfo = PortalUtils.getPagedListInfo(request, "randomProjectListInfo");
 
         //fetch a random project based on preference from the database

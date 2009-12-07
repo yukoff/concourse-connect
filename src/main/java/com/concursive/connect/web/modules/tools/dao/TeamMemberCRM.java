@@ -212,7 +212,7 @@ public class TeamMemberCRM implements CustomActionHandler {
               "AND user_id = ? ");
       int i = 0;
       pst.setBoolean(++i, true);
-      pst.setInt(++i, TeamMember.STATUS_ACCEPTED);
+      pst.setInt(++i, TeamMember.STATUS_ADDED);
       pst.setInt(++i, userLevel);
       pst.setInt(++i, modifiedBy);
       pst.setInt(++i, projectId);

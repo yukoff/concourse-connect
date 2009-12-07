@@ -8,12 +8,12 @@
         </td>
       </tr>
       <tr>
-        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e3ebf8; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8 ">
+        <td style="background:#fff; padding:20px 20px 0; border-top:25px solid #e9e9e9; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9 ">
           <p>Hello ${invite.name?html},</p>
         </td>
       </tr>
       <tr>
-        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8">
+        <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9; border-bottom:1px solid #e9e9e9">
           <p>${user.nameFirstLast?html} has setup the following profile and is requesting that you join in:</p>
           <blockquote>
             <b>Profile Name:</b> ${project.title?html}<br />

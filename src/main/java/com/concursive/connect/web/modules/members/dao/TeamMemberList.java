@@ -84,7 +84,6 @@ public class TeamMemberList extends ArrayList<TeamMember> {
   private int status = -2;
   private boolean tools = false;
   private boolean buildProject = false;
-  private boolean includeAddedOrJoinedOrApproved = false;
   private int withNotificationsSet = Constants.UNDEFINED;
 
 
@@ -354,27 +353,6 @@ public class TeamMemberList extends ArrayList<TeamMember> {
   }
 
 
-  /**
-   * @return the includeAddedOrJoinedOrApproved
-   */
-  public boolean getIncludeAddedOrJoinedOrApproved() {
-    return includeAddedOrJoinedOrApproved;
-  }
-
-
-  /**
-   * @param includeAddedOrJoinedOrApproved the includeAddedOrJoinedOrApproved to set
-   */
-  public void setIncludeAddedOrJoinedOrApproved(
-      boolean includeAddedOrJoinedOrApproved) {
-    this.includeAddedOrJoinedOrApproved = includeAddedOrJoinedOrApproved;
-  }
-
-  public void setIncludeAddedOrJoinedOrApproved(
-      String includeAddedOrJoinedOrApproved) {
-    this.includeAddedOrJoinedOrApproved = DatabaseUtils.parseBoolean(includeAddedOrJoinedOrApproved);
-  }
-
   public int getWithNotificationsSet() {
     return withNotificationsSet;
   }
@@ -511,9 +489,6 @@ public class TeamMemberList extends ArrayList<TeamMember> {
         sqlFilter.append("AND t.status = ? ");
       }
     }
-    if (this.includeAddedOrJoinedOrApproved) {
-      sqlFilter.append("AND ( t.status IS NULL OR t.status = ? OR t.status = ? ) ");
-    }
     if (withNotificationsSet != Constants.UNDEFINED) {
       sqlFilter.append("AND t.notification = ? ");
     }
@@ -553,10 +528,6 @@ public class TeamMemberList extends ArrayList<TeamMember> {
       } else {
         pst.setInt(++i, status);
       }
-    }
-    if (this.includeAddedOrJoinedOrApproved) {
-      pst.setInt(++i, TeamMember.STATUS_JOINED);
-      pst.setInt(++i, TeamMember.STATUS_JOINED_APPROVED);
     }
     if (withNotificationsSet != Constants.UNDEFINED) {
       pst.setBoolean(++i, withNotificationsSet == Constants.TRUE);

@@ -108,7 +108,7 @@
                   <rule>userCanJoin</rule>]]>
               </value>
               <value><![CDATA[
-                <content>Ask to become a member</content>
+                <content>Ask to Become a Member</content>
                 <title>Request to join ${project.title:xml} as a member</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -161,6 +161,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -284,7 +285,7 @@
                   <rule>userCanJoin</rule>]]>
               </value>
               <value><![CDATA[
-                <content>Ask to become a friend</content>
+                <content>Ask to Become a Friend</content>
                 <title>Request to become a friend with ${project.title:xml}</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -323,6 +324,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -405,10 +407,10 @@
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary">
             <title>Inbox</title>
           </portlet>
-          <portlet name="PendingInvitationsPortlet" isUser="true">
+          <portlet name="PendingInvitationsPortlet" isUser="true" class="basic-list ">
             <title>My Invites</title>
           </portlet>
-          <portlet name="MemberRequestsPortlet" isUser="true">
+          <portlet name="MemberRequestsPortlet" isUser="true" class="basic-list ">
             <title>Friend Requests</title>
           </portlet>
           <portlet name="ProjectDownloadsPortlet" class="detailed-list ">
@@ -521,7 +523,7 @@
                   <rule>canClaim</rule>]]>
               </value>
               <value><![CDATA[
-                <content>Ask to become a member</content>
+                <content>Ask to Become a Member</content>
                 <title>Request to join ${project.title:xml} as a member</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -575,6 +577,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -729,7 +732,7 @@
                   <rule>canClaim</rule>]]>
               </value>
               <value><![CDATA[
-                <content>Ask to become a member</content>
+                <content>Ask to Become a Member</content>
                 <title>Request to join ${project.title:html} as a member</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -783,6 +786,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -943,7 +947,7 @@
                   <rule>canClaim</rule>]]>
               </value>-->
               <!--<value><![CDATA[
-                <content>Ask to become a member</content>
+                <content>Ask to Become a Member</content>
                 <title>Request to join ${project.title:xml} as a member</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -997,6 +1001,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -1142,7 +1147,7 @@
                   <rule>userCanJoin</rule>]]>
               </value>
               <value><![CDATA[
-               <content>Ask to become a member</content>
+               <content>Ask to Become a Member</content>
                <title>Request to join ${project.title:html} as a member</title>
                <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                <rel>shadowbox;width=500</rel>
@@ -1203,6 +1208,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -1346,7 +1352,7 @@
                   <rule>userCanJoin</rule>]]>
               </value>
                <value><![CDATA[
-                <content>Ask to become a member</content>
+                <content>Ask to Become a Member</content>
                 <title>Request to join ${project.title:html} as a member</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -1407,6 +1413,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="UpcomingEventListPortlet" class="basic-list ">
             <title>Event Details</title>
@@ -1546,7 +1553,7 @@
                   <rule>userCanJoin</rule>]]>
               </value>
                <value><![CDATA[
-                <content>Ask to become a member</content>
+                <content>Ask to Become a Member</content>
                 <title>Request to join ${project.title:html} as a member</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -1600,6 +1607,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -1752,6 +1760,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>
@@ -1897,6 +1906,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="articleBody">
             <wiki>Introduction</wiki>
@@ -2056,6 +2066,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ProjectWikiContentPortlet" class="articleBody">
             <wiki>Introduction</wiki>
@@ -2152,7 +2163,7 @@
                   <rule>userCanJoin</rule>]]>
               </value>
               <value><![CDATA[
-                <content>Ask to become a member</content>
+                <content>Ask to Become a Member</content>
                 <title>Request to join ${project.title:xml} as a member</title>
                 <href>/ProjectManagementTeam.do?command=ConfirmAskToBecomeMember&amp;pid=${project.id}</href>
                 <rel>shadowbox;width=500</rel>
@@ -2205,6 +2216,7 @@
           <portlet name="ProjectWikiContentPortlet" class="articleBody ">
             <wiki>Profile Message</wiki>
             <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
           </portlet>
           <portlet name="ActivityInputPortlet" class="detailed-list "  viewer="form">
             <title>What's happening?</title>

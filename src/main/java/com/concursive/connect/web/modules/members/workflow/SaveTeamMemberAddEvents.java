@@ -109,7 +109,7 @@ public class SaveTeamMemberAddEvents extends ObjectHookComponent implements Comp
         history.setLinkItemId(thisMember.getId());
         history.setDescription(context.getParameter(HISTORY_INVITE_TEXT));
         history.insert(db);
-      } else if (thisMember.getStatus() == TeamMember.STATUS_JOINED) {
+      } else if (thisMember.getStatus() == TeamMember.STATUS_ADDED) {
         // user joined a particular project
 
         // Prepare the wiki links

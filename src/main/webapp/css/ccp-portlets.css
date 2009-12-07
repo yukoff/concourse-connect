@@ -1843,8 +1843,8 @@ li.listing {
   width:80%;
 }
 
-.detailed-list li address {
-  margin: 0 0 0 60px;
+.detailed-list li address, .detailed-list li p {
+  margin: 0 0 0 60px !important;
   padding: 0;
 }
 

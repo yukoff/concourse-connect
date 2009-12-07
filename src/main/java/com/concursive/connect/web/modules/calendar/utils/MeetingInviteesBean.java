@@ -407,7 +407,7 @@ public class MeetingInviteesBean extends GenericBean {
       thisMember.setProjectId(meeting.getProjectId());
       thisMember.setUserId(user.getId());
       thisMember.setUserLevel(PortalUtils.getUserLevel(TeamMember.PARTICIPANT));
-      thisMember.setStatus(TeamMember.STATUS_JOINED);
+      thisMember.setStatus(TeamMember.STATUS_ADDED);
       thisMember.setEnteredBy(user.getId());
       thisMember.setModifiedBy(user.getId());
       String optionalMessage = "";
@@ -855,7 +855,7 @@ public class MeetingInviteesBean extends GenericBean {
         thisMember.setProjectId(meeting.getProjectId());
         thisMember.setUserId(meetingAttendee.getUserId());
         thisMember.setUserLevel(PortalUtils.getUserLevel(TeamMember.PARTICIPANT));
-        thisMember.setStatus(TeamMember.STATUS_JOINED);
+        thisMember.setStatus(TeamMember.STATUS_ADDED);
         thisMember.setEnteredBy(meeting.getOwner());
         thisMember.setModifiedBy(meeting.getOwner());
         String optionalMessage = "";

@@ -45,18 +45,6 @@
  */
 package com.concursive.connect.web.modules.members.portlets.memberRequests;
 
-import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
-import static com.concursive.connect.web.portal.PortalUtils.getUser;
-
-import java.io.PrintWriter;
-import java.sql.Connection;
-
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
-import org.aspcfs.utils.StringUtils;
-
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
@@ -65,6 +53,13 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
+import static com.concursive.connect.web.portal.PortalUtils.*;
+import org.aspcfs.utils.StringUtils;
+
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+import java.io.PrintWriter;
+import java.sql.Connection;
 
 /**
  * Project team member list
@@ -85,7 +80,7 @@ public class MemberRequestsViewer implements IPortletViewer {
   private static final String MEMBER_REQUESTS = "memberRequests";
 
   public String doView(RenderRequest request, RenderResponse response)
-	    throws Exception {
+      throws Exception {
     // The JSP to show upon success
     String defaultView = VIEW_PAGE;
 
@@ -100,83 +95,80 @@ public class MemberRequestsViewer implements IPortletViewer {
 
     // Determine if the invites can be shown to the current user
     if (ProjectUtils.hasAccess(project.getId(), user, "project-team-edit")) {
-    	String approve = request.getParameter("approve");
-    	
+      String approve = request.getParameter("approve");
+
       // Determine the database connection to use
       Connection db = getConnection(request);
-    	if (StringUtils.hasText(approve)){
+      if (StringUtils.hasText(approve)) {
         String teamMemberId = request.getParameter("teamMemberId");
         TeamMember teamMember = new TeamMember(db, Integer.parseInt(teamMemberId));
         TeamMember prevMember = new TeamMember(db, Integer.parseInt(teamMemberId));
-        
+
         int requestingUserId = teamMember.getUserId();
-        
+
         if ("true".equals(approve)) {
           //Change status of team member
-          teamMember.setStatus(TeamMember.STATUS_JOINED);
+          teamMember.setStatus(TeamMember.STATUS_ADDED);
           teamMember.setModifiedBy(user.getId());
           teamMember.update(db);
           PortalUtils.processUpdateHook(request, prevMember, teamMember);
 
           if (project.getProfile() && user.getId() == project.getOwner()) {
-          	//Reciprocate as it is request to become a friend of a user profile
-          	Project requestingUserProfile = (UserUtils.loadUser(requestingUserId)).getProfileProject();
-          	TeamMember reciprocatingTeamMember = null;
-          	//Determine if the reciprocal already exists, then update if necessary
-          	if (requestingUserProfile.getTeam().hasUserId(user.getId())){
-          		reciprocatingTeamMember = requestingUserProfile.getTeam().getTeamMember(user.getId());
-          		if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED){
-          			// DO Nothing
-          		} else {
-  	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
-  	            reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-  	            reciprocatingTeamMember.update(db);
-          		}
-          	} else {
-          		//Reciprocal does not exist, therefore create one
-	          	reciprocatingTeamMember = new TeamMember();
-	          	reciprocatingTeamMember.setProjectId(requestingUserProfile.getId());
-	          	reciprocatingTeamMember.setUserId(user.getId());
-	            reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
-	          	reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-	            reciprocatingTeamMember.setEnteredBy(requestingUserId);
-	            reciprocatingTeamMember.setModifiedBy(requestingUserId);
-	            reciprocatingTeamMember.insert(db);
-          	}
+            //Reciprocate as it is request to become a friend of a user profile
+            Project requestingUserProfile = (UserUtils.loadUser(requestingUserId)).getProfileProject();
+            TeamMember reciprocatingTeamMember = null;
+            //Determine if the reciprocal already exists, then update if necessary
+            if (requestingUserProfile.getTeam().hasUserId(user.getId())) {
+              reciprocatingTeamMember = requestingUserProfile.getTeam().getTeamMember(user.getId());
+              if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED) {
+                // DO Nothing
+              } else {
+                reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
+                reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+                reciprocatingTeamMember.update(db);
+              }
+            } else {
+              //Reciprocal does not exist, therefore create one
+              reciprocatingTeamMember = new TeamMember();
+              reciprocatingTeamMember.setProjectId(requestingUserProfile.getId());
+              reciprocatingTeamMember.setUserId(user.getId());
+              reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
+              reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
+              reciprocatingTeamMember.setEnteredBy(requestingUserId);
+              reciprocatingTeamMember.setModifiedBy(requestingUserId);
+              reciprocatingTeamMember.insert(db);
+            }
           }
         } else {
           teamMember.setStatus(TeamMember.STATUS_REFUSED);
           if (project.getProfile() && user.getId() == project.getOwner()) {
-          	//Remove team member if request to become a friend of a user profile is denied
+            //Remove team member if request to become a friend of a user profile is denied
             teamMember.delete(db);
           } else {
-          	//Change user status to refused
+            //Change user status to refused
             teamMember.update(db);
           }
-            PortalUtils.processUpdateHook(request, prevMember, teamMember);
+          PortalUtils.processUpdateHook(request, prevMember, teamMember);
         }
-
-    		response.setContentType("text/html");
+        response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("");
         out.flush();
-    		defaultView  = null;
-    	} else {
-	      
-	      TeamMemberList teamMemberList = new TeamMemberList();
-	      teamMemberList.setProjectId(project.getId());
-	      teamMemberList.setStatus(TeamMember.STATUS_JOINED_NEEDS_APPROVAL);
-	      teamMemberList.buildList(db);
-	      
-	      if (teamMemberList.size() == 0){
-	      	defaultView = null; 
-	      }
-	      
-	      request.setAttribute(MEMBER_REQUESTS, teamMemberList);
-    	}
+        defaultView = null;
+      } else {
+        // Retrieve the membership requests for the current user
+        TeamMemberList teamMemberList = new TeamMemberList();
+        teamMemberList.setProjectId(project.getId());
+        teamMemberList.setStatus(TeamMember.STATUS_JOINED_NEEDS_APPROVAL);
+        teamMemberList.buildList(db);
+        if (teamMemberList.size() == 0) {
+          defaultView = null;
+        }
+        request.setAttribute(MEMBER_REQUESTS, teamMemberList);
+      }
       // JSP view
       return defaultView;
     }
     return null;
-	}
+  }
 }

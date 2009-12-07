@@ -128,7 +128,7 @@ public class SendInvitationMessageToTeamMember extends ObjectHookComponent imple
             inviteSubject = freeMarkerConfiguration.getTemplate("project_invitation_email_subject-text.ftl");
             inviteBody = freeMarkerConfiguration.getTemplate("project_invitation_email_body-html.ftl");
             ((Map) bodyMappings.get("link")).put("info", url);
-            ((Map) bodyMappings.get("link")).put("invitations", url + "/invites");
+            ((Map) bodyMappings.get("link")).put("invitations", url + "/show/" + teamMemberUser.getProfileProject().getUniqueId());
           } else {
             // User IS NOT registered
             inviteSubject = freeMarkerConfiguration.getTemplate("project_invitation_for_new_user_email_subject-text.ftl");

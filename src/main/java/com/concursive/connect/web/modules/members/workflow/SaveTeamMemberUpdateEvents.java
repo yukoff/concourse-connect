@@ -98,8 +98,8 @@ public class SaveTeamMemberUpdateEvents extends ObjectHookComponent implements C
       // load the project profile
       Project projectProfile = ProjectUtils.loadProject(thisMember.getProjectId());
 
-      if (prevMember.getStatus() != TeamMember.STATUS_ACCEPTED &&
-          thisMember.getStatus() == TeamMember.STATUS_ACCEPTED) {
+      if (prevMember.getStatus() != TeamMember.STATUS_ADDED &&
+          thisMember.getStatus() == TeamMember.STATUS_ADDED) {
         // An existing team member accepted an invitation
 
         // Prepare the wiki links

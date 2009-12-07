@@ -102,6 +102,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static int INVITE_MEMBER_EVENT = 2009022607; //invites
   public final static int BECOME_PROFILE_FAN_EVENT = 2009022608; //member
   public final static int ACCEPT_INVITATION_EVENT = 2009022609; //invites
+  public final static int APPROVED_MEMBER_EVENT = 2009120701; //invites
   public final static int PROMOTE_MEMBER_EVENT = 2009022610; //role
   public final static int GRANT_MEMBER_TOOLS_EVENT = 2009022611; //tools
   public final static int BOOKMARK_PROFILE_EVENT = 2009022612; //list

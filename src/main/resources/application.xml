@@ -215,6 +215,7 @@
           <parameters>
             <parameter name="history.friend.invite.text">${member} became a friend of ${user}</parameter>
             <parameter name="history.invite.text">${member} accepted an invitation from ${user} to join ${profile}</parameter>
+            <parameter name="history.membership.invite.text">${user} approved ${member} for membership in ${profile}</parameter>
             <parameter name="history.promote.text">${user} promoted ${member} to ${profile} ${role}</parameter>
             <parameter name="history.grant.text">${user} granted tools access to ${member}</parameter>  
           </parameters>

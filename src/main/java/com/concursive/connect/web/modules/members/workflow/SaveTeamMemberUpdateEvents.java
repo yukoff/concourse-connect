@@ -69,6 +69,7 @@ import java.sql.Connection;
  */
 public class SaveTeamMemberUpdateEvents extends ObjectHookComponent implements ComponentInterface {
   public final static String HISTORY_INVITE_TEXT = "history.invite.text";
+  public final static String HISTORY_MEMBERSHIP_INVITE_TEXT = "history.membership.invite.text";
   public final static String HISTORY_FRIEND_INVITE_TEXT = "history.friend.invite.text";
   public final static String HISTORY_PROMOTE_TEXT = "history.promote.text";
   public final static String HISTORY_GRANT_TEXT = "history.grant.text";
@@ -109,17 +110,27 @@ public class SaveTeamMemberUpdateEvents extends ObjectHookComponent implements C
 
         // Insert the history
         ProjectHistory history = new ProjectHistory();
-        history.setEnteredBy(thisMember.getUserId());
         history.setProjectId(thisMember.getProjectId());
         history.setLinkObject(ProjectHistoryList.INVITES_OBJECT);
-        history.setEventType(ProjectHistoryList.ACCEPT_INVITATION_EVENT);
         history.setLinkItemId(thisMember.getId());
         if (projectProfile.getProfile()) {
           // Became a friend
           history.setDescription(context.getParameter(HISTORY_FRIEND_INVITE_TEXT));
+          history.setEventType(ProjectHistoryList.ACCEPT_INVITATION_EVENT);
+          history.setEnteredBy(thisMember.getUserId());
         } else {
-          // Became a member
-          history.setDescription(context.getParameter(HISTORY_INVITE_TEXT));
+          // Determine how the user was added...
+          if (prevMember.getStatus() == TeamMember.STATUS_JOINED_NEEDS_APPROVAL) {
+            // Was approved by a manager
+            history.setDescription(context.getParameter(HISTORY_MEMBERSHIP_INVITE_TEXT));
+            history.setEventType(ProjectHistoryList.APPROVED_MEMBER_EVENT);
+            history.setEnteredBy(user.getId());
+          } else {
+            // Added themself
+            history.setDescription(context.getParameter(HISTORY_INVITE_TEXT));
+            history.setEventType(ProjectHistoryList.ACCEPT_INVITATION_EVENT);
+            history.setEnteredBy(thisMember.getUserId());
+          }
         }
         history.insert(db);
       }

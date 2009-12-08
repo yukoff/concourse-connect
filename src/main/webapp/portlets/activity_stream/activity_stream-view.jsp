@@ -64,6 +64,9 @@
 <c:set var="add_activity_constant">
   <%= ProjectHistoryList.ADD_ACTIVITY_ENTRY_EVENT %>
 </c:set>
+<c:set var="twitter_constant">
+  <%= ProjectHistoryList.TWITTER_EVENT %>
+</c:set>
 <h3><c:out value="${title}"/></h3>
 <c:if test="${!empty content}">
   <h4><c:out value="${content}"/></h4>
@@ -93,7 +96,7 @@
             <li>
           <c:choose>
             <%-- use the project's logo for manually entered events --%>
-            <c:when test="${projectHistory.eventType == add_activity_constant}">
+            <c:when test="${projectHistory.eventType == add_activity_constant or projectHistory.eventType == twitter_constant}">
               <c:choose>
                 <c:when test="${!empty projectHistory.project.logo}">
                 <img alt="<c:out value="${projectHistory.project.title}"/> photo"

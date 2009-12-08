@@ -423,7 +423,7 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     sqlSelect.append(
         "t.team_id, t.project_id, t.user_id, t.userlevel, t.entered, t.enteredby, " +
             "t.modified, t.modifiedby, t.status, t.last_accessed, " +
-            "t.tools, t.notification, " +
+            "t.tools, t.notification, t.email_updates_schedule, " +
             "r.level " +
             "FROM project_team t, lookup_project_role r, users u " +
             "WHERE t.userlevel = r.code " +

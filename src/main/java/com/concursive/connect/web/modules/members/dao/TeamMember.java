@@ -53,6 +53,8 @@ import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueueList;
+import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueue;
 import com.concursive.connect.web.utils.LookupList;
 
 import java.sql.Connection;
@@ -92,6 +94,13 @@ public class TeamMember extends GenericBean {
   public final static int STATUS_PENDING = 3;
   public final static int STATUS_REFUSED = 4;
   public final static int STATUS_JOINED_NEEDS_APPROVAL = 6;
+  //Scheduled Email Updates
+  public final static int EMAIL_NEVER = 0;
+  public final static int EMAIL_OFTEN = 1;
+  public final static int EMAIL_DAILY = 2;
+  public final static int EMAIL_WEEKLY = 3;
+  public final static int EMAIL_MONTHLY = 4;
+
   private Object contact = null;
   private User user = null;
 
@@ -114,6 +123,7 @@ public class TeamMember extends GenericBean {
   private boolean notification = false;
   private Project project = null;
   private String customInvitationMessage = null;
+  private int emailUpdatesSchedule = EMAIL_NEVER;
 
   /**
    * Constructor for the Assignment object
@@ -144,7 +154,7 @@ public class TeamMember extends GenericBean {
     PreparedStatement pst = db.prepareStatement(
         "SELECT t.team_id, t.project_id, t.user_id, t.userlevel, t.entered, t.enteredby, " +
             "t.modified, t.modifiedby, t.status, t.last_accessed, " +
-            "t.tools, t.notification, " +
+            "t.tools, t.notification, t.email_updates_schedule, " +
             "r.level " +
             "FROM project_team t, lookup_project_role r " +
             "WHERE t.userlevel = r.code " +
@@ -176,7 +186,7 @@ public class TeamMember extends GenericBean {
     PreparedStatement pst = db.prepareStatement(
         "SELECT t.team_id, t.project_id, t.user_id, t.userlevel, t.entered, t.enteredby, " +
             "t.modified, t.modifiedby, t.status, t.last_accessed, " +
-            "t.tools, t.notification, " +
+            "t.tools, t.notification, t.email_updates_schedule, " +
             "r.level " +
             "FROM project_team t, lookup_project_role r " +
             "WHERE t.userlevel = r.code " +
@@ -217,6 +227,7 @@ public class TeamMember extends GenericBean {
     lastAccessed = rs.getTimestamp("last_accessed");
     tools = rs.getBoolean("tools");
     notification = rs.getBoolean("notification");
+    emailUpdatesSchedule = DatabaseUtils.getInt(rs, "email_updates_schedule");
     // lookup_project_role
     roleId = rs.getInt("level");
   }
@@ -433,6 +444,17 @@ public class TeamMember extends GenericBean {
     this.status = Integer.parseInt(tmp);
   }
 
+  public int getEmailUpdatesSchedule() {
+    return emailUpdatesSchedule;
+  }
+
+  public void setEmailUpdatesSchedule(int emailUpdatesSchedule) {
+    this.emailUpdatesSchedule = emailUpdatesSchedule;
+  }
+
+  public void setEmailUpdatesSchedule(String emailUpdatesSchedule) {
+    this.emailUpdatesSchedule = Integer.parseInt(emailUpdatesSchedule);
+  }
 
   /**
    * Sets the lastAccessed attribute of the TeamMember object
@@ -672,58 +694,93 @@ public class TeamMember extends GenericBean {
    * @throws SQLException Description of the Exception
    */
   public boolean insert(Connection db) throws SQLException {
-    StringBuffer sql = new StringBuffer();
-    sql.append("INSERT INTO project_team ");
-    sql.append("(" + (id > -1 ? "team_id, " : "") + "project_id, user_id, userlevel, tools, ");
-    if (entered != null) {
-      sql.append("entered, ");
+    boolean commit = false;
+    try {
+      commit = db.getAutoCommit();
+      if (commit) {
+        db.setAutoCommit(false);
+      }
+      StringBuffer sql = new StringBuffer();
+      sql.append("INSERT INTO project_team ");
+      sql.append("(" + (id > -1 ? "team_id, " : "") + "project_id, user_id, userlevel, tools, ");
+      if (entered != null) {
+        sql.append("entered, ");
+      }
+      if (modified != null) {
+        sql.append("modified, ");
+      }
+      if (lastAccessed != null) {
+        sql.append("last_accessed, ");
+      }
+      sql.append("enteredby, modifiedby, status, notification, email_updates_schedule) ");
+      sql.append("VALUES (?, ?, ?, ?, ");
+      if (id > -1) {
+        sql.append("?, ");
+      }
+      if (entered != null) {
+        sql.append("?, ");
+      }
+      if (modified != null) {
+        sql.append("?, ");
+      }
+      if (lastAccessed != null) {
+        sql.append("?, ");
+      }
+      sql.append("?, ?, ?, ?, ?) ");
+      PreparedStatement pst = db.prepareStatement(sql.toString());
+      int i = 0;
+      if (id > -1) {
+        pst.setInt(++i, id);
+      }
+      pst.setInt(++i, projectId);
+      pst.setInt(++i, userId);
+      DatabaseUtils.setInt(pst, ++i, userLevel);
+      pst.setBoolean(++i, tools);
+      if (entered != null) {
+        pst.setTimestamp(++i, entered);
+      }
+      if (modified != null) {
+        pst.setTimestamp(++i, modified);
+      }
+      if (lastAccessed != null) {
+        pst.setTimestamp(++i, lastAccessed);
+      }
+      pst.setInt(++i, enteredBy);
+      pst.setInt(++i, modifiedBy);
+      DatabaseUtils.setInt(pst, ++i, status);
+      pst.setBoolean(++i, notification);
+      DatabaseUtils.setInt(pst, ++i, emailUpdatesSchedule);
+      pst.execute();
+      pst.close();
+      id = DatabaseUtils.getCurrVal(db, "project_team_team_id_seq", id);
+
+      if (emailUpdatesSchedule != TeamMember.EMAIL_NEVER) {
+        EmailUpdatesQueueList queues = new EmailUpdatesQueueList();
+        queues.setEnteredBy(userId);
+        queues.setType(emailUpdatesSchedule);
+        queues.buildList(db);
+        if (queues.size() == 0) {
+          //Populate specified email update queue if it does not exist for this user. If the queue type specified
+          //already exists then no need to take any action
+          EmailUpdatesQueue queue = new EmailUpdatesQueue();
+          queue.setEnteredBy(userId);
+          queue.setModifiedBy(userId);
+          queue.setEnabled(true);
+          queue.setType(emailUpdatesSchedule);
+          queue.insert(db);
+        }
+      }
+      if (commit) {
+        db.commit();
+      }
+    } catch (SQLException e) {
+      if (commit) {
+        db.rollback();
+      }
+      throw new SQLException(e.getMessage());
+    } finally {
+      db.setAutoCommit(true);
     }
-    if (modified != null) {
-      sql.append("modified, ");
-    }
-    if (lastAccessed != null) {
-      sql.append("last_accessed, ");
-    }
-    sql.append("enteredby, modifiedby, status, notification) ");
-    sql.append("VALUES (?, ?, ?, ?, ");
-    if (id > -1) {
-      sql.append("?, ");
-    }
-    if (entered != null) {
-      sql.append("?, ");
-    }
-    if (modified != null) {
-      sql.append("?, ");
-    }
-    if (lastAccessed != null) {
-      sql.append("?, ");
-    }
-    sql.append("?, ?, ?, ?) ");
-    PreparedStatement pst = db.prepareStatement(sql.toString());
-    int i = 0;
-    if (id > -1) {
-      pst.setInt(++i, id);
-    }
-    pst.setInt(++i, projectId);
-    pst.setInt(++i, userId);
-    DatabaseUtils.setInt(pst, ++i, userLevel);
-    pst.setBoolean(++i, tools);
-    if (entered != null) {
-      pst.setTimestamp(++i, entered);
-    }
-    if (modified != null) {
-      pst.setTimestamp(++i, modified);
-    }
-    if (lastAccessed != null) {
-      pst.setTimestamp(++i, lastAccessed);
-    }
-    pst.setInt(++i, enteredBy);
-    pst.setInt(++i, modifiedBy);
-    DatabaseUtils.setInt(pst, ++i, status);
-    pst.setBoolean(++i, notification);
-    pst.execute();
-    pst.close();
-    id = DatabaseUtils.getCurrVal(db, "project_team_team_id_seq", id);
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, projectId);
     return true;
   }
@@ -742,7 +799,7 @@ public class TeamMember extends GenericBean {
     if (lastAccessed != null) {
       sql.append("last_accessed = ?, ");
     }
-    sql.append("modifiedby = ?, status = ?, userlevel = ?, tools = ?, notification = ? ");
+    sql.append("modifiedby = ?, status = ?, userlevel = ?, tools = ?, notification = ?, email_updates_schedule = ? ");
     sql.append("WHERE team_id = ? AND modified = ? ");
     PreparedStatement pst = db.prepareStatement(sql.toString());
     int i = 0;
@@ -754,6 +811,7 @@ public class TeamMember extends GenericBean {
     DatabaseUtils.setInt(pst, ++i, userLevel);
     pst.setBoolean(++i, tools);
     pst.setBoolean(++i, notification);
+    DatabaseUtils.setInt(pst, ++i, emailUpdatesSchedule);
     pst.setInt(++i, id);
     pst.setTimestamp(++i, modified);
     int resultCount = pst.executeUpdate();

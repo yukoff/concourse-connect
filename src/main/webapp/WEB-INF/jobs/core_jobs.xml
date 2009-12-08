@@ -71,4 +71,20 @@
       </simple>
     </trigger>
   </job>
+  <job pref="BACKGROUND.SCHEDULED_EMAIL_UPDATES">
+    <job-detail>
+      <name>scheduledEmailUpdatesJob</name>
+      <group>DEFAULT</group>
+      <description>Process scheduled email updates queue and send emails</description>
+      <job-class>com.concursive.connect.web.modules.communications.jobs.EmailUpdatesJob</job-class>
+    </job-detail>
+    <trigger>
+      <simple>
+        <name>scheduledEmailUpdatesJob</name>
+        <group>DEFAULT</group>
+        <start-time>30s</start-time>
+        <repeat-interval>1m</repeat-interval>
+      </simple>
+    </trigger>
+  </job>
 </quartz>

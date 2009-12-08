@@ -640,7 +640,8 @@ CREATE TABLE project_team (
   last_accessed TIMESTAMP(3),
   purpose INTEGER,
   notification BOOLEAN DEFAULT false,
-  tools BOOLEAN DEFAULT false NOT NULL
+  tools BOOLEAN DEFAULT false NOT NULL,
+  email_updates_schedule INTEGER DEFAULT 0 NOT NULL
 );
 CREATE UNIQUE INDEX project_team_uni_idx ON project_team (project_id, user_id);
 CREATE INDEX project_team_user_idx ON project_team(user_id);

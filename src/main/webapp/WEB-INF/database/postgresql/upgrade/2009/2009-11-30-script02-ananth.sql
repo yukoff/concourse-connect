@@ -1,0 +1,1 @@
+ALTER TABLE project_team ADD email_updates_schedule INTEGER DEFAULT 0 NOT NULL;

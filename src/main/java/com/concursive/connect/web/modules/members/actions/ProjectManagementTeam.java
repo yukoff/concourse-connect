@@ -521,8 +521,8 @@ public final class ProjectManagementTeam extends GenericAction {
     String errorMessage = null;
     //Parameters
     String projectIdStr = context.getRequest().getParameter("pid");
-
-    boolean isNotify = "true".equals(context.getRequest().getParameter("notification"));
+    boolean isNotify = "yes".equals(context.getRequest().getParameter("notification"));
+    int emailUpdateSchedule = Integer.parseInt(context.getRequest().getParameter("emailNotification"));
     User user = getUser(context);
     Project project = null;
     int projectId = -1;
@@ -559,6 +559,7 @@ public final class ProjectManagementTeam extends GenericAction {
             member.setModifiedBy(user.getId());
             member.setStatus(TeamMember.STATUS_ADDED);
             member.setNotification(isNotify);
+            member.setEmailUpdatesSchedule(emailUpdateSchedule);
             member.update(db);
             // TODO If membership is required
             // TeamMember.PARTICIPANT
@@ -574,6 +575,7 @@ public final class ProjectManagementTeam extends GenericAction {
           thisMember.setEnteredBy(user.getId());
           thisMember.setModifiedBy(user.getId());
           thisMember.setNotification(isNotify);
+          thisMember.setEmailUpdatesSchedule(emailUpdateSchedule);
           if (thisMember.insert(db)) {
             processInsertHook(context, thisMember);
           }

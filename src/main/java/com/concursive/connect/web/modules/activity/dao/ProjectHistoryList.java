@@ -52,8 +52,8 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * A collection of ProjectHistory objects
@@ -90,6 +90,8 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static String WIKI_OBJECT = "wiki";
   public final static String WIKI_COMMENT_OBJECT = "wiki-comment";
   public final static String ACTIVITY_ENTRY_OBJECT = "user-entry";
+  public final static String SITE_CHATTER_OBJECT = "site-chatter";
+  public final static String SITE_TWITTER_OBJECT = "site-twitter";
   public final static String TWITTER_OBJECT = "twitter";
 
   //Event constants
@@ -139,9 +141,45 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   private int instanceId = -1;
   private int projectCategoryId = -1;
   private int forUser = -1;
+  private int forMember = -1;
+  private int emailUpdatesSchedule = -1;
+  private Timestamp rangeStart = null;
+  private Timestamp rangeEnd = null;
   private Timestamp untilLinkStartDate = null;
   private int publicProjects = Constants.UNDEFINED;
   private int forParticipant = Constants.UNDEFINED;
+
+  public Timestamp getRangeStart() {
+    return rangeStart;
+  }
+
+  public void setRangeStart(Timestamp rangeStart) {
+    this.rangeStart = rangeStart;
+  }
+
+  public Timestamp getRangeEnd() {
+    return rangeEnd;
+  }
+
+  public void setRangeEnd(Timestamp rangeEnd) {
+    this.rangeEnd = rangeEnd;
+  }
+
+  public int getForMember() {
+    return forMember;
+  }
+
+  public void setForMember(int forMember) {
+    this.forMember = forMember;
+  }
+
+  public int getEmailUpdatesSchedule() {
+    return emailUpdatesSchedule;
+  }
+
+  public void setEmailUpdatesSchedule(int emailUpdatesSchedule) {
+    this.emailUpdatesSchedule = emailUpdatesSchedule;
+  }
 
   public int getEventType() {
     return eventType;
@@ -402,6 +440,12 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     if (eventType > -1) {
       sqlFilter.append("AND event_type = ? ");
     }
+    if (rangeStart != null) {
+      sqlFilter.append("AND link_start_date >= ? ");
+    }
+    if (rangeEnd != null) {
+      sqlFilter.append("AND link_start_date < ? ");
+    }
     if (untilLinkStartDate != null) {
       sqlFilter.append("AND link_start_date <= ? ");
     }
@@ -430,6 +474,10 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     if (forUser != -1) {
       sqlFilter.append("AND (ph.project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
           "AND status IS NULL) OR ph.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
+    }
+    if (forMember != -1) {
+      sqlFilter.append("AND ph.project_id IN " +
+              "(SELECT DISTINCT project_id FROM project_team WHERE user_id = ? AND email_updates_schedule = ?) ");
     }
     if (publicProjects == Constants.TRUE || forParticipant == Constants.TRUE) {
       sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
@@ -461,6 +509,12 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     if (eventType > -1) {
       pst.setInt(++i, eventType);
     }
+    if (rangeStart != null) {
+      pst.setTimestamp(++i, rangeStart);
+    }
+    if (rangeEnd != null) {
+      pst.setTimestamp(++i, rangeEnd);
+    }
     if (untilLinkStartDate != null) {
       pst.setTimestamp(++i, untilLinkStartDate);
     }
@@ -483,6 +537,10 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
       pst.setInt(++i, forUser);
       pst.setBoolean(++i, true);
     }
+    if (forMember != -1) {
+      pst.setInt(++i, forMember);
+      pst.setInt(++i, emailUpdatesSchedule);
+    }
     if (publicProjects == Constants.TRUE) {
       pst.setBoolean(++i, true);
     }
@@ -500,5 +558,22 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     pst.setInt(1, projectId);
     pst.execute();
     pst.close();
+  }
+
+  public HashMap getList(Connection db) throws SQLException {
+    this.buildList(db);
+
+    HashMap map = new HashMap();
+    for (ProjectHistory history : this) {
+      Date historyDate = new Date(history.getLinkStartDate().getTime());
+      ArrayList descriptions = (ArrayList) map.get(historyDate.toString());
+      if (descriptions == null) {
+        descriptions = new ArrayList();
+        map.put(historyDate.toString(), descriptions);
+      }
+      descriptions.add(history.getDescription());
+    }
+
+    return map;
   }
 }

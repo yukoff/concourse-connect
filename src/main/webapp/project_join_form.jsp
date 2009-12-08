@@ -46,6 +46,7 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
+<%@ page import="com.concursive.connect.web.modules.members.dao.TeamMember" %>
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/><jsp:useBean id="register" class="com.concursive.connect.web.modules.register.beans.RegisterBean" scope="request"/><%@ include file="initPage.jsp" %>
 <div class="formContainer">
   <form name="join" method="post" action="<%= ctx %>/ProjectManagementTeam.do?command=Join&pid=${project.id}">
@@ -56,8 +57,15 @@
     <fieldset id="Join">
       <legend><ccp:label name="project.join">Join</ccp:label></legend>
       <div>
-        <input type="checkbox" name="notification" id="notification" value="true" checked="true">
-        <label for="notification" style="display:inline"><ccp:label name="project.join.optin">Receive notifications by email regarding</ccp:label> <c:out value="${project.title}"/>?</label>
+        <label for="notification" style="display:inline"><ccp:label name="project.join.optin">Receive notifications by email regarding</ccp:label> <c:out value="${project.title}"/>?</label><br />
+        <input type="radio" name="notification" id="notification" value="yes" checked="true">Yes
+        <input type="radio" name="notification" id="notification" value="no">No <br /><br />  
+        <label for="notification" style="display:inline"><ccp:label name="project.email.optin">Receive email updates regarding</ccp:label> <c:out value="${project.title}"/>?</label><br />  
+        <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_OFTEN %>"> Often
+        <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_DAILY %>" checked="true"> Daily
+        <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_WEEKLY %>"> Weekly
+        <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_MONTHLY %>"> Monthly
+        <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_NEVER %>"> Never
       </div>
     </fieldset>
     <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" />

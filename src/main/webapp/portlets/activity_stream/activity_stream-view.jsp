@@ -152,8 +152,9 @@
             <c:when test="${isProfile eq 'true'}">
               <c:if test="${userProfileProjectId eq project.id}">
                 <p>
-                  Post to Twitter using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.<br />
+                  Post to Twitter using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.
                   <c:if test="${empty user.profileProject.twitterId}">
+                    <br />
                     <a href="javascript:showPanel('','${ctx}/show/${user.profileProject.uniqueId}/app/edit_profile','600')">Link your Twitter id</a> |
                     <a href="http://twitter.com" target="_blank">Need a Twitter account?</a>
                   </c:if>
@@ -164,9 +165,12 @@
             <c:when test="${projectId ne -1}">
               <ccp:permission if="all" name="project-profile-activity-add">
                 <p>
-                  Post to <a href="http://twitter.com" target="_blank">Twitter</a> using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.<br />
-                  <a href="javascript:showPanel('','${ctx}/show/${project.uniqueId}/app/edit_profile','600')">Link your Twitter id</a> |
-                  <a href="http://twitter.com" target="_blank">Need a Twitter account?</a>
+                  Post to <a href="http://twitter.com" target="_blank">Twitter</a> using <strong>#${applicationPrefs.prefs["TWITTER_HASH"]}</strong> so others will see your messages here.
+                  <c:if test="${empty project.twitterId}">
+                    <br />
+                    <a href="javascript:showPanel('','${ctx}/show/${project.uniqueId}/app/edit_profile','600')">Link your Twitter id</a> |
+                    <a href="http://twitter.com" target="_blank">Need a Twitter account?</a>
+                  </c:if>
                 </p>
               </ccp:permission>
             </c:when>

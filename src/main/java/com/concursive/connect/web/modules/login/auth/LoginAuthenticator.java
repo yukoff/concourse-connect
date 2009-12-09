@@ -144,7 +144,7 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
       // Valid user -- Log the user in
       if (thisUser != null) {
         // Make sure the user info is valid for the application
-        thisUser.updateLogin(db, context, loginBean.getPassword());
+        thisUser.updateLogin(db, context.getRequest(), prefs, loginBean.getPassword());
         thisUser.setBrowserType(context.getBrowser());
         // Apply any defaults
         UserUtils.createLoggedInUser(thisUser, db);

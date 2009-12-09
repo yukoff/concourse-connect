@@ -113,6 +113,9 @@ public class SessionValidator implements ISessionValidator {
         // Load the user record from the guid
         thisUser = UserUtils.loadUserFromGuid(db, guid);
         if (thisUser != null) {
+          // Track the login
+          thisUser.updateLogin(db, request, prefs, null);
+          thisUser.setBrowserType(request.getHeader("USER-AGENT"));
           // Apply defaults
           UserUtils.createLoggedInUser(thisUser, db);
           // Extend the cookie

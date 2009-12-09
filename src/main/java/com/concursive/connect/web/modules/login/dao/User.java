@@ -63,6 +63,7 @@ import com.concursive.connect.web.modules.translation.dao.WebSiteLanguageList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import com.concursive.connect.web.webdav.servlets.WebdavServlet;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -1656,16 +1657,15 @@ public class User extends GenericBean {
   }
 
   /**
-   * Description of the Method
+   * Updates the database with information about the user's current successful login
    *
    * @param db       Description of the Parameter
-   * @param context  Description of the Parameter
    * @param password Description of the Parameter
    * @return Description of the Return Value
    * @throws SQLException Description of the Exception
    */
-  public boolean updateLogin(Connection db, ActionContext context, String password) throws SQLException {
-    // Update the last login
+  public boolean updateLogin(Connection db, HttpServletRequest request, ApplicationPrefs prefs, String password) throws SQLException {
+    // Update the last login date
     PreparedStatement pst = db.prepareStatement(
         "UPDATE users " +
             "SET last_login = CURRENT_TIMESTAMP " +
@@ -1674,50 +1674,54 @@ public class User extends GenericBean {
     pst.execute();
     pst.close();
     try {
-      // Update the permanent password if using the temporary password
-      pst = db.prepareStatement(
-          "UPDATE users " +
-              "SET password = ? " +
-              "WHERE user_id = ? " +
-              "AND password <> ? AND temporary_password = ? ");
-      String passwordHash = PasswordHash.encrypt(password);
-      pst.setString(1, passwordHash);
-      pst.setInt(2, id);
-      pst.setString(3, passwordHash);
-      pst.setString(4, passwordHash);
-      pst.execute();
-      pst.close();
-      // Update the webdav passwords
-      pst = db.prepareStatement(
-          "UPDATE users " +
-              "SET webdav_password = ? " +
-              "WHERE user_id = ? " +
-              "AND (webdav_password IS NULL OR webdav_password <> ?) ");
-      String webdav = PasswordHash.encrypt(username + ":" + WebdavServlet.USER_REALM + ":" + password);
-      pst.setString(1, webdav);
-      pst.setInt(2, id);
-      pst.setString(3, webdav);
-      pst.execute();
-      pst.close();
-      // Update the htpasswd
-      ApplicationPrefs prefs = (ApplicationPrefs) context.getServletContext().getAttribute("applicationPrefs");
-      if ("true".equals(prefs.get("HTPASSWD"))) {
+      if (password != null) {
+        // Update the permanent password if user is using a temporary password
         pst = db.prepareStatement(
             "UPDATE users " +
-                "SET htpasswd = ?, htpasswd_date = CURRENT_TIMESTAMP " +
+                "SET password = ? " +
                 "WHERE user_id = ? " +
-                "AND (htpasswd IS NULL OR htpasswd <> ?) ");
-        String htpasswd = PasswordHash.htpasswd(username, password);
-        pst.setString(1, htpasswd);
+                "AND password <> ? AND temporary_password = ? ");
+        String passwordHash = PasswordHash.encrypt(password);
+        pst.setString(1, passwordHash);
         pst.setInt(2, id);
-        pst.setString(3, htpasswd);
+        pst.setString(3, passwordHash);
+        pst.setString(4, passwordHash);
         pst.execute();
         pst.close();
+
+        // Update the webdav passwords
+        pst = db.prepareStatement(
+            "UPDATE users " +
+                "SET webdav_password = ? " +
+                "WHERE user_id = ? " +
+                "AND (webdav_password IS NULL OR webdav_password <> ?) ");
+        String webdav = PasswordHash.encrypt(username + ":" + WebdavServlet.USER_REALM + ":" + password);
+        pst.setString(1, webdav);
+        pst.setInt(2, id);
+        pst.setString(3, webdav);
+        pst.execute();
+        pst.close();
+
+        // Update the htpasswd
+        if ("true".equals(prefs.get("HTPASSWD"))) {
+          pst = db.prepareStatement(
+              "UPDATE users " +
+                  "SET htpasswd = ?, htpasswd_date = CURRENT_TIMESTAMP " +
+                  "WHERE user_id = ? " +
+                  "AND (htpasswd IS NULL OR htpasswd <> ?) ");
+          String htpasswd = PasswordHash.htpasswd(username, password);
+          pst.setString(1, htpasswd);
+          pst.setInt(2, id);
+          pst.setString(3, htpasswd);
+          pst.execute();
+          pst.close();
+        }
       }
     } catch (Exception e) {
       // This column might not exist yet so catch the fail
     }
-    // Load the current last login
+
+    // Load the user's updated login value
     pst = db.prepareStatement(
         "SELECT last_login " +
             "FROM users " +
@@ -1729,16 +1733,16 @@ public class User extends GenericBean {
     }
     rs.close();
     pst.close();
-    //Record the IP
-    String ipAddress = context.getIpAddress();
+
+    // Record the user login event
     if (System.getProperty("DEBUG") != null) {
-      System.out.println("User-> Logging user IP: " + ipAddress);
+      System.out.println("User-> Logging user IP: " + request.getRemoteAddr());
     }
     pst = db.prepareStatement(
         "INSERT INTO user_log (user_id, ip_address, browser) VALUES (?, ?, ?)");
     pst.setInt(1, id);
-    pst.setString(2, ipAddress);
-    pst.setString(3, context.getBrowser());
+    pst.setString(2, request.getRemoteAddr());
+    pst.setString(3, request.getHeader("USER-AGENT"));
     pst.execute();
     pst.close();
     CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, id);

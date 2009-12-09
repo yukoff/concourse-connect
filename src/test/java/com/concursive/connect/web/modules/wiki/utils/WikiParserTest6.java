@@ -73,7 +73,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
     user.setGroupId(1);
     user.setDepartmentId(1);
     user.setEnabled(true);
-    user.insert(db, null, null);
+    user.insert(db, "127.0.0.1", mockPrefs);
     assertTrue("User not inserted", user.getId() > -1);
     // Create a project
     Project project = new Project();

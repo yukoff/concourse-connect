@@ -119,7 +119,7 @@ public abstract class AbstractWorkflowManagerTest extends AbstractConnectionPool
     workflowUser.setStartPage(1);
     workflowUser.setRegistered(true);
     workflowUser.setProfileProjectId(workflowUserProfile.getId());
-    workflowUser.insert(db, "127.0.0.1", null);
+    workflowUser.insert(db, "127.0.0.1", mockPrefs);
     assertTrue("Unable to add a user..", workflowUser.getId() != -1);
 
     USER_ID = workflowUser.getId();

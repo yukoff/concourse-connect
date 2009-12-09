@@ -157,6 +157,7 @@ public class ApplicationPrefs {
   public final static String USERS_CAN_INVITE = "INVITE";
   public final static String USERS_CAN_START_PROJECTS = "START_PROJECTS";
   public final static String USERS_ARE_ANONYMOUS = "ANONYMOUS";
+  public final static String DEFAULT_USER_PROFILE_ROLE = "DEFAULT_USER_PROFILE_ROLE";
   public final static String SHOW_TERMS_AND_CONDITIONS = "LICENSE";
   public final static String SEARCH_USES_LOCATION = "USE_LOCATIONS";
   public final static String LANGUAGE = "SYSTEM.LANGUAGE";

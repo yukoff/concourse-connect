@@ -52,7 +52,6 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.common.social.tagging.dao.TagList;
-import com.concursive.connect.web.modules.common.social.tagging.dao.TagLogList;
 import com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplate;
 import com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplateList;
 import com.concursive.connect.web.modules.discussion.dao.Forum;
@@ -296,12 +295,9 @@ public class UserUtils {
       project.setOwner(user.getId());
       project.setEnteredBy(user.getId());
       project.setModifiedBy(user.getId());
-      if (prefs != null) {
-        if ("false".equals(prefs.get(ApplicationPrefs.USERS_ARE_ANONYMOUS))) {
-          project.setTitle(user.getNameFirstLast());
-        } else {
-          project.setTitle(user.getNameFirstLastInitial());
-        }
+      // Determine how to record the user's name in the profile
+      if ("true".equals(prefs.get(ApplicationPrefs.USERS_ARE_ANONYMOUS))) {
+        project.setTitle(user.getNameFirstLastInitial());
       } else {
         project.setTitle(user.getNameFirstLast());
       }
@@ -315,10 +311,8 @@ public class UserUtils {
       // Access rules will allow this profile to be searched and seen
       project.getFeatures().setUpdateAllowGuests(true);
       project.getFeatures().setAllowGuests(true);
-      if (prefs != null) {
-        if ("true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE))) {
-          project.getFeatures().setAllowGuests(false);
-        }
+      if ("true".equals(prefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE))) {
+        project.getFeatures().setAllowGuests(false);
       }
       // A join request can be made which requires approval by the profile owner
       project.getFeatures().setUpdateAllowParticipants(true);
@@ -330,12 +324,20 @@ public class UserUtils {
       project.getFeatures().setId(project.getId());
       project.getFeatures().update(db);
       updateProfileProjectId(db, user, project);
-      // Add the user as a Manager of the profile
+      // Determine which role level the user is for their own profile
       LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
+      int defaultUserLevel = roleList.getIdFromLevel(TeamMember.MANAGER);
+      if (!user.getAccessAdmin() && prefs.has(ApplicationPrefs.DEFAULT_USER_PROFILE_ROLE)) {
+        int userLevelPreference = roleList.getIdFromValue(prefs.get(ApplicationPrefs.DEFAULT_USER_PROFILE_ROLE));
+        if (userLevelPreference > -1) {
+          defaultUserLevel = userLevelPreference;
+        }
+      }
+      // Add the user as a member of the profile
       TeamMember member = new TeamMember();
       member.setUserId(user.getId());
       member.setProjectId(project.getId());
-      member.setUserLevel(roleList.getIdFromLevel(TeamMember.MANAGER));
+      member.setUserLevel(defaultUserLevel);
       member.setStatus(TeamMember.STATUS_ADDED);
       member.setNotification(true);
       member.setEnteredBy(user.getId());
@@ -504,9 +506,10 @@ public class UserUtils {
       }
     }
   }
-  
+
   /**
    * Get recently used tags by the user
+   *
    * @param db
    * @param userId
    * @return

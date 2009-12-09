@@ -78,7 +78,7 @@ public class UserUtilsTest extends AbstractConnectionPoolTest {
     Timestamp entered = new Timestamp(System.currentTimeMillis());
     entered.setNanos(23456);
     user.setEntered(entered);
-    user.insert(db, null, null);
+    user.insert(db, "127.0.0.1", mockPrefs);
 
     // Reset the fields from the database
     user = new User(db, user.getId());

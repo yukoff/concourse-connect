@@ -88,7 +88,7 @@ public class SaveUserRegisterEventTest extends AbstractWorkflowManagerTest {
     user.setEnabled(true);
     user.setStartPage(1);
     user.setRegistered(true);
-    user.insert(db, "127.0.0.1", null);
+    user.insert(db, "127.0.0.1", mockPrefs);
     assertTrue("Unable to add a user..", user.getId() != -1);
 
     registerBean.setUser(user);

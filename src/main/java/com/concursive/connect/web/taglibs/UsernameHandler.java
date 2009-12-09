@@ -173,10 +173,10 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
 
       ApplicationPrefs prefs = (ApplicationPrefs) this.pageContext.getServletContext().getAttribute(Constants.APPLICATION_PREFS);
       String user = "";
-      if ("false".equals(prefs.get(ApplicationPrefs.USERS_ARE_ANONYMOUS))) {
-        user = userObject.getNameFirstLast();
-      } else {
+      if ("true".equals(prefs.get(ApplicationPrefs.USERS_ARE_ANONYMOUS))) {
         user = userObject.getNameFirstLastInitial();
+      } else {
+        user = userObject.getNameFirstLast();
       }
       // Find a related profile
       boolean foundProfile = false;

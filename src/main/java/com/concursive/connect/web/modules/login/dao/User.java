@@ -278,11 +278,11 @@ public class User extends GenericBean {
     }
     //cleanup
     idRange = String.valueOf(id);
-    
-    if (getProfileProject() != null){
-    	this.profileUniqueId = getProfileProject().getUniqueId();
+
+    if (getProfileProject() != null) {
+      this.profileUniqueId = getProfileProject().getUniqueId();
     }
-    
+
   }
 
   public int getInstanceId() {
@@ -1619,19 +1619,19 @@ public class User extends GenericBean {
    * @return the profileUniqueId
    */
   public String getProfileUniqueId() {
-  	return profileUniqueId;
+    return profileUniqueId;
   }
 
 
-	/**
+  /**
    * @param profileUniqueId the profileUniqueId to set
    */
   public void setProfileUniqueId(String profileUniqueId) {
-  	this.profileUniqueId = profileUniqueId;
+    this.profileUniqueId = profileUniqueId;
   }
 
 
-	public boolean isApiRestore() {
+  public boolean isApiRestore() {
     return apiRestore;
   }
 
@@ -1654,7 +1654,7 @@ public class User extends GenericBean {
   public void setConnectCRMManager(boolean connectCRMManager) {
     this.connectCRMManager = connectCRMManager;
   }
-  
+
   /**
    * Description of the Method
    *
@@ -1746,14 +1746,15 @@ public class User extends GenericBean {
   }
 
   /**
-   * Basic user insert method, used by API
+   * Basic user insert method, used by API (fails due to prefs requirement)
    *
    * @param db The database connection
    * @return true if the record was added successfully
    * @throws SQLException Database exception
+   * @deprecated
    */
   public boolean insert(Connection db) throws SQLException {
-    return insert(db, null, null);
+    return insert(db, null, new ApplicationPrefs());
   }
 
   /**

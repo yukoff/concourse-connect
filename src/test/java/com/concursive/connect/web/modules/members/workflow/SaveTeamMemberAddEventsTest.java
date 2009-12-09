@@ -106,7 +106,7 @@ public class SaveTeamMemberAddEventsTest extends AbstractWorkflowManagerTest {
     memberUser.setEnabled(true);
     memberUser.setStartPage(1);
     memberUser.setRegistered(true);
-    memberUser.insert(db, "127.0.0.1", null);
+    memberUser.insert(db, "127.0.0.1", mockPrefs);
     assertTrue("Unable to add a user..", memberUser.getId() != -1);
 
     //invite a new team member
@@ -208,7 +208,7 @@ public class SaveTeamMemberAddEventsTest extends AbstractWorkflowManagerTest {
     memberUser.setEnabled(true);
     memberUser.setStartPage(1);
     memberUser.setRegistered(true);
-    memberUser.insert(db, "127.0.0.1", null);
+    memberUser.insert(db, "127.0.0.1", mockPrefs);
     assertTrue("Unable to add a user..", memberUser.getId() != -1);
 
     //add a team member with joined status

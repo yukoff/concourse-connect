@@ -85,7 +85,7 @@ public class ContributionCalculationForFilesDownloadedTest extends AbstractConne
   	user.setModifiedBy(USER_ID);
   	user.setGroupId(DEPARTMENT_ID);
   	user.setDepartmentId(1);
-    boolean userInserted = user.insert(db, null, null);
+    boolean userInserted = user.insert(db, "127.0.0.1", mockPrefs);
     assertTrue("User was not inserted ", userInserted);
     assertTrue("User did not have an id ", user.getId() > -1);
   	

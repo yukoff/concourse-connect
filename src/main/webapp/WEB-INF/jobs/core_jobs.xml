@@ -78,6 +78,7 @@
       <description>Process scheduled email updates queue and send emails</description>
       <job-class>com.concursive.connect.web.modules.communications.jobs.EmailUpdatesJob</job-class>
     </job-detail>
+    <!--
     <trigger>
       <simple>
         <name>scheduledEmailUpdatesJob</name>
@@ -86,5 +87,6 @@
         <repeat-interval>1m</repeat-interval>
       </simple>
     </trigger>
+    -->
   </job>
 </quartz>

@@ -215,7 +215,7 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
         this.pageContext.getOut().write(
             "<a " +
                 "href=\"" + RequestUtils.getAbsoluteServerUrl((HttpServletRequest) pageContext.getRequest()) + "/show/" + userProject.getUniqueId() + "\"" +
-                (idTag != null ? "id=\"" + idTag + "\"" : "") +
+                (idTag != null ? " id=\"" + idTag + "\"" : "") +
                 (showLinkTitle ? " title=\"Profile for " + user + "\"" : "") +
                 ">");
       }

@@ -68,19 +68,21 @@
 <c:set var="inviteFlag"><%= TeamMember.STATUS_INVITING %></c:set>
 <c:set var="canJoinFlag"><%= project.getFeatures().getAllowParticipants() && !project.getFeatures().getMembershipRequired() && !project.getTeam().hasUserId(User.getId()) %></c:set>
 <%-- Initialize the drop-down menus --%>
-<c:choose>
-  <c:when test="${project.owner > -1}">
-    <ccp:permission name="project-details-edit">
-      <c:set var="canUnsetOwner" value="${true}" scope="request"/>
-    </ccp:permission>
-    <c:set var="ownerId" scope="request" value="${project.owner}"/>
-  </c:when>
-  <c:otherwise>
-    <ccp:permission name="project-details-edit">
-      <c:set var="canSetOwner" value="${true}" scope="request"/>
-    </ccp:permission>
-  </c:otherwise>
-</c:choose>
+<c:if test="${!project.profile}">
+  <c:choose>
+    <c:when test="${project.owner > -1}">
+      <ccp:permission name="project-details-edit">
+        <c:set var="canUnsetOwner" value="${true}" scope="request"/>
+      </ccp:permission>
+      <c:set var="ownerId" scope="request" value="${project.owner}"/>
+    </c:when>
+    <c:otherwise>
+      <ccp:permission name="project-details-edit">
+        <c:set var="canSetOwner" value="${true}" scope="request"/>
+      </ccp:permission>
+    </c:otherwise>
+  </c:choose>
+</c:if>
 <%@ include file="projects_center_team_menu.jspf" %>
 <%-- Initialize the tooltip --%>
 <pack:script>

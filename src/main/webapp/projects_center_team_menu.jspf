@@ -134,7 +134,10 @@
               </ccp:permission>
             </c:if>
           }
-          oMenu.addItem({ text: "Remove", onclick: { fn: removeFromProfile } });
+          <%-- Do not allow users to be detached from their own profile --%>
+          if (!${project.profile} || (${project.profile} && ${project.owner} != thisItemId)) {
+            oMenu.addItem({ text: "Remove", onclick: { fn: removeFromProfile } });
+          }
         }
       </ccp:permission>
       oMenu.render(document.getElementById("popupLayer"));

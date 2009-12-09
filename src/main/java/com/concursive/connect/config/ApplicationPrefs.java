@@ -125,9 +125,11 @@ public class ApplicationPrefs {
   // DimDim Properties
   public final static String DIMDIM_ENABLED = "DIMDIM.ENABLED";
   public final static String DIMDIM_API_DOMAIN = "DIMDIM.DOMAIN";
-  // Google Maps Properties
+  // Google Properties
   public final static String GOOGLE_MAPS_API_DOMAIN = "GOOGLE_MAPS.DOMAIN";
   public final static String GOOGLE_MAPS_API_KEY = "GOOGLE_MAPS.KEY";
+  public final static String GOOGLE_ANALYTICS_ID = "GOOGLE_ANALYTICS.ID";
+  public final static String GOOGLE_ANALYTICS_VERIFY = "GOOGLE_ANALYTICS.VERIFY";
   // Twitter Properties
   public final static String TWITTER_HASH = "TWITTER_HASH";
   // Services Properties

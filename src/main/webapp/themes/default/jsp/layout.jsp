@@ -172,6 +172,10 @@
     <ccp:evaluate if="<%= hasText(metaKeywords) %>">
       <meta name="keywords" content="<%= toHtml(metaKeywords) %>"/>
     </ccp:evaluate>
+    <%-- Google Analytics --%>
+    <ccp:evaluate if='<%= applicationPrefs.has("GOOGLE_ANALYTICS.VERIFY") %>'>
+      <meta name="verify-v1" content="<%= applicationPrefs.get("GOOGLE_ANALYTICS.VERIFY") %>" />
+    </ccp:evaluate>
     <title><%= toHtml(pageTitle) %></title>
     <%--
       <link rel="shortcut icon" href="${ctx}/favicon.ico" type="image/x-icon" />
@@ -492,5 +496,18 @@
     <div class="yui-skin-sam">
       <div id="popupLayer"></div>
     </div>
+    <%-- Google Analytics Tracker --%>
+    <c:if test='<%= applicationPrefs.has("GOOGLE_ANALYTICS.ID") %>'>
+      <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      </script>
+      <script type="text/javascript">
+        try {
+        var pageTracker = _gat._getTracker("<%= applicationPrefs.get("GOOGLE_ANALYTICS.ID") %>");
+        pageTracker._trackPageview();
+        } catch(err) {}
+      </script>
+    </c:if>
   </body>
 </html>

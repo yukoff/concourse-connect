@@ -67,6 +67,8 @@ public class SetupDetailsBean extends GenericBean {
   private String storage = "-1";
   private String googleMapsAPIDomain = null;
   private String googleMapsAPIKey = null;
+  private String googleAnalyticsId = null;
+  private String googleAnalyticsVerifyCode = null;
   private String twitterHashtag = null;
 
 
@@ -178,6 +180,22 @@ public class SetupDetailsBean extends GenericBean {
 
   public void setGoogleMapsAPIKey(String googleMapsAPIKey) {
     this.googleMapsAPIKey = googleMapsAPIKey;
+  }
+
+  public String getGoogleAnalyticsId() {
+    return googleAnalyticsId;
+  }
+
+  public void setGoogleAnalyticsId(String googleAnalyticsId) {
+    this.googleAnalyticsId = googleAnalyticsId;
+  }
+
+  public String getGoogleAnalyticsVerifyCode() {
+    return googleAnalyticsVerifyCode;
+  }
+
+  public void setGoogleAnalyticsVerifyCode(String googleAnalyticsVerifyCode) {
+    this.googleAnalyticsVerifyCode = googleAnalyticsVerifyCode;
   }
 
   public String getTwitterHashtag() {

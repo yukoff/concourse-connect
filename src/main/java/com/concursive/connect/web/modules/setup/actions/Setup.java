@@ -545,6 +545,12 @@ public final class Setup extends GenericAction {
       if (hasPref(context, ApplicationPrefs.GOOGLE_MAPS_API_KEY)) {
         bean.setGoogleMapsAPIKey(getPref(context, ApplicationPrefs.GOOGLE_MAPS_API_KEY));
       }
+      if (hasPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_ID)) {
+        bean.setTwitterHashtag(getPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_ID));
+      }
+      if (hasPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_VERIFY)) {
+        bean.setTwitterHashtag(getPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_VERIFY));
+      }
       if (hasPref(context, ApplicationPrefs.TWITTER_HASH)) {
         bean.setTwitterHashtag(getPref(context, ApplicationPrefs.TWITTER_HASH));
       }
@@ -584,6 +590,12 @@ public final class Setup extends GenericAction {
         StringUtils.hasText(bean.getGoogleMapsAPIKey())) {
       prefs.add(ApplicationPrefs.GOOGLE_MAPS_API_DOMAIN, RequestUtils.getDomainName(bean.getGoogleMapsAPIDomain()).trim());
       prefs.add(ApplicationPrefs.GOOGLE_MAPS_API_KEY, bean.getGoogleMapsAPIKey().trim());
+    }
+    if (StringUtils.hasText(bean.getGoogleAnalyticsId())) {
+      prefs.add(ApplicationPrefs.GOOGLE_ANALYTICS_ID, bean.getGoogleAnalyticsId().trim());
+    }
+    if (StringUtils.hasText(bean.getGoogleAnalyticsVerifyCode())) {
+      prefs.add(ApplicationPrefs.GOOGLE_ANALYTICS_VERIFY, bean.getGoogleAnalyticsVerifyCode().trim());
     }
     // Is a twitter hashtag defined?
     if (StringUtils.hasText(bean.getTwitterHashtag())) {

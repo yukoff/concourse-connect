@@ -97,6 +97,21 @@
           <input type="text" name="googleMapsAPIKey" value="<%= toHtmlValue(detailsBean.getGoogleMapsAPIKey()) %>" size="40" />
           <b><%= showAttribute(request, "googleMapsAPIKeyError") %></b>
 
+          <label>Google Analytics</label>
+          <input type="text" name="googleAnalyticsId" value="<%= toHtmlValue(detailsBean.getGoogleAnalyticsId()) %>" size="40" />
+          <b><%= showAttribute(request, "googleAnalyticsIdError") %></b>
+          <span class="characterCount">
+            Visit <a target="_blank" href="http://www.google.com/analytics/">Google Analytics site</a> to create an account.<br />
+            The tracker id is usually in the format of UA-########-#
+          </span>
+
+          <label>Google Analytics Verification Code</label>
+          <input type="text" name="googleAnalyticsVerifyCode" value="<%= toHtmlValue(detailsBean.getGoogleAnalyticsVerifyCode()) %>" size="40" />
+          <b><%= showAttribute(request, "googleAnalyticsVerifyCodeError") %></b>
+          <span class="characterCount">
+            A verification code is sometimes required -- during account creation Google may ask you to verify the ownership of this site, otherwise leave blank.
+          </span>
+
           <label>Twitter Hashtag</label>
           <input type="text" name="twitterHashtag" value="<%= toHtmlValue(detailsBean.getTwitterHashtag()) %>" size="40" />
           <b><%= showAttribute(request, "twitterHashtagError") %></b>

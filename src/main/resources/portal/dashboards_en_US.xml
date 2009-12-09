@@ -52,18 +52,18 @@
       <urls>
         <value>
           <![CDATA[
-            <content>Join the Community</content>
-            <title>Join the Community</title>
-            <href>/register</href>
+            <content>Sign In</content>
+            <title>Sign in with an existing account</title>
+            <href>/login?redirectTo=%2F</href>
             <rule>isLoggedOut</rule>
             <secure>true</secure>
           ]]>
         </value>
         <value>
           <![CDATA[
-            <content>Sign In</content>
-            <title>Sign in with an existing account</title>
-            <href>/login?redirectTo=%2F</href>
+            <content>Join the Community</content>
+            <title>Join the Community</title>
+            <href>/register</href>
             <rule>isLoggedOut</rule>
             <secure>true</secure>
           ]]>

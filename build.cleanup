@@ -167,3 +167,7 @@ WEB-INF/lib/concursive-commons-20090911.jar
 
 # 2009-12-07
 WEB-INF/lib/concursive-commons-20090924.jar
+
+# 2009-12-10
+WEB-INF/lib/concursive-commons-20091207.jar
+WEB-INF/lib/quartz-1.6.4.jar

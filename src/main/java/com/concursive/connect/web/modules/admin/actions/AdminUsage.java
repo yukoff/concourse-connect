@@ -47,6 +47,8 @@
 package com.concursive.connect.web.modules.admin.actions;
 
 import com.concursive.commons.files.FileUtils;
+import com.concursive.commons.http.RequestUtils;
+import com.concursive.commons.web.URLFactory;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
@@ -123,6 +125,33 @@ public final class AdminUsage extends GenericAction {
     }
     getApplicationPrefs(context).configureWorkflowManager(context.getServletContext());
     return "ReloadWorkflowsOK";
+  }
+
+  /**
+   * A utility which allows an admin to have a properly configured system.
+   * The prefs are used by background tasks which don't have access to the
+   * intended URL.
+   *
+   * @param context
+   * @return
+   */
+  public String executeCommandStoreURL(ActionContext context) {
+    if (!getUser(context).getAccessAdmin()) {
+      return "PermissionError";
+    }
+    ApplicationPrefs prefs = getApplicationPrefs(context);
+    String url = URLFactory.createURL(prefs.getPrefs());
+    if (url == null || !url.equals(RequestUtils.getAbsoluteServerUrl(context.getRequest()))) {
+      LOG.debug("Saving the WEB properties");
+      prefs.add(ApplicationPrefs.WEB_SCHEME, context.getRequest().getScheme());
+      prefs.add(ApplicationPrefs.WEB_DOMAIN_NAME, context.getRequest().getServerName());
+      prefs.add(ApplicationPrefs.WEB_PORT, String.valueOf(context.getRequest().getServerPort()));
+      prefs.add(ApplicationPrefs.WEB_CONTEXT, context.getRequest().getContextPath());
+      prefs.save();
+      url = URLFactory.createURL(prefs.getPrefs());
+    }
+    context.getRequest().setAttribute("redirectTo", url);
+    return "Redirect301";
   }
 
 }

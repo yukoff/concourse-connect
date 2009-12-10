@@ -45,6 +45,9 @@
  */
 package com.concursive.connect.web.modules.wiki.portlets.main;
 
+import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.URLFactory;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -58,7 +61,6 @@ import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
 import static com.concursive.connect.web.portal.PortalUtils.getConnection;
-import com.concursive.commons.text.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -98,6 +100,8 @@ public class WikiEditorViewer implements IPortletViewer {
     // The JSP to show upon success
     String defaultView = WYSIWYG_VIEW_PAGE;
 
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+
     // General Display Preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, "Wiki"));
 
@@ -136,6 +140,7 @@ public class WikiEditorViewer implements IPortletViewer {
     request.setAttribute(WIKI_IMAGE_LIST, imageList);
 
     // Create a wiki context to manage sections and forms being edited
+    // @note the context is used instead of the full URL
     WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, user.getId(), true, request.getContextPath());
     // Determine the wiki editor to use
     if ("raw".equals(mode)) {

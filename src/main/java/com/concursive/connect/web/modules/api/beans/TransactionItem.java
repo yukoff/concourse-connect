@@ -702,8 +702,8 @@ public class TransactionItem {
       // Prepare required objects for ObjectHookManager
       ApplicationPrefs prefs = packetContext.getApplicationPrefs();
       boolean sslEnabled = "true".equals(prefs.get("SSL"));
-      String url = ("http://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), packetContext.getActionContext().getRequest()));
-      String secureUrl = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), packetContext.getActionContext().getRequest()));
+      String url = ("http://" + RequestUtils.getServerUrl(packetContext.getActionContext().getRequest()));
+      String secureUrl = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(packetContext.getActionContext().getRequest()));
       // Execute the process asynchronously
       switch (action) {
         case INSERT:

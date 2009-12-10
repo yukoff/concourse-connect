@@ -47,6 +47,7 @@ package com.concursive.connect.cms.portal.utils;
 
 import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.cms.portal.beans.PortalBean;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.blog.dao.BlogPostList;
@@ -58,6 +59,7 @@ import com.concursive.connect.web.utils.ClientType;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  * Utilities for working with the integrated website capability
@@ -92,11 +94,12 @@ public class WebPortalUtils {
 
   public static boolean isUnexpectedHost(PortalBean bean, ActionContext context, ApplicationPrefs prefs) {
     // Use case: An old domain name or virtual host is used
-    String expectedURL = prefs.get("URL");
-    if (expectedURL != null &&
+    String expectedDomainName = prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME);
+    if (expectedDomainName != null &&
         !"127.0.0.1".equals(bean.getServerName()) &&
         !"localhost".equals(bean.getServerName()) &&
-        !bean.getServerName().equals(expectedURL)) {
+        !bean.getServerName().equals(expectedDomainName)) {
+      // Preserve the URI
       String uri = "";
       String uriValue = context.getRequest().getRequestURI();
       if (uriValue != null && !uriValue.substring(1).equals(prefs.get("PORTAL.INDEX"))) {
@@ -106,7 +109,14 @@ public class WebPortalUtils {
         }
         uri = uriValue;
       }
-      context.getRequest().setAttribute("redirectTo", "http://" + prefs.get("URL") + uri);
+      // Convert the current URL to a redirect of the expected URL
+      HashMap expectedURL = new HashMap();
+      expectedURL.put(ApplicationPrefs.WEB_SCHEME, context.getRequest().getScheme());
+      expectedURL.put(ApplicationPrefs.WEB_DOMAIN_NAME, expectedDomainName);
+      expectedURL.put(ApplicationPrefs.WEB_PORT, context.getRequest().getServerPort());
+      String newUrl = URLFactory.createURL(expectedURL);
+      // Send a redirect
+      context.getRequest().setAttribute("redirectTo", newUrl + uri);
       context.getRequest().removeAttribute("PageLayout");
       return true;
     }

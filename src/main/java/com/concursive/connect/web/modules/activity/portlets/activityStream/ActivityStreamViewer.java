@@ -47,7 +47,9 @@ package com.concursive.connect.web.modules.activity.portlets.activityStream;
 
 import com.concursive.commons.date.DateUtils;
 import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.Constants;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
 import com.concursive.connect.web.modules.login.dao.User;
@@ -93,6 +95,8 @@ public class ActivityStreamViewer implements IPortletViewer {
       throws Exception {
     // The JSP to show upon success
     String defaultView = VIEW_PAGE;
+
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
 
     String limit = request.getPreferences().getValue(PREF_LIMIT, "10");
     // General display preferences
@@ -192,6 +196,7 @@ public class ActivityStreamViewer implements IPortletViewer {
       if (thisUser != null) {
         userId = thisUser.getId();
       }
+      // @note the context is used instead of the full URL
       WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(userId, request.getContextPath());
       String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, projectHistory.getDescription());
       projectHistory.setHtmlLink(wikiLinkString);

@@ -353,7 +353,7 @@ public class WikiToHTMLUtils {
           if (context.canAppend()) {
             if (!context.isEditMode()) {
               if (hasUserProjectAccess(db, context.getUserId(), context.getProjectId(), "wiki", "add")) {
-                sb.append("<span class=\"editsection\"><a href=\"" + context.getContextPath() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?section=" + context.getSectionIdCount() + "\">edit</a></span>");
+                sb.append("<span class=\"editsection\"><a href=\"" + context.getServerUrl() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?section=" + context.getSectionIdCount() + "\">edit</a></span>");
               }
             }
           }
@@ -671,7 +671,7 @@ public class WikiToHTMLUtils {
           for (CustomFormField field : group) {
             sb.append("<tr class=\"containerBody\">" +
                 "<td valign=\"top\" class=\"formLabel\">").append(StringUtils.toHtml(field.getLabel())).append("</td>" +
-                "<td valign=\"top\">").append(toHtmlFormField(field, context.getContextPath()));
+                "<td valign=\"top\">").append(toHtmlFormField(field, context.getServerUrl()));
             if (StringUtils.hasText(field.getAdditionalText())) {
               sb.append("&nbsp;").append(StringUtils.toHtml(field.getAdditionalText()));
             }
@@ -705,13 +705,13 @@ public class WikiToHTMLUtils {
                 LOG.debug("   output w/label");
                 sb.append("<td class=\"formLabel\">").append(StringUtils.toHtml(field.getLabel())).append("</td>");
                 sb.append("<td>");
-                sb.append(toHtml(field, context.getWiki(), context.getContextPath()));
+                sb.append(toHtml(field, context.getWiki(), context.getServerUrl()));
                 sb.append("</td>");
               } else {
                 LOG.debug("   output");
                 sb.append("<td colspan=\"2\">");
                 sb.append("<center>");
-                sb.append(toHtml(field, context.getWiki(), context.getContextPath()));
+                sb.append(toHtml(field, context.getWiki(), context.getServerUrl()));
                 sb.append("</center>");
                 sb.append("</td>");
               }
@@ -736,7 +736,7 @@ public class WikiToHTMLUtils {
         LOG.debug("Check permissions");
         if (context.getProject() != null && hasUserProjectAccess(db, context.getUserId(), context.getProject().getId(), "wiki", "add")) {
           sb.append("<tr><td colspan=\"2\" align=\"center\">");
-          sb.append("<a href=\"" + context.getContextPath() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?form=1\">Fill out this form</a>");
+          sb.append("<a href=\"" + context.getServerUrl() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?form=1\">Fill out this form</a>");
           sb.append("</td></tr>");
         }
         sb.append("</table>");
@@ -804,12 +804,12 @@ public class WikiToHTMLUtils {
 
           if (link.startsWith("Image:") || link.startsWith("image:")) {
             // Image link
-            WikiImageLink wikiImageLink = new WikiImageLink(link, context.getProjectId(), context.getImageList(), (i + 1 == line.length()), context.isEditMode(), context.getContextPath());
+            WikiImageLink wikiImageLink = new WikiImageLink(link, context.getProjectId(), context.getImageList(), (i + 1 == line.length()), context.isEditMode(), context.getServerUrl());
             sb.append(wikiImageLink.getValue());
             needsCRLF = wikiImageLink.getNeedsCRLF();
           } else if (link.startsWith("Video:") || link.startsWith("video:")) {
             // Video link
-            WikiVideoLink wikiVideoLink = new WikiVideoLink(link, context.isEditMode(), context.getContextPath());
+            WikiVideoLink wikiVideoLink = new WikiVideoLink(link, context.isEditMode(), context.getServerUrl());
             sb.append(wikiVideoLink.getValue());
             needsCRLF = wikiVideoLink.getNeedsCRLF();
           } else {
@@ -832,17 +832,17 @@ public class WikiToHTMLUtils {
               if ("profile".equalsIgnoreCase(wikiLink.getArea())) {
                 // Links to a profile page
                 cssClass = "wikiLink external";
-                url = context.getContextPath() + "/show/" + thisProject.getUniqueId();
+                url = context.getServerUrl() + "/show/" + thisProject.getUniqueId();
               } else if ("badge".equalsIgnoreCase(wikiLink.getArea())) {
                 // Links to a badge
                 cssClass = "wikiLink external";
-                url = context.getContextPath() + "/badge/" + wikiLink.getEntityId();
+                url = context.getServerUrl() + "/badge/" + wikiLink.getEntityId();
               } else if ("wiki".equalsIgnoreCase(wikiLink.getArea())) {
                 // Links to another wiki page
                 if (StringUtils.hasText(wikiLink.getEntity())) {
-                  url = context.getContextPath() + "/show/" + thisProject.getUniqueId() + "/wiki/" + wikiLink.getEntityTitle();
+                  url = context.getServerUrl() + "/show/" + thisProject.getUniqueId() + "/wiki/" + wikiLink.getEntityTitle();
                 } else {
-                  url = context.getContextPath() + "/show/" + thisProject.getUniqueId() + "/wiki";
+                  url = context.getServerUrl() + "/show/" + thisProject.getUniqueId() + "/wiki";
                 }
                 // Check to see if this is an external wiki
                 if (context.getProjectId() > -1 && context.getProjectId() != thisProject.getId()) {
@@ -854,12 +854,12 @@ public class WikiToHTMLUtils {
                   // If user has access to edit, then use an edit link
                   if (hasUserProjectAccess(db, context.getUserId(), wikiLink.getProjectId(), wikiLink.getArea(), "edit")) {
                     String wikiSubject = StringUtils.hasText(wikiLink.getEntity()) ? "/" + wikiLink.getEntityTitle() : "";
-                    url = context.getContextPath() + "/modify/" + thisProject.getUniqueId() + "/wiki" + wikiSubject;
+                    url = context.getServerUrl() + "/modify/" + thisProject.getUniqueId() + "/wiki" + wikiSubject;
                   }
                 }
               } else {
                 cssClass = "wikiLink external";
-                url = context.getContextPath() + "/show/" + thisProject.getUniqueId() + "/" + wikiLink.getArea().toLowerCase() + (StringUtils.hasText(wikiLink.getEntity()) ? "/" + wikiLink.getEntityId() : "");
+                url = context.getServerUrl() + "/show/" + thisProject.getUniqueId() + "/" + wikiLink.getArea().toLowerCase() + (StringUtils.hasText(wikiLink.getEntity()) ? "/" + wikiLink.getEntityId() : "");
               }
               // Display the resulting URL
               if (wikiLink.getProjectId() == -1 || wikiLink.getProjectId() == context.getProjectId() || hasUserProjectAccess(db, context.getUserId(), wikiLink.getProjectId(), wikiLink.getPermissionArea(), "view")) {

@@ -46,6 +46,8 @@
 package com.concursive.connect.web.modules.wiki.portlets;
 
 import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.URLFactory;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -105,6 +107,8 @@ public class EditProjectWikiPortlet extends GenericPortlet {
       if (viewType == null) {
         viewType = (String) request.getPortletSession().getAttribute("viewType");
       }
+      ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+
       // Set global preferences
       request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
       Project project = PortalUtils.getProject(request);
@@ -138,6 +142,7 @@ public class EditProjectWikiPortlet extends GenericPortlet {
         // Load wiki image library dimensions (cache in future)
         HashMap imageList = WikiUtils.buildImageInfo(db, project.getId());
         request.setAttribute(IMAGE_LIST, imageList);
+        // @note the context must be used instead of the full URL
         WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, PortalUtils.getUser(request).getId(), true, request.getContextPath());
 
         wikiContext.setEditFormId(1);

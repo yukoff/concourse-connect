@@ -48,7 +48,9 @@ package com.concursive.connect.web.controller.hooks;
 import com.concursive.commons.db.ConnectionElement;
 import com.concursive.commons.db.ConnectionPool;
 import com.concursive.commons.http.CookieUtils;
+import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.web.mvc.servlets.ControllerHook;
+import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.beans.PortalBean;
 import com.concursive.connect.config.ApplicationPrefs;
@@ -80,6 +82,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Executed on every request to verify user is logged in, and that system
@@ -164,7 +167,7 @@ public class SecurityHook implements ControllerHook {
       if (!s.startsWith("Portal") && uri.indexOf(".shtml") == -1) {
         // Check to see if an old domain name is used
         PortalBean bean = new PortalBean(request);
-        String expectedURL = prefs.get("URL");
+        String expectedURL = prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME);
         if (expectedURL != null && requestedURL != null &&
             !"127.0.0.1".equals(bean.getServerName()) &&
             !"localhost".equals(bean.getServerName()) &&
@@ -333,12 +336,28 @@ public class SecurityHook implements ControllerHook {
         db = getConnection(context, request);
         // TODO: Implement cache since every hit needs this list
         if (db != null) {
+          // A map for global alerts
+          ArrayList<String> alerts = new ArrayList<String>();
+          request.setAttribute(Constants.REQUEST_GLOBAL_ALERTS, alerts);
+
+          // Check to see if the application is configured...
+          if (userSession.getAccessAdmin()) {
+            String url = URLFactory.createURL(prefs.getPrefs());
+            if (url == null) {
+              alerts.add("The application configuration requires that the URL properties are updated.  Store <strong>" + RequestUtils.getAbsoluteServerUrl(request) + "</strong>? <a href=\"" + RequestUtils.getAbsoluteServerUrl(request) + "/AdminUsage.do?command=StoreURL\">Save Changes</a>");
+            } else if (!url.equals(RequestUtils.getAbsoluteServerUrl(request))) {
+              alerts.add("There is a configuration mismatch -- expected: <strong>" + RequestUtils.getAbsoluteServerUrl(request) + "</strong> but the configuration has <strong><a href=\"" + url + "\">" + url + "</a></strong> <a href=\"" + RequestUtils.getAbsoluteServerUrl(request) + "/AdminUsage.do?command=StoreURL\">Save Changes</a>");
+            }
+          }
+
           // Check the # of invitations
           int invitationCount = InvitationList.queryCount(db, userSession.getId(), userSession.getProfileProjectId());
           request.setAttribute(Constants.REQUEST_INVITATION_COUNT, String.valueOf(invitationCount));
 
+          // Check the # of private messages
           int newMailCount = PrivateMessageList.queryUnreadCountForUser(db, userSession.getId());
           request.setAttribute(Constants.REQUEST_PRIVATE_MESSAGE_COUNT, String.valueOf(newMailCount));
+
           // NOTE: removed because not currently used
           // Check the number of what's new
 //          int whatsNewCount = ProjectUtils.queryWhatsNewCount(db, userSession.getId());

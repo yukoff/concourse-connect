@@ -62,15 +62,15 @@ public class WikiParserTest8 extends AbstractConnectionPoolTest {
     // The user id
     int userId = -1;
     // Create a context based on the current user, and the application web context
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(userId, "/community");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(userId, "http://127.0.0.1:8080/community");
     // Convert the wiki to html for this user
     String html = WikiToHTMLUtils.getHTML(wikiContext, db, history);
     // Test the output
     assertEquals("Wiki text mismatch",
         "<p>" +
-            "<a class=\"wikiLink external\" href=\"/community/show/\">John Smith</a> " +
-            "granted the <a class=\"wikiLink external\" href=\"/community/badge/-1\">Awesome</a> " +
+            "<a class=\"wikiLink external\" href=\"http://127.0.0.1:8080/community/show/\">John Smith</a> " +
+            "granted the <a class=\"wikiLink external\" href=\"http://127.0.0.1:8080/community/badge/-1\">Awesome</a> " +
             "badge to <a class=\"wikiLink external\" " +
-            "href=\"/community/show/\">A new group</a></p>\n", html);
+            "href=\"http://127.0.0.1:8080/community/show/\">A new group</a></p>\n", html);
   }
 }

@@ -45,6 +45,8 @@
  */
 package com.concursive.connect.web.modules.wiki.portlets.wikiForm;
 
+import com.concursive.commons.web.URLFactory;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.contactus.dao.ContactUsBean;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
@@ -52,12 +54,12 @@ import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
-import java.util.HashMap;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.HashMap;
 
 /**
  * Displays a CustomForm form
@@ -85,6 +87,8 @@ public class WikiFormViewer implements IPortletViewer {
 
   public String doView(RenderRequest request, RenderResponse response) throws Exception {
 
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+
     // Determine the portlet's view to use
     String view = PortalUtils.getViewer(request);
     LOG.debug("Viewer... " + view);
@@ -110,7 +114,7 @@ public class WikiFormViewer implements IPortletViewer {
     // Convert wiki to html
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(request.getPreferences().getValue(PREF_FORM_CONTENT, null));
-    // Parse it
+    // @note the context is used instead of the full URL
     WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, true, request.getContextPath());
     String html = WikiToHTMLUtils.getHTML(wikiContext, null);
 

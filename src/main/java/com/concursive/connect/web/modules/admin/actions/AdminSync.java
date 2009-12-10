@@ -187,8 +187,8 @@ public final class AdminSync extends GenericAction {
               record.setName(MAP);
               record.setAction(SAVE_CONNECT_SYNC_INFO_SERVICE);
               record.addField("connectURL", getServerUrl(context));
-              if (StringUtils.hasText(prefs.get(ApplicationPrefs.WEB_URL))) {
-                record.addField("connectDomain", prefs.get(ApplicationPrefs.WEB_URL));
+              if (StringUtils.hasText(prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME))) {
+                record.addField("connectDomain", prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
               } else {
                 record.addField("connectDomain", context.getRequest().getServerName());
               }

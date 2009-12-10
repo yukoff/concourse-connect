@@ -63,7 +63,7 @@ public final class ResetPassword extends GenericAction {
     ApplicationPrefs prefs = getApplicationPrefs(context);
     boolean sslEnabled = "true".equals(getPref(context, "SSL"));
     if (sslEnabled && !"https".equals(context.getRequest().getScheme())) {
-      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/ResetPassword.do";
+      String url = ("https://" + RequestUtils.getServerUrl(context.getRequest())) + "/ResetPassword.do";
       context.getRequest().setAttribute("redirectTo", url);
       return "Redirect301";
     }
@@ -77,7 +77,7 @@ public final class ResetPassword extends GenericAction {
     ApplicationPrefs prefs = getApplicationPrefs(context);
     boolean sslEnabled = "true".equals(getPref(context, "SSL"));
     if (sslEnabled && !"https".equals(context.getRequest().getScheme())) {
-      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/ResetPassword.do";
+      String url = ("https://" + RequestUtils.getServerUrl(context.getRequest())) + "/ResetPassword.do";
       context.getRequest().setAttribute("redirectTo", url);
       return "Redirect301";
     }

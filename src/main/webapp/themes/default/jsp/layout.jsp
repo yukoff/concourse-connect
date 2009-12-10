@@ -383,6 +383,17 @@
       </div><%-- End ccp-header --%>
       <div class="ccp-body">
         <p class="access"><a name="content">Main Content</a></p>
+        <%-- Any system alerts? --%>
+        <c:if test="${!empty requestGlobalAlerts}">
+          <div class="portlet-message-error">
+            <ul>
+              <c:forEach items="${requestGlobalAlerts}" var="alert" varStatus="status">
+                <li>${alert}</li>
+              </c:forEach>
+            </ul>
+          </div>
+        </c:if>
+        <%-- Render the page --%>
         <jsp:include page="<%= PageBody %>" flush="true"/>
       </div>
       <div class="ccp-footer">

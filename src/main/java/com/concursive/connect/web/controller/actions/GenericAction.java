@@ -633,7 +633,7 @@ public class GenericAction implements java.io.Serializable {
   protected static String getServerUrl(ActionContext context) {
     ApplicationPrefs prefs = (ApplicationPrefs) context.getServletContext().getAttribute(Constants.APPLICATION_PREFS);
     boolean sslEnabled = "true".equals(prefs.get("SSL"));
-    return ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest()));
+    return ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(context.getRequest()));
   }
 
   protected String getLink(ActionContext context, String url) {

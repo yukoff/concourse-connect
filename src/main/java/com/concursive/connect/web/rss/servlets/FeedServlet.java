@@ -106,7 +106,7 @@ public class FeedServlet extends HttpServlet {
       response.setContentType(MIME_TYPE);
 
       ApplicationPrefs prefs = (ApplicationPrefs) getServletContext().getAttribute("applicationPrefs");
-      String url = "http://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), request);
+      String url = "http://" + RequestUtils.getServerUrl(request);
       List entries = new ArrayList();
       SyndEntry entry;
       SyndContent description;

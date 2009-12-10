@@ -77,7 +77,7 @@ public final class Login extends GenericAction {
       if (StringUtils.hasText(context.getRequest().getParameter("redirectTo"))) {
         redirectTo = "?redirectTo=" + context.getRequest().getParameter("redirectTo");
       }
-      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/login" + redirectTo;
+      String url = ("https://" + RequestUtils.getServerUrl(context.getRequest())) + "/login" + redirectTo;
       context.getRequest().setAttribute("redirectTo", url);
       return "Redirect301";
     }
@@ -134,7 +134,7 @@ public final class Login extends GenericAction {
       if (StringUtils.hasText(context.getRequest().getParameter("redirectTo"))) {
         redirectTo = "?redirectTo=" + context.getRequest().getParameter("redirectTo");
       }
-      String url = ("https://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/login" + redirectTo;
+      String url = ("https://" + RequestUtils.getServerUrl(context.getRequest())) + "/login" + redirectTo;
       context.getRequest().setAttribute("redirectTo", url);
       return "Redirect301";
     }

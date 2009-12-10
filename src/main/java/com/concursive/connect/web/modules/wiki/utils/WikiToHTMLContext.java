@@ -61,35 +61,48 @@ import java.util.LinkedHashMap;
  * @created July 7, 2008
  */
 public class WikiToHTMLContext {
+
   // properties used for parsing a wiki
   private Wiki wiki;
   private HashMap imageList;
   private LinkedHashMap<String, String> headerAnchors = new LinkedHashMap<String, String>();
   private int userId;
-  private String contextPath;
   private int sectionIdCount = 0;
   private boolean canAppend = true;
   private int currentHeaderLevel = 1;
+
   // properties that affect the output
+  private String serverUrl;
   private boolean editMode;
   private int editSectionId = -1;
   private int editSectionHeaderLevel = -1;
   private int editFormId = -1;
 
-  public WikiToHTMLContext(Wiki wiki, HashMap imageList, int userId, boolean editMode, String contextPath) {
+  /**
+   * The context provides essential properties for the underlying operation -- when using
+   * edit mode, be sure to just use the application context because the WYSIWYG editor
+   * expects it.
+   *
+   * @param wiki
+   * @param imageList
+   * @param userId
+   * @param editMode
+   * @param serverUrl
+   */
+  public WikiToHTMLContext(Wiki wiki, HashMap imageList, int userId, boolean editMode, String serverUrl) {
     this.wiki = wiki;
     this.imageList = imageList;
     this.userId = userId;
     this.editMode = editMode;
-    this.contextPath = contextPath;
+    this.serverUrl = serverUrl;
   }
 
-  public WikiToHTMLContext(int userId, String contextPath) {
+  public WikiToHTMLContext(int userId, String serverUrl) {
     this.wiki = null;
     this.imageList = new HashMap();
     this.userId = userId;
     this.editMode = false;
-    this.contextPath = contextPath;
+    this.serverUrl = serverUrl;
   }
 
   public Wiki getWiki() {
@@ -132,12 +145,12 @@ public class WikiToHTMLContext {
     this.editMode = editMode;
   }
 
-  public String getContextPath() {
-    return contextPath;
+  public String getServerUrl() {
+    return serverUrl;
   }
 
-  public void setContextPath(String contextPath) {
-    this.contextPath = contextPath;
+  public void setServerUrl(String serverUrl) {
+    this.serverUrl = serverUrl;
   }
 
   public int getSectionIdCount() {

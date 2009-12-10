@@ -45,8 +45,10 @@
  */
 package com.concursive.connect.web.modules.wiki.portlets.main;
 
+import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.dao.ProjectItemList;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.common.social.rating.dao.Rating;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -102,6 +104,8 @@ public class WikiDetailsViewer implements IPortletViewer {
     // The JSP to show upon success
     String defaultView = VIEW_PAGE;
 
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+
     // General Display Preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, "Wiki"));
 
@@ -134,6 +138,7 @@ public class WikiDetailsViewer implements IPortletViewer {
       request.setAttribute(WIKI_COMMENT_LIST, commentList);
 
       // Convert the wiki to html for this user
+      // @note the context is used instead of the full URL
       WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, user.getId(), false, request.getContextPath());
       String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext, db);
       request.setAttribute(WIKI_HTML, wikiHtml);

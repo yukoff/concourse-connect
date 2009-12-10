@@ -170,7 +170,7 @@ public class EmailUpdatesJob implements StatefulJob {
               Iterator j = descriptions.iterator();
               while (j.hasNext()) {
                 String description = (String) j.next();
-                WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_URL));
+                WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
                 String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
                 message.append("<li>" + wikiLinkString + "</li>");
               }
@@ -204,7 +204,7 @@ public class EmailUpdatesJob implements StatefulJob {
                 Iterator l = descriptions.iterator();
                 while (l.hasNext()) {
                   String description = (String) l.next();
-                  WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_URL));
+                  WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
                   String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
                   message.append("<li>" + wikiLinkString + "</li>");
                 }
@@ -234,7 +234,7 @@ public class EmailUpdatesJob implements StatefulJob {
                 Iterator n = descriptions.iterator();
                 while (n.hasNext()) {
                   String description = (String) n.next();
-                  WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_URL));
+                  WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
                   String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
                   message.append("<li>" + wikiLinkString + "</li>");
                 }
@@ -250,7 +250,7 @@ public class EmailUpdatesJob implements StatefulJob {
             message.append("</p>");
 
             Template template = new Template(message.toString());
-            template.addParseElement("${secureUrl}", prefs.get(ApplicationPrefs.WEB_URL));
+            template.addParseElement("${secureUrl}", prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
             template.addParseElement("${this.project.uniqueId:html}", website.getUniqueId());
             //Try to send the email
             LOG.debug("Sending email...");

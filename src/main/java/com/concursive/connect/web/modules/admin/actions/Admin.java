@@ -140,11 +140,10 @@ public final class Admin extends GenericAction {
    * @param dir      Description of the Parameter
    */
   private void precompileJSP(ActionContext context, File thisFile, String dir) {
-    ApplicationPrefs prefs = getApplicationPrefs(context);
     if (thisFile.getName().endsWith(".jsp") &&
         !thisFile.getName().endsWith("_include.jsp") &&
         !thisFile.getName().endsWith("_menu.jsp")) {
-      String serverName = "http://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest());
+      String serverName = "http://" + RequestUtils.getServerUrl(context.getRequest());
       String jsp = serverName + dir + thisFile.getName();
       try {
         URL url = new URL(jsp);

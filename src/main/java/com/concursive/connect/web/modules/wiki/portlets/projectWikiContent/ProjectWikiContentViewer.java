@@ -46,6 +46,8 @@
 package com.concursive.connect.web.modules.wiki.portlets.projectWikiContent;
 
 import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.URLFactory;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -59,13 +61,13 @@ import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
 import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.sql.Connection;
 import java.util.HashMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Displays wiki information
@@ -93,6 +95,8 @@ public class ProjectWikiContentViewer implements IPortletViewer {
   public String doView(RenderRequest request, RenderResponse response) throws Exception {
 
     String defaultView = VIEW_PAGE;
+
+    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
 
     // The wiki to display
     String wikiName = request.getPreferences().getValue(PREF_WIKI, null);
@@ -145,6 +149,7 @@ public class ProjectWikiContentViewer implements IPortletViewer {
     if (wiki.getId() > -1 && StringUtils.hasText(wiki.getContent())) {
       LOG.debug("Wiki found.");
       // Convert the wiki to html for this user
+      // @note the context is used instead of the full URL
       WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, user.getId(), false, request.getContextPath());
       String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext, db);
       request.setAttribute(WIKI_HTML, wikiHtml);

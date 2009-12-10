@@ -45,13 +45,13 @@
  */
 package com.concursive.connect.web.modules.api.services;
 
+import com.concursive.commons.api.Record;
 import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
 import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.text.Template;
 import com.concursive.commons.web.mvc.actions.ActionContext;
-import com.concursive.commons.api.Record;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.config.ApplicationPrefs;
@@ -64,12 +64,12 @@ import com.concursive.connect.web.modules.contacts.utils.ContactUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.net.URLEncoder;
 import java.security.Key;
 import java.sql.Connection;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Handler invoked on a projectMessage bean using the API...
@@ -153,7 +153,7 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
           inviteBody.addParseElement("${project.description}", project.getShortDescription());
           inviteBody.addParseElement("${project.ownerName}", ((User) CacheUtils.getObjectValue(Constants.SYSTEM_USER_CACHE, project.getOwner())).getNameFirstLastInitial());
           inviteBody.addParseElement("${project.profileLink}",
-              RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), actionContext.getRequest()) + "/show/" + project.getUniqueId());
+              RequestUtils.getServerUrl(actionContext.getRequest()) + "/show/" + project.getUniqueId());
           //TODO: Define the following link..
           //inviteBody.addParseElement("${project.unsubscribeLink}", YYY);
           inviteBody.addParseElement("\r\n", "");

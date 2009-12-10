@@ -49,7 +49,6 @@ import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.db.ConnectionElement;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.http.RequestUtils;
-import com.concursive.commons.net.HTTPUtils;
 import com.concursive.commons.objects.ObjectUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
@@ -237,7 +236,7 @@ public final class Setup extends GenericAction {
         }
         boolean saved = ApplicationPrefs.saveFileLibraryLocation(thisPath, fileLibrary);
         if (!saved) {
-          context.getRequest().setAttribute("actionError", "The java preferences could not be stored: " + thisPath + "=" + fileLibrary);
+          context.getRequest().setAttribute("actionError", "The Java preferences could not be stored: " + thisPath + "=" + fileLibrary);
           return "SetupSaveLibraryERROR";
         }
         // Test to see if registration of services is enabled
@@ -273,9 +272,7 @@ public final class Setup extends GenericAction {
     }
     bean.setOs(System.getProperty("os.name") + " " + System.getProperty("os.arch") + " " + System.getProperty("os.version"));
     bean.setJava(System.getProperty("java.version"));
-    bean.setWebserver(HTTPUtils.getServerName(
-        context.getRequest().getScheme() + "://" +
-            RequestUtils.getServerUrl(context.getRequest())));
+    bean.setWebserver(context.getServletContext().getServerInfo());
     return "SetupRegistrationFormOK";
   }
 
@@ -298,9 +295,7 @@ public final class Setup extends GenericAction {
     // Set system properties
     bean.setOs(System.getProperty("os.name") + " " + System.getProperty("os.arch") + " " + System.getProperty("os.version"));
     bean.setJava(System.getProperty("java.version"));
-    bean.setWebserver(HTTPUtils.getServerName(
-        context.getRequest().getScheme() + "://" +
-            RequestUtils.getServerUrl(context.getRequest())));
+    bean.setWebserver(context.getServletContext().getServerInfo());
     // Set key for exchanging info
     Key key = PrivateString.generateKey();
     bean.setKey(PrivateString.encodeHex(key));
@@ -576,14 +571,21 @@ public final class Setup extends GenericAction {
       processErrors(context, bean.getErrors());
       return "SetupSaveDetailsERROR";
     }
-    // save the settings
+    // Save the settings
     ApplicationPrefs prefs = getApplicationPrefs(context);
+    // Set the web application's URL
+    prefs.add(ApplicationPrefs.WEB_SCHEME, context.getRequest().getScheme());
+    prefs.add(ApplicationPrefs.WEB_DOMAIN_NAME, context.getRequest().getServerName());
+    prefs.add(ApplicationPrefs.WEB_PORT, String.valueOf(context.getRequest().getServerPort()));
+    prefs.add(ApplicationPrefs.WEB_CONTEXT, context.getRequest().getContextPath());
+    // Set the mail server
     prefs.add(ApplicationPrefs.MAILSERVER, bean.getServer());
     prefs.add(ApplicationPrefs.MAILSERVER_USERNAME, bean.getServerUsername());
     prefs.add(ApplicationPrefs.MAILSERVER_PASSWORD, bean.getServerPassword());
     prefs.add(ApplicationPrefs.MAILSERVER_PORT, bean.getServerPort());
     prefs.add(ApplicationPrefs.MAILSERVER_SSL, bean.getServerSsl());
     prefs.add(ApplicationPrefs.EMAILADDRESS, bean.getAddress());
+    // Set the app default
     prefs.add("ACCOUNT.SIZE", bean.getStorage());
     // Are all the google params available?
     if (StringUtils.hasText(bean.getGoogleMapsAPIDomain()) &&

@@ -139,8 +139,11 @@ public class ApplicationPrefs {
   // Web Application Behavior Properties
   public final static String LOGIN_MODE = "LOGIN.MODE";
   public final static String PURPOSE = "PURPOSE";
-  public final static String WEB_URL = "URL";
+  // The Application's URL
+  public final static String WEB_SCHEME = "URL.SCHEME";
+  public final static String WEB_DOMAIN_NAME = "URL.DOMAIN_NAME";
   public final static String WEB_PORT = "URL.PORT";
+  public final static String WEB_CONTEXT = "URL.CONTEXT";
   // Web Application Look and Feel
   public final static String THEME = "THEME";
   public final static String COLOR_SCHEME = "COLOR_SCHEME";
@@ -871,6 +874,11 @@ public class ApplicationPrefs {
     }
   }
 
+  /**
+   * Utility for upgrading the application
+   *
+   * @param context
+   */
   private void performUpgrade(ServletContext context) {
     Connection db = null;
     ConnectionPool commonCP = (ConnectionPool) context.getAttribute(Constants.CONNECTION_POOL);
@@ -902,12 +910,12 @@ public class ApplicationPrefs {
   }
 
   /**
-   * Description of the Method
+   * Saves the Application Prefs to disk
    *
    * @param filename Description of the Parameter
    * @return Description of the Return Value
    */
-  public boolean save(String filename) {
+  public synchronized boolean save(String filename) {
     try {
       BufferedWriter out = new BufferedWriter(new FileWriter(filename));
       out.write(GENERATED_MESSAGE + " on " + new java.util.Date() + " ###" + ls);

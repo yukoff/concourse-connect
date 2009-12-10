@@ -149,6 +149,7 @@ public class Constants {
 
   // Global request attribute names
   public static final String REQUEST_INSTANCE = "requestInstance";
+  public static final String REQUEST_GLOBAL_ALERTS = "requestGlobalAlerts";
   public static final String REQUEST_MY_PROJECT_COUNT = "requestMyProjectCount";
   public static final String REQUEST_INVITATION_COUNT = "requestInvitationCount";
   public static final String REQUEST_WHATS_NEW_COUNT = "requestWhatsNewCount";

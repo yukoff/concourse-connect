@@ -271,10 +271,10 @@ public class PortletManager {
         }
       }
       // provide the application's url
-      portalRequestContext.getRequest().setAttribute("url", "http://" + RequestUtils.getServerUrl(applicationPrefs.get(ApplicationPrefs.WEB_URL), applicationPrefs.get(ApplicationPrefs.WEB_PORT), context.getRequest()));
+      portalRequestContext.getRequest().setAttribute("url", "http://" + RequestUtils.getServerUrl(context.getRequest()));
       // provide the secure url if enabled
       boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
-      String url = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(applicationPrefs.get(ApplicationPrefs.WEB_URL), applicationPrefs.get(ApplicationPrefs.WEB_PORT), context.getRequest()));
+      String url = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(context.getRequest()));
       portalRequestContext.getRequest().setAttribute("secureUrl", url);
       try {
         container.doAction(portletWindow, portalRequestContext.getRequest(), context.getResponse());
@@ -328,10 +328,10 @@ public class PortletManager {
         // Script Node and XHR DataSources
         portalRequest.setAttribute("query", context.getRequest().getParameter("query"));
         // provide the application's url
-        portalRequest.setAttribute("url", "http://" + RequestUtils.getServerUrl(applicationPrefs.get(ApplicationPrefs.WEB_URL), applicationPrefs.get(ApplicationPrefs.WEB_PORT), context.getRequest()));
+        portalRequest.setAttribute("url", "http://" + RequestUtils.getServerUrl(context.getRequest()));
         // provide the secure url if enabled
         boolean sslEnabled = "true".equals(applicationPrefs.get("SSL"));
-        String url = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(applicationPrefs.get(ApplicationPrefs.WEB_URL), applicationPrefs.get(ApplicationPrefs.WEB_PORT), context.getRequest()));
+        String url = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(context.getRequest()));
         portalRequest.setAttribute("secureUrl", url);
 
         // If this portlet is requesting data, provide it to the portlet

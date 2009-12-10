@@ -1255,7 +1255,7 @@ public final class ProjectManagement extends GenericAction {
             String requestedURL = (String) context.getRequest().getAttribute("requestedURL");
             boolean sslEnabled = "true".equals(getPref(context, "SSL"));
             ApplicationPrefs prefs = getApplicationPrefs(context);
-            String url = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(prefs.get(ApplicationPrefs.WEB_URL), prefs.get(ApplicationPrefs.WEB_PORT), context.getRequest())) + "/login?redirectTo=" + requestedURL;
+            String url = ("http" + (sslEnabled ? "s" : "") + "://" + RequestUtils.getServerUrl(context.getRequest())) + "/login?redirectTo=" + requestedURL;
             context.getRequest().setAttribute("redirectTo", url);
             return "Redirect301";
           }

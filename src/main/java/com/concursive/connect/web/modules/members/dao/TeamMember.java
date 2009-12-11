@@ -55,6 +55,7 @@ import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueueList;
 import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueue;
+import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
 import com.concursive.connect.web.utils.LookupList;
 
 import java.sql.Connection;
@@ -754,22 +755,8 @@ public class TeamMember extends GenericBean {
       pst.close();
       id = DatabaseUtils.getCurrVal(db, "project_team_team_id_seq", id);
 
-      if (emailUpdatesSchedule != TeamMember.EMAIL_NEVER) {
-        EmailUpdatesQueueList queues = new EmailUpdatesQueueList();
-        queues.setEnteredBy(userId);
-        queues.setType(emailUpdatesSchedule);
-        queues.buildList(db);
-        if (queues.size() == 0) {
-          //Populate specified email update queue if it does not exist for this user. If the queue type specified
-          //already exists then no need to take any action
-          EmailUpdatesQueue queue = new EmailUpdatesQueue();
-          queue.setEnteredBy(userId);
-          queue.setModifiedBy(userId);
-          queue.setEnabled(true);
-          queue.setType(emailUpdatesSchedule);
-          queue.insert(db);
-        }
-      }
+      EmailUpdatesUtils.saveQueue(db, this);
+
       if (commit) {
         db.commit();
       }

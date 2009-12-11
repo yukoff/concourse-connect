@@ -45,34 +45,26 @@
  */
 package com.concursive.connect.web.modules.communications.jobs;
 
-import org.quartz.StatefulJob;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.SchedulerContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.sql.Connection;
-import java.sql.Timestamp;
-import java.util.*;
-
+import com.concursive.commons.email.SMTPMessage;
+import com.concursive.commons.email.SMTPMessageFactory;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.scheduler.SchedulerUtils;
 import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueue;
 import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueueList;
+import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
-import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
-import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
-import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
-import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
-import com.concursive.connect.config.ApplicationPrefs;
-import com.concursive.commons.email.SMTPMessage;
-import com.concursive.commons.email.SMTPMessageFactory;
-import com.concursive.commons.text.Template;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.SchedulerContext;
+import org.quartz.StatefulJob;
+
+import java.sql.Connection;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Job to process the scheduled email udpates queue and send emails
@@ -98,24 +90,22 @@ public class EmailUpdatesJob implements StatefulJob {
       db = SchedulerUtils.getConnection(schedulerContext);
       ApplicationPrefs prefs = (ApplicationPrefs) schedulerContext.get(
           "ApplicationPrefs");
-      System.out.println("EmailUpdatesJob triggered...");
+      LOG.info("EmailUpdatesJob triggered...");
       while (true) {
-        System.out.println("Inside the while loop...");
         //Retrieve retrieve the next item from the email_updates_queue that is scheduled for now.
         EmailUpdatesQueueList queueList = new EmailUpdatesQueueList();
         queueList.setScheduledOnly(true);
         queueList.setMax(1);
         queueList.buildList(db);
-        System.out.println("queue size: " + queueList.size());
         if (queueList.size() == 0) {
           LOG.debug("No more scheduled emails to be processed...");
           break;
         } else {
           EmailUpdatesQueue queue = (EmailUpdatesQueue) queueList.get(0);
           //Lock that record by issuing a successful update which updates the status = 1 to status = 2.
-          System.out.println("Attempting to lock a queue...");
           if (EmailUpdatesQueue.lockQueue(queue, db)) {
             LOG.debug("Processing scheduled email queue...");
+
             // User who needs to be sent an email
             User user = UserUtils.loadUser(queue.getEnteredBy());
 
@@ -127,131 +117,9 @@ public class EmailUpdatesJob implements StatefulJob {
             Timestamp min = queue.getProcessed();
             Timestamp max = new Timestamp(now.getTimeInMillis());
 
-            StringBuffer message = new StringBuffer();
-            Project website = ProjectUtils.loadProject("main-profile");
-            int emailUpdatesSchedule = -1;
-            if (queue.getScheduleOften()) {
-              emailUpdatesSchedule = TeamMember.EMAIL_OFTEN;
-              message.append("<h1>" + website.getTitle() + " recent updates" + "</h1>");
-            } else if (queue.getScheduleDaily()) {
-              emailUpdatesSchedule = TeamMember.EMAIL_DAILY;
-              message.append("<h1>" + website.getTitle() + " daily update" + "</h1>");
-            } else if (queue.getScheduleWeekly()) {
-              emailUpdatesSchedule = TeamMember.EMAIL_WEEKLY;
-              message.append("<h1>" + website.getTitle() + " weekly update" + "</h1>");
-            } else if (queue.getScheduleMonthly()) {
-              emailUpdatesSchedule = TeamMember.EMAIL_MONTHLY;
-              message.append("<h1>" + website.getTitle() + " monthly update" + "</h1>");
-            }
-            if (emailUpdatesSchedule == -1) {
-              //unexpected case; throw exception
-              throw new Exception("The queue does not have a valid schedule type!");
-            }
+            // Determine the message to be sent
+            String message = EmailUpdatesUtils.getEmailHTMLMessage(db, queue, prefs, min, max); 
 
-
-            //Determine the website's site-chatter data to email for this user (if any)
-            message.append("<h2>Chatter</h2>");
-            message.append("<ol>");
-            ProjectHistoryList chatter = new ProjectHistoryList();
-            chatter.setProjectId(website.getId());
-            chatter.setForMember(user.getId());
-            chatter.setLinkObject(ProjectHistoryList.SITE_CHATTER_OBJECT);
-            chatter.setEmailUpdatesSchedule(emailUpdatesSchedule);
-            chatter.setRangeStart(min);
-            chatter.setRangeEnd(max);
-            HashMap map = chatter.getList(db);
-
-            Iterator i = map.keySet().iterator();
-            while (i.hasNext()) {
-              String date = (String) i.next();
-              message.append("<li>" + date + "</li>");
-              message.append("<ol>");
-              ArrayList descriptions = (ArrayList) map.get(date);
-              Iterator j = descriptions.iterator();
-              while (j.hasNext()) {
-                String description = (String) j.next();
-                WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
-                String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
-                message.append("<li>" + wikiLinkString + "</li>");
-              }
-              message.append("</ol>");
-            }
-            message.append("</ol>");
-
-            // Load the categories
-            ProjectCategoryList categoryList = new ProjectCategoryList();
-            categoryList.setTopLevelOnly(true);
-            categoryList.buildList(db);
-
-            if (categoryList.getIdFromValue("Businesses") != -1) {
-              ProjectHistoryList businesses = new ProjectHistoryList();
-              businesses.setProjectCategoryId(categoryList.getIdFromValue("Businesses"));
-              businesses.setForMember(user.getId());
-              businesses.setEmailUpdatesSchedule(emailUpdatesSchedule);
-              businesses.setRangeStart(min);
-              businesses.setRangeEnd(max);
-              HashMap businessMap = businesses.getList(db);
-
-              message.append("<h2>Businesses</h2>");
-              message.append("<ol>");
-
-              Iterator k = businessMap.keySet().iterator();
-              while (k.hasNext()) {
-                String date = (String) k.next();
-                message.append("<li>" + date + "</li>");
-                message.append("<ol>");
-                ArrayList descriptions = (ArrayList) businessMap.get(date);
-                Iterator l = descriptions.iterator();
-                while (l.hasNext()) {
-                  String description = (String) l.next();
-                  WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
-                  String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
-                  message.append("<li>" + wikiLinkString + "</li>");
-                }
-                message.append("</ol>");
-              }
-              message.append("</ol>");
-            }
-
-            if (categoryList.getIdFromValue("Groups") != -1) {
-              ProjectHistoryList groups = new ProjectHistoryList();
-              groups.setProjectCategoryId(categoryList.getIdFromValue("Groups"));
-              groups.setForMember(user.getId());
-              groups.setEmailUpdatesSchedule(emailUpdatesSchedule);
-              groups.setRangeStart(min);
-              groups.setRangeEnd(max);
-              HashMap groupMap = groups.getList(db);
-
-              message.append("<h2>Groups</h2>");
-              message.append("<ol>");
-
-              Iterator m = groupMap.keySet().iterator();
-              while (m.hasNext()) {
-                String date = (String) m.next();
-                message.append("<li>" + date + "</li>");
-                message.append("<ol>");
-                ArrayList descriptions = (ArrayList) groupMap.get(date);
-                Iterator n = descriptions.iterator();
-                while (n.hasNext()) {
-                  String description = (String) n.next();
-                  WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
-                  String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
-                  message.append("<li>" + wikiLinkString + "</li>");
-                }
-                message.append("</ol>");
-              }
-              message.append("</ol>");
-            }
-
-            message.append("<p>");
-            message.append("This information is sent based on your notification settings.<br/>");
-            message.append("<a href=\"${secureUrl}/show/${this.project.uniqueId:html}\" target=\"_blank\">" +
-                    "Manage your notifications.</a>");
-            message.append("</p>");
-
-            Template template = new Template(message.toString());
-            template.addParseElement("${secureUrl}", prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME));
-            template.addParseElement("${this.project.uniqueId:html}", website.getUniqueId());
             //Try to send the email
             LOG.debug("Sending email...");
             SMTPMessage email = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
@@ -260,15 +128,15 @@ public class EmailUpdatesJob implements StatefulJob {
             email.addTo(user.getEmail());
             email.setSubject("Activity Updates");
             email.setType("text/html");
-            email.setBody(template.getParsedText());
+            email.setBody(message);
             email.send();
 
             //Determine the next schedule date and save the schedule date and status=1
-            System.out.println("Calculating next run date...");
+            LOG.debug("Calculating next run date...");
             queue.calculateNextRunDate(db);
 
             //Set the max date to be the queue's processed date
-            System.out.println("Updating process date...");
+            LOG.debug("Updating process date...");
             queue.updateProcessedDate(db, max);
           }
         }

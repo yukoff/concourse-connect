@@ -91,6 +91,17 @@ public class LinkGenerator {
         "&portlet-params=" + StringUtils.toString(bean.getParams());
   }
 
+  public static String getAdminPortalLink(URLControllerBean bean) {
+    if (LOG.isTraceEnabled()) {
+      LOG.trace(bean.toString());
+    }
+    return "Admin.do?command=Portal" +
+        "&portlet-action=" + StringUtils.toString(bean.getAction()) +
+        "&portlet-object=" + StringUtils.toString(bean.getDomainObject()) +
+        "&portlet-value=" + StringUtils.toString(bean.getObjectValue()) +
+        "&portlet-params=" + StringUtils.toString(bean.getParams());
+  }
+
   /**
    * Method for
    *

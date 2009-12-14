@@ -113,9 +113,7 @@ public class URLControllerServlet extends HttpServlet {
       } else if (bean.getAction().equals(URLControllerBean.SETUP)) {
         mappedPath = "Setup.do";
       } else if (bean.getAction().equals(URLControllerBean.ADMIN)) {
-        if (bean.getDomainObject() == null) {
-          mappedPath = "Admin.do";
-        }
+        mappedPath = LinkGenerator.getAdminPortalLink(bean);
       } else if (bean.getAction().equals(URLControllerBean.CATALOG)) {
         mappedPath = "Order.do";
       } else if (bean.getAction().equals(URLControllerBean.CONTACT_US)) {

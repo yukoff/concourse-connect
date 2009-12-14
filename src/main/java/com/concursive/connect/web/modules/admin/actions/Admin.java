@@ -48,10 +48,13 @@ package com.concursive.connect.web.modules.admin.actions;
 
 import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
-import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.cms.portal.dao.DashboardPage;
 import com.concursive.connect.web.controller.actions.GenericAction;
+import com.concursive.connect.web.modules.admin.beans.AdminPortalBean;
+import com.concursive.connect.web.modules.admin.utils.AdminPortalUtils;
 import com.concursive.connect.web.modules.documents.beans.FileDownload;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
+import com.concursive.connect.web.portal.PortletManager;
 
 import java.io.File;
 import java.net.URL;
@@ -68,16 +71,70 @@ import java.sql.Connection;
 public final class Admin extends GenericAction {
 
   /**
-   * Description of the Method
+   * Processes and renders the Admin portal
    *
    * @param context Description of the Parameter
    * @return Description of the Return Value
    */
-  public String executeCommandDefault(ActionContext context) {
+  public String executeCommandPortal(ActionContext context) {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
-    return "DefaultOK";
+
+    Connection db = null;
+
+    try {
+      // Determine the database connection to use
+      db = getConnection(context);
+
+      // Turn the URL into a ProjectPortalBean
+      AdminPortalBean portalBean = new AdminPortalBean(context.getRequest());
+      LOG.info(portalBean.toString());
+
+      if (LOG.isTraceEnabled()) {
+        LOG.trace(portalBean.toString());
+      }
+
+      DashboardPage page = AdminPortalUtils.retrieveDashboardPage(portalBean);
+      if (page == null) {
+        LOG.warn("Page could not be found for: " + portalBean.getDomainObject());
+        return "404Error";
+      }
+      LOG.debug("dashboardPage: " + page.getName());
+      // Allow access
+      context.getRequest().setAttribute("dashboardPage", page);
+
+      // Set shared values
+      context.getRequest().setAttribute("portletAction", portalBean.getAction());
+      context.getRequest().setAttribute("portletDomainObject", portalBean.getDomainObject());
+      context.getRequest().setAttribute("portletView", portalBean.getObjectValue());
+      context.getRequest().setAttribute("portletParams", portalBean.getParams());
+
+      boolean isAction = PortletManager.processPage(context, db, page);
+      if (LOG.isDebugEnabled()) {
+        if (context.getResponse().getContentType() != null) {
+          LOG.debug("Content type: " + context.getResponse().getContentType());
+        }
+      }
+      if (isAction) {
+        return "-none-";
+      }
+
+      // Show the portal
+      context.getRequest().setAttribute("includePortal", "portal");
+//      if ("text".equals(context.getRequest().getParameter("out"))) {
+//        return ("ShowPortalPageOK");
+//      }
+      return "ShowPortalPageOK";
+    } catch (Exception errorMessage) {
+      context.getRequest().setAttribute("Error", errorMessage);
+      LOG.error("error", errorMessage);
+      return "404Error";
+    } finally {
+      if (db != null) {
+        freeConnection(context, db);
+      }
+    }
   }
 
 

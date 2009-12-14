@@ -180,7 +180,7 @@
   </action>
   
   <action name="Admin" class="com.concursive.connect.web.modules.admin.actions.Admin">
-    <forward name="DefaultOK" resource="/admin.jsp"/>
+    <forward name="ShowPortalPageOK" resource="/admin_portal.jsp"/>
     <forward name="OverviewOK" resource="/admin_overview.jsp"/>
     <forward name="AddUserOK" resource="/admin_adduser.jsp"/>
     <forward name="InsertUserOK" resource="/Admin.do?command=Overview"/>

@@ -1,4 +1,5 @@
-<%--
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
   ~ ConcourseConnect
   ~ Copyright 2009 Concursive Corporation
   ~ http://www.concursive.com
@@ -16,7 +17,7 @@
   ~ These terms must be included in any work that has ConcourseConnect components.
   ~ If you are developing and distributing open source applications under the
   ~ GNU Affero General Public License, then you are free to use ConcourseConnect
-  ~ under the GNU Affero General Public License.
+  ~ under the GNU Affero General Public License.  
   ~
   ~ If you are deploying a web site in which users interact with any portion of
   ~ ConcourseConnect over a network, the complete source code changes must be made
@@ -42,22 +43,17 @@
   ~
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
-  --%>
-<%@ include file="initPage.jsp" %>
-<div class="admin-portlet">
-  <div class="portlet-section-header">
-  	<h1>System Administration</h1>
-  </div>
-  <div class="portlet-section-body">
-    <ul>
-      <li><a href="<%= ctx %>/AdminUsage.do">Review application usage</a></li>
-      <li><a href="<%= ctx %>/AdminUsers.do">Manage users</a></li>
-      <li><a href="<%= ctx %>/AdminCustomize.do">Customize the site</a></li>
-      <li><a href="<%= ctx %>/AdminApplication.do">Manage application settings</a></li>
-      <li><a href="<%= ctx %>/AdminSync.do">Synchronize with ConcourseSuite CRM</a></li>
-      <%--
-      <li><a href="<%= ctx %>/AdminSettings.do">Configure System Settings</a></li>
-      --%>
-    </ul>
-  </div>
-</div>
+  -->
+<module>
+  <portal type="controller">
+    <module name="admin" layout="admin-portal-layout.xml">
+      <url name="/admin" object="/" page="admin-default"/>
+      <!--
+      <url name="/admin" object="/show-usage" page="admin-usage"/>
+      <url name="/admin" object="/manage-users" page="admin-users"/>
+      <url name="/admin" object="/customize" page="admin-customize"/>
+      <url name="/admin" object="/synchronize" page="admin-synchronize"/>
+      -->
+    </module>
+  </portal>
+</module>

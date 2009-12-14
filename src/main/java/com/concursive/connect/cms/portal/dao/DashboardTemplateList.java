@@ -72,6 +72,7 @@ public class DashboardTemplateList extends ArrayList<DashboardTemplate> {
   private static Log LOG = LogFactory.getLog(DashboardTemplateList.class);
 
   public static final String TYPE_PORTAL = "portal";
+  public static final String TYPE_CONTROLLER = "controller";
   public static final String TYPE_NAVIGATION = "navigation";
   public static final String TYPE_PROJECTS = "projects";
   public static final String TYPE_PROJECT_TEMPLATES = "templates";

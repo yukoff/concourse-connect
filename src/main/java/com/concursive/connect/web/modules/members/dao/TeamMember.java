@@ -755,6 +755,7 @@ public class TeamMember extends GenericBean {
       pst.close();
       id = DatabaseUtils.getCurrVal(db, "project_team_team_id_seq", id);
 
+      //Update the scheduled emails queue
       EmailUpdatesUtils.saveQueue(db, this);
 
       if (commit) {
@@ -816,14 +817,36 @@ public class TeamMember extends GenericBean {
    * @throws SQLException Any database connection or statement error
    */
   public boolean delete(Connection db) throws SQLException {
-    int projectId = TeamMemberList.queryProjectIdOfTeamMemberId(db, id);
-    PreparedStatement pst = db.prepareStatement(
-        "DELETE FROM project_team " +
-            "WHERE team_id = ? ");
-    pst.setInt(1, id);
-    int resultCount = pst.executeUpdate();
-    pst.close();
-    CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, projectId);
+    int resultCount = 0;
+    boolean commit = false;
+    try {
+      commit = db.getAutoCommit();
+      if (commit) {
+        db.setAutoCommit(false);
+      }
+      int projectId = TeamMemberList.queryProjectIdOfTeamMemberId(db, id);
+      PreparedStatement pst = db.prepareStatement(
+              "DELETE FROM project_team " +
+                      "WHERE team_id = ? ");
+      pst.setInt(1, id);
+      resultCount = pst.executeUpdate();
+      pst.close();
+
+      //Manage the scheduled emails queue
+      EmailUpdatesUtils.manageQueue(db, this);
+
+      if (commit) {
+        db.commit();
+      }
+      CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, projectId);
+    } catch (SQLException e) {
+      if (commit) {
+        db.rollback();
+      }
+      throw new SQLException(e.getMessage());
+    } finally {
+      db.setAutoCommit(true);
+    }
     return (resultCount > 0);
   }
 

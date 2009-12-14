@@ -531,6 +531,8 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
         thisMember.setProjectId(project.getId());
         thisMember.setUserId(userId);
         thisMember.setUserLevel(newRowLevel);
+        thisMember.setNotification(true);
+        thisMember.setEmailUpdatesSchedule(TeamMember.EMAIL_DAILY);
         thisMember.setEnteredBy(PortalUtils.getUser(request).getId());
         thisMember.setModifiedBy(PortalUtils.getUser(request).getId());
         thisMember.insert(db);

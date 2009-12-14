@@ -141,13 +141,20 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   private int instanceId = -1;
   private int projectCategoryId = -1;
   private int forUser = -1;
-  private int forMember = -1;
-  private int emailUpdatesSchedule = -1;
   private Timestamp rangeStart = null;
   private Timestamp rangeEnd = null;
   private Timestamp untilLinkStartDate = null;
   private int publicProjects = Constants.UNDEFINED;
   private int forParticipant = Constants.UNDEFINED;
+  private boolean forEmailUpdates = false;
+  private int emailUpdatesMember = -1;
+  private int emailUpdatesSchedule = -1;
+
+  public void forMemberEmailUpdates(int emailUpdatesMember, int emailUpdatesSchedule) {
+    this.forEmailUpdates = true;
+    this.emailUpdatesMember = emailUpdatesMember;
+    this.emailUpdatesSchedule = emailUpdatesSchedule;
+  }
 
   public Timestamp getRangeStart() {
     return rangeStart;
@@ -163,22 +170,6 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
 
   public void setRangeEnd(Timestamp rangeEnd) {
     this.rangeEnd = rangeEnd;
-  }
-
-  public int getForMember() {
-    return forMember;
-  }
-
-  public void setForMember(int forMember) {
-    this.forMember = forMember;
-  }
-
-  public int getEmailUpdatesSchedule() {
-    return emailUpdatesSchedule;
-  }
-
-  public void setEmailUpdatesSchedule(int emailUpdatesSchedule) {
-    this.emailUpdatesSchedule = emailUpdatesSchedule;
   }
 
   public int getEventType() {
@@ -475,9 +466,10 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
       sqlFilter.append("AND (ph.project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
           "AND status IS NULL) OR ph.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
     }
-    if (forMember != -1) {
+    if (forEmailUpdates) {
       sqlFilter.append("AND ph.project_id IN " +
-              "(SELECT DISTINCT project_id FROM project_team WHERE user_id = ? AND email_updates_schedule = ?) ");
+              "(SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
+              " AND status IS NULL AND email_updates_schedule = ?) ");
     }
     if (publicProjects == Constants.TRUE || forParticipant == Constants.TRUE) {
       sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
@@ -537,8 +529,8 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
       pst.setInt(++i, forUser);
       pst.setBoolean(++i, true);
     }
-    if (forMember != -1) {
-      pst.setInt(++i, forMember);
+    if (forEmailUpdates) {
+      pst.setInt(++i, emailUpdatesMember);
       pst.setInt(++i, emailUpdatesSchedule);
     }
     if (publicProjects == Constants.TRUE) {

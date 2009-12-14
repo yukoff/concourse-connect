@@ -69,9 +69,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -137,12 +135,11 @@ public class EmailUpdatesUtils {
       message.append("<ol>");
       ProjectHistoryList chatter = new ProjectHistoryList();
       chatter.setProjectId(website.getId());
-      chatter.setForMember(user.getId());
       chatter.setLinkObject(ProjectHistoryList.SITE_CHATTER_OBJECT);
-      chatter.setEmailUpdatesSchedule(emailUpdatesSchedule);
       chatter.setRangeStart(min);
       chatter.setRangeEnd(max);
       chatter.setPagedListInfo(info);
+      chatter.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
       HashMap map = chatter.getList(db);
 
       Iterator i = map.keySet().iterator();
@@ -159,6 +156,9 @@ public class EmailUpdatesUtils {
           message.append("<li>" + wikiLinkString + "</li>");
         }
         message.append("</ol>");
+      }
+      if (map.size() == 0) {
+        message.append("No website chatter for " + website.getTitle());
       }
       message.append("</ol>");
 
@@ -182,12 +182,11 @@ public class EmailUpdatesUtils {
       for (ProjectCategory category : categoryList) {
         ProjectHistoryList activities = new ProjectHistoryList();
         activities.setProjectCategoryId(category.getId());
-        activities.setForMember(user.getId());
-        activities.setEmailUpdatesSchedule(emailUpdatesSchedule);
         activities.setRangeStart(min);
         activities.setRangeEnd(max);
         activities.setObjectPreferences(types);
         activities.setPagedListInfo(info);
+        activities.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
         HashMap activityMap = activities.getList(db);
 
         message.append("<h2>" + category.getDescription() + "</h2>");
@@ -244,6 +243,46 @@ public class EmailUpdatesUtils {
         queue.setType(teamMember.getEmailUpdatesSchedule());
         queue.insert(db);
       }
+    }
+  }
+
+  public static void manageQueue(Connection db, TeamMember teamMember) throws SQLException {
+    //Determine if the member is part of any other projects and has a matching email updates preference
+    PreparedStatement pst = db.prepareStatement(
+            "SELECT count(*) AS record_count " +
+            "FROM project_team pt " +
+            "WHERE pt.user_id = ? " +
+            "AND pt.email_updates_schedule = ? ");
+    int i = 0;
+    pst.setInt(++i, teamMember.getUserId());
+    pst.setInt(++i, teamMember.getEmailUpdatesSchedule());
+    ResultSet rs = pst.executeQuery();
+    int records = 0;
+    if (rs.next()) {
+      records = rs.getInt("record_count");
+    }
+    rs.close();
+    pst.close();
+
+    if (records == 0) {
+      //Delete the queue since it is no longer needed.
+      String field = "";
+      int emailUpdatesSchedule = teamMember.getEmailUpdatesSchedule();
+      if (emailUpdatesSchedule == TeamMember.EMAIL_OFTEN) {
+        field = "schedule_often";
+      } else if (emailUpdatesSchedule == TeamMember.EMAIL_DAILY) {
+        field = "schedule_daily";
+      } else if (emailUpdatesSchedule == TeamMember.EMAIL_WEEKLY) {
+        field = "schedule_weekly";
+      } else if (emailUpdatesSchedule == TeamMember.EMAIL_MONTHLY) {
+        field = "schedule_monthly";
+      }
+      i = 0;
+      pst = db.prepareStatement("DELETE FROM email_updates_queue WHERE enteredby = ? AND " + field + " = ? ");
+      pst.setInt(++i, teamMember.getUserId());
+      pst.setBoolean(++i, true);
+      pst.executeUpdate();
+      pst.close();
     }
   }
 }

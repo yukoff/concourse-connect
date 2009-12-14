@@ -2528,7 +2528,7 @@
             <addUserWithRole>Manager</addUserWithRole>
             <allowGuests>true</allowGuests>
             <showAllowGuestsOption>false</showAllowGuestsOption>
-            <allowParticipants>false</allowParticipants>
+            <allowParticipants>true</allowParticipants>
             <showRequiresMembershipOption>false</showRequiresMembershipOption>
             <isApproved>true</isApproved>
             <introductionMessage>Enter information below about the product
@@ -2629,7 +2629,7 @@
             <addUserWithRole>Manager</addUserWithRole>
             <allowGuests>true</allowGuests>
             <showAllowGuestsOption>false</showAllowGuestsOption>
-            <allowParticipants>false</allowParticipants>
+            <allowParticipants>true</allowParticipants>
             <showRequiresMembershipOption>false</showRequiresMembershipOption>
             <isApproved>true</isApproved>
             <introductionMessage>Enter information below about the service</introductionMessage>
@@ -2729,7 +2729,7 @@
             <addUserWithRole>Manager</addUserWithRole>
             <allowGuests>true</allowGuests>
             <showAllowGuestsOption>false</showAllowGuestsOption>
-            <allowParticipants>false</allowParticipants>
+            <allowParticipants>true</allowParticipants>
             <showRequiresMembershipOption>false</showRequiresMembershipOption>
             <isApproved>true</isApproved>
             <introductionMessage>Enter information below about the solution</introductionMessage>

@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.communications.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
+import com.concursive.commons.date.DateUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
@@ -151,6 +152,12 @@ public class EmailUpdatesQueue {
       if (commit) {
         db.setAutoCommit(false);
       }
+
+      //Determine the day-of-the-week preference to use
+      if (scheduleWeekly) {
+        determineDayOfTheWeek(db);
+      }
+
       id = DatabaseUtils.getNextSeq(db, "email_updates_queue_queue_id_seq", id);
       PreparedStatement pst = db.prepareStatement(
               "INSERT INTO email_updates_queue " +
@@ -186,8 +193,10 @@ public class EmailUpdatesQueue {
       pst.execute();
       pst.close();
       id = DatabaseUtils.getCurrVal(db, "email_updates_queue_queue_id_seq", id);
+
       //Determine the next schedule date for this queue
       calculateNextRunDate(db);
+
       if (commit) {
         db.commit();
       }
@@ -198,6 +207,31 @@ public class EmailUpdatesQueue {
       throw new SQLException(e.getMessage());
     } finally {
       db.setAutoCommit(true);
+    }
+  }
+
+  private void determineDayOfTheWeek(Connection db) throws SQLException {
+    //The UI currently does not allow user to specify the day-of-the-week for weekly schedule.
+    //Determine the day of the week based on today's date for now..
+    User user = UserUtils.loadUser(enteredBy);
+    Calendar today = Calendar.getInstance();
+    if (user.getTimeZone() != null) {
+      today = Calendar.getInstance(TimeZone.getTimeZone(user.getTimeZone()));
+    }
+    if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+      scheduleSunday = true;
+    } else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+      scheduleMonday = true;
+    } else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY) {
+      scheduleTuesday = true;
+    } else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY) {
+      scheduleWednesday = true;
+    } else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY) {
+      scheduleThursday = true;
+    } else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) {
+      scheduleFriday = true;
+    } else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+      scheduleSaturday = true;
     }
   }
 

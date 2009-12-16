@@ -159,7 +159,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.SaveProjectAddEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} added ${profile}</parameter>
+            <parameter name="history.text">${user} created the profile ${profile}</parameter>
           </parameters>
         </component>
       </components>
@@ -335,8 +335,8 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.SaveForumTopicEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.question.text">${user} posted the question ${topic}</parameter>
-            <parameter name="history.topic.text">${user} posted the topic ${topic}</parameter>
+            <parameter name="history.question.text">${user} posted the question ${topic} in ${profile}</parameter>
+            <parameter name="history.topic.text">${user} posted the topic ${topic} in ${profile}</parameter>
           </parameters>
         </component>
       </components>
@@ -346,10 +346,10 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.SaveForumTopicResponseEvent" enabled="true">
           <parameters>
-            <parameter name="history.postreply.text">${user} posted a reply to ${topic}</parameter>
-            <parameter name="history.postanswer.text">${user} posted a reply to ${topic}</parameter>
-            <parameter name="history.markanswer.text">${user} marked an answer by ${answeredby} as correct for ${topic}</parameter>
-            <parameter name="history.markanswer.user-profile.text">${user} found an answer for ${topic}</parameter>
+            <parameter name="history.postreply.text">${user} posted a reply to ${topic} in ${profile}</parameter>
+            <parameter name="history.postanswer.text">${user} posted a reply to ${topic} in ${profile}</parameter>
+            <parameter name="history.markanswer.text">${user} marked an answer by ${answeredby} as correct for ${topic} in ${profile}</parameter>
+            <parameter name="history.markanswer.user-profile.text">${user} found an answer for ${topic} in ${profile}</parameter>
           </parameters>
         </component>
       </components>

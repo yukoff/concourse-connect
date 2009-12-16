@@ -49,6 +49,7 @@ import com.concursive.commons.text.Template;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.URLFactory;
 import com.concursive.commons.xml.XMLUtils;
+import com.concursive.commons.date.DateUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
@@ -70,9 +71,7 @@ import org.w3c.dom.Element;
 
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Utility methods used by the EmailUpdatesJob
@@ -129,10 +128,9 @@ public class EmailUpdatesUtils {
       PagedListInfo info = new PagedListInfo();
       String limit = emailElement.getAttribute("limit");
       info.setItemsPerPage(limit);
+      int activityCount = 0;
 
       //Determine the website's site-chatter data to email for this user (if any)
-      message.append("<h2>Chatter</h2>");
-      message.append("<ol>");
       ProjectHistoryList chatter = new ProjectHistoryList();
       chatter.setProjectId(website.getId());
       chatter.setLinkObject(ProjectHistoryList.SITE_CHATTER_OBJECT);
@@ -141,26 +139,29 @@ public class EmailUpdatesUtils {
       chatter.setPagedListInfo(info);
       chatter.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
       HashMap map = chatter.getList(db);
+      activityCount += map.size();
 
-      Iterator i = map.keySet().iterator();
-      while (i.hasNext()) {
-        String date = (String) i.next();
-        message.append("<li>" + date + "</li>");
+      if (map.size() != 0) {
+        message.append("<h2>Chatter</h2>");
         message.append("<ol>");
-        ArrayList descriptions = (ArrayList) map.get(date);
-        Iterator j = descriptions.iterator();
-        while (j.hasNext()) {
-          String description = (String) j.next();
-          WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), URLFactory.createURL(prefs.getPrefs()));
-          String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
-          message.append("<li>" + wikiLinkString + "</li>");
+
+        Iterator i = map.keySet().iterator();
+        while (i.hasNext()) {
+          String date = (String) i.next();
+          message.append("<li>" + date + "</li>");
+          message.append("<ol>");
+          ArrayList descriptions = (ArrayList) map.get(date);
+          Iterator j = descriptions.iterator();
+          while (j.hasNext()) {
+            String description = (String) j.next();
+            WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), URLFactory.createURL(prefs.getPrefs()));
+            String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
+            message.append("<li>" + wikiLinkString + "</li>");
+          }
+          message.append("</ol>");
         }
         message.append("</ol>");
       }
-      if (map.size() == 0) {
-        message.append("No website chatter for " + website.getTitle());
-      }
-      message.append("</ol>");
 
       // Determine the types of events to display based on the config file
       ArrayList<Element> eventElements = new ArrayList<Element>();
@@ -188,29 +189,34 @@ public class EmailUpdatesUtils {
         activities.setPagedListInfo(info);
         activities.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
         HashMap activityMap = activities.getList(db);
+        activityCount += activityMap.size();
 
-        message.append("<h2>" + category.getDescription() + "</h2>");
-        message.append("<ol>");
-
-        Iterator k = activityMap.keySet().iterator();
-        while (k.hasNext()) {
-          String date = (String) k.next();
-          message.append("<li>" + date + "</li>");
+        if (activityMap.size() != 0) {
+          message.append("<h2>" + category.getDescription() + "</h2>");
           message.append("<ol>");
-          ArrayList descriptions = (ArrayList) activityMap.get(date);
-          Iterator l = descriptions.iterator();
-          while (l.hasNext()) {
-            String description = (String) l.next();
-            WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), URLFactory.createURL(prefs.getPrefs()));
-            String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
-            message.append("<li>" + wikiLinkString + "</li>");
+
+          Iterator k = activityMap.keySet().iterator();
+          while (k.hasNext()) {
+            String date = (String) k.next();
+            message.append("<li>" + date + "</li>");
+            message.append("<ol>");
+            ArrayList descriptions = (ArrayList) activityMap.get(date);
+            Iterator l = descriptions.iterator();
+            while (l.hasNext()) {
+              String description = (String) l.next();
+              WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), URLFactory.createURL(prefs.getPrefs()));
+              String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
+              message.append("<li>" + wikiLinkString + "</li>");
+            }
+            message.append("</ol>");
           }
           message.append("</ol>");
         }
-        if (activityMap.size() == 0) {
-          message.append("No activities under " + category.getDescription());
-        }
-        message.append("</ol>");
+      }
+
+      if (activityCount == 0) {
+        //Don't send an email update
+        return null;
       }
 
       message.append("<p>");
@@ -222,7 +228,7 @@ public class EmailUpdatesUtils {
     }
     Template template = new Template(message.toString());
     template.addParseElement("${secureUrl}", URLFactory.createURL(prefs.getPrefs()));
-    template.addParseElement("${this.project.uniqueId:html}", website.getUniqueId());
+    template.addParseElement("${this.project.uniqueId:html}", user.getProfileUniqueId());
 
     return template.getParsedText();
   }

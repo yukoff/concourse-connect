@@ -47,6 +47,7 @@ package com.concursive.connect.web.modules.communications.jobs;
 
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
+import com.concursive.commons.date.DateUtils;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.scheduler.SchedulerUtils;
 import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueue;
@@ -54,6 +55,7 @@ import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueueLi
 import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
@@ -118,18 +120,36 @@ public class EmailUpdatesJob implements StatefulJob {
             Timestamp max = new Timestamp(now.getTimeInMillis());
 
             // Determine the message to be sent
-            String message = EmailUpdatesUtils.getEmailHTMLMessage(db, queue, prefs, min, max); 
+            String message = EmailUpdatesUtils.getEmailHTMLMessage(db, queue, prefs, min, max);
 
-            //Try to send the email
-            LOG.debug("Sending email...");
-            SMTPMessage email = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-            email.setFrom(prefs.get("EMAILADDRESS"));
-            email.addReplyTo(prefs.get("EMAILADDRESS"));
-            email.addTo(user.getEmail());
-            email.setSubject("Activity Updates");
-            email.setType("text/html");
-            email.setBody(message);
-            email.send();
+            if (message != null) {
+              Calendar today = Calendar.getInstance();
+              if (user.getTimeZone() != null) {
+                today = Calendar.getInstance(TimeZone.getTimeZone(user.getTimeZone()));
+              }
+              String subject = "";
+              if (queue.getScheduleOften()) {
+                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Recent updates";
+              } else if (queue.getScheduleDaily()) {
+                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Daily update";
+              } else if (queue.getScheduleWeekly()) {
+                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Weekly update";
+              } else if (queue.getScheduleMonthly()) {
+                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Monthly update";
+              }
+              //Try to send the email
+              LOG.debug("Sending email...");
+              SMTPMessage email = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
+              email.setFrom(prefs.get("EMAILADDRESS"));
+              email.addReplyTo(prefs.get("EMAILADDRESS"));
+              email.addTo(user.getEmail());
+              email.setSubject(subject);
+              email.setType("text/html");
+              email.setBody(message);
+              email.send();
+            } else {
+              LOG.debug("No activities to report. Skipping email.");
+            }
 
             //Determine the next schedule date and save the schedule date and status=1
             LOG.debug("Calculating next run date...");

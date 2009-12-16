@@ -246,18 +246,18 @@ public class EmailUpdatesQueue {
     }
     if (scheduleOften) {
       if (next.get(Calendar.HOUR_OF_DAY) < 8) {
-        next.set(Calendar.HOUR, 8);
+        next.set(Calendar.HOUR_OF_DAY, 8);
         next.set(Calendar.MINUTE, 0);
       } else if (next.get(Calendar.HOUR_OF_DAY) < 12) {
-        next.set(Calendar.HOUR, 12);
+        next.set(Calendar.HOUR_OF_DAY, 12);
         next.set(Calendar.MINUTE, 0);
       } else if (next.get(Calendar.HOUR_OF_DAY) < 16) {
-        next.set(Calendar.HOUR, 16);
+        next.set(Calendar.HOUR_OF_DAY, 16);
         next.set(Calendar.MINUTE, 0);
       } else {
         //next day
         next.add(Calendar.DATE, 1);
-        next.set(Calendar.HOUR, 8);
+        next.set(Calendar.HOUR_OF_DAY, 8);
         next.set(Calendar.MINUTE, 0);
       }
     } else if (scheduleDaily) {

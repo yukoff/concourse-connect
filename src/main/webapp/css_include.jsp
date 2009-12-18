@@ -79,18 +79,14 @@
   <src>/css/star_rating.css</src>
   <src>/css/bucketlist.css</src>
   <src>/javascript/yui-2.8r4/build/calendar/assets/skins/sam/calendar.css</src>
+  <src>/javascript/yui-2.8r4/build/button/assets/skins/sam/button.css</src>
+  <src>/javascript/yui-2.8r4/build/menu/assets/skins/sam/menu.css</src>
   <src>/javascript/yui-2.8r4/build/container/assets/skins/sam/container.css</src>
   <src>/javascript/yui-2.8r4/build/container/assets/container.css</src>
 </pack:style>
 <c:if test="${!empty templateColorScheme}">
   <link rel="stylesheet" href="${ctx}/themes/${templateTheme}/color-schemes/${templateColorScheme}/css/ccp-color.css?3" />
 </c:if>
-<link rel="stylesheet" href="<%= ctx %>/javascript/yui-2.8r4/build/menu/assets/skins/sam/menu.css" />
-<%--
-<link rel="stylesheet" type="text/css" href="<%= yuiURL %>/tabview/assets/skins/sam/tabview.css">
-<link rel="stylesheet" type="text/css" href="<%= yuiURL %>/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="<%= yuiURL %>/autocomplete/assets/skins/sam/autocomplete.css" />
---%>
 <%-- RSS Feeds --%>
 <ccp:evaluate if='<%= !"intranet".equals(applicationPrefs.get("PURPOSE")) || User.isLoggedIn() || !"true".equals(applicationPrefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE)) %>'>
   <link rel="alternate" type="application/rss+xml" title="<c:out value="${requestMainProfile.title}"/>" href="<%= RequestUtils.getAbsoluteServerUrl(request) %>/feed/rss.xml"/>
@@ -140,12 +136,19 @@
   <src>/javascript/checkCheckbox.js</src>
   <src>/javascript/captcha.js</src>
   <src>/javascript/AC_RunActiveContent.js</src>
-  <src>/javascript/yui-2.8r4/build/utilities/utilities.js</src>
+  <src>/javascript/yui-2.8r4/build/yahoo/yahoo.js</src>
+  <src>/javascript/yui-2.8r4/build/event/event.js</src>
+  <src>/javascript/yui-2.8r4/build/dom/dom.js</src>
+  <src>/javascript/yui-2.8r4/build/element/element.js</src>
+  <src>/javascript/yui-2.8r4/build/connection/connection.js</src>
+  <src>/javascript/yui-2.8r4/build/animation/animation.js</src>
+  <src>/javascript/yui-2.8r4/build/dragdrop/dragdrop.js</src>
   <src>/javascript/yui-2.8r4/build/calendar/calendar-min.js</src>
   <src>/javascript/yui-2.8r4/build/container/container-min.js</src>
   <src>/javascript/yui-2.8r4/build/datasource/datasource-min.js</src>
   <src>/javascript/yui-2.8r4/build/json/json-min.js</src>
   <src>/javascript/yui-2.8r4/build/menu/menu-min.js</src>
+  <src>/javascript/yui-2.8r4/build/button/button-min.js</src>
   <src>/javascript/panel.js</src>
   <src>/javascript/carousel_min.js</src>
   <src>/javascript/trackMouse.js</src>

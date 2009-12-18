@@ -11,7 +11,7 @@
       <tr>
         <td style="padding:10px 20px; background:#fff; border-right:1px solid #e2eaf8; border-left:1px solid #e2eaf8">
           <#list categories?keys as category>
-          <h2>${category}</h2>
+          <h2>${category?html}</h2>
           <ol>
               <#list categories[category]?keys as date>
               <li>${date}</li>

@@ -123,37 +123,29 @@ img:after {
 /* @group $_site-menu */
 
 /* Site Menu  */
-    ul.logForm {
-      position:relative;
-    }
-    ul.logForm,
-      .ccp-site-menu {
+    .ccp-site-menu {
       margin:0;
       float:right;
-      background:url(../themes/default/images/sprites/login_background_gray_20090301.gif) 0 0 no-repeat;
+      background:url(../themes/default/images/sprites/menu_background_gray.gif) 0 0 no-repeat;
       height:27px; /* set to height of background image */
       left:-5px;
       z-index:1;
     }
 
-      ul.logForm li,
       .ccp-site-menu li {
         display:inline;
         padding: 3px 12px;
         border-right: 1px solid #ababab;
       }
 
-        ul.logForm li.first,
         .ccp-site-menu li.first {
 
         }
 
-        ul.logForm li.last,
         .ccp-site-menu li.last {
           border: none;
         }
 
-        ul.logForm li a,
         .ccp-site-menu li a {
           
         }
@@ -165,7 +157,7 @@ img:after {
 /* User Menu */
     .ccp-user-menu {
       float:right;
-      background:url(../themes/default/images/sprites/login_background_gray_20090301.gif) 0 -27px no-repeat;
+      background:url(../themes/default/images/sprites/menu_background_gray.gif) 0 -27px no-repeat;
       height:27px; /* set to height of background image */
       padding-right:15px;
       margin-right: -5px;

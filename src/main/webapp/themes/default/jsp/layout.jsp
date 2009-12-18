@@ -234,6 +234,12 @@
                   <c:set var="isFirst" value=""/>
                 </c:if>
               </ccp:permission>
+              <ccp:permission object="requestMainProfile" name="project-documents-view">
+                <c:if test="${requestMainProfile.features.showDocuments}">
+                  <li ${isFirst}><a href="<%= ctx %>/show/main-profile/documents" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Documents" object="requestMainProfile"/>"><ccp:tabLabel name="Documents" object="requestMainProfile"/></a></li>
+                  <c:set var="isFirst" value=""/>
+                </c:if>
+              </ccp:permission>
               <ccp:permission object="requestMainProfile" name="project-classifieds-view">
                 <c:if test="${requestMainProfile.features.showClassifieds}">
                   <li ${isFirst}><a href="<%= ctx %>/show/main-profile/classifieds" title="<%= toHtml(applicationPrefs.get("TITLE")) %> <ccp:tabLabel name="Classifieds" object="requestMainProfile"/>"><ccp:tabLabel name="Classifieds" object="requestMainProfile"/></a></li>

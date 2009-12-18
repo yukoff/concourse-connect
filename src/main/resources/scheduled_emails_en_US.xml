@@ -46,7 +46,7 @@
   -->
 <document>
     <!-- The site's scheduled email updates, based on purpose -->
-    <email events="site,social" limit="50">
+    <email events="site,social" limit="-1">
         <event>ad</event>
         <event>badge</event>
         <event>blog</event>
@@ -66,7 +66,7 @@
         <event>user-entry</event>
         <event>twitter</event>
     </email>
-    <email events="site,directory" limit="50">
+    <email events="site,directory" limit="-1">
         <event>ad</event>
         <event>badge</event>
         <event>blog</event>
@@ -86,7 +86,7 @@
         <event>user-entry</event>
         <event>twitter</event>
     </email>
-    <email events="site,community" limit="50">
+    <email events="site,community" limit="-1">
         <event>ad</event>
         <event>badge</event>
         <event>blog</event>
@@ -106,7 +106,7 @@
         <event>user-entry</event>
         <event>twitter</event>
     </email>
-    <email events="site,intranet" limit="50">
+    <email events="site,intranet" limit="-1">
         <event>ad</event>
         <event>badge</event>
         <event>blog</event>
@@ -126,7 +126,7 @@
         <event>user-entry</event>
         <event>twitter</event>
     </email>
-    <email events="site,projects" limit="50">
+    <email events="site,projects" limit="-1">
         <event>ad</event>
         <event>badge</event>
         <event>blog</event>
@@ -146,7 +146,7 @@
         <event>user-entry</event>
         <event>twitter</event>
     </email>
-    <email events="site,web" limit="50">
+    <email events="site,web" limit="-1">
         <event>ad</event>
         <event>badge</event>
         <event>blog</event>
@@ -167,7 +167,7 @@
         <event>twitter</event>
     </email>
     <!-- A generic site configuration can be used if specific is not found -->
-    <email events="site" limit="50">
+    <email events="site" limit="-1">
       <event>blog</event>
       <event>rating</event>
       <event>profile</event>
@@ -200,16 +200,16 @@
       <event>rating</event>
     </email>
     -->
-    <email events="category,products" limit="50">
+    <email events="category,products" limit="-1">
         <event>blog</event>
     </email>
-    <email events="category,solutions" limit="50">
+    <email events="category,solutions" limit="-1">
         <event>blog</event>
     </email>
-    <email events="category,partners" limit="50">
+    <email events="category,partners" limit="-1">
         <event>blog</event>
     </email>
-    <email events="category" limit="50">
+    <email events="category" limit="-1">
         <event>topic</event>
         <event>question</event>
         <event>blog</event>

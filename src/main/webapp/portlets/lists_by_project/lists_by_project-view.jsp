@@ -49,7 +49,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" />
-<h3 class="portletHeader"><c:out value="${title}"/></h3>
+<h3><c:out value="${title}"/></h3>
 <c:set var="task_constant">
   <%= Constants.TASK_CATEGORY_PROJECTS %>
 </c:set>
@@ -62,15 +62,15 @@
       <c:set var="listEntry" value="${mapItem.key}" />
       <c:set var="listItems" value="${mapItem.value}"/>
       <dl>
-        <dt class="portletHeader"><c:out value="${listEntry.description}"/>: </dt>
+        <dt><c:out value="${listEntry.description}"/></dt>
           <c:forEach var="listItem" items="${listItems}" varStatus="status">
             <c:choose>
               <c:when test="${!empty taskUrlMap[listItem.id]}">
-                <dd><a style="font-weight: normal;" href="${taskUrlMap[listItem.id]}" title="<c:out value="${listItem.description}"/> link">
-                  <c:out value="${listItem.description}" /></a><c:if test="${!status.last}">,</c:if></dd>
+                <dd><a href="${taskUrlMap[listItem.id]}" title="<c:out value="${listItem.description}"/> link">
+                  <c:out value="${listItem.description}" /></a>&nbsp;</dd>
               </c:when>
               <c:otherwise>
-                <dd><c:out value="${listItem.description}" /><c:if test="${!status.last}">,</c:if></dd>
+                <dd><c:out value="${listItem.description}" /></dd>
               </c:otherwise>
             </c:choose>
           </c:forEach>

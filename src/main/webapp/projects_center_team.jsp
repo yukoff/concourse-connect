@@ -188,12 +188,12 @@
                       </c:choose>
                     </ccp:permission>
                 </div>
-				<ccp:permission name="project-team-edit">
-                <div class="portlet-menu">
-                  <div id="select_${count}">
-                    <a href="javascript:displayMenu('select_${count}',${teamMember.userId},'${profileProject.uniqueId}',${showResendInvitation},${needsApproval},${teamMember.tools},${ownerId == teamMember.userId});">edit</a>
+				        <ccp:permission name="project-team-edit">
+                  <div class="portlet-menu">
+                    <div id="select_${count}">
+                      <a href="javascript:displayMenu('select_${count}',${teamMember.userId},'${profileProject.uniqueId}',${showResendInvitation},${needsApproval},${teamMember.tools},${ownerId == teamMember.userId},${teamMember.roleId});">edit</a>
+                    </div>
                   </div>
-                </div>
                </ccp:permission>
             </li>
           </c:forEach>

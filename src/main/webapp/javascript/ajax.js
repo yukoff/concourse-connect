@@ -130,7 +130,7 @@ function getResponse(xmlHttpReq,id) {
 function copyRequest(url,id,contentId) {
     var xmlHttpReq = myXMLHttpRequest();
     xmlHttpReq.open('get', url);
-    xmlHttpReq.onreadystatechange = function(){getCopyResponse(xmlHttpReq,id, contentId);}
+    xmlHttpReq.onreadystatechange = function(){getCopyResponse(xmlHttpReq, id, contentId);};
     xmlHttpReq.send(null);
 }
 

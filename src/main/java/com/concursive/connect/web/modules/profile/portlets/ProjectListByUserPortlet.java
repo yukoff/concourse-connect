@@ -45,16 +45,11 @@
  */
 package com.concursive.connect.web.modules.profile.portlets;
 
-import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.Constants;
+import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
-import com.concursive.connect.web.modules.messages.dao.PrivateMessageList;
 import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
-import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
-import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.reviews.dao.ProjectRating;
-import com.concursive.connect.web.modules.reviews.dao.ProjectRatingList;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
 
@@ -62,8 +57,7 @@ import javax.portlet.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.sql.SQLException;
 
 /**
  * List of projects for a user
@@ -76,143 +70,157 @@ public class ProjectListByUserPortlet extends GenericPortlet {
   // Pages
   private static final String VIEW_PAGE = "/portlets/projects_by_user/projects_by_user-view.jsp";
 
+  // Preferences
+  private static final String PREF_TITLE = "title";
+  private static final String PREF_LIMIT = "limit";
+  private static final String PREF_USER_PROFILES = "userProfiles";
+  private static final String PREF_IS_THE_USER = "isTheUser";
+
   // Request Attributes
   private static final String TEAM_MEMBER_LIST = "teamMemberList";
-  private static final String PROJECT_RATING_MAP = "projectRatingMap";
-  private static final String PRIVATE_MESSAGE_MAP = "privateMessageMap";
   private static final String TITLE = "title";
-  private static final String CATEGORY_NAME = "categoryName";
   private static final String MODIFY_NOTIFICATION = "modifyNotification";
   private static final String PAGED_LIST_INFO = "pagedListInfo";
 
-  // Preferences
-  private static final String PREF_CATEGORY_NAME = "category";
-  private static final String PREF_TITLE = "title";
-  private static final String PREF_LIMIT = "limit";
-  private static final String PREF_SHOW_IF_EMPTY = "showIfEmpty";
-
-  public void doView(RenderRequest request, RenderResponse response)
-      throws PortletException, IOException {
+  public void doView(RenderRequest request, RenderResponse response) throws PortletException, IOException {
     try {
-      String defaultView = VIEW_PAGE;
-      // Get global preferences
-      String maxNumberOfProjectsToShow = request.getPreferences().getValue(PREF_LIMIT, "-1");
-      String categoryName = request.getPreferences().getValue(PREF_CATEGORY_NAME, null);
-      String title = request.getPreferences().getValue(PREF_TITLE, null);
-      boolean showIfEmpty = Boolean.parseBoolean(request.getPreferences().getValue(PREF_SHOW_IF_EMPTY, "false"));
-
-      String viewType = request.getParameter("viewType");
-      // Get the projects reviewed by this profile owner...
-      int userId = -1;
-
+      // Determine the action or viewer
+      String value = request.getParameter("value");
+      // Prepare the response
+      String view = null;
       try {
         Connection db = PortalUtils.getConnection(request);
-        if ("setNotification".equals(viewType)) {
-
-          int teamMemberId = Integer.parseInt(request.getParameter("teamMemberId"));
-          TeamMember teamMember = new TeamMember(db, teamMemberId);
-          teamMember.setModifiedBy(PortalUtils.getUser(request).getId());
-          teamMember.setNotification(request.getParameter("notification"));
-          teamMember.update(db);
-
-          response.setContentType("text/html");
-          PrintWriter out = response.getWriter();
-          out.println("");
-          out.flush();
-          defaultView = null;
+        // Handle the request
+        if (value != null) {
+          setAjaxNotification(request, response, db);
         } else {
-          User user = PortalUtils.getUser(request);
-          Project project = PortalUtils.findProject(request);
-
-          userId = PortalUtils.getProject(request).getOwner();
-
-          // Get category id for the provided category name
-          ProjectCategoryList categories = new ProjectCategoryList();
-          categories.setEnabled(true);
-          categories.setTopLevelOnly(true);
-          categories.buildList(db);
-
-          // Look for the specified category
-          ProjectCategory category = categories.getFromValue(categoryName);
-
-          if (category == null) {
-            // The category was not found, so skip this portlet
-            defaultView = null;
-          } else {
-            // Use paged data for sorting
-            PagedListInfo pagedListInfo = new PagedListInfo();
-            pagedListInfo.setItemsPerPage(maxNumberOfProjectsToShow);
-            request.setAttribute(PAGED_LIST_INFO, pagedListInfo);
-
-            // Fetch JUST the user's team member entry
-            TeamMemberList teamMemberList = new TeamMemberList();
-            teamMemberList.setUserId(userId);
-            teamMemberList.setStatus(TeamMember.STATUS_ADDED);
-            teamMemberList.setBuildProject(true);
-            teamMemberList.setCategoryId((category != null) ? category.getId() : null);
-            teamMemberList.setPagedListInfo(pagedListInfo);
-            teamMemberList.buildList(db);
-
-            if (teamMemberList.size() > 0 || showIfEmpty) {
-              // fetch ratings by the user
-              ProjectRatingList projectRatingList = new ProjectRatingList();
-              projectRatingList.setEnteredBy(userId);
-              projectRatingList.setOpenProjectsOnly(true);
-              projectRatingList.setCategoryId(category.getId());
-              // @todo include only the teamMemberList projects instead of all rated
-              projectRatingList.buildList(PortalUtils.getConnection(request));
-
-              HashMap<Integer, ProjectRating> projectRatingMap = new HashMap<Integer, ProjectRating>();
-              HashMap<Integer, Integer> privateMessageMap = new HashMap<Integer, Integer>();
-              Iterator i = teamMemberList.iterator();
-              while (i.hasNext()) {
-                TeamMember teamMember = (TeamMember) i.next();
-                // Verify this user can access the project
-                if (user.getId() != teamMember.getUserId() && !ProjectUtils.hasAccess(teamMember.getProjectId(), user, "project-profile-view")) {
-                  i.remove();
-                  continue;
-                }
-
-                // Retrieve the team member's rating for display
-                ProjectRating projectRating = projectRatingList.getRatingForProject(teamMember.getProjectId());
-                projectRatingMap.put(teamMember.getProjectId(), projectRating);
-
-                // Fetch the new messages only if the user is viewing his profile
-                if (user.getProfileProjectId() == project.getId()) {
-                  //Check if the user has permissions to view messages in the projects in which he is a team member
-                  if (ProjectUtils.hasAccess(teamMember.getProjectId(), user, "project-private-messages-view")) {
-                    privateMessageMap.put(teamMember.getProjectId(), PrivateMessageList.queryUnreadCountForProject(db, teamMember.getProjectId()));
-                  }
-                }
-              }
-              request.setAttribute(PRIVATE_MESSAGE_MAP, privateMessageMap);
-              request.setAttribute(TEAM_MEMBER_LIST, teamMemberList);
-              request.setAttribute(PROJECT_RATING_MAP, projectRatingMap);
-              request.setAttribute(CATEGORY_NAME, categoryName);
-              request.setAttribute(TITLE, title);
-              if (userId == PortalUtils.getUser(request).getId()) {
-                request.setAttribute(MODIFY_NOTIFICATION, "true");
-              } else {
-                request.setAttribute(MODIFY_NOTIFICATION, "false");
-              }
-            } else {
-              defaultView = null;
-            }
-          }
+          view = projectListViewer(request, db);
         }
       } catch (Exception e) {
         e.printStackTrace();
+      } finally {
+        // Connect here doesn't get closed because it was obtained elsewhere
       }
 
-      // JSP view
-      if (defaultView != null) {
+      // Generate the output
+      if (view != null) {
         PortletContext context = getPortletContext();
         PortletRequestDispatcher requestDispatcher =
-            context.getRequestDispatcher(defaultView);
+            context.getRequestDispatcher(view);
         requestDispatcher.include(request, response);
       }
     } catch (Exception e) {
       throw new PortletException(e.getMessage());
     }
   }
+
+  private String projectListViewer(RenderRequest request, Connection db) throws SQLException {
+    // Retrieve the preferences
+    String maxNumberOfProjectsToShow = request.getPreferences().getValue(PREF_LIMIT, "-1");
+    String title = request.getPreferences().getValue(PREF_TITLE, null);
+    boolean userProfiles = Boolean.valueOf(request.getPreferences().getValue(PREF_USER_PROFILES, "false"));
+    boolean isTheUser = Boolean.valueOf(request.getPreferences().getValue(PREF_IS_THE_USER, "false"));
+
+    // Show all of the user's joined profiles...
+    Project project = PortalUtils.findProject(request);
+    int userId = project.getOwner();
+
+    // Determine if this portlet can be shown to this user
+    if ((isTheUser && (userId != PortalUtils.getUser(request).getId())) ||
+        (!isTheUser && (userId == PortalUtils.getUser(request).getId()))) {
+      return null;
+    }
+
+    // Use paged data for sorting
+    PagedListInfo pagedListInfo = new PagedListInfo();
+    pagedListInfo.setItemsPerPage(maxNumberOfProjectsToShow);
+    request.setAttribute(PAGED_LIST_INFO, pagedListInfo);
+
+    // Fetch JUST the user's team member entry
+    TeamMemberList teamMemberList = new TeamMemberList();
+    teamMemberList.setUserId(userId);
+    teamMemberList.setStatus(TeamMember.STATUS_ADDED);
+    teamMemberList.setPagedListInfo(pagedListInfo);
+    // Decide if showing non-user profiles or user profiles
+    if (userProfiles) {
+      teamMemberList.setUserProfiles(Constants.TRUE);
+      pagedListInfo.setDefaultSort("p.title", null);
+    } else {
+      teamMemberList.setUserProfiles(Constants.FALSE);
+      pagedListInfo.setDefaultSort("t.email_updates_schedule, p.title", null);
+    }
+    // For when other users look at this profile...
+    if (userId != PortalUtils.getUser(request).getId()) {
+      // Show the allowable profiles...
+      teamMemberList.setForTeamMateUserId(PortalUtils.getUser(request).getId());
+      teamMemberList.setIgnoreOwnerUserId(userId);
+      // Sort by title
+      pagedListInfo.setDefaultSort("p.title", null);
+    }
+    teamMemberList.buildList(db);
+
+    // Return the correct view
+    if (teamMemberList.size() > 0) {
+      // Set request values
+      request.setAttribute(TEAM_MEMBER_LIST, teamMemberList);
+      request.setAttribute(TITLE, title);
+      // Set modification permissions
+      if (userId == PortalUtils.getUser(request).getId()) {
+        request.setAttribute(MODIFY_NOTIFICATION, "true");
+      } else {
+        request.setAttribute(MODIFY_NOTIFICATION, "false");
+      }
+      return VIEW_PAGE;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Updates the team member's notifications
+   *
+   * @param request
+   * @param db
+   * @throws SQLException
+   */
+  private void setAjaxNotification(RenderRequest request, RenderResponse response, Connection db) throws Exception {
+    // Verify the user is changing their own record
+    int teamMemberId = Integer.parseInt(request.getParameter("id"));
+    String value = request.getParameter("value");
+    // Load the corresponding member
+    TeamMember teamMember = new TeamMember(db, teamMemberId);
+    // Configure the notifications for this user only
+    if (teamMember.getUserId() == PortalUtils.getUser(request).getId()) {
+      teamMember.setModifiedBy(PortalUtils.getUser(request).getId());
+      if ("often".equals(value)) {
+        teamMember.setEmailUpdatesSchedule(TeamMember.EMAIL_OFTEN);
+      } else if ("daily".equals(value)) {
+        teamMember.setEmailUpdatesSchedule(TeamMember.EMAIL_DAILY);
+      } else if ("weekly".equals(value)) {
+        teamMember.setEmailUpdatesSchedule(TeamMember.EMAIL_WEEKLY);
+      } else if ("monthly".equals(value)) {
+        teamMember.setEmailUpdatesSchedule(TeamMember.EMAIL_MONTHLY);
+      } else if ("never".equals(value)) {
+        teamMember.setEmailUpdatesSchedule(TeamMember.EMAIL_NEVER);
+      } else if ("notifications-true".equals(value)) {
+        teamMember.setNotification("false");
+      } else if ("notifications-false".equals(value)) {
+        teamMember.setNotification("true");
+      } else {
+        throw new Exception("Invalid parameter: " + value);
+      }
+      // Update the appropriate records...
+      teamMember.update(db);
+      EmailUpdatesUtils.saveQueue(db, teamMember);
+      // Render the output
+      response.setContentType("text/html");
+      PrintWriter out = response.getWriter();
+      out.println("," + teamMember.getId() + "," + teamMember.getNotification() + "," + teamMember.getEmailUpdatesSchedule());
+      out.flush();
+    } else {
+
+    }
+  }
+
+
 }

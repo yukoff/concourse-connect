@@ -351,11 +351,6 @@ img:after {
   margin: 0;
 }
 
-.portletContainer td {
-  padding: 0;
-  margin: 0;
-}
-
 /* Container around .portalContainer */
 
 .portalContainer {
@@ -404,22 +399,19 @@ img:after {
         
       }
 
-        /* Around each portlet row, within the portletTable */
-
+        /* Around each portlet column, within the portletTable */
         .portletColumn {
           vertical-align: top;
           margin: 0;
-          padding: 0;
-          width:auto;
+          padding: 0 10px 0 0;
         }
 
           .portletColumn1 {
-            padding: 0;
-            width: 240px;
+
           }
 
           .portletColumnLast {
-            width: 300px;
+            padding-right: 0;
           }
           
 
@@ -430,8 +422,8 @@ img:after {
 /* Main Column Styles : including portlet modifiers specific to the mainportletColumn */
 
 .mainportletColumn {
-  width:auto;
-  padding:0;
+  width: auto;
+  padding: 0 10px 0 0;
 }
 
   .mainportletColumn1 {
@@ -439,8 +431,7 @@ img:after {
   }
 
   .mainportletColumnLast {
-    width:auto;
-    /*display:block;*/
+    padding-right: 0;
   }
 
 /* Clear portletWindows in mainportletColumns */

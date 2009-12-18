@@ -57,11 +57,15 @@
     <fieldset id="Join">
       <legend><ccp:label name="project.join">Join</ccp:label></legend>
       <div>
-        <label for="notification" style="display:inline"><ccp:label name="project.join.optin">Receive notifications by email regarding</ccp:label> <c:out value="${project.title}"/>?</label><br />
+        <p>
+          Stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
+          You can adjust your notifications later from your 'Me' page.
+        </p>
+        <label for="notification" style="display:inline">Do you want to opt-in to receive email messages from the managers of this profile?</label><br />
         <input type="radio" name="notification" id="notification" value="yes" checked="true">Yes
         <input type="radio" name="notification" id="notification" value="no">No <br /><br />  
-        <label for="notification" style="display:inline"><ccp:label name="project.email.optin">Receive email updates regarding</ccp:label> <c:out value="${project.title}"/>?</label><br />  
-        <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_OFTEN %>"> Often
+        <label for="notification" style="display:inline">Do you want to opt-in to receive an automated email digest of activity for this profile? Choose how often would you like to receive the updates:</label><br />
+        <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_OFTEN %>"> Often (every few hours)
         <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_DAILY %>" checked="true"> Daily
         <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_WEEKLY %>"> Weekly
         <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_MONTHLY %>"> Monthly

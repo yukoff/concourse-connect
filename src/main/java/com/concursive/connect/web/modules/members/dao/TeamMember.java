@@ -50,12 +50,11 @@ import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueueList;
-import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueue;
-import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.LookupList;
 
 import java.sql.Connection;
@@ -122,7 +121,6 @@ public class TeamMember extends GenericBean {
   // Other factors
   private boolean temporaryAdmin = false;
   private boolean notification = false;
-  private Project project = null;
   private String customInvitationMessage = null;
   private int emailUpdatesSchedule = EMAIL_NEVER;
 
@@ -868,7 +866,7 @@ public class TeamMember extends GenericBean {
     TeamMember memberBeingChanged = project.getTeam().getTeamMember(userId);
     LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
     int newRowLevel = roleList.getLevelFromId(newUserLevel);
-    
+
     // Leverage the user's record whether on the team or not
     User thisUser = UserUtils.loadUser(userIdMakingChange);
 
@@ -988,18 +986,17 @@ public class TeamMember extends GenericBean {
   }
 
 
-  public void setProject(Project project) {
-    this.project = project;
-
-  }
-
   public Project getProject() {
-    return project;
+    if (projectId > -1) {
+      return ProjectUtils.loadProject(projectId);
+    } else {
+      return null;
+    }
   }
 
 
-  public Project getTeamMemberProfile(){
-  	return UserUtils.loadUser(userId).getProfileProject();
+  public Project getTeamMemberProfile() {
+    return UserUtils.loadUser(userId).getProfileProject();
   }
 }
 

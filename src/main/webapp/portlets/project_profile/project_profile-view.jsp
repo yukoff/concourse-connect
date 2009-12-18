@@ -500,13 +500,13 @@ Can be removed and made into a seperate portlet --%>
 </dl>
   <%--@elvariable id="projectTagList" type="com.concursive.connect.web.modules.common.social.tagging.dao.TagList"--%>
 <c:if test="${!empty projectTagList}">
-  <dl class="horizontal-list">
-    <dt>Tag Cloud</dt>
+  <dl class="tag-list">
+    <dt>Tags</dt>
     <c:forEach items="${projectTagList}" var="tag">
       <%--@elvariable id="tag" type="com.concursive.connect.web.modules.common.social.tagging.dao.Tag"--%>
       <dd class="portlet-text-${tag.weight}"><a
           href="${ctx}/page/tag/<c:out value="${fn:toLowerCase(project.category.description)}"/>/${tag.normalizedTag}"><c:out
-          value="${tag.tag}"/></a></dd>
+          value="${tag.tag}"/></a>&nbsp;</dd>
     </c:forEach>
   </dl>
 </c:if>

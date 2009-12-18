@@ -51,7 +51,6 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
-import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.*;
@@ -83,8 +82,11 @@ public class TeamMemberList extends ArrayList<TeamMember> {
   private int userId = -1;
   private int status = -2;
   private boolean tools = false;
-  private boolean buildProject = false;
   private int withNotificationsSet = Constants.UNDEFINED;
+  private int forParticipant = Constants.UNDEFINED;
+  private int forTeamMateUserId = -1;
+  private int userProfiles = Constants.UNDEFINED;
+  private int ignoreOwnerUserId = -1;
 
 
   /**
@@ -332,27 +334,6 @@ public class TeamMemberList extends ArrayList<TeamMember> {
   }
 
 
-  /**
-   * @return the buildProject
-   */
-  public boolean getBuildProject() {
-    return buildProject;
-  }
-
-
-  /**
-   * @param buildProject the buildProject to set
-   */
-  public void setBuildProject(boolean buildProject) {
-    this.buildProject = buildProject;
-  }
-
-
-  public void setBuildProject(String buildProject) {
-    this.buildProject = DatabaseUtils.parseBoolean(buildProject);
-  }
-
-
   public int getWithNotificationsSet() {
     return withNotificationsSet;
   }
@@ -365,6 +346,53 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     this.withNotificationsSet = DatabaseUtils.parseBooleanToConstant(test);
   }
 
+  public int getForParticipant() {
+    return forParticipant;
+  }
+
+  public void setForParticipant(int forParticipant) {
+    this.forParticipant = forParticipant;
+  }
+
+  public void setForParticipant(String tmp) {
+    forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
+  public int getForTeamMateUserId() {
+    return forTeamMateUserId;
+  }
+
+  public void setForTeamMateUserId(int forTeamMateUserId) {
+    this.forTeamMateUserId = forTeamMateUserId;
+  }
+
+  public void setForTeamMateUserId(String forTeamMate) {
+    this.forTeamMateUserId = Integer.parseInt(forTeamMate);
+  }
+
+  public int getUserProfiles() {
+    return userProfiles;
+  }
+
+  public void setUserProfiles(int userProfiles) {
+    this.userProfiles = userProfiles;
+  }
+
+  public void setUserProfiles(String test) {
+    this.userProfiles = DatabaseUtils.parseBooleanToConstant(test);
+  }
+
+  public int getIgnoreOwnerUserId() {
+    return ignoreOwnerUserId;
+  }
+
+  public void setIgnoreOwnerUserId(int ignoreOwnerUserId) {
+    this.ignoreOwnerUserId = ignoreOwnerUserId;
+  }
+
+  public void setIgnoreOwnerUserId(String ignoreOwnerUserId) {
+    this.ignoreOwnerUserId = Integer.parseInt(ignoreOwnerUserId);
+  }
 
   /**
    * Description of the Method
@@ -404,7 +432,7 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     if (!pagedListInfo.getCurrentLetter().equals("")) {
       pst = db.prepareStatement(sqlCount.toString() +
           sqlFilter.toString() +
-          "AND project_id < ? ");
+          "AND t.project_id < ? ");
       items = prepareFilter(pst);
       pst.setString(++items, pagedListInfo.getCurrentLetter().toLowerCase());
       rs = pst.executeQuery();
@@ -416,7 +444,7 @@ public class TeamMemberList extends ArrayList<TeamMember> {
       pst.close();
     }
     // Determine column to sort by
-    pagedListInfo.setDefaultSort("t.project_id, r.level, last_name", null);
+    pagedListInfo.setDefaultSort("p.title, r.level, last_name", null);
     pagedListInfo.appendSqlTail(db, sqlOrder);
     // Need to build a base SQL statement for returning records
     pagedListInfo.appendSqlSelectHead(db, sqlSelect);
@@ -424,10 +452,11 @@ public class TeamMemberList extends ArrayList<TeamMember> {
         "t.team_id, t.project_id, t.user_id, t.userlevel, t.entered, t.enteredby, " +
             "t.modified, t.modifiedby, t.status, t.last_accessed, " +
             "t.tools, t.notification, t.email_updates_schedule, " +
-            "r.level " +
-            "FROM project_team t, lookup_project_role r, users u " +
+            "r.level, p.title " +
+            "FROM project_team t, lookup_project_role r, users u, projects p " +
             "WHERE t.userlevel = r.code " +
-            "AND t.user_id = u.user_id ");
+            "AND t.user_id = u.user_id " +
+            "AND t.project_id = p.project_id ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -443,10 +472,6 @@ public class TeamMemberList extends ArrayList<TeamMember> {
       }
       ++count;
       TeamMember thisTeamMember = new TeamMember(rs);
-      if (buildProject) {
-        thisTeamMember.setProject(ProjectUtils.loadProject(thisTeamMember.getProjectId()));
-      }
-
       this.add(thisTeamMember);
     }
     rs.close();
@@ -464,13 +489,13 @@ public class TeamMemberList extends ArrayList<TeamMember> {
       sqlFilter = new StringBuffer();
     }
     if (projectId > -1) {
-      sqlFilter.append("AND project_id = ? ");
+      sqlFilter.append("AND t.project_id = ? ");
     }
     if (categoryId > -1) {
-      sqlFilter.append("AND project_id IN (SELECT DISTINCT project_id FROM projects WHERE category_id = ?) ");
+      sqlFilter.append("AND t.project_id IN (SELECT DISTINCT project_id FROM projects WHERE category_id = ?) ");
     }
     if (forProjectUser > -1) {
-      sqlFilter.append("AND project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
+      sqlFilter.append("AND t.project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
           "AND status IS NULL) ");
     }
     if (roleLevel > -1) {
@@ -491,6 +516,20 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     }
     if (withNotificationsSet != Constants.UNDEFINED) {
       sqlFilter.append("AND t.notification = ? ");
+    }
+    if (forTeamMateUserId > -1) {
+      sqlFilter.append("AND " +
+          "(t.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL) " +
+          "OR (t.project_id IN (SELECT project_id FROM project_team WHERE user_id = ? AND status IS NULL)))");
+    }
+    if (forParticipant == Constants.TRUE) {
+      sqlFilter.append("AND t.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL) ");
+    }
+    if (userProfiles != Constants.UNDEFINED) {
+      sqlFilter.append("AND t.project_id IN (SELECT project_id FROM projects WHERE profile = ?) ");
+    }
+    if (ignoreOwnerUserId > -1) {
+      sqlFilter.append("AND t.project_id NOT IN (SELECT project_id FROM projects WHERE profile = ? AND owner = ?) ");
     }
   }
 
@@ -531,6 +570,22 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     }
     if (withNotificationsSet != Constants.UNDEFINED) {
       pst.setBoolean(++i, withNotificationsSet == Constants.TRUE);
+    }
+    if (forTeamMateUserId > -1) {
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
+      pst.setInt(++i, forTeamMateUserId);
+    }
+    if (forParticipant == Constants.TRUE) {
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
+    }
+    if (userProfiles != Constants.UNDEFINED) {
+      pst.setBoolean(++i, userProfiles == Constants.TRUE);
+    }
+    if (ignoreOwnerUserId > -1) {
+      pst.setBoolean(++i, true);
+      pst.setInt(++i, ignoreOwnerUserId);
     }
     return i;
   }

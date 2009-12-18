@@ -5114,6 +5114,8 @@
               <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
@@ -5292,6 +5294,8 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <limit>5</limit>
@@ -5303,6 +5307,14 @@
           <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
             <limit>5</limit>
           </portlet>
         </column>
@@ -5420,20 +5432,32 @@
               <consumes-data>productResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+        </column>
+        <column width="220">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Products</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <category>Products</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <category>Products</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Products</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Products</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -5551,20 +5575,32 @@
               <consumes-data>solutionsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+        </column>
+        <column width="220">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Solutions</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <category>Solutions</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <category>Solutions</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Solutions</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Solutions</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -5682,20 +5718,32 @@
               <consumes-data>partnerResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+        </column>
+        <column width="220">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Partners</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <category>Partners</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <category>Partners</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Partners</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Partners</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -5813,6 +5861,8 @@
               <consumes-data>businessesResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Businesses</category>
@@ -5827,6 +5877,16 @@
             <title>Related Discussions</title>
             <category>Businesses</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Businesses</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Businesses</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -5944,6 +6004,8 @@
               <consumes-data>organizationResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Organizations</category>
@@ -5958,6 +6020,16 @@
             <title>Related Discussions</title>
             <category>Organizations</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Organizations</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Organizations</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -6080,6 +6152,8 @@
               <consumes-data>committeeResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Committees</category>
@@ -6094,6 +6168,16 @@
             <title>Related Discussions</title>
             <category>Committees</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Committees</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Committees</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -6217,6 +6301,8 @@
               <consumes-data>departmentResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Departments</category>
@@ -6231,6 +6317,16 @@
             <title>Related Discussions</title>
             <category>Departments</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Departments</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Departments</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -6343,20 +6439,32 @@
               <consumes-data>sponsorResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+        </column>
+        <column width="220">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Sponsors</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <category>Sponsors</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <category>Sponsors</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Sponsors</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Sponsors</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -6469,6 +6577,8 @@
               <consumes-data>groupsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Groups</category>
@@ -6483,6 +6593,16 @@
             <title>Related Discussions</title>
             <category>Groups</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Groups</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Groups</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -6600,15 +6720,17 @@
             </portlet-events>
           </portlet>
         </column>
+        <!--
         <column width="300">
-          <!--
           <portlet name="GoogleMapsFromSearchHitsPortlet">
             <maxResults>3</maxResults>
             <portlet-events>
               <consumes-data>peopleResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
           -->
+        <column width="300">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>People</category>
@@ -6623,6 +6745,16 @@
             <title>Related Discussions</title>
             <category>People</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>People</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>People</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -6740,6 +6872,8 @@
               <consumes-data>eventResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Events</category>
@@ -6754,6 +6888,16 @@
             <title>Related Discussions</title>
             <category>Events</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Events</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Events</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -6886,6 +7030,8 @@
               <consumes-data>placeResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Places</category>
@@ -6900,6 +7046,16 @@
             <title>Related Discussions</title>
             <category>Places</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Places</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Places</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -7032,6 +7188,8 @@
               <consumes-data>neighborhoodResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Neighborhoods</category>
@@ -7046,6 +7204,16 @@
             <title>Related Discussions</title>
             <category>Neighborhoods</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Neighborhoods</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -7163,6 +7331,8 @@
               <consumes-data>ideasResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Ideas</category>
@@ -7177,6 +7347,16 @@
             <title>Related Discussions</title>
             <category>Ideas</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Ideas</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Ideas</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -7289,20 +7469,32 @@
               <consumes-data>projectsResultsFound</consumes-data>
             </portlet-events>
           </portlet>
-          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list ">
+         </column>
+        <column width="220">
+          <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Projects</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByWikiPortlet" class="basic-list ">
+          <portlet name="SearchResultsByWikiPortlet" class="basic-list " isSensitive="true">
             <title>Related Wikis</title>
             <category>Projects</category>
             <limit>5</limit>
           </portlet>
-          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list ">
+          <portlet name="SearchResultsByRecentDiscussionsPortlet" class="basic-list " isSensitive="true">
             <title>Related Discussions</title>
             <category>Projects</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Projects</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Projects</category>
             <limit>5</limit>
           </portlet>
         </column>
@@ -7435,6 +7627,8 @@
               <consumes-data>clusterResultsFound</consumes-data>
             </portlet-events>
           </portlet>
+        </column>
+        <column width="220">
           <portlet name="SearchResultsByRecentBlogPostsPortlet" class="basic-list " isSensitive="true">
             <title>Related Blogs</title>
             <category>Clusters</category>
@@ -7449,6 +7643,16 @@
             <title>Related Discussions</title>
             <category>Clusters</category>
             <includeReplies>false</includeReplies>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByClassifiedsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Classifieds</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
+            <title>Related Promotions</title>
+            <category>Clusters</category>
             <limit>5</limit>
           </portlet>
         </column>

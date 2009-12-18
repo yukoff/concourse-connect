@@ -56,22 +56,22 @@
 <c:set var="GUEST"><%= TeamMember.GUEST %></c:set>
 <script type="text/javascript" language="javascript">
   var thisItemId = -1;
-  var thisUniqueId;
-  var thisShowResendInvite = false;
-  var thisNeedsApproval = false;
-  var thisHasTools = false;
-  function displayMenu(loc, userId, uniqueId, showResendInvite, needsApproval, hasTools, isOwner) {
-    // Set the action parameters for the clicked item
+  function displayMenu(loc, userId, uniqueId, showResendInvite, needsApproval, hasTools, isOwner, currentLevel) {
+    // Set the global action parameters for the clicked item
     thisItemId = userId;
-    thisUniqueId = uniqueId;
-    thisShowResendInvite = (showResendInvite == true);
-    thisNeedsApproval = (needsApproval == true);
-    thisHasTools = (hasTools == true);
+    // Determine the checked values
+    var projectAdminChecked = ${PROJECT_ADMIN} == currentLevel;
+    var managerChecked = ${MANAGER} == currentLevel;
+    var championChecked = ${CHAMPION} == currentLevel;
+    var vipChecked = ${VIP} == currentLevel;
+    var memberChecked = ${MEMBER} == currentLevel;
+    var participantChecked = ${PARTICIPANT} == currentLevel;
+    var guestChecked = ${GUEST} == currentLevel;
 
     var oMenu = YAHOO.widget.MenuManager.getMenu(loc+"none");
     if (!oMenu) {
-      oMenu = new YAHOO.widget.Menu(loc + "none", { position: "dynamic", context: [loc, "tl", "bl"], hidedelay: 1000 });
-      oMenu.addItem({ text: "View Profile", url: "${ctx}/show/" + thisUniqueId });
+      oMenu = new YAHOO.widget.Menu(loc + "none", { position: "dynamic", context: [loc, "tl", "bl"], hidedelay: 1000, minscrollheight: 300 });
+      oMenu.addItem({ text: "View Profile", url: "${ctx}/show/" + uniqueId });
   <c:choose>
     <c:when test="${canUnsetOwner}">
      if(isOwner) {
@@ -83,7 +83,7 @@
     </c:when>
   </c:choose>
       <ccp:permission name="project-team-edit">
-        if (thisNeedsApproval) {
+        if (needsApproval) {
           <c:choose>
             <c:when test="${project.profile}">
               oMenu.addItem({ text: "Add as Friend", onclick: { fn: approveMembership } });
@@ -95,7 +95,7 @@
             </c:otherwise>
           </c:choose>
         } else {
-          if (thisShowResendInvite) {
+          if (showResendInvite) {
             oMenu.addItem({ text: "Resend Invitation", onclick: { fn: resendInvitation } });
           } else {
             oMenu.addItem({ text: "Change Role",
@@ -103,30 +103,30 @@
                 id: loc + "submenu1",
                 itemdata: [
                   <c:if test="${currentMember.roleId <= PROJECT_ADMIN || currentMember.user.accessAdmin}">
-                    { text: "Admin", onclick: { fn: changeRole, obj: "${PROJECT_ADMIN}" } },
+                    { text: "Admin", checked: projectAdminChecked, onclick: { fn: changeRole, obj: "${PROJECT_ADMIN}" } },
                   </c:if>
                   <c:if test="${currentMember.roleId <= MANAGER || currentMember.user.accessAdmin}">
-                    { text: "Manager", onclick: { fn: changeRole, obj: "${MANAGER}" } },
+                    { text: "Manager", checked: managerChecked, onclick: { fn: changeRole, obj: "${MANAGER}" } },
                   </c:if>
                   <c:if test="${currentMember.roleId <= CHAMPION || currentMember.user.accessAdmin}">
-                    { text: "Champion", onclick: { fn: changeRole, obj: "${CHAMPION}" } },
+                    { text: "Champion", checked: championChecked, onclick: { fn: changeRole, obj: "${CHAMPION}" } },
                   </c:if>
                   <c:if test="${currentMember.roleId <= VIP || currentMember.user.accessAdmin}">
-                    { text: "VIP", onclick: { fn: changeRole, obj: "${VIP}" } },
+                    { text: "VIP", checked: vipChecked, onclick: { fn: changeRole, obj: "${VIP}" } },
                   </c:if>
                   <c:if test="${currentMember.roleId <= MEMBER || currentMember.user.accessAdmin}">
-                    { text: "Member", onclick: { fn: changeRole, obj: "${MEMBER}" } },
+                    { text: "Member", checked: memberChecked, onclick: { fn: changeRole, obj: "${MEMBER}" } },
                   </c:if>
                   <c:if test="${currentMember.roleId <= PARTICIPANT || currentMember.user.accessAdmin}">
-                    { text: "Participant", onclick: { fn: changeRole, obj: "${PARTICIPANT}" } },
+                    { text: "Participant", checked: participantChecked, onclick: { fn: changeRole, obj: "${PARTICIPANT}" } },
                   </c:if>
-                  { text: "Guest", onclick: { fn: changeRole, obj: "${GUEST}" } }
+                  { text: "Guest", checked: guestChecked, onclick: { fn: changeRole, obj: "${GUEST}" } }
                 ]
               }
             });
             <c:if test="${!empty project.concursiveCRMUrl}">
               <ccp:permission name="project-team-tools">
-                if (!thisHasTools) {
+                if (!hasTools) {
                     oMenu.addItem({ text: "Add Access to Tools", onclick: { fn: addAccessToTools } });
                 } else {
                     oMenu.addItem({ text: "Revoke Access to Tools", onclick: { fn: revokeAccessToTools } });

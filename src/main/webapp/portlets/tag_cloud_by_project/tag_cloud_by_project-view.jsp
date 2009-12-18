@@ -62,7 +62,7 @@
 <c:if test="${!empty tagList}">
   <ul>
     <c:forEach items="${tagList}" var="tag">
-      <li class="portlet-text-${tag.weight}"><a href="${ctx}/page/tag/${categoryName}/${tag.normalizedTag}"><c:out value="${tag.tag}"/></a></li>
+      <li class="portlet-text-${tag.weight}"><a href="${ctx}/page/tag/${categoryName}/${tag.normalizedTag}"><c:out value="${tag.tag}"/></a>&nbsp;</li>
     </c:forEach>
   </ul>
 </c:if>

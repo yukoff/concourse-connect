@@ -1,0 +1,161 @@
+<%--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  --%>
+<%@ page import="com.concursive.connect.web.modules.members.dao.TeamMember" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" scope="request" />
+<script type="text/javascript" language="javascript">
+
+  var <portlet:namespace/>map = new Object();
+
+  function <portlet:namespace/>goToProfile(p_sType, p_aArgs) {
+    window.location.href='${ctx}/show/' + p_aArgs;
+  }
+
+  <portlet:renderURL var="notificationURL" portletMode="view" windowState="maximized" />
+  function <portlet:namespace/>changeNotifications(p_sType, p_aArgs, p_oValue) {
+    var data = p_oValue.split("-");
+    var value = data[0];
+    var teamMemberId = data[1];
+    if (value == 'notifications') {
+      // Get the menu and check the state of the check, then send the opposite
+      var oSplitButton = <portlet:namespace/>map[teamMemberId];
+      var oMenu = oSplitButton.getMenu();
+      value += "-" + oMenu.getItems()[0].cfg.getProperty("checked");
+    }
+    <portlet:namespace/>sendRequest('<%= pageContext.getAttribute("notificationURL") %>&out=text&id=' + teamMemberId + '&value=' + value, teamMemberId);
+  }
+
+  function <portlet:namespace/>sendRequest(url,id) {
+      var xmlHttpReq = myXMLHttpRequest();
+      xmlHttpReq.open('get', url);
+      xmlHttpReq.onreadystatechange = function(){<portlet:namespace/>getResponse(xmlHttpReq,id);};
+      xmlHttpReq.send(null);
+  }
+
+  function <portlet:namespace/>getResponse(xmlHttpReq,id) {
+    if(xmlHttpReq.readyState == 4){
+      if (xmlHttpReq.status == 200){
+        // Parse out the data
+        var data = xmlHttpReq.responseText.split(",");
+        // [0] is left blank
+        var teamMemberId = data[1];
+        var notificationsChecked = data[2];
+        var schedule = data[3];
+
+        // Find the button's menu...
+        var oSplitButton = <portlet:namespace/>map[id];
+        var oMenu = oSplitButton.getMenu();
+
+        // Update the button class
+        oSplitButton.removeClass("ccp-schedule-0");
+        oSplitButton.removeClass("ccp-schedule-1");
+        oSplitButton.removeClass("ccp-schedule-2");
+        oSplitButton.removeClass("ccp-schedule-3");
+        oSplitButton.removeClass("ccp-schedule-4");
+        oSplitButton.addClass("ccp-schedule-" + schedule);
+        
+        // Update the checks marks
+        oMenu.getItems()[0].cfg.setProperty("checked", notificationsChecked == 'true');
+        oMenu.getItems()[1].cfg.setProperty("checked", schedule == 1);
+        oMenu.getItems()[2].cfg.setProperty("checked", schedule == 2);
+        oMenu.getItems()[3].cfg.setProperty("checked", schedule == 3);
+        oMenu.getItems()[4].cfg.setProperty("checked", schedule == 4);
+        oMenu.getItems()[5].cfg.setProperty("checked", schedule == 0);
+      }
+    }
+  }
+
+  function <portlet:namespace/>attachSplitButtons() {
+    // Find buttons to replace with a split button
+    var root = document.getElementById('<portlet:namespace/>buttons');
+    var buttons = YAHOO.util.Dom.getElementsBy(function(el){return (el.type == 'button');},'input',root);
+
+    // For each button, determine the button properties
+    for (var i = 0; i < buttons.length; i++) {
+
+      var data = buttons[i].getAttribute("name").split(",");
+      var teamMemberId = data[0];
+      var uniqueId = data[1].substring(1,data[1].length-1);
+      var notificationsChecked = (data[2] == 'true');
+      var schedule = data[3];
+
+      var scheduleNever = (schedule == 0);
+      var scheduleOften = (schedule == 1);
+      var scheduleDaily = (schedule == 2);
+      var scheduleWeekly = (schedule == 3);
+      var scheduleMonthly = (schedule == 4);
+
+      // Set the drop-down menu
+      var oMenu = [
+            [{ text: "Receive manager emails", checked: notificationsChecked, onclick: { fn: <portlet:namespace/>changeNotifications, obj: "notifications-" + teamMemberId } }],
+            [{ text: "Often", checked: scheduleOften, onclick: { fn: <portlet:namespace/>changeNotifications, obj: "often-" + teamMemberId } },
+             { text: "Daily", checked: scheduleDaily, onclick: { fn: <portlet:namespace/>changeNotifications, obj: "daily-" + teamMemberId } },
+             { text: "Weekly", checked: scheduleWeekly, onclick: { fn: <portlet:namespace/>changeNotifications, obj: "weekly-" + teamMemberId } },
+             { text: "Monthly", checked: scheduleMonthly, onclick: { fn: <portlet:namespace/>changeNotifications, obj: "monthly-" + teamMemberId } },
+             { text: "Never", checked: scheduleNever, onclick: { fn: <portlet:namespace/>changeNotifications, obj: "never-" + teamMemberId } }]
+          ];
+
+      // Set the button properties
+      var oSplitButton = new YAHOO.widget.Button(buttons[i].id, {
+        type: "split",
+        menuminscrollheight: 300,
+        menu: oMenu,
+        onclick: { fn: <portlet:namespace/>goToProfile, obj: uniqueId }
+        });
+
+      oSplitButton.addClass("ccp-schedule-" + schedule);
+
+      var thisMenu = oSplitButton.getMenu();
+      thisMenu.setItemGroupTitle("Receive Manager Emails", 0);
+      thisMenu.setItemGroupTitle("Receive Digest Emails", 1);
+
+      <portlet:namespace/>map[teamMemberId] = oSplitButton;
+    }
+  };
+
+  YAHOO.util.Event.onDOMReady(<portlet:namespace/>attachSplitButtons);
+</script>

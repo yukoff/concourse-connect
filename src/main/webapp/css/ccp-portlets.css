@@ -1557,24 +1557,114 @@ ol.pagination {
 
 }
 
-    .tag-cloud .portletWrapper {
-
+    .tag-cloud .portletWrapper, .tag-cloud {
+      line-height: 1.9;
     }
 
-    .tag-cloud ul {
+    .tag-cloud ul, .tag-cloud {
       padding:0;
       margin:0 0 5px 0;
     }
 
-      .tag-cloud ul li {
+      .tag-cloud ul li, .tag-cloud dd {
         display:inline;
-        margin: 5px 5px 5px 0px;
-        padding: 1px;
+        padding: 0;
+        margin: 0;
+      }
+
+      .tag-cloud ul li a, .tag-cloud dd a {
+        padding: 3px 4px 3px 4px;
+        margin: 0;
+        white-space: nowrap;
+        text-decoration: none;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+      }
+
+      .tag-cloud ul li a:hover, .tag-cloud dd a:hover {
+        text-decoration: none;
       }
 
     .tag-cloud p {
       text-align:right;
       margin:0;
+    }
+
+    .tag-cloud ul li a, .tag-cloud dd a {
+      background-color: #8c8c8c;
+      /*background-color: #ec9e3b;*/
+      color: #FFFFFF;
+    }
+    .tag-cloud ul li a:hover, .tag-cloud dd a:hover {
+      /*background-color: #ec8400;*/
+      background-color: #666666;
+    }
+
+
+/* @end */
+
+/* @group $_tag-list */
+
+/* $_tag-list  */
+
+.tag-list.portletWindowBackground {
+
+}
+
+    .tag-list {
+      line-height: 1.9;
+    }
+
+    .tag-list h3 {
+      margin: 0;
+    }
+
+    .tag-list ul {
+      padding: 0;
+      margin: 0 0 5px 0;
+    }
+
+    .tag-list dl {
+      padding: 0;
+      margin: 0;
+    }
+
+      .tag-list dl dt {
+        padding: 0;
+        margin: 0;
+        font-style: italic;
+      }
+
+      .tag-list ul li, .tag-list dl dd {
+        display: inline;
+        padding: 0;
+        margin: 0;
+      }
+
+      .tag-list ul li a, .tag-list dl dd a {
+        padding: 3px 4px 3px 4px;
+        margin: 0;
+        white-space: nowrap;
+        text-decoration: none;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+      }
+
+      .tag-list ul li a:hover, .tag-list dl dd a:hover {
+        text-decoration: none;
+      }
+
+    .tag-list p {
+      text-align:right;
+      margin:0;
+    }
+
+    .tag-list ul li a, .tag-list dl dd a {
+      background-color: #999999;
+      color: #FFFFFF;
+    }
+    .tag-list ul li a:hover, .tag-list dl dd a:hover {
+      background-color: #808080;
     }
 
 /* @end */
@@ -1646,6 +1736,52 @@ ol.pagination {
   list-style:none;
   line-height:100%;
 }
+
+.horizontal-list a {
+  white-space: nowrap;
+}
+
+/* @end */
+
+/* @group $_horizontal-list*/
+
+.wrapping-list .portletWindowBackground {
+
+}
+
+/* Clear floats for IE*/
+.wrapping-list .portletWrapper {
+ /* *display:inline-block; */
+}
+
+  .wrapping-list h3,
+  .wrapping-list h4 {
+    margin: 0;
+    padding: 5px 0;
+    *display:inline-block;
+  }
+
+  .wrapping-list {
+    line-height: 2.2;
+  }
+
+  .ccp-schedule-legend {
+  }
+
+  .ccp-schedule-legend dd {
+    padding: 1px;
+    font-size: 90%;
+    border: 1px solid #ccc;
+  }
+
+  .wrapping-list .yuimenu { z-index: 5 !important; }
+  .wrapping-list .yui-split-button { background-image: none !important; }
+  .wrapping-list .yui-split-button-hover { background-image: none !important; }
+  .ccp-schedule-0 { background-color: #f2f2f2 !important; color: #000; }
+  .ccp-schedule-1 { background-color: #ffcc80 !important; color: #000; }
+  .ccp-schedule-2 { background-color: #ffff80 !important; color: #000; }
+  .ccp-schedule-3 { background-color: #abed77 !important; color: #000; }
+  .ccp-schedule-4 { background-color: #a6c8ed !important; color: #000; }
 
 /* @end */
 

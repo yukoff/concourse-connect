@@ -98,6 +98,8 @@ public class WebPortalUtils {
     if (expectedDomainName != null &&
         !"127.0.0.1".equals(bean.getServerName()) &&
         !"localhost".equals(bean.getServerName()) &&
+        !"127.0.0.1".equals(expectedDomainName) &&
+        !"localhost".equals(expectedDomainName) &&
         !bean.getServerName().equals(expectedDomainName)) {
       // Preserve the URI
       String uri = "";
@@ -113,7 +115,7 @@ public class WebPortalUtils {
       HashMap expectedURL = new HashMap();
       expectedURL.put(ApplicationPrefs.WEB_SCHEME, context.getRequest().getScheme());
       expectedURL.put(ApplicationPrefs.WEB_DOMAIN_NAME, expectedDomainName);
-      expectedURL.put(ApplicationPrefs.WEB_PORT, context.getRequest().getServerPort());
+      expectedURL.put(ApplicationPrefs.WEB_PORT, String.valueOf(context.getRequest().getServerPort()));
       String newUrl = URLFactory.createURL(expectedURL);
       // Send a redirect
       context.getRequest().setAttribute("redirectTo", newUrl + uri);

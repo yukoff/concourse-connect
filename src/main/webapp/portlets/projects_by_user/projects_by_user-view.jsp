@@ -48,61 +48,62 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
-<%@ page import="com.concursive.connect.web.modules.reviews.dao.ProjectRating" %>
 <%@ page import="com.concursive.connect.web.modules.members.dao.TeamMember" %>
-<jsp:useBean id="projectRatingMap" class="java.util.HashMap" scope="request"/>
+<%--@elvariable id="title" type="java.lang.String"--%>
+<%--@elvariable id="teamMemberList" type="com.concursive.connect.web.modules.members.dao.TeamMemberList"--%>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-  <h3><c:out value="${title}"/></h3>
-  <c:if test="${!empty teamMemberList}">
-  <ol class="portletList">
-    <c:forEach items="${teamMemberList}" var="teamMember">
-      <c:set var="teamMember" value="${teamMember}" />
-      <jsp:useBean id="teamMember" type="com.concursive.connect.web.modules.members.dao.TeamMember" />
-      <li>
-        <h4>
-          <a href="${ctx}/show/${teamMember.project.uniqueId}" title="<c:out value="${teamMember.project.title}" />"><c:out value="${teamMember.project.title}"/></a>
-          <ccp:evaluate if="<%= teamMember.getRoleId() < TeamMember.MEMBER %>">
-            <span style="font-weight: normal;">(<ccp:role id="${teamMember.userLevel}"/>)
-            <c:if test="${!empty privateMessageMap[teamMember.project.id] and privateMessageMap[teamMember.project.id] > 0}">
-              <a href="${ctx}/show/${teamMember.project.uniqueId}/messages">${privateMessageMap[teamMember.project.id]} message<c:if test="${privateMessageMap[teamMember.project.id] > 1}">s</c:if></a>
-            </c:if>
-            </span>
-          </ccp:evaluate>
-        </h4>
-        <c:if test="${modifyNotification eq 'true'}">
-          <portlet:renderURL var="deleteNotificationURL" portletMode="view" windowState="maximized">
-            <portlet:param name="teamMemberId" value="${teamMember.id}"/>
-            <portlet:param name="notification" value="false"/>
-            <portlet:param name="viewType" value="setNotification"/>
-          </portlet:renderURL>
-          <portlet:renderURL var="addNotificationURL" portletMode="view" windowState="maximized">
-            <portlet:param name="teamMemberId" value="${teamMember.id}"/>
-            <portlet:param name="notification" value="true"/>
-            <portlet:param name="viewType" value="setNotification"/>
-          </portlet:renderURL>
-          <c:set var="deleteURL" scope="page">
-            javascript:copyRequest('<%= pageContext.getAttribute("deleteNotificationURL") %>&out=text','<portlet:namespace/>notification_${teamMember.id}','add_${teamMember.id}');
-          </c:set>
-          <c:set var="addURL" scope="page">
-            javascript:copyRequest('<%= pageContext.getAttribute("addNotificationURL") %>&out=text','<portlet:namespace/>notification_${teamMember.id}','remove_${teamMember.id}');
-          </c:set>
-          <div id="remove_${teamMember.id}" class="menu"><a href="${deleteURL}">Remove Notifications?</a></div>
-          <div id="add_${teamMember.id}" class="menu"><a href="${addURL}">Add Notifications?</a></div>
+<h3><c:out value="${title}"/></h3>
+<c:choose>
+  <c:when test="${modifyNotification eq true}">
+    <%-- Use the drop-down menu for notifications --%>
+    <%@ include file="projects_by_user_menu.jspf" %>
+    <div class="portlet-message-info">
+      <div class="horizontal-list">
+        <dl class="ccp-schedule-legend">
+          <dt>For each profile, choose a preference:</dt>
+          <dd class="ccp-schedule-0">never</dd>
+          <dd class="ccp-schedule-1">often</dd>
+          <dd class="ccp-schedule-2">daily</dd>
+          <dd class="ccp-schedule-3">weekly</dd>
+          <dd class="ccp-schedule-4">monthly</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="yui-skin-sam">
+      <div id="<portlet:namespace/>buttons" class="wrapping-list">
+        <c:forEach items="${teamMemberList}" var="teamMember" varStatus="teamMemberCounter">
           <c:choose>
-            <c:when test="${teamMember.notification eq true}">
-              <div id="<portlet:namespace/>notification_${teamMember.id}"><a href="${deleteURL}">Remove Notifications?</a></div>
-            </c:when>
-            <c:otherwise>
-              <div id="<portlet:namespace/>notification_${teamMember.id}"><a href="${addURL}">Add Notifications?</a></div>
-            </c:otherwise>
+            <c:when test="${teamMember.emailUpdatesSchedule == 4}"><c:set var="emailUpdatesSchedule" value="4"/></c:when>
+            <c:when test="${teamMember.emailUpdatesSchedule == 3}"><c:set var="emailUpdatesSchedule" value="3"/></c:when>
+            <c:when test="${teamMember.emailUpdatesSchedule == 2}"><c:set var="emailUpdatesSchedule" value="2"/></c:when>
+            <c:when test="${teamMember.emailUpdatesSchedule == 1}"><c:set var="emailUpdatesSchedule" value="1"/></c:when>
+            <c:otherwise><c:set var="emailUpdatesSchedule" value="0"/></c:otherwise>
           </c:choose>
-        </c:if>
-      </li>
-    </c:forEach>
-  </ol>
-</c:if>
-<c:if test="${empty teamMemberList}">
-  <p><c:out value="This user does not have ${categoryName}"/></p>
-</c:if>
+          <c:choose>
+            <c:when test="${teamMember.project.profile && teamMember.project.owner == teamMember.userId}"><c:set var="nameToDisplay" value="Me"/></c:when>
+            <c:otherwise><c:set var="nameToDisplay" value="${teamMember.project.title}"/></c:otherwise>
+          </c:choose>
+          <input class="ccp-schedule-${emailUpdatesSchedule}" type="button" id="<portlet:namespace/>splitbutton_${teamMember.id}" name="${teamMember.id},'${teamMember.project.uniqueId}',${teamMember.notification},${teamMember.emailUpdatesSchedule}" value="<c:out value="${nameToDisplay}" />">
+        </c:forEach>
+      </div>
+    </div>
+  </c:when>
+  <c:otherwise>
+    <%-- Show a linkable list --%>
+    <div class="tag-list">
+      <ul>
+        <c:forEach items="${teamMemberList}" var="teamMember" varStatus="teamMemberCounter">
+          <li>
+            <c:choose>
+              <c:when test="${teamMember.project.profile && teamMember.project.owner == teamMember.userId}"><c:set var="nameToDisplay" value="Me"/></c:when>
+              <c:otherwise><c:set var="nameToDisplay" value="${teamMember.project.title}"/></c:otherwise>
+            </c:choose>
+            <a href="${ctx}/show/${teamMember.project.uniqueId}"><c:out value="${nameToDisplay}" /></a>&nbsp;
+          </li>
+        </c:forEach>
+      </ul>
+    </div>
+  </c:otherwise>
+</c:choose>

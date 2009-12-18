@@ -47,11 +47,9 @@
 package com.concursive.connect.web.modules.communications.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
-import com.concursive.commons.date.DateUtils;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
-import com.concursive.connect.web.modules.reports.dao.ReportQueue;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
 
 import java.sql.*;
 import java.util.Calendar;

@@ -48,8 +48,11 @@ package com.concursive.connect.web.modules.activity.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
+import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 
 import java.sql.*;
 import java.sql.Date;
@@ -552,7 +555,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     pst.close();
   }
 
-  public HashMap getList(Connection db) throws SQLException {
+  public HashMap getList(Connection db, int userId, String serverURL) throws SQLException {
     this.buildList(db);
 
     HashMap map = new HashMap();
@@ -563,7 +566,9 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
         descriptions = new ArrayList();
         map.put(historyDate.toString(), descriptions);
       }
-      descriptions.add(history.getDescription());
+      WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(userId, serverURL);
+      String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, history.getDescription());
+      descriptions.add(wikiLinkString);
     }
 
     return map;

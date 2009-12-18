@@ -45,11 +45,8 @@
  */
 package com.concursive.connect.web.modules.communications.utils;
 
-import com.concursive.commons.text.Template;
-import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.URLFactory;
 import com.concursive.commons.xml.XMLUtils;
-import com.concursive.commons.date.DateUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
@@ -62,16 +59,20 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
-import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
+import freemarker.template.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.quartz.SchedulerContext;
 import org.w3c.dom.Element;
 
+import javax.servlet.ServletContext;
+import java.io.StringWriter;
 import java.net.URL;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility methods used by the EmailUpdatesJob
@@ -83,26 +84,30 @@ public class EmailUpdatesUtils {
 
   private static Log LOG = LogFactory.getLog(EmailUpdatesUtils.class);
 
-  public static String getEmailHTMLMessage(Connection db, EmailUpdatesQueue queue, ApplicationPrefs prefs,
+  public static String getEmailHTMLMessage(SchedulerContext context, Connection db, EmailUpdatesQueue queue, 
                                            Timestamp min, Timestamp max) throws Exception {
+    ApplicationPrefs prefs = (ApplicationPrefs) context.get(
+          "ApplicationPrefs");
+    ServletContext servletContext = (ServletContext) context.get("ServletContext");
+    
     // User who needs to be sent an email
     User user = UserUtils.loadUser(queue.getEnteredBy());
 
-    StringBuffer message = new StringBuffer();
     Project website = ProjectUtils.loadProject("main-profile");
     int emailUpdatesSchedule = -1;
+    String title = "";
     if (queue.getScheduleOften()) {
       emailUpdatesSchedule = TeamMember.EMAIL_OFTEN;
-      message.append("<h1>" + website.getTitle() + " recent updates" + "</h1>");
+      title = website.getTitle() + " recent updates";
     } else if (queue.getScheduleDaily()) {
       emailUpdatesSchedule = TeamMember.EMAIL_DAILY;
-      message.append("<h1>" + website.getTitle() + " daily update" + "</h1>");
+      title = website.getTitle() + " daily update";
     } else if (queue.getScheduleWeekly()) {
       emailUpdatesSchedule = TeamMember.EMAIL_WEEKLY;
-      message.append("<h1>" + website.getTitle() + " weekly update" + "</h1>");
+      title = website.getTitle() + " weekly update";
     } else if (queue.getScheduleMonthly()) {
       emailUpdatesSchedule = TeamMember.EMAIL_MONTHLY;
-      message.append("<h1>" + website.getTitle() + " monthly update" + "</h1>");
+      title = website.getTitle() + " monthly update";
     }
     if (emailUpdatesSchedule == -1) {
       //unexpected case; throw exception
@@ -111,6 +116,14 @@ public class EmailUpdatesUtils {
     if (URLFactory.createURL(prefs.getPrefs()) == null) {
       throw new Exception("The server URL is not specified. Please contact the system administrator to configure the remote server's URL!");
     }
+
+    // Populate the message template
+    Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(servletContext);
+    freemarker.template.Template template = configuration.getTemplate("scheduled_activity_updates_email_body-html.ftl");
+    Map bodyMappings = new HashMap();
+    bodyMappings.put("title", title);
+    bodyMappings.put("link", new HashMap());
+    ((Map) bodyMappings.get("link")).put("settings", URLFactory.createURL(prefs.getPrefs()) + "/show/" + user.getProfileUniqueId());
 
     // Load the RSS config file to determine the objects for display
     String fileName = "scheduled_emails_en_US.xml";
@@ -125,6 +138,8 @@ public class EmailUpdatesUtils {
       emailElement = XMLUtils.getElement(library.getDocumentElement(), "email", "events", "site");
     }
     if (emailElement != null) {
+      HashMap categories = new HashMap();
+
       PagedListInfo info = new PagedListInfo();
       String limit = emailElement.getAttribute("limit");
       info.setItemsPerPage(limit);
@@ -138,29 +153,10 @@ public class EmailUpdatesUtils {
       chatter.setRangeEnd(max);
       chatter.setPagedListInfo(info);
       chatter.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
-      HashMap map = chatter.getList(db);
+      HashMap map = chatter.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
       activityCount += map.size();
-
       if (map.size() != 0) {
-        message.append("<h2>Chatter</h2>");
-        message.append("<ol>");
-
-        Iterator i = map.keySet().iterator();
-        while (i.hasNext()) {
-          String date = (String) i.next();
-          message.append("<li>" + date + "</li>");
-          message.append("<ol>");
-          ArrayList descriptions = (ArrayList) map.get(date);
-          Iterator j = descriptions.iterator();
-          while (j.hasNext()) {
-            String description = (String) j.next();
-            WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), URLFactory.createURL(prefs.getPrefs()));
-            String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
-            message.append("<li>" + wikiLinkString + "</li>");
-          }
-          message.append("</ol>");
-        }
-        message.append("</ol>");
+        categories.put("Chatter", map);
       }
 
       // Determine the types of events to display based on the config file
@@ -188,29 +184,10 @@ public class EmailUpdatesUtils {
         activities.setObjectPreferences(types);
         activities.setPagedListInfo(info);
         activities.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
-        HashMap activityMap = activities.getList(db);
+        HashMap activityMap = activities.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
         activityCount += activityMap.size();
-
         if (activityMap.size() != 0) {
-          message.append("<h2>" + category.getDescription() + "</h2>");
-          message.append("<ol>");
-
-          Iterator k = activityMap.keySet().iterator();
-          while (k.hasNext()) {
-            String date = (String) k.next();
-            message.append("<li>" + date + "</li>");
-            message.append("<ol>");
-            ArrayList descriptions = (ArrayList) activityMap.get(date);
-            Iterator l = descriptions.iterator();
-            while (l.hasNext()) {
-              String description = (String) l.next();
-              WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(user.getId(), URLFactory.createURL(prefs.getPrefs()));
-              String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, description);
-              message.append("<li>" + wikiLinkString + "</li>");
-            }
-            message.append("</ol>");
-          }
-          message.append("</ol>");
+          categories.put(category.getDescription(), activityMap);   
         }
       }
 
@@ -218,19 +195,14 @@ public class EmailUpdatesUtils {
         //Don't send an email update
         return null;
       }
-
-      message.append("<p>");
-      message.append("This information is sent based on your notification settings.<br/>");
-      message.append("<a href=\"${secureUrl}/show/${this.project.uniqueId:html}\" target=\"_blank\">" +
-              "Manage your notifications.</a>");
-      message.append("</p>");
-
+      bodyMappings.put("categories", categories);
     }
-    Template template = new Template(message.toString());
-    template.addParseElement("${secureUrl}", URLFactory.createURL(prefs.getPrefs()));
-    template.addParseElement("${this.project.uniqueId:html}", user.getProfileUniqueId());
 
-    return template.getParsedText();
+    // Parse and return
+    StringWriter emailBodyTextWriter = new StringWriter();
+    template.process(bodyMappings, emailBodyTextWriter);
+
+    return emailBodyTextWriter.toString();
   }
 
   public static void saveQueue(Connection db, TeamMember teamMember) throws SQLException {

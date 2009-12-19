@@ -79,11 +79,12 @@
   <src>/css/star_rating.css</src>
   <src>/css/bucketlist.css</src>
   <src>/javascript/yui-2.8r4/build/calendar/assets/skins/sam/calendar.css</src>
-  <src>/javascript/yui-2.8r4/build/button/assets/skins/sam/button.css</src>
-  <src>/javascript/yui-2.8r4/build/menu/assets/skins/sam/menu.css</src>
   <src>/javascript/yui-2.8r4/build/container/assets/skins/sam/container.css</src>
   <src>/javascript/yui-2.8r4/build/container/assets/container.css</src>
 </pack:style>
+<%-- These don't like running through pack tag --%>
+<link rel="stylesheet" href="<%= ctx %>/javascript/yui-2.8r4/build/button/assets/skins/sam/button.css" />
+<link rel="stylesheet" href="<%= ctx %>/javascript/yui-2.8r4/build/menu/assets/skins/sam/menu.css" />
 <c:if test="${!empty templateColorScheme}">
   <link rel="stylesheet" href="${ctx}/themes/${templateTheme}/color-schemes/${templateColorScheme}/css/ccp-color.css?3" />
 </c:if>

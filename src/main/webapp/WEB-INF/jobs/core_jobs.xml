@@ -83,8 +83,8 @@
       <simple>
         <name>scheduledEmailUpdatesJob</name>
         <group>DEFAULT</group>
-        <start-time>30s</start-time>
-        <repeat-interval>1m</repeat-interval>
+        <start-time>5m</start-time>
+        <repeat-interval>5m</repeat-interval>
       </simple>
     </trigger>
     -->

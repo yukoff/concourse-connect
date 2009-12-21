@@ -73,6 +73,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * Utility methods used by the EmailUpdatesJob
@@ -138,7 +139,7 @@ public class EmailUpdatesUtils {
       emailElement = XMLUtils.getElement(library.getDocumentElement(), "email", "events", "site");
     }
     if (emailElement != null) {
-      HashMap categories = new HashMap();
+      LinkedHashMap categories = new LinkedHashMap();
 
       PagedListInfo info = new PagedListInfo();
       String limit = emailElement.getAttribute("limit");
@@ -153,7 +154,7 @@ public class EmailUpdatesUtils {
       chatter.setRangeEnd(max);
       chatter.setPagedListInfo(info);
       chatter.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
-      HashMap map = chatter.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
+      LinkedHashMap map = chatter.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
       activityCount += map.size();
       if (map.size() != 0) {
         categories.put("Chatter", map);
@@ -184,7 +185,7 @@ public class EmailUpdatesUtils {
         activities.setObjectPreferences(types);
         activities.setPagedListInfo(info);
         activities.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
-        HashMap activityMap = activities.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
+        LinkedHashMap activityMap = activities.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
         activityCount += activityMap.size();
         if (activityMap.size() != 0) {
           categories.put(category.getDescription(), activityMap);   

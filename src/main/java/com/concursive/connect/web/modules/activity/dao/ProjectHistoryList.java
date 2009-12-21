@@ -555,10 +555,10 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     pst.close();
   }
 
-  public HashMap getList(Connection db, int userId, String serverURL) throws SQLException {
+  public LinkedHashMap getList(Connection db, int userId, String serverURL) throws SQLException {
     this.buildList(db);
 
-    HashMap map = new HashMap();
+    LinkedHashMap map = new LinkedHashMap();
     for (ProjectHistory history : this) {
       Date historyDate = new Date(history.getLinkStartDate().getTime());
       ArrayList descriptions = (ArrayList) map.get(historyDate.toString());

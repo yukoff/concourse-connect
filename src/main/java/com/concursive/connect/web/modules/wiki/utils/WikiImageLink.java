@@ -70,7 +70,7 @@ public class WikiImageLink {
   private String value = "";
   private boolean needsCRLF = true;
 
-  public WikiImageLink(String link, int projectId, HashMap imageList, boolean lineTest, boolean editMode, String contextPath) {
+  public WikiImageLink(String link, int projectId, HashMap<String, ImageInfo> imageList, boolean lineTest, boolean editMode, String contextPath) {
     Project project = ProjectUtils.loadProject(projectId);
     StringBuffer sb = new StringBuffer();
     String image = link.substring(6);
@@ -129,17 +129,21 @@ public class WikiImageLink {
       int width = 0;
       int height = 0;
       int fullWidth = 0;
-      ImageInfo imageInfo = (ImageInfo) imageList.get(image + (thumbnail > -1 ? "-TH" : ""));
+      ImageInfo imageInfo = imageList.get(image + (thumbnail > -1 ? "-TH" : ""));
       if (imageInfo != null) {
+        // Determine the width and height for the output
         width = imageInfo.getWidth();
         height = imageInfo.getHeight();
-
         fullWidth = width;
         if (thumbnail > -1) {
-          ImageInfo fullImageInfo = (ImageInfo) imageList.get(image);
+          ImageInfo fullImageInfo = imageList.get(image);
           if (fullImageInfo != null) {
             fullWidth = fullImageInfo.getWidth();
           }
+        }
+        // Determine if the version so that an image isn't cached with a prior version
+        if (imageInfo.getVersion() > 1.0) {
+          imageUrl += (!imageUrl.contains("?") ? "?" : "&") + "v=" + imageInfo.getVersion();
         }
       }
 

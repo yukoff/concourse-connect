@@ -57,6 +57,7 @@ import com.concursive.connect.web.modules.wiki.utils.CustomFormUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.portal.PortalUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -140,7 +141,7 @@ public class EditProjectWikiPortlet extends GenericPortlet {
         Wiki wiki = WikiList.queryBySubject(db, "", project.getId());
         request.setAttribute(WIKI, wiki);
         // Load wiki image library dimensions (cache in future)
-        HashMap imageList = WikiUtils.buildImageInfo(db, project.getId());
+        HashMap<String, ImageInfo> imageList = WikiUtils.buildImageInfo(db, project.getId());
         request.setAttribute(IMAGE_LIST, imageList);
         // @note the context must be used instead of the full URL
         WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, PortalUtils.getUser(request).getId(), true, request.getContextPath());

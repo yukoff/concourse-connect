@@ -46,8 +46,8 @@
 package com.concursive.connect.web.modules.wiki.portlets.projectWikiContent;
 
 import com.concursive.commons.text.StringUtils;
-import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -143,7 +143,7 @@ public class ProjectWikiContentViewer implements IPortletViewer {
     request.setAttribute(WIKI, wiki);
 
     // Load wiki image library dimensions (@todo cache)
-    HashMap imageList = WikiUtils.buildImageInfo(db, project.getId());
+    HashMap<String, ImageInfo> imageList = WikiUtils.buildImageInfo(db, project.getId());
     request.setAttribute(WIKI_IMAGE_LIST, imageList);
 
     if (wiki.getId() > -1 && StringUtils.hasText(wiki.getContent())) {

@@ -49,9 +49,9 @@ import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
 import com.concursive.commons.workflow.BusinessProcess;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
-import com.concursive.connect.web.modules.discussion.dao.Topic;
 import com.concursive.connect.web.modules.discussion.dao.Forum;
 import com.concursive.connect.web.modules.discussion.dao.Reply;
+import com.concursive.connect.web.modules.discussion.dao.Topic;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
@@ -148,7 +148,7 @@ public class SaveForumTopicResponseEventTest extends AbstractWorkflowManagerTest
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] posted a reply to [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] posted a reply to [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]] in [[|" + project.getId() + ":profile||" + project.getTitle() + "]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)
@@ -266,7 +266,8 @@ public class SaveForumTopicResponseEventTest extends AbstractWorkflowManagerTest
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] found an answer for [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]]", 
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] found an answer for [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]] " +
+            "in [[|" + project.getId() + ":profile||" + project.getTitle() + "]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

@@ -91,16 +91,14 @@
           </a>
         </h3>
         <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.DRAFT %>">
-          <span class="red">
-            <ccp:label
-              name="projectsCenterNews.byArticle.draft">(Draft)</ccp:label>
-          </span>
+          <div class="portlet-message-alert">
+            DRAFT
+          </div>
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.UNAPPROVED %>">
-          <span class="red">
-            <ccp:label
-            name="projectsCenterNews.byArticle.unapproved">(Unapproved)</ccp:label>
-          </span>
+          <div class="portlet-message-alert">
+            FOR REVIEW
+          </div>
         </ccp:evaluate>
       </div>
       <ccp:permission name="any">

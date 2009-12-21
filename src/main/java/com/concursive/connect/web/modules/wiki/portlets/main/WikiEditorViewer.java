@@ -57,6 +57,7 @@ import com.concursive.connect.web.modules.wiki.dao.WikiTemplate;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
@@ -136,7 +137,7 @@ public class WikiEditorViewer implements IPortletViewer {
     request.setAttribute(WIKI, wiki);
 
     // Load wiki image library dimensions (@todo cache)
-    HashMap imageList = WikiUtils.buildImageInfo(db, project.getId());
+    HashMap<String, ImageInfo> imageList = WikiUtils.buildImageInfo(db, project.getId());
     request.setAttribute(WIKI_IMAGE_LIST, imageList);
 
     // Create a wiki context to manage sections and forms being edited

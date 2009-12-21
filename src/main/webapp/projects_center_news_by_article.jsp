@@ -72,14 +72,14 @@
     <div class="header <ccp:permission if="any" name="project-news-edit,project-news-delete">admin</ccp:permission>">
       <h3><a href="javascript:popURL('<%= ctx %>/show/<%= project.getUniqueId() %>/post/<%= thisArticle.getId() %>?popup=true','Article_<%= thisArticle.getId() %>','600','500','yes','yes');"><%= toHtml(thisArticle.getSubject()) %></a></h3>
       <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.DRAFT %>">
-        <span class="red">
-          <ccp:label name="projectsCenterNews.byArticle.draft">(Draft)</ccp:label>
-        </span>
+        <div class="portlet-message-alert">
+          DRAFT
+        </div>
       </ccp:evaluate>
       <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.UNAPPROVED %>">
-        <span class="red">
-          <ccp:label name="projectsCenterNews.byArticle.unapproved">(Unapproved)</ccp:label>
-        </span>
+        <div class="portlet-message-alert">
+          FOR REVIEW
+        </div>
       </ccp:evaluate>
     </div>
     <ccp:permission name="project-news-edit,project-news-delete" if="any">

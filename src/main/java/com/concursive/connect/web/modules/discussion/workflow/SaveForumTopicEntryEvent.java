@@ -87,10 +87,14 @@ public class SaveForumTopicEntryEvent extends ObjectHookComponent implements Com
       User user = UserUtils.loadUser(thisTopic.getEnteredBy());
       Project userProfile = ProjectUtils.loadProject(user.getProfileProjectId());
 
+      // load the project profile
+      Project projectProfile = ProjectUtils.loadProject(thisTopic.getProjectId());
+
       if (prevTopic == null) {
         // Prepare the wiki links
         context.setParameter("user", WikiLink.generateLink(userProfile));
         context.setParameter("topic", WikiLink.generateLink(thisTopic));
+        context.setParameter("profile", WikiLink.generateLink(projectProfile));
 
         // Insert the history
         ProjectHistory history = new ProjectHistory();

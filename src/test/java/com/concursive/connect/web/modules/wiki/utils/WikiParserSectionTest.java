@@ -46,6 +46,7 @@
 package com.concursive.connect.web.modules.wiki.utils;
 
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import junit.framework.TestCase;
 import org.suigeneris.jrcs.diff.Diff;
 import org.suigeneris.jrcs.diff.Revision;
@@ -129,7 +130,7 @@ public class WikiParserSectionTest extends TestCase {
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, true, "");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), -1, true, "");
     wikiContext.setEditSectionId(5);
     String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertNotNull(html);
@@ -162,7 +163,7 @@ public class WikiParserSectionTest extends TestCase {
     Wiki wiki = new Wiki();
     wiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, true, "");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap<String, ImageInfo>(), -1, true, "");
     wikiContext.setEditSectionId(section);
     String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     // Initial tests

@@ -606,7 +606,15 @@ public class BlogPost extends GenericBean {
    * @param tmp The new status value
    */
   public void setStatus(String tmp) {
-    this.status = Integer.parseInt(tmp);
+    if ("Publish".equals(tmp)) {
+      this.status = PUBLISHED;
+    } else if ("Save as Draft".equals(tmp)) {
+      this.status = DRAFT;
+    } else if ("Save for Review".equals(tmp)) {
+      this.status = UNAPPROVED;
+    } else {
+      this.status = Integer.parseInt(tmp);
+    }
   }
 
 

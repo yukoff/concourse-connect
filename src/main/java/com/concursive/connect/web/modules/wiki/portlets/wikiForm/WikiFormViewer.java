@@ -52,6 +52,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import org.apache.commons.logging.Log;
@@ -115,7 +116,7 @@ public class WikiFormViewer implements IPortletViewer {
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(request.getPreferences().getValue(PREF_FORM_CONTENT, null));
     // @note the context is used instead of the full URL
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), -1, true, request.getContextPath());
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), -1, true, request.getContextPath());
     String html = WikiToHTMLUtils.getHTML(wikiContext, null);
 
     // Set the portlet preferences

@@ -85,12 +85,12 @@ public class EmailUpdatesUtils {
 
   private static Log LOG = LogFactory.getLog(EmailUpdatesUtils.class);
 
-  public static String getEmailHTMLMessage(SchedulerContext context, Connection db, EmailUpdatesQueue queue, 
+  public static String getEmailHTMLMessage(SchedulerContext context, Connection db, EmailUpdatesQueue queue,
                                            Timestamp min, Timestamp max) throws Exception {
     ApplicationPrefs prefs = (ApplicationPrefs) context.get(
-          "ApplicationPrefs");
+        "ApplicationPrefs");
     ServletContext servletContext = (ServletContext) context.get("ServletContext");
-    
+
     // User who needs to be sent an email
     User user = UserUtils.loadUser(queue.getEnteredBy());
 
@@ -188,7 +188,7 @@ public class EmailUpdatesUtils {
         LinkedHashMap activityMap = activities.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
         activityCount += activityMap.size();
         if (activityMap.size() != 0) {
-          categories.put(category.getDescription(), activityMap);   
+          categories.put(category.getDescription(), activityMap);
         }
       }
 
@@ -228,7 +228,7 @@ public class EmailUpdatesUtils {
   public static void manageQueue(Connection db, TeamMember teamMember) throws SQLException {
     //Determine if the member is part of any other projects and has a matching email updates preference
     PreparedStatement pst = db.prepareStatement(
-            "SELECT count(*) AS record_count " +
+        "SELECT count(*) AS record_count " +
             "FROM project_team pt " +
             "WHERE pt.user_id = ? " +
             "AND pt.email_updates_schedule = ? ");
@@ -247,21 +247,25 @@ public class EmailUpdatesUtils {
       //Delete the queue since it is no longer needed.
       String field = "";
       int emailUpdatesSchedule = teamMember.getEmailUpdatesSchedule();
-      if (emailUpdatesSchedule == TeamMember.EMAIL_OFTEN) {
-        field = "schedule_often";
-      } else if (emailUpdatesSchedule == TeamMember.EMAIL_DAILY) {
-        field = "schedule_daily";
-      } else if (emailUpdatesSchedule == TeamMember.EMAIL_WEEKLY) {
-        field = "schedule_weekly";
-      } else if (emailUpdatesSchedule == TeamMember.EMAIL_MONTHLY) {
-        field = "schedule_monthly";
+      if (emailUpdatesSchedule > 0) {
+        if (emailUpdatesSchedule == TeamMember.EMAIL_OFTEN) {
+          field = "schedule_often";
+        } else if (emailUpdatesSchedule == TeamMember.EMAIL_DAILY) {
+          field = "schedule_daily";
+        } else if (emailUpdatesSchedule == TeamMember.EMAIL_WEEKLY) {
+          field = "schedule_weekly";
+        } else if (emailUpdatesSchedule == TeamMember.EMAIL_MONTHLY) {
+          field = "schedule_monthly";
+        }
+        i = 0;
+        pst = db.prepareStatement(
+            "DELETE FROM email_updates_queue " +
+                "WHERE enteredby = ? AND " + field + " = ? ");
+        pst.setInt(++i, teamMember.getUserId());
+        pst.setBoolean(++i, true);
+        pst.executeUpdate();
+        pst.close();
       }
-      i = 0;
-      pst = db.prepareStatement("DELETE FROM email_updates_queue WHERE enteredby = ? AND " + field + " = ? ");
-      pst.setInt(++i, teamMember.getUserId());
-      pst.setBoolean(++i, true);
-      pst.executeUpdate();
-      pst.close();
     }
   }
 }

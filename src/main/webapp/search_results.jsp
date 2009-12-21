@@ -216,16 +216,15 @@ for (int i = searchBeanInfo.getCurrentOffset() ; hits != null && i < searchBeanI
       <ccp:evaluate if="<%= issueType %>">discussion topic</ccp:evaluate>
       <ccp:evaluate if="<%= issueReplyType %>">discussion reply</ccp:evaluate>
       <ccp:evaluate if="<%= wikiType %>">wiki</ccp:evaluate>
-      <ccp:evaluate if="<%= newsType %>">blog</ccp:evaluate>
       <ccp:evaluate if="<%= projectType %>">project</ccp:evaluate>
       <ccp:evaluate if="<%= outlineType %>">plan</ccp:evaluate>
       <ccp:evaluate if="<%= listCategoryType %>">list</ccp:evaluate>
       <ccp:evaluate if="<%= listType %>">list item</ccp:evaluate>
       <ccp:evaluate if="<%= ticketType %>">ticket</ccp:evaluate>
-
       <ccp:evaluate if="<%= newsType %>">
-        <ccp:evaluate if="<%= newsStatusDraft  %>">(draft)</ccp:evaluate>
-        <ccp:evaluate if="<%= newsStatusUnapproved %>">(unapproved)</ccp:evaluate>
+        blog
+        <ccp:evaluate if="<%= newsStatusDraft %>">(DRAFT)</ccp:evaluate>
+        <ccp:evaluate if="<%= newsStatusUnapproved %>">(FOR REVIEW)</ccp:evaluate>
       </ccp:evaluate>
       <ccp:evaluate if="<%= adsType %>">ads</ccp:evaluate>
       <ccp:evaluate if="<%= classifiedsType %>">classifieds</ccp:evaluate>

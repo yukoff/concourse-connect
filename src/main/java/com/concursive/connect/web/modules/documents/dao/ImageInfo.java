@@ -61,12 +61,14 @@ public class ImageInfo {
   private String filename = null;
   private int width = 0;
   private int height = 0;
+  private double version = 0;
 
   public ImageInfo(ResultSet rs) throws SQLException {
     filename = rs.getString("client_filename");
     String serverFilename = rs.getString("filename");
     width = rs.getInt("image_width");
     height = rs.getInt("image_height");
+    version = rs.getDouble("version");
     if (serverFilename.endsWith("TH")) {
       filename += "-TH";
     }
@@ -94,5 +96,13 @@ public class ImageInfo {
 
   public void setHeight(int height) {
     this.height = height;
+  }
+
+  public double getVersion() {
+    return version;
+  }
+
+  public void setVersion(double version) {
+    this.version = version;
   }
 }

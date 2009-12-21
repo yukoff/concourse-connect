@@ -157,11 +157,11 @@ public class WikiUtils {
     }
   }
 
-  public static HashMap buildImageInfo(Connection db, int projectId) throws SQLException {
-    HashMap images = new HashMap();
+  public static HashMap<String, ImageInfo> buildImageInfo(Connection db, int projectId) throws SQLException {
+    HashMap<String, ImageInfo> images = new HashMap<String, ImageInfo>();
     // Full size image
     PreparedStatement pst = db.prepareStatement(
-        "SELECT client_filename, filename, image_width, image_height " +
+        "SELECT client_filename, filename, image_width, image_height, version " +
             "FROM project_files " +
             "WHERE link_module_id = ? " +
             "AND link_item_id = ? ");
@@ -176,7 +176,7 @@ public class WikiUtils {
     pst.close();
     // Thumbnail
     pst = db.prepareStatement(
-        "SELECT client_filename, th.filename, th.image_width, th.image_height " +
+        "SELECT client_filename, th.filename, th.image_width, th.image_height, pf.version " +
             "FROM project_files pf, project_files_thumbnail th " +
             "WHERE (pf.item_id = th.item_id AND pf.version = th.version) " +
             "AND link_module_id = ? " +

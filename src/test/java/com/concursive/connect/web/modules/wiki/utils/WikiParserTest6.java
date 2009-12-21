@@ -51,6 +51,7 @@ import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -116,7 +117,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[Standard link]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink newWiki\" href=\"/modify/" + project.getUniqueId() + "/wiki/Standard+link\">Standard link</a></p>\n", html);
@@ -131,7 +132,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[Standard link|Renamed]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink newWiki\" href=\"/modify/" + project.getUniqueId() + "/wiki/Standard+link\">Renamed</a></p>\n", html);
@@ -147,7 +148,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|" + project.getId() + ":issue|" + ticket.getId() + "|Some Ticket]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         //============ WikiLink ============
         //project: 11714
@@ -176,7 +177,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|" + project.getId() + ":issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
@@ -194,7 +195,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|" + project.getUniqueId() + ":issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
@@ -212,7 +213,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|:issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
@@ -230,7 +231,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[|issue|" + ticket.getId() + "]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
@@ -248,7 +249,7 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         thisWiki.setContent("[[http://www.concursive.com?hello=0&world=1 test]]");
         thisWiki.setProjectId(project.getId());
         // Parse it
-        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap(), user.getId(), false, "");
+        WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), user.getId(), false, "");
         String html = WikiToHTMLUtils.getHTML(wikiContext, db);
         assertEquals(
             "<p><a class=\"wikiLink external\" target=\"_blank\" href=\"http://www.concursive.com?hello=0&world=1\">test</a></p>\n", html);

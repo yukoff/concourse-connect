@@ -50,6 +50,7 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 
 import java.util.HashMap;
 
@@ -107,7 +108,7 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
     Wiki wiki = new Wiki();
     wiki.setContent(wikiSample);
     // Parse it
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, false, "");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap<String, ImageInfo>(), -1, false, "");
     String html = WikiToHTMLUtils.getHTML(wikiContext, null);
     assertEquals(htmlSample, html);
   }

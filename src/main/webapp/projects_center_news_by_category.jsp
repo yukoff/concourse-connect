@@ -99,10 +99,10 @@
         <td valign="top">
           <a href="javascript:popURL('<%= ctx %>/show/<%= project.getUniqueId() %>/post/<%= thisArticle.getId() %>?popup=true','Article','600','400','yes','yes');"><%= toHtml(thisArticle.getSubject()) %></a>
           <ccp:evaluate if="<%= hasText(thisArticle.getPortalKey()) %>"><em><%= toHtml(thisArticle.getPortalKey()) %></em></ccp:evaluate>
-          <font color="red">
-          <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.DRAFT %>"><ccp:label name="projectsCenterNews.byArticle.draft">(Draft)</ccp:label></ccp:evaluate>
-          <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.UNAPPROVED %>"><ccp:label name="projectsCenterNews.byArticle.unapproved">(Unapproved)</ccp:label></ccp:evaluate>
-          </font>
+          <div class="portlet-message-alert">
+            <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.DRAFT %>">DRAFT</ccp:evaluate>
+            <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.UNAPPROVED %>">FOR REVIEW</ccp:evaluate>
+          </div>
         </td>
       </tr>
     <%

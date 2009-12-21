@@ -121,7 +121,7 @@ public class SaveProjectAddEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] added [[|" + project.getId() + ":profile||Concursive Test]]", 
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] created the profile [[|" + project.getId() + ":profile||Concursive Test]]", 
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

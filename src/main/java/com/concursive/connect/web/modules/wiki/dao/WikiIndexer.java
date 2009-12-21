@@ -56,6 +56,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -120,7 +121,7 @@ public class WikiIndexer implements Indexer {
     // use the project's general access to speedup guest projects
     Project project = ProjectUtils.loadProject(wiki.getProjectId());
     // Use the wiki context
-    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap(), -1, false, "");
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap<String, ImageInfo>(), -1, false, "");
     // add the document
     Document document = new Document();
     document.add(new Field("type", "wiki", Field.Store.YES, Field.Index.UN_TOKENIZED));

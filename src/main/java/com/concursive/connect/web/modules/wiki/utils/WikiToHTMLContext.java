@@ -50,6 +50,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.dao.CustomForm;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -64,7 +65,7 @@ public class WikiToHTMLContext {
 
   // properties used for parsing a wiki
   private Wiki wiki;
-  private HashMap imageList;
+  private HashMap<String, ImageInfo> imageList;
   private LinkedHashMap<String, String> headerAnchors = new LinkedHashMap<String, String>();
   private int userId;
   private int sectionIdCount = 0;
@@ -89,7 +90,7 @@ public class WikiToHTMLContext {
    * @param editMode
    * @param serverUrl
    */
-  public WikiToHTMLContext(Wiki wiki, HashMap imageList, int userId, boolean editMode, String serverUrl) {
+  public WikiToHTMLContext(Wiki wiki, HashMap<String, ImageInfo> imageList, int userId, boolean editMode, String serverUrl) {
     this.wiki = wiki;
     this.imageList = imageList;
     this.userId = userId;
@@ -99,7 +100,7 @@ public class WikiToHTMLContext {
 
   public WikiToHTMLContext(int userId, String serverUrl) {
     this.wiki = null;
-    this.imageList = new HashMap();
+    this.imageList = new HashMap<String, ImageInfo>();
     this.userId = userId;
     this.editMode = false;
     this.serverUrl = serverUrl;
@@ -113,11 +114,11 @@ public class WikiToHTMLContext {
     this.wiki = wiki;
   }
 
-  public HashMap getImageList() {
+  public HashMap<String, ImageInfo> getImageList() {
     return imageList;
   }
 
-  public void setImageList(HashMap imageList) {
+  public void setImageList(HashMap<String, ImageInfo> imageList) {
     this.imageList = imageList;
   }
 

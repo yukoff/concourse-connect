@@ -112,48 +112,42 @@
     <fieldset id="<ccp:label name="projectsCenterNews.add.update">Update Post</ccp:label>">
        <legend><ccp:label name="projectsCenterNews.add.update">Update Post</ccp:label></legend>
   </ccp:evaluate>
-    <fieldset id="status">
-       <legend><ccp:label name="projectsCenterNews.add.status">Status</ccp:label></legend>
-       <label for="draft"><input type="radio" name="status" id="draft" value="-1" <%= (blog.getStatus() == -1 ? "checked" : "") %> class="radio" />
-         <ccp:label name="projectsCenterNews.add.status.draft">Draft</ccp:label></label>
-       <label for="unapproved"><input type="radio" name="status" id="unapproved" value="1" <%= (blog.getStatus() == 1 ? "checked" : "") %> class="radio" />
-         <ccp:label name="projectsCenterNews.add.status.unapproved">Unapproved</ccp:label></label>
-       <label for="published"><input type="radio" name="status" id="published" value="2" <%= (blog.getStatus() == 2 ? "checked" : "") %> class="radio" />
-         <ccp:label name="projectsCenterNews.add.status.published">Published</ccp:label></label>
-       </fieldset>
-       <label for="subject"><ccp:label name="projectsCenterNews.add.subject">Subject</ccp:label> <span class="required">*</span></label>
-       <%= showAttribute(request, "subjectError") %>
-       <input type="text" name="subject" id="subject" value="<%= toHtmlValue(blog.getSubject()) %>" />
-       <span class="characterCounter">255 characters max</span>
-       <label for="intro"><ccp:label name="projectsCenterNews.add.summaryOrIntroduction">Summary or Introduction</ccp:label></label>
-       <textarea id="intro" name="intro"><%= toString(blog.getIntro()) %></textarea>
-       <ccp:label name="projectsCenterNews.add.body">Body</ccp:label>
-       <textarea rows="20" id="message" name="message" class="height300"><%= toString(blog.getMessage()) %></textarea>
+    <label for="subject"><ccp:label name="projectsCenterNews.add.subject">Subject</ccp:label> <span class="required">*</span></label>
+    <%= showAttribute(request, "subjectError") %>
+    <input type="text" name="subject" id="subject" value="<%= toHtmlValue(blog.getSubject()) %>" />
+    <span class="characterCounter">255 characters max</span>
+    <label for="intro"><ccp:label name="projectsCenterNews.add.summaryOrIntroduction">Summary or Introduction</ccp:label></label>
+    <textarea id="intro" name="intro"><%= toString(blog.getIntro()) %></textarea>
+    <ccp:label name="projectsCenterNews.add.body">Body</ccp:label>
+    <textarea rows="20" id="message" name="message" class="height300"><%= toString(blog.getMessage()) %></textarea>
 
-       <fieldset>
-         <legend><ccp:label name="projectsCenterNews.add.startDate">Start Date/Time</ccp:label></legend>
-         <%= showAttribute(request, "startDateError") %>
-         <input type="text" name="startDate" id="startDate" value="<ccp:tz timestamp="<%= blog.getStartDate() %>" dateOnly="true"/>">
-         <a href="javascript:popCalendar('inputForm', 'startDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
-         <ccp:label name="projectsCenterNews.add.at">at</ccp:label>
-         <ccp:timeSelect baseName="startDate" value="<%= blog.getStartDate() %>" timeZone="<%= User.getTimeZone() %>"/>
-         <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
-       </fieldset>
+    <fieldset>
+      <legend><ccp:label name="projectsCenterNews.add.startDate">Start Date/Time</ccp:label></legend>
+      <%= showAttribute(request, "startDateError") %>
+      <input type="text" name="startDate" id="startDate" value="<ccp:tz timestamp="<%= blog.getStartDate() %>" dateOnly="true"/>">
+      <a href="javascript:popCalendar('inputForm', 'startDate', '<%= User.getLocale().getLanguage() %>', '<%= User.getLocale().getCountry() %>');"><img src="<%= ctx %>/images/icons/stock_form-date-field-16.gif" border="0" align="absmiddle"></a>
+      <ccp:label name="projectsCenterNews.add.at">at</ccp:label>
+      <ccp:timeSelect baseName="startDate" value="<%= blog.getStartDate() %>" timeZone="<%= User.getTimeZone() %>"/>
+      <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
+    </fieldset>
 
     <label for="categoryId"><ccp:label name="projectsCenterNews.add.category">Category</ccp:label></label>
     <span>
       <%= showAttribute(request, "categoryIdError") %>
       <%= blogCategoryList.getHtmlSelect("categoryId", blog.getCategoryId()) %>
     </span>
-  <ccp:permission name="project-news-add">
-    <a name="lists" id="lists" href="javascript:popURL('<%= ctx %>/BlogActions.do?command=EditCategoryList&pid=<%= project.getId() %>&form=inputForm&field=categoryId&previousId=' + document.inputForm.categoryId.options[document.inputForm.categoryId.selectedIndex].value + '&popup=true','EditList','600','300','yes','yes');"><ccp:label name="projectsCenterNews.add.editList">Add/Modify Categories</ccp:label></a>
-  </ccp:permission>
+    <ccp:permission name="project-news-add">
+      <a name="lists" id="lists" href="javascript:popURL('<%= ctx %>/BlogActions.do?command=EditCategoryList&pid=<%= project.getId() %>&form=inputForm&field=categoryId&previousId=' + document.inputForm.categoryId.options[document.inputForm.categoryId.selectedIndex].value + '&popup=true','EditList','600','300','yes','yes');"><ccp:label name="projectsCenterNews.add.editList">Add/Modify Categories</ccp:label></a>
+    </ccp:permission>
     <span>
       <label for="priorityId"><input type="checkbox" name="priorityId" id="priorityId" value="5" class="checkbox" <ccp:evaluate if="<%= blog.getPriorityId() < 10 %>" >checked</ccp:evaluate> />
       Always keep this post at the top of all other posts</label>
     </span>
   </fieldset>
-  <input type="submit" name="save" value="<ccp:label name="button.save">Save</ccp:label>" class="submit" />
+  <%-- These names are updated in the BlogPost bean --%>
+  <input type="submit" name="status" value="Publish" class="submit" />
+  <input type="submit" name="status" value="Save as Draft" class="submit" />
+  <input type="submit" name="status" value="Save for Review" class="submit" />
   <c:choose>
     <c:when test="${'true' eq param.popup || 'true' eq popup}">
       <input type="button" value="Cancel" class="cancel" id="panelCloseButton">

@@ -992,6 +992,17 @@
       <title>Search results by promotions</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>SearchResultsByDocumentsPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.documents.portlets.searchResultsByDocuments.SearchResultsByDocumentsPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search results by documents</title>
+    </portlet-info>
+  </portlet>
   <custom-portlet-mode>
     <description>Provides administration functions</description>
     <name>config</name>

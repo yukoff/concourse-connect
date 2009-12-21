@@ -5137,6 +5137,10 @@
             <title>Related Promotions</title>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
       <row>

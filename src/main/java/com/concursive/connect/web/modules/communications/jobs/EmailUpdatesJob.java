@@ -118,6 +118,10 @@ public class EmailUpdatesJob implements StatefulJob {
             Timestamp min = queue.getProcessed();
             Timestamp max = new Timestamp(now.getTimeInMillis());
 
+            if (min == null) {
+              //set the min value to be queue's entered date to restrict picking up all the records in the system
+              min = queue.getEntered();
+            }
             // Determine the message to be sent
             String message = EmailUpdatesUtils.getEmailHTMLMessage(schedulerContext, db, queue, min, max);
 

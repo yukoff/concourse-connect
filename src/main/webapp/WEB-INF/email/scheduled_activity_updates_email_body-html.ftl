@@ -13,12 +13,12 @@
             <h2>${category?html}</h2>
             <#list categories[category]?keys as date>
               <h3>${date}</h3>
-              <ol>
-                  <#assign activities = categories[category][date]>
-                  <#list activities as activity>
-                    <li>${activity}</li>
-                  </#list>
-              </ol>
+              <ul>
+                <#assign activities = categories[category][date]>
+                <#list activities as activity>
+                  <li>${activity}</li>
+                </#list>
+              </ul>
             </#list>
           </#list>
         </td>

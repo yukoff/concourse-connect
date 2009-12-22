@@ -5321,6 +5321,10 @@
             <title>Related Promotions</title>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -5461,6 +5465,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Products</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Products</category>
             <limit>5</limit>
           </portlet>
@@ -5607,6 +5616,11 @@
             <category>Solutions</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>Solutions</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -5747,6 +5761,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Partners</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Partners</category>
             <limit>5</limit>
           </portlet>
@@ -5893,6 +5912,11 @@
             <category>Businesses</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>Businesses</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -6033,6 +6057,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Organizations</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Organizations</category>
             <limit>5</limit>
           </portlet>
@@ -6181,6 +6210,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Committees</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Committees</category>
             <limit>5</limit>
           </portlet>
@@ -6333,6 +6367,11 @@
             <category>Departments</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>Departments</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -6471,6 +6510,11 @@
             <category>Sponsors</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>Sponsors</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -6606,6 +6650,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Groups</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Groups</category>
             <limit>5</limit>
           </portlet>
@@ -6761,6 +6810,11 @@
             <category>People</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>People</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -6901,6 +6955,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Events</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Events</category>
             <limit>5</limit>
           </portlet>
@@ -7062,6 +7121,11 @@
             <category>Places</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>Places</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -7220,6 +7284,11 @@
             <category>Neighborhoods</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>Neighborhoods</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -7363,6 +7432,11 @@
             <category>Ideas</category>
             <limit>5</limit>
           </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
+            <category>Ideas</category>
+            <limit>5</limit>
+          </portlet>
         </column>
       </row>
     </page>
@@ -7498,6 +7572,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Projects</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Projects</category>
             <limit>5</limit>
           </portlet>
@@ -7656,6 +7735,11 @@
           </portlet>
           <portlet name="SearchResultsByPromotionPortlet" class="basic-list " isSensitive="true">
             <title>Related Promotions</title>
+            <category>Clusters</category>
+            <limit>5</limit>
+          </portlet>
+          <portlet name="SearchResultsByDocumentsPortlet" class="basic-list " isSensitive="true">
+            <title>Related Documents</title>
             <category>Clusters</category>
             <limit>5</limit>
           </portlet>

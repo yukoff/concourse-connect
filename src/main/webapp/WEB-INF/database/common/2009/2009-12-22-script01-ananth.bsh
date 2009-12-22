@@ -1,0 +1,42 @@
+/*
+  This script populates WEEKLY email updates queue entries for users who do not have any queue setup
+*/
+
+import java.sql.*;
+import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueue;
+import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
+import com.concursive.connect.web.modules.members.dao.*;
+import com.concursive.connect.web.modules.login.dao.*;
+import com.concursive.connect.Constants;
+
+UserList users = new UserList();
+users.setValidUser(Constants.TRUE);
+users.buildList(db);
+
+for (user: users) {
+  if (!EmailUpdatesUtils.hasMemberQueue(db, user.getId(), TeamMember.EMAIL_WEEKLY)) {
+    //User does not have a queue for WEEKLY updates, so populate one...
+    System.out.println("User <" + user.getId() + "> does not have a WEEKLY queue...populating one.");
+    EmailUpdatesQueue queue = new EmailUpdatesQueue();
+    queue.setEnteredBy(user.getId());
+    queue.setModifiedBy(user.getId());
+    queue.setEnabled(true);
+    queue.setType(TeamMember.EMAIL_WEEKLY);
+    queue.insert(db);
+    
+    PreparedStatement pst = db.prepareStatement(
+        "UPDATE project_team SET email_updates_schedule = ? " +
+        "WHERE team_id IN (" +
+           "SELECT team_id " +
+           "FROM project_team " +
+           "WHERE user_id = ? " +
+           "AND status IS NULL " +
+           "AND (email_updates_schedule IS NULL OR email_updates_schedule = ?)) ");
+    pst.setInt(1, TeamMember.EMAIL_WEEKLY);
+    pst.setInt(2, user.getId());
+    pst.setInt(3, TeamMember.EMAIL_NEVER);
+    pst.executeUpdate();
+    pst.close();
+  }
+}
+System.out.println("Done...");

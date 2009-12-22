@@ -206,13 +206,39 @@ public class EmailUpdatesUtils {
     return emailBodyTextWriter.toString();
   }
 
+  /**
+   * Retruns 'true' if the member has any email updates queues configured
+   *
+   * @param db
+   * @param memberId
+   * @return
+   * @throws SQLException
+   */
+  public static boolean hasMemberQueue(Connection db, int memberId) throws SQLException {
+    return EmailUpdatesUtils.hasMemberQueue(db, memberId, -1);
+  }
+
+  /**
+   * Returns 'true' if the member has any particular type of email updates queues configured
+   * 
+   * @param db
+   * @param memberId
+   * @param queueType
+   * @return
+   * @throws SQLException
+   */
+  public static boolean hasMemberQueue(Connection db, int memberId, int queueType) throws SQLException {
+    EmailUpdatesQueueList queues = new EmailUpdatesQueueList();
+    queues.setEnteredBy(memberId);
+    queues.setType(queueType);
+    queues.buildList(db);
+
+    return (queues.size() > 0);
+  }
+
   public static void saveQueue(Connection db, TeamMember teamMember) throws SQLException {
     if (teamMember.getEmailUpdatesSchedule() != TeamMember.EMAIL_NEVER) {
-      EmailUpdatesQueueList queues = new EmailUpdatesQueueList();
-      queues.setEnteredBy(teamMember.getUserId());
-      queues.setType(teamMember.getEmailUpdatesSchedule());
-      queues.buildList(db);
-      if (queues.size() == 0) {
+      if (!EmailUpdatesUtils.hasMemberQueue(db, teamMember.getUserId(), teamMember.getEmailUpdatesSchedule())) {
         //Populate specified email update queue if it does not exist for this user. If the queue type specified
         //already exists then no need to take any action
         EmailUpdatesQueue queue = new EmailUpdatesQueue();

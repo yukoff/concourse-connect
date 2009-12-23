@@ -479,4 +479,13 @@ function attachEvents(panel) {
   }
 }
 
+function submitPanelOnEnter() {
+  if (window.event && window.event.keyCode == 13) {
+    YAHOO.util.Event.preventDefault(window.event);
+    panel.submit();
+    return false;
+  }
+  return true;
+}
+
 YAHOO.util.Event.onDOMReady(attachPanel);

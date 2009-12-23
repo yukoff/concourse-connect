@@ -96,7 +96,7 @@
       <c:if test="${param.allowCaption == 'true'}">
         <p>
           <label><ccp:label name="fileAttach.setCaption">Enter a caption to be displayed</ccp:label></label>
-          <input type="text" name="comment" id="comment" value="<%= toHtmlValue(request.getParameter("caption")) %>" maxlength="500" />
+          <input type="text" name="comment" id="comment" value="<%= toHtmlValue(request.getParameter("caption")) %>" maxlength="500" onKeyPress="return submitPanelOnEnter();" />
           <span class="characterCounter">500 characters max</span>
         </p>
       </c:if>

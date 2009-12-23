@@ -89,20 +89,22 @@
       <fieldset id="Join">
         <legend><ccp:label name="project.join">Join</ccp:label></legend>
           <div>
-            <c:when test="${project.profile}">
-              <p>
-                Once you are a friend, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
-                You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
-              </p>
-              <label for="notification" style="display:inline">Do you want to opt-in to receive email messages from this friend?</label><br />
-            </c:when>
-            <c:otherwise>
-              <p>
-                Once you are a member, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
-                You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
-              </p>
-              <label for="notification" style="display:inline">Do you want to opt-in to receive email messages from the managers of this profile?</label><br />
-            </c:otherwise>
+            <c:choose>
+              <c:when test="${project.profile}">
+                <p>
+                  Once you are a friend, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
+                  You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
+                </p>
+                <label for="notification" style="display:inline">Do you want to opt-in to receive broadcast email messages from this friend?</label><br />
+              </c:when>
+              <c:otherwise>
+                <p>
+                  Once you are a member, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
+                  You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
+                </p>
+                <label for="notification" style="display:inline">Do you want to opt-in to receive broadcast email messages from the managers of this profile?</label><br />
+              </c:otherwise>
+            </c:choose>
             <input type="radio" name="notification" id="notification" value="yes" checked="true">Yes
             <input type="radio" name="notification" id="notification" value="no">No <br /><br />
             <label for="notification" style="display:inline">Do you want to opt-in to receive an automated email digest of activity for this profile? Choose how often would you like to receive the updates:</label><br />

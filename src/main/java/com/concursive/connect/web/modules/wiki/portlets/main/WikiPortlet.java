@@ -95,7 +95,7 @@ public class WikiPortlet extends AbstractPortletModule {
   public static final String LOCK_ACTION = "lock";
   public static final String UNLOCK_ACTION = "unlock";
   public static final String EXPORT_ACTION = "export";
-  //public static final String DELETE_ACTION = "delete";
+  public static final String DELETE_ACTION = "delete";
   //public static final String CLONE_ACTION = "clone";
   public static final String SAVE_TAGS_ACTION = "saveTags";
   public static final String SEARCH_ACTION = "search";
@@ -133,6 +133,7 @@ public class WikiPortlet extends AbstractPortletModule {
     actions.put(SAVE_CONFIGURE_LISTS_ACTION, new SaveWikiConfigureListsAction());
     actions.put(LOCK_ACTION, new LockWikiAction());
     actions.put(UNLOCK_ACTION, new UnlockWikiAction());
+    actions.put(DELETE_ACTION, new DeleteWikiAction());
     actions.put(EXPORT_ACTION, new ExportAction());
     actions.put(SAVE_TAGS_ACTION, new SaveTagsAction());
     //actions.put(DELETE_ACTION, new DeleteWikiAction());

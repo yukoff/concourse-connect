@@ -121,6 +121,7 @@ INSERT INTO lookup_project_permission (group_id, category_id, level, default_rol
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 10, 20, 4, 'project-wiki-add', 'Create and modify public content');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 10, 22, 3, 'project-wiki-locked-edit', 'Create and modify locked content');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 10, 30, 2, 'project-wiki-admin', 'Administrate the wiki');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 10, 40, 2, 'project-wiki-delete', 'Delete wiki');
 
 INSERT INTO lookup_project_permission_category (group_id, level, description) VALUES (1, 23, 'Dashboard');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 11, 10, 5, 'project-dashboard-view', 'View dashboard');

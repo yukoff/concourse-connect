@@ -43,49 +43,68 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
+package com.concursive.connect.web.modules.wiki.portlets.main;
 
-package com.concursive.connect.config;
+import com.concursive.commons.web.mvc.beans.GenericBean;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.wiki.dao.WikiList;
+import com.concursive.connect.web.portal.IPortletAction;
+import static com.concursive.connect.web.portal.PortalUtils.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
+import java.sql.Connection;
 
 /**
- * Class for reading the application version information; APP_VERSION triggers
- * CSS and Javascript updates; VERSION and DB_VERSION trigger application
- * upgrades
+ * Action for deleting a wiki entry
  *
- * @author matt rajkowski
- * @created August 30, 2004
+ * @author Kailash Bhoopalam
+ * @created December 23, 2009
  */
-public class ApplicationVersion {
-  public final static String TITLE = "ConcourseConnect";
-  public final static String VERSION = "2.0 milestone 4 (2009-12-23)";
-  public final static String APP_VERSION = "2009-12-23";
-  public final static String DB_VERSION = "2009-12-23";
+public class DeleteWikiAction implements IPortletAction {
 
+  // Logger
+  private static Log LOG = LogFactory.getLog(DeleteWikiAction.class);
 
-  /**
-   * Gets the outOfDate attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The outOfDate value
-   */
-  public static boolean isOutOfDate(ApplicationPrefs prefs) {
-    String installedVersion = getInstalledVersion(prefs);
-    return !"true".equals(prefs.get("MANUAL_UPGRADE")) && !installedVersion.equals(ApplicationVersion.VERSION);
-  }
+  public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
 
-
-  /**
-   * Gets the installedVersion attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The installedVersion value
-   */
-  public static String getInstalledVersion(ApplicationPrefs prefs) {
-    String installedVersion = prefs.get("VERSION");
-    if (installedVersion == null || "".equals(installedVersion)) {
-      return "2.1.3 (2004-09-13)";
-    } else {
-      return installedVersion;
+    // Determine the project container to use
+    Project project = findProject(request);
+    if (project == null) {
+      throw new Exception("Project is null");
     }
+
+    // Check the user's permissions
+    User user = getUser(request);
+    if (!ProjectUtils.hasAccess(project.getId(), user, "project-wiki-delete")) {
+      throw new PortletException("Unauthorized to admin in this project");
+    }
+    // Parameters
+    String subject = getPageView(request);
+
+    // Find the record to update
+    Connection db = getConnection(request);
+    //Load the wiki page
+    Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
+    if (!wiki.getReadOnly()) {
+      wiki.delete(db);
+    }
+
+    // Redirect to another view
+    if ("true".equals(request.getParameter("popup"))) {
+      String ctx = request.getContextPath();
+      response.sendRedirect(ctx + "/projects_center_panel_refresh.jsp");
+    } else {
+      response.setRenderParameter("portlet-action", "show");
+      response.setRenderParameter("portlet-object", "wiki-index");
+    }
+    return null;
   }
 }
-

@@ -97,14 +97,15 @@ public class DeleteWikiAction implements IPortletAction {
       wiki.delete(db);
     }
 
-    // Redirect to another view
-    if ("true".equals(request.getParameter("popup"))) {
-      String ctx = request.getContextPath();
-      response.sendRedirect(ctx + "/projects_center_panel_refresh.jsp");
-    } else {
-      response.setRenderParameter("portlet-action", "show");
-      response.setRenderParameter("portlet-object", "wiki-index");
-    }
+    // Index this wiki
+    indexDeleteItem(request, wiki);
+    
+    // Send to workflow
+    processDeleteHook(request, wiki);
+
+    response.setRenderParameter("portlet-action", "show");
+    response.setRenderParameter("portlet-object", "wiki-index");
+
     return null;
   }
 }

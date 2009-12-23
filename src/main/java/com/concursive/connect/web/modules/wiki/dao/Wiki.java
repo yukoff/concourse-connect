@@ -576,6 +576,14 @@ public class Wiki extends GenericBean {
       pst.execute();
       pst.close();
 
+      // Delete the reference data
+      pst = db.prepareStatement(
+          "DELETE FROM project_wiki_ref " +
+              "WHERE wiki_id = ? ");
+      pst.setInt(1, id);
+      pst.execute();
+      pst.close();
+
       // Delete the wiki
       pst = db.prepareStatement(
           "DELETE FROM project_wiki " +

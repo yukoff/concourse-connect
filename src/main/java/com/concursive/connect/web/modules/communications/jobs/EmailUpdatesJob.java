@@ -67,6 +67,9 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import freemarker.template.Configuration;
+import javax.servlet.ServletContext;
+
 /**
  * Job to process the scheduled email udpates queue and send emails
  *
@@ -91,6 +94,7 @@ public class EmailUpdatesJob implements StatefulJob {
       db = SchedulerUtils.getConnection(schedulerContext);
       ApplicationPrefs prefs = (ApplicationPrefs) schedulerContext.get(
           "ApplicationPrefs");
+      ServletContext servletContext = (ServletContext) schedulerContext.get("ServletContext");
       LOG.info("EmailUpdatesJob triggered...");
       while (true) {
         //Retrieve retrieve the next item from the email_updates_queue that is scheduled for now.
@@ -122,8 +126,10 @@ public class EmailUpdatesJob implements StatefulJob {
               //set the min value to be queue's entered date to restrict picking up all the records in the system
               min = queue.getEntered();
             }
+
+            Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(servletContext);
             // Determine the message to be sent
-            String message = EmailUpdatesUtils.getEmailHTMLMessage(schedulerContext, db, queue, min, max);
+            String message = EmailUpdatesUtils.getEmailHTMLMessage(db, prefs, configuration, queue, min, max);
 
             if (message != null) {
               Calendar today = Calendar.getInstance();

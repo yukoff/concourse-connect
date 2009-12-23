@@ -63,17 +63,15 @@ import com.concursive.connect.web.utils.PagedListInfo;
 import freemarker.template.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.quartz.SchedulerContext;
 import org.w3c.dom.Element;
 
-import javax.servlet.ServletContext;
 import java.io.StringWriter;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Utility methods used by the EmailUpdatesJob
@@ -85,12 +83,8 @@ public class EmailUpdatesUtils {
 
   private static Log LOG = LogFactory.getLog(EmailUpdatesUtils.class);
 
-  public static String getEmailHTMLMessage(SchedulerContext context, Connection db, EmailUpdatesQueue queue,
+  public static String getEmailHTMLMessage(Connection db, ApplicationPrefs prefs, Configuration configuration, EmailUpdatesQueue queue,
                                            Timestamp min, Timestamp max) throws Exception {
-    ApplicationPrefs prefs = (ApplicationPrefs) context.get(
-        "ApplicationPrefs");
-    ServletContext servletContext = (ServletContext) context.get("ServletContext");
-
     // User who needs to be sent an email
     User user = UserUtils.loadUser(queue.getEnteredBy());
 
@@ -119,7 +113,6 @@ public class EmailUpdatesUtils {
     }
 
     // Populate the message template
-    Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(servletContext);
     freemarker.template.Template template = configuration.getTemplate("scheduled_activity_updates_email_body-html.ftl");
     Map bodyMappings = new HashMap();
     bodyMappings.put("title", title);

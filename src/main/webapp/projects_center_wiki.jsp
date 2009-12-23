@@ -116,7 +116,7 @@
             <%= toHtml(project.getTitle()) %> Home
           </ccp:evaluate>
         </h1>
-        <ccp:permission if="any" name="project-wiki-add,project-wiki-admin">
+        <ccp:permission if="any" name="project-wiki-add,project-wiki-admin,project-wiki-locked-edit,project-wiki-delete">
           <div class="actions">
               <%-- WYSIWYG URL --%>
             <portlet:renderURL var="wysiwygUrl" portletMode="view">
@@ -155,7 +155,7 @@
                 </ccp:permission>
               </ccp:evaluate>
             </ccp:permission>
-            <ccp:permission if="any" name="project-wiki-add,project-wiki-admin">
+            <ccp:permission if="any" name="project-wiki-add,project-wiki-admin,project-wiki-delete">
               <ccp:evaluate if="<%= wiki.getId() > -1 %>">
                 <portlet:renderURL var="exportUrl">
                   <portlet:param name="portlet-action" value="export"/>

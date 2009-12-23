@@ -47,6 +47,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
+<%@ page import="com.concursive.connect.web.modules.members.dao.TeamMember" %>
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/><jsp:useBean id="register" class="com.concursive.connect.web.modules.register.beans.RegisterBean" scope="request"/><%@ include file="initPage.jsp" %>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request" />
 <div class="portletWrapper projectAskToBecomeMemberContainer">
@@ -85,6 +86,33 @@
           </ol>
         </div>
       </fieldset>
+      <fieldset id="Join">
+        <legend><ccp:label name="project.join">Join</ccp:label></legend>
+          <div>
+            <c:when test="${project.profile}">
+              <p>
+                Once you are a friend, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
+                You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
+              </p>
+              <label for="notification" style="display:inline">Do you want to opt-in to receive email messages from this friend?</label><br />
+            </c:when>
+            <c:otherwise>
+              <p>
+                Once you are a member, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
+                You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
+              </p>
+              <label for="notification" style="display:inline">Do you want to opt-in to receive email messages from the managers of this profile?</label><br />
+            </c:otherwise>
+            <input type="radio" name="notification" id="notification" value="yes" checked="true">Yes
+            <input type="radio" name="notification" id="notification" value="no">No <br /><br />
+            <label for="notification" style="display:inline">Do you want to opt-in to receive an automated email digest of activity for this profile? Choose how often would you like to receive the updates:</label><br />
+            <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_OFTEN %>"> Often (every few hours)
+            <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_DAILY %>" checked="true"> Daily
+            <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_WEEKLY %>"> Weekly
+            <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_MONTHLY %>"> Monthly
+            <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_NEVER %>"> Never
+          </div>
+      </fieldset>  
       <c:choose>
         <c:when test="${project.profile}">
           <p><c:out value="${project.title}"/> will confirm that you are friends.</p>

@@ -445,6 +445,7 @@ public final class ProjectManagementTeam extends GenericAction {
     String errorMessage = null;
     String projectIdStr = context.getRequest().getParameter("pid");
     boolean isNotify = "true".equals(context.getRequest().getParameter("notification"));
+    int emailUpdateSchedule = Integer.parseInt(context.getRequest().getParameter("emailNotification"));
     User user = getUser(context);
     Project targetProject = null;
     int projectId = -1;
@@ -494,6 +495,7 @@ public final class ProjectManagementTeam extends GenericAction {
           member.setEnteredBy(user.getId());
           member.setModifiedBy(user.getId());
           member.setNotification(isNotify);
+          member.setEmailUpdatesSchedule(emailUpdateSchedule);
           member.insert(db);
           processInsertHook(context, member);
 

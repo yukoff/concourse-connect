@@ -207,20 +207,20 @@
                     </a>
                   </ccp:evaluate>
                 </ccp:permission>
-		          <ccp:permission name="project-wiki-delete">
-		            <portlet:actionURL var="deleteUrl">
-                    <portlet:param name="portlet-object" value="wiki"/>
-                    <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
-                      <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
-                    </ccp:evaluate>
-   	                <portlet:param name="portlet-command" value="delete"/>
-		            </portlet:actionURL>
-                    <a href="javascript:confirmDelete('${deleteUrl}');" title="Delete Wiki">
-		              <img src="<%= ctx %>/images/icons/stock_delete-16.gif"
-		                   border="0"  height="16" width="16" 
-		                   alt="Delete wiki">
-		            </a>
-		          </ccp:permission>
+                <ccp:permission name="project-wiki-delete">
+                  <portlet:actionURL var="deleteUrl">
+                      <portlet:param name="portlet-object" value="wiki"/>
+                      <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
+                        <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
+                      </ccp:evaluate>
+                      <portlet:param name="portlet-command" value="delete"/>
+                  </portlet:actionURL>
+                      <a href="javascript:confirmDelete('${deleteUrl}');" title="Delete Wiki">
+                    <img src="<%= ctx %>/images/icons/stock_delete-16.gif"
+                         border="0"  height="16" width="16"
+                         alt="Delete wiki">
+                  </a>
+                </ccp:permission>
               </ccp:evaluate>
             </ccp:permission>
           </div>

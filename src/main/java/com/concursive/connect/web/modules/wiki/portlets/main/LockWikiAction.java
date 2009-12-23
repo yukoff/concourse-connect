@@ -87,7 +87,7 @@ public class LockWikiAction implements IPortletAction {
     }
 
     // Parameters
-    String subject = request.getParameter("subject");
+    String subject = getPageView(request);
 
     // Find the record to update
     Connection db = getConnection(request);

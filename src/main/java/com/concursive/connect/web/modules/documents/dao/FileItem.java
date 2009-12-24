@@ -1836,8 +1836,11 @@ public class FileItem extends GenericBean {
         String.valueOf(cal.get(Calendar.MILLISECOND)));
   }
 
+  public String getUrlName(String maxWidth, String maxHeight) {
+    return getUrlName(Integer.parseInt(maxWidth), Integer.parseInt(maxHeight));
+  }
+
   public String getUrlName(int maxWidth, int maxHeight) {
     return linkModuleId + "-" + linkItemId + "-" + id + "-" + maxWidth + "x" + maxHeight + "/" + StringUtils.toHtml(clientFilename);
   }
 }
-

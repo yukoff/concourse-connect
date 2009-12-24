@@ -99,8 +99,8 @@
     </c:when>
   </c:choose>
   <c:if test="${userId < 0 && canJoinFlag}">
-    <div class="portlet-msg-alert">
-      <ccp:label name="user.loginToJoin">Please sign in to become a member.</ccp:label>
+    <div class="portlet-message-alert">
+      You need to be logged in to become a member of this profile.
     </div>
   </c:if>
   <%-- Default the view to big images until changed to small images --%>
@@ -110,9 +110,12 @@
   <c:forEach items="${teamMemberMap}" var="role" varStatus="roleCounter">
     <c:if test="${!empty role.value}">
       <c:set var="outputItems" value="true"/>
-      <c:if test="${fn:length(role.value) > 8}">
+      <c:set var="imageSize" value="100" scope="request"/>
+      <c:if test="${fn:length(role.value) > 12}">
         <c:set var="listClass" value="sList"/>
+        <c:set var="imageSize" value="45" scope="request"/>
       </c:if>
+      <jsp:useBean id="imageSize" class="java.lang.String" scope="request"/>
         <div class="portlet-section-header">
           <h3><c:out value="${role.key.description}"/></h3>
         </div>
@@ -123,78 +126,71 @@
             <c:set var="profileProject" value="${teamMember.user.profileProject}" scope="request" />
             <jsp:useBean id="profileProject" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
             <li id="teamMember_${teamMember.id}">
-                <%-- the handle is used for dragging the item
-                <span id="teamMemberHandle_${teamMember.id}" class="projectCenterTeamMembersHandle">handle</span>
-                --%>
-                <c:if test="${profileProject.id > 0}"><a href="${ctx}/show/${profileProject.uniqueId}"></c:if>
-                  <%-- If no photo, show no photo text --%>
-                  <c:if test="${empty profileProject.logo}">
-                    <div class="pContainer">
-                      <div class="profileImageBackground">
-                        <c:choose>
-                          <c:when test="${!empty profileProject.category.logo}">
-                            <img src="${ctx}/image/<%= profileProject.getCategory().getLogo().getUrlName(100,100) %>" width="100" height="100" class="default-photo" />
-                          </c:when>
-                          <c:otherwise>
-                            <div class="noPhoto">
-                              <c:if test="${listClass eq 'dList'}">
-                                <p><span>no image</span></p>
-                              </c:if>
-                            </div>
-                          </c:otherwise>
-                        </c:choose>
-                      </div>
-                    </div>
-                  </c:if>
-                  <%-- show the main image --%>
-                  <c:if test="${!empty profileProject.logo}">
-                    <div class="profileImageContainer">
-                      <div class="profileImageBackground">
-                        <div class="profileImageContainer">
-                      		<img src="<%= ctx %>/show/${profileProject.uniqueId}/image/<%= profileProject.getLogo().getUrlName(100,100) %>" width="100" height="100" />
-                        </div>
-                      </div>
-                    </div>
-                  </c:if>
-                  <div class="portlet-section-footer">
-                    <div id="tooltip_${teamMember.id}" class="toolTip">
-                      <p><ccp:username id="${teamMember.userId}" idTag="teamMemberLink_${teamMember.id}" showLinkTitle="false"/></p>
-                      <c:if test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}"><p>(Needs Approval)</p></c:if>
-                      <c:if test="${teamMember.status == STATUS_PENDING}"><p>(Invitation Pending)</p></c:if>
-                      <c:if test="${teamMember.userId == project.owner}"><p>(Profile Owner)</p></c:if>
-                    </div>
-                    <c:if test="${profileProject.id > 0}"></a></c:if>
-                    <%-- prepare the drop-down menu to this specific user --%>
-                    <ccp:permission name="project-team-edit">
-                      <c:set var="count">${roleCounter.count}${teamMemberCounter.count}</c:set>
-                      <c:choose>
-                        <c:when test="${teamMember.status == STATUS_MAILERROR ||
-                                    teamMember.status == STATUS_PENDING ||
-                                    teamMember.status == STATUS_INVITING ||
-                                    teamMember.status == STATUS_REFUSED}">
-                          <c:set var="showResendInvitation">true</c:set>
-                        </c:when>
-                        <c:otherwise>
-                          <c:set var="showResendInvitation">false</c:set>
-                        </c:otherwise>
-                      </c:choose>
-                      <c:choose>
-                        <c:when test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}">
-                          <c:set var="needsApproval">true</c:set>
-                        </c:when>
-                        <c:otherwise>
-                          <c:set var="needsApproval">false</c:set>
-                        </c:otherwise>
-                      </c:choose>
-                    </ccp:permission>
-                </div>
-				        <ccp:permission name="project-team-edit">
-                  <div class="portlet-menu">
-                    <div id="select_${count}">
-                      <a href="javascript:displayMenu('select_${count}',${teamMember.userId},'${profileProject.uniqueId}',${showResendInvitation},${needsApproval},${teamMember.tools},${ownerId == teamMember.userId},${teamMember.roleId});">edit</a>
-                    </div>
+              <%-- If no photo, show no photo text --%>
+              <c:if test="${empty profileProject.logo}">
+                <div class="profileImageBackground">
+                  <div class="profileImageContainer">
+                    <c:choose>
+                      <c:when test="${!empty profileProject.category.logo}">
+                        <img src="${ctx}/image/<%= profileProject.getCategory().getLogo().getUrlName(imageSize,imageSize) %>" width="${imageSize}" height="${imageSize}" class="default-photo" />
+                      </c:when>
+                      <c:otherwise>
+                        <c:if test="${listClass eq 'dList'}">
+                          <div class="noPhoto">
+                            <p><span>no image</span></p>
+                          </div>
+                        </c:if>
+                      </c:otherwise>
+                    </c:choose>
                   </div>
-               </ccp:permission>
+                </div>
+              </c:if>
+              <%-- show the main image --%>
+              <c:if test="${!empty profileProject.logo}">
+                <div class="profileImageBackground">
+                  <div class="profileImageContainer">
+                    <img src="<%= ctx %>/show/${profileProject.uniqueId}/image/<%= profileProject.getLogo().getUrlName(imageSize,imageSize) %>" width="${imageSize}" height="${imageSize}" />
+                  </div>
+                </div>
+              </c:if>
+              <div class="portlet-section-footer">
+                <%-- prepare the drop-down menu to this specific user --%>
+                <ccp:permission name="project-team-edit">
+                  <c:set var="count">${roleCounter.count}${teamMemberCounter.count}</c:set>
+                  <c:choose>
+                    <c:when test="${teamMember.status == STATUS_MAILERROR ||
+                                teamMember.status == STATUS_PENDING ||
+                                teamMember.status == STATUS_INVITING ||
+                                teamMember.status == STATUS_REFUSED}">
+                      <c:set var="showResendInvitation">true</c:set>
+                    </c:when>
+                    <c:otherwise>
+                      <c:set var="showResendInvitation">false</c:set>
+                    </c:otherwise>
+                  </c:choose>
+                  <c:choose>
+                    <c:when test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}">
+                      <c:set var="needsApproval">true</c:set>
+                    </c:when>
+                    <c:otherwise>
+                      <c:set var="needsApproval">false</c:set>
+                    </c:otherwise>
+                  </c:choose>
+                </ccp:permission>
+              </div>
+				      <ccp:permission name="project-team-edit">
+                <div class="portlet-menu">
+                  <div id="select_${count}">
+                    <a href="javascript:displayMenu('select_${count}',${teamMember.userId},'${profileProject.uniqueId}',${showResendInvitation},${needsApproval},${teamMember.tools},${ownerId == teamMember.userId},${teamMember.roleId});">edit</a>
+                  </div>
+                </div>
+              </ccp:permission>
+              <div id="tooltip_${teamMember.id}" class="team-list-content">
+                <p><ccp:username id="${teamMember.userId}" idTag="teamMemberLink_${teamMember.id}" showLinkTitle="false"/></p>
+                <c:if test="${teamMember.status == STATUS_JOINED_NEEDS_APPROVAL}"><p>(Needs Approval)</p></c:if>
+                <c:if test="${teamMember.status == STATUS_PENDING}"><p>(Invitation Pending)</p></c:if>
+                <c:if test="${teamMember.userId == project.owner}"><p>(Profile Owner)</p></c:if>
+              </div>
             </li>
           </c:forEach>
         </ol>

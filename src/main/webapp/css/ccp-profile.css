@@ -846,7 +846,8 @@ IE fix
   position: relative;
   float: left;
   margin: 0 15px 15px 0;
-  width: 150px; /* Permissions position fix */
+  width: 150px;
+  height: 175px;
 }
 
 .dList .profileImageBackground {
@@ -877,12 +878,7 @@ IE fix
   text-align:center;
 }
 
-.dList .tooltip {
-  float: none
-}
-
-.dList .permissions,
-  .team-list-portletWindowBackground .dList .portlet-menu {
+.team-list-portletWindowBackground .dList .portlet-menu {
   position: absolute;
   right: -14px;
   top: 10px;
@@ -891,24 +887,20 @@ IE fix
   border-left: 2px #c1840f solid
 }
 
-.dList .leftColumn,
-  .teams-list-portletWindowBackground .dList .portlet-section-footer {
+.dList .team-list-content {
   text-align: center;
   width: 100%;
-
 }
+
+.dList .team-list-content p {
+  padding: 0;
+  margin: 2px 0 0 0;
+}
+
 
 /* @end */
 
-/* @group No Image List */
-
-.sList .leftColumn {
-  line-height: 19px
-}
-
-.sList .rightColumn {
-  width: auto
-}
+/* @group Small Image List */
 
 .sList {
   display: block;
@@ -925,7 +917,8 @@ IE fix
   float: left;
   display: block;
   margin: 0 5px 5px 0;
-  width: 200px;
+  height: 55px;
+  width: 212px;
   max-width: 50%;
   padding: 2px;
 }
@@ -950,37 +943,21 @@ IE fix
   border: none !important;
 }
 
-.sList .profileImageBackground img {
-  width: 15px;
-  height: 15px;
-}
-
-.sList .noPhoto {
-  display: none;
-}
-
-.sList .noPhoto p {
-  font-size: 8px;
-  top: 0
-}
-
-.sList .pNameContainer,
-  .team-list-portletWindowBackground .sList .portlet-section-footer {
-  float: left;
+.team-list-portletWindowBackground .sList .portlet-section-footer {
   padding: 3px 0 0 0;
 }
 
-.sList .permissions,
-  .team-list-portletWindowBackground .sList .portlet-menu {
-  padding: 4px;
-  position: relative;
-  width: auto;
-  float: right;
+.sList .team-list-content p {
+  margin: 0;
+  padding: 0 3px 0 0;
 }
 
-.sList .permissions:hover,
-  .team-list-portletWindowBackground .sList .portlet-menu {
-  background: #eee
+.team-list-portletWindowBackground .sList .portlet-menu {
+  padding: 4px;
+  position: relative;
+  float: right;
+  background: #eee;
+  border: 1px solid #999;
 }
 
 /* @end */

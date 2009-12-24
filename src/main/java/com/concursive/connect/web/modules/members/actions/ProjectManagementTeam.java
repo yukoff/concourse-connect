@@ -444,7 +444,7 @@ public final class ProjectManagementTeam extends GenericAction {
     Connection db = null;
     String errorMessage = null;
     String projectIdStr = context.getRequest().getParameter("pid");
-    boolean isNotify = "true".equals(context.getRequest().getParameter("notification"));
+    boolean isNotify = "yes".equals(context.getRequest().getParameter("notification"));
     int emailUpdateSchedule = Integer.parseInt(context.getRequest().getParameter("emailNotification"));
     User user = getUser(context);
     Project targetProject = null;

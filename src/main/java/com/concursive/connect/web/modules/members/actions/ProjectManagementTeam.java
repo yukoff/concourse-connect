@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.members.actions;
 
 import com.concursive.commons.codec.PrivateString;
+import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
 import com.concursive.commons.text.StringUtils;
@@ -444,7 +445,7 @@ public final class ProjectManagementTeam extends GenericAction {
     Connection db = null;
     String errorMessage = null;
     String projectIdStr = context.getRequest().getParameter("pid");
-    boolean isNotify = "yes".equals(context.getRequest().getParameter("notification"));
+    boolean isNotify = DatabaseUtils.parseBoolean(context.getRequest().getParameter("notification"));
     int emailUpdateSchedule = Integer.parseInt(context.getRequest().getParameter("emailNotification"));
     User user = getUser(context);
     Project targetProject = null;
@@ -523,7 +524,7 @@ public final class ProjectManagementTeam extends GenericAction {
     String errorMessage = null;
     //Parameters
     String projectIdStr = context.getRequest().getParameter("pid");
-    boolean isNotify = "yes".equals(context.getRequest().getParameter("notification"));
+    boolean isNotify = DatabaseUtils.parseBoolean(context.getRequest().getParameter("notification"));
     int emailUpdateSchedule = Integer.parseInt(context.getRequest().getParameter("emailNotification"));
     User user = getUser(context);
     Project project = null;

@@ -832,8 +832,8 @@ IE fix
 
 .dList {
   display: block;
-  padding: 10px;
-  margin: 5px;
+  margin: 0 5px 0 5px;
+  padding: 0 10px 0 10px;
   list-style: none;
   float: left;
 }
@@ -845,9 +845,9 @@ IE fix
 .dList li {
   position: relative;
   float: left;
-  margin: 0 15px 15px 0;
+  margin: 0 15px 0 0;
   width: 150px;
-  height: 175px;
+  height: 170px;
 }
 
 .dList .profileImageBackground {
@@ -904,7 +904,7 @@ IE fix
 
 .sList {
   display: block;
-  margin: 5px 0;
+  margin: 0;
   float: left;
   list-style: none;
   padding: 0;

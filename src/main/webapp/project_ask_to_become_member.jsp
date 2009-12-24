@@ -102,7 +102,7 @@
                   Once you are a member, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
                   You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
                 </p>
-                <label for="notification" style="display:inline">Do you want to opt-in to receive broadcast email messages from the managers of this profile?</label><br />
+                <label for="notification" style="display:inline">Do you want to opt-in to receive broadcast email messages from the members of this profile?</label><br />
               </c:otherwise>
             </c:choose>
             <input type="radio" name="notification" id="notification" value="yes" checked="true">Yes

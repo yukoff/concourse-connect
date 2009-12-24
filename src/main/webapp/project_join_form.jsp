@@ -61,7 +61,7 @@
           Stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
           You can adjust your notifications later from your 'Me' page.
         </p>
-        <label for="notification" style="display:inline">Do you want to opt-in to receive email messages from the managers of this profile?</label><br />
+        <label for="notification" style="display:inline">Do you want to opt-in to receive broadcast email messages from the members of this profile?</label><br />
         <input type="radio" name="notification" id="notification" value="yes" checked="true">Yes
         <input type="radio" name="notification" id="notification" value="no">No <br /><br />  
         <label for="notification" style="display:inline">Do you want to opt-in to receive an automated email digest of activity for this profile? Choose how often would you like to receive the updates:</label><br />

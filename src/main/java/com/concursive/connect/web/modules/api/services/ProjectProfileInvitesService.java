@@ -70,6 +70,11 @@ import org.apache.commons.logging.LogFactory;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.sql.Connection;
+import java.util.Map;
+import java.util.HashMap;
+import java.io.StringWriter;
+
+import freemarker.template.Configuration;
 
 /**
  * Handler invoked on a projectMessage bean using the API...
@@ -169,7 +174,15 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
           //message.addReplyTo(applicationPrefs.get()contact.getEmail(), getUser(context).getNameFirstLast());
           message.setTo(contact.getEmail1());
           message.setSubject(projectMessage.getSubject());
-          message.setBody(inviteBody.getParsedText());
+          // Populate the message template
+          Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(actionContext.getServletContext());
+          freemarker.template.Template template = configuration.getTemplate("project_profile_invites_email-html.ftl");
+          Map bodyMappings = new HashMap();
+          bodyMappings.put("body", inviteBody.getParsedText());
+          // Parse and send
+          StringWriter inviteBodyTextWriter = new StringWriter();
+          template.process(bodyMappings, inviteBodyTextWriter);
+          message.setBody(inviteBodyTextWriter.toString());
           message.setType("text/html");
           //Send the invitations
           int result = message.send();

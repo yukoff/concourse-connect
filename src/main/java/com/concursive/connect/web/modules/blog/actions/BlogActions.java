@@ -70,6 +70,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.HtmlSelect;
 import freemarker.template.Template;
+import freemarker.template.Configuration;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -213,22 +214,16 @@ public final class BlogActions extends GenericAction {
         mail.setType("text/html");
         mail.addTo(getUser(context).getEmail());
         mail.setSubject(thisArticle.getSubject());
-        // Construct the message
-        StringBuffer body = new StringBuffer();
-        body.append("<table border=\"0\"");
-        body.append("<tr>");
-        body.append("<td>");
-        body.append(thisArticle.getIntro());
-        body.append("</td>");
-        body.append("</tr>");
-        if (thisArticle.hasMessage()) {
-          body.append("<tr><td>[message is continued...]</td></tr>");
-        }
-        body.append("<tr><td>&nbsp;</td></tr>");
-        body.append("<tr><td><a href=\"" + getLink(context, "show/" + thisProject.getUniqueId() + "/post/" + thisArticle.getId()) + "\">View this message online</a></td></tr>");
-        body.append("</table>");
-        // Send it...
-        mail.setBody(body.toString());
+        // Populate the message template
+        Template template = getFreemarkerConfiguration(context).getTemplate("blog_article_email_me_notification-html.ftl");
+        Map bodyMappings = new HashMap();
+        bodyMappings.put("post", thisArticle);
+        bodyMappings.put("link", new HashMap());
+        ((Map) bodyMappings.get("link")).put("post", getLink(context, "show/" + thisProject.getUniqueId() + "/post/" + thisArticle.getId()));
+        // Parse and send
+        StringWriter inviteBodyTextWriter = new StringWriter();
+        template.process(bodyMappings, inviteBodyTextWriter);
+        mail.setBody(inviteBodyTextWriter.toString());
         mail.send();
       }
       context.getRequest().setAttribute("project", thisProject);

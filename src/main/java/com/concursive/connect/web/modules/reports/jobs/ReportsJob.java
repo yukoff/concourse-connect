@@ -74,9 +74,14 @@ import org.quartz.StatefulJob;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.HashMap;
+
+import freemarker.template.Template;
+import freemarker.template.Configuration;
 
 /**
  * Runs reports and outputs as requested
@@ -307,32 +312,40 @@ public class ReportsJob implements StatefulJob {
           message.addTo(user.getEmail());
           message.setSubject(thisReport.getTitle());
           message.setType("text/html");
+          // Populate the message template
+          Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(servletContext);
+          Template template = configuration.getTemplate("report_generation_email_notification-html.ftl");
+          Map bodyMappings = new HashMap();
           if (thisQueue.getStatus() == ReportQueue.STATUS_PROCESSED) {
             switch (thisQueue.getOutputTypeConstant()) {
               case ReportQueue.REPORT_TYPE_HTML:
                 // Just place the HTML in the email body, not as an attachment...
-                message.setBody("The attached report was generated and emailed as requested...<br /><br />" +
+                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />" +
                     StringUtils.loadText(destDir + filename));
                 break;
               case ReportQueue.REPORT_TYPE_CSV:
                 // Attach the CSV
-                message.setBody("The attached report was generated and emailed as requested...<br /><br />");
+                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />");
                 message.addFileAttachment(destDir + filename, filename + ".csv");
                 break;
               case ReportQueue.REPORT_TYPE_PDF:
                 // Attach the PDF
-                message.setBody("The attached report was generated and emailed as requested...<br /><br />");
+                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />");
                 message.addFileAttachment(destDir + filename, filename + ".pdf");
                 break;
               case ReportQueue.REPORT_TYPE_EXCEL:
                 // Attach the Excel
-                message.setBody("The attached report was generated and emailed as requested...<br /><br />");
+                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />");
                 message.addFileAttachment(destDir + filename, filename + ".xls");
                 break;
             }
           } else {
-            message.setBody("There was an error in processing the requested report.");
+            bodyMappings.put("body", "There was an error in processing the requested report.");
           }
+          // Parse and send
+          StringWriter inviteBodyTextWriter = new StringWriter();
+          template.process(bodyMappings, inviteBodyTextWriter);
+          message.setBody(inviteBodyTextWriter.toString());
           //Send the invitations
           message.send();
         }

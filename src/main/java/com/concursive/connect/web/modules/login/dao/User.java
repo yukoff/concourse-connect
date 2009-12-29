@@ -65,9 +65,13 @@ import com.concursive.connect.web.webdav.servlets.WebdavServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Stack;
+import java.util.*;
+import java.io.StringWriter;
+import java.io.IOException;
+
+import freemarker.template.Template;
+import freemarker.template.Configuration;
+import freemarker.template.TemplateException;
 
 /**
  * Represents a user of the system
@@ -2000,17 +2004,20 @@ public class User extends GenericBean {
     message.setTo(email);
     message.setFrom(prefs.get("EMAILADDRESS"));
     message.setSubject("Your Password");
-    message.setBody(
-        "Hello " + firstName + "," + lf +
-            lf +
-            "Your temporary password is:" + lf +
-            lf +
-            temporaryPassword + lf +
-            lf +
-            "You may use this password to log into the site." + lf +
-            lf +
-            "After logging in, you can change your password by choosing Personal Settings from the " +
-            "menu options.");
+    try {
+      // Populate the message template
+      Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(context.getServletContext());
+      Template template = configuration.getTemplate("blog_article_email_me_notification-html.ftl");
+      Map bodyMappings = new HashMap();
+      bodyMappings.put("firstname", firstName);
+      bodyMappings.put("temporaryPassword", temporaryPassword);
+      // Parse and send
+      StringWriter inviteBodyTextWriter = new StringWriter();
+      template.process(bodyMappings, inviteBodyTextWriter);
+      message.setBody(inviteBodyTextWriter.toString());
+    } catch (TemplateException te) {
+    } catch (IOException io) {
+    }
     int result = message.send();
     if (result > 0) {
       errors.put("emailError", message.getErrorMsg());

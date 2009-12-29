@@ -62,6 +62,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.io.StringWriter;
+import java.io.IOException;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
 /**
  * HTML form bean for the contact us page
@@ -331,12 +338,13 @@ public class ContactUsBean extends GenericBean {
     return errors;
   }
 
-  public boolean save(ActionContext context, Connection db) throws SQLException {
+  public boolean save(ActionContext context, Connection db) throws Exception {
     ApplicationPrefs prefs = (ApplicationPrefs) context.getServletContext().getAttribute("applicationPrefs");
-    return save(db, prefs, context.getIpAddress(), context.getBrowser());
+    Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(context.getServletContext());
+    return save(db, prefs, configuration, context.getIpAddress(), context.getBrowser());
   }
 
-  public boolean save(Connection db, ApplicationPrefs prefs, String ipAddress, String browser) throws SQLException {
+  public boolean save(Connection db, ApplicationPrefs prefs, Configuration configuration, String ipAddress, String browser) throws Exception {
     //store message in database
     PreparedStatement pst = db.prepareStatement(
         "INSERT INTO contact_us (instance_id, first_name, last_name, email, organization, description, copied, ip_address, browser, language, " +
@@ -386,15 +394,21 @@ public class ContactUsBean extends GenericBean {
       message.addReplyTo(email);
       message.setFrom(prefs.get("EMAILADDRESS"));
       message.setSubject(form + " Form");
-      message.setBody(
-          "The following information was submitted using the \"" + form + "\" form: " + lf + lf +
-          "First Name: " + nameFirst + lf +
-          "Last Name: " + nameLast + lf +
-          "Email Address: " + email + lf +
-          "Phone Number: " + businessPhone + lf +
-          "Organization: " + organization + lf +
-          (language != null ? "Language: " + language + lf : "") +
-          "Question/Comments: " + description + lf);
+      // Populate the message template
+      Template template = configuration.getTemplate("contact_us_email_notification-html.ftl");
+      Map bodyMappings = new HashMap();
+      bodyMappings.put("form", form);
+      bodyMappings.put("firstname", nameFirst);
+      bodyMappings.put("lastname", nameLast);
+      bodyMappings.put("email", email);
+      bodyMappings.put("phone", businessPhone);
+      bodyMappings.put("organization", organization);
+      bodyMappings.put("language", language);
+      bodyMappings.put("description", description);
+      // Parse and send
+      StringWriter inviteBodyTextWriter = new StringWriter();
+      template.process(bodyMappings, inviteBodyTextWriter);
+      message.setBody(inviteBodyTextWriter.toString());
       message.send();
     }
     return true;

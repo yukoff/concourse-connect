@@ -135,7 +135,8 @@ public class SaveWikiFormAction implements IPortletAction {
     }
     // Everything is there... save it
     bean.setEmailCopy(true);
-    bean.save(PortalUtils.getConnection(request), PortalUtils.getApplicationPrefs(request), ipAddress, browser);
+    bean.save(PortalUtils.getConnection(request), PortalUtils.getApplicationPrefs(request),
+                            PortalUtils.getFreemarkerConfiguration(request), ipAddress, browser);
 
     // Show the success message
     return (PortalUtils.goToViewer(request, response, "success", bean));

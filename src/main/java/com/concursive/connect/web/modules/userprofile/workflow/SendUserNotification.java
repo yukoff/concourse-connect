@@ -53,6 +53,8 @@ import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.Constants;
+import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.scheduler.SchedulerUtils;
 import com.concursive.connect.web.modules.issues.dao.TicketContact;
 import com.concursive.connect.web.modules.issues.dao.TicketContactList;
 import com.concursive.connect.web.modules.issues.workflow.LoadTicketDetails;
@@ -67,9 +69,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.StringWriter;
+
+import freemarker.template.Template;
+import freemarker.template.Configuration;
+
+import javax.servlet.ServletContext;
 
 /**
  * Description of the Class
@@ -264,7 +270,15 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
         }
         mail.setType("text/html");
         mail.setSubject(context.getParameter(SUBJECT));
-        mail.setBody(context.getParameter(BODY));
+        // Populate the message template
+        Configuration configuration = (Configuration) context.getAttribute(ComponentContext.FREEMARKER_CONFIGURATION);
+        Template template = configuration.getTemplate("send_user_notification_email-html.ftl");
+        Map bodyMappings = new HashMap();
+        bodyMappings.put("body", context.getParameter(BODY));
+        // Parse and send
+        StringWriter inviteBodyTextWriter = new StringWriter();
+        template.process(bodyMappings, inviteBodyTextWriter);
+        mail.setBody(inviteBodyTextWriter.toString());
 
         // Send to each user
         Iterator userList = users.iterator();

@@ -103,34 +103,37 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
 	      	if (teamMember.getUserId() == user.getId() && "false".equals(emailToSender) ){
 	      		//do nothing and skip this team member
 	      	} else {
-	          // Initialize the message template
-	          freemarker.template.Template emailSubject = null;
-	          freemarker.template.Template emailBody = null;
 	          // Set the data model
 	          Map subjectMappings = new HashMap();
-	          subjectMappings.put("user", user);
+	          subjectMappings.put("user",  new HashMap());
 	          ((Map) subjectMappings.get("user")).put("nameFirstLast", user.getNameFirstLast());
-	          subjectMappings.put("project", project);
+	          subjectMappings.put("project",  new HashMap());
 	          ((Map) subjectMappings.get("project")).put("title", project.getTitle());
 
 	          Map bodyMappings = new HashMap();
 	          bodyMappings.put("site", new HashMap());
 	          ((Map) bodyMappings.get("site")).put("title", prefs.get("TITLE"));
-	          bodyMappings.put("project", project);
+	          bodyMappings.put("project",  new HashMap());
 	          ((Map) bodyMappings.get("project")).put("title", project.getTitle());
 	          ((Map) bodyMappings.get("project")).put("profileUrl", url + "/show/" + project.getUniqueId());
 	
-	          bodyMappings.put("user", user);
+	          bodyMappings.put("user",  new HashMap());
+	          ((Map) bodyMappings.get("user")).put("nameFirstLast", user.getNameFirstLast());
 	          ((Map) bodyMappings.get("user")).put("profileUrl", url + "/show/" + user.getProfileProject().getUniqueId());
 	
-	          bodyMappings.put("member", teamMember);
+	          bodyMappings.put("member",  new HashMap());
 	          ((Map) bodyMappings.get("member")).put("profileUrl", url + "/show/" + UserUtils.loadUser(teamMember.getUserId()).getProfileProject().getUniqueId());
 	          
+	          bodyMappings.put("emailMessage", thisEmailBean.getBody());
+
 	          Configuration freeMarkerConfiguration = (Configuration) context.getAttribute(ComponentContext.FREEMARKER_CONFIGURATION);
 	          if (freeMarkerConfiguration == null) {
 	            LOG.error("freeMarkerConfiguration is null");
 	          }
 	
+	          // Initialize the message template
+	          freemarker.template.Template emailSubject = null;
+	          freemarker.template.Template emailBody = null;
 	          emailSubject = freeMarkerConfiguration.getTemplate("project_members_email_subject-text.ftl");
 	          emailBody = freeMarkerConfiguration.getTemplate("project_members_email_body-html.ftl");
 	

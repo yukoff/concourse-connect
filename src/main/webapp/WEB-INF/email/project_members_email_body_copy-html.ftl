@@ -16,7 +16,7 @@
       <tr>
         <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9">
           <p>You sent the following message to all members of <strong>${project.title?html}</strong>:</p>
-          <p style="padding:10px 20px; font-family:sans-serif;">${private.message}</p>
+          <p style="padding:10px 20px; font-family:sans-serif;">${emailMessage}</p>
         </td>
       </tr>
       <tr>

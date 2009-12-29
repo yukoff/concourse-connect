@@ -16,7 +16,7 @@
       <tr>
         <td style="padding:10px 20px; background:#fff; border-right:1px solid #e9e9e9; border-left:1px solid #e9e9e9">
           <p><strong>${user.nameFirstLast?html}</strong> sends the following message to all members of <strong>${project.title?html}</strong>:</p>
-          <p style="padding:10px 20px; font-family:sans-serif;">${private.message}</p>
+          <p style="padding:10px 20px; font-family:sans-serif;">${${emailMessage}}</p>
           <p>You received this email because you are subscribed to emails for ${project.title?html}<br /></p>
           <p>You can:<a href="${member.profileUrl}" target="_blank" style="color:#3f86f8">manage your emails</a>, go to <a href="${project.profileUrl}" target="_blank" style="color:#3f86f8">${project.title?html}</a>, or see the profile for <a href="${user.profileUrl}" target="_blank" style="color:#3f86f8">${user.nameFirstLast?html}</a><br /></p>
         </td>

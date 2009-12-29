@@ -86,13 +86,13 @@ public class PrivateMessage extends GenericBean {
   public static final String FOLDER_INBOX = "inbox";
 
   /**
-   * Constructor for the ProjectRating
+   * Constructor for the PrivateMessage
    */
   public PrivateMessage() {
   }
 
   /**
-   * Constructor for the ProjectRating object
+   * Constructor for the PrivateMessage object
    *
    * @param rs Description of Parameter
    * @throws SQLException Description of Exception
@@ -102,7 +102,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Constructor for the ProjectRating object
+   * Constructor for the PrivateMessage object
    *
    * @param db     Description of the Parameter
    * @param thisId Description of the Parameter
@@ -300,7 +300,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Sets the Id attribute of the ProjectRating object
+   * Sets the Id attribute of the PrivateMessage object
    *
    * @param tmp The new Id value
    */
@@ -309,7 +309,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Sets the id attribute of the ProjectRating object
+   * Sets the id attribute of the PrivateMessage object
    *
    * @param tmp The new id value
    */
@@ -318,7 +318,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Sets the enteredBy attribute of the Project object
+   * Sets the enteredBy attribute of the PrivateMessage object
    *
    * @param tmp The new enteredBy value
    */
@@ -327,7 +327,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Sets the entered attribute of the Project object
+   * Sets the entered attribute of the PrivateMessage object
    *
    * @param tmp The new entered value
    */
@@ -336,7 +336,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Sets the entered attribute of the Project object
+   * Sets the entered attribute of the PrivateMessage object
    *
    * @param tmp The new entered value
    */
@@ -345,7 +345,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Sets the enteredBy attribute of the Project object
+   * Sets the enteredBy attribute of the PrivateMessage object
    *
    * @param tmp The new enteredBy value
    */
@@ -368,7 +368,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Gets the Id attribute of the Project object
+   * Gets the Id attribute of the PrivateMessage object
    *
    * @return The Id value
    */
@@ -377,7 +377,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Gets the entered attribute of the Project object
+   * Gets the entered attribute of the PrivateMessage object
    *
    * @return The entered value
    */
@@ -386,7 +386,7 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * Gets the enteredBy attribute of the Project object
+   * Gets the enteredBy attribute of the PrivateMessage object
    *
    * @return The enteredBy value
    */
@@ -409,12 +409,19 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param parentId the parentId to set
+   * Sets the parentId attribute of the PrivateMessage object
+   *
+   * @param tmp The new parentId value
    */
   public void setParentId(int parentId) {
     this.parentId = parentId;
   }
 
+  /**
+   * Sets the parentId attribute of the PrivateMessage object
+   *
+   * @param tmp The new parentId value
+   */
   public void setParentId(String parentId) {
     this.parentId = Integer.parseInt(parentId);
   }
@@ -423,6 +430,11 @@ public class PrivateMessage extends GenericBean {
     return module;
   }
 
+  /**
+   * Sets the module attribute of the PrivateMessage object
+   *
+   * @param tmp The new module value
+   */
   public void setModule(String module) {
     this.module = module;
   }
@@ -435,12 +447,19 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param linkModuleId the linkModuleId to set
+   * Sets the linkModuleId attribute of the PrivateMessage object
+   *
+   * @param tmp The new linkModuleId value
    */
   public void setLinkModuleId(int linkModuleId) {
     this.linkModuleId = linkModuleId;
   }
 
+  /**
+   * Sets the linkModuleId attribute of the PrivateMessage object
+   *
+   * @param tmp The new linkModuleId value
+   */
   public void setLinkModuleId(String linkModuleId) {
     this.linkModuleId = Integer.parseInt(linkModuleId);
   }
@@ -453,7 +472,9 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param linkItemId the linkItemId to set
+   * Sets the linkItemId attribute of the PrivateMessage object
+   *
+   * @param tmp The new linkItemId value
    */
   public void setLinkItemId(int linkItemId) {
     this.linkItemId = linkItemId;
@@ -481,7 +502,9 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param body the body to set
+   * Sets the body attribute of the PrivateMessage object
+   *
+   * @param tmp The new body value
    */
   public void setBody(String body) {
     this.body = body;
@@ -495,12 +518,19 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param read the readDate to set
+   * Sets the readDate attribute of the PrivateMessage object
+   *
+   * @param tmp The new readDate value
    */
   public void setReadDate(Timestamp readDate) {
     this.readDate = readDate;
   }
 
+  /**
+   * Sets the readDate attribute of the PrivateMessage object
+   *
+   * @param tmp The new readDate value
+   */
   public void setReadDate(String readDate) {
     this.readDate = DatabaseUtils.parseTimestamp(readDate);
   }
@@ -513,12 +543,19 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param readBy the readBy to set
+   * Sets the readBy attribute of the PrivateMessage object
+   *
+   * @param tmp The new readBy value
    */
   public void setReadBy(int readBy) {
     this.readBy = readBy;
   }
 
+  /**
+   * Sets the readBy attribute of the PrivateMessage object
+   *
+   * @param tmp The new readBy value
+   */
   public void setReadBy(String readBy) {
     this.readBy = Integer.parseInt(readBy);
   }
@@ -531,12 +568,19 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param deletedByEnteredBy the deletedByEnteredBy to set
+   * Sets the deletedByEnteredBy attribute of the PrivateMessage object
+   *
+   * @param tmp The new deletedByEnteredBy value
    */
   public void setDeletedByEnteredBy(boolean deletedByEnteredBy) {
     this.deletedByEnteredBy = deletedByEnteredBy;
   }
 
+  /**
+   * Sets the deletedByEnteredBy attribute of the PrivateMessage object
+   *
+   * @param tmp The new deletedByEnteredBy value
+   */
   public void setDeletedByEnteredBy(String deletedByEnteredBy) {
     this.deletedByEnteredBy = DatabaseUtils.parseBoolean(deletedByEnteredBy);
   }
@@ -549,25 +593,36 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param deletedByUserId the deletedByUserId to set
+   * Sets the deletedByUserId attribute of the PrivateMessage object
+   *
+   * @param tmp The new deletedByUserId value
    */
   public void setDeletedByUserId(boolean deletedByUserId) {
     this.deletedByUserId = deletedByUserId;
   }
 
+  /**
+   * Sets the deletedByUserId attribute of the PrivateMessage object
+   *
+   * @param tmp The new deletedByUserId value
+   */
   public void setDeletedByUserId(String deletedByUserId) {
     this.deletedByUserId = DatabaseUtils.parseBoolean(deletedByUserId);
   }
 
   /**
-   * @return the lastReplyDate
+   * Sets the lastReplyDate attribute of the PrivateMessage object
+   *
+   * @param tmp The new lastReplyDate value
    */
   public Timestamp getLastReplyDate() {
     return lastReplyDate;
   }
 
   /**
-   * @param lastReplyDate the lastReplyDate to set
+   * Sets the lastReplyDate attribute of the PrivateMessage object
+   *
+   * @param tmp The new lastReplyDate value
    */
   public void setLastReplyDate(Timestamp lastReplyDate) {
     this.lastReplyDate = lastReplyDate;
@@ -585,18 +640,25 @@ public class PrivateMessage extends GenericBean {
   }
 
   /**
-   * @param linkProjectId the linkProjectId to set
+   * Sets the linkProjectId attribute of the PrivateMessage object
+   *
+   * @param tmp The new linkProjectId value
    */
   public void setLinkProjectId(int linkProjectId) {
     this.linkProjectId = linkProjectId;
   }
 
+  /**
+   * Sets the linkProjectId attribute of the PrivateMessage object
+   *
+   * @param tmp The new linkProjectId value
+   */
   public void setLinkProjectId(String linkProjectId) {
     this.linkProjectId = Integer.parseInt(linkProjectId);
   }
 
   /**
-   * Gets the valid attribute of the Project object
+   * Gets the valid attribute of the PrivateMessage object
    *
    * @return The valid value
    */

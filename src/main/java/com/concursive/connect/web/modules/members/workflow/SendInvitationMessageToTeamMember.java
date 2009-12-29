@@ -70,7 +70,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Loads the details of the specified user.
+ * Send Invitation message to team member
  *
  * @author Kailash Bhoopalam
  * @version $Id$

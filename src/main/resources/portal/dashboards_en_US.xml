@@ -4518,6 +4518,18 @@
         </column>
       </row>
     </page>
+		<page name="send_email_to_members">
+			<row>
+				<column>
+					<portlet name="SendEmailToMembersPortlet">
+						<title>Send Email to All Members</title>
+						<failureMessage>
+							We could not send this email to members...
+						</failureMessage>
+					</portlet>
+				</column>
+			</row>
+		</page>
     <page name="bookmark">
       <row>
         <column>

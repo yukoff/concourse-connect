@@ -43,49 +43,53 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
+package com.concursive.connect.web.modules.members.portlets.sendEmailToMembers;
 
-package com.concursive.connect.config;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.portal.IPortletViewer;
+import static com.concursive.connect.web.portal.PortalUtils.*;
+
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
- * Class for reading the application version information; APP_VERSION triggers
- * CSS and Javascript updates; VERSION and DB_VERSION trigger application
- * upgrades
+ * Project team member list
  *
- * @author matt rajkowski
- * @created August 30, 2004
+ * @author Kailash Bhoopalam
+ * @created December 28, 2009
  */
-public class ApplicationVersion {
-  public final static String TITLE = "ConcourseConnect";
-  public final static String VERSION = "2.0 milestone 4 (2009-12-28)";
-  public final static String APP_VERSION = "2009-12-28";
-  public final static String DB_VERSION = "2009-12-28";
+public class SendEmailToMembersViewer implements IPortletViewer {
+  // Pages
+  private static final String VIEW_PAGE = "/portlets/send_email_to_members/send_email_to_members-view.jsp";
 
+  //Preferences
+  private static final String PREF_TITLE = "title";
 
-  /**
-   * Gets the outOfDate attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The outOfDate value
-   */
-  public static boolean isOutOfDate(ApplicationPrefs prefs) {
-    String installedVersion = getInstalledVersion(prefs);
-    return !"true".equals(prefs.get("MANUAL_UPGRADE")) && !installedVersion.equals(ApplicationVersion.VERSION);
-  }
+  // Object Results
+  private static final String TITLE = "title";
+  private static final String PROJECT = "project";
 
+  public String doView(RenderRequest request, RenderResponse response)
+      throws Exception {
+    // The JSP to show upon success
+    String defaultView = VIEW_PAGE;
 
-  /**
-   * Gets the installedVersion attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The installedVersion value
-   */
-  public static String getInstalledVersion(ApplicationPrefs prefs) {
-    String installedVersion = prefs.get("VERSION");
-    if (installedVersion == null || "".equals(installedVersion)) {
-      return "2.1.3 (2004-09-13)";
-    } else {
-      return installedVersion;
+    // Determine the project container to use
+    Project project = findProject(request);
+    request.setAttribute(PROJECT, project);
+
+    User user = getUser(request);
+
+    // Determine if the invites can be shown to the current user
+    if (ProjectUtils.hasAccess(project.getId(), user, "project-team-email")) {
+      // Set global preferences
+      request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
+
+    	// JSP view
+      return defaultView;
     }
+    return null;
   }
 }
-

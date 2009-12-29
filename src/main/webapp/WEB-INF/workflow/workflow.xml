@@ -143,6 +143,13 @@
         <action type="insert" process="connect.contactus.insert"/>
       </actions>
     </hook>
+
+    <hook class="com.concursive.connect.web.modules.members.beans.TeamMemberEmailBean">
+      <actions>
+        <action type="insert" process="connect.teamMembers.sendEmail"/>
+      </actions>
+    </hook>
+
   </hooks>
   <!-- Each process describes the workflow for the various object and action
     that is being hooked-->
@@ -1405,5 +1412,16 @@ Comments: ${this.description?html}<br />
       </components>
     </process>
 
+    <process name="connect.teamMembers.sendEmail" description="Send Email to all TeamMembers" startId="1">
+      <components>
+        <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.SendEmailToAllTeamMembers">
+          <parameters>
+            <parameter name="emailToSender" value="false"/>
+            <parameter name="url" value="${secureUrl}"/>
+           </parameters> 
+       </component> 
+        <component id="2" parent="1" class="com.concursive.connect.web.modules.members.workflow.SendEmailCopyToSender" />
+       </components>
+    </process>
   </processes>
 </workflow>

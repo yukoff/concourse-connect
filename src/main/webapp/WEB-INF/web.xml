@@ -846,6 +846,15 @@
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
+  <servlet>
+    <servlet-name>SendEmailToMembersPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>SendEmailToMembersPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
   <!-- WSRP -->
   <servlet>
     <servlet-name>ProxyPortlet</servlet-name>
@@ -1263,6 +1272,10 @@
   <servlet-mapping>
     <servlet-name>SearchResultsByDocumentsPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/SearchResultsByDocumentsPortlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SendEmailToMembersPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/SendEmailToMembersPortlet</url-pattern>
   </servlet-mapping>
    <!-- WSRP -->
   <servlet-mapping>

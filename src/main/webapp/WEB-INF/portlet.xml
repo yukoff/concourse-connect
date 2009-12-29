@@ -1003,6 +1003,17 @@
       <title>Search results by documents</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>SendEmailToMembersPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.members.portlets.sendEmailToMembers.SendEmailToMembersPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Send message to members</title>
+    </portlet-info>
+  </portlet>
   <custom-portlet-mode>
     <description>Provides administration functions</description>
     <name>config</name>

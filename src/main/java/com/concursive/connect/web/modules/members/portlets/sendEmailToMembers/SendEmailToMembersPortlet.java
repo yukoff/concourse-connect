@@ -43,49 +43,39 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
+package com.concursive.connect.web.modules.members.portlets.sendEmailToMembers;
 
-package com.concursive.connect.config;
+import com.concursive.connect.web.portal.AbstractPortletModule;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * Class for reading the application version information; APP_VERSION triggers
- * CSS and Javascript updates; VERSION and DB_VERSION trigger application
- * upgrades
+ * Email to members Members mvc portlet
  *
- * @author matt rajkowski
- * @created August 30, 2004
+ * @author Kailash Bhoopalam
+ * @created December 28, 2009
  */
-public class ApplicationVersion {
-  public final static String TITLE = "ConcourseConnect";
-  public final static String VERSION = "2.0 milestone 4 (2009-12-28)";
-  public final static String APP_VERSION = "2009-12-28";
-  public final static String DB_VERSION = "2009-12-28";
+public class SendEmailToMembersPortlet extends AbstractPortletModule {
 
+  private static Log LOG = LogFactory.getLog(SendEmailToMembersPortlet.class);
 
-  /**
-   * Gets the outOfDate attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The outOfDate value
-   */
-  public static boolean isOutOfDate(ApplicationPrefs prefs) {
-    String installedVersion = getInstalledVersion(prefs);
-    return !"true".equals(prefs.get("MANUAL_UPGRADE")) && !installedVersion.equals(ApplicationVersion.VERSION);
+  // Viewers
+  public static final String LIST_VIEW = "list";
+
+  //Actions
+  public static final String SEND_EMAIL_ACTION = "sendEmail";
+  
+  public static final String DEFAULT_VIEW = LIST_VIEW;
+
+  public SendEmailToMembersPortlet() {
+    defaultCommand = DEFAULT_VIEW;
   }
 
+  protected void doPopulateActionsAndViewers() {
+    // Viewers
+    viewers.put(LIST_VIEW, new SendEmailToMembersViewer());
 
-  /**
-   * Gets the installedVersion attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The installedVersion value
-   */
-  public static String getInstalledVersion(ApplicationPrefs prefs) {
-    String installedVersion = prefs.get("VERSION");
-    if (installedVersion == null || "".equals(installedVersion)) {
-      return "2.1.3 (2004-09-13)";
-    } else {
-      return installedVersion;
-    }
+    // Actions
+    actions.put(SEND_EMAIL_ACTION, new SendEmailToMembersAction());
   }
 }
-

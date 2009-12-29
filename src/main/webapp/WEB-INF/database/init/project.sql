@@ -52,6 +52,7 @@ INSERT INTO lookup_project_permission (group_id, category_id, level, default_rol
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 2, 30, 2, 'project-team-edit', 'Add and remove members');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 2, 40, 2, 'project-team-edit-role', 'Modify member role');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 2, 50, 2, 'project-team-tools', 'Grant access to tools');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 2, 60, 3, 'project-team-email', 'Send email to subscribed members');
 
 INSERT INTO lookup_project_permission_category (group_id, level, description) VALUES (1, 30, 'Blog');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 3, 10, 7, 'project-news-view', 'View currently published entries');

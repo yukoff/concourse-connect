@@ -43,49 +43,64 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
+package com.concursive.connect.web.modules.members.portlets.sendEmailToMembers;
 
-package com.concursive.connect.config;
+import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.mvc.beans.GenericBean;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.members.beans.TeamMemberEmailBean;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.portal.IPortletAction;
+import com.concursive.connect.web.portal.PortalUtils;
+import static com.concursive.connect.web.portal.PortalUtils.*;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * Class for reading the application version information; APP_VERSION triggers
- * CSS and Javascript updates; VERSION and DB_VERSION trigger application
- * upgrades
+ * Action for sending email to team members
  *
- * @author matt rajkowski
- * @created August 30, 2004
+ * @author Kailash Bhoopalam
+ * @created December 28, 2009
  */
-public class ApplicationVersion {
-  public final static String TITLE = "ConcourseConnect";
-  public final static String VERSION = "2.0 milestone 4 (2009-12-28)";
-  public final static String APP_VERSION = "2009-12-28";
-  public final static String DB_VERSION = "2009-12-28";
+public class SendEmailToMembersAction implements IPortletAction {
 
+  private static Log LOG = LogFactory.getLog(SendEmailToMembersAction.class);
 
-  /**
-   * Gets the outOfDate attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The outOfDate value
-   */
-  public static boolean isOutOfDate(ApplicationPrefs prefs) {
-    String installedVersion = getInstalledVersion(prefs);
-    return !"true".equals(prefs.get("MANUAL_UPGRADE")) && !installedVersion.equals(ApplicationVersion.VERSION);
-  }
-
-
-  /**
-   * Gets the installedVersion attribute of the ApplicationVersion class
-   *
-   * @param prefs Description of the Parameter
-   * @return The installedVersion value
-   */
-  public static String getInstalledVersion(ApplicationPrefs prefs) {
-    String installedVersion = prefs.get("VERSION");
-    if (installedVersion == null || "".equals(installedVersion)) {
-      return "2.1.3 (2004-09-13)";
-    } else {
-      return installedVersion;
+  public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
+    // Determine the project container to use
+    Project project = findProject(request);
+    if (project == null) {
+      throw new Exception("Project is null");
     }
+
+    // Check the user's permissions
+    User user = getUser(request);
+    if (!user.isLoggedIn()) {
+      throw new PortletException("User needs to be logged in");
+    }
+
+    //TeamMemberEmailBean emailBean = (TeamMemberEmailBean) getFormBean(request, TeamMemberEmailBean.class);
+    TeamMemberEmailBean emailBean = new TeamMemberEmailBean();
+    emailBean.setBody(request.getParameter("message"));
+    emailBean.setEnteredBy(user.getId());
+    emailBean.setProjectId(project.getId());
+    
+    // Validate the form
+    if (!StringUtils.hasText(emailBean.getBody())) {
+    	emailBean.getErrors().put("bodyError", "Message body is required");
+      return emailBean;
+    }
+
+    // Send email notice
+    PortalUtils.processInsertHook(request, emailBean);
+    
+    // Close the panel, everything went well
+    String ctx = request.getContextPath();
+    response.sendRedirect(ctx + "/close_panel_refresh.jsp");
+    return null;
   }
 }
-

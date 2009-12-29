@@ -1,0 +1,1 @@
+COPY - ${user.nameFirstLast} sends the following message to all members of ${project.title?html} (Do not reply to this email)

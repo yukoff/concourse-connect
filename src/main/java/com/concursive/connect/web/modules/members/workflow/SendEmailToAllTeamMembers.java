@@ -151,11 +151,10 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
 	          emailBody.process(bodyMappings, inviteBodyTextWriter);
 	          message.setBody(inviteBodyTextWriter.toString());
 	          
-	          //Send the invitations
+	          //Send the emails
 	          message.setType("text/html");
 	          int result = message.send();
 	          if (result == 0) {
-	            //Record that message was delivered
 	            LOG.debug("email sent successfully to " + UserUtils.loadUser(teamMember.getUserId()).getNameFirstLast());
 	          } else {
 	            LOG.debug("email not sent to " + UserUtils.loadUser(teamMember.getUserId()).getNameFirstLast());

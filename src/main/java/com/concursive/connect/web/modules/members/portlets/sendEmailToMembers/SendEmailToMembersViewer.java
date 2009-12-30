@@ -46,12 +46,9 @@
 package com.concursive.connect.web.modules.members.portlets.sendEmailToMembers;
 
 import java.sql.Connection;
-import java.util.Iterator;
 
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;

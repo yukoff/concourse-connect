@@ -46,18 +46,14 @@
 
 package com.concursive.connect.web.modules.members.workflow;
 
-import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
-import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.beans.TeamMemberEmailBean;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
-import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import freemarker.template.Configuration;
@@ -65,7 +61,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.StringWriter;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -143,11 +138,10 @@ public class SendEmailCopyToSender extends ObjectHookComponent implements Compon
       emailBody.process(bodyMappings, inviteBodyTextWriter);
       message.setBody(inviteBodyTextWriter.toString());
       
-      //Send the invitations
+      //Send the email
       message.setType("text/html");
       int result = message.send();
       if (result == 0) {
-        //Record that message was delivered
         LOG.debug("email sent successfully to " + user.getNameFirstLast());
       } else {
         LOG.debug("email not sent to " + user.getNameFirstLast());

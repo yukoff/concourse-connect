@@ -45,10 +45,19 @@
  */
 package com.concursive.connect.web.modules.members.portlets.sendEmailToMembers;
 
+import java.sql.Connection;
+import java.util.Iterator;
+
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
+import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
+import com.concursive.connect.web.portal.PortalUtils;
+
 import static com.concursive.connect.web.portal.PortalUtils.*;
 
 import javax.portlet.PortletException;
@@ -71,6 +80,8 @@ public class SendEmailToMembersViewer implements IPortletViewer {
   // Object Results
   private static final String TITLE = "title";
   private static final String PROJECT = "project";
+  private static final String TEAM_MEMBER_NAMES = "teamMemberNames";
+  private static final String TEAM_MEMBERS = "teamMembers";
 
   public String doView(RenderRequest request, RenderResponse response)
       throws Exception {
@@ -94,7 +105,16 @@ public class SendEmailToMembersViewer implements IPortletViewer {
       // Set global preferences
       request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
 
-    	// JSP view
+      Connection db = PortalUtils.getConnection(request);
+      TeamMemberList teamMembers = new TeamMemberList();
+      teamMembers.setProjectId(project.getId());
+      teamMembers.setWithNotificationsSet(Constants.TRUE);
+      teamMembers.setIgnoreUserId(user.getId());
+      teamMembers.buildList(db);
+      request.setAttribute(TEAM_MEMBERS, teamMembers);
+      request.setAttribute(TEAM_MEMBER_NAMES, teamMembers.getCommaSeperatedTeamMemberFirstNames(3));
+    	
+      // JSP view
       return defaultView;
     }
     return null;

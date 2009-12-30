@@ -80,6 +80,7 @@ public class TeamMemberList extends ArrayList<TeamMember> {
   private int modifiedBy = -1;
   private int forProjectUser = -1;
   private int userId = -1;
+  private int ignoreUserId = -1;
   private int status = -2;
   private boolean tools = false;
   private int withNotificationsSet = Constants.UNDEFINED;
@@ -270,7 +271,26 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     this.userId = Integer.parseInt(tmp);
   }
 
-  public int getSize() {
+  /**
+   * @return the ignoreUserId
+   */
+  public int getIgnoreUserId() {
+  	return ignoreUserId;
+  }
+
+
+	/**
+   * @param ignoreUserId the ignoreUserId to set
+   */
+  public void setIgnoreUserId(int ignoreUserId) {
+  	this.ignoreUserId = ignoreUserId;
+  }
+
+  public void setIgnoreUserId(String ignoreUserId) {
+  	this.ignoreUserId = Integer.parseInt(ignoreUserId);
+  }
+
+	public int getSize() {
     return this.size();
   }
 
@@ -507,6 +527,11 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     if (userId > -1) {
       sqlFilter.append("AND t.user_id = ? ");
     }
+    
+    if (ignoreUserId > -1) {
+      sqlFilter.append("AND t.user_id <> ? ");
+    }
+    
     if (status > -2) {
       if (status == -1) {
         sqlFilter.append("AND t.status IS NULL ");
@@ -561,6 +586,11 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     if (userId > -1) {
       pst.setInt(++i, userId);
     }
+        
+    if (ignoreUserId > -1) {
+      pst.setInt(++i, ignoreUserId);
+    }
+
     if (status > -2) {
       if (status == -1) {
         //Do nothing
@@ -837,6 +867,34 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     rs.close();
     pst.close();
     return projectId;
+  }
+  
+  /*
+   * Gets a list of team member names
+   * 
+   * @param numberOfNames the number of names to list, -1 for no limit.
+   * @param ignoreUserId the userId to ignore while building the list of names
+   */
+  public String getCommaSeperatedTeamMemberFirstNames(int numberOfNames){
+  	String teamMemberNames = null;
+    StringBuffer teamMemberNamesBuffer = new StringBuffer();
+
+    Iterator<TeamMember> teamMemberItr = this.iterator();
+    int count = 0;
+    while (teamMemberItr.hasNext()){
+    	TeamMember teamMember = teamMemberItr.next();
+    	teamMemberNamesBuffer.append(UserUtils.loadUser(teamMember.getUserId()).getFirstName());
+    	if (teamMemberItr.hasNext()){
+    		teamMemberNamesBuffer.append(", ");
+    	}
+    	count++;
+    	if (numberOfNames != -1 && numberOfNames == count){
+    		break;
+    	}
+    }
+
+    teamMemberNames = teamMemberNamesBuffer.toString();
+  	return teamMemberNames;
   }
 
 }

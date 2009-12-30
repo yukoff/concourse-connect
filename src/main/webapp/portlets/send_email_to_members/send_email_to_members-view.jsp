@@ -85,6 +85,21 @@
       <textarea id="message" name="message" rows="5" cols="35"><c:out value='${message}'/></textarea>
 	  <span class="characterCounter">1000 characters max</span>
 	  <label>Broadcast messages go to those members that have opted-in to receive messages.</label>
+	  <c:choose>
+	  <c:when test="${!empty teamMemberNames}">
+	  	<c:choose>
+	  	<c:when test="${fn:length(teamMembers) > 3}">
+		  <label>This message will be sent to ${teamMemberNames}... and ${fn:length(teamMembers) - 3} others.</label>
+		</c:when>
+		<c:otherwise>
+		  <label>This message will be sent to ${teamMemberNames}.</label>
+		</c:otherwise>
+		</c:choose>
+	  </c:when>
+	  <c:otherwise>
+		  <label>There are no team members to whom this message can be sent.</label>
+	  </c:otherwise>
+	  </c:choose>
     </fieldset>
     <input type="submit" value="Send Email" class="submit">
     <c:choose>

@@ -271,7 +271,7 @@ public class SendProjectToFriendPortlet extends GenericPortlet {
       // Process multiple email addresses
       String[] sendToEmail = formBean.getSendToEmails().split(",");
       for (String aSendToEmail : sendToEmail) {
-        if (sendEmailMessage(PortalUtils.getFreemarkerConfiguration(request), messageSubject, messageBody, formBean.getSentFromEmail(), aSendToEmail.trim(), PortalUtils.getApplicationPrefs(request)) == 0) {
+        if (sendEmailMessage(messageSubject, messageBody, formBean.getSentFromEmail(), aSendToEmail.trim(), PortalUtils.getApplicationPrefs(request)) == 0) {
           messageSendStatus.put(aSendToEmail, "Success");
         } else {
           messageSendStatus.put(aSendToEmail, "Failure");
@@ -285,27 +285,15 @@ public class SendProjectToFriendPortlet extends GenericPortlet {
   /**
    *
    */
-  private int sendEmailMessage(Configuration configuration, String subject, String body, String sentFromEmail, String sendToEmail, ApplicationPrefs prefs) {
-    try {
-      SMTPMessage messageToSend = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-      messageToSend.setFrom(prefs.get("EMAILADDRESS"));
-      messageToSend.addReplyTo(sentFromEmail);
-      messageToSend.setTo(sendToEmail);
-      messageToSend.setType("text/html");
-      messageToSend.setSubject(subject);
-      // Populate the message template
-      freemarker.template.Template template = configuration.getTemplate("send_project_to_friend_email-html.ftl");
-      Map bodyMappings = new HashMap();
-      bodyMappings.put("body", body);
-      // Parse and send
-      StringWriter inviteBodyTextWriter = new StringWriter();
-      template.process(bodyMappings, inviteBodyTextWriter);
-      messageToSend.setBody(inviteBodyTextWriter.toString());
-      return messageToSend.send();
-    } catch (IOException io) {
-      return -1;
-    } catch (TemplateException te) {
-      return -1;
-    }
+  private int sendEmailMessage(String subject, String body, String sentFromEmail, String sendToEmail, ApplicationPrefs prefs) {
+    SMTPMessage messageToSend = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
+    messageToSend.setFrom(prefs.get("EMAILADDRESS"));
+    messageToSend.addReplyTo(sentFromEmail);
+    messageToSend.setTo(sendToEmail);
+    messageToSend.setType("text/html");
+    messageToSend.setSubject(subject);
+    messageToSend.setBody(body);
+
+    return messageToSend.send();
   }
 }

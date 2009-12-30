@@ -90,6 +90,13 @@
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
               </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
               <!--
               <value><![CDATA[
                 <content>Send to Phone</content>
@@ -471,6 +478,13 @@
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
               </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
               <!--
               <value><![CDATA[
                 <content>Send to Phone</content>
@@ -679,6 +693,13 @@
                   <href>/show/${project.uniqueId:html}/app/send_to_friend</href>
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
               </value>
               <!--
               <value><![CDATA[
@@ -895,6 +916,13 @@
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
               </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
               <!--
               <value><![CDATA[
                 <content>Send to Phone</content>
@@ -1103,6 +1131,13 @@
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
               </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
               <!--
               <value><![CDATA[
                 <content>Send to Phone</content>
@@ -1308,6 +1343,13 @@
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
               </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
               <!--
               <value><![CDATA[
                 <content>Send to Phone</content>
@@ -1509,6 +1551,13 @@
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
               </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
               <!--
               <value><![CDATA[
                 <content>Send to Phone</content>
@@ -1693,6 +1742,13 @@
                   <rule>projectAllowsGuests</rule>]]>
               </value>
               <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Add to My Lists</content>
                   <title>Add ${project.title:xml} to List</title>
                   <href>/show/${project.uniqueId}/app/bookmark?pidToBookmark=${project.id}</href>
@@ -1839,6 +1895,13 @@
                   <href>/show/${project.uniqueId}/app/send_to_friend</href>
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
               </value>
               <value>
                 <![CDATA[<content>Add to My Lists</content>
@@ -2008,6 +2071,13 @@
                   <rule>projectAllowsGuests</rule>]]>
               </value>
               <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
+              </value>
+              <value>
                 <![CDATA[<content>Add to My Lists</content>
                   <title>Add ${project.title:xml} to List</title>
                   <href>/show/${project.uniqueId}/app/bookmark?pidToBookmark=${project.id}</href>
@@ -2118,6 +2188,13 @@
                   <href>/show/${project.uniqueId}/app/send_to_friend</href>
                   <rel>shadowbox;width=550</rel>
                   <rule>projectAllowsGuests</rule>]]>
+              </value>
+              <value>
+                <![CDATA[<content>Send Email to Members</content>
+                  <title>Send Email to Members</title>
+                  <href>/show/${project.uniqueId:html}/app/send_email_to_members</href>
+                  <rel>shadowbox;width=550</rel>
+                  <permission>project-team-email</permission>]]>
               </value>
               <!--
               <value><![CDATA[

@@ -122,6 +122,7 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
 	          ((Map) bodyMappings.get("user")).put("profileUrl", url + "/show/" + user.getProfileProject().getUniqueId());
 	
 	          bodyMappings.put("member",  new HashMap());
+	          ((Map) bodyMappings.get("member")).put("nameFirstLast", UserUtils.loadUser(teamMember.getUserId()).getNameFirstLast());
 	          ((Map) bodyMappings.get("member")).put("profileUrl", url + "/show/" + UserUtils.loadUser(teamMember.getUserId()).getProfileProject().getUniqueId());
 	          
 	          bodyMappings.put("emailMessage", thisEmailBean.getBody());
@@ -150,9 +151,6 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
 	          emailBody.process(bodyMappings, inviteBodyTextWriter);
 	          message.setBody(inviteBodyTextWriter.toString());
 	          
-	          System.out.println("BODY ==> " + message.getBody());
-	          System.out.println("SUBJECT ==> " + message.getSubject());
-	          
 	          //Send the invitations
 	          message.setType("text/html");
 	          int result = message.send();
@@ -163,8 +161,6 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
 	            LOG.debug("email not sent to " + UserUtils.loadUser(teamMember.getUserId()).getNameFirstLast());
 	          }
 	      	}
-        } else {
-          LOG.error("could not find user profile for or team member " + teamMember.getId());
         }
       }
     } catch (Exception e) {

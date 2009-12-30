@@ -143,9 +143,6 @@ public class SendEmailCopyToSender extends ObjectHookComponent implements Compon
       emailBody.process(bodyMappings, inviteBodyTextWriter);
       message.setBody(inviteBodyTextWriter.toString());
       
-      System.out.println("BODY ==> " + message.getBody());
-      System.out.println("SUBJECT ==> " + message.getSubject());
-      
       //Send the invitations
       message.setType("text/html");
       int result = message.send();

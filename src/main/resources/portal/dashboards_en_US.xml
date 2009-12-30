@@ -4491,26 +4491,7 @@
             <messageSubject>
               <![CDATA[Message from ${bean.sentFromName}]]>
             </messageSubject>
-            <messageBody>
-              <![CDATA[<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-                <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
-                  <tr>
-                    <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
-                      Hello,<br />
-                      ${bean.sentFromName:html} has sent you a link to the following profile:<br />
-                      <b>${bean.project.title:html}</b><br />
-                      ${project.shortDescription:html}<br />
-                      <address>${project.addressToAndLocation:html}</address>
-                      See the complete profile at <a href="${secureUrl}/show/${bean.project.uniqueId}" target="_blank">${secureUrl}/show/${bean.project.uniqueId}</a><br />
-                      Message from ${bean.sentFromName:html}:<br />
-                      ${bean.message:html}<br />
-                      <p>For more information and to review our privacy and security policies, please visit <a href="${secureUrl}" target="_blank">${secureUrl}</a></p>
-                      <br />
-                    </td>
-                  </tr>
-                </table>
-              </body>]]>
-            </messageBody>
+            <freemarkerTemplate>send_project_to_friend_email-html.ftl</freemarkerTemplate>
             <portlet-events>
               <consumes-session-data>simpleCaptcha</consumes-session-data>
             </portlet-events>

@@ -79,7 +79,7 @@ public class SendProjectToFriendPortlet extends GenericPortlet {
   // Preferences
   private static final String PREF_TITLE = "title";
   private static final String PREF_FAILURE_MESSAGE = "failureMessage";
-  private static final String PREF_MESSAGE_BODY = "messageBody";
+  private static final String PREF_FREEMARKER_TEMPLATE = "freemarkerTemplate";
   private static final String PREF_MESSAGE_SUBJECT = "messageSubject";
 
   // Attribute names for objects available in the view
@@ -267,11 +267,10 @@ public class SendProjectToFriendPortlet extends GenericPortlet {
     } else {
       // Add the form values to the smtp message template
       String messageSubject = getFormattedMessageToSend(request, request.getPreferences().getValue(PREF_MESSAGE_SUBJECT, null), project);
-      String messageBody = getFormattedMessageToSend(request, request.getPreferences().getValue(PREF_MESSAGE_BODY, null), project);
       // Process multiple email addresses
       String[] sendToEmail = formBean.getSendToEmails().split(",");
       for (String aSendToEmail : sendToEmail) {
-        if (sendEmailMessage(messageSubject, messageBody, formBean.getSentFromEmail(), aSendToEmail.trim(), PortalUtils.getApplicationPrefs(request)) == 0) {
+        if (sendEmailMessage(request, project, messageSubject, formBean.getSentFromEmail(), aSendToEmail.trim(), PortalUtils.getApplicationPrefs(request)) == 0) {
           messageSendStatus.put(aSendToEmail, "Success");
         } else {
           messageSendStatus.put(aSendToEmail, "Failure");
@@ -285,15 +284,35 @@ public class SendProjectToFriendPortlet extends GenericPortlet {
   /**
    *
    */
-  private int sendEmailMessage(String subject, String body, String sentFromEmail, String sendToEmail, ApplicationPrefs prefs) {
-    SMTPMessage messageToSend = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-    messageToSend.setFrom(prefs.get("EMAILADDRESS"));
-    messageToSend.addReplyTo(sentFromEmail);
-    messageToSend.setTo(sendToEmail);
-    messageToSend.setType("text/html");
-    messageToSend.setSubject(subject);
-    messageToSend.setBody(body);
+  private int sendEmailMessage(ActionRequest request, Project project, String subject, String sentFromEmail, String sendToEmail, ApplicationPrefs prefs) {
+    try {
+      SMTPMessage messageToSend = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
+      messageToSend.setFrom(prefs.get("EMAILADDRESS"));
+      messageToSend.addReplyTo(sentFromEmail);
+      messageToSend.setTo(sendToEmail);
+      messageToSend.setType("text/html");
+      messageToSend.setSubject(subject);
+      // Populate the message template
+      String templateName = request.getPreferences().getValue(PREF_FREEMARKER_TEMPLATE, null);
+      Configuration configuration = PortalUtils.getFreemarkerConfiguration(request);
+      freemarker.template.Template template = configuration.getTemplate(templateName);
+      Map bodyMappings = new HashMap();
+      bodyMappings.put("sentFromName", request.getParameter("sentFromName"));
+      bodyMappings.put("project", project);
+      bodyMappings.put("message", request.getParameter("note"));
+      bodyMappings.put("link", new HashMap());
+      ((Map) bodyMappings.get("link")).put("secureUrl", PortalUtils.getApplicationUrl(request) + "/show/" + project.getUniqueId());
+      ((Map) bodyMappings.get("link")).put("siteUrl", PortalUtils.getApplicationUrl(request));
+      // Parse and send
+      StringWriter inviteBodyTextWriter = new StringWriter();
+      template.process(bodyMappings, inviteBodyTextWriter);
+      messageToSend.setBody(inviteBodyTextWriter.toString());
 
-    return messageToSend.send();
+      return messageToSend.send();
+    } catch (IOException ie) {
+      return -1;
+    } catch (TemplateException te) {
+      return -1;
+    }
   }
 }

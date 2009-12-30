@@ -50,6 +50,7 @@ import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.members.beans.TeamMemberEmailBean;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletAction;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
@@ -83,15 +84,19 @@ public class SendEmailToMembersAction implements IPortletAction {
       throw new PortletException("User needs to be logged in");
     }
 
-    //TeamMemberEmailBean emailBean = (TeamMemberEmailBean) getFormBean(request, TeamMemberEmailBean.class);
     TeamMemberEmailBean emailBean = new TeamMemberEmailBean();
     emailBean.setBody(request.getParameter("message"));
     emailBean.setEnteredBy(user.getId());
     emailBean.setProjectId(project.getId());
     
+    //Determine if the team member can send an email.
+    if (!ProjectUtils.hasAccess(project.getId(), user, "project-team-email")) {
+      throw new PortletException("Unauthorized to send email in this project");
+    }
+
     // Validate the form
     if (!StringUtils.hasText(emailBean.getBody())) {
-    	emailBean.getErrors().put("bodyError", "Message body is required");
+    	emailBean.getErrors().put("messageError", "Message is required");
       return emailBean;
     }
 

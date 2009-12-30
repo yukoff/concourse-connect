@@ -51,11 +51,12 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import static com.concursive.connect.web.portal.PortalUtils.*;
 
+import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 /**
- * Project team member list
+ * Form view for sending email to all members
  *
  * @author Kailash Bhoopalam
  * @created December 28, 2009
@@ -78,11 +79,17 @@ public class SendEmailToMembersViewer implements IPortletViewer {
 
     // Determine the project container to use
     Project project = findProject(request);
+    if (project == null) {
+      throw new Exception("Project is null");
+    }
     request.setAttribute(PROJECT, project);
 
     User user = getUser(request);
+    if (!user.isLoggedIn()) {
+      throw new PortletException("User needs to be logged in");
+    }
 
-    // Determine if the invites can be shown to the current user
+    //Determine if the team member can send an email.
     if (ProjectUtils.hasAccess(project.getId(), user, "project-team-email")) {
       // Set global preferences
       request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));

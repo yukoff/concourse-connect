@@ -81,7 +81,7 @@
     <input id="projectId" name="projectId" type="hidden" value="<c:out value='${project.id}'/>">
     <fieldset id="sendmessagetomembers">
       <legend><c:out value="${title}"/></legend>
-      <label for="message">Message<font color="red">*</font></label>
+      <label for="message">Message<font color="red">*</font><%= showAttribute(request, "messageError") %></label>
       <textarea id="message" name="message" rows="5" cols="35"><c:out value='${message}'/></textarea>
 	  <span class="characterCounter">1000 characters max</span>
 	  <label>Broadcast messages go to those members that have opted-in to receive messages.</label>

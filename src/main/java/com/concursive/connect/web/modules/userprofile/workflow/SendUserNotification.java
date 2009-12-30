@@ -270,7 +270,8 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
         }
         mail.setType("text/html");
         mail.setSubject(context.getParameter(SUBJECT));
-        // Populate the message template
+        /*
+        //TODO: Populate the message using a freemarker template
         Configuration configuration = (Configuration) context.getAttribute(ComponentContext.FREEMARKER_CONFIGURATION);
         Template template = configuration.getTemplate("send_user_notification_email-html.ftl");
         Map bodyMappings = new HashMap();
@@ -279,7 +280,8 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
         StringWriter inviteBodyTextWriter = new StringWriter();
         template.process(bodyMappings, inviteBodyTextWriter);
         mail.setBody(inviteBodyTextWriter.toString());
-
+        */
+        mail.setBody(context.getParameter(BODY));
         // Send to each user
         Iterator userList = users.iterator();
         while (userList.hasNext()) {

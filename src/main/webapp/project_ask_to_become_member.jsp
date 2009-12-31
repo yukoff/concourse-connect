@@ -102,12 +102,12 @@
                   Once you are a member, you can stay informed about <strong><c:out value="${project.title}"/></strong> by choosing one or more of the following email options.
                   You can adjust your notifications later from your 'Me' page. Your choice will not become active unless you are approved.
                 </p>
-                <label for="notification" style="display:inline">Do you want to opt-in to receive broadcast email messages from the members of this profile?</label><br />
+                <label for="notification" style="display:inline">Do you want to opt-in to receive broadcast email messages to the members of this profile from the owners?</label><br />
               </c:otherwise>
             </c:choose>
             <input type="radio" name="notification" id="notification" value="yes" checked="true">Yes
             <input type="radio" name="notification" id="notification" value="no">No <br /><br />
-            <label for="notification" style="display:inline">Do you want to opt-in to receive an automated email digest of activity for this profile? Choose how often would you like to receive the updates:</label><br />
+            <label for="notification" style="display:inline">Do you want to opt-in to receive automated email of activities for this profile? If so, choose how often you would like to receive the updates, and the activities will be appended to a single digest email:</label><br />
             <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_OFTEN %>"> Often (every few hours)
             <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_DAILY %>" checked="true"> Daily
             <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_WEEKLY %>"> Weekly

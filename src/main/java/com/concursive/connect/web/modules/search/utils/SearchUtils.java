@@ -290,9 +290,9 @@ public class SearchUtils {
         "(approved:1) " +
         (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
         "AND (" +
-        "(guests:1)" +
-        (userId > 0 ? " OR (participants:1)" : "") +
-        (StringUtils.hasText(projectList) ? "OR " + "(projectId:(" + projectList + "))" : "") +
+        "(guests:1) " +
+        (userId > 0 ? "OR (participants:1) " : "") +
+        (StringUtils.hasText(projectList) ? "OR " + "(projectId:(" + projectList + ")) " : "") +
         ") " +
         "AND (closed:0) " +
         "AND (website:0) " +
@@ -311,9 +311,9 @@ public class SearchUtils {
    * user-member data
    *
    * @param search
-   * @param db
    * @param userId
-   * @param specificProjectId
+   * @param instanceId
+   * @param projectListings
    * @return
    * @throws SQLException
    */

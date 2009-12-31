@@ -270,16 +270,11 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
           if (subCategory != null) {
             queryString += "AND (projectCategoryId1:" + subCategory.getId() + ") ";
           }
-          if (PortalUtils.canShowSensitiveData(request)) {
-            // Use the most generic settings since this portlet is cached
-            if (PortalUtils.getUser(request).getId() > 0) {
-              queryString += "AND ((guests:1) OR (participants:1))";
-            } else {
-              queryString += "AND (guests:1)";
-            }
+          // Determine which listings to show based on whether user is logged in
+          if (PortalUtils.getUser(request).getId() > 0) {
+            queryString += "AND ((guests:1) OR (participants:1)) ";
           } else {
-            // Use the most generic settings
-            queryString += "AND (guests:1)";
+            queryString += "AND (guests:1) ";
           }
           IndexerQueryResultList hits = new IndexerQueryResultList(queryString);
           hits.setPagedListInfo(projectListInfo);

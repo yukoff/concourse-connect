@@ -129,7 +129,7 @@ public class SearchResultsByProjectPortlet extends GenericPortlet {
         queryString +=
             " AND (type:project) " +
                 (category != null ?
-                    "AND (projectCategoryId:" + categories.getIdFromValue(category) + ")" : "");
+                    "AND (projectCategoryId:" + categories.getIdFromValue(category) + ") " : "");
 
         // Efficient unsorted list
         /*

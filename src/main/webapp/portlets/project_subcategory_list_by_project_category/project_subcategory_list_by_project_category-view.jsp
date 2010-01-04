@@ -49,6 +49,7 @@
 <%@ page import="com.concursive.commons.text.StringUtils" %>
 <%@ page import="java.util.Collection" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" %>
+<%@ page import="com.concursive.connect.web.modules.profile.dao.ProjectCategory" %> 
 <%@ page import="java.util.ArrayList" %>
 <jsp:useBean id="hasMore" class="java.lang.String" scope="request"/>
 <jsp:useBean id="hasMoreURL" class="java.lang.String" scope="request"/>
@@ -82,7 +83,7 @@
       <jsp:useBean id="subProjectCategoryDescription" type="java.lang.String" />
       <c:set var="subProjectCategory" value="${subProjectCategory}"/>
       <jsp:useBean id="subProjectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
-        <li class="listing"><a href='${ctx}${hasMoreURL}/<%= StringUtils.toHtmlValue(StringUtils.replace(subProjectCategoryDescription," ", "_").toLowerCase()) %>' title='<c:out value="${subProjectCategory.description}" />'><c:out value="${subProjectCategory.description}" /></a></li>
+        <li class="listing"><a href='${ctx}${hasMoreURL}/<%= ProjectCategory.getNormalizedCategoryName(subProjectCategoryDescription) %>' title='<c:out value="${subProjectCategory.description}" />'><c:out value="${subProjectCategory.description}" /></a></li>
     </c:forEach>
   </ul>
   <ccp:evaluate if='<%= "true".equals(hasMore) %>'>

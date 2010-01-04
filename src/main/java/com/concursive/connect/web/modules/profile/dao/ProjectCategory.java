@@ -536,16 +536,20 @@ public class ProjectCategory extends GenericBean {
   }
 
   public String getNormalizedCategoryName() {
-    if (StringUtils.hasText(description)) {
-      return StringUtils.replace(description.toLowerCase(), " ", "_");
-    }
-
-    return null;
+  	return getNormalizedCategoryName(description);
   }
 
   public static String getNormalizedCategoryName(String projectCategoryName) {
     if (StringUtils.hasText(projectCategoryName)) {
-      return StringUtils.replace(projectCategoryName.toLowerCase(), " ", "_");
+      return StringUtils.jsEscape(StringUtils.replace(projectCategoryName.toLowerCase(), " ", "_"));
+    }
+
+    return null;
+  }
+  
+  public static String getCategoryNameFromNormalizedCategoryName(String normalizedCategoryName){
+    if (StringUtils.hasText(normalizedCategoryName)) {
+      return StringUtils.jsUnEscape(StringUtils.replace(normalizedCategoryName, "_", " "));
     }
 
     return null;

@@ -141,7 +141,7 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
       // Base the selected subcategory off of the URL
       String subCategoryString = PortalUtils.getPageParameter(request);
       // convert the space back to a space
-      subCategoryString = StringUtils.replace(subCategoryString, "_", " ");
+      subCategoryString = ProjectCategory.getCategoryNameFromNormalizedCategoryName(subCategoryString);
       LOG.debug("Subcategory: " + subCategoryString);
 
       // Get the top-level category

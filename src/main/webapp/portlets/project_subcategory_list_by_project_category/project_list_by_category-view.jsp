@@ -49,7 +49,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.concursive.commons.text.StringUtils" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
-<%--@elvariable id="hits" type="com.concursive.connect.indexer.IndexerQueryResultList"--%>
+<%@ page import="com.concursive.connect.web.modules.profile.dao.ProjectCategory" %>
 <jsp:useBean id="hits" class="com.concursive.connect.indexer.IndexerQueryResultList" scope="request"/>
 <jsp:useBean id="projectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
 <jsp:useBean id="projectSubCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
@@ -104,7 +104,7 @@
     <c:if test="${!empty projectListInfo && projectListInfo.numberOfPages > 1}">
       <jsp:useBean id="hasMoreURL" class="java.lang.String" scope="request"/>
       <c:if test="${!empty projectSubCategory.description}">
-        <ccp:paginationControl object="projectListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(StringUtils.replace(projectSubCategory.getDescription().toLowerCase()," ", "_")) %>' />
+        <ccp:paginationControl object="projectListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(ProjectCategory.getNormalizedCategoryName(projectSubCategory.getDescription())) %>' />
       </c:if>
       <c:if test="${empty projectSubCategory.description}">
         <ccp:paginationControl object="projectListInfo" url='<%= hasMoreURL %>' />

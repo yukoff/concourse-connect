@@ -699,4 +699,10 @@ public class ProjectUtils {
     }
     return !a.equals(b);
   }
+
+  public static boolean isUserProfile(Project project) {
+    User projectOwner = UserUtils.loadUser(project.getOwner());
+    return
+       (projectOwner.getProfileProjectId() == project.getId());
+  }
 }

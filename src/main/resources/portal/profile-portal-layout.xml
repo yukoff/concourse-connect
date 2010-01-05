@@ -202,6 +202,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary">
             <title>Inbox</title>
           </portlet>
@@ -364,6 +365,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary">
             <title>Inbox</title>
           </portlet>
@@ -619,6 +621,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />  
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -839,6 +842,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />  
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -1053,6 +1057,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />  
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -1271,6 +1276,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -1484,6 +1490,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic- list ">
             <title>Inbox</title>
           </portlet>
@@ -1681,6 +1688,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -1824,6 +1832,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -1951,6 +1960,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -2118,6 +2128,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary" class="basic-list ">
             <title>Inbox</title>
           </portlet>
@@ -2299,6 +2310,7 @@
           </portlet>
         </column>
         <column width="300">
+          <portlet name="JoinPortlet" viewer="summary" />
           <portlet name="PendingPrivateMessagesPortlet" viewer="summary">
             <title>Inbox</title>
           </portlet>

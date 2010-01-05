@@ -717,7 +717,7 @@
       <title>View pending messages</title>
     </portlet-info>
   </portlet>
-   <portlet>
+  <portlet>
     <portlet-name>PendingPrivateMessagesPortlet</portlet-name>
     <portlet-class>com.concursive.connect.web.modules.messages.portlets.pendingPrivateMessages.PendingPrivateMessagesPortlet</portlet-class>
     <supports>
@@ -726,6 +726,17 @@
     </supports>
     <portlet-info>
       <title>View status of private messages</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>JoinPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.members.portlets.JoinPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Allows users to join or request to become members of a project</title>
     </portlet-info>
   </portlet>
    <portlet>

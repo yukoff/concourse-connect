@@ -76,7 +76,7 @@ import java.util.*;
  */
 public class InviteMembersPortlet extends GenericPortlet {
 
-  private static Log LOG = LogFactory.getLog(DimDimUtils.class);
+  private static Log LOG = LogFactory.getLog(InviteMembersPortlet.class);
   // Pages
   private static final String ENTER_MEMBERS_FORM = "/portlets/invite_members/enter_members_form-view.jsp";
   private static final String SELECT_MEMBERS_FORM = "/portlets/invite_members/select_members_form-view.jsp";

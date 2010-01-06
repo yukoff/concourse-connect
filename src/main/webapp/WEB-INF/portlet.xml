@@ -750,6 +750,17 @@
       <title>Display a member's status and statistics for the profile the user is currently viewing</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>EmailUpdatesPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.communications.portlets.EmailUpdatesPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Display the user's notification settings for the current profile and allow them to make changes.</title>
+    </portlet-info>
+  </portlet>
    <portlet>
     <portlet-name>ComposePrivateMessagePortlet</portlet-name>
     <portlet-class>com.concursive.connect.web.modules.messages.portlets.composePrivateMessage.ComposePrivateMessagePortlet</portlet-class>

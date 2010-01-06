@@ -739,6 +739,17 @@
       <title>Allows users to join or request to become members of a project</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>MemberProfilePortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.members.portlets.MemberProfilePortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Display a member's status and statistics for the profile the user is currently viewing</title>
+    </portlet-info>
+  </portlet>
    <portlet>
     <portlet-name>ComposePrivateMessagePortlet</portlet-name>
     <portlet-class>com.concursive.connect.web.modules.messages.portlets.composePrivateMessage.ComposePrivateMessagePortlet</portlet-class>

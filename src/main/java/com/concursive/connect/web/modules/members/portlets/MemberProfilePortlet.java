@@ -43,70 +43,59 @@
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
  */
-package com.concursive.connect.web.modules.members.utils;
+package com.concursive.connect.web.modules.members.portlets;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
-import com.concursive.connect.web.modules.members.dao.TeamMemberList;
+import org.apache.commons.logging.LogFactory;
+
+import javax.portlet.*;
+import java.io.IOException;
+
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.members.utils.TeamMemberUtils;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
+import static com.concursive.connect.web.portal.PortalUtils.findProject;
+import static com.concursive.connect.web.portal.PortalUtils.getUser;
+import com.concursive.connect.web.utils.LookupList;
+import com.concursive.connect.cache.utils.CacheUtils;
 
 /**
- * TeamMember utility methods
+ * Display a member's status and statistics for the profile the user is currently viewing
  *
  * @author Ananth
  * @created Jan 4, 2010
  */
-public class TeamMemberUtils {
-  private static final Log LOG = LogFactory.getLog(TeamMemberUtils.class);
+public class MemberProfilePortlet extends GenericPortlet {
+  private static Log LOG = LogFactory.getLog(MemberProfilePortlet.class);
+  //Pages
+  private static final String MEMBER_PROFILE_STATUS = "/portlets/member_profile_status/member_profile_status-view.jsp";
+  // Attribute names for objects available in the view
+  private static final String MEMBER = "member";
+  private static final String MEMBER_ROLE = "memberRole";
 
-  public static boolean userCanJoin(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
-        //user is already a member of this project
-        return false;
+  public void doView(RenderRequest request, RenderResponse response)
+          throws PortletException, IOException {
+    // Determine the project container to use
+    Project project = findProject(request);
+
+    // Check the user's permissions
+    User user = getUser(request);
+
+    boolean isActive = TeamMemberUtils.isActiveMember(user, project);
+    if (isActive) {
+      if (user.getProfileProjectId() != project.getId()) {
+        TeamMember member = TeamMemberUtils.getMember(user, project);
+        request.setAttribute(MEMBER, member);
+
+        LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
+        String roleName = roleList.getValueFromId(roleList.getIdFromLevel(member.getRoleId()));
+        request.setAttribute(MEMBER_ROLE, roleName);
+
+        PortletContext context = getPortletContext();
+        PortletRequestDispatcher requestDispatcher = context.getRequestDispatcher(MEMBER_PROFILE_STATUS);
+        requestDispatcher.include(request, response);
       }
     }
-    return
-     (user.getId() > 0
-         && project.getFeatures().getAllowParticipants() 
-         && !project.getFeatures().getMembershipRequired());
-  }
-
-  public static boolean userCanRequestToJoin(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
-        //user is already a member of this project
-        return false;
-      }
-    }
-    return
-      (user != null && user.getId() > 0
-          && (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants())
-          && project.getFeatures().getMembershipRequired());
-  }
-
-  public static boolean isActiveMember(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
-        //user is already a member of this project
-        return (member.getStatus() == TeamMember.STATUS_ADDED);
-      }
-    }
-    return false;
-  }
-
-  public static TeamMember getMember(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
-        return member;
-      }
-    }
-    return null;
   }
 }

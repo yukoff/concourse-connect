@@ -46,15 +46,15 @@
 
 package com.concursive.connect.web.modules.blog.portlets.main;
 
-import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiLink;
-import com.concursive.connect.web.modules.blog.dao.BlogPost;
+import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.commons.workflow.BusinessProcess;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
+import com.concursive.connect.web.modules.blog.dao.BlogPost;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
-import com.concursive.commons.workflow.BusinessProcess;
-import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.modules.wiki.utils.WikiLink;
 
 import java.sql.Timestamp;
 
@@ -103,7 +103,7 @@ public class SaveBlogEntryEventTest extends AbstractWorkflowManagerTest {
 
     Project userProfile = ProjectUtils.loadProject(workflowUser.getProfileProjectId());
 
-    BusinessProcess thisProcess = (BusinessProcess) processList.get(PROCESS_NAME);
+    BusinessProcess thisProcess = processList.get(PROCESS_NAME);
     assertTrue("Process not found...", thisProcess != null);
     context.setPreviousObject(null);
     context.setThisObject(blog);
@@ -128,7 +128,7 @@ public class SaveBlogEntryEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] published [[|" + project.getId() + ":post|" + blog.getId() + "|Dummy Blog Subject]] in [[|" + project.getId() + ":profile||Project SQL Test]]", 
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] @[[|" + project.getId() + ":profile||Project SQL Test]] published [[|" + project.getId() + ":post|" + blog.getId() + "|Dummy Blog Subject]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)
@@ -136,6 +136,116 @@ public class SaveBlogEntryEventTest extends AbstractWorkflowManagerTest {
 
     //Delete the news article..
     blog.delete(db, (String) null);
+
+    // Delete the project
+    boolean deleteResult = project.delete(db, (String) null);
+    assertTrue("Project wasn't deleted", deleteResult);
+    // Try to find the previously deleted project
+    ProjectList projectList = new ProjectList();
+    projectList.setProjectId(project.getId());
+    projectList.buildList(db);
+    assertTrue("Project exists when it shouldn't -- id " + project.getId(), projectList.size() == 0);
+  }
+
+  public void testSaveBlogEntryUpdateEvent() throws Exception {
+    // Insert project
+    Project project = new Project();
+    project.setTitle("Project SQL Test");
+    project.setShortDescription("Project SQL Test Description");
+    project.setRequestDate(new Timestamp(System.currentTimeMillis()));
+    project.setEstimatedCloseDate((Timestamp) null);
+    project.setRequestedBy("Project SQL Test Requested By");
+    project.setRequestedByDept("Project SQL Test Requested By Department");
+    project.setBudgetCurrency("USD");
+    project.setBudget("10000.75");
+    project.setGroupId(GROUP_ID);
+    project.setEnteredBy(USER_ID);
+    project.setModifiedBy(USER_ID);
+    assertNotNull(project);
+    boolean result = project.insert(db);
+    assertTrue("Project was not inserted", result);
+
+    //Add a blog entry
+    BlogPost blog = new BlogPost();
+    blog.setProjectId(project.getId());
+    blog.setSubject("Dummy Blog Subject");
+    blog.setMessage("Dummy Blog Message");
+    blog.setEnteredBy(USER_ID);
+    blog.setModifiedBy(USER_ID);
+    blog.setIntro("Dummy Intro");
+    blog.setStatus(BlogPost.DRAFT);
+    blog.setStartDate(new Timestamp(System.currentTimeMillis()));
+    blog.setClassificationId(1);
+    blog.insert(db);
+    assertTrue("Blog entry was not saved..", blog.getId() > -1);
+
+    Project userProfile = ProjectUtils.loadProject(workflowUser.getProfileProjectId());
+
+    {
+      BusinessProcess thisProcess = processList.get(PROCESS_NAME);
+      assertTrue("Process not found...", thisProcess != null);
+      context.setPreviousObject(null);
+      context.setThisObject(blog);
+      context.setProcessName(PROCESS_NAME);
+      context.setProcess(thisProcess);
+      context.setAttribute("userId", new Integer(USER_ID));
+      context.setAttribute("user", WikiLink.generateLink(userProfile));
+      context.setAttribute("blog", WikiLink.generateLink(blog));
+      context.setAttribute("profile", WikiLink.generateLink(project));
+
+      workflowManager.execute(context);
+    }
+
+    //Now query the database and test to see if a history item was added for the specified test user Id.
+    ProjectHistoryList historyList = new ProjectHistoryList();
+    historyList.setProjectId(project.getId());
+    historyList.setEnteredBy(USER_ID);
+    historyList.setLinkObject(ProjectHistoryList.BLOG_OBJECT);
+    historyList.setEventType(ProjectHistoryList.PUBLISH_BLOG_EVENT);
+    historyList.setLinkItemId(blog.getId());
+    historyList.buildList(db);
+    assertTrue("History event was INCORRECTLY recorded!", historyList.size() == 0);
+
+    // Reload blog and make an update
+    blog = new BlogPost(db, blog.getId());
+    BlogPost updatedBlog = new BlogPost(db, blog.getId());
+    updatedBlog.setModifiedBy(USER_ID);
+    updatedBlog.setStatus(BlogPost.PUBLISHED);
+
+    {
+      BusinessProcess thisProcess = processList.get(PROCESS_NAME);
+      assertTrue("Process not found...", thisProcess != null);
+      context.setPreviousObject(blog);
+      context.setThisObject(updatedBlog);
+      context.setProcessName(PROCESS_NAME);
+      context.setProcess(thisProcess);
+      context.setAttribute("userId", new Integer(USER_ID));
+      context.setAttribute("user", WikiLink.generateLink(userProfile));
+      context.setAttribute("blog", WikiLink.generateLink(updatedBlog));
+      context.setAttribute("profile", WikiLink.generateLink(project));
+
+      workflowManager.execute(context);
+    }
+
+    historyList = new ProjectHistoryList();
+    historyList.setProjectId(project.getId());
+    historyList.setEnteredBy(USER_ID);
+    historyList.setLinkObject(ProjectHistoryList.BLOG_OBJECT);
+    historyList.setEventType(ProjectHistoryList.PUBLISH_BLOG_EVENT);
+    historyList.setLinkItemId(blog.getId());
+    historyList.buildList(db);
+    assertTrue("History event was not recorded!", historyList.size() == 1);
+
+    ProjectHistory history = historyList.get(0);
+    assertEquals("Recorded event mismatch",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] @[[|" + project.getId() + ":profile||Project SQL Test]] published [[|" + project.getId() + ":post|" + blog.getId() + "|Dummy Blog Subject]]",
+        history.getDescription());
+
+    //Delete the history item because the test is done (and any other needed objects)
+    history.delete(db);
+
+    //Delete the news article..
+    updatedBlog.delete(db, (String) null);
 
     // Delete the project
     boolean deleteResult = project.delete(db, (String) null);

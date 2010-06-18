@@ -51,17 +51,21 @@
   if (redirectTo.contains("\"")) {
     throw new JspException("Invalid URL: " + redirectTo);
   }
+  if (ctx.length() > 1 && redirectTo.startsWith(ctx)) {
+    // the ctx is part of the absolute url so it's not needed here
+    redirectTo = redirectTo.substring(ctx.length());
+  }
 %>
 <c:choose>
   <c:when test="${'true' eq param.popup || 'true' eq popup}">
     {"ResultSet":
-      {"location":"<%= RequestUtils.getAbsoluteServerUrl(request) + request.getParameter("redirectTo") %>"}
+      {"location":"<%= RequestUtils.getAbsoluteServerUrl(request) + redirectTo %>"}
     }
   </c:when>
   <c:otherwise>
     <%
       response.setStatus(302);
-      response.setHeader("Location", RequestUtils.getAbsoluteServerUrl(request) + request.getParameter("redirectTo"));
+      response.setHeader("Location", RequestUtils.getAbsoluteServerUrl(request) + redirectTo);
     %>
   </c:otherwise>
 </c:choose>

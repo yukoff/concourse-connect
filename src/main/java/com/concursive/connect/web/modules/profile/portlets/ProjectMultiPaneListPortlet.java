@@ -121,8 +121,8 @@ public class ProjectMultiPaneListPortlet extends GenericPortlet {
         }
         projects.setInvitationAcceptedOnly(true);
         projects.setBuildOverallIssues(true);
-        projects.buildList(PortalUtils.getConnection(request));
-        projects.buildTeam(PortalUtils.getConnection(request));
+        projects.buildList(PortalUtils.useConnection(request));
+        projects.buildTeam(PortalUtils.useConnection(request));
         request.setAttribute(PROJECT_LIST, projects);
         defaultView = VIEW_PAGE_ALL;
         // Remember the user's tab selection for next time the page is drawn

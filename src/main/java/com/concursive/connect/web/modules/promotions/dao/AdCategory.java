@@ -506,7 +506,7 @@ public class AdCategory extends GenericBean {
 
   public String getNormalizedCategoryName() {
     if (StringUtils.hasText(itemName)) {
-      return StringUtils.replace(itemName.toLowerCase(), " ", "_");
+      return getNormalizedCategoryName(itemName);
     }
 
     return null;
@@ -514,9 +514,16 @@ public class AdCategory extends GenericBean {
 
   public static String getNormalizedCategoryName(String adCategoryName) {
     if (StringUtils.hasText(adCategoryName)) {
-      return StringUtils.replace(adCategoryName.toLowerCase(), " ", "_");
+      return StringUtils.jsEscape(StringUtils.replace(adCategoryName.toLowerCase(), " ", "_"));
     }
 
+    return null;
+  }
+
+  public static String getCategoryNameFromNormalizedCategoryName(String normalizedCategoryName){
+    if (StringUtils.hasText(normalizedCategoryName)) {
+      return StringUtils.jsUnEscape(StringUtils.replace(normalizedCategoryName, "_", " "));
+    }
     return null;
   }
 }

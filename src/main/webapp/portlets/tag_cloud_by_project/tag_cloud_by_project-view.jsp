@@ -53,20 +53,24 @@
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<script language="javascript" type="text/javascript">
-</script>
-<body>
 <c:if test="${!empty title}">
-  <h3>${title}</h3>
+  <h3><c:out value="${title}"/></h3>
 </c:if>
-<c:if test="${!empty tagList}">
-  <ul>
-    <c:forEach items="${tagList}" var="tag">
-      <li class="portlet-text-${tag.weight}"><a href="${ctx}/page/tag/${categoryName}/${tag.normalizedTag}"><c:out value="${tag.tag}"/></a>&nbsp;</li>
-    </c:forEach>
-  </ul>
+<c:if test="${!empty message}">
+  <span><c:out value="${message}"/></span>
 </c:if>
-<c:if test="${!empty hasMoreURL}">
-  <p><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>">see all tags</a></p>
-</c:if>
-</body>
+<c:choose>
+  <c:when test="${!empty tagList}">
+    <ul>
+      <c:forEach items="${tagList}" var="tag">
+        <li class="portlet-text-${tag.weight}"><a href="${ctx}/page/tag/${categoryName}/${tag.normalizedTag}"><c:out value="${tag.tag}"/></a>&nbsp;</li>
+      </c:forEach>
+    </ul>
+    <c:if test="${!empty hasMoreURL}">
+      <p><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>"><c:out value="${hasMoreTitle}"/></a></p>
+    </c:if>
+  </c:when>
+  <c:otherwise>
+    No tags found.
+  </c:otherwise>
+</c:choose>

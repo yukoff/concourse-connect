@@ -129,18 +129,18 @@ public class RatingHandler extends TagSupport {
       this.pageContext.getOut().write("<li class=\"current-rating\" id=\"current-rating\" style=\"width: " + (int) width + "px; background: url(" + ctx + "/images/star_rating/stars16.png) left center !important; left: 0 !important; margin: 0 !important\"></li>");
       if (StringUtils.hasText(field) && StringUtils.hasText(url)) {
         url += "&ratingShowText=" + (showText ? "true" : "false");
-        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='1';callURL('" + StringUtils.replace(url, "${vote}", "1") + "');\" title=\"1 star out of 5\" class=\"one-star\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='2';callURL('" + StringUtils.replace(url, "${vote}", "2") + "');\" title=\"2 stars out of 5\" class=\"two-stars\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='3';callURL('" + StringUtils.replace(url, "${vote}", "3") + "');\" title=\"3 stars out of 5\" class=\"three-stars\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='4';callURL('" + StringUtils.replace(url, "${vote}", "4") + "');\" title=\"4 stars out of 5\" class=\"four-stars\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='5';callURL('" + StringUtils.replace(url, "${vote}", "5") + "');\" title=\"5 stars out of 5\" class=\"five-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='1';callURL('" + StringUtils.replace(url, "{vote}", "1") + "');\" title=\"1 star out of 5\" class=\"one-star\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='2';callURL('" + StringUtils.replace(url, "{vote}", "2") + "');\" title=\"2 stars out of 5\" class=\"two-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='3';callURL('" + StringUtils.replace(url, "{vote}", "3") + "');\" title=\"3 stars out of 5\" class=\"three-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='4';callURL('" + StringUtils.replace(url, "{vote}", "4") + "');\" title=\"4 stars out of 5\" class=\"four-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:document.getElementById('" + field + "').value='5';callURL('" + StringUtils.replace(url, "{vote}", "5") + "');\" title=\"5 stars out of 5\" class=\"five-stars\"></a></li>");
       } else if (StringUtils.hasText(url)) {
         url += "&ratingShowText=" + (showText ? "true" : "false");
-        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "${vote}", "1") + "');\" title=\"1 star out of 5\" class=\"one-star\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "${vote}", "2") + "');\" title=\"2 stars out of 5\" class=\"two-stars\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "${vote}", "3") + "');\" title=\"3 stars out of 5\" class=\"three-stars\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "${vote}", "4") + "');\" title=\"4 stars out of 5\" class=\"four-stars\"></a></li>");
-        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "${vote}", "5") + "');\" title=\"5 stars out of 5\" class=\"five-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "{vote}", "1") + "');\" title=\"1 star out of 5\" class=\"one-star\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "{vote}", "2") + "');\" title=\"2 stars out of 5\" class=\"two-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "{vote}", "3") + "');\" title=\"3 stars out of 5\" class=\"three-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "{vote}", "4") + "');\" title=\"4 stars out of 5\" class=\"four-stars\"></a></li>");
+        this.pageContext.getOut().write("<li><a href=\"javascript:callURL('" + StringUtils.replace(url, "{vote}", "5") + "');\" title=\"5 stars out of 5\" class=\"five-stars\"></a></li>");
       }
 
 

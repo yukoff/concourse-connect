@@ -91,7 +91,7 @@ public class SaveReviewAction implements IPortletAction {
     thisProjectRating.setModifiedBy(user.getId());
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Save the record
     boolean isNew = false;

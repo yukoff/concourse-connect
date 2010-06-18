@@ -50,6 +50,7 @@ import bsh.Interpreter;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.Constants;
 
 import javax.servlet.ServletContext;
 import java.io.BufferedReader;
@@ -61,6 +62,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Utilities for working with upgrade scripts
  *
@@ -68,6 +72,8 @@ import java.util.ArrayList;
  * @created February 6, 2009
  */
 public class UpgradeUtils {
+
+  private static Log LOG = LogFactory.getLog(UpgradeUtils.class);
 
   /**
    * Iterates through and executes available database upgrade scripts
@@ -178,7 +184,7 @@ public class UpgradeUtils {
     StringUtils.loadText(
         context.getResourceAsStream("/WEB-INF/database/upgrade/" + yearString + "upgrade_" + baseName),
         files, true);
-    System.out.println("Scripts to process: " + files.size());
+    LOG.info("Scripts to process: " + files.size());
     for (String thisFile : files) {
       if (thisFile.endsWith(".bsh")) {
         // Try to run a specified bean shell script if found
@@ -211,7 +217,7 @@ public class UpgradeUtils {
         throw new Exception("Upgrade-> * Database could not be determined: " + DatabaseUtils.getType(db));
     }
     String pathString = baseName.substring(0, 4);
-    System.out.println("UpgradeUtils-> Executing " + dbType + " script: " + baseName);
+    LOG.info("Executing " + dbType + " script: " + baseName);
     DatabaseUtils.executeSQL(db, context.getResourceAsStream(
         "/WEB-INF/database/" + dbType + "/upgrade/" + pathString + "/" + baseName), true);
   }
@@ -226,12 +232,12 @@ public class UpgradeUtils {
    * @throws Exception Description of the Exception
    */
   private static void upgradeBSH(ServletContext context, Connection db, String scriptName) throws Exception {
-    System.out.println("UpgradeUtils-> Executing BeanShell script " + scriptName);
+    LOG.info("Executing BeanShell script " + scriptName);
     // Prepare bean shell script, if needed
     Interpreter script = new Interpreter();
     script.set("db", db);
     // Add the ApplicationPrefs...
-    ApplicationPrefs prefs = (ApplicationPrefs) context.getAttribute("applicationPrefs");
+    ApplicationPrefs prefs = (ApplicationPrefs) context.getAttribute(Constants.APPLICATION_PREFS);
     script.set("prefs", prefs);
     // Read the script
     String pathString = scriptName.substring(0, 4);

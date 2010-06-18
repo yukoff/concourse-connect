@@ -91,7 +91,7 @@ public class TagCloudResultsCategoryCountsViewer implements IPortletViewer {
     try {
       String defaultView = VIEW_PAGE1;
 
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
 
       // Set global preferences
       ProjectCategoryList categoriesToShow = null;

@@ -1,1 +1,1 @@
-ALTER TABLE project_files ADD COLUMN featured_file BOOLEAN DEFAULT false;
+ALTER TABLE project_files ADD featured_file BOOLEAN DEFAULT false;

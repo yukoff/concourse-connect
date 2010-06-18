@@ -53,6 +53,8 @@ import com.concursive.connect.web.modules.discussion.dao.Topic;
 import com.concursive.connect.web.modules.discussion.dao.Reply;
 import com.concursive.connect.web.modules.documents.beans.FileDownload;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
+import com.concursive.connect.web.modules.documents.dao.Thumbnail;
+import com.concursive.connect.web.modules.documents.utils.ThumbnailUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 
@@ -119,8 +121,17 @@ public final class DiscussionActions extends GenericAction {
       fileDownload.setDisplayName(itemToDownload.getClientFilename());
       if (fileDownload.fileExists()) {
         if (view != null && "true".equals(view)) {
-          fileDownload.setFileTimestamp(itemToDownload.getModificationDate().getTime());
-          fileDownload.streamContent(context);
+          if (thisItem.isImageFormat() && thisItem.hasValidImageSize()) {
+            // Use the panel preview
+            Thumbnail thumbnail = ThumbnailUtils.retrieveThumbnail(db, itemToDownload, 640, 480, this.getPath(context, "projects"));
+            filePath = this.getPath(context, "projects") + getDatePath(itemToDownload.getModified()) + thumbnail.getFilename();
+            fileDownload.setFullPath(filePath);
+            fileDownload.setFileTimestamp(itemToDownload.getModificationDate().getTime());
+            fileDownload.streamThumbnail(context, thumbnail);
+          } else {
+            // Use the browser's capability
+            fileDownload.streamContent(context);
+          }
         } else {
           fileDownload.sendFile(context);
         }

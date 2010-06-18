@@ -65,42 +65,77 @@ public class WikiParserTest3 extends TestCase {
 
   protected final static String htmlSample =
       "<p>This is a table...</p>\n" +
-          "<table border=\"0\">\n" +
+          "<table class=\"wikiTable\">\n" +
           "<tbody>\n" +
           "<tr>\n" +
-          "<td id=\"_mc_tmp\" colspan=\"5\">This is the header of the table</td>\n" +
+          "<th colspan=\"5\">This is the header of the table</th>\n" +
           "</tr>\n" +
-          "<tr>\n" +
+          "<tr class=\"row1\">\n" +
           "<td>&nbsp;</td>\n" +
-          "<td>Feature A</td>\n" +
-          "<td>Feature B</td>\n" +
-          "<td>Feature C</td>\n" +
-          "<td>Feature D</td>\n" +
+          "<td>\n" +
+          "<p>Feature A</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Feature B</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Feature C</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Feature D</p>\n" +
+          "</td>\n" +
           "</tr>\n" +
-          "<tr>\n" +
-          "<td>Item 1</td>\n" +
-          //"<td><a href=\"http://www.concursive.com\">Item 1</a></td>\n" +
-          "<td>Yes</td>\n" +
-          "<td>No</td>\n" +
-          "<td>No</td>\n" +
-          "<td>No</td>\n" +
-          "</tr>\n" +
-          "<tr>\n" +
-          "<td>Item 2</td>\n" +
-          "<td>Yes</td>\n" +
-          "<td>Yes</td>\n" +
-          "<td>No</td>\n" +
-          "<td>Yes</td>\n" +
-          "</tr>\n" +
-          "<tr>\n" +
-          "<td>Item 3</td>\n" +
+          "<tr class=\"row2\">\n" +
+          "<td>\n" +
+          "<p>Item 1</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Yes</p>\n" +
+          "</td>\n" +
           "<td>\n" +
           "<p>No</p>\n" +
-          "<p>* maybe</p>\n" +
+          "<p>* Maybe</p>\n" +
           "</td>\n" +
-          "<td>Yes</td>\n" +
-          "<td>Yes</td>\n" +
-          "<td>Yes</td>\n" +
+          "<td>\n" +
+          "<p>No</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>No</p>\n" +
+          "</td>\n" +
+          "</tr>\n" +
+          "<tr class=\"row1\">\n" +
+          "<td>\n" +
+          "<p>Item 2</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Yes</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Yes</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>No</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Yes</p>\n" +
+          "</td>\n" +
+          "</tr>\n" +
+          "<tr class=\"row2\">\n" +
+          "<td>\n" +
+          "<p>Item 3</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>No</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Yes</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Yes</p>\n" +
+          "</td>\n" +
+          "<td>\n" +
+          "<p>Yes</p>\n" +
+          "</td>\n" +
           "</tr>\n" +
           "</tbody>\n" +
           "</table>\n" +
@@ -111,23 +146,22 @@ public class WikiParserTest3 extends TestCase {
           "\n" +
           "||||||||||This is the header of the table||\n" +
           "| |Feature A|Feature B|Feature C|Feature D|\n" +
-          "|Item 1|Yes|No|No|No|\n" +
-          //"|[[http://www.concursive.com Item 1]]|Yes|No|No|No|\n" +
+          "|Item 1|Yes|No\n" +
+          "!\n" +
+          "!\\* Maybe|No|No|\n" +
           "|Item 2|Yes|Yes|No|Yes|\n" +
-          "|Item 3|No\n" +
-          "!* maybe|Yes|Yes|Yes|\n" +
+          "|Item 3|No|Yes|Yes|Yes|\n" +
           "\n" +
           "That is a tough decision.\n";
 
   protected final static String htmlOut =
       "<p>This is a table...</p>\n" +
           "<table class=\"wikiTable\">\n" +
-          "<tr><th colspan=\"5\">This is the header of the table</th></tr>\n" +
-          "<tr class=\"row1\"><td>&nbsp;</td><td>Feature A</td><td>Feature B</td><td>Feature C</td><td>Feature D</td></tr>\n" +
-          "<tr class=\"row2\"><td>Item 1</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>\n" +
-          //"<tr class=\"row2\"><td><a class=\"wikiLink external\" target=\"_blank\" href=\"http://www.concursive.com\">Item 1</a></td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>\n" +
-          "<tr class=\"row1\"><td>Item 2</td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr>\n" +
-          "<tr class=\"row2\"><td>Item 3</td><td>No<br />* maybe</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>\n" +
+          "<tr><th colspan=\"5\"><p>This is the header of the table</p></th></tr>\n" +
+          "<tr class=\"row1\"><td>&nbsp;</td><td><p>Feature A</p></td><td><p>Feature B</p></td><td><p>Feature C</p></td><td><p>Feature D</p></td></tr>\n" +
+          "<tr class=\"row2\"><td><p>Item 1</p></td><td><p>Yes</p></td><td><p>No</p>\n<p>* Maybe</p></td><td><p>No</p></td><td><p>No</p></td></tr>\n" +
+          "<tr class=\"row1\"><td><p>Item 2</p></td><td><p>Yes</p></td><td><p>Yes</p></td><td><p>No</p></td><td><p>Yes</p></td></tr>\n" +
+          "<tr class=\"row2\"><td><p>Item 3</p></td><td><p>No</p></td><td><p>Yes</p></td><td><p>Yes</p></td><td><p>Yes</p></td></tr>\n" +
           "</table>\n" +
           "<p>That is a tough decision.</p>\n";
 

@@ -48,13 +48,16 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<div class="">
-  <h3>Member Status</h3>
-  <p>
-    You are a member of this profile! You have been a member since
-    <ccp:tz timestamp="${member.entered}" pattern="MM/dd/yyyy" /> and have the <c:out value="${memberRole}"/> role.
-  </p>
-</div>
+<h3>Member Status</h3>
+<p>
+  You are a member of this profile! You have been a member since
+  <strong><ccp:tz timestamp="${member.entered}" dateOnly="true" /></strong> and have the <strong><c:out value="${memberRole}"/></strong> role.<br/>
+  <br />
+  <a href="${ctx}/ProjectManagementTeam.do?command=Leave&pid=<%= project.getId()%>&show=profile">Remove yourself from <c:out value="${project.title}"/></a>
+  <br />
+  <a href="javascript:showPanel('Report this Profile','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=profile&pid=${project.id}&id=${project.id}',700)">Report this Profile</a>  
+</p>

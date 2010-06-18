@@ -23,7 +23,7 @@ if (1 == 1) {
   String permissionName = "project-profile-activity-add";
   String permissionDescription = "Add activity";
   int permissionLevel = 40;
-  int defaultRole = TeamMember.MANAGER;
+  int defaultRole = TeamMember.MEMBER;
   PermissionLookup permission = permissionLookupList.getByPermission(permissionName);
   if (permission == null) {
       PermissionCategoryLookup category = permissionCategoryList.getByDescription(categoryName);

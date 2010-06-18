@@ -164,9 +164,9 @@ public class FileItem extends GenericBean {
     StringBuffer sql = new StringBuffer();
     sql.append(
         "SELECT f.*, t.filename AS thumbnail " +
-        "FROM project_files f " +
-        "LEFT JOIN project_files_thumbnail t ON (f.item_id = t.item_id AND f.version = t.version) " +
-        "WHERE f.item_id > 0 ");
+            "FROM project_files f " +
+            "LEFT JOIN project_files_thumbnail t ON (f.item_id = t.item_id AND f.version = t.version) " +
+            "WHERE f.item_id > 0 ");
     if (itemId > -1) {
       sql.append("AND f.item_id = ? ");
     }
@@ -1157,6 +1157,8 @@ public class FileItem extends GenericBean {
   public Project getProject() {
     if (linkModuleId == Constants.PROJECTS_FILES) {
       return ProjectUtils.loadProject(linkItemId);
+    } else if (linkModuleId == Constants.PROJECT_IMAGE_FILES) {
+      return ProjectUtils.loadProject(linkItemId);
     }
     return null;
   }
@@ -1183,7 +1185,7 @@ public class FileItem extends GenericBean {
       StringBuffer sql = new StringBuffer();
       sql.append(
           "INSERT INTO project_files " +
-          "(folder_id, subject, client_filename, filename, version, size, ");
+              "(folder_id, subject, client_filename, filename, version, size, ");
       sql.append("enabled, downloads, ");
       if (entered != null) {
         sql.append("entered, ");
@@ -1309,9 +1311,9 @@ public class FileItem extends GenericBean {
       int i = 0;
       PreparedStatement pst = db.prepareStatement(
           "UPDATE project_files " +
-          "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
-          "size = ?, modifiedby = ?, modified = CURRENT_TIMESTAMP, comment = ?, image_width = ?, image_height = ? , featured_file = ? " +
-          "WHERE item_id = ? ");
+              "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
+              "size = ?, modifiedby = ?, modified = CURRENT_TIMESTAMP, comment = ?, image_width = ?, image_height = ? , featured_file = ? " +
+              "WHERE item_id = ? ");
       pst.setString(++i, subject);
       pst.setString(++i, clientFilename);
       pst.setString(++i, filename);
@@ -1368,8 +1370,8 @@ public class FileItem extends GenericBean {
       // NOTE: Do not update the "modified" field because it is used for file paths
       PreparedStatement pst = db.prepareStatement(
           "UPDATE project_files " +
-          "SET subject = ?, client_filename = ?, default_file = ?, comment = ?, featured_file = ? " +
-          "WHERE item_id = ? ");
+              "SET subject = ?, client_filename = ?, default_file = ?, comment = ?, featured_file = ? " +
+              "WHERE item_id = ? ");
       pst.setString(++i, subject);
       pst.setString(++i, clientFilename);
       pst.setBoolean(++i, defaultFile);
@@ -1431,9 +1433,9 @@ public class FileItem extends GenericBean {
     int i = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-        "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
-        "size = ?, modifiedby = ?, modified = ?, comment = ?, featured_file = ? " +
-        "WHERE item_id = ? ");
+            "SET subject = ?, client_filename = ?, filename = ?, version = ?, " +
+            "size = ?, modifiedby = ?, modified = ?, comment = ?, featured_file = ? " +
+            "WHERE item_id = ? ");
     pst.setString(++i, subject);
     pst.setString(++i, clientFilename);
     pst.setString(++i, filename);
@@ -1529,7 +1531,7 @@ public class FileItem extends GenericBean {
       int i = 0;
       PreparedStatement pst = db.prepareStatement(
           "DELETE FROM project_files_download " +
-          "WHERE item_id = ? ");
+              "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1537,7 +1539,7 @@ public class FileItem extends GenericBean {
       i = 0;
       pst = db.prepareStatement(
           "DELETE FROM project_files_thumbnail " +
-          "WHERE item_id = ? ");
+              "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1545,7 +1547,7 @@ public class FileItem extends GenericBean {
       i = 0;
       pst = db.prepareStatement(
           "DELETE FROM project_files_version " +
-          "WHERE item_id = ? ");
+              "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1553,7 +1555,7 @@ public class FileItem extends GenericBean {
       i = 0;
       pst = db.prepareStatement(
           "DELETE FROM project_files " +
-          "WHERE item_id = ? ");
+              "WHERE item_id = ? ");
       pst.setInt(++i, this.getId());
       pst.execute();
       pst.close();
@@ -1660,7 +1662,7 @@ public class FileItem extends GenericBean {
   private void logUpload(Connection db) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "INSERT INTO usage_log " +
-        "(enteredby, action, record_id, record_size) VALUES (?, ?, ?, ?) ");
+            "(enteredby, action, record_id, record_size) VALUES (?, ?, ?, ?) ");
     int i = 0;
     pst.setInt(++i, enteredBy);
     pst.setInt(++i, 1);
@@ -1683,8 +1685,8 @@ public class FileItem extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-        "SET folder_id = ? " +
-        "WHERE item_id = ?");
+            "SET folder_id = ? " +
+            "WHERE item_id = ?");
     int i = 0;
     if (newFolderId > 0) {
       pst.setInt(++i, newFolderId);
@@ -1745,9 +1747,9 @@ public class FileItem extends GenericBean {
     int i = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-        "SET enabled = " + DatabaseUtils.getTrue(db) + " " +
-        "WHERE item_id = ? " +
-        "AND modified = ? ");
+            "SET enabled = " + DatabaseUtils.getTrue(db) + " " +
+            "WHERE item_id = ? " +
+            "AND modified = ? ");
     pst.setInt(++i, this.getId());
     pst.setTimestamp(++i, this.getModified());
     int resultCount = pst.executeUpdate();
@@ -1773,9 +1775,9 @@ public class FileItem extends GenericBean {
     int i = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files SET " +
-        "enabled = " + DatabaseUtils.getFalse(db) + " " +
-        "WHERE item_id = ? " +
-        "AND modified = ? ");
+            "enabled = " + DatabaseUtils.getFalse(db) + " " +
+            "WHERE item_id = ? " +
+            "AND modified = ? ");
     pst.setInt(++i, this.getId());
     pst.setTimestamp(++i, this.getModified());
     int resultCount = pst.executeUpdate();
@@ -1799,10 +1801,10 @@ public class FileItem extends GenericBean {
     // Turn off other defaults
     PreparedStatement pst = db.prepareStatement(
         "UPDATE project_files " +
-        "SET default_file = ? " +
-        "WHERE link_module_id = ? " +
-        "AND link_item_id = ? " +
-        "AND default_file = ? ");
+            "SET default_file = ? " +
+            "WHERE link_module_id = ? " +
+            "AND link_item_id = ? " +
+            "AND default_file = ? ");
     int i = 0;
     pst.setBoolean(++i, false);
     pst.setInt(++i, linkModuleId);
@@ -1813,9 +1815,9 @@ public class FileItem extends GenericBean {
     // Turn on this default
     pst = db.prepareStatement(
         "UPDATE project_files " +
-        "SET default_file = ? " +
-        "WHERE item_id = ? " +
-        "AND default_file = ? ");
+            "SET default_file = ? " +
+            "WHERE item_id = ? " +
+            "AND default_file = ? ");
     pst.setBoolean(1, true);
     pst.setInt(2, id);
     pst.setBoolean(3, false);
@@ -1841,6 +1843,6 @@ public class FileItem extends GenericBean {
   }
 
   public String getUrlName(int maxWidth, int maxHeight) {
-    return linkModuleId + "-" + linkItemId + "-" + id + "-" + maxWidth + "x" + maxHeight + "/" + StringUtils.toHtml(clientFilename);
+    return linkModuleId + "-" + linkItemId + "-" + id + "-" + maxWidth + "x" + maxHeight + "/" + StringUtils.replace(StringUtils.toAllowedOnly("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890`~!@$^*()-_=+;:,.{}[]\" ", clientFilename), " ", "+");
   }
 }

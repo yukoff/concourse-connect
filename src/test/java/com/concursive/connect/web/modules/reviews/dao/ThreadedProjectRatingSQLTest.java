@@ -97,7 +97,6 @@ public class ThreadedProjectRatingSQLTest extends AbstractConnectionPoolTest {
     projectRating.setProjectId(project.getId());
     projectRating.setRating(3);
     projectRating.setEnteredBy(USER_ID);
-    projectRating.setModifiedBy(USER_ID);
     assertNotNull(projectRating);
     boolean result = ProjectRating.save(db, projectRating);
     assertTrue("Project Rating was not inserted", result);

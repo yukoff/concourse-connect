@@ -154,4 +154,13 @@ public class WikiExportBean extends GenericBean {
     }
     return displaySubject;
   }
+
+  public boolean isSimilar(WikiExportBean bean) {
+    return (
+        bean.getUserId() == this.getUserId() &&
+            bean.getWikiId() == this.getWikiId() &&
+            bean.getProjectId() == this.getProjectId() &&
+            bean.getFollowLinks() == this.getFollowLinks() &&
+            bean.getIncludeTitle() == this.getIncludeTitle());
+  }
 }

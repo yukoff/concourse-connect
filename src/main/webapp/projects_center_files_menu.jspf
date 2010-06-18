@@ -77,7 +77,7 @@
     document.location.href='<%= ctx %>/ProjectManagementFileFolders.do?command=Modify&pid=<%= project.getId() %>&folderId=<%= fileItemList.getFolderId() %>&id=' + thisFolderId + '&parentId=<%= fileItemList.getFolderId() %>';
   }
   function moveFolder() {
-    popURL('<%= ctx %>/ProjectManagementFileFolders.do?command=Move&pid=<%= project.getId() %>&id=' + thisFolderId + '&popup=true&return=ProjectFiles&param=<%= project.getId() %>&param2=<%= fileItemList.getFolderId() %>','Files','400','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementFileFolders.do?command=Move&pid=<%= project.getId() %>&id=' + thisFolderId + '&popup=true&return=ProjectFiles&param=<%= project.getId() %>&param2=<%= fileItemList.getFolderId() %>','400','375','yes','yes');
   }
   function viewFileHistory() {
     document.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/file/' + thisFileId;
@@ -89,7 +89,7 @@
     document.location.href='<%= ctx %>/ProjectManagementFiles.do?command=Download&pid=<%= project.getId() %>&fid=' + thisFileId;
   }
   function viewFile() {
-    popURL('<%= ctx %>/ProjectManagementFiles.do?command=Download&pid=<%= project.getId() %>&fid=' + thisFileId + '&view=true','Content_' + thisFileId,700,580,1,1);
+    popURL('<%= ctx %>/ProjectManagementFiles.do?command=Download&pid=<%= project.getId() %>&fid=' + thisFileId + '&view=true',700,580,1,1);
   }
   function renameFile() {
     document.location.href='<%= ctx %>/ProjectManagementFiles.do?command=Modify&pid=<%= project.getId() %>&fid=' + thisFileId + '&folderId=<%= fileItemList.getFolderId() %>';
@@ -98,7 +98,7 @@
     document.location.href='<%= ctx %>/ProjectManagementFiles.do?command=AddVersion&pid=<%= project.getId() %>&fid=' + thisFileId + '&folderId=<%= fileItemList.getFolderId() %>';
   }
   function moveFile() {
-    popURL('<%= ctx %>/ProjectManagementFiles.do?command=Move&pid=<%= project.getId() %>&fid=' + thisFileId + '&popup=true&return=ProjectFiles&param=<%= project.getId() %>&param2=<%= fileItemList.getFolderId() %>','Files','400','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementFiles.do?command=Move&pid=<%= project.getId() %>&fid=' + thisFileId + '&popup=true&return=ProjectFiles&param=<%= project.getId() %>&param2=<%= fileItemList.getFolderId() %>','400','375','yes','yes');
   }
   function deleteFile() {
     confirmDelete('<%= ctx %>/ProjectManagementFiles.do?command=Delete&pid=<%= project.getId() %>&fid=' + thisFileId + '&folderId=<%= fileItemList.getFolderId() %>');

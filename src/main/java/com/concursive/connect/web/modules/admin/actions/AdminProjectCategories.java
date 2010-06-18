@@ -89,7 +89,6 @@ public final class AdminProjectCategories extends GenericAction {
       // Get project categories
       PagedListInfo adminProjectCategoriesInfo = this.getPagedListInfo(context, "adminProjectCategoriesInfo");
       adminProjectCategoriesInfo.setItemsPerPage(0);
-      adminProjectCategoriesInfo.setDefaultSort("parent_category,description", null);
       adminProjectCategoriesInfo.setLink(context, ctx(context) + "/AdminProjectCategories.do?command=List");
       ProjectCategoryList projectCategoryList = new ProjectCategoryList();
       projectCategoryList.setPagedListInfo(adminProjectCategoriesInfo);

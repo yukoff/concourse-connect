@@ -90,7 +90,7 @@ public class SaveBlogCommentsAction implements IPortletAction {
     String comment = request.getParameter("comment");
 
     // Find the record to record comments against
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     BlogPost thisArticle = new BlogPost(db, Integer.parseInt(newsId));
     if (thisArticle.getId() > -1) {
       BlogPostComment blogPostComment = new BlogPostComment();

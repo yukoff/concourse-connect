@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.wiki.portlets.main;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -55,6 +56,8 @@ import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
 import com.concursive.connect.web.portal.IPortletAction;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -68,6 +71,8 @@ import java.sql.Connection;
  * @created October 29, 2008
  */
 public class SaveWikiAction implements IPortletAction {
+
+  private static Log LOG = LogFactory.getLog(SaveWikiAction.class);
 
   public GenericBean processAction(ActionRequest request, ActionResponse response) throws Exception {
 
@@ -84,7 +89,7 @@ public class SaveWikiAction implements IPortletAction {
     }
 
     // Update the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     boolean recordInserted = false;
     int resultCount = -1;
 
@@ -168,6 +173,18 @@ public class SaveWikiAction implements IPortletAction {
     indexAddItem(request, wiki);
 
     // This call will close panels and perform redirects
+    String returnURL = request.getParameter("returnURL");
+
+    String ctx = request.getContextPath();
+    boolean isPopup = "true".equals(request.getParameter("popup"));
+    if (StringUtils.hasText(returnURL)) {
+      // Redirect to the suggested location, closing the popup
+      if (LOG.isDebugEnabled()) {
+        System.out.println("Redirect to: " + ctx + "/closepopup.jsp?return=" + StringUtils.encodeUrl(returnURL.toString()) + (isPopup ? "&popup=true" : ""));
+      }
+      response.sendRedirect(ctx + "/closepopup.jsp?return=" + StringUtils.encodeUrl(returnURL.toString()) + (isPopup ? "&popup=true" : ""));
+      return null;
+    }
     return (PortalUtils.performRefresh(request, response, "/show/wiki/" + wiki.getSubjectLink()));
   }
 }

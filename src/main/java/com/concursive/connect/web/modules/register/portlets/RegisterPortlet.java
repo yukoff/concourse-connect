@@ -99,7 +99,7 @@ public class RegisterPortlet extends GenericPortlet {
     try {
       // Setup prefs
       ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
-      boolean showLicense = "true".equals(prefs.get("LICENSE"));
+      boolean showLicense = "true".equals(prefs.get(ApplicationPrefs.SHOW_TERMS_AND_CONDITIONS));
       boolean invitationOnly = false;
       if ("false".equals(prefs.get("REGISTER"))) {
         invitationOnly = true;
@@ -192,13 +192,13 @@ public class RegisterPortlet extends GenericPortlet {
 
     // Check to see if the application is allowing registration
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
-    boolean showLicense = "true".equals(prefs.get("LICENSE"));
+    boolean showLicense = "true".equals(prefs.get(ApplicationPrefs.SHOW_TERMS_AND_CONDITIONS));
     boolean invitationOnly = false;
     if ("false".equals(prefs.get("REGISTER"))) {
       invitationOnly = true;
     }
 
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     String ctx = request.getContextPath();
 
     // Determine the page that submitted the data
@@ -236,8 +236,8 @@ public class RegisterPortlet extends GenericPortlet {
         } else if (bean.isAlreadyRegistered(db)) {
           bean.getErrors().put("actionError",
               "This email address is already registered. " +
-              "If you forgot your login information then you can request your registration " +
-              "information from the login page.");
+                  "If you forgot your login information then you can request your registration " +
+                  "information from the login page.");
           response.sendRedirect(ctx + "/page/register");
         } else {
           // Forward to the verification page
@@ -255,8 +255,8 @@ public class RegisterPortlet extends GenericPortlet {
           boolean saved = bean.save(db, prefs, request, null);
           if (saved) {
             PortalUtils.processInsertHook(request, bean);
-            PortalUtils.processInsertHook(request, bean.getProject());
-            PortalUtils.indexAddItem(request, bean.getProject());
+            PortalUtils.processInsertHook(request, bean.getUser().getProfileProject());
+            PortalUtils.indexAddItem(request, bean.getUser().getProfileProject());
             response.sendRedirect(ctx + "/page/register/thanks");
           } else {
             if (bean.getErrors().size() > 0) {

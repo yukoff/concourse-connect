@@ -85,7 +85,7 @@ public class DeletePromotionAction implements IPortletAction {
     int id = getPageViewAsInt(request);
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Ad promotion = new Ad(db, id, project.getId());

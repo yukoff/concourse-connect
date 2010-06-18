@@ -320,22 +320,22 @@ public class ReportsJob implements StatefulJob {
             switch (thisQueue.getOutputTypeConstant()) {
               case ReportQueue.REPORT_TYPE_HTML:
                 // Just place the HTML in the email body, not as an attachment...
-                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />" +
+                bodyMappings.put("body", "The attached report was generated and emailed as requested..." +
                     StringUtils.loadText(destDir + filename));
                 break;
               case ReportQueue.REPORT_TYPE_CSV:
                 // Attach the CSV
-                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />");
+                bodyMappings.put("body", "The attached report was generated and emailed as requested...");
                 message.addFileAttachment(destDir + filename, filename + ".csv");
                 break;
               case ReportQueue.REPORT_TYPE_PDF:
                 // Attach the PDF
-                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />");
+                bodyMappings.put("body", "The attached report was generated and emailed as requested...");
                 message.addFileAttachment(destDir + filename, filename + ".pdf");
                 break;
               case ReportQueue.REPORT_TYPE_EXCEL:
                 // Attach the Excel
-                bodyMappings.put("body", "The attached report was generated and emailed as requested...<br /><br />");
+                bodyMappings.put("body", "The attached report was generated and emailed as requested...");
                 message.addFileAttachment(destDir + filename, filename + ".xls");
                 break;
             }

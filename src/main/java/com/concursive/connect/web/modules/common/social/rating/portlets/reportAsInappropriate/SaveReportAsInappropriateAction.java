@@ -90,7 +90,7 @@ public class SaveReportAsInappropriateAction implements IPortletAction {
       throw new PortletException("User needs to be logged in");
     }
 
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     String ticketCategory = request.getPreferences().getValue(PREF_TICKET_CATEGORY, null);
     int ticketCategoryId = -1;
     if (StringUtils.hasText(ticketCategory)) {
@@ -112,9 +112,12 @@ public class SaveReportAsInappropriateAction implements IPortletAction {
       ticket.setModifiedBy(user.getId());
       ticket.setCatCode(ticketCategoryId);
       if (ticket.insert(db)) {
-        Rating.save(db, user.getId(), reportAsInappropriateBean.getLinkProjectId(), reportAsInappropriateBean.getLinkItemId(), String.valueOf(Rating.INAPPROPRIATE_COMMENT), ModuleUtils.getTableFromModuleName(reportAsInappropriateBean.getLinkModule()), ModuleUtils.getPrimaryKeyFromModuleName(reportAsInappropriateBean.getLinkModule()), Constants.TRUE);
+        //Insert inappropriate rating if the object being reported IS NOT a profile
+        if (!reportAsInappropriateBean.getLinkModule().equals(ModuleUtils.MODULENAME_PROFILE)) {
+          Rating.save(db, user.getId(), reportAsInappropriateBean.getLinkProjectId(), reportAsInappropriateBean.getLinkItemId(), String.valueOf(Rating.INAPPROPRIATE_COMMENT), ModuleUtils.getTableFromModuleName(reportAsInappropriateBean.getLinkModule()), ModuleUtils.getPrimaryKeyFromModuleName(reportAsInappropriateBean.getLinkModule()), Constants.TRUE);
 
-        //PortalUtils.processInsertHook(request, reportAsInappropriateBean);
+          //PortalUtils.processInsertHook(request, reportAsInappropriateBean);
+        }
       }
     }
     String ctx = request.getContextPath();

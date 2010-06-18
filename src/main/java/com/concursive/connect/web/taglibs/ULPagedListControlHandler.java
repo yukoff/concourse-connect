@@ -82,6 +82,7 @@ public class ULPagedListControlHandler extends TagSupport {
   private boolean enableJScript = false;
   private String url = null;
   private String urlSuffix = null;
+  private String urlParams = null;
 
   private static final String CLASS_PAGINATE = "pagination";
   private static final String CLASS_PREVIOUS_ENABLED = "previous";
@@ -170,6 +171,22 @@ public class ULPagedListControlHandler extends TagSupport {
 
 
   /**
+   * @return the urlParams
+   */
+  public String getUrlParams() {
+    return urlParams;
+  }
+
+
+  /**
+   * @param urlParams the urlParams to set
+   */
+  public void setUrlParams(String urlParams) {
+    this.urlParams = urlParams;
+  }
+
+
+  /**
    * Description of the Method
    *
    * @return Description of the Returned Value
@@ -225,6 +242,9 @@ public class ULPagedListControlHandler extends TagSupport {
         if (enableJScript) {
           out.write("<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\" SRC=\"" + ctx + "/javascript/pageListInfo.js\"></SCRIPT>");
         }
+        if (pagedListInfo.getMaxRecords() > 0 || pagedListInfo.getNumberOfPages() > 1) {
+          out.write("<div class=\"pagination\">");
+        }
         if (pagedListInfo.getMaxRecords() > 0) {
           out.write("<em>" + pagedListInfo.getMaxRecords() + " result" + (pagedListInfo.getMaxRecords() == 1 ? "" : "s") + " found</em>");
         }
@@ -235,12 +255,16 @@ public class ULPagedListControlHandler extends TagSupport {
             if (pagedListInfo.getCurrentPageNumber() != 1) {
               prevPage = pagedListInfo.getCurrentPageNumber() - 1;
               String prevLink = (useCtx ? ctx : "") + url + ((prevPage != 1) ? "/" + prevPage : "");
-              out.write("<li class=\"" + prevClass + "\"><a href=\"" + prevLink + "\">Previous</a></li>");
+              out.write("<li class=\"" + prevClass + "\"><a href=\"" + getCompleteLink(prevLink) + "\">&lt; Previous</a></li>");
             } else {
-              out.write("<li class=\"" + prevClass + "\">Previous</li>");
+              out.write("<li class=\"" + prevClass + "\"><a>&lt; Previous</a></li>");
             }
           } else {
-            out.write("<li class=\"" + prevClass + "\">" + pagedListInfo.getPreviousPageLink("Previous", "Previous", null, renderResponse) + "</li>");
+            String previousPageLink = pagedListInfo.getPreviousPageLink("&lt; Previous", "&lt; Previous", null, renderResponse);
+            if (!previousPageLink.contains("<a")) {
+              previousPageLink = "<a>" + previousPageLink + "</a>";
+            }
+            out.write("<li class=\"" + prevClass + "\">" + previousPageLink + "</li>");
           }
           //@TODO make number of links shown available to customize for cases where pagination needs to be larger or smaller
           int PRIOR_LIMIT = 3; //this might be useful to be dynamic
@@ -280,7 +304,7 @@ public class ULPagedListControlHandler extends TagSupport {
               } else {
                 link = pagedListInfo.getLinkForPage(i, renderResponse);
               }
-              out.write("<li><a href=\"" + getCompleteLink(link) + "\">" + i + "</a></li>");
+              out.write("<li class=\"page\"><a href=\"" + getCompleteLink(link) + "\">" + i + "</a></li>");
             }
             if (pageStart > 3) { // only show ... if there was a break in the counting
               out.write("<li>...</li>");
@@ -289,7 +313,7 @@ public class ULPagedListControlHandler extends TagSupport {
 
           for (int i = pageStart; i != pageEnd + 1; i++) {
             if (i == pagedListInfo.getCurrentPageNumber()) {
-              out.write("<li class=\"" + CLASS_ACTIVE + "\">" + i + "</li>");
+              out.write("<li class=\"" + CLASS_ACTIVE + "\"><a>" + i + "</a></li>");
             } else {
               String link = null;
               if (url != null) {
@@ -297,7 +321,7 @@ public class ULPagedListControlHandler extends TagSupport {
               } else {
                 link = pagedListInfo.getLinkForPage(i, renderResponse);
               }
-              out.write("<li><a href=\"" + getCompleteLink(link) + "\">" + i + "</a></li>");
+              out.write("<li class=\"page\"><a href=\"" + getCompleteLink(link) + "\">" + i + "</a></li>");
             }
           }
 
@@ -314,7 +338,7 @@ public class ULPagedListControlHandler extends TagSupport {
               } else {
                 link = pagedListInfo.getLinkForPage(i, renderResponse);
               }
-              out.write("<li><a href=\"" + getCompleteLink(link) + "\">" + i + "</a></li>");
+              out.write("<li class=\"page\"><a href=\"" + getCompleteLink(link) + "\">" + i + "</a></li>");
             }
           }
 
@@ -323,14 +347,21 @@ public class ULPagedListControlHandler extends TagSupport {
             if (pagedListInfo.getCurrentPageNumber() != pagedListInfo.getNumberOfPages()) {
               nextPage = pagedListInfo.getCurrentPageNumber() + 1;
               String nextLink = (useCtx ? ctx : "") + url + "/" + nextPage;
-              out.write("<li class=\"" + nextClass + "\"><a href=\"" + getCompleteLink(nextLink) + "\">Next</a></li>");
+              out.write("<li class=\"" + nextClass + "\"><a href=\"" + getCompleteLink(nextLink) + "\">Next &gt;</a></li>");
             } else {
-              out.write("<li class=\"" + nextClass + "\">Next</li>");
+              out.write("<li class=\"" + nextClass + "\"><a>Next &gt;</a></li>");
             }
           } else {
-            out.write("<li class=\"" + nextClass + "\">" + pagedListInfo.getNextPageLink("Next", "Next", null, renderResponse) + "</li>");
+            String nextPageLink = pagedListInfo.getNextPageLink("Next &gt;", "Next &gt;", null, renderResponse);
+            if (!nextPageLink.contains("<a")) {
+              nextPageLink = "<a>" + nextPageLink + "</a>";
+            }
+            out.write("<li class=\"" + nextClass + "\">" + nextPageLink + "</li>");
           }
           out.write("</ol>");
+        }
+        if (pagedListInfo.getMaxRecords() > 0 || pagedListInfo.getNumberOfPages() > 1) {
+          out.write("</div>");
         }
       } else {
         LOG.error("Control not found in request: " + object);
@@ -356,7 +387,25 @@ public class ULPagedListControlHandler extends TagSupport {
 
   private String getCompleteLink(String link) {
     if (StringUtils.hasText(link)) {
-      return link + (StringUtils.hasText(urlSuffix) ? urlSuffix : "");
+      link += (StringUtils.hasText(urlSuffix) ? urlSuffix : "");
+    }
+
+    if (StringUtils.hasText(urlParams)) {
+      String[] param = urlParams.split(",");
+      String paramString = "";
+      int i = 0;
+      if (param.length > 0) {
+        while (i < param.length) {
+          paramString += param[i];
+          if ((i + 1) < param.length) {
+            paramString += "&";
+          }
+          i++;
+        }
+        if (link.indexOf("?") == -1) {
+          link += "?" + paramString;
+        }
+      }
     }
     return link;
   }

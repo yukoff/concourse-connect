@@ -133,7 +133,7 @@
     window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Setup&pid=' + thisProjectId;
   }
   function cloneProject() {
-    popURL('CloneProject.do?command=Wizard&projectId=' + thisProjectId + '&popup=true','Clone_Wizard','500','550','yes','yes');
+    popURL('CloneProject.do?command=Wizard&projectId=' + thisProjectId + '&popup=true','500','550','yes','yes');
   }
 </script>
 <div id="menuItemContainer" class="menu">

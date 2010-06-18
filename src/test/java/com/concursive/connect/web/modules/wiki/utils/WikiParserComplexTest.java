@@ -51,7 +51,7 @@ import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 
 /**
- * Tests common project database access
+ * Tests wiki parser
  *
  * @author matt rajkowski
  * @created April 15, 2008
@@ -62,6 +62,8 @@ public class WikiParserComplexTest extends AbstractConnectionPoolTest {
       "<h1>Here's some logo.</h1>\n" +
           "<p><img title=\"This is our logo\" src=\"/show/some-project/wiki-image/concoursesuite.png\" alt=\"concoursesuite.png\" width=\"564\" height=\"92\" /></p>\n" +
           "<p>And some <strong>more</strong> content:</p>\n" +
+          "<h3><span>Collaboration</span></h3>\n" +
+          "<p><span>With the complexity of today&rsquo;s organizations, choosing the right tools to promote effective communication and collaboration is becoming even more crucial.</span></p>" +
           "<p>&nbsp;</p>\n" +
           "<ol>\n" +
           "<li>Line 1</li>\n" +
@@ -74,7 +76,7 @@ public class WikiParserComplexTest extends AbstractConnectionPoolTest {
           "<table border=\"0\">\n" +
           "<tbody>\n" +
           "<tr>\n" +
-          "<td colspan=\"2\">Here's some stuff</td>\n" +
+          "<th colspan=\"2\">Here's some stuff</th>\n" +
           "</tr>\n" +
           "<tr>\n" +
           "<td>Left Side</td>\n" +
@@ -97,7 +99,7 @@ public class WikiParserComplexTest extends AbstractConnectionPoolTest {
     project.setId(9999999);
     project.setTitle("Some Project");
     project.setUniqueId("some-project");
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, 9999999, project);
     CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
 
     String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "", project.getId());
@@ -107,6 +109,10 @@ public class WikiParserComplexTest extends AbstractConnectionPoolTest {
         "[[Image:concoursesuite.png|frame|This is our logo]]\n" +
         "\n" +
         "And some '''more''' content:\n" +
+        "\n" +
+        "=== Collaboration ===\n" +
+        "\n" +
+        "With the complexity of today’s organizations, choosing the right tools to promote effective communication and collaboration is becoming even more crucial.\n" +
         "\n" +
         "# Line 1\n" +
         "# Line 2\n" +

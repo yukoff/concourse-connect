@@ -65,7 +65,10 @@
     Project project = ProjectUtils.loadProject(projectId);
 %>
     <li>
-      <a href="${ctx}/show/<%= project.getUniqueId() %>/post/<%= document.getObjectId() %>"><%= StringUtils.toHtml(document.getTitle()) %></a>
+      <a href="${ctx}/show/<%= project.getUniqueId() %>/post/<%= document.getObjectId() %>"><%= StringUtils.toHtml(document.getTitle()) %></a><br />
+      <cite>
+      	<%= StringUtils.toHtml(document.getProjectTitle()) %>
+      </cite>
     </li>
 <%
   }

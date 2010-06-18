@@ -62,7 +62,7 @@
 %>
 <%@ include file="../initPage.jsp" %>
 <ccp:evaluate if="<%= languagePack.allowsTranslation(User.getId()) || languagePack.allowsApproval(User.getId()) %>">
-<script language="javascript">
+<script language="javascript" type="text/javascript">
   function init() {
     var frm = document.forms['addParams'];
     var len = document.forms['addParams'].elements.length;
@@ -118,7 +118,7 @@ Details
     <tr class="row<%= rowid %>">
       <input type="hidden" name="paramId<%= dictionaryItem.getId() %>" value="<%= dictionaryItem.getId() %>">
       <td align="center">
-        <a href="javascript:popURL('<%= ctx %>/Translation.do?command=Context&languageId=<%= languagePack.getId() %>&id=<%= dictionaryItem.getId() %>&popup=true','Translation_Context','600','300','yes','yes');"><%= dictionaryItem.getId() %></a>
+        <a href="javascript:popURL('<%= ctx %>/Translation.do?command=Context&languageId=<%= languagePack.getId() %>&id=<%= dictionaryItem.getId() %>&popup=true','600','300','yes','yes');"><%= dictionaryItem.getId() %></a>
       </td>
       <ccp:evaluate if="<%= !hasReturn(dictionaryItem.getDefaultValue()) %>">
         <td align="right">

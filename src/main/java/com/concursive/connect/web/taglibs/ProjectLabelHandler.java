@@ -110,7 +110,7 @@ public class ProjectLabelHandler extends TagSupport {
         final User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
         final String language = (null != user.getLanguage())
             ? user.getLanguage()
-            : prefs.get("SYSTEM.LANGUAGE");
+            : prefs.get(ApplicationPrefs.LANGUAGE);
         final String newName =
             prefs.getLabel("tabbedMenu.tab." + name, language);
         pageContext.getOut().write(((null != newName) ? newName : name));

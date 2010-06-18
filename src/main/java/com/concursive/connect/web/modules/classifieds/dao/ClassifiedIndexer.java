@@ -86,7 +86,7 @@ public class ClassifiedIndexer implements Indexer {
   public void add(IIndexerService writer, Connection db, IndexerContext context) throws SQLException, IOException {
     int count = 0;
     PreparedStatement pst = db.prepareStatement(
-        "SELECT classified_id, project_id, title, description, publish_date, expiration_date, modified " +
+        "SELECT classified_id, project_id, title, description, publish_date, expiration_date, modified, classified_category_id " +
             "FROM project_classified " +
             "WHERE project_id > -1 ");
     ResultSet rs = pst.executeQuery();
@@ -101,6 +101,7 @@ public class ClassifiedIndexer implements Indexer {
       classified.setPublishDate(rs.getTimestamp("publish_date"));
       classified.setExpirationDate(rs.getTimestamp("expiration_date"));
       classified.setModified(rs.getTimestamp("modified"));
+      classified.setCategoryId(rs.getInt("classified_category_id"));
       // add to index
       writer.indexAddItem(classified, false);
     }
@@ -127,6 +128,11 @@ public class ClassifiedIndexer implements Indexer {
     document.add(new Field("type", "classifieds", Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("classifiedId", String.valueOf(classified.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(classified.getProjectId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    if (classified.getCategoryId() != -1) {
+      document.add(new Field("categoryId", String.valueOf(classified.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    }
+    document.add(new Field("location", String.valueOf(ProjectUtils.loadProject(classified.getProjectId()).getLocation()), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("instanceId", String.valueOf(ProjectUtils.loadProject(classified.getProjectId()).getInstanceId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     if (classified.getProjectId() > -1) {
       // use the project's general access to speedup guest projects
       Project project = ProjectUtils.loadProject(classified.getProjectId());
@@ -141,6 +147,7 @@ public class ClassifiedIndexer implements Indexer {
       document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     document.add(new Field("title", classified.getTitle(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleFull", classified.getTitle(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("titleLower", classified.getTitle().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         classified.getTitle() + " " +

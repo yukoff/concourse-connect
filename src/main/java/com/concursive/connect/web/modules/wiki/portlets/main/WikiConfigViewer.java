@@ -106,7 +106,7 @@ public class WikiConfigViewer implements IPortletViewer {
     String category = PortalUtils.getPageView(request);
     String object = PortalUtils.getPageParameter(request);
 
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     if (category != null) {
       // A list is being configured
       if ("lists".equals(category) && object != null) {

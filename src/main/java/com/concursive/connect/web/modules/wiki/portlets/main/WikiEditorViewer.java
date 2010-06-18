@@ -46,7 +46,6 @@
 package com.concursive.connect.web.modules.wiki.portlets.main;
 
 import com.concursive.commons.text.StringUtils;
-import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -61,7 +60,7 @@ import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -125,7 +124,7 @@ public class WikiEditorViewer implements IPortletViewer {
     String templateId = request.getParameter("template");
 
     // Load the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
     // Determine if a template is requested
     if (!StringUtils.hasText(wiki.getContent()) && templateId != null && !"-1".equals(templateId)) {

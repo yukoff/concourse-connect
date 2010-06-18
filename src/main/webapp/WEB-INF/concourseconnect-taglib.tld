@@ -114,6 +114,11 @@
       <rtexprvalue>true</rtexprvalue>
     </attribute>
     <attribute>
+      <name>showLink</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
       <name>showLinkTitle</name>
       <required>no</required>
       <rtexprvalue>true</rtexprvalue>
@@ -531,6 +536,11 @@
     </attribute>
     <attribute>
       <name>urlSuffix</name>
+      <required>no</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>urlParams</name>
       <required>no</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>

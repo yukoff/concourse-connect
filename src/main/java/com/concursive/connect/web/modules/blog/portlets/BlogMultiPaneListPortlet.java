@@ -86,7 +86,7 @@ public class BlogMultiPaneListPortlet extends GenericPortlet {
         newsList.setForUser(thisUser.getId());
         newsList.setPagedListInfo(tmpInfo);
         newsList.setCurrentNews(Constants.TRUE);
-        newsList.buildList(PortalUtils.getConnection(request));
+        newsList.buildList(PortalUtils.useConnection(request));
         request.setAttribute(BLOG_LIST, newsList);
         defaultView = VIEW_PAGE_ALL;
       }

@@ -85,7 +85,7 @@ public class CloneBlogAction implements IPortletAction {
     int id = getPageViewAsInt(request);
 
     // Load the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     BlogPost thisArticle = new BlogPost(db, id, project.getId());
 
     // Insert a copy of the record

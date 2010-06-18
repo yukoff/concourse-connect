@@ -58,4 +58,7 @@
   <div class="portlet-message-success">
     <c:out value="${successMessage}"/>
   </div>
+  <c:if test="${'true' eq param.popup || 'true' eq popup}">
+    <input type="button" value="Ok" class="cancel" id="panelCloseButton">
+  </c:if>
 </div>

@@ -45,15 +45,16 @@
  */
 package com.concursive.connect.web.modules.discussion.portlets.recentDiscussions;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.discussion.dao.TopicList;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.getUser;
 import com.concursive.connect.web.utils.PagedListInfo;
 
 import javax.portlet.RenderRequest;
@@ -75,6 +76,9 @@ public class RecentDiscussionsViewer implements IPortletViewer {
   private static final String PREF_TITLE = "title";
   private static final String PREF_LIMIT = "limit";
   private static final String PREF_CATEGORY = "category";
+  private static final String PREF_PREF_MINIMUM_RATING_COUNT = "minimumRatingCount";
+  private static final String PREF_PREF_MINIMUM_RATING_AVG = "minimumRatingAvg";
+  private static final String PREF_FILTER_INAPPROPRIATE = "filterInappropriate";
 
   // Object Results
   private static final String TITLE = "title";
@@ -84,10 +88,19 @@ public class RecentDiscussionsViewer implements IPortletViewer {
 
   public String doView(RenderRequest request, RenderResponse response)
       throws Exception {
+
     String defaultView = VIEW_PAGE;
+
+    // Preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
     String limit = request.getPreferences().getValue(PREF_LIMIT, null);
-    Connection db = PortalUtils.getConnection(request);
+
+    // Filter Preferences
+    String minimumRatingCount = request.getPreferences().getValue(PREF_PREF_MINIMUM_RATING_COUNT, null);
+    String minimumRatingAvg = request.getPreferences().getValue(PREF_PREF_MINIMUM_RATING_AVG, null);
+    String filterInappropriate = request.getPreferences().getValue(PREF_FILTER_INAPPROPRIATE, null);
+
+    Connection db = PortalUtils.useConnection(request);
 
     //Get the project if available
     Project project = PortalUtils.findProject(request);
@@ -98,23 +111,39 @@ public class RecentDiscussionsViewer implements IPortletViewer {
     recentIssueListInfo.setItemsPerPage(limit);
     recentTopicList.setPagedListInfo(recentIssueListInfo);
 
-    //if no project is available, look for category in preferences
+    // Filters based on ratings
+    if (StringUtils.hasText(minimumRatingCount) && StringUtils.isNumber(minimumRatingCount)) {
+      recentTopicList.setMinimumRatingCount(minimumRatingCount);
+    }
+    if (StringUtils.hasText(minimumRatingAvg)) {
+      recentTopicList.setMinimumRatingAvg(minimumRatingAvg);
+    }
+    if ("true".equals(filterInappropriate)) {
+      recentTopicList.setFilterInappropriate(Constants.TRUE);
+    }
+
+    // if no project is available, look for category in preferences
+    User thisUser = PortalUtils.getUser(request);
     if (project == null) {
       recentTopicList.setInstanceId(PortalUtils.getInstance(request).getId());
-      String category = request.getPreferences().getValue(PREF_CATEGORY, null);
-      ProjectCategoryList categories = new ProjectCategoryList();
-      categories.setEnabled(true);
-      categories.setTopLevelOnly(true);
-      if (category != null) {
-        categories.setCategoryNameLowerCase(category.toLowerCase());
+      boolean privateCategory = false;
+      String categoryValue = request.getPreferences().getValue(PREF_CATEGORY, null);
+      if (categoryValue != null) {
+        ProjectCategoryList categories = new ProjectCategoryList();
+        categories.setEnabled(true);
+        categories.setTopLevelOnly(true);
+        categories.setCategoryDescriptionLowerCase(categoryValue.toLowerCase());
+        categories.buildList(db);
+        if (categories.size() > 0) {
+          ProjectCategory category = categories.get(0);
+          if (category.getSensitive()) {
+            privateCategory = true;
+          }
+          recentTopicList.setProjectCategoryId(category.getId());
+        }
       }
-      categories.buildList(db);
-      if (categories.size() > 0) {
-        recentTopicList.setProjectCategoryId(categories.get(0).getId());
-      }
-      recentTopicList.setPublicProjectIssues(Constants.TRUE);
       if (PortalUtils.getDashboardPortlet(request).isCached()) {
-        if (PortalUtils.canShowSensitiveData(request)) {
+        if (PortalUtils.canShowSensitiveData(request) || privateCategory) {
           // Use the most generic settings since this portlet is cached
           recentTopicList.setForParticipant(Constants.TRUE);
         } else {
@@ -123,15 +152,17 @@ public class RecentDiscussionsViewer implements IPortletViewer {
         }
       } else {
         // Use the current user's setting
-        User thisUser = PortalUtils.getUser(request);
-        recentTopicList.setForUser(thisUser.getId());
+        if (thisUser.isLoggedIn()) {
+          recentTopicList.setForUser(thisUser.getId());
+        } else {
+          recentTopicList.setPublicProjectIssues(Constants.TRUE);
+        }
       }
       request.setAttribute(SHOW_PROJECT_TITLE, "true");
       request.setAttribute(SHOW_DISCUSSION_LINK, "true");
     } else {
       //determine if the user has access to view discussion topics of the project
-      User user = getUser(request);
-      if (ProjectUtils.hasAccess(project.getId(), user, "project-discussion-forums-view")) {
+      if (ProjectUtils.hasAccess(project.getId(), thisUser, "project-discussion-forums-view")) {
         request.setAttribute(SHOW_DISCUSSION_LINK, "true");
       }
       recentTopicList.setProjectId(project.getId());

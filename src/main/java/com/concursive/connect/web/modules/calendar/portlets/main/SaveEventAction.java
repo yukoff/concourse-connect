@@ -45,7 +45,6 @@
  */
 package com.concursive.connect.web.modules.calendar.portlets.main;
 
-import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
 import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
@@ -92,7 +91,7 @@ public class SaveEventAction implements IPortletAction {
     meeting.setModifiedBy(user.getId());
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Save the record
     boolean recordSaved = false;
@@ -114,7 +113,10 @@ public class SaveEventAction implements IPortletAction {
       meeting.setDimdimMeetingId(previousMeeting.getDimdimMeetingId());
       meeting.setDimdimUrl(previousMeeting.getDimdimUrl());
       meeting.setDimdimUsername(previousMeeting.getDimdimUsername());
-      meeting.setDimdimPassword(previousMeeting.getDimdimPassword());
+      // Only set and show the password if this is the previous user
+      if (user.getId() == previousMeeting.getEnteredBy()) {
+        meeting.setDimdimPassword(previousMeeting.getDimdimPassword());
+      }
       meeting.setDimdimMeetingKey(previousMeeting.getDimdimMeetingKey());
 
       // Verify the record matches the specified project

@@ -46,6 +46,7 @@
 package com.concursive.connect.web.modules.profile.portlets;
 
 import com.concursive.commons.text.StringUtils;
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.badges.dao.ProjectBadgeList;
 import com.concursive.connect.web.modules.common.social.tagging.dao.TagList;
 import com.concursive.connect.web.modules.login.dao.User;
@@ -114,7 +115,7 @@ public class ProjectProfilePortlet extends GenericPortlet {
       throws PortletException, IOException {
     Connection db = null;
     try {
-      db = PortalUtils.getConnection(request);
+      db = PortalUtils.useConnection(request);
 
       String defaultView = VIEW_PAGE;
 
@@ -345,7 +346,7 @@ public class ProjectProfilePortlet extends GenericPortlet {
           ProjectCategoryList categories = new ProjectCategoryList();
           categories.setEnabled(true);
           categories.setTopLevelOnly(true);
-          categories.setCategoryNameLowerCase(category.toLowerCase());
+          categories.setCategoryDescriptionLowerCase(category.toLowerCase());
           categories.buildList(db);
           if (categories.size() > 0) {
             projectList.setCategoryId(categories.get(0).getId());
@@ -370,8 +371,14 @@ public class ProjectProfilePortlet extends GenericPortlet {
           }
         }
         // Determine which projects can be shown
-        if (publicOnly != null) {
-          projectList.setPublicOnly("true".equals(publicOnly));
+        if ("true".equals(publicOnly)) {
+          if (PortalUtils.canShowSensitiveData(request)) {
+            // Limit the data to a participant
+            projectList.setForParticipant(Constants.TRUE);
+          } else {
+            // Use the most generic settings
+            projectList.setPublicOnly(true);
+          }
         }
         if (approvedOnly != null) {
           projectList.setApprovedOnly("true".equals(approvedOnly));
@@ -383,6 +390,7 @@ public class ProjectProfilePortlet extends GenericPortlet {
           projectList.setMinimumAverageRating(minimumAverageRating);
         }
         // Leave off the member based ones due to exposing images and such
+        // @todo... remove this after making sure the portlet doesn't show anything it's not supposed to
         projectList.setRequiresMembership(false);
 
         PagedListInfo randomProjectListInfo = PortalUtils.getPagedListInfo(request, "randomProjectListInfo");

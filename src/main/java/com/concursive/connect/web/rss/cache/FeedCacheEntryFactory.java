@@ -189,7 +189,7 @@ public class FeedCacheEntryFactory implements CacheEntryFactory {
           ProjectCategoryList projectCategoryList = new ProjectCategoryList();
           projectCategoryList.setTopLevelOnly(true);
           projectCategoryList.setEnabled(true);
-          projectCategoryList.setCategoryNameLowerCase(category.toLowerCase());
+          projectCategoryList.setCategoryDescriptionLowerCase(category.toLowerCase());
           projectCategoryList.buildList(db);
           if (projectCategoryList.size() >= 1) {
             projectCategoryId = projectCategoryList.get(0).getId();

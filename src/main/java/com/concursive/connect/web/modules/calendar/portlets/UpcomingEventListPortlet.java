@@ -57,6 +57,7 @@ import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.commons.text.StringUtils;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -91,27 +92,24 @@ public class UpcomingEventListPortlet extends GenericPortlet {
   private static final String LIMIT = "limit";
   private static final String INCLUDE_CATEGORY_LIST = "category";
   private static final String TITLE = "title";
+  private static final String PREF_SHOW_LINKS = "showLinks";
   private static final String PREF_SUCCESS_MESSAGE = "successMessage";
+  private static final String INCLUDE_WEBCASTS_ONLY = "webcastsOnly";
   private static final String SUCCESS_MESSAGE = "successMessage";
 
   public void doView(RenderRequest request, RenderResponse response) throws PortletException, IOException {
     // Prefs
     request.setAttribute(TITLE, request.getPreferences().getValue(TITLE, "Upcoming Events"));
+    request.setAttribute(PREF_SHOW_LINKS, request.getPreferences().getValue(PREF_SHOW_LINKS, "true"));
     String view = VIEW_PAGE;
     String viewType = request.getParameter(VIEW_TYPE);
     if (viewType == null) {
       viewType = (String) request.getPortletSession().getAttribute(VIEW_TYPE);
     }
     User thisUser = PortalUtils.getUser(request);
+    String webcastsOnly = request.getPreferences().getValue(INCLUDE_WEBCASTS_ONLY, "false"); 
     String includeCategoryListString = request.getPreferences().getValue(INCLUDE_CATEGORY_LIST, "");
     String listSizeString = request.getPreferences().getValue(LIMIT, "10");
-
-    // Determine today's date for queries
-    Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.HOUR_OF_DAY, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MILLISECOND, 0);
 
     int listSize = Integer.parseInt(listSizeString);
     Collection<String> includeCategoryList = Arrays.asList(includeCategoryListString.split(","));
@@ -129,7 +127,7 @@ public class UpcomingEventListPortlet extends GenericPortlet {
       }
       // This portlet can use the project in the request scope so check that last
       if (project == null) {
-        project = PortalUtils.getProject(request);
+        project = PortalUtils.findProject(request);
       }
       if (project != null) {
         projectId = project.getId();
@@ -147,7 +145,7 @@ public class UpcomingEventListPortlet extends GenericPortlet {
         request.setAttribute(SUCCESS_MESSAGE, request.getPreferences().getValue(PREF_SUCCESS_MESSAGE, null));
         request.setAttribute(PROJECT_URL, request.getContextPath() + "/show/" + p.getUniqueId());
       } else {
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
         allCategories.buildList(db);
 
         // For each category get all the public projects that match the category id
@@ -165,19 +163,17 @@ public class UpcomingEventListPortlet extends GenericPortlet {
         pagedListInfo.setColumnToSortBy("m.start_date");
         pagedListInfo.setSortOrder("asc");
 
-        // Projects to show
+        // Show the current or upcoming events
         events.setPagedListInfo(pagedListInfo);
+        events.setEventSpanStart(new Timestamp(System.currentTimeMillis()));
+
+        // Show webcasts only
+        if (StringUtils.isTrue(webcastsOnly)) {
+          events.setIsWebcast(true);
+        }
         if (projectId > -1) {
           // Show the meetings for a specific project
           events.setProjectId(projectId);
-          events.buildList(db);
-          for (Meeting m : events) {
-            Project p = projectByIdMap.get(m.getProjectId()); // check if project was already added
-            if (p == null) {
-              p = ProjectUtils.loadProject(m.getProjectId());
-            }
-            projectByIdMap.put(p.getId(), p);
-          }
         } else {
           events.setInstanceId(PortalUtils.getInstance(request).getId());
           if (PortalUtils.getDashboardPortlet(request).isCached()) {
@@ -189,21 +185,26 @@ public class UpcomingEventListPortlet extends GenericPortlet {
               events.setPublicOpenProjectsOnly(true);
             }
           } else {
-            // Use the current user's setting
-            thisUser = PortalUtils.getUser(request);
-            events.setForUser(thisUser.getId());
+            if (thisUser.isLoggedIn()) {
+              // Use the current user's setting
+              events.setForUser(thisUser.getId());
+            } else {
+              // Use the most generic settings
+              events.setPublicOpenProjectsOnly(true);
+            }
           }
           // Show meetings that exist for the specified categories
-          events.setAlertRangeStart(new Timestamp(calendar.getTime().getTime()));
           events.setProjectCategoryIdList(includeCategoryIdList);
-          events.buildList(db);
-          for (Meeting m : events) {
-            Project p = projectByIdMap.get(m.getProjectId()); // check if project was already added
-            if (p == null) {
-              p = ProjectUtils.loadProject(m.getProjectId());
-            }
-            projectByIdMap.put(p.getId(), p);
+        }
+
+        // Build the list
+        events.buildList(db);
+        for (Meeting m : events) {
+          Project p = projectByIdMap.get(m.getProjectId()); // check if project was already added
+          if (p == null) {
+            p = ProjectUtils.loadProject(m.getProjectId());
           }
+          projectByIdMap.put(p.getId(), p);
         }
 
         // Get all meeting attendee records for this user
@@ -243,7 +244,7 @@ public class UpcomingEventListPortlet extends GenericPortlet {
   public void processAction(ActionRequest request, ActionResponse response) throws PortletException {
     MeetingAttendee attendee = null;
     Meeting meeting = null;
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     User user = PortalUtils.getUser(request);
     String meetingIdStr = request.getParameter("meetingId");
     int meetingId = meetingIdStr == null ? -1 : Integer.parseInt(meetingIdStr);

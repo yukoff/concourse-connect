@@ -92,7 +92,7 @@ public class DeleteFileAction implements IPortletAction {
     String filePath = PortalUtils.getFileLibraryPath(request, "projects");
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     FileItem thisItem = new FileItem(db, id, project.getId(), Constants.PROJECTS_FILES);

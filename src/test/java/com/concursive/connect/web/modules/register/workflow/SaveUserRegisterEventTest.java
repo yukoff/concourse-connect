@@ -125,6 +125,7 @@ public class SaveUserRegisterEventTest extends AbstractWorkflowManagerTest {
     history.delete(db);
 
     // Delete the user record
+    user.getProfileProject().delete(db, null);
     int deleteResult = user.delete(db);
     assertTrue("Project wasn't deleted", deleteResult != 0);
     // Try to find the previously deleted user

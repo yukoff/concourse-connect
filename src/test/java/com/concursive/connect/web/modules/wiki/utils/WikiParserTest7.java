@@ -48,9 +48,9 @@ package com.concursive.connect.web.modules.wiki.utils;
 import com.concursive.commons.db.AbstractConnectionPoolTest;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
-import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 
 import java.util.HashMap;
 
@@ -67,9 +67,20 @@ public class WikiParserTest7 extends AbstractConnectionPoolTest {
           "[[API examples]]\n" +
           "[[Backup and Restore]]\n" +
           "[[UI Configurability]]\n" +
+          "Look at the [[|:calendar|]]\n" +
+          "Look at the [[|9999999:calendar|]]\n" +
+          "[[|9999999:calendar||See our calendar]]\n" +
           "\n";
 
   public void testWikiToHtmlLinks() throws Exception {
+    // Stage a project and ticket for the cache
+    Project project = new Project();
+    project.setId(9999999);
+    project.setTitle("Some Project");
+    project.setUniqueId("some-project");
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, 9999999, project);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", 9999999);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_TICKET_ID_CACHE, "9999999-1", 200);
     // Convert wiki to html
     Wiki thisWiki = new Wiki();
     thisWiki.setContent(wikiSample);
@@ -80,7 +91,11 @@ public class WikiParserTest7 extends AbstractConnectionPoolTest {
         "<p><a class=\"wikiLink newWiki\" href=\"/show//wiki/Subversion+Details\">Subversion Details</a><br />" +
             "<a class=\"wikiLink newWiki\" href=\"/show//wiki/API+examples\">API examples</a><br />" +
             "<a class=\"wikiLink newWiki\" href=\"/show//wiki/Backup+and+Restore\">Backup and Restore</a><br />" +
-            "<a class=\"wikiLink newWiki\" href=\"/show//wiki/UI+Configurability\">UI Configurability</a></p>\n", html);
+            "<a class=\"wikiLink newWiki\" href=\"/show//wiki/UI+Configurability\">UI Configurability</a><br />" +
+            "Look at the <a class=\"wikiLink external\" href=\"/show//calendar\">calendar</a><br />" +
+            "Look at the <a class=\"wikiLink denied\" href=\"#\" onmouseover=\"window.status='\\/show\\/some-project\\/calendar;'\">calendar</a><br />" +
+            "<a class=\"wikiLink denied\" href=\"#\" onmouseover=\"window.status='\\/show\\/some-project\\/calendar;'\">See our calendar</a></p>" +
+            "\n", html);
   }
 
   protected final static String htmlSample =
@@ -96,9 +111,9 @@ public class WikiParserTest7 extends AbstractConnectionPoolTest {
     project.setId(9999999);
     project.setTitle("Some Project");
     project.setUniqueId("some-project");
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_TICKET_ID_CACHE, "9999999-1", new Integer(200));
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, 9999999, project);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", 9999999);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_TICKET_ID_CACHE, "9999999-1", 200);
 
     String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "", project.getId());
     assertEquals("" +

@@ -93,7 +93,7 @@ public class PendingPrivateMessagesViewer implements IPortletViewer {
       return null;
     }
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     PrivateMessageList privateMessageList = new PrivateMessageList();
     privateMessageList.setProjectId(project.getId());

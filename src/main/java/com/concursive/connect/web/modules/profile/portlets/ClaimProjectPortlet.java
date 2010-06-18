@@ -175,7 +175,7 @@ public class ClaimProjectPortlet extends GenericPortlet {
       // Process the claim
       try {
         // Determine the database connection to use
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
 
         boolean isSuccess = claimProject(project, user, request, db);
         if (isSuccess) {

@@ -130,7 +130,9 @@ public class SaveMeetingEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] scheduled [[|" + project.getId() + ":event|" + meeting.getId() + "|Dummy Meeting Title]] in [[|" + project.getId() + ":profile||" + project.getTitle() + "]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||" + project.getTitle() + "]] " +
+            "scheduled [[|" + project.getId() + ":event|" + meeting.getId() + "|Dummy Meeting Title]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)
@@ -212,7 +214,9 @@ public class SaveMeetingEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] re-scheduled [[|" + project.getId() + ":event|" + meeting.getId() + "|Dummy Meeting Title]] in [[|" + project.getId() + ":profile||" + project.getTitle() + "]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||" + project.getTitle() + "]] " +
+            "re-scheduled [[|" + project.getId() + ":event|" + meeting.getId() + "|Dummy Meeting Title]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

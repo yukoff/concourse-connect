@@ -52,6 +52,7 @@ import com.concursive.commons.xml.XMLUtils;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
+import com.concursive.connect.web.modules.members.utils.TeamMemberUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.PortalUtils;
@@ -103,7 +104,7 @@ public class ProjectActionsPortlet extends GenericPortlet {
 
       // Object from the portal
       if (project == null) {
-        project = PortalUtils.getProject(request);
+        project = PortalUtils.findProject(request);
       }
 
       // The applicationPrefs
@@ -182,17 +183,13 @@ public class ProjectActionsPortlet extends GenericPortlet {
               valid = false;
             }
           } else if ("userCanRequestToJoin".equals(rule)) {
-            boolean canRequestToJoin =
-                (thisUser != null && thisUser.getId() > 0 &&
-                    (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
-                    project.getFeatures().getMembershipRequired() &&
-                    (member == null || member.getId() == -1));
+            boolean canRequestToJoin = TeamMemberUtils.userCanRequestToJoin(thisUser, project);
             if (!canRequestToJoin) {
               valid = false;
             }
           } else if ("userCanJoin".equals(rule)) {
             // TODO: Update the code that adds the user, and set the team member status to pending, then remove the membership required part
-            boolean canJoin = (thisUser.getId() > 0 && project.getFeatures().getAllowParticipants() && !project.getFeatures().getMembershipRequired() && member == null);
+            boolean canJoin = TeamMemberUtils.userCanJoin(thisUser, project);
             if (!canJoin) {
               valid = false;
             }
@@ -244,8 +241,13 @@ public class ProjectActionsPortlet extends GenericPortlet {
               valid = false;
             }
           } else if ("userCanReview".equals(rule)) {
+            // Users cannot review themself, and must be logged in
             boolean isUserCanReview = thisUser != null && thisUser.isLoggedIn() && project.getOwner() != thisUser.getId();
             if (!isUserCanReview) {
+              valid = false;
+            }
+            // If the tab isn't visible, can't add a review
+            if (!project.getFeatures().getShowReviews()) {
               valid = false;
             }
           } else {

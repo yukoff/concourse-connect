@@ -100,6 +100,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
   private static final String PREF_ALLOW_PARTICIPANTS = "allowParticipants"; //true (or) false
   private static final String PREF_SHOW_IS_OWNER = "showIsOwner"; //true (or) false
   private static final String PREF_SHOW_ALLOW_GUESTS_OPTION = "showAllowGuestsOption"; //true (or) false
+  private static final String PREF_SHOW_ALLOW_PARTICIPANTS_OPTION = "showAllowParticipantsOption"; //true (or) false
   private static final String PREF_REQUIRES_MEMBERSHIP = "requiresMembership"; //true (or) false;
   private static final String PREF_SHOW_REQUIRES_MEMBERSHIP_OPTION = "showRequiresMembershipOption"; //true (or) false;
   private static final String PREF_MODULES = "modules"; //value array
@@ -222,7 +223,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
           request.getPortletSession().removeAttribute(PROJECT);
           request.getPortletSession().removeAttribute("viewType");
         } else if ("getSubCategories".equals(viewType)) {
-          Connection db = PortalUtils.getConnection(request);
+          Connection db = PortalUtils.useConnection(request);
           String categoryId = request.getParameter("category");
           ProjectCategoryList subCategories = new ProjectCategoryList();
           subCategories.setEnabled(true);
@@ -263,7 +264,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
             request.setAttribute(MESSAGE, "You need to be logged in to perform this action");
           } else {
             // Show the add a project form, possibly partially filled out
-            Connection db = PortalUtils.getConnection(request);
+            Connection db = PortalUtils.useConnection(request);
 
             // A list of possible categories
             ProjectCategoryList categories = new ProjectCategoryList();
@@ -303,7 +304,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
             if ((isSubCategoryModifiable != null && "true".equals(isSubCategoryModifiable)) ||
                 (subCategoryValue != null)) {
               ProjectCategoryList subCategories = new ProjectCategoryList();
-              subCategories.setCategoryName(subCategoryValue);
+              subCategories.setCategoryDescription(subCategoryValue);
               if (category != null) {
                 subCategories.setParentCategoryId(category.getId());
               } else if (allowedCategoryList != null && allowedCategoryList.size() > 0) {
@@ -373,7 +374,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
           boolean isSpawnMeeting = "true".equals(request.getPreferences().getValue(PREF_SPAWN_MEETING, "false"));
           if (isSpawnMeeting) {
             Meeting meeting = Meeting.createMeetingFromProject(project);
-            meeting.insert(PortalUtils.getConnection(request));
+            meeting.insert(PortalUtils.useConnection(request));
           }
         } else {
           request.getPortletSession().setAttribute("viewType", "saveFailure");
@@ -392,7 +393,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
    * @return
    */
   private Project saveProject(ActionRequest request) throws Exception {
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     // Populate the project information
     Project project = new Project();
     PortalUtils.populateObject(project, request);
@@ -469,14 +470,12 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
     if ("false".equals(request.getPreferences().getValue(PREF_SHOW_ALLOW_GUESTS_OPTION, "false"))) {
       project.getFeatures().setAllowGuests(request.getPreferences().getValue(PREF_ALLOW_GUESTS, "false"));
     }
-    // Override the guests option if the site is private
-    if (category.getSensitive()) {
-      project.getFeatures().setAllowGuests(false);
-    }
 
     // Determines if guests are promoted to participant if they are logged in
     project.getFeatures().setUpdateAllowParticipants(true);
-    project.getFeatures().setAllowParticipants(request.getPreferences().getValue(PREF_ALLOW_PARTICIPANTS, "false"));
+    if ("false".equals(request.getPreferences().getValue(PREF_SHOW_ALLOW_PARTICIPANTS_OPTION, "false"))) {
+      project.getFeatures().setAllowParticipants(request.getPreferences().getValue(PREF_ALLOW_PARTICIPANTS, "false"));
+    }
 
     // Determines if membership is required to see any data besides the project details
     project.getFeatures().setUpdateMembershipRequired(true);
@@ -487,6 +486,14 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
     // RULE: If membership is required, downgrade allowing participants
     if (project.getFeatures().getMembershipRequired() && project.getFeatures().getAllowParticipants()) {
       project.getFeatures().setAllowParticipants(false);
+    }
+
+    // Override the guests option if the site is private
+    if (category.getSensitive()) {
+      if (project.getFeatures().getAllowGuests()) {
+        project.getFeatures().setAllowGuests(false);
+        project.getFeatures().setAllowParticipants(true);
+      }
     }
 
     // Set the instance id, if there is one

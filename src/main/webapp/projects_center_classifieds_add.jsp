@@ -112,6 +112,7 @@
             <%= classified.getId() == -1 ? "New Post" : "Update an Existing Post" %>
           </legend>
           <%= showError(request, "actionError") %>
+          <div class="portlet-message-info"><p>Ads auto-expire in 45 days</p></div>
 
           <label for="title"><ccp:label name="projectsCenterClassifieds.add.title">Title</ccp:label> <span class="required">*</span></label>
           <%= showAttribute(request, "titleError") %>

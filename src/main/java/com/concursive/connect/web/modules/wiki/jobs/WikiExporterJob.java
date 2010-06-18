@@ -49,11 +49,13 @@ package com.concursive.connect.web.modules.wiki.jobs;
 import com.concursive.commons.date.DateUtils;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.scheduler.SchedulerUtils;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.beans.WikiExportBean;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.wiki.utils.WikiPDFContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiPDFUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
 import org.apache.commons.logging.Log;
@@ -136,7 +138,12 @@ public class WikiExporterJob implements StatefulJob {
             LOG.debug("Found the requested file in the FileLibrary (" + wiki.getId() + ")...");
           } else {
             LOG.debug("Generating a new file for wiki (" + wiki.getId() + ")...");
-            WikiPDFUtils.exportToFile(thisProject, wiki, exportFile, new HashMap(), db, prefs.get("FILELIBRARY"), bean);
+            // Load wiki image library dimensions (cache in future)
+            HashMap<String, ImageInfo> imageList = WikiUtils.buildImageInfo(db, wiki.getProjectId());
+            // Use a context to hold a bunch of stuff
+            WikiPDFContext pdfContext = new WikiPDFContext(thisProject, wiki, exportFile, imageList, prefs.get("FILELIBRARY"), bean);
+            // Execute the export
+            WikiPDFUtils.exportToFile(pdfContext, db);
           }
           bean.setExportedFile(exportFile);
           bean.setFileSize(exportFile.length());

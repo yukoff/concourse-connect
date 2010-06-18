@@ -137,7 +137,7 @@ public class ClassifiedListViewer implements IPortletViewer {
     }
 
     // Determine the database connection to use
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
 
     // Classifieds to show - use paged data for sorting
     PagedListInfo pagedListInfo = new PagedListInfo();
@@ -146,6 +146,9 @@ public class ClassifiedListViewer implements IPortletViewer {
 
     ClassifiedList classifiedList = new ClassifiedList();
     classifiedList.setPagedListInfo(pagedListInfo);
+    if (project == null) {
+      classifiedList.setInstanceId(PortalUtils.getInstance(request).getId());
+    }
     classifiedList.setGroupId(thisUser.getGroupId());
     if (categoryId > -1) {
       classifiedList.setProjectCategoryId(categoryId);

@@ -54,6 +54,7 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.reviews.dao.ProjectRatingList;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.connect.Constants;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -77,7 +78,7 @@ public class RecentUserReviewsPortlet extends GenericPortlet {
   private static final String SHOW_PROJECT_TITLE = "showProjectTitle";
   private static final String SHOW_PROJECT_CATEGORY = "showProjectCategory";
   private static final String PAGED_LIST_INFO = "pagedListInfo";
-  private static final String USER = "user";
+  private static final String USER = "profileUser";
 
   // Preferences
   private static final String PREF_TITLE = "title";
@@ -139,7 +140,7 @@ public class RecentUserReviewsPortlet extends GenericPortlet {
       }
 
       try {
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
 
         User profileUser = UserUtils.loadUser(userId);
         request.setAttribute(USER, profileUser);
@@ -181,7 +182,7 @@ public class RecentUserReviewsPortlet extends GenericPortlet {
           projectRatingList.setGroupId(thisUser.getGroupId());
           projectRatingList.setForUser(thisUser.getId());
         }
-        projectRatingList.buildList(PortalUtils.getConnection(request));
+        projectRatingList.buildList(PortalUtils.useConnection(request));
         request.setAttribute(PROJECT_RATING_LIST, projectRatingList);
 
         // Display preferences...

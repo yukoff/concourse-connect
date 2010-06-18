@@ -49,6 +49,8 @@ import com.concursive.connect.indexer.IIndexerSearch;
 import com.concursive.connect.indexer.IndexerQueryResultList;
 
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.portal.PortalUtils;
+
 import javax.portlet.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -97,6 +99,10 @@ public class SearchResultsByRecentBlogPostsPortlet extends GenericPortlet {
         if (categoryId > -1) {
           queryString += " AND (projectCategoryId:" + categoryId + ")";
         }
+      }
+      // Fetch only blog posts in this instanceId
+      if (PortalUtils.getInstance(request).getId() != -1){
+      	queryString += " AND (instanceId:" + PortalUtils.getInstance(request).getId() + ")";
       }
 
       // Customize the query and take into account a date range  [20030101 TO 20040101]

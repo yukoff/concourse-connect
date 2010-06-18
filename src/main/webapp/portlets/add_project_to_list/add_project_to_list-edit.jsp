@@ -56,9 +56,7 @@
   <c:set var="disableInput">disabled</c:set>
 </c:if>
 <div class="addProjectToListContainer">
-  <c:if test="${!empty actionError}">
-      <p><span class="error"><c:out value="${actionError}"/></span></p>
-  </c:if>
+	<%= showError(request, "actionError") %>
   <div class="formContainer">
     <div class="leftColumn">
       <portlet:actionURL var="submitContentUrl" portletMode="view" />

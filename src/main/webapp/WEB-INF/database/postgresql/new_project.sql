@@ -70,7 +70,8 @@ CREATE TABLE lookup_project_category (
   parent_category INTEGER,
   style TEXT,
   style_enabled BOOLEAN DEFAULT false,
-  is_sensitive BOOLEAN DEFAULT false
+  is_sensitive BOOLEAN DEFAULT false,
+  label VARCHAR(80) NOT NULL
 );
 
 CREATE SEQUENCE lookup_project_ass_code_seq;
@@ -252,12 +253,22 @@ CREATE TABLE projects (
   style_enabled BOOLEAN DEFAULT false NOT NULL,
   messages_enabled BOOLEAN DEFAULT true NOT NULL,
   messages_label VARCHAR(50),
-  messages_order INTEGER DEFAULT 0 NOT NULL,
+  messages_order INTEGER DEFAULT 18 NOT NULL,
   messages_description VARCHAR(255),
   system_default BOOLEAN DEFAULT false NOT NULL,
   shortdescription VARCHAR(1000) NOT NULL,
   instance_id INTEGER REFERENCES instances(instance_id),
-  twitter_id  VARCHAR(255)
+  twitter_id VARCHAR(255),
+  facebook_page VARCHAR(255),
+  youtube_channel_id VARCHAR(255),
+  ustream_id VARCHAR(1000),
+  livestream_id VARCHAR(255),
+  justintv_id VARCHAR(255),
+  qik_id VARCHAR(255),
+  webcasts_enabled BOOLEAN DEFAULT true NOT NULL,
+  webcasts_label VARCHAR(50),
+  webcasts_order INTEGER DEFAULT 17 NOT NULL,
+  webcasts_description VARCHAR(255)
 );
 CREATE INDEX "projects_idx"
   ON "projects"
@@ -712,7 +723,8 @@ CREATE TABLE project_calendar_meeting (
   dimdim_meetingid VARCHAR(255),
   dimdim_username VARCHAR(255),
   dimdim_password VARCHAR(255),
-  dimdim_meeting_key VARCHAR(255)
+  dimdim_meeting_key VARCHAR(255),
+  is_webcast BOOLEAN DEFAULT false
 );
 CREATE INDEX project_cal_mtg_idx ON project_calendar_meeting(project_id);
 
@@ -838,7 +850,16 @@ CREATE TABLE project_history (
   link_start_date TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
   description VARCHAR(512),
   enabled BOOLEAN DEFAULT true,
-  event_type INT
+  event_type INT,
+  parent_id BIGINT REFERENCES project_history(history_id),
+  top_id BIGINT REFERENCES project_history(history_id),
+  position INTEGER DEFAULT 0,
+  thread_position INTEGER DEFAULT 0,
+  indent INTEGER DEFAULT 0,
+  child_count INTEGER DEFAULT 0,
+  relative_date TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  relative_enteredby BIGINT REFERENCES users(user_id) NOT NULL,
+  lineage TEXT
 );
 
 

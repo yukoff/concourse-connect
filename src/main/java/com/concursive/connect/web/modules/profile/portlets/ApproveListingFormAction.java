@@ -84,7 +84,7 @@ public class ApproveListingFormAction implements IPortletAction {
     }
 
     // Update the approval
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     project.setApproved(true);
     project.update(db);
 

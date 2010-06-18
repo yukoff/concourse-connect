@@ -122,7 +122,9 @@ public class SaveForumEntryEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] created a forum [[|" + project.getId() + ":forum|" + forum.getId() + "|Dummy Forum Subject]] in [[|" + project.getId() + ":profile||Project SQL Test]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||Project SQL Test]] " +
+            "created a discussion forum [[|" + project.getId() + ":forum|" + forum.getId() + "|Dummy Forum Subject]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

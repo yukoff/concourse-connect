@@ -90,7 +90,7 @@ public class ForumListViewer implements IPortletViewer {
     }
 
     // Build a list of records
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Paging will be used for remembering several list view settings
     PagedListInfo pagedListInfo = getPagedListInfo(request, PAGED_LIST_INFO);

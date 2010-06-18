@@ -71,7 +71,8 @@ public class PromotionResultsSorter implements IPortletViewer {
   private static final String CATEGORY_NAME_ATTRIBUTE = "categoryName";
   private static final String PROMOTION_CATEGORY_NAME_ATTRIBUTE = "promotionCategoryName";
   private static final String PAGE_URL_ATTRIBUTE = "pageURL";
-  private static final String SORT_CRITERIA_ATTRIBUTE = "sortCriteria";
+  private static final String QUERY = "query";
+  private static final String LOCATION = "location";
 
   //Preferences
   private static final String PREF_PAGE_URL = "pageURL";
@@ -91,13 +92,10 @@ public class PromotionResultsSorter implements IPortletViewer {
       String projectCategoryName = PortalUtils.getPageView(request);
       request.setAttribute(CATEGORY_NAME_ATTRIBUTE, ProjectCategory.getNormalizedCategoryName(projectCategoryName));
 
-      String[] params = PortalUtils.getPageParameters(request);
-      // page/promotions/{project category}/{promotion category}?sort=alpha
-      if (params != null && params.length == 1) {
-        String sortCriteria = params[0];
-        request.setAttribute(SORT_CRITERIA_ATTRIBUTE, sortCriteria);
-      }
-
+      String query = PortalUtils.getQueryParameter(request, "query");
+      String location = PortalUtils.getQueryParameter(request, "location");
+      request.setAttribute(QUERY, query);
+      request.setAttribute(LOCATION, location);
       // JSP view
       return defaultView;
 

@@ -1,8 +1,8 @@
 import java.sql.*;
 import java.util.*;
-import com.zeroio.iteam.base.*;
-import org.aspcfs.utils.web.PagedListInfo;
-import com.zeroio.utils.*;
+import com.concursive.connect.Constants;
+import com.concursive.connect.web.utils.*;
+import com.concursive.connect.web.modules.profile.dao.*;
 
 // Get the permissions to be added to projects
 PermissionLookupList permissionList = new PermissionLookupList();

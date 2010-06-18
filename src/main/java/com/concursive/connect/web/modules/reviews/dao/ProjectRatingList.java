@@ -432,7 +432,6 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
     this.loadProject = loadProject;
   }
 
-
   /**
    * Description of the Method
    *
@@ -574,13 +573,13 @@ public class ProjectRatingList extends ArrayList<ProjectRating> {
           "AND status IS NULL) OR pr.project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
     }
     if (minimumRatingCount != -1) {
-      sqlFilter.append("AND rating_count > ? ");
+      sqlFilter.append("AND rating_count >= ? ");
     }
     if (minimumRatingAvg != -1) {
-      sqlFilter.append("AND rating_avg > ? ");
+      sqlFilter.append("AND rating_avg >= ? ");
     }
     if (filterInappropriate != Constants.UNDEFINED) {
-      sqlFilter.append("AND ( inappropriate_count IS NULL OR inappropriate_count = ? ) ");
+      sqlFilter.append("AND (inappropriate_count IS NULL OR inappropriate_count = ?) ");
     }
     if (enteredRangeStart != null) {
       sqlFilter.append("AND entered >= ? ");

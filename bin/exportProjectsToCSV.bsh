@@ -1,5 +1,5 @@
 #!/bin/sh
-//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/concourseconnect.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/log4j-1.2.15.jar:lib/commons-logging-1.1.1.jar:lib/opencsv-1.8.jar:lib/concursive-commons-20100517.jar bsh.Interpreter "$0" "$@"
 
 // Dynamically add to the classpath
 File libDir = new File("lib");
@@ -12,16 +12,18 @@ if (libDir.isDirectory()) {
   }
 }
 
-import com.zeroio.utils.APIConnection;
-import com.zeroio.utils.PhoneNumberUtils;
-import com.zeroio.transfer.DataRecord;
-import au.com.bytecode.opencsv.CSVWriter;
-import com.zeroio.iteam.base.Project;
-import com.zeroio.iteam.base.ProjectCategory;
-import com.zeroio.utils.StringUtils;
+
+
+import com.concursive.commons.api.APIConnection;
+import com.concursive.commons.api.DataRecord;
+import com.concursive.commons.phone.PhoneNumberUtils;
+import com.concursive.connect.web.modules.login.dao.UserList;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
+import com.concursive.commons.text.StringUtils;
 import java.util.Date;
-import com.zeroio.controller.UserList;
-import com.zeroio.controller.User;
+import au.com.bytecode.opencsv.CSVWriter;
 
 if (bsh.args.length == 0) {
   print("Usage:");
@@ -36,7 +38,7 @@ String filename = bsh.args[0].trim();
 
 print("parsing arguments: " + bsh.args.length);
 String url = "http://127.0.0.1";
-String code = "";
+String code = "plaintext-code-in-database";
 String postal_code = "";
 
 if (bsh.args.length > 1) {
@@ -52,6 +54,7 @@ print("Starting download...");
 
 APIConnection api = new APIConnection();
 api.setUrl(url);
+api.setClientId(1);
 api.setCode(code);
 
 // Get the category ID for businesses...
@@ -68,11 +71,11 @@ int businessCategoryId = 0;
   record.setName("projectCategoryList");
   record.setAction(DataRecord.SELECT);
   // Set the filters to query by
-  record.addField("categoryName", "Businesses");
+  record.addField("categoryName", "Groups");
   api.save(record);
 
   // In the meta section only a few properties were specified and will exist
-  ArrayList projectCategoryObjects = api.getRecords("com.zeroio.iteam.base.ProjectCategory");
+  ArrayList projectCategoryObjects = api.getRecords("com.concursive.connect.web.modules.profile.dao.ProjectCategory");
   for (Object projectCategoryObject : projectCategoryObjects) {
     ProjectCategory partialProjectCategory = (ProjectCategory) projectCategoryObject;
     businessCategoryId = partialProjectCategory.getId();
@@ -80,6 +83,10 @@ int businessCategoryId = 0;
   }
 }
 
+if (businessCategoryId == 0) {
+  System.out.println("ERROR: Requested categoryId not found");
+  System.exit(2);
+}
 
 // Create the file & set the headers...
 CSVWriter writer = new CSVWriter(new FileWriter(filename));
@@ -145,7 +152,9 @@ do {
     DataRecord record = new DataRecord();
     record.setName("projectList");
     record.setAction(DataRecord.SELECT);
-    record.addField("categoryId", businessCategoryId.toString());
+    if (businessCategoryId > 0) {
+      record.addField("categoryId", businessCategoryId.toString());
+    }
     if(!postal_code.equals("")) {
       record.addField("postalCode", postal_code);
     }
@@ -161,7 +170,7 @@ do {
   }
 
 // Write them...
-  ArrayList projectObjects = api.getRecords("com.zeroio.iteam.base.Project");
+  ArrayList projectObjects = api.getRecords("com.concursive.connect.web.modules.profile.dao.Project");
   String[] projectLine = new String[15];
   recordsThisPage=0;
   for (Object projectObject : projectObjects) {

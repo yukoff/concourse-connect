@@ -230,7 +230,7 @@
         </tr>
         <tr class="containerBody">
           <td class="formLabel">
-            State
+            State/Province
           </td>
           <td>
             <input type="text" name="state" size="35" maxlength="80" value="<%= toHtmlValue(contact.getState()) %>">
@@ -246,7 +246,7 @@
         </tr>
         <tr class="containerBody">
           <td class="formLabel">
-            Postal Code
+            Zip/Postal Code
           </td>
           <td>
             <input type="text" name="postalCode" size="35" maxlength="12" value="<%= toHtmlValue(contact.getPostalCode()) %>">

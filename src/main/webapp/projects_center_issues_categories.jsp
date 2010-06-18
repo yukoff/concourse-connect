@@ -62,7 +62,7 @@
 <script language="JavaScript" type="text/javascript">
   loadImages('select_<%= SKIN %>');
 </script>
-<h1><ccp:tabLabel name="Discussion" object="project"/></h1>
+<%--<h1><ccp:tabLabel name="Discussion" object="project"/></h1>--%>
 <ccp:evaluate if="<%= !User.isLoggedIn() && project.getFeatures().getAllowGuests() %>">
   <p class="portlet-message-info"><ccp:label name="projectsCenterIssues.categories.neddLogin">You need to be logged in to post messages.</ccp:label></p>
 </ccp:evaluate>
@@ -111,8 +111,9 @@
         </ccp:permission>
       </h2>
       <p>
-        <ccp:evaluate if="<%= thisCategory.getPostsCount() > 0 %>">
-          Last post by <ccp:username id="<%= thisCategory.getLastPostBy() %>"/> on <%= thisCategory.getLastPostDateTimeString()%>
+        <ccp:evaluate if="<%= thisCategory.getPostsCount() > 0 %>">          
+          Last post <ccp:tz timestamp="<%= thisCategory.getLastPostDate() %>" pattern="relative" />
+          by <ccp:username id="<%= thisCategory.getLastPostBy() %>"/>
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisCategory.getPostsCount() == 0 %>">
           No posts yet.
@@ -123,7 +124,5 @@
     }
   %>
   </ol>
-  <div class="pagination">
-    <ccp:paginationControl object="projectForumInfo"/>
-  </div>
+  <ccp:paginationControl object="projectForumInfo"/>
 </c:if>

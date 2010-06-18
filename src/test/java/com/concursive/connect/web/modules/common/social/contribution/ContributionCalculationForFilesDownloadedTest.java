@@ -188,6 +188,7 @@ public class ContributionCalculationForFilesDownloadedTest extends AbstractConne
     project.delete(db, (String) null);
     
     //delete test user
+    user.getProfileProject().delete(db, null);
     user.delete(db);
   }
 }

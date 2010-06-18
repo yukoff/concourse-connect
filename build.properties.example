@@ -1,6 +1,9 @@
 ## The following property or environment variable is required for compiling
 ## with the Servlet, JSP, and Naming Resources API
-#CATALINA_HOME=/path/to/apache-tomcat
+CATALINA_HOME=/path/to/apache-tomcat
+
+
+## OPTIONAL PROPERTIES
 
 ## The following properties allow ConcourseConnect to be deployed to a
 ## properly configured remote Tomcat instance.

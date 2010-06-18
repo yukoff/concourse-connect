@@ -57,6 +57,10 @@ var VideoSelect = {
   init : function (ed) {
     var dom = ed.dom, n = ed.selection.getNode();
     if (n.nodeName == 'OBJECT') {
+      // see if a thumbnail video
+      if (dom.getAttrib(n, 'width') == '120') {
+        document.getElementById('thumbnail').checked = true;
+      }
       // web video
       if (n.hasChildNodes()) {
         for (i = 0; i < n.childNodes.length; i++) {
@@ -80,22 +84,60 @@ var VideoSelect = {
       ed.getWin().focus();
     }
     var videoUrl = document.getElementById('webvideo').value;
+    var thumbnail = "";
+    if (getSelectedCheckboxValue(document.getElementById('thumbnail')) == 'true') {
+      thumbnail = "true";
+    }
     var width = '425';
-    var height = '350';
+    var height = '344';
+    if (thumbnail == "true") {
+      width = '120';
+      height = '90';
+    }
     var name = '';
     var link = videoUrl;
 
     var foundLink = false;
+    var foundQikLink = false;
+    var foundJustinTvLink = false;
+    var foundLivestreamLink = false;
+    var foundVimeoLink = false;
+    var foundUstreamLink = false;
+
     if (videoUrl.match(/watch\?v=(.+)(.*)/)) {
       foundLink = true;
       width = '425';
-      height = '350';
+      height = '344';
+      if (thumbnail == "true") {
+        width = '120';
+        height = '90';
+      }
       link = 'http://www.youtube.com/v/' + videoUrl.match(/v=(.*)(.*)/)[0].split('=')[1];
     } else if (videoUrl.indexOf('http://video.google.com/videoplay?docid=') == 0) {
       foundLink = true;
       width = '425';
       height = '326';
       link = 'http://video.google.com/googleplayer.swf?docId=' + videoUrl.substring('http://video.google.com/videoplay?docid='.length) + '&hl=en';
+    } else if (videoUrl.indexOf('http://qik.com/') == 0) {
+      foundQikLink = true;
+      width = '425';
+      height = '319';
+    } else if (videoUrl.indexOf('http://www.justin.tv/') == 0) {
+      foundJustinTvLink = true;
+      width = '400';
+      height = '300';
+    } else if (videoUrl.indexOf('http://www.livestream.com/') == 0) {
+      foundLivestreamLink = true;
+      width = '400';
+      height = '300';
+    } else if (videoUrl.indexOf('http://vimeo.com/') == 0 || videoUrl.indexOf('http://www.vimeo.com/') == 0) {
+      foundVimeoLink = true;
+      width = '400';
+      height = '300';
+    } else if (videoUrl.indexOf("<object") == 0 && videoUrl.indexOf("http://www.ustream.tv/flash") > -1) {
+      foundUstreamLink = true;
+      //width = '400';
+      //height = '300';
     } else {
       if (videoUrl.indexOf("<param") == -1) {
         foundLink = true;
@@ -105,22 +147,96 @@ var VideoSelect = {
     var g1 = '<p>';
     var g2 = '';
     var h = '';
-    if (foundLink) {
-      // Avoid annoying warning about insecure items
-      if (!tinymce.isIE || document.location.protocol != 'https:') {
-        g1 += '<object width="' + width + '" height="' + height + '" name="' + name + '">';
-        h+= '<param name="movie" value="' + link + '"></param>';
-        h+= '<param name="allowFullScreen" value="true"></param>';
-        h+= '<param name="allowscriptaccess" value="always"></param>';
+    if (foundQikLink) {
+      var channel = videoUrl.substring(15);
+      g1 += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" ' +
+                'codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0" ' +
+                'width="' + width + '" ' +
+                'height="' + height + '" ' +
+                'id="qikPlayer" align="middle">';
+      h +=
+                '<param name="allowScriptAccess" value="sameDomain" />' +
+                '<param name="allowFullScreen" value="true" />' +
+                '<param name="movie" value="http://assets0.qik.com/swfs/qikPlayer5.swf?1271067225" />' +
+                '<param name="quality" value="high" />' +
+                '<param name="bgcolor" value="#000000" />' +
+                '<param name="FlashVars" value="username=' + channel + '" />' +
+                '<embed src="http://assets0.qik.com/swfs/qikPlayer5.swf?1271067225" quality="high" bgcolor="#000000" ' +
+                'width="' + width + '" ' +
+                'height="' + height + '" name="qikPlayer" align="middle" allowScriptAccess="sameDomain" ' +
+                'allowFullScreen="true" type="application/x-shockwave-flash" ' +
+                'pluginspage="http://www.macromedia.com/go/getflashplayer" ' +
+                'FlashVars="username=' + channel + '"></embed>';
+      g2 +=
+                '</object>';
+    } else if (foundJustinTvLink) {
+      var channel = videoUrl.substring(21);
+      if (channel.indexOf("#") > -1) {
+        channel = channel.substring(0, channel.indexOf("#"));
       }
-      h += '<embed type="application/x-shockwave-flash" ';
-      h += 'src="' + link + '" allowscriptaccess="always" allowfullscreen="true" width="' + width + '" height="' + height + '"';
-      h += '></embed>';
-
-      // Avoid annoying warning about insecure items
-      if (!tinymce.isIE || document.location.protocol != 'https:') {
-        g2 += '</object>';
+      g1 += '<object type="application/x-shockwave-flash" ' +
+                'height="' + height + '" ' +
+                'width="' + width + '" ' +
+                'id="live_embed_player_flash" ' +
+                'data="http://www.justin.tv/widgets/live_embed_player.swf?channel=' + channel + '" ' +
+                'bgcolor="#000000">';
+      h +=
+                '<param name="allowFullScreen" value="true" />' +
+                '<param name="allowScriptAccess" value="always" />' +
+                '<param name="allowNetworking" value="all" />' +
+                '<param name="movie" value="http://www.justin.tv/widgets/live_embed_player.swf" />' +
+                '<param name="flashvars" value="channel=' + channel + '&auto_play=false&start_volume=25" />';
+      g2 +=
+                '</object>';
+    } else if (foundLivestreamLink) {
+      var channel = videoUrl.substring(26);
+      if (channel.indexOf("#") > -1) {
+        channel = channel.substring(0, channel.indexOf("#"));
       }
+      g1 += '<object ' +
+                'width="' + width + '" ' +
+                'height="' + height + '" ' +
+                'id="lsplayer" ' +
+                'classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">';
+      h +=
+                '<param name="movie" value="http://cdn.livestream.com/grid/LSPlayer.swf?channel=' + channel + '&amp;autoPlay=false"></param>' +
+                '<param name="allowScriptAccess" value="always"></param>' +
+                '<param name="allowFullScreen" value="true"></param>' +
+                '<embed name="lsplayer" wmode="transparent" ' +
+                'src="http://cdn.livestream.com/grid/LSPlayer.swf?channel=' + channel + '&amp;autoPlay=true" ' +
+                'width="' + width + '" ' +
+                'height="' + height + '" ' +
+                'allowScriptAccess="always" allowFullScreen="true" type="application/x-shockwave-flash"></embed>';
+      g2 +=
+                '</object>';
+    } else if (foundVimeoLink) {
+      var channel = videoUrl.substring(videoUrl.indexOf("/", videoUrl.indexOf("http://") + 7) + 1);
+      if (channel.indexOf("#") > -1) {
+        channel = channel.substring(0, channel.indexOf("#"));
+      }
+      g1 += '<object ' +
+                'width="' + width + '" ' +
+                'height="' + height + '>';
+      h +=
+                '<param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=' + channel + '&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" />' +
+                '<param name="allowScriptAccess" value="always" />' +
+                '<param name="allowFullScreen" value="true" />' +
+                '<embed src="http://vimeo.com/moogaloop.swf?clip_id=' + channel + '&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1" ' +
+                'width="' + width + '" ' +
+                'height="' + height + '" ' +
+                'allowScriptAccess="always" allowFullScreen="true" type="application/x-shockwave-flash"></embed>';
+      g2 +=
+                '</object>';
+    } else if (foundUstreamLink) {
+      g1 += videoUrl.substring(0, videoUrl.indexOf('">') + 2);
+      h  += videoUrl.substring(videoUrl.indexOf('<param'), videoUrl.indexOf('</object>'));
+      g2 += '</object>';
+    } else if (foundLink) {
+      g1 += '<object type="application/x-shockwave-flash" data="' + link + '" width="' + width + '" height="' + height + '">';
+      h+= '<param name="movie" value="' + link + '" />';
+      h+= '<param name="allowFullScreen" value="true" />';
+      h+= '<param name="allowscriptaccess" value="always" />';
+      g2 += '</object>';
     } else {
       h = videoUrl;
     }
@@ -131,7 +247,8 @@ var VideoSelect = {
     el = ed.selection.getNode();
     if (el && el.nodeName == 'OBJECT') {
       ed.execCommand('mceBeginUndoLevel');
-
+      el.setAttribute("type", "application/x-shockwave-flash");
+      el.setAttribute("data", link);
       el.setAttribute("width", width);
       el.setAttribute("height", height);
       el.innerHTML = h;
@@ -162,18 +279,39 @@ tinyMCEPopup.onInit.add(VideoSelect.init, VideoSelect);
       <form onsubmit="VideoSelect.insertAndClose();return false;" action="#">
         <fieldset>
           <legend>General</legend>
-          <label id="webvideoLabel" for="webvideo">Embed a video using YouTube's video URL:</label><br />
+          <label id="webvideoLabel" for="webvideo">Video Link:</label><br />
           <input name="webvideo" type="text" id="webvideo" size="80" value="" class="mceFocus url" /><br />
-          (use the complete url or embed content, example: http://www.youtube.com/watch?v=d13hPzZqFJI)
+          <ul>
+            <li>
+              <strong>YouTube.com:</strong> use the complete url or embed content, <br />
+              example: <em>http://www.youtube.com/watch?v=d13hPzZqFJI</em>
+            </li>
+            <li>
+              <strong>Ustream.tv:</strong> use the complete embed content, example: <em>&lt;object&gt;...&lt;/object&gt;</em>
+            </li>
+            <li>
+              <strong>Justin.tv:</strong> use the channel's URL, example: <em>http://www.justin.tv/zeroio</em>
+            </li>
+            <li>
+              <strong>Qik.com:</strong> use the user's URL, example: <em>http://qik.com/zeroio</em>
+            </li>
+            <li>
+              <strong>Livestream.com:</strong> use the video's link, example: <em>http://www.livestream.com/news</em>
+            </li>
+            <li>
+              <strong>Google Video:</strong> use the complete url, <br />
+              example: <em>http://video.google.com/videoplay?docid=-489885651925767878#</em>
+            </li>
+            <li>
+              <strong>Vimeo:</strong> use the complete url, example: <em>http://www.vimeo.com/2696386</em>
+            </li>
+          </ul>
         </fieldset>
-        <%--
         <fieldset>
-          <legend>Caption</legend>
-          <label id="webcaptionlabel" for="webcaption">Add an optional title:</label><br />
-          <input type="text" id="webcaption" name="webcaption" value="" size="50" /><br />
+          <legend>Formatting</legend>
+          <input type="checkbox" id="thumbnail" name="thumbnail" value="true" /> Insert as thumbnail<br />
           <br />
         </fieldset>
-        --%>
         <div class="mceActionPanel">
           <div>
             <input type="submit" id="insert" name="insert" value="{#insert}" />

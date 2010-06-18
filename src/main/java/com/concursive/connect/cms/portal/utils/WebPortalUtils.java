@@ -46,8 +46,8 @@
 package com.concursive.connect.cms.portal.utils;
 
 import com.concursive.commons.http.RequestUtils;
-import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.commons.web.URLFactory;
+import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.cms.portal.beans.PortalBean;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.blog.dao.BlogPostList;
@@ -100,6 +100,9 @@ public class WebPortalUtils {
         !"localhost".equals(bean.getServerName()) &&
         !"127.0.0.1".equals(expectedDomainName) &&
         !"localhost".equals(expectedDomainName) &&
+        !bean.getServerName().startsWith("10.") &&
+        !bean.getServerName().startsWith("172.") &&
+        !bean.getServerName().startsWith("192.") &&
         !bean.getServerName().equals(expectedDomainName)) {
       // Preserve the URI
       String uri = "";

@@ -204,9 +204,27 @@
           <label>Web Site</label>
           <input type="text" name="webPage" size="35" maxlength="80"
                    value="<%= toHtmlValue(project.getWebPage()) %>">
-          <label for="twitterId">Link your Twitter Id</label>
+          <label for="twitterId">Twitter Username</label>
           <input type="text" name="twitterId" id="twitterId" size="35" maxlength="80"
                    value="<%= toHtmlValue(project.getTwitterId()) %>">
+          <label for="facebookPage">Facebook URL</label>
+          <input type="text" name="facebookPage" id="facebookPage" size="35" maxlength="80"
+                   value="<%= toHtmlValue(project.getFacebookPage()) %>">
+          <label for="youtubeChannelId">YouTube.com Channel Name</label>
+          <input type="text" name="youtubeChannelId" id="youtubeChannelId" size="35" maxlength="80"
+                   value="<%= toHtmlValue(project.getYoutubeChannelId()) %>">
+          <label for="ustreamId">Ustream.tv Live Embed Code</label>
+          <input type="text" name="ustreamId" id="ustreamId" size="35" maxlength="80"
+                   value="<%= toHtmlValue(project.getUstreamId()) %>">
+          <label for="livestreamId">Livestream.com Username</label>
+          <input type="text" name="livestreamId" id="livestreamId" size="35" maxlength="80"
+                   value="<%= toHtmlValue(project.getLivestreamId()) %>">
+          <label for="justintvId">Justin.tv Username</label>
+          <input type="text" name="justintvId" id="justintvId" size="35" maxlength="80"
+                   value="<%= toHtmlValue(project.getJustintvId()) %>">
+          <label for="qikId">Qik.com Username</label>
+          <input type="text" name="qikId" id="qikId" size="35" maxlength="80"
+                   value="<%= toHtmlValue(project.getQikId()) %>">
         </fieldset>
         <fieldset>
           <legend><ccp:label name="projectsCenterModifyProject.Location">Location</ccp:label></legend>
@@ -225,13 +243,13 @@
           <label for="city">City</label>
           <input type="text" name="city" id="city" size="35" maxlength="80"
                    value="<%= toHtmlValue(project.getCity()) %>">
-          <label for="state">State</label>
+          <label for="state">State/Province</label>
           <input type="text" name="state" id="state" size="35" maxlength="80"
                    value="<%= toHtmlValue(project.getState()) %>">
           <label for="country">Country</label>
           <input type="text" name="country" id="country" size="35" maxlength="80"
                    value="<%= toHtmlValue(project.getCountry()) %>">
-          <label for="postalCode">Postal Code</label>
+          <label for="postalCode">Zip/Postal Code</label>
           <input type="text" name="postalCode" id="postalCode" size="35" maxlength="12"
                    value="<%= toHtmlValue(project.getPostalCode()) %>">
           <label for="latitude">Latitude</label>

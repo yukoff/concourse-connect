@@ -90,7 +90,7 @@ public class SaveEventInviteesAction implements IPortletAction {
     }
 
     // Determine the db connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Reload the meeting information
     int meetingId = Integer.parseInt(request.getParameter("meetingId"));

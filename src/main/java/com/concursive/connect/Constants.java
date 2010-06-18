@@ -84,6 +84,10 @@ public class Constants {
   public static final int PROJECT_MESSAGES_FILES = 2008122922;
   public static final int PROJECTS_CALENDAR_EVENT_FILES = 2009021619;
   public static final int SITE_LOGO_FILES = 2009030915;
+  public static final int PROJECT_WEBCAST_FILES = 2010050414;
+
+  // Report profile as inappropriate linkModuleId Constant
+  public static final int PROFILE_LINK = 2010051114;
 
   // Task category linkModuleId Constants
   public final static int TASK_CATEGORY_PROJECTS = 4;

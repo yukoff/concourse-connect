@@ -131,7 +131,7 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
    */
   public PortalURL parse(HttpServletRequest request) {
 
-    LOG.debug("parse");
+    LOG.debug("Parsing URL: " + request.getRequestURI());
 
     StringBuffer url = new StringBuffer();
 
@@ -142,20 +142,26 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
       String object = request.getParameter("portlet-object");
       String value = request.getParameter("portlet-value");
       String params = request.getParameter("portlet-params");
-
-      url.append("/").append(action);
-
+      // Append the portlet action
+      // @note TEST TEST TEST
+      //url.append("/").append(action);
+      url.append("/").append(StringUtils.encodeUrl(action));
+      // Append the targeted profile
       Project project = ProjectUtils.loadProject(Integer.parseInt(projectValue));
       url.append("/").append(project.getUniqueId());
-
-      url.append("/").append(object);
-
+      // Append the object in the profile
+      // @note TEST TEST TEST
+      //url.append("/").append(object);
+      url.append("/").append(StringUtils.encodeUrl(object));
+      // Append any object value, like object id
       if (StringUtils.hasText(value)) {
-        url.append("/").append(value);
+        url.append("/").append(StringUtils.encodeUrl(value));
       }
-
+      // Append any parameters
       if (StringUtils.hasText(params)) {
-        url.append("/").append(params);
+        // @note TEST TEST TEST
+        //url.append("/").append(params);
+        url.append("/").append(StringUtils.encodeUrl(params));
       }
       LOG.debug("reconstructed url: " + url.toString());
     }
@@ -194,9 +200,9 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
     Enumeration params = request.getParameterNames();
     while (params.hasMoreElements()) {
       String parameter = (String) params.nextElement();
-      String value = request.getParameter(parameter);
-      LOG.debug("parameter: " + parameter);
       if (parameter.startsWith(PREFIX + RENDER_PARAM)) {
+        String value = request.getParameter(parameter);
+        LOG.debug("parameter: " + parameter);
         portalURL.addParameter(decodeParameter(parameter, value));
       }
     }
@@ -211,6 +217,7 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
     } else {
       url.append("&");
     }
+    LOG.debug("appendParameter: " + parameter);
     url.append(parameter);
   }
 
@@ -223,8 +230,8 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
   public String toString(PortalURL portalURL) {
 
     //servletPath: /context/show/project/module
-    //renderPath: /context.SomePortlet!T3
     LOG.debug("servletPath: " + portalURL.getServletPath());
+    //renderPath: /context.SomePortlet!T3
     LOG.debug("renderPath: " + portalURL.getRenderPath());
 
     // Decode the current url
@@ -307,7 +314,7 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
     }
 
 
-    // Append action and render parameters.
+    // Append action and render parameters
     for (Iterator it = portalURL.getParameters().iterator();
          it.hasNext();) {
 
@@ -344,19 +351,26 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
       } else if (param.getValues() != null && param.getValues().length > 0) {
         // Encode the parameter ONLY if it targets the currently being rendered portlet
         if (param.getWindowId().equals(portalURL.getRenderPath())) {
-
-          String valueString = encodeMultiValues(param.getValues());
-          appendParameter(buffer, param.getName() + "=" + valueString);
+          // The Project Portal uses clean URLs, so portlet window targeting is not used
+          if (!buffer.toString().contains("?" + param.getName() + "=") &&
+              !buffer.toString().contains("&" + param.getName() + "=")) {
+            String valueString = encodeMultiValues(param.getValues());
+            // @note TEST TEST TEST
+            //appendParameter(buffer, param.getName() + "=" + valueString);
+            appendParameter(buffer, param.getName() + "=" + StringUtils.encodeUrl(valueString));
+          } else {
+//           If param already exists, replace the value
+          }
         }
       }
     }
 
-    // Append the action window definition, if it exists.
+    // Append the action window definition, if it exists
     if (portalURL.getActionWindow() != null) {
       appendParameter(buffer, "portletAction=" + PREFIX + ACTION + encodeCharacters(portalURL.getActionWindow()));
     }
 
-    // Append portlet mode definitions.
+    // Append portlet mode definitions
     for (Iterator it = portalURL.getPortletModes().entrySet().iterator();
          it.hasNext();) {
       Map.Entry entry = (Map.Entry) it.next();
@@ -367,15 +381,18 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
       }
     }
 
-    // Append window state definitions.
+    // Append window state definitions
     int windowStateCount = 0;
     for (Iterator it = portalURL.getWindowStates().entrySet().iterator();
          it.hasNext();) {
       ++windowStateCount;
       Map.Entry entry = (Map.Entry) it.next();
-      appendParameter(buffer, "portletWindowState" + windowStateCount + "=" +
-          encodeControlParameter(WINDOW_STATE, entry.getKey().toString(),
-              entry.getValue().toString()));
+      // If the portlet window state is "normal" then no need to show it in the url because that is the default
+      if (!"normal".equals(entry.getValue().toString())) {
+        appendParameter(buffer, "portletWindowState" + windowStateCount + "=" +
+            encodeControlParameter(WINDOW_STATE, entry.getKey().toString(),
+                entry.getValue().toString()));
+      }
     }
 
     // Construct the string representing the portal URL.
@@ -526,7 +543,8 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
       if (StringUtils.hasText(value)) {
         if (!parameter.startsWith(PREFIX + RENDER_PARAM)
             && !parameter.equals("portletWindowState1")
-            && !parameter.startsWith("portlet-")) {
+            && !parameter.startsWith("portlet-")
+            && !(parameter.equals("command") && "ProjectCenter".equals(value))) {
           if (StringUtils.hasText(value)) {
             LOG.debug("Made a parameter available to the portlet: " + parameter);
             portalURL.addParameter(new PortalURLParameter(portalURL.getRenderPath(), parameter, value));

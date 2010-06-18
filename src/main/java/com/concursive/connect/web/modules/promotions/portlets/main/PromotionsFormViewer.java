@@ -97,7 +97,7 @@ public class PromotionsFormViewer implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Check the request for the record and provide a value for the request scope
     Ad promotion = (Ad) PortalUtils.getFormBean(request, PROMOTION, Ad.class);

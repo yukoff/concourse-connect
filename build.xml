@@ -212,6 +212,7 @@
     <property name="servletJar" value="${CATALINA_HOME}${fs}common${fs}lib${fs}servlet-api.jar" />
     <property name="jspJar" value="${CATALINA_HOME}${fs}common${fs}lib${fs}jsp-api.jar" />
     <property name="namingJar" value="${CATALINA_HOME}${fs}common${fs}lib${fs}naming-resources.jar" />
+    <property name="catalinaAntJar" value="${CATALINA_HOME}${fs}server${fs}lib${fs}catalina-ant.jar" />
     <echo message="Web Server: Tomcat 5.x" />
   </target>
   <!-- Tomcat 6.x -->
@@ -223,6 +224,7 @@
     <property name="servletJar" value="${CATALINA_HOME}${fs}lib${fs}servlet-api.jar" />
     <property name="jspJar" value="${CATALINA_HOME}${fs}lib${fs}jsp-api.jar" />
     <property name="namingJar" value="${CATALINA_HOME}${fs}lib${fs}catalina.jar" />
+    <property name="catalinaAntJar" value="${CATALINA_HOME}${fs}lib${fs}catalina-ant.jar" />
     <echo message="Web Server: Tomcat 6.x" />
   </target>
   <!-- Weblogic -->
@@ -735,8 +737,8 @@
     <javadoc sourcepath="${src.classes.dir}"
         packagenames="com.concursive.*"
         destdir="${build.docs.dir}">
-      <header>Copyright 2009 Concursive Corporation</header>
-      <footer>Copyright 2009 Concursive Corporation</footer>
+      <header>Copyright 2010 Concursive Corporation</header>
+      <footer>Copyright 2010 Concursive Corporation</footer>
       <classpath>
         <path refid="web.classpath"/>
       </classpath>
@@ -985,6 +987,7 @@
       <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_ads.sql"/>
       <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_badges.sql"/>
       <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_classifieds.sql"/>
+      <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_project_webcast.sql"/>  
       <transaction src="${build.sql.dir}/project.sql"/>
       <!-- task management -->
       <transaction src="${src.web.dir}/WEB-INF/database/${SITE.DBTYPE}/new_task.sql"/>
@@ -1121,16 +1124,28 @@
   <!-- Deploy to Tomcat -->
   <target name="tomcat.tasks" depends="initialize" if="TYPE.CATALINA">
     <taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
-      <classpath>
-        <fileset dir="${CATALINA_HOME}/server/lib">
-          <include name="catalina-ant.jar"/>
+      <classpath id="tomcatDeploy.classpath">
+        <fileset dir="${CATALINA_HOME}/server/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/common/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
         </fileset>
       </classpath>
     </taskdef>
     <taskdef name="undeploy"  classname="org.apache.catalina.ant.UndeployTask">
-      <classpath>
-        <fileset dir="${CATALINA_HOME}/server/lib">
-          <include name="catalina-ant.jar"/>
+      <classpath id="tomcatUnDeploy.classpath">
+        <fileset dir="${CATALINA_HOME}/server/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/common/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${CATALINA_HOME}/lib" erroronmissingdir="false">
+          <include name="*.jar"/>
         </fileset>
       </classpath>
     </taskdef>
@@ -1158,6 +1173,7 @@
     <property name="tools.version" value="${DSTAMP}" />
     <property name="tools.dist.dir" value="${project.build.directory}/${tools.name}"/>
     <delete dir="${tools.dist.dir}" />
+    <mkdir dir="${tools.dist.dir}" />
     <!-- Create the distributable .zip file -->
     <zip destfile="${tools.dist.dir}/${tools.name}-${project.version}.zip">
       <!-- main directory -->

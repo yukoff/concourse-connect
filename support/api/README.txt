@@ -40,11 +40,13 @@ also be retrieved.
 
   Methods supported:
 
-    DataRecord.INSERT
-    DataRecord.SELECT
-    DataRecord.UPDATE
-    DataRecord.DELETE
-    DataRecord.GET_DATETIME
+    DataRecord.INSERT = "insert"
+    DataRecord.SELECT = "select"
+    DataRecord.UPDATE = "update"
+    DataRecord.DELETE = "delete"
+    DataRecord.GET_DATETIME = "getDateTime"
+    DataRecord.BACKUP = "backup"
+    DataRecord.RESTORE = "restore"
 
 
 
@@ -163,11 +165,7 @@ record.setAction(DataRecord.INSERT);
 record.setShareKey(true);
 record.addField("title", "API Project Title");
 record.addField("shortDescription", "This is the short description");
-record.addField("requestDate", "2007-05-01 00:00:00 -0400");
-record.addField("requestedBy", "Project Manager");
-record.addField("showNews", "true");
-record.addField("showWiki", "true");
-record.addField("showTeam", "true");
+record.addField("requestDate", "2010-05-01 00:00:00 -0400");
 record.addField("enteredBy", 1);
 record.addField("modifiedBy", 1);
 record.addField("groupId", 1);

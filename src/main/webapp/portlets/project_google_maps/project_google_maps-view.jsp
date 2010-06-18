@@ -52,8 +52,8 @@
 <%--@elvariable id="project" type="com.concursive.connect.web.modules.profile.dao.Project"--%>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<c:set var="project" value="${project}" />
-<jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" />
+<c:set var="project" value="${project}" scope="request" />
+<jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%-- Draw the map --%>
 <%
   String mapId = "Map" + renderResponse.getNamespace();

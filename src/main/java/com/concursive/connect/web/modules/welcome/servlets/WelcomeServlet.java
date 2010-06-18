@@ -51,6 +51,8 @@ import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.config.ApplicationVersion;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.utils.ClientType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServlet;
@@ -68,10 +70,17 @@ import java.io.IOException;
 
 public class WelcomeServlet extends HttpServlet {
 
+  private static final Log LOG = LogFactory.getLog(WelcomeServlet.class);
+
   public void init() {
   }
 
   public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    try {
+      request.setCharacterEncoding("UTF-8");
+    } catch (Exception e) {
+      LOG.warn("Unsupported encoding");
+    }
     try {
       // Save the requestURI to be used downstream (it gets rewritten on forwards)
       String contextPath = request.getContextPath();
@@ -106,15 +115,16 @@ public class WelcomeServlet extends HttpServlet {
         upgrade.forward(request, response);
       } else if ("true".equals(applicationPrefs.get("PORTAL"))) {
         // If the site supports a portal, go to the portal
-        if (clientType.getMobile()) {
-          // If a mobile device is detected, offer a low-bandwidth option
-          RequestDispatcher portal = request.getRequestDispatcher("/Login.do?command=DetectMobile");
-          portal.forward(request, response);
-        } else {
-          String pathToUse = request.getRequestURI().substring(request.getContextPath().length());
-          RequestDispatcher portal = request.getRequestDispatcher(pathToUse + applicationPrefs.get("PORTAL.INDEX"));
-          portal.forward(request, response);
-        }
+        // @todo implement mobile pages then turn this back on
+//        if (clientType.getMobile()) {
+        // If a mobile device is detected, offer a low-bandwidth option
+//          RequestDispatcher portal = request.getRequestDispatcher("/Login.do?command=DetectMobile");
+//          portal.forward(request, response);
+//        } else {
+        String pathToUse = request.getRequestURI().substring(request.getContextPath().length());
+        RequestDispatcher portal = request.getRequestDispatcher(pathToUse + applicationPrefs.get("PORTAL.INDEX"));
+        portal.forward(request, response);
+//        }
       } else {
         // Go to the user's home page if logged in
         User thisUser = (User) request.getSession().getAttribute(Constants.SESSION_USER);

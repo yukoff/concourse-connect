@@ -109,9 +109,9 @@ public class ListsByProjectPortlet extends GenericPortlet {
     }
 
     try {
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       // First retrieve all the TaskCategories
-      // The get all the tasks for each task category and store
+      // Then get all the tasks for each task category and store
       // tasks mapped out to their task category
       TaskCategoryList taskCategories = new TaskCategoryList();
       taskCategories.setProjectId(projectId);
@@ -121,10 +121,12 @@ public class ListsByProjectPortlet extends GenericPortlet {
         tcMap.put(tc.getId(), tc);
       }
 
+      // Find all of the items on the list
       TaskList tasks = new TaskList();
       tasks.setProjectId(projectId);
       tasks.buildList(db);
 
+      // Map the tasks to a category and check the permissions
       Map<TaskCategory, TaskList> tasksByCategoryMap = new HashMap<TaskCategory, TaskList>();
       HashMap<Integer, String> taskUrlMap = new HashMap<Integer, String>();
       for (Task task : tasks) {
@@ -133,12 +135,18 @@ public class ListsByProjectPortlet extends GenericPortlet {
         if (tmpList == null) {
           tmpList = new TaskList();
         }
-        tmpList.add(task);
-        tasksByCategoryMap.put(tc, tmpList);
-        String linkItemUrl = TaskUtils.getLinkItemUrl(request.getContextPath(), task);
-        taskUrlMap.put(task.getId(), linkItemUrl);
-        if (linkItemUrl != null) {
-          taskUrlMap.put(task.getId(), linkItemUrl);
+        // Add tasks without a link, anyone can see these list items
+        if (task.getLinkItemId() == -1) {
+          tmpList.add(task);
+          tasksByCategoryMap.put(tc, tmpList);
+        } else {
+          // Check permissions before adding
+          String linkItemUrl = TaskUtils.getLinkItemUrl(thisUser, request.getContextPath(), task);
+          if (linkItemUrl != null) {
+            tmpList.add(task);
+            tasksByCategoryMap.put(tc, tmpList);
+            taskUrlMap.put(task.getId(), linkItemUrl);
+          }
         }
       }
 

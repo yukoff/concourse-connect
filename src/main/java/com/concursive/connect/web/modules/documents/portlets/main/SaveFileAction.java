@@ -88,7 +88,7 @@ public class SaveFileAction implements IPortletAction {
     thisRecord.setModifiedBy(user.getId());
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Save the record
     int resultCount = -1;

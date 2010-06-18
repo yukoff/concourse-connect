@@ -99,7 +99,7 @@ public class PrivateMessagesViewer implements IPortletViewer {
       throw new PortletException("Unauthorized to view in this project");
     }
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     String folder = PortalUtils.getPageView(request);
     PrivateMessageList privateMessageList = new PrivateMessageList();

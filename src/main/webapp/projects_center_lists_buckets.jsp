@@ -214,7 +214,7 @@
         </ccp:evaluate>
         <ccp:evaluate if='<%= request.getParameter("table") != null && !"owner".equals(request.getParameter("table")) %>'>
           <div class="workoptionseditor">
-            [<a href="javascript:popURL('${ctx}/ProjectManagementListsConfig.do?command=ConfigureItemList&pid=<%= project.getId() %>&list=<%= StringUtils.encodeUrl(request.getParameter("table")) %>&popup=true','Edit_List','650','400','yes','yes');">configure list</a>]
+            [<a href="javascript:popURL('${ctx}/ProjectManagementListsConfig.do?command=ConfigureItemList&pid=<%= project.getId() %>&list=<%= StringUtils.encodeUrl(request.getParameter("table")) %>&popup=true','650','400','yes','yes');">configure list</a>]
           </div>
         </ccp:evaluate>
         </div>

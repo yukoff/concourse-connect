@@ -346,7 +346,7 @@ public class InviteMembersPortlet extends GenericPortlet {
    * @param request
    */
   private void sendInvitation(ActionRequest request) throws Exception {
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
 
     Project project = PortalUtils.getProject(request);
@@ -446,19 +446,26 @@ public class InviteMembersPortlet extends GenericPortlet {
           thisUser.setDepartmentId(1);
           thisUser.setFirstName(firstName);
           thisUser.setLastName(lastName);
-          //company?
+          // company will be set when user completes their own registration
           thisUser.setEmail(email);
           thisUser.setUsername(email);
           thisUser.setPassword("unregistered");
           thisUser.setEnteredBy(PortalUtils.getUser(request).getId());
           thisUser.setModifiedBy(PortalUtils.getUser(request).getId());
-
-          //enabled?
+          // the user will be enabled after completing registration
+          thisUser.setEnabled(false);
           thisUser.setStartPage(1);
           thisUser.setRegistered(false);
           thisUser.setAccountSize(prefs.get("ACCOUNT.SIZE"));
           thisUser.setAccessAddProjects(prefs.get(ApplicationPrefs.USERS_CAN_START_PROJECTS));
-          thisUser.insert(db, PortalUtils.getServerDomainNameAndPort(request), prefs);
+          // the user will supply location info during registration
+          //city
+          //state
+          //country
+          //postalCode
+
+          // Create the user, and the user's profile
+          thisUser.insert(db, null, prefs);
 
           //Insert user into project as pending
           TeamMember thisMember = new TeamMember();
@@ -555,7 +562,7 @@ public class InviteMembersPortlet extends GenericPortlet {
    */
   private boolean buildMatches(ActionRequest request) throws SQLException {
 
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     String[] membersToInvite = request.getParameter(MEMBERS_TO_INVITE).split(",");
     LinkedHashMap<String, String> members = new LinkedHashMap<String, String>();
     LinkedHashMap<String, String> membersPresent = new LinkedHashMap<String, String>();

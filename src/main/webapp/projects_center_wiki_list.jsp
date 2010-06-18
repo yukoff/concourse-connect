@@ -56,7 +56,7 @@
 <portlet:defineObjects/>
 <%@ include file="initPage.jsp" %>
 <div class="portletWrapper">
-  <h2><ccp:tabLabel name="Wiki" object="project"/> Index</h2>
+  <h2>Index</h2>
   <portlet:renderURL var="homeUrl" portletMode="view">
     <portlet:param name="portlet-action" value="show"/>
     <portlet:param name="portlet-object" value="wiki"/>

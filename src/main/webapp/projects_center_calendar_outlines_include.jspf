@@ -75,14 +75,7 @@
         <div class="timeContainer">
           <div class="timeWrapper">
            <span class="hour">
-             <ccp:tz timestamp="<%= thisRequirement.getStartDate() %>" pattern="hh" timeOnly="true"/>
-           </span>
-            :
-           <span class="hour">
-             <ccp:tz timestamp="<%= thisRequirement.getStartDate() %>" pattern="mm" timeOnly="true"/>
-           </span>
-           <span class="ampm">
-             <ccp:tz timestamp="<%= thisRequirement.getStartDate() %>" pattern="a" timeOnly="true"/>
+             <ccp:tz timestamp="<%= thisRequirement.getStartDate() %>" timeOnly="true"/>
            </span>
           </div>
         </div>

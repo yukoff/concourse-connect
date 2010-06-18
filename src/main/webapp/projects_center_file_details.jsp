@@ -55,12 +55,12 @@
 <portlet:defineObjects/>
   <div class="profile-portlet-header">
     <h1>
-      <ccp:label name="projectsCenterFile.details.fileVersions">File Versions</ccp:label> for <c:out value="${fileItem.subject}"/>
+      <ccp:label name="projectsCenterFile.details.fileVersions">File Versions</ccp:label> for: <c:out value="${fileItem.subject}"/>
     </h1>
   </div>
-
   <ccp:permission name="project-documents-files-upload">
     <portlet:renderURL var="uploadUrl">
+      <portlet:param name="portlet-command" value="fileForm"/>
       <portlet:param name="portlet-action" value="create"/>
       <portlet:param name="portlet-object" value="file-version"/>
       <portlet:param name="portlet-value" value="${fileItem.id}"/>
@@ -88,13 +88,12 @@
           </c:choose>
          </li>
         <li class="last">
-          <img src="<%= ctx %>/images/icons/documents_plus.png"/>
+          <img src="<%= ctx %>/images/icons/documents_plus.png" />
           <a href="${uploadUrl}"><ccp:label name="projectsCenterFile.details.addVersion">Add Version</ccp:label></a>
         </li>
       </ul>
     </div>
   </ccp:permission>
-
   <ccp:permission name="project-documents-files-download" if="none">
     <ccp:evaluate if="<%= !User.isLoggedIn() && project.getFeatures().getAllowGuests() %>">
       <div class="portlet-message-alert">
@@ -125,22 +124,7 @@
         <li>
           <div class="portlet-section-body">
             <%= thisVersion.getImageTag("-23", ctx) %>
-            <h2>
-              <c:out value="${thisVersion.clientFilename}"/>
-              <ccp:permission name="project-documents-files-download">
-                <span>
-                  <portlet:renderURL var="downloadUrl">
-                    <portlet:param name="portlet-action" value="download"/>
-                    <portlet:param name="portlet-object" value="file"/>
-                    <portlet:param name="portlet-value" value="${thisVersion.id}"/>
-                    <portlet:param name="portlet-params" value="${thisVersion.version}"/>
-                  </portlet:renderURL>
-                  <img src="${ctx}/images/icons/get_16x16.png" alt="download icon"/>
-                  <a href="${downloadUrl}">download</a>
-                </span>
-              </ccp:permission>
-            </h2>
-
+            <h3><c:out value="${thisVersion.clientFilename}"/></h3>
             <dl>
               <dt>File Size:</dt>
               <dd><%= thisVersion.getRelativeSize() %>k&nbsp;</dd>
@@ -168,13 +152,16 @@
                 <div class="portlet-section-body-menu">
                   <p>
                     <%-- Download --%>
+                    <c:set var="downloadUrl" value="${ctx}/download/${project.uniqueId}/file/${thisVersion.id}/${thisVersion.version}" />
+                    <%--
                     <portlet:renderURL var="downloadUrl">
                       <portlet:param name="portlet-action" value="download"/>
                       <portlet:param name="portlet-object" value="file"/>
                       <portlet:param name="portlet-value" value="${thisVersion.id}"/>
                       <portlet:param name="portlet-params" value="${thisVersion.version}"/>
                     </portlet:renderURL>
-                    <a href="${downloadUrl}">
+                    --%>
+                    <a href="${downloadUrl}/<c:out value="${thisVersion.clientFilename}"/>">
                       <img src="${ctx}/images/icons/get_32x32.png" alt="Download icon"/>
                       <ccp:label name="projectsCenterFile.details.download">download</ccp:label>
                       <span><%= thisVersion.getRelativeSize() %>k&nbsp;</span>
@@ -186,12 +173,15 @@
                 <ccp:permission name="project-documents-files-download">
                   <li>
                     <%-- View --%>
+                    <c:set var="streamUrl" value="${ctx}/stream/${project.uniqueId}/file/${thisVersion.id}/${thisVersion.version}" />
+                    <%--
                     <portlet:renderURL var="streamUrl">
                       <portlet:param name="portlet-action" value="stream"/>
                       <portlet:param name="portlet-object" value="file"/>
                       <portlet:param name="portlet-value" value="${thisVersion.id}"/>
                       <portlet:param name="portlet-params" value="${thisVersion.version}"/>
                     </portlet:renderURL>
+                    --%>
                     <img src="<%= ctx %>/images/icons/magnifier_search.png" alt="Zoom icon"/>
                     <a href="javascript:popURL('${streamUrl}','Content_<%= fileItem.getId() %>-<%= thisVersion.getVersion() %>',700,580,1,1);">
                       <ccp:label name="projectsCenterFile.details.openInNewWindow">open in new window</ccp:label>
@@ -220,3 +210,4 @@
         }
       %>
     </ol>
+  </div>

@@ -66,7 +66,7 @@ import org.apache.wsrp4j.consumer.proxyportlet.impl.UserRegistryImpl;
  * @created Mar 24, 2008
  */
 public class ConsumerEnvironmentImpl extends GenericConsumerEnvironment {
-  private static String CONSUMER_AGENT = "ConcourseSuite ProxyPortlet Consumer";
+  private static String CONSUMER_AGENT = "ConcourseConnect ProxyPortlet Consumer";
 
   public ConsumerEnvironmentImpl() {
     // set the name of the consumer agent
@@ -93,7 +93,7 @@ public class ConsumerEnvironmentImpl extends GenericConsumerEnvironment {
     setSupportedWindowStates(supportedWindowStates);
 
     // define portlet state change behaviour
-    setPortletStateChange(StateChange.readOnly);
+    setPortletStateChange(StateChange.readWrite);
 
     // define the mime types the consumer supports
     setMimeTypes(new String[]{Constants.MIME_TYPE_HTML});

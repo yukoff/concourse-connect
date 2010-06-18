@@ -75,14 +75,17 @@ public class TagCloudViewer implements IPortletViewer {
 
   // Preferences
   private static final String PREF_TITLE = "title";
+  private static final String PREF_MESSAGE = "message";
   private static final String PREF_LIMIT = "limit";
   private static final String PREF_SORTBY_TAGCOUNT = "sortByTagCount";
   private static final String PREF_HAS_MORE_URL = "hasMoreURL";
   private static final String PREF_HAS_MORE_TITLE = "hasMoreTitle";
   private static final String PREF_CATEGORY = "category";
+  private static final String PREF_SHOW_WHEN_EMPTY = "showWhenEmpty";
 
   // Attribute names for objects available in the view
   private static final String TITLE = "title";
+  private static final String MESSAGE = "message";
   private static final String TAG_LIST = "tagList";
   private static final String HAS_MORE_URL = "hasMoreURL";
   private static final String HAS_MORE_TITLE = "hasMoreTitle";
@@ -95,6 +98,7 @@ public class TagCloudViewer implements IPortletViewer {
 
       // Set global preferences
       request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
+      request.setAttribute(MESSAGE, request.getPreferences().getValue(PREF_MESSAGE, null));
       String limitString = request.getPreferences().getValue(PREF_LIMIT, null);
       String sortByTagCount = request.getPreferences().getValue(PREF_SORTBY_TAGCOUNT, null);
       String hasMoreURL = request.getPreferences().getValue(PREF_HAS_MORE_URL, null);
@@ -108,7 +112,7 @@ public class TagCloudViewer implements IPortletViewer {
         limit = Integer.parseInt(limitString);
       }
 
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       //If preference for category is not set, get it from the page view
       if (!StringUtils.hasText(projectCategory)) {
         projectCategory = PortalUtils.getPageView(request);
@@ -158,7 +162,10 @@ public class TagCloudViewer implements IPortletViewer {
         tagList.setDetermineTagWeights(true);
         tagList.buildList(db);
         if (tagList.size() == 0) {
-          return null;
+          String showWhenEmpty = request.getPreferences().getValue(PREF_SHOW_WHEN_EMPTY, "false");
+          if ("false".equals(showWhenEmpty)) {
+            return null;
+          }
         }
         request.setAttribute(TAG_LIST, tagList);
       } else {
@@ -183,7 +190,10 @@ public class TagCloudViewer implements IPortletViewer {
         tagList.setDetermineTagWeights(true);
         tagList.buildList(db);
         if (tagList.size() == 0) {
-          return null;
+          String showWhenEmpty = request.getPreferences().getValue(PREF_SHOW_WHEN_EMPTY, "false");
+          if ("false".equals(showWhenEmpty)) {
+            return null;
+          }
         }
         request.setAttribute(TAG_LIST, tagList);
       }

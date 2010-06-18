@@ -46,25 +46,24 @@
 
 package com.concursive.connect.web.modules.admin.actions;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
-import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.api.dao.SyncClient;
-
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 import org.apache.commons.codec.binary.Hex;
-import org.aspcfs.apps.transfer.DataRecord;
-import org.aspcfs.utils.CRMConnection;
-import org.aspcfs.utils.StringUtils;
-import org.quartz.Scheduler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.quartz.Scheduler;
 
+import java.security.Key;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.sql.Connection;
-import java.security.Key;
 
 /**
  * Actions for the administration module
@@ -118,48 +117,48 @@ public final class AdminSync extends GenericAction {
 
       String syncListings = context.getRequest().getParameter("syncListings");
       startSync = context.getRequest().getParameter("startSync");
-      if ("true".equals(startSync)){
-      	isValid = true;
-	      if (syncStatus != null && syncStatus.size() == 0) {
-	        // Trigger the sync job
-	        triggerJob(context, "syncSystem", syncListings);
-	      } else {
-	        // Do nothing as a sync is already in progress.
-	      }
+      if ("true".equals(startSync)) {
+        isValid = true;
+        if (syncStatus != null && syncStatus.size() == 0) {
+          // Trigger the sync job
+          triggerJob(context, "syncSystem", syncListings);
+        } else {
+          // Do nothing as a sync is already in progress.
+        }
       }
-      
+
       saveConnectionDetails = context.getRequest().getParameter("saveConnectionDetails");
-      if ("true".equals(saveConnectionDetails)){
-      	
-      	ApplicationPrefs prefs = this.getApplicationPrefs(context);
-      	
+      if ("true".equals(saveConnectionDetails)) {
+
+        ApplicationPrefs prefs = this.getApplicationPrefs(context);
+
         serverURL = context.getRequest().getParameter("serverURL");
         apiClientId = context.getRequest().getParameter("apiClientId");
         apiCode = context.getRequest().getParameter("apiCode");
         String domainAndPort = "";
-        if (serverURL.indexOf("http://") != -1){
-        	domainAndPort = serverURL.substring(7).split("/")[0];
-        } else if (serverURL.indexOf("https://") != -1){
-        	domainAndPort = serverURL.substring(8).split("/")[0];
+        if (serverURL.indexOf("http://") != -1) {
+          domainAndPort = serverURL.substring(7).split("/")[0];
+        } else if (serverURL.indexOf("https://") != -1) {
+          domainAndPort = serverURL.substring(8).split("/")[0];
         }
         String domain = domainAndPort;
-        if (domainAndPort.indexOf(":") != -1){
-        	domain = domainAndPort.split(":")[0];
+        if (domainAndPort.indexOf(":") != -1) {
+          domain = domainAndPort.split(":")[0];
         }
-        
-        if (StringUtils.hasText(serverURL) &&  StringUtils.hasText(domain) &&
-        		StringUtils.hasText(apiClientId) && StringUtils.hasText(apiCode)){
-        	if (testConnection(serverURL, domain, apiCode,apiClientId)){
-        		
-        		isValid = true;
-        		
-	        	prefs.add("CONCURSIVE_CRM.SERVER", serverURL);
-	        	prefs.add("CONCURSIVE_CRM.ID", domain);
-	        	prefs.add("CONCURSIVE_CRM.CODE", apiCode);
-	        	prefs.add("CONCURSIVE_CRM.CLIENT", apiClientId);
-	        	prefs.save();
-	        	
-		        triggerJob(context, "syncSystem", syncListings);
+
+        if (StringUtils.hasText(serverURL) && StringUtils.hasText(domain) &&
+            StringUtils.hasText(apiClientId) && StringUtils.hasText(apiCode)) {
+          if (testConnection(serverURL, domain, apiCode, apiClientId)) {
+
+            isValid = true;
+
+            prefs.add("CONCURSIVE_CRM.SERVER", serverURL);
+            prefs.add("CONCURSIVE_CRM.ID", domain);
+            prefs.add("CONCURSIVE_CRM.CODE", apiCode);
+            prefs.add("CONCURSIVE_CRM.CLIENT", apiClientId);
+            prefs.save();
+
+            triggerJob(context, "syncSystem", syncListings);
 
             //Set the connect user performing the first sync to have crm admin role
             db = this.getConnection(context);
@@ -201,7 +200,7 @@ public final class AdminSync extends GenericAction {
                 LOG.debug("Connect Sync connection information transmission failed...");
               }
             }
-        	}
+          }
         }
       }
     } catch (Exception e) {
@@ -210,27 +209,27 @@ public final class AdminSync extends GenericAction {
     } finally {
       this.freeConnection(context, db);
     }
-    if (!isValid && "true".equals(saveConnectionDetails)){
-    	context.getRequest().setAttribute("serverURL", context.getRequest().getParameter("serverURL"));
+    if (!isValid && "true".equals(saveConnectionDetails)) {
+      context.getRequest().setAttribute("serverURL", context.getRequest().getParameter("serverURL"));
       context.getRequest().setAttribute("apiClientId", context.getRequest().getParameter("apiClientId"));
       context.getRequest().setAttribute("apiCode", context.getRequest().getParameter("apiCode"));
 
-      context.getRequest().setAttribute("actionError","Could not connect to the suite.");
+      context.getRequest().setAttribute("actionError", "Could not connect to the suite.");
       return executeCommandDefault(context);
     }
     return "StartSyncOK";
   }
-  
-  private boolean testConnection(String serverURL, String id, String code, String clientId){
-  	
+
+  private boolean testConnection(String serverURL, String id, String code, String clientId) {
+
     CRMConnection crmConnection = new CRMConnection();
-    
+
     crmConnection.setUrl(serverURL);
     crmConnection.setCode(code);
     crmConnection.setClientId(clientId);
     crmConnection.setId(id);
     crmConnection.setAutoCommit(false);
-    
+
     ArrayList<String> meta = new ArrayList<String>();
     meta.add("code");
     crmConnection.setTransactionMeta(meta);
@@ -241,17 +240,15 @@ public final class AdminSync extends GenericAction {
     list.addField("uniqueField", "code");
     list.addField("tableName", "lookup_account_types");
     list.addField("description", "test");
-  	try {
-  		crmConnection.save(list);
-    	crmConnection.commit();
-    	
-    	if (crmConnection.hasError()){
-    		return false;
-    	}
-    	
-  	}catch (Exception e){
-  		return false;
-  	}
+    try {
+      crmConnection.save(list);
+      crmConnection.commit();
+      if (crmConnection.hasError()) {
+        return false;
+      }
+    } catch (Exception e) {
+      return false;
+    }
     return true;
   }
 

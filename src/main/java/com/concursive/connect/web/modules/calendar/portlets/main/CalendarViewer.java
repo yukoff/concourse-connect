@@ -57,6 +57,7 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
+import com.concursive.connect.config.ApplicationPrefs;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -73,6 +74,9 @@ public class CalendarViewer implements IPortletViewer {
 
   // Pages
   private static final String VIEW_PAGE = "/projects_center_calendar.jsp";
+
+  // Preferences
+  private static final String PREF_SHOW_HOLIDAYS = "showHolidays";
 
   // Object Results
   private static final String CALENDAR_BEAN_BASE = "calendarInfoBean";
@@ -104,6 +108,11 @@ public class CalendarViewer implements IPortletViewer {
 
     // Adjust view settings based on request
     CalendarBeanUtils.updateValues(calendarInfo, request, user);
+
+    // Set any preferences
+    calendarInfo.setShowHolidays(request.getPreferences().getValue(
+        PREF_SHOW_HOLIDAYS,
+        getApplicationPrefs(request).get(ApplicationPrefs.SHOW_HOLIDAYS)));
 
     // Determine the display date, based on the URL
     String selectedDate = PortalUtils.getPageView(request);
@@ -156,7 +165,7 @@ public class CalendarViewer implements IPortletViewer {
     String filter = null;
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Generate a calendar
     CalendarView calendarView = CalendarViewUtils.generateCalendarView(db, calendarInfo, project, user, filter);

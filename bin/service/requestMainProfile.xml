@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+  <authentication>
+    <clientId>1</clientId>
+    <code>plaintext-code-in-database</code>
+    <systemId>1</systemId>
+  </authentication>
+  <transaction id="1">
+    <service action="getDateTime"/>
+  </transaction>
+  <transaction id="2">
+    <meta>
+      <property>id</property>
+      <property>title</property>
+    </meta>
+    <projectList action="select">
+      <uniqueId>main-profile</uniqueId>
+    </projectList>
+  </transaction>
+</app>

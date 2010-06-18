@@ -51,9 +51,9 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.config.ApplicationVersion;
-import com.concursive.connect.web.modules.documents.dao.FileItemVersionList;
 import com.concursive.connect.web.modules.login.beans.LoginBean;
 import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 
@@ -64,8 +64,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.text.NumberFormat;
-import java.util.TimeZone;
 
 /**
  * Description of the SessionValidator
@@ -157,8 +155,10 @@ public class TokenSessionValidator implements ISessionValidator {
       // Check user credentials
       int i = 0;
       PreparedStatement pst = db.prepareStatement(
-          "SELECT u.*, d.description as department " +
-              "FROM users u LEFT JOIN departments d ON (u.department_id = d.code) " +
+          "SELECT u.*, d.description AS department, p.projecttextid " +
+              "FROM users u " +
+              "LEFT JOIN departments d ON (u.department_id = d.code) " +
+              "LEFT JOIN projects p ON (u.profile_project_id = p.project_id) " +
               "WHERE lower(username) = ? ");
       pst.setString(++i, UserId.toLowerCase());
       ResultSet rs = pst.executeQuery();
@@ -177,22 +177,7 @@ public class TokenSessionValidator implements ISessionValidator {
       }
       // Valid user -- Log the user in
       if (thisUser != null) {
-        thisUser.setCurrentAccountSize(FileItemVersionList.queryOwnerSize(db, thisUser.getId()));
-        //thisUser.updateLogin(db, context, ""); //No password...
-        //thisUser.setBrowserType(context.getBrowser());
-        thisUser.setTemplate("template0");
-        // Set a default time zone for user
-        if (thisUser.getTimeZone() == null) {
-          thisUser.setTimeZone(TimeZone.getDefault().getID());
-        }
-        // Set a default currency
-        if (thisUser.getCurrency() == null) {
-          thisUser.setCurrency(NumberFormat.getCurrencyInstance().getCurrency().getCurrencyCode());
-        }
-        // Set a default locale
-        if (thisUser.getLanguage() == null) {
-          thisUser.setLanguage("en_US");
-        }
+        UserUtils.createLoggedInUser(thisUser, db, prefs, context);
         //hasInvitations = (InvitationList.queryCount(db, thisUser.getId()) > 0);
         //thisUser.queryRecentlyAccessedProjects(db);
         // Determine content editing capability

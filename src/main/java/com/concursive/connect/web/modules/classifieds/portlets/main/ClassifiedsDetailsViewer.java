@@ -88,7 +88,7 @@ public class ClassifiedsDetailsViewer implements IPortletViewer {
     int recordId = getPageViewAsInt(request);
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Classified classified = new Classified(db, recordId);

@@ -101,7 +101,7 @@ for (Object anAvailableToUser : exportsAvailableToUser) {
                 <a href="${downloadUrl}">download</a>
                 <%= thisBean.getExportedFile().length() %> bytes</p>
               <ul>
-                <li><img alt="Zoom icon" src="${ctx}/images/icons/magnifier_search.png"/><a href="javascript:popURL('${streamUrl}','Content_<%= thisBean.getExportedFile().getName() %>',700,580,1,1);">View</a></li>
+                <li><img alt="Zoom icon" src="${ctx}/images/icons/magnifier_search.png"/><a href="javascript:popURL('${streamUrl}',700,580,1,1);">View</a></li>
               </ul>
             </div>
           </div>

@@ -221,6 +221,7 @@ function portletCheck(taskId) {
 }
 
 function callSavePageDesign(url) {
+  url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
   xmlhttp.open('get', url);
   xmlhttp.onreadystatechange = handleSavePageResponse;
   xmlhttp.send(null);
@@ -257,6 +258,7 @@ function handleSavePageResponse() {
 }
 
 function callDeletePortlet(url) {
+  url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
   xmlhttp.open('get', url);
   xmlhttp.onreadystatechange = handleDeletePortletResponse;
   xmlhttp.send(null);

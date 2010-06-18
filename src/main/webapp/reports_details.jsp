@@ -84,6 +84,7 @@ Configure the parameters for this report...<br />
         </td>
         <td>
           <%= thisParameter.getHtml(request) %>
+          <%= showAttribute(request, thisParameter.getName() + "Error") %>
         </td>
       </tr>
     <%

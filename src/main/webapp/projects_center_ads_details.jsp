@@ -80,6 +80,7 @@
         <div>
           <ccp:label name="promotion.expires">Expires</ccp:label>
           <ccp:tz timestamp="<%= promotion.getExpirationDate() %>" dateFormat="<%= DateFormat.LONG %>" />
+          (<ccp:tz timestamp="<%= promotion.getExpirationDate() %>" pattern="relative" />)
         </div>
       </ccp:evaluate>
       <ccp:permission name="project-ads-admin">
@@ -142,7 +143,7 @@
         <portlet:param name="portlet-object" value="promotions"/>
         <portlet:param name="portlet-value" value="${promotion.id}"/>
         <portlet:param name="portlet-command" value="setRating"/>
-        <portlet:param name="v" value="\${vote}"/>
+        <portlet:param name="v" value="{vote}"/>
         <portlet:param name="out" value="text"/>
       </portlet:renderURL>
       <ccp:rating id='${promotion.id}'
@@ -164,7 +165,7 @@
     </c:if>
     <p><c:out value="${promotion.content}"/></p>
     <c:if test="${!empty promotion.webPage && !empty promotion.destinationUrl && fn:startsWith(promotion.destinationUrl, 'http')}">
-      <cite><a target="_blank" rel="nofollow" href="<c:out value="${promotion.destinationUrl}"/>"><c:out value="${promotion.webPage}"/></a></cite>
+      <p><cite><a target="_blank" rel="nofollow" href="<c:out value="${promotion.destinationUrl}"/>"><c:out value="${promotion.webPage}"/></a></cite></p>
     </c:if>
     <span class="tagListAd">
       <portlet:renderURL var="setTagsUrl" windowState="maximized">
@@ -174,7 +175,7 @@
         <portlet:param name="portlet-value" value="${promotion.id}"/>
         <portlet:param name="popup" value="true" />
       </portlet:renderURL>
-      <br/><ccp:tags url="${setTagsUrl}" />
+      <ccp:tags url="${setTagsUrl}" />
     </span>
   </div>
 </div>

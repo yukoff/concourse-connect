@@ -85,7 +85,7 @@ public class DeleteClassifiedAdAction implements IPortletAction {
     int id = getPageViewAsInt(request);
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Classified classified = new Classified(db, id);

@@ -79,12 +79,10 @@
         <li>
           <c:choose>
             <c:when test="${empty privateMessage.linkProject}">
-            About this <a href="${ctx}/show/${privateMessage.project.uniqueId}/${privateMessage.itemLink}"><c:out
-             value="${privateMessage.itemLabel}"/></a>
+              &raquo; About this <a href="${ctx}/show/${privateMessage.project.uniqueId}/${privateMessage.itemLink}"><c:out value="${privateMessage.itemLabel}"/></a>
             </c:when>
             <c:otherwise>
-            About this <a href="${ctx}/show/${privateMessage.linkProject.uniqueId}/${privateMessage.itemLink}"><c:out
-             value="${privateMessage.itemLabel}"/></a>
+              &raquo; About this <a href="${ctx}/show/${privateMessage.linkProject.uniqueId}/${privateMessage.itemLink}"><c:out value="${privateMessage.itemLabel}"/></a>
             </c:otherwise>
           </c:choose>
         </li>
@@ -99,8 +97,7 @@
     <div class="actions">
       <a href="javascript:showPanel('ContactUs','${ctx}/show/${privateMessage.user.profileProject.uniqueId}/app/compose_message?module=inbox&id=${privateMessage.id}',700)" name="reply" class="reply">
         <img src="${ctx}/images/icons/mail_pencil.png" alt="Reply Icons">
-        Reply
-      </a>
+        Reply</a>
     </div>
 	</ccp:permission>
    </c:if>	

@@ -81,7 +81,7 @@ function updateCategory() {
       hideSpan("emailSpan2");
       showSpan("thisProjectSpan");
       window.frames['server_commands'].location.href=
-        teamelements_ctx + "/ProjectManagementTickets.do?command=Items&source=" + escape(value);
+        teamelements_ctx + "/ProjectManagementTickets.do?command=Items&source=" + encodeURIComponent(value) + "&out=text";
     } else if (value.indexOf("contacts|") == 0) {
       var sel2 = document.getElementById("selDepartment");
       sel2.options.length = 0;
@@ -118,7 +118,7 @@ function updateCategory() {
       hideSpan("emailSpan");
       hideSpan("emailSpan2");
       window.frames['server_commands'].location.href=
-        teamelements_ctx + "/ProjectManagementTickets.do?command=Projects&source=" + escape(value);
+        teamelements_ctx + "/ProjectManagementTickets.do?command=Projects&source=" + encodeURIComponent(value) + "&out=text";
     }
   }
 }
@@ -131,7 +131,7 @@ function updateItemList() {
       sel2.options.length > 0 && sel2.options.selectedIndex != -1) {
     var value = sel.options[sel.selectedIndex].value;
     var value2 = sel2.options[sel2.selectedIndex].value;
-    var url = teamelements_ctx + "/ProjectManagementTickets.do?command=Items&source=" + escape(value) + "|" + value2;
+    var url = teamelements_ctx + "/ProjectManagementTickets.do?command=Items&source=" + encodeURIComponent(value) + "|" + value2 + "&out=text";
     window.frames['server_commands'].location.href=url;
   }
   showSpan("select2Span");
@@ -161,7 +161,7 @@ function searchName(form) {
     var value = sel.options[sel.selectedIndex].value;
     var value2 = form.searchValue.value;
     window.frames['server_commands'].location.href=
-      teamelements_ctx + "/ProjectManagementTickets.do?command=Items&source=" + escape(value) + "|" + value2 + "&out=text";
+      teamelements_ctx + "/ProjectManagementTickets.do?command=Items&source=" + encodeURIComponent(value) + "|" + value2 + "&out=text";
   }
 }
 

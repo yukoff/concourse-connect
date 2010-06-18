@@ -59,8 +59,8 @@
   <c:if test="${!empty projectList}">
     <ol>
       <c:forEach items="${projectList}" var="project">
-        <c:set var="project" value="${project}" />
-        <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" />
+        <c:set var="project" value="${project}" scope="request"/>
+        <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request" />
         <li>
           <c:if test="${!empty project.category.logo}">
             <c:choose>
@@ -72,18 +72,51 @@
               </c:when>
             </c:choose>
           </c:if>
+          <c:choose>
+            <c:when test="${showRating eq 'true'}">
+              <ccp:rating id='${project.id}'
+                          showText='false'
+                          count='${project.ratingCount}'
+                          value='${project.ratingValue}'
+                          url=''/>
+            </c:when>
+            <c:when test="${showPoints eq 'true'}">
+              <div class="points-rating">
+                <div class="points-ratingValue">
+                  ${project.ratingValue} POINT<c:if test="${project.ratingValue != 1}">S</c:if>
+                </div>
+                <div class="points-ratingCount">
+                  <c:set var="ratingLinkShown" value="false"/>
+                  <c:if test="${project.features.showReviews}">
+                    <c:if test="${project.owner ne user.id}">
+                      <ccp:permission name="project-reviews-add" object="project">
+                        <a href="${ctx}/create/${project.uniqueId}/review?redirectTo=${ctx}/ideas.shtml" rel="shadowbox;width=600">${project.ratingCount} vote<c:if test="${project.ratingCount != 1}">s</c:if></a>
+                        <c:set var="ratingLinkShown" value="true"/>
+                      </ccp:permission>
+                    </c:if>
+                  </c:if>
+                  <c:if test="${ratingLinkShown eq 'false'}">
+                    ${project.ratingCount} vote<c:if test="${project.ratingCount != 1}">s</c:if>
+                  </c:if>
+                </div>
+              </div>
+            </c:when>
+          </c:choose>
           <h4><a href="${ctx}/show/${project.uniqueId}"><c:out value="${project.title}"/></a></h4>
           <c:if test="${!empty project.location}">
             <address>
-              <c:if test="${!empty project.city}"><span class="city">${project.city}</span>,</c:if>
-              <c:if test="${!empty project.state}"><span class="state">${project.state}</span></c:if>
+              <c:if test="${!empty project.city}"><span class="city"><c:out value="${project.city}"/></span>,</c:if>
+              <c:if test="${!empty project.state}"><span class="state"><c:out value="${project.state}"/></span></c:if>
               <%--
-              <c:if test="${!empty project.postalCode}"><span class="zip">${project.postalCode}</span></c:if>
+              <c:if test="${!empty project.postalCode}"><span class="zip"><c:out value="${project.postalCode}"/></span></c:if>
               --%>
               <c:if test="${!empty project.country && project.country ne 'UNITED STATES'}">
                 <span class="country"><c:out value="${project.country}"/></span>
               </c:if>
             </address>
+          </c:if>
+          <c:if test="${project.subCategory1Id > -1}">
+            <p><c:out value="${project.subCategory1.label}"/></p>
           </c:if>
         </li>
       </c:forEach>

@@ -108,7 +108,7 @@ public class ProjectListByTagViewer implements IPortletViewer {
       }
 
       String categoryName = PortalUtils.getPageView(request);
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       int categoryId = -1;
       if (StringUtils.hasText(categoryName) && !"all".equals(categoryName)) {
         ProjectCategoryList categories = (ProjectCategoryList) request.getAttribute(Constants.REQUEST_TAB_CATEGORY_LIST);

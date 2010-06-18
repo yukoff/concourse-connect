@@ -142,10 +142,10 @@
           <label>City</label>
           <%= showAttribute(request, "cityError") %>
           <input type="text" name="city" value="<%= toHtmlValue(contactUs.getCity()) %>"/>
-          <label>State</label>
+          <label>State/Province</label>
           <%= showAttribute(request, "stateError") %>
           <input type="text" name="state" value="<%= toHtmlValue(contactUs.getState()) %>"/>
-          <label>Postal Code</label>
+          <label>Zip/Postal Code</label>
           <%= showAttribute(request, "postalCodeError") %>
           <input type="text" name="postalCode" value="<%= toHtmlValue(contactUs.getPostalCode()) %>"/>
           <label>Country or area <span class="required">*</span></label>
@@ -184,8 +184,8 @@
 
 <%-- Draw the map if possible --%>
 <c:if test='${!empty applicationPrefs.prefs["GOOGLE_MAPS.DOMAIN"] && !empty requestMainProfile.address}'>
-<c:set var="project" value="${requestMainProfile}"/>
-<jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project"/>
+<c:set var="project" value="${requestMainProfile}" scope="request"/>
+<jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%
   String mapId = "Map";
   request.setAttribute("mapId", mapId);

@@ -89,7 +89,7 @@ public class ProjectListByUserPortlet extends GenericPortlet {
       // Prepare the response
       String view = null;
       try {
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
         // Handle the request
         if (value != null) {
           setAjaxNotification(request, response, db);
@@ -140,6 +140,7 @@ public class ProjectListByUserPortlet extends GenericPortlet {
     TeamMemberList teamMemberList = new TeamMemberList();
     teamMemberList.setUserId(userId);
     teamMemberList.setStatus(TeamMember.STATUS_ADDED);
+    teamMemberList.setOpenProjectsOnly(Constants.TRUE);
     teamMemberList.setPagedListInfo(pagedListInfo);
     // Decide if showing non-user profiles or user profiles
     if (userProfiles) {
@@ -151,8 +152,12 @@ public class ProjectListByUserPortlet extends GenericPortlet {
     }
     // For when other users look at this profile...
     if (userId != PortalUtils.getUser(request).getId()) {
-      // Show the allowable profiles...
-      teamMemberList.setForTeamMateUserId(PortalUtils.getUser(request).getId());
+      if (!PortalUtils.getUser(request).isLoggedIn()) {
+        teamMemberList.setPublicProjectsOnly(Constants.TRUE);
+      } else {
+        // Show the allowable profiles...
+        teamMemberList.setForTeamMateUserId(PortalUtils.getUser(request).getId());
+      }
       teamMemberList.setIgnoreOwnerUserId(userId);
       // Sort by title
       pagedListInfo.setDefaultSort("p.title", null);

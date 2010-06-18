@@ -1,44 +1,10 @@
 /*
  * ConcourseConnect
- * Copyright 2009 Concursive Corporation
+ * Copyright 2010 Concursive Corporation
  * http://www.concursive.com
  *
- * This file is part of ConcourseConnect, an open source social business
- * software and community platform.
- *
- * Concursive ConcourseConnect is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Affero General Public License as published
- * by the Free Software Foundation, version 3 of the License.
- *
- * Under the terms of the GNU Affero General Public License you must release the
- * complete source code for any application that uses any part of ConcourseConnect
- * (system header files and libraries used by the operating system are excluded).
- * These terms must be included in any work that has ConcourseConnect components.
- * If you are developing and distributing open source applications under the
- * GNU Affero General Public License, then you are free to use ConcourseConnect
- * under the GNU Affero General Public License.
- *
- * If you are deploying a web site in which users interact with any portion of
- * ConcourseConnect over a network, the complete source code changes must be made
- * available.  For example, include a link to the source archive directly from
- * your web site.
- *
- * For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
- * products, and do not license and distribute their source code under the GNU
- * Affero General Public License, Concursive provides a flexible commercial
- * license.
- *
- * To anyone in doubt, we recommend the commercial license. Our commercial license
- * is competitively priced and will eliminate any confusion about how
- * ConcourseConnect can be used and distributed.
- *
- * ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
- * details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of ConcourseConnect and is licensed under a commercial
+ * license, not an open source license.
  *
  * Attribution Notice: ConcourseConnect is an Original Work of software created
  * by Concursive Corporation
@@ -47,14 +13,14 @@ package com.concursive.connect.web.modules.activity.portlets.activityStream;
 
 import com.concursive.commons.date.DateUtils;
 import com.concursive.commons.text.StringUtils;
-import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.Constants;
-import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
+import com.concursive.connect.web.modules.activity.utils.ProjectHistoryUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
@@ -78,11 +44,14 @@ public class ActivityStreamViewer implements IPortletViewer {
   private static final String VIEW_PAGE = "/portlets/activity_stream/activity_stream-view.jsp";
 
   // Preferences
+  private static final String PREF_CATEGORY = "category";
   private static final String PREF_TITLE = "title";
   private static final String PREF_CONTENT = "content";
   private static final String PREF_LIMIT = "limit";
-  private static final String PREF_EVENTS = "events";//An array list
-  private static final String PREF_CATEGORY = "category";//An array list
+  private static final String PREF_EVENTS = "events";
+  private static final String PREF_ALLOW_REPLIES = "allowReplies";
+  private static final String PREF_SHOW_CONTROLS = "showControls";
+
 
   // Object Results
   private static final String TITLE = "title";
@@ -90,45 +59,106 @@ public class ActivityStreamViewer implements IPortletViewer {
   private static final String PROJECT_HISTORY_LIST = "projectHistoryList";
   private static final String PROJECT_HISTORY_ARRAY_LIST = "projectHistoryArrayList";
   private static final String EVENT_ARRAY_LIST = "eventArrayList";
+  private static final String ALLOW_REPLIES = "allowReplies";
+  private static final String SHOW_CONTROLS = "showControls";
 
   public String doView(RenderRequest request, RenderResponse response)
       throws Exception {
-    // The JSP to show upon success
-    String defaultView = VIEW_PAGE;
 
-    ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
+    // Read the paging parameters, which can be sent from other portlets
+    String ajax = request.getParameter("ajax");
+    String limit = request.getParameter("limit");
+    if (limit == null) {
+      // Look for the global request parameter
+      limit = PortalUtils.getQueryParameter(request, "limit");
+    }
+    String offset = request.getParameter("offset");
+    // Ajax null means non-ajax request
+    if (ajax == null) {
+      ajax = "false";
+    }
 
-    String limit = request.getPreferences().getValue(PREF_LIMIT, "10");
     // General display preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, "Recent Activity"));
+    request.setAttribute(ALLOW_REPLIES, request.getPreferences().getValue(PREF_ALLOW_REPLIES, "true"));
     request.setAttribute(CONTENT, request.getPreferences().getValue(PREF_CONTENT, null));
+    String prefLimit = request.getPreferences().getValue(PREF_LIMIT, "10");
+    // Change the limit for showing more entries if limit is not null
+    if (limit == null) {
+      limit = prefLimit;
+    }
 
     Project project = PortalUtils.findProject(request);
-    Connection db = PortalUtils.getConnection(request);
-    ArrayList eventArrayList = getEventPreferences(request);
+    User user = PortalUtils.getUser(request);
+    Connection db = PortalUtils.useConnection(request);
 
-    // Query the activity stream data
+    // Query the activity stream
     ProjectHistoryList projectHistoryList = new ProjectHistoryList();
     PagedListInfo projectHistoryListInfo = PortalUtils.getPagedListInfo(request, "projectHistoryListInfo");
     projectHistoryListInfo.setItemsPerPage(Integer.parseInt(limit));
+    if (offset != null) {
+      projectHistoryListInfo.setCurrentOffset(offset);
+    }
     projectHistoryList.setPagedListInfo(projectHistoryListInfo);
-    projectHistoryList.setObjectPreferences(eventArrayList);
     projectHistoryList.setUntilLinkStartDate(new Timestamp(System.currentTimeMillis()));
+
+    // Prepare the stream type
+    String streamType = request.getParameter("streamType");
+    if (streamType == null) {
+      streamType = "1";
+    }
+    request.setAttribute("streamType", streamType);
 
     // Determine if the portlet is on a project page
     if (project != null && project.getId() != -1) {
-      // Determine if this is a user's page
-      User user = PortalUtils.getUser(request);
-      if (user.getProfileProjectId() == project.getId()) {
-        // Show the user's activity
-        projectHistoryList.setEnteredBy(user.getId());
+      // determine if the user has access to members of this profile
+      if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-activity-view")) {
+        return null;
+      }
+      // Determine what kind of project page
+      if (user.isLoggedIn() && user.getProfileProjectId() == project.getId()) {
+        // This is the current user's profile...
+        if ("1".equals(streamType)) {
+          // Show all activities in all of my related profiles
+          projectHistoryList.setForMember(user.getId());
+          // @todo Limit the object types based on access to each profile
+          ArrayList<String> eventArrayList = getEventPreferences(request, null, user);
+          projectHistoryList.setObjectPreferences(eventArrayList);
+        } else {
+          // Show just my profile's activities
+          projectHistoryList.setProjectId(user.getProfileProjectId());
+          // Limit the object types based on access to my profile
+          ArrayList<String> eventArrayList = getEventPreferences(request, project, user);
+          projectHistoryList.setObjectPreferences(eventArrayList);
+        }
+        request.setAttribute(SHOW_CONTROLS, request.getPreferences().getValue(PREF_SHOW_CONTROLS, "true"));
+      } else if (project.getProfile()) {
+        if (user.isLoggedIn()) {
+          // All of the user's activities that I have access to
+          projectHistoryList.setForUserUpdates(user.getId(), project.getOwner(), project.getId());
+          // @todo Limit the object types based on access to each profile
+          ArrayList<String> eventArrayList = getEventPreferences(request, null, user);
+          projectHistoryList.setObjectPreferences(eventArrayList);
+        } else {
+          // Show just the user profile page activities
+          projectHistoryList.setProjectId(project.getId());
+          // Limit the object types based on access to this profile
+          ArrayList<String> eventArrayList = getEventPreferences(request, project, user);
+          projectHistoryList.setObjectPreferences(eventArrayList);
+        }
       } else {
         // Show the project's activity
         projectHistoryList.setProjectId(project.getId());
+        // Limit the object types based on access
+        ArrayList<String> eventArrayList = getEventPreferences(request, project, user);
+        projectHistoryList.setObjectPreferences(eventArrayList);
       }
     } else {
       // Constrain to the current instance
       projectHistoryList.setInstanceId(PortalUtils.getInstance(request).getId());
+      // @todo Limit the object types based on access to each profile
+      ArrayList<String> eventArrayList = getEventPreferences(request, null, null);
+      projectHistoryList.setObjectPreferences(eventArrayList);
       // Determine if a specific category is specified
       String projectCategoryName = request.getPreferences().getValue(PREF_CATEGORY, null);
       int projectCategoryId = -1;
@@ -139,25 +169,24 @@ public class ActivityStreamViewer implements IPortletViewer {
         }
         projectHistoryList.setProjectCategoryId(projectCategoryId);
       }
-    }
-
-    // Determine which data is returned
-    User thisUser = null;
-    if (PortalUtils.getDashboardPortlet(request).isCached()) {
-      if (PortalUtils.canShowSensitiveData(request)) {
-        // Need to use a participant's setting here, this user is fine
-        // because this is for building the wiki links, not the data
-        thisUser = PortalUtils.getUser(request);
-        // Limit the data to a participant
-        projectHistoryList.setForParticipant(Constants.TRUE);
+      // Since this is a category page, determine which data is shown
+      if (PortalUtils.getDashboardPortlet(request).isCached()) {
+        if (PortalUtils.canShowSensitiveData(request)) {
+          // Limit the data to a participant
+          projectHistoryList.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          projectHistoryList.setPublicProjects(Constants.TRUE);
+        }
       } else {
-        // Use the most generic settings since this portlet is cached
-        projectHistoryList.setPublicProjects(Constants.TRUE);
+        if (user.isLoggedIn()) {
+          // Use the current user's setting
+          projectHistoryList.setForUser(user.getId());
+        } else {
+          // Use the most generic settings since this portlet is cached
+          projectHistoryList.setPublicProjects(Constants.TRUE);
+        }
       }
-    } else {
-      // Use the current user's setting
-      thisUser = PortalUtils.getUser(request);
-      projectHistoryList.setForUser(thisUser.getId());
     }
     projectHistoryList.buildList(db);
     request.setAttribute(PROJECT_HISTORY_LIST, projectHistoryList);
@@ -174,27 +203,30 @@ public class ActivityStreamViewer implements IPortletViewer {
     for (ProjectHistory projectHistory : projectHistoryList) {
       // This is a new day
       if (lastDate == null ||
-          DateUtils.isAtleastNextDay(projectHistory.getLinkStartDate().getTime(), lastDate.getTime())) {
+          DateUtils.isAtleastNextDay(projectHistory.getRelativeDate().getTime(), lastDate.getTime())) {
         // This is a new date so create a new array for storing into dayList
         dayList = new ArrayList<ArrayList>();
         activityStreamList.add(dayList);
+
         // New day, new people
         lastId = -1;
       }
       // This is a new day or this is a new event owner
       int thisOwner = projectHistory.getUser().getId();
-      if (projectHistory.getEventType() == ProjectHistoryList.ADD_ACTIVITY_ENTRY_EVENT) {
-        // This event type will have a custom handler
-        thisOwner = 0;
-      }
-      if (lastId == -1 || thisOwner != lastId) {
+//      if (projectHistory.getEventType() == ProjectHistoryList.ADD_ACTIVITY_ENTRY_EVENT) {
+//        // This event type will have a custom handler
+//        thisOwner = 0;
+//      }
+
+
+      if (lastId == -1 || projectHistory.getIndent() == 0) {
         eventList = new ArrayList<ProjectHistory>();
         dayList.add(eventList);
       }
       // Parse the wiki content
       int userId = -1;
-      if (thisUser != null) {
-        userId = thisUser.getId();
+      if (user != null) {
+        userId = user.getId();
       }
       // @note the context is used instead of the full URL
       WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(userId, request.getContextPath());
@@ -203,34 +235,55 @@ public class ActivityStreamViewer implements IPortletViewer {
       // Add the activity stream item to the person
       eventList.add(projectHistory);
       // Update the pointers
-      lastDate = projectHistory.getLinkStartDate();
+      lastDate = projectHistory.getRelativeDate();
       lastId = thisOwner;
     }
 
     // Determine if the portlet should be shown
     if (activityStreamList.size() > 0) {
+      // Share the namespace of this portlet so it can be controlled
+      for (String event : PortalUtils.getDashboardPortlet(request).getGenerateDataEvents()) {
+        if (event.startsWith("namespace-")) {
+          PortalUtils.setGeneratedData(request, event, response.getNamespace());
+        }
+      }
+      // Show the activity list
       request.setAttribute(PROJECT_HISTORY_ARRAY_LIST, activityStreamList);
-      request.setAttribute(EVENT_ARRAY_LIST, eventArrayList);
-      // Show the view
-      return defaultView;
+      // Show the more button
+      if (projectHistoryList.getPagedListInfo().getHasNextPageLink()) {
+        request.setAttribute("hasNext", "1");
+      }
+      // Show how many more comments there are for the current activity
+      ProjectHistory lastHistoryItem = projectHistoryList.get(projectHistoryList.size() - 1);
+      int additionalComments = ProjectHistoryUtils.queryAdditionalCommentsCount(db, lastHistoryItem);
+      if (additionalComments > 0) {
+        request.setAttribute("additionalComments", String.valueOf(additionalComments));
+      }
+      // Setting status of request type (ajax/non-ajax)
+      request.setAttribute("ajax", ajax);
+      request.setAttribute("prefLimit", prefLimit);
+      request.setAttribute("limit", limit);
+      request.setAttribute("offset", "-1");
+      return VIEW_PAGE;
     } else {
       return null;
     }
   }
 
-  private ArrayList<String> getEventPreferences(RenderRequest request) {
+  private ArrayList<String> getEventPreferences(RenderRequest request, Project project, User user) {
     ArrayList<String> objectPreference = null;
     String[] objectPreferences = request.getPreferences().getValues(PREF_EVENTS, null);
     if (objectPreferences != null) {
       objectPreference = new ArrayList<String>();
-      int numberOfPreferences = objectPreferences.length;
-      int count = 0;
-      while (count < numberOfPreferences) {
-        String preferenceName = objectPreferences[count];
-        objectPreference.add(preferenceName);
-        count++;
+      for (String preferenceName : objectPreferences) {
+        // Make sure the user has access to the data
+        String permission = ProjectHistoryList.getPermission(preferenceName);
+        if (user == null || project == null || permission == null || ProjectUtils.hasAccess(project.getId(), user, permission)) {
+          objectPreference.add(preferenceName);
+        }
       }
     }
+    request.setAttribute(EVENT_ARRAY_LIST, objectPreference);
     return objectPreference;
   }
 }

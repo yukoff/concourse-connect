@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.lists.portlets;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.lists.dao.Task;
@@ -93,7 +94,7 @@ public class AddProjectToListPortlet extends GenericPortlet {
   private static final String TITLE = "title";
   private static final String INTRODUCTION_MESSAGE = "introductionMessage";
   private static final String SUCCESS_MESSAGE = "successMessage";
-  private static final String ERROR_MESSAGE = "errorMessage";
+  private static final String ACTION_ERROR = "actionError";
   private static final String PROJECT = "project";
   private static final String AVAILABLE_LISTS = "availableLists";
   private static final String AVAILABLE_PROJECTS = "availableProjects";
@@ -136,13 +137,12 @@ public class AddProjectToListPortlet extends GenericPortlet {
       LOG.debug("doView: pidOfLists -- " + pidOfLists);
 
       // Clean up session
-      request.getPortletSession().removeAttribute(ERROR_MESSAGE);
       request.getPortletSession().removeAttribute(VIEW_TYPE);
       request.getPortletSession().removeAttribute(PROJECT_ID_OF_LISTS);
 
       if (SAVE_FAILURE.equals(viewType)) {
         // Prep the form to show errors...
-        request.setAttribute(ERROR_MESSAGE, request.getPreferences().getValue(PREF_FAILURE_MESSAGE, null));
+        request.setAttribute(ACTION_ERROR, request.getPreferences().getValue(PREF_FAILURE_MESSAGE, null));
         // Show the form with any errors provided
         PortalUtils.processErrors(request, task.getErrors());
       } else if (SAVE_SUCCESS.equals(viewType)) {
@@ -153,20 +153,20 @@ public class AddProjectToListPortlet extends GenericPortlet {
         if (!user.isLoggedIn()) {
           // If user is not logged in, redirect
           view = VIEW_MESSAGE_PAGE;
-          request.setAttribute(ERROR_MESSAGE, "You need to be logged in to perform this action");
+          request.setAttribute(ACTION_ERROR, "You need to be logged in to perform this action");
         } else if (projectId <= 0) {
-          request.setAttribute(ERROR_MESSAGE, "No project was specified");
+          request.setAttribute(ACTION_ERROR, "No project was specified");
           view = VIEW_MESSAGE_PAGE;
         } else {
           view = VIEW_FORM_PAGE;
           try {
-            Connection db = PortalUtils.getConnection(request);
+            Connection db = PortalUtils.useConnection(request);
 
             int userProfileId = user.getProfileProjectId();
             Project userProfile;
             if (userProfileId == -1) {
               view = VIEW_MESSAGE_PAGE;
-              request.setAttribute(ERROR_MESSAGE, "No profile is available to bookmark.");
+              request.setAttribute(ACTION_ERROR, "No profile is available to bookmark.");
             } else {
               userProfile = ProjectUtils.loadProject(userProfileId);
               if (pidOfLists == -1) {
@@ -189,6 +189,12 @@ public class AddProjectToListPortlet extends GenericPortlet {
               }
 
               TaskCategoryList availableLists = getAvailableLists(db, pidOfLists);
+              
+              String errorMessage = (String)request.getPortletSession().getAttribute(ACTION_ERROR);
+              if (StringUtils.hasText(errorMessage)){
+              	request.setAttribute(ACTION_ERROR, errorMessage);
+              }
+              
               Map<Integer, TaskCategory> usedLists = findExistingTaskCategorysForProjects(db, pidOfLists, project.getId());
               request.setAttribute(PROJECT_ID_OF_LISTS, pidOfLists);
               request.setAttribute(PROJECT, project);
@@ -200,10 +206,12 @@ public class AddProjectToListPortlet extends GenericPortlet {
           } catch (SQLException e) {
             e.printStackTrace();
             view = VIEW_MESSAGE_PAGE;
-            request.setAttribute(ERROR_MESSAGE, "An error occurred processing your request. Please try again.");
+            request.setAttribute(ACTION_ERROR, "An error occurred processing your request. Please try again.");
           }
         }
       }
+      // Clean up session
+      request.getPortletSession().removeAttribute(ACTION_ERROR);
       PortletContext context = getPortletContext();
       PortletRequestDispatcher requestDispatcher = context.getRequestDispatcher(view);
       requestDispatcher.include(request, response);
@@ -229,6 +237,7 @@ public class AddProjectToListPortlet extends GenericPortlet {
 
     int projectIdToBookmark = Integer.valueOf(request.getParameter(PROJECT_ID_TO_BOOKMARK));
     int projectIdOfLists = Integer.valueOf(request.getParameter(PROJECT_ID_OF_LISTS));
+    String newListName = request.getParameter(NEW_LIST_NAME);
 
     // If the user selected an item in the drop-down, then that means they are
     // changing lists
@@ -247,23 +256,30 @@ public class AddProjectToListPortlet extends GenericPortlet {
 
       User user = PortalUtils.getUser(request);
       int userId = user.getId();
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       Project projectOfLists = new Project(db, projectIdOfLists);
       Project projectToBookmark = new Project(db, projectIdToBookmark);
       Collection<Integer> listIds = getListIds(request.getParameterValues(LIST));
       //verify user can modify lists for project
       boolean isAddNewList = false;
       if (ProjectUtils.hasAccess(projectOfLists.getId(), user, "project-lists-modify")) {
-        String newListName = request.getParameter(NEW_LIST_NAME);
-        if (newListName != null && newListName.trim().length() > 0) {
+      	
+      	if (!StringUtils.hasText(newListName) && (listIds.size() == 0)){
+          System.out.println("Error need to show From");
+          request.getPortletSession().setAttribute(ACTION_ERROR, "Choose a list or create one");
+          request.getPortletSession().setAttribute(VIEW_TYPE, VIEW_FORM_PAGE);
+          return;
+      	}
+      	
+        if (StringUtils.hasText(newListName)) {
           if (!ProjectUtils.hasAccess(projectOfLists.getId(), user, "project-lists-add")) {
-            request.getPortletSession().setAttribute(ERROR_MESSAGE, "Not authorized to create new list");
+            request.getPortletSession().setAttribute(ACTION_ERROR, "Not authorized to create new list");
             request.getPortletSession().setAttribute(VIEW_TYPE, VIEW_FORM_PAGE);
             return;
           }
           int newListId = saveNewList(db, projectIdOfLists, newListName);
           if (newListId == -1) {
-            request.getPortletSession().setAttribute(ERROR_MESSAGE, "Unable to create new list.");
+            request.getPortletSession().setAttribute(ACTION_ERROR, "Unable to create new list.");
             request.getPortletSession().setAttribute(VIEW_TYPE, SAVE_FAILURE);
             return;
           } else {
@@ -276,7 +292,7 @@ public class AddProjectToListPortlet extends GenericPortlet {
         if ((isAddNewList && existingTasks.size() > listIds.size() - 1)
             || !isAddNewList && existingTasks.size() > listIds.size()) {
           if (!ProjectUtils.hasAccess(projectOfLists.getId(), user, "project-lists-delete")) {
-            request.getPortletSession().setAttribute(ERROR_MESSAGE, "Not authorized to delete items");
+            request.getPortletSession().setAttribute(ACTION_ERROR, "Not authorized to delete items");
             request.getPortletSession().setAttribute(VIEW_TYPE, VIEW_FORM_PAGE);
             return;
           } else {
@@ -287,7 +303,7 @@ public class AddProjectToListPortlet extends GenericPortlet {
             projectIdOfLists, request);
       } else {
         isSuccess = false;
-        request.getPortletSession().setAttribute(ERROR_MESSAGE, "Not authorized to bookmark");
+        request.getPortletSession().setAttribute(ACTION_ERROR, "Not authorized to bookmark");
       }
 
       if (isSuccess) {

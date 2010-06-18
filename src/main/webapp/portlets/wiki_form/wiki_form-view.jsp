@@ -89,6 +89,10 @@
         <input type="hidden" name="popup" value="true"/>
       </c:if>
       <input type="submit" class="submit" value="Get Information" />
+      <c:if test="${'true' eq param.popup || 'true' eq popup}">
+        <input type="button" value="Cancel" class="cancel" id="panelCloseButton">
+      </c:if>
+      <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
     </form>
   </div>
 </div>

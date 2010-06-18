@@ -97,7 +97,7 @@ public class PortalUtils {
   public PortalUtils() {
   }
 
-  public static Connection getConnection(PortletRequest request) {
+  public static Connection useConnection(PortletRequest request) {
     return (Connection) request.getAttribute("connection");
   }
 
@@ -194,15 +194,30 @@ public class PortalUtils {
   }
 
   public static String getPageAction(PortletRequest request) {
-    return (String) request.getAttribute("portletAction");
+    String value = (String) request.getAttribute("portletAction");
+    if (value == null) {
+      LOG.debug("Looking at just this portlet for portlet-action");
+      value = request.getParameter("portlet-action");
+    }
+    return value;
   }
 
   public static String getPageDomainObject(PortletRequest request) {
-    return (String) request.getAttribute("portletDomainObject");
+    String value = (String) request.getAttribute("portletDomainObject");
+    if (value == null) {
+      LOG.debug("Looking at just this portlet for portlet-object");
+      value = request.getParameter("portlet-object");
+    }
+    return value;
   }
 
   public static String getPageView(PortletRequest request) {
-    return (String) request.getAttribute("portletView");
+    String value = (String) request.getAttribute("portletView");
+    if (value == null) {
+      LOG.debug("Looking at just this portlet for portlet-value");
+      value = request.getParameter("portlet-value");
+    }
+    return value;
   }
 
   public static int getPageViewAsInt(PortletRequest request) {
@@ -275,7 +290,8 @@ public class PortalUtils {
           String[] paramParts = param.split("=");
           if (paramParts != null && paramParts.length == 2) {
             String paramName = paramParts[0];
-            String paramValue = paramParts[1];
+            // Decode the raw url value
+            String paramValue = StringUtils.jsUnEscape(StringUtils.replace(paramParts[1], "+", " "));
             paramMap.put(paramName, paramValue);
           }
         }
@@ -329,6 +345,9 @@ public class PortalUtils {
     try {
       IndexEvent indexEvent = new IndexEvent(item, IndexEvent.ADD);
       ((Vector) scheduler.getContext().get("IndexArray")).add(indexEvent);
+
+      //if (scheduler.getCurrentlyExecutingJobs().)
+
       scheduler.triggerJob("indexer", (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
     } catch (Exception e) {
       LOG.error("indexAddItem failed: " + e.getMessage());
@@ -732,7 +751,12 @@ public class PortalUtils {
    * @return
    */
   public static String getViewer(PortletRequest request) {
-    return (String) request.getAttribute("portletCommand");
+    String value = (String) request.getAttribute("portletCommand");
+    if (value == null) {
+      LOG.debug("Looking at just this portlet for portlet-command");
+      value = request.getParameter("portlet-command");
+    }
+    return value;
   }
 
   public static String getPortletUniqueKey(PortletRequest request) {

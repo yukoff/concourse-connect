@@ -51,14 +51,13 @@ import com.concursive.connect.web.modules.documents.dao.FileFolderList;
 import com.concursive.connect.web.modules.documents.utils.FileItemCounter;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.*;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Project blog list counter portlet
@@ -77,7 +76,7 @@ public class DocumentsFolderCounterPortlet extends GenericPortlet {
   private static final String COUNTER = "fileItemCounter";
   private static final String FOLDER_LIST = "fileFolderList";
   private static final String CURRENT_FOLDER = "currentFolder";
-
+  private static final String VIEWER_NAMESPACE = "namespace";
 
   public void doView(RenderRequest request, RenderResponse response) throws PortletException, IOException {
 
@@ -88,7 +87,7 @@ public class DocumentsFolderCounterPortlet extends GenericPortlet {
     }
 
     // Build a list of records
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     try {
       // Build news counts
@@ -107,15 +106,32 @@ public class DocumentsFolderCounterPortlet extends GenericPortlet {
 
       // Let the view know about the currently selected folder
       FileFolder currentFolder = (FileFolder) PortalUtils.getGeneratedData(request, "currentFolder");
+      LOG.debug("getGeneratedData folder: " + currentFolder.getSubject());
       request.setAttribute(CURRENT_FOLDER, currentFolder);
 
-      // JSP view
-      PortletContext context = getPortletContext();
-      PortletRequestDispatcher requestDispatcher =
-          context.getRequestDispatcher(VIEW_PAGE);
-      requestDispatcher.include(request, response);
+      // This portlet can consume data from other portlets
+      boolean display = true;
+      for (String event : PortalUtils.getDashboardPortlet(request).getConsumeDataEvents()) {
+        if (event.startsWith("namespace-")) {
+          // The namespace needs to be known so that URLs can be generated for another portlet
+          String namespace = (String) PortalUtils.getGeneratedData(request, event);
+          if (namespace == null) {
+            display = false;
+          } else {
+            request.setAttribute(VIEWER_NAMESPACE, namespace);
+          }
+        }
+      }
 
-    } catch (SQLException e) {
+      // JSP view
+      if (display) {
+        PortletContext context = getPortletContext();
+        PortletRequestDispatcher requestDispatcher =
+            context.getRequestDispatcher(VIEW_PAGE);
+        requestDispatcher.include(request, response);
+      }
+    } catch (Exception e) {
+      LOG.debug("doView", e);
       throw new PortletException(e);
     }
 

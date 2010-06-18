@@ -150,14 +150,14 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
       request.setAttribute(PROJECT_CATEGORY, category);
 
       // Determine the database connection to use
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
 
       // Determine the subcategory to use for showing projects
       ProjectCategory subCategory = null;
       if (showSubcategories && subCategoryString != null) {
         ProjectCategoryList subCategories = new ProjectCategoryList();
         subCategories.setParentCategoryId(category.getId());
-        subCategories.setCategoryNameLowerCase(subCategoryString);
+        subCategories.setCategoryDescriptionLowerCase(subCategoryString);
         subCategories.setEnabled(true);
         subCategories.buildList(db);
         if (subCategories.size() > 0) {
@@ -198,16 +198,16 @@ public class ProjectSubCategoryListByProjectCategoryPortlet extends GenericPortl
         if (dashboardPage != null) {
           // Set the title
           if (subCategory != null) {
-            pageTitle = subCategory.getDescription() + " - " + category.getDescription();
+            pageTitle = subCategory.getLabel() + " - " + category.getLabel();
           } else if (category != null) {
-            pageTitle = category.getDescription();
+            pageTitle = category.getLabel();
           }
           if (pageTitle != null) {
             request.setAttribute(Constants.REQUEST_GENERATED_TITLE, pageTitle);
           }
           // Set the category
           if (category != null) {
-            request.setAttribute(Constants.REQUEST_GENERATED_CATEGORY, pageTitle);
+            request.setAttribute(Constants.REQUEST_GENERATED_CATEGORY, category.getDescription());
           }
         }
       }

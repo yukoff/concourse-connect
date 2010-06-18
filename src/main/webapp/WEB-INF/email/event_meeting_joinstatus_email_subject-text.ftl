@@ -1,1 +1,1 @@
-Meeting join request status
+Event join request status

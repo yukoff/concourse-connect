@@ -55,15 +55,15 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show page index</content>
+                  <title>Show page index for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-index</href>
                 ]]>
               </value>
               <value>
                 <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show exported pages</content>
+                  <title>Show exported pages for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
@@ -130,39 +130,37 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/wiki-index</href>
+                  <content>Show main page</content>
+                  <title>Show main page for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki</href>
                 ]]>
               </value>
-              <value>
-                <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/wiki-exports</href>
-                ]]>
-              </value>
-              <!--
-              <value>
-                <![CDATA[
-                  <content>Configure the wiki module</content>
-                  <title>Profile for ${project.title:html}</title>
-                  <href>/configure/${project.uniqueId}/wiki</href>
-                  <permission>project-setup-customize</permission>
-                ]]>
-              </value>
-              -->
             </urls>
-          </portlet>
-          <!-- Display Ads -->
-          <portlet name="ProjectPromotionsPortlet" class="basic-list ">
-            <title>Promotions</title>
-            <category>${category}</category>
-            <limit>3</limit>
           </portlet>
         </column>
         <column width="auto" class="main">
           <portlet name="WikiPortlet" viewer="editor" >
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <!-- Wiki Editor -->
+    <page name="editor-popup">
+      <row>
+        <column width="auto" class="main">
+          <portlet name="WikiPortlet" viewer="editor" >
+            <title>${project.features.labelWiki}</title>
+          </portlet>
+        </column>
+      </row>
+    </page>
+
+    <page name="delete-popup">
+      <row>
+        <column width="auto">
+          <portlet name="WikiPortlet" viewer="delete-confirmation" class="modal">
             <title>${project.features.labelWiki}</title>
           </portlet>
         </column>
@@ -178,15 +176,15 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/wiki-index</href>
+                  <content>Show main page</content>
+                  <title>Show main page for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki</href>
                 ]]>
               </value>
               <value>
                 <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show exported pages</content>
+                  <title>Show exported pages for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
@@ -231,15 +229,22 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show main page</content>
+                  <title>Show main page for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show page index</content>
+                  <title>Show page index for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-index</href>
                 ]]>
               </value>
               <value>
                 <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show exported pages</content>
+                  <title>Show exported pages for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
@@ -321,7 +326,7 @@
                   <li>Wikis have special formatting requirements.  You can use different tools to add content.</li>
                   <li>The “wysiwyg” (what you see is what you get) editor is the one that you see when you press the “edit” link.</li>
                   <li>Type the information you want and use the icons to help perform tasks, like inserting a picture or embedding a link to another site.</li>
-                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target=_blank">This link explains what the icons on the editor will do.</a></li>
+                  <li><a href="http://tinymce.moxiecode.com/examples/full.php#" title="link to what you see is what you get editor help - new website" target="_blank">This link explains what the icons on the editor will do.</a></li>
                   <li>If you are cutting and pasting from another web site, you should use the markup editor.  The markup editor is on the wiki home page and is labeled.  Markup editors require HTML experience.</li>
                   </ol>
               ]]>
@@ -350,16 +355,16 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/wiki-index</href>
+                  <content>Show main page</content>
+                  <title>Show main page for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki</href>
                 ]]>
               </value>
               <value>
                 <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
-                  <href>/show/${project.uniqueId}/wiki-exports</href>
+                  <content>Show page index</content>
+                  <title>Show page index for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki-index</href>
                 ]]>
               </value>
               <!--
@@ -408,15 +413,22 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show main page</content>
+                  <title>Show main page for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show page index</content>
+                  <title>Show page index for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-index</href>
                 ]]>
               </value>
               <value>
                 <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show exported pages</content>
+                  <title>Show exported pages for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
@@ -476,15 +488,22 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show main page</content>
+                  <title>Show main page for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show page index</content>
+                  <title>Show page index for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-index</href>
                 ]]>
               </value>
               <value>
                 <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show exported pages</content>
+                  <title>Show exported pages for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>
@@ -524,15 +543,22 @@
             <urls>
               <value>
                 <![CDATA[
-                  <content>Show wiki index</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show main page</content>
+                  <title>Show main page for ${project.title:html}</title>
+                  <href>/show/${project.uniqueId}/wiki</href>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Show page index</content>
+                  <title>Show page index for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-index</href>
                 ]]>
               </value>
               <value>
                 <![CDATA[
-                  <content>Show my wiki exports</content>
-                  <title>Show wiki index for ${project.title:html}</title>
+                  <content>Show exported pages</content>
+                  <title>Show exported pages for ${project.title:html}</title>
                   <href>/show/${project.uniqueId}/wiki-exports</href>
                 ]]>
               </value>

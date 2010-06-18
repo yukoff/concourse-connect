@@ -117,7 +117,7 @@ boolean hasInvitations = hasText(invitationCount) && !"0".equals(invitationCount
 boolean hasWhatsAssignedCount = hasText(whatsAssignedCount) && !"0".equals(whatsAssignedCount);
 boolean hasWhatsNewCount = hasText(whatsNewCount) && !"0".equals(whatsNewCount);
 %>
-<body bgcolor="#FFFFFF" LEFTMARGIN="0" MARGINWIDTH="0" TOPMARGIN="0" MARGINHEIGHT="0">
+<body style="background: #FFFFFF none;  margin: 0 !important; padding: 0 !important;">
 <ccp:evaluate if="<%= isUserLoggedIn %>">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
@@ -176,7 +176,7 @@ boolean hasWhatsNewCount = hasText(whatsNewCount) && !"0".equals(whatsNewCount);
               <a href="<%= ctx %>/admin">Admin</a>
           (<%= Tracker.getGuestCount() %>
           guest<ccp:evaluate if="<%= Tracker.getGuestCount() != 1 %>">s</ccp:evaluate> /
-          <a href="javascript:popURL('<%= ctx %>/AdminMembers.do?popup=true','ITEAM_Members','400','500','yes','yes');"><%= Tracker.getUserCount() %> member<ccp:evaluate if="<%= Tracker.getUserCount() != 1 %>">s</ccp:evaluate></a>)<br />
+          <a href="javascript:popURL('<%= ctx %>/AdminMembers.do?popup=true','400','500','yes','yes');"><%= Tracker.getUserCount() %> member<ccp:evaluate if="<%= Tracker.getUserCount() != 1 %>">s</ccp:evaluate></a>)<br />
         </ccp:evaluate>
     </td>
   </tr>

@@ -73,6 +73,10 @@ public class TopicList extends ArrayList<Topic> {
   private int projectCategoryId = -1;
   private int publicProjectIssues = Constants.UNDEFINED;
   private int forParticipant = Constants.UNDEFINED;
+  // ratings
+  private int minimumRatingCount = -1;
+  private double minimumRatingAvg = -1;
+  private int filterInappropriate = Constants.UNDEFINED;
   //calendar
   protected Timestamp alertRangeStart = null;
   protected Timestamp alertRangeEnd = null;
@@ -180,6 +184,41 @@ public class TopicList extends ArrayList<Topic> {
     this.forUser = Integer.parseInt(tmp);
   }
 
+  public int getMinimumRatingCount() {
+    return minimumRatingCount;
+  }
+
+  public void setMinimumRatingCount(int minimumRatingCount) {
+    this.minimumRatingCount = minimumRatingCount;
+  }
+
+  public void setMinimumRatingCount(String minimumRatingCount) {
+    this.minimumRatingCount = Integer.parseInt(minimumRatingCount);
+  }
+
+  public double getMinimumRatingAvg() {
+    return minimumRatingAvg;
+  }
+
+  public void setMinimumRatingAvg(double minimumRatingAvg) {
+    this.minimumRatingAvg = minimumRatingAvg;
+  }
+
+  public void setMinimumRatingAvg(String minimumRatingAvg) {
+    this.minimumRatingAvg = Double.parseDouble(minimumRatingAvg);
+  }
+
+  public int getFilterInappropriate() {
+    return filterInappropriate;
+  }
+
+  public void setFilterInappropriate(int filterInappropriate) {
+    this.filterInappropriate = filterInappropriate;
+  }
+
+  public void setFilterInappropriate(String filterInappropriate) {
+    this.filterInappropriate = Integer.parseInt(filterInappropriate);
+  }
 
   /**
    * Sets the alertRangeStart attribute of the IssueList object
@@ -517,6 +556,15 @@ public class TopicList extends ArrayList<Topic> {
     if (projectCategoryId != -1) {
       sqlFilter.append(" AND i.project_id IN ( SELECT project_id FROM projects WHERE category_id = ? ) ");
     }
+    if (minimumRatingCount != -1) {
+      sqlFilter.append("AND i.rating_count >= ? ");
+    }
+    if (minimumRatingAvg != -1) {
+      sqlFilter.append("AND i.rating_avg >= ? ");
+    }
+    if (filterInappropriate != Constants.UNDEFINED) {
+      sqlFilter.append("AND (i.inappropriate_count IS NULL OR i.inappropriate_count = ?) ");
+    }
   }
 
 
@@ -563,6 +611,15 @@ public class TopicList extends ArrayList<Topic> {
     }
     if (projectCategoryId != -1) {
       pst.setInt(++i, projectCategoryId);
+    }
+    if (minimumRatingCount != -1) {
+      pst.setInt(++i, minimumRatingCount);
+    }
+    if (minimumRatingAvg != -1) {
+      pst.setDouble(++i, minimumRatingAvg);
+    }
+    if (filterInappropriate != Constants.UNDEFINED) {
+      pst.setInt(++i, 0);
     }
     return i;
   }

@@ -96,7 +96,7 @@ public class ScrumReleaseProgressPortlet extends GenericPortlet {
       } else {
         // Portlet is configured
 
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
         Project thisProject = PortalUtils.getProject(request);
         TaskCategory category = new TaskCategory(db, Integer.parseInt(categoryId));
         request.setAttribute("category", category);
@@ -161,7 +161,7 @@ public class ScrumReleaseProgressPortlet extends GenericPortlet {
     }
 
     try {
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       // Get the categories for the user
       TaskCategoryList categoryList = new TaskCategoryList();
       categoryList.setProjectId(PortalUtils.getProject(request).getId());

@@ -92,7 +92,7 @@ public class ReviewsSetRatingViewer implements IPortletViewer {
     String vote = request.getParameter("v");
 
     // Build the review
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the review record
     ProjectRating thisProjectRating = new ProjectRating(db, Integer.parseInt(reviewId));

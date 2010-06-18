@@ -65,6 +65,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -84,20 +85,29 @@ public class CalendarViewUtils {
     // Generate a new calendar
     CalendarView calendarView = new CalendarView(calendarInfo, user.getLocale());
 
-    // Add some holidays based on the user locale
-    calendarView.addHolidays();
+    if (calendarInfo.getShowHolidays()) {
+      // Add some holidays based on the user locale
+      calendarView.addHolidays();
+    }
 
-    // Set Start and End Dates for the view
-    java.sql.Timestamp startDate = DatabaseUtils.parseTimestamp(
-        DateUtils.getUserToServerDateTimeString(
-            calendarInfo.getTimeZone(), DateFormat.SHORT, DateFormat.LONG, calendarView.getCalendarStartDate(
-                calendarInfo.getSource()), Locale.US));
+    // Set Start and End Dates for the view, use the user's timezone offset
+    // (always use Locale.US which matches the URL format)
+    String startValue = calendarView.getCalendarStartDate(calendarInfo.getSource());
+    LOG.debug(startValue);
+    String userStartValue = DateUtils.getUserToServerDateTimeString(
+        calendarInfo.getTimeZone(), DateFormat.SHORT, DateFormat.LONG,
+        startValue,
+        Locale.US);
+    LOG.debug(userStartValue);
+    Timestamp startDate = DatabaseUtils.parseTimestamp(userStartValue);
     startDate.setNanos(0);
+    LOG.debug(startDate);
 
-    java.sql.Timestamp endDate = DatabaseUtils.parseTimestamp(
+    Timestamp endDate = DatabaseUtils.parseTimestamp(
         DateUtils.getUserToServerDateTimeString(
-            calendarInfo.getTimeZone(), DateFormat.SHORT, DateFormat.LONG, calendarView.getCalendarEndDate(
-                calendarInfo.getSource()), Locale.US));
+            calendarInfo.getTimeZone(), DateFormat.SHORT, DateFormat.LONG,
+            calendarView.getCalendarEndDate(calendarInfo.getSource()),
+            Locale.US));
     endDate.setNanos(0);
 
     if (ProjectUtils.hasAccess(project.getId(), user, "project-tickets-view")) {
@@ -143,6 +153,7 @@ public class CalendarViewUtils {
 
       // Retrieve the requirements that meet the criteria
       requirementList.buildList(db);
+      // @todo fix timezone for query counts
       requirementList.buildPlanActivityCounts(db);
       for (Requirement thisRequirement : requirementList) {
         // Display Milestone startDate
@@ -207,8 +218,11 @@ public class CalendarViewUtils {
     if (ProjectUtils.hasAccess(project.getId(), user, "project-calendar-view")) {
       MeetingList meetingList = new MeetingList();
       meetingList.setProjectId(project.getId());
-      meetingList.setAlertRangeStart(startDate);
-      meetingList.setAlertRangeEnd(endDate);
+      meetingList.setEventSpanStart(startDate);
+      if (!calendarInfo.isAgendaView()) {
+        // limit the events to the date range chosen
+        meetingList.setEventSpanEnd(endDate);
+      }
       meetingList.setBuildAttendees(true);
       meetingList.buildList(db);
       LOG.debug("Meeting count = " + meetingList.size());
@@ -217,12 +231,20 @@ public class CalendarViewUtils {
         if (thisMeeting.getStartDate() != null) {
           String start = DateUtils.getServerToUserDateString(UserUtils.getUserTimeZone(user), DateFormat.SHORT, thisMeeting.getStartDate());
           if ("pending".equals(filter)) {
-            if (thisMeeting.getStartDate().getTime() > System.currentTimeMillis())
+            if (thisMeeting.getStartDate().getTime() > System.currentTimeMillis()) {
               calendarView.addEvent(start, CalendarEventList.EVENT_TYPES[CalendarEventList.EVENT], thisMeeting);
+            }
           } else if ("completed".equals(filter)) {
-            if (thisMeeting.getEndDate().getTime() < System.currentTimeMillis())
+            if (thisMeeting.getEndDate().getTime() < System.currentTimeMillis()) {
               calendarView.addEvent(start, CalendarEventList.EVENT_TYPES[CalendarEventList.EVENT], thisMeeting);
+            }
           } else {
+            if (calendarInfo.isAgendaView()) {
+              // Display meetings that started before today, but last greater than today, on the startDate of the calendar display
+              if (thisMeeting.getStartDate().before(startDate)) {
+                start = DateUtils.getServerToUserDateString(UserUtils.getUserTimeZone(user), DateFormat.SHORT, startDate);
+              }
+            }
             calendarView.addEvent(start, CalendarEventList.EVENT_TYPES[CalendarEventList.EVENT], thisMeeting);
           }
           LOG.debug("Meeting added for date: " + start);
@@ -232,10 +254,10 @@ public class CalendarViewUtils {
       // Retrieve the dates for meeting events
       HashMap<String, Integer> dayEvents = meetingList.queryRecordCount(db, UserUtils.getUserTimeZone(user));
       for (String thisDay : dayEvents.keySet()) {
+        LOG.debug("addingCount: " + thisDay + " = " + dayEvents.get(thisDay));
         calendarView.addEventCount(thisDay, CalendarEventList.EVENT_TYPES[CalendarEventList.EVENT], dayEvents.get(thisDay));
       }
     }
-
     return calendarView;
   }
 }

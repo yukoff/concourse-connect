@@ -74,6 +74,7 @@ public class ProjectList extends ArrayList<Project> {
   private int groupId = -1;
   private int instanceId = -1;
   private int projectId = -1;
+  private String uniqueId = null;
   private int projectsForUser = -1;
   private int enteredByUser = -1;
   private String enteredByUserRange = null;
@@ -94,6 +95,12 @@ public class ProjectList extends ArrayList<Project> {
   private int subCategory3Id = -1;
   private String title = null;
   private String twitterId = null;
+  private String facebookPage = null;
+  private String youtubeChannelId = null;
+  private String ustreamId = null;
+  private String livestreamId = null;
+  private String justintvId = null;
+  private String qikId = null;
   private String keywords = null;
   private double latitude = -1;
   private double longitude = -1;
@@ -207,6 +214,14 @@ public class ProjectList extends ArrayList<Project> {
 
   public void setProjectId(String tmp) {
     this.projectId = Integer.parseInt(tmp);
+  }
+
+  public String getUniqueId() {
+    return uniqueId;
+  }
+
+  public void setUniqueId(String uniqueId) {
+    this.uniqueId = uniqueId;
   }
 
   /**
@@ -510,6 +525,55 @@ public class ProjectList extends ArrayList<Project> {
    */
   public String getTwitterId() {
     return twitterId;
+  }
+
+
+  public String getFacebookPage() {
+    return facebookPage;
+  }
+
+  public void setFacebookPage(String facebookPage) {
+    this.facebookPage = facebookPage;
+  }
+
+  public String getYoutubeChannelId() {
+    return youtubeChannelId;
+  }
+
+  public void setYoutubeChannelId(String youtubeChannelId) {
+    this.youtubeChannelId = youtubeChannelId;
+  }
+
+  public String getUstreamId() {
+    return ustreamId;
+  }
+
+  public void setUstreamId(String ustreamId) {
+    this.ustreamId = ustreamId;
+  }
+
+  public String getLivestreamId() {
+    return livestreamId;
+  }
+
+  public void setLivestreamId(String livestreamId) {
+    this.livestreamId = livestreamId;
+  }
+
+  public String getJustintvId() {
+    return justintvId;
+  }
+
+  public void setJustintvId(String justintvId) {
+    this.justintvId = justintvId;
+  }
+
+  public String getQikId() {
+    return qikId;
+  }
+
+  public void setQikId(String qikId) {
+    this.qikId = qikId;
   }
 
 
@@ -1202,6 +1266,9 @@ public class ProjectList extends ArrayList<Project> {
     if (sqlFilter == null) {
       sqlFilter = new StringBuffer();
     }
+    if (uniqueId != null) {
+      sqlFilter.append("AND projecttextid = ? ");
+    }
     if (hasTwitterId) {
       sqlFilter.append("AND (twitter_id IS NOT NULL AND twitter_id <> '') ");
     }
@@ -1300,6 +1367,24 @@ public class ProjectList extends ArrayList<Project> {
     }
     if (twitterId != null) {
       sqlFilter.append("AND lower(twitter_id) = ? ");
+    }
+    if (facebookPage != null) {
+      sqlFilter.append("AND lower(facebook_page) = ? ");
+    }
+    if (youtubeChannelId != null) {
+      sqlFilter.append("AND lower(youtube_channel_id) = ? ");
+    }
+    if (ustreamId != null) {
+      sqlFilter.append("AND lower(ustream_id) = ? ");
+    }
+    if (livestreamId != null) {
+      sqlFilter.append("AND lower(livestream_id) = ? ");
+    }
+    if (justintvId != null) {
+      sqlFilter.append("AND lower(justintv_id) = ? ");
+    }
+    if (qikId != null) {
+      sqlFilter.append("AND lower(qik_id) = ? ");
     }
     if (keywords != null) {
       sqlFilter.append("AND lower(keywords) = ? ");
@@ -1409,6 +1494,9 @@ public class ProjectList extends ArrayList<Project> {
    */
   private int prepareFilter(PreparedStatement pst) throws SQLException {
     int i = 0;
+    if (uniqueId != null) {
+      pst.setString(++i, uniqueId);
+    }
     if (groupId > -1) {
       pst.setInt(++i, groupId);
     }
@@ -1497,6 +1585,24 @@ public class ProjectList extends ArrayList<Project> {
     }
     if (twitterId != null) {
       pst.setString(++i, twitterId.toLowerCase());
+    }
+    if (facebookPage != null) {
+      pst.setString(++i, facebookPage.toLowerCase());
+    }
+    if (youtubeChannelId != null) {
+      pst.setString(++i, youtubeChannelId.toLowerCase());
+    }
+    if (ustreamId != null) {
+      pst.setString(++i, ustreamId.toLowerCase());
+    }
+    if (livestreamId != null) {
+      pst.setString(++i, livestreamId.toLowerCase());
+    }
+    if (justintvId != null) {
+      pst.setString(++i, justintvId.toLowerCase());
+    }
+    if (qikId != null) {
+      pst.setString(++i, qikId.toLowerCase());
     }
     if (keywords != null) {
       pst.setString(++i, keywords.toLowerCase());

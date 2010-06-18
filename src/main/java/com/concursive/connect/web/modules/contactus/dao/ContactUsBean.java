@@ -53,22 +53,18 @@ import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.utils.UserAdmins;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import nl.captcha.Captcha;
 
 import javax.servlet.http.HttpSession;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.io.StringWriter;
-import java.io.IOException;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 /**
  * HTML form bean for the contact us page
@@ -348,9 +344,9 @@ public class ContactUsBean extends GenericBean {
     //store message in database
     PreparedStatement pst = db.prepareStatement(
         "INSERT INTO contact_us (instance_id, first_name, last_name, email, organization, description, copied, ip_address, browser, language, " +
-        "job_title, business_phone, business_phone_ext, addrline1, addrline2, addrline3, " +
-        "city, state, country, postalcode, form_data) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+            "job_title, business_phone, business_phone_ext, addrline1, addrline2, addrline3, " +
+            "city, state, country, postalcode, form_data) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
     StringBuffer sbf = new StringBuffer();
     if (formData != null) {
       for (int m = 0; m < formData.length; m++) {
@@ -390,6 +386,7 @@ public class ContactUsBean extends GenericBean {
       }
       // Send an email to the user admins...
       SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
+      message.setType("text/html");
       message.setTo(UserAdmins.getEmailAddresses(db));
       message.addReplyTo(email);
       message.setFrom(prefs.get("EMAILADDRESS"));
@@ -402,9 +399,18 @@ public class ContactUsBean extends GenericBean {
       bodyMappings.put("lastname", nameLast);
       bodyMappings.put("email", email);
       bodyMappings.put("phone", businessPhone);
+      bodyMappings.put("phoneExt", businessPhoneExt);
       bodyMappings.put("organization", organization);
       bodyMappings.put("language", language);
       bodyMappings.put("description", description);
+      bodyMappings.put("addressLine1", addressLine1);
+      bodyMappings.put("addressLine2", addressLine2);
+      bodyMappings.put("addressLine3", addressLine3);
+      bodyMappings.put("city", city);
+      bodyMappings.put("state", state);
+      bodyMappings.put("country", country);
+      bodyMappings.put("postalCode", postalCode);
+      bodyMappings.put("formData", sbf.toString());
       // Parse and send
       StringWriter inviteBodyTextWriter = new StringWriter();
       template.process(bodyMappings, inviteBodyTextWriter);
@@ -412,6 +418,22 @@ public class ContactUsBean extends GenericBean {
       message.send();
     }
     return true;
+  }
+
+  public Map<String, String> getPropertyMap() {
+    Map<String, String> map = new HashMap<String, String>();
+    addToMap(map, "firstName", nameFirst);
+    addToMap(map, "lastName", nameLast);
+    addToMap(map, "email", email);
+    addToMap(map, "phone", businessPhone);
+    addToMap(map, "organization", organization);
+    return map;
+  }
+
+  private void addToMap(Map<String, String> map, String name, String value) {
+    if (StringUtils.hasText(value)) {
+      map.put(name, value);
+    }
   }
 }
 

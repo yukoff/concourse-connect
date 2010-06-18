@@ -63,8 +63,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.pluto.PortletContainer;
 import org.apache.pluto.PortletContainerFactory;
-import org.apache.wsrp4j.commons.consumer.interfaces.producer.ProducerRegistry;
 import org.apache.wsrp4j.commons.consumer.driver.producer.ProducerImpl;
+import org.apache.wsrp4j.commons.consumer.interfaces.producer.ProducerRegistry;
 import org.apache.wsrp4j.commons.exception.WSRPException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
@@ -213,6 +213,7 @@ public class ContextListener implements ServletContextListener {
     ObjectHookManager hookManager = (ObjectHookManager) context.getAttribute(Constants.OBJECT_HOOK_MANAGER);
     if (hookManager != null) {
       hookManager.reset();
+      hookManager.shutdown();
       context.removeAttribute(Constants.OBJECT_HOOK_MANAGER);
     }
 
@@ -225,7 +226,7 @@ public class ContextListener implements ServletContextListener {
     //De-register the remote wsrp producer
     ProducerRegistry producerRegistry = ProducerRegistryImpl.getInstance();
     ProducerImpl producer = (ProducerImpl) producerRegistry
-            .getProducer(PortletManager.CONCURSIVE_WSRP_PRODUCER_ID);
+        .getProducer(PortletManager.CONCURSIVE_WSRP_PRODUCER_ID);
     if (producer != null) {
       try {
         producer.deregister();

@@ -118,7 +118,7 @@
         </ccp:evaluate>
         <%--
         <td nowrap>
-          <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= "1" %>&aid=<%= "1" %>&uid=<%= "1" %>&popup=true','ITEAM_Assignment_Notes','400','500','yes','yes');"><ccp:evaluate if="<%= 1 == 2 %>"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></ccp:evaluate><ccp:evaluate if="<%= 1 == 1 %>"><img src="<%= ctx %>/images/icons/stock_insert-note-gray-16.gif" border="0" align="absmiddle" alt="Review all notes"/></ccp:evaluate></a>
+          <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= "1" %>&aid=<%= "1" %>&uid=<%= "1" %>&popup=true','400','500','yes','yes');"><ccp:evaluate if="<%= 1 == 2 %>"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></ccp:evaluate><ccp:evaluate if="<%= 1 == 1 %>"><img src="<%= ctx %>/images/icons/stock_insert-note-gray-16.gif" border="0" align="absmiddle" alt="Review all notes"/></ccp:evaluate></a>
           0
         </td>
         --%>

@@ -95,7 +95,7 @@ public class ProjectListByCategoryPortlet extends GenericPortlet {
 
     try {
       // Determine the database connection
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
 
 
       // Find the specified categories, if they are enabled
@@ -137,7 +137,7 @@ public class ProjectListByCategoryPortlet extends GenericPortlet {
 
       // Show the category name if there is just one
       if (title == null && allowedCategoryList.size() == 1) {
-        title = allowedCategoryList.get(0).getDescription();
+        title = allowedCategoryList.get(0).getLabel();
       }
 
       // Set the title

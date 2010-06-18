@@ -48,11 +48,14 @@ package com.concursive.connect.web.modules.classifieds.portlets.classifiedListBy
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.dao.DashboardPage;
+import com.concursive.connect.indexer.IIndexerSearch;
+import com.concursive.connect.indexer.IndexerQueryResultList;
 import com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategory;
 import com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategoryList;
-import com.concursive.connect.web.modules.classifieds.dao.ClassifiedList;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.modules.search.beans.SearchBean;
+import com.concursive.connect.web.modules.search.utils.SearchUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
@@ -62,6 +65,9 @@ import org.apache.commons.logging.LogFactory;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 
 /**
  * Classifieds list by classifieds portlet
@@ -100,10 +106,11 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
   private static final String HAS_MORE_URL = "hasMoreURL";
   private static final String HAS_PAGING = "hasPaging";
   private static final String RECORD_LIMIT = "recordLimit";
-  private static final String COLUMN_LENGTH = "columnLength";
-  private static final String SHOW_CATEGORY_LANDING_PAGE_LINK = "showCategoryLandingPageLink";
   private static final String SORT_ORDER = "sortOrder";
+  private static final String QUERY = "query";
+  private static final String LOCATION = "location";
   private static final String SHOW_PROJECT_CATEGORY_NAME_IN_CATEGORY_LIST = "showProjectCategoryNameInCategoryList";
+  private static final String CLASSIFIEDS_CATEGORY_COUNT_MAP = "classifiedsCategoryCountMap";
 
   public String doView(RenderRequest request, RenderResponse response)
       throws Exception {
@@ -119,7 +126,7 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
     }
 
     String title = request.getPreferences().getValue(PREF_TITLE, null);
-    title = StringUtils.replace(title, "${category}", categoryValue);
+    title = StringUtils.replace(title, "${category}", ProjectCategory.getCategoryNameFromNormalizedCategoryName(categoryValue));
     request.setAttribute(TITLE, title);
     LOG.debug("Title: " + title);
 
@@ -132,15 +139,20 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
     boolean showClassifiedCategories = Boolean.parseBoolean(request.getPreferences().getValue(PREF_SHOW_CLASSIFIEDCATEGORIES, "false"));
     boolean showClassifieds = Boolean.parseBoolean(request.getPreferences().getValue(PREF_SHOW_CLASSIFIEDS, "false"));
 
-    // Base the selected subcategory off of the URL
+    // Base the selected classified category off of the URL
     String classifiedCategoryString = PortalUtils.getPageParameter(request);
-    // convert the space back to a space
-    classifiedCategoryString = StringUtils.replace(classifiedCategoryString, "_", " ");
+    // convert from normalized form
+    classifiedCategoryString = ClassifiedCategory.getCategoryNameFromNormalizedCategoryName(classifiedCategoryString);
     LOG.debug("classifiedCategory: " + classifiedCategoryString);
+    String classifiedCategoryId = null;
+    if (StringUtils.hasText(classifiedCategoryString) && PortalUtils.getPageParameters(request).length > 1) {
+      classifiedCategoryId = PortalUtils.getPageParameters(request)[1];
+    }
+    LOG.debug("classifiedCategoryId: " + classifiedCategoryId);
 
     // Get the top-level category
     ProjectCategoryList categories = (ProjectCategoryList) request.getAttribute(Constants.REQUEST_TAB_CATEGORY_LIST);
-    ProjectCategory category = categories.getFromValue(categoryValue);
+    ProjectCategory category = categories.getFromValue(ProjectCategory.getCategoryNameFromNormalizedCategoryName(categoryValue));
     if (category == null) {
       category = new ProjectCategory();
       category.setDescription("all");
@@ -148,9 +160,9 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
     request.setAttribute(PROJECT_CATEGORY, category);
 
     // Determine the database connection to use
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
 
-    // Determine the classified to use for showing projects
+    // Determine the classified category to use for showing classifieds
     ClassifiedCategory classifiedCategory = null;
     if (showClassifiedCategories && StringUtils.hasText(categoryValue)) {
       ClassifiedCategoryList classifiedCategories = new ClassifiedCategoryList();
@@ -159,7 +171,6 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
       classifiedCategories.buildList(db);
       if (classifiedCategories.size() > 0) {
         classifiedCategory = classifiedCategories.get(0);
-        request.setAttribute(CLASSIFIED_CATEGORY, classifiedCategory);
       }
     }
 
@@ -193,28 +204,47 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
       DashboardPage dashboardPage = PortalUtils.getDashboardPage(request);
       String pageTitle = null;
       if (dashboardPage != null) {
-        // Set the title
+        // Set the page's title
         if (classifiedCategory != null) {
-          pageTitle = classifiedCategory.getItemName() + " - " + category.getDescription();
+          pageTitle = classifiedCategory.getItemName() + " - " + category.getLabel();
         } else {
-          pageTitle = category.getDescription();
+          pageTitle = category.getLabel();
         }
         if (pageTitle != null) {
           request.setAttribute(Constants.REQUEST_GENERATED_TITLE, pageTitle);
         }
-        // Set the category
-        request.setAttribute(Constants.REQUEST_GENERATED_CATEGORY, pageTitle);
+        // Set the page's category
+//        request.setAttribute(Constants.REQUEST_GENERATED_CATEGORY, pageTitle);
+      }
+    }
+
+    String query = PortalUtils.getQueryParameter(request, "query");
+    String location = PortalUtils.getQueryParameter(request, "location");
+
+    // Use a search bean to validate the search input
+    SearchBean search = new SearchBean();
+    search.setQuery(query);
+    search.setLocation(location);
+    search.parseQuery();
+    if (!search.isValid()) {
+      if (StringUtils.hasText(query)) {
+        LOG.warn("Search invalid");
+        return "SearchERROR";
       }
     }
 
     if (showThisPortlet) {
-      ClassifiedList classifieds = new ClassifiedList();
+      String sortOrder = PortalUtils.getQueryParameter(request, "sort");
+
+      boolean hasResults = false;
       if (showClassifieds) {
         request.setAttribute(PREF_SHOW_CATEGORY_LANDING_PAGE_LINK, request.getPreferences().getValue(PREF_SHOW_CATEGORY_LANDING_PAGE_LINK, "false"));
 
         ClassifiedCategoryList classifiedCategories = new ClassifiedCategoryList();
         classifiedCategory = new ClassifiedCategory();
-        if (StringUtils.hasText(classifiedCategoryString)) {
+        if (StringUtils.hasText(classifiedCategoryId)) {
+          classifiedCategory = new ClassifiedCategory(db, Integer.parseInt(classifiedCategoryId));
+        } else if (StringUtils.hasText(classifiedCategoryString)) {
           classifiedCategories.setProjectCategoryId(category.getId());
           classifiedCategories.setEnabled(Constants.TRUE);
           classifiedCategories.setCategoryLowercaseName(classifiedCategoryString);
@@ -224,7 +254,7 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
           }
         }
 
-        // Show the projects
+        // Show the classifieds
         boolean hasPaging = "true".equals(request.getPreferences().getValue(PREF_HAS_PAGING, "false"));
         PagedListInfo classifiedListInfo = new PagedListInfo();
         if (hasPaging) {
@@ -237,9 +267,9 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
           String[] params = PortalUtils.getPageParameters(request);
           if (classifiedCategory.getId() != -1) {
             if (params != null) {
-              //E.g., {url}/page/${page name}/${project category}/${classified category}/${page number}
-              if (params.length == 2) {
-                pageNumber = params[1];
+              //E.g., {url}/page/${page name}/${project category}/${classified category}/${classified category Id}/${page number}
+              if (params.length == 3) {
+                pageNumber = params[2];
               }
             }
           } else {
@@ -257,38 +287,63 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
           classifiedListInfo.setItemsPerPage(-1);
         }
         request.setAttribute(HAS_PAGING, request.getPreferences().getValue(PREF_HAS_PAGING, "false"));
-        String sortOrder = PortalUtils.getQueryParameter(request, "sort");
-        if ("new".equals(sortOrder)) {
-          classifiedListInfo.setColumnToSortBy("entered DESC");
+        if ("alpha".equals(sortOrder)) {
+          classifiedListInfo.setColumnToSortBy("titleFull");
+          classifiedListInfo.setSortOrder("asc");
         } else if ("expire".equals(sortOrder)) {
-          classifiedListInfo.setColumnToSortBy("expiration_date ASC");
+          classifiedListInfo.setColumnToSortBy("expired");
+          classifiedListInfo.setSortOrder("asc");
         } else {
-          classifiedListInfo.setColumnToSortBy("title ASC");
+          classifiedListInfo.setColumnToSortBy("modified");
+          classifiedListInfo.setSortOrder("desc");
         }
         classifiedListInfo.setContextPath(request.getContextPath());
-        // Projects to show
-        classifieds.setPagedListInfo(classifiedListInfo);
-        classifieds.setInstanceId(PortalUtils.getInstance(request).getId());
-        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
-          classifieds.setForParticipant(Constants.TRUE);
-        } else {
-          // Use the most generic settings since this portlet is cached
-          classifieds.setPublicProjects(Constants.TRUE);
-        }
-        classifieds.setCategoryId(classifiedCategory.getId());
-        classifieds.setProjectCategoryId(category.getId());
-        classifieds.setOpenProjectsOnly(true);
-        classifieds.setPublicProjects(Constants.TRUE);
-        classifieds.setCurrentClassifieds(Constants.TRUE);
-        classifieds.buildList(db);
 
-        request.setAttribute(SORT_ORDER, sortOrder);
-        request.setAttribute(CLASSIFIED_LIST, classifieds);
+        // Retrieve the user's allowed projects
+        String projectListings = SearchUtils.generateValidProjects(db, PortalUtils.getUser(request).getId(), -1, category.getId());
+
+        // Generate a valid data query string
+        String dataQueryString = SearchUtils.generateDataQueryString(search, PortalUtils.getUser(request).getId(), PortalUtils.getInstance(request).getId(), projectListings);
+
+        // Set the document type
+        dataQueryString += " AND (type:classifieds) ";
+
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        // Fetch only those that are published. TODO: performance testing as this results in a query explosion
+        dataQueryString += " AND published:[20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "]");
+        // Fetch only those that have not expired
+        dataQueryString += " AND NOT (expired:{20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "})");
+        // fetch only classifieds in this instanceId
+        if (PortalUtils.getInstance(request).getId() != -1) {
+          dataQueryString += " AND (instanceId:" + PortalUtils.getInstance(request).getId() + ")";
+        }
+        if (classifiedCategory.getId() != -1) {
+          dataQueryString += " AND (categoryId:" + classifiedCategory.getId() + ") ";
+        }
+        if (category.getId() != -1) {
+          dataQueryString += " AND (projectCategoryId:" + category.getId() + ") ";
+        }
+
+        IndexerQueryResultList queryResultList = new IndexerQueryResultList();
+        queryResultList.setQueryIndexType(Constants.INDEXER_FULL);
+        queryResultList.setQueryString(dataQueryString);
+        queryResultList.setPagedListInfo(classifiedListInfo);
+
+        IIndexerSearch searcher = SearchUtils.retrieveSearcher(Constants.INDEXER_FULL);
+        searcher.search(queryResultList);
+
+        request.setAttribute(CLASSIFIED_LIST, queryResultList);
         request.setAttribute(CLASSIFIED_CATEGORY, classifiedCategory);
         defaultView = CLASSIFIED_VIEW_PAGE;
+
+        if (queryResultList.size() > 0) {
+          hasResults = true;
+        }
       }
 
-      if (showClassifiedCategories && classifieds.size() == 0) {
+      if (showClassifiedCategories && !hasResults) {
+
         int columns = Integer.parseInt(request.getPreferences().getValue(PREF_COLUMNS, "1"));
 
         // Use paged list for limiting number of records, and for counting all
@@ -311,10 +366,57 @@ public class ClassifiedListByClassifiedCategoryViewer implements IPortletViewer 
         request.setAttribute(CLASSIFIED_CATEGORY_LIST, classifiedCategories);
         request.setAttribute(HAS_MORE, String.valueOf(pagedListInfo.getNumberOfPages() > 1));
 
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        LinkedHashMap<ClassifiedCategory, Integer> classifiedCategoryCountMap = new LinkedHashMap<ClassifiedCategory, Integer>();
+
+        // Retrieve the user's allowed projects
+        String projectListings = SearchUtils.generateValidProjects(db, PortalUtils.getUser(request).getId(), -1, category.getId());
+
+        for (ClassifiedCategory thisClassifiedCategory : classifiedCategories) {
+
+          // Generate a valid data query string
+          String dataQueryString = SearchUtils.generateDataQueryString(search, PortalUtils.getUser(request).getId(), PortalUtils.getInstance(request).getId(), projectListings);
+          dataQueryString += " AND (type:classifieds) ";
+
+          // Fetch only those that are published.
+          dataQueryString += " AND published:[20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "]");
+          // Fetch only those that have not expired
+          dataQueryString += " AND NOT (expired:{20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "})");
+          // Fetch only promotions in this instanceId
+          if (PortalUtils.getInstance(request).getId() != -1) {
+            dataQueryString += " AND (instanceId:" + PortalUtils.getInstance(request).getId() + ")";
+          }
+          if (category.getId() != -1) {
+            dataQueryString += " AND (projectCategoryId:" + category.getId() + ") ";
+          }
+          dataQueryString += " AND (categoryId:" + thisClassifiedCategory.getId() + ") ";
+
+          IndexerQueryResultList classifiedCategoryHits = new IndexerQueryResultList();
+          classifiedCategoryHits.setQueryIndexType(Constants.INDEXER_FULL);
+          classifiedCategoryHits.setQueryString(dataQueryString);
+
+          IIndexerSearch searcher = SearchUtils.retrieveSearcher(Constants.INDEXER_FULL);
+          searcher.search(classifiedCategoryHits);
+
+          if (classifiedCategoryHits.size() > 0) {
+            classifiedCategoryCountMap.put(thisClassifiedCategory, classifiedCategoryHits.size());
+          }
+        }
+        request.setAttribute(CLASSIFIEDS_CATEGORY_COUNT_MAP, classifiedCategoryCountMap);
+
+        if (StringUtils.hasText(classifiedCategoryId)) {
+          classifiedCategory = classifiedCategories.getCategoryFromId(Integer.parseInt(classifiedCategoryId));
+          request.setAttribute(CLASSIFIED_CATEGORY, classifiedCategory);
+        }
         if (classifiedCategories.size() == 0) {
+          LOG.debug("This category doesn't have any subcategories, so hiding this portlet");
           defaultView = null;
         }
       }
+      request.setAttribute(SORT_ORDER, sortOrder);
+      request.setAttribute(QUERY, query);
+      request.setAttribute(LOCATION, location);
     }
     return defaultView;
   }

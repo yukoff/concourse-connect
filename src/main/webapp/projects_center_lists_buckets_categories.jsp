@@ -64,9 +64,9 @@
   <c:set var="movableClass">movable</c:set>
 </ccp:permission>
 <div class="portletWrapper">
-  <div class="profile-portlet-header">
-    <h2>Lists</h2>
-  </div>
+  <%--<div class="profile-portlet-header">--%>
+    <%--<h2>Lists</h2>--%>
+  <%--</div>--%>
   <div class="profile-portlet-menu">
     <ul>
       <ccp:permission name="project-lists-add">
@@ -80,7 +80,12 @@
   <div class="profile-portlet-body">
     <c:forEach items="${categoryList}" var="thisCategory" varStatus="categoryStatus">
     <div class="workarea">
-      <h3><ccp:permission name="project-lists-modify"><a href="<%= ctx %>/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${thisCategory.id}"></ccp:permission><c:out value="${thisCategory.description}"/><ccp:permission name="project-lists-modify"></a></ccp:permission></h3>
+      <h3>
+        <ccp:permission name="project-lists-modify"><a href="<%= ctx %>/ProjectManagementListsBuckets.do?command=List&pid=<%= project.getId() %>&cid=${thisCategory.id}"></ccp:permission><c:out value="${thisCategory.description}"/><ccp:permission name="project-lists-modify"></a></ccp:permission>&nbsp;
+        <ccp:permission name="project-lists-delete">
+          <a href="javascript:confirmDelete('<%= ctx %>/ProjectManagementListsCategory.do?command=DeleteCategory&pid=<%= project.getId() %>&cid=${thisCategory.id}&out=text');"><img src="<%= ctx %>/images/icons/stock_delete-16.gif" border="0" align="absmiddle" title="<ccp:label name="projectsCenterLists.deleteThisListAndAnyItems">Delete this list and any list items</ccp:label>"></a>
+        </ccp:permission>
+      </h3>
       <ul id="column_${thisCategory.id}" class="draglist">
         <c:forEach items="${outlineList}" var="thisTask">
           <c:if test="${thisTask.categoryId == thisCategory.id}">

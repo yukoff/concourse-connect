@@ -125,8 +125,15 @@
             <ccp:label name="projectsCenterReviews.add.update">Update an Existing Review</ccp:label>
           </ccp:evaluate>
         </legend>
+        <p><em>You are reviewing...</em></p>
+        <div class="excerpt">
+          <p><strong><c:out value="${project.title}"/></strong></p>
+          <c:if test="${!empty project.shortDescription && project.title ne project.shortDescription}">
+            <p><c:out value="${project.shortDescription}"/></p>
+          </c:if>
+        </div>
         <%= showError(request, "actionError") %>
-        <label for="title"><ccp:label name="projectsCenterReviews.add.titleForReview">Please enter a title for the review <span class="required">*</span></ccp:label></label>
+        <label for="title"><ccp:label name="projectsCenterReviews.add.titleForReview">Please enter a short title for your review <span class="required">*</span></ccp:label></label>
         <%= showAttribute(request, "titleError") %>
         <input type="text" id="title" name="title" value="<%= toHtmlValue(projectRating.getTitle()) %>" maxlength="100" />
         <span class="characterCounter">100 characters max</span>
@@ -139,7 +146,7 @@
           <span>
             <portlet:renderURL var="ratingUrl" windowState="maximized">
               <portlet:param name="portlet-command" value="setProjectRating"/>
-              <portlet:param name="v" value='<%= "${vote}" %>'/>
+              <portlet:param name="v" value="{vote}"/>
               <portlet:param name="out" value="text"/>
               <c:if test="${'true' eq param.popup || 'true' eq popup}">
                 <portlet:param name="popup" value="true"/>

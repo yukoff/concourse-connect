@@ -78,6 +78,7 @@ public class ReportQueueList extends ArrayList {
   private int projectId = -1;
   private boolean expiredOnly = false;
   private int reportId = -1;
+  private boolean enabled = true;
 
   /**
    * Constructor for the CategoryList object
@@ -381,6 +382,18 @@ public class ReportQueueList extends ArrayList {
     this.reportId = reportId;
   }
 
+  public boolean getEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public void setEnabled(String enabled) {
+    this.enabled = Boolean.parseBoolean(enabled);
+  }
+
   /**
    * Builds a list of ReportQueue objects based on the filter properties that
    * have been set
@@ -465,6 +478,9 @@ public class ReportQueueList extends ArrayList {
     if (sqlFilter == null) {
       sqlFilter = new StringBuffer();
     }
+    if (enabled) {
+      sqlFilter.append("AND q.enabled = ? ");
+    }
     if (enteredBy != -1) {
       sqlFilter.append("AND q.enteredby = ? ");
     }
@@ -539,6 +555,9 @@ public class ReportQueueList extends ArrayList {
    */
   protected int prepareFilter(PreparedStatement pst) throws SQLException {
     int i = 0;
+    if (enabled) {
+      pst.setBoolean(++i, true);
+    }
     if (enteredBy != -1) {
       pst.setInt(++i, enteredBy);
     }

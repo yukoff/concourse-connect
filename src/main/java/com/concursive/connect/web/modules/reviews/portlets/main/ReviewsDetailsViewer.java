@@ -99,7 +99,7 @@ public class ReviewsDetailsViewer implements IPortletViewer {
     int recordId = getPageViewAsInt(request);
 
     // Build the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     ProjectRating thisProjectRating = new ProjectRating(db, recordId);

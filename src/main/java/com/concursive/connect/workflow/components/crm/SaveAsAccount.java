@@ -53,8 +53,8 @@ import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import org.aspcfs.apps.transfer.DataRecord;
-import org.aspcfs.utils.CRMConnection;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;

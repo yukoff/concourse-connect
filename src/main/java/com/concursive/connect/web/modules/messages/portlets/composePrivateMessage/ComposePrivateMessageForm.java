@@ -51,6 +51,7 @@ import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.ModuleUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.messages.dao.PrivateMessage;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -114,7 +115,7 @@ public class ComposePrivateMessageForm implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // replying to message
     if (privateMessage.getLinkModuleId() == Constants.PROJECT_MESSAGES_FILES) {
@@ -133,7 +134,7 @@ public class ComposePrivateMessageForm implements IPortletViewer {
     } else {
       // Since this is a direct message, indicate if this user is a friend
       if ("true".equals(PortalUtils.getApplicationPrefs(request).get(ApplicationPrefs.USERS_CAN_REGISTER)) &&
-          project.getProfile() && !TeamMemberList.isOnTeam(db, project.getId(), user.getId())) {
+          project.getProfile() && !TeamMemberList.isOnTeam(db, project.getId(), user.getId(), TeamMember.STATUS_ADDED)) {
         request.setAttribute(NEEDS_PERMISSION, "true");
       }
       // Show who this message is being sent to

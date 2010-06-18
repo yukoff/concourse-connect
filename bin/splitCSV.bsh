@@ -1,0 +1,68 @@
+#!/bin/sh
+//usr/bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
+
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
+
+boolean hasText(String in) {
+  return (in != null && !(("".equals(in.trim()) || "null".equals(in))));
+}
+
+if (bsh.args.length < 3) {
+  print("Usage:");
+  print("  splitCSV [input_filename] [base_output_filename].csv [size]");
+  print("");
+  print("The file specified by input_filename will be read, split and saved in several output files.");
+  print("");
+  System.exit(0);
+}
+
+// Takes a CSV file and output into split files
+File csvFile = new File(bsh.args[0].trim());
+int size = Integer.parseInt(bsh.args[2].trim());
+
+if (csvFile.exists()) {
+  System.out.println("splitting... " + csvFile.toURL());
+
+  // Access the CSV file
+  CSVReader reader = new CSVReader(new FileReader(csvFile), '\t');
+
+  // Read the header line
+  String[] headerLine = reader.readNext();
+
+  ArrayList writerList = new ArrayList();
+  for (int fileExtension = 1; fileExtension <= 16; fileExtension++) {
+    String extension = (fileExtension < 10 ? "0" + fileExtension : "" + fileExtension);
+    File csvFile2 = new File(bsh.args[1].trim() + "_" + extension + ".csv");
+    CSVWriter writer = new CSVWriter(new FileWriter(csvFile2));
+    writer.writeNext(headerLine);
+    writerList.add(writer);
+  }
+
+  CSVWriter thisWriter = null;
+  String[] nextLine = null;
+  int count = 0;
+  int currentWriter = 0;
+  while ((nextLine = reader.readNext()) != null) {
+    ++count;
+    // Get the writer
+    thisWriter = writerList.get(currentWriter);
+    ++currentWriter;
+    if (currentWriter > 15) {
+      currentWriter = 0;
+    }
+    thisWriter.writeNext(nextLine);
+    if (count % size == 0) {
+      System.out.println(count + "...");
+    }
+  }
+
+  // Close the writers
+  for (int wr = 0; wr <= 15; wr++) {
+    CSVWriter writer = writerList.get(wr);
+    writer.flush();
+    writer.close();
+  }
+} else {
+  System.out.println("file does not exist");
+}

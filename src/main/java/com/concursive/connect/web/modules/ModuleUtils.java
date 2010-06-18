@@ -59,6 +59,8 @@ import com.concursive.connect.web.modules.promotions.dao.Ad;
 import com.concursive.connect.web.modules.reviews.dao.ProjectRating;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.dao.WikiComment;
+import com.concursive.connect.web.modules.webcast.dao.Webcast;
+import com.concursive.connect.web.modules.profile.dao.Project;
 
 /**
  * Utilties for working with modules
@@ -91,6 +93,7 @@ public class ModuleUtils {
   public static final String MODULENAME_MEMBERS = "members";
   public static final String MODULENAME_INBOX = "inbox";
   public static final String MODULENAME_DOCUMENTS = "documents";
+  public static final String MODULENAME_WEBCAST = "webcast";
 
   public static String getTableFromModuleName(String moduleName) {
     if (!StringUtils.hasText(moduleName)) {
@@ -117,8 +120,12 @@ public class ModuleUtils {
       return Meeting.TABLE;
     } else if (MODULENAME_PROFILE_IMAGE.equals(moduleName)) {
       return FileItem.TABLE;
-    } if (MODULENAME_DISCUSSION_REPLY.equals(moduleName)) {
+    } else if (MODULENAME_DISCUSSION_REPLY.equals(moduleName)) {
       return Reply.TABLE;
+    } else if (MODULENAME_WEBCAST.equals(moduleName)) {
+      return Webcast.TABLE;
+    } else if (MODULENAME_PROFILE.equals(moduleName)) {
+      return Project.TABLE;
     }
     return null;
   }
@@ -150,6 +157,10 @@ public class ModuleUtils {
       return FileItem.PRIMARY_KEY;
     } else if (MODULENAME_DISCUSSION_REPLY.equals(moduleName)) {
       return Reply.PRIMARY_KEY;
+    } else if (MODULENAME_WEBCAST.equals(moduleName)) {
+      return Webcast.PRIMARY_KEY;
+    } else if (MODULENAME_PROFILE.equals(moduleName)) {
+      return Project.PRIMARY_KEY;
     }
 
     return null;
@@ -164,7 +175,7 @@ public class ModuleUtils {
     } else if (MODULENAME_PROMOTIONS.equals(moduleName)) {
       linkModuleId = Constants.PROJECT_AD_FILES;
     } else if (MODULENAME_PROFILE.equals(moduleName)) {
-      linkModuleId = -1;
+      linkModuleId = Constants.PROFILE_LINK;
     } else if (MODULENAME_INBOX.equals(moduleName)) {
       linkModuleId = Constants.PROJECT_MESSAGES_FILES;
     } else if (MODULENAME_WIKI.equals(moduleName)) {
@@ -189,6 +200,8 @@ public class ModuleUtils {
       linkModuleId = Constants.PROJECT_IMAGE_FILES;
     } else if (MODULENAME_DISCUSSION_REPLY.equals(moduleName)) {
       linkModuleId = Constants.DISCUSSION_FILES_REPLY;
+    } else if (MODULENAME_WEBCAST.equals(moduleName)) {
+      linkModuleId = Constants.PROJECT_WEBCAST_FILES;
     }
     return linkModuleId;
   }
@@ -227,6 +240,10 @@ public class ModuleUtils {
         itemLabel = "Profile Images";
       } else if (linkModuleId == Constants.PROJECT_MESSAGES_FILES) {
         itemLabel = "Message";
+      } else if (linkModuleId == Constants.PROJECT_WEBCAST_FILES) {
+        itemLabel = "Webcast";
+      } else if (linkModuleId == Constants.PROFILE_LINK) {
+        itemLabel = "Profile";
       }
     }
     return itemLabel;

@@ -56,12 +56,11 @@ import com.concursive.connect.web.modules.contacts.dao.ContactList;
 import com.concursive.connect.web.modules.documents.beans.FileDownload;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
 import com.concursive.connect.web.modules.documents.dao.FileItemList;
+import com.concursive.connect.web.modules.documents.dao.Thumbnail;
+import com.concursive.connect.web.modules.documents.utils.ThumbnailUtils;
 import com.concursive.connect.web.modules.issues.beans.CategoryEditor;
 import com.concursive.connect.web.modules.issues.dao.*;
-import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.dao.UserList;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
@@ -667,8 +666,17 @@ public final class ProjectManagementTickets extends GenericAction {
       fileDownload.setDisplayName(itemToDownload.getClientFilename());
       if (fileDownload.fileExists()) {
         if (view != null && "true".equals(view)) {
-          fileDownload.setFileTimestamp(itemToDownload.getModificationDate().getTime());
-          fileDownload.streamContent(context);
+          if (thisItem.isImageFormat() && thisItem.hasValidImageSize()) {
+            // Use the panel preview
+            Thumbnail thumbnail = ThumbnailUtils.retrieveThumbnail(db, itemToDownload, 640, 480, this.getPath(context, "projects"));
+            filePath = this.getPath(context, "projects") + getDatePath(itemToDownload.getModified()) + thumbnail.getFilename();
+            fileDownload.setFullPath(filePath);
+            fileDownload.setFileTimestamp(itemToDownload.getModificationDate().getTime());
+            fileDownload.streamThumbnail(context, thumbnail);
+          } else {
+            // Use the browser's capability
+            fileDownload.streamContent(context);
+          }
         } else {
           fileDownload.sendFile(context);
         }

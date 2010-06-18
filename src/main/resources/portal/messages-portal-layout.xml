@@ -49,6 +49,7 @@
     <!-- Messages -->
     <page name="list">
       <row>
+        <!--
         <column width="250">
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
@@ -61,6 +62,7 @@
             </urls>
           </portlet>
         </column>
+        -->
         <column width="auto" class="main">
           <portlet name="PrivateMessagesPortlet" viewer="list">
             <title>Messages</title>
@@ -78,6 +80,7 @@
     <page name="details">
       <row>
         <column width="250">
+         <!--
           <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
             <title>Quick Actions</title>
             <urls>
@@ -88,6 +91,7 @@
               </value>
             </urls>
           </portlet>
+           -->
         </column>
         <column width="auto" class="main">
           <portlet name="PrivateMessagesPortlet" viewer="details">

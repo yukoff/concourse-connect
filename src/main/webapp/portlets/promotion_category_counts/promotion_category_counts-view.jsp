@@ -52,25 +52,30 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<c:choose>
-	<c:when test="${empty sortOrder}">
-		<c:set var="sortURL" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="sortURL">?sort=${sortOrder}</c:set>
-	</c:otherwise>
-</c:choose>
-<ul>
+<c:if test="${!empty sortOrder}">
+	<c:set var="paramExists">?</c:set>
+	<c:set var="sortOrderString">sort=${sortOrder}</c:set>
+</c:if>
+<c:if test="${!empty query}">
+   <c:choose>
+	<c:when test="${empty paramExists}">
+		<c:set var="queryString">query=${query}&location=${location}</c:set>
+    </c:when>
+    <c:otherwise>
+		<c:set var="queryString">&query=${query}&location=${location}</c:set>
+    </c:otherwise>
+	</c:choose>
+	<c:set var="paramExists">?</c:set>
+</c:if>
+<ul class="searchResultsProjectCategoryCounts">
   <li>
-	<a href="${ctx}${pageURL}/all${sortURL}" <c:if test="${chosenCategory eq 'all'}"> class="active"</c:if>>
-		<em>All Categories (${total})</em>
-	</a>
+	  <a href="${ctx}${pageURL}/all${paramExists}${sortOrderString}${queryString}" <c:if test="${chosenCategory eq 'all'}"> class="active"</c:if>>
+    <em>All Categories (${total})</em></a>
   </li>
   <c:forEach items="${promotionsCountMap}" var="category" varStatus="status">
-  <li>
-    <a href="${ctx}${pageURL}/${category.key.normalizedCategoryName}${sortURL}"<c:if test="${! empty chosenCategory and chosenCategory eq category.key.description}"> class="active"</c:if>>
-      <em><c:out value="${category.key.description}" /><c:if test="${category.value > 0 }">(${category.value})</c:if></em>
-    </a>
-  </li>
+    <li>
+      <a href="${ctx}${pageURL}/${category.key.normalizedCategoryName}${paramExists}${sortOrderString}${queryString}"<c:if test="${!empty chosenCategory and chosenCategory eq category.key.normalizedCategoryName}"> class="active"</c:if>>
+      <em><c:out value="${category.key.description}" /><c:if test="${category.value > 0 }"> (${category.value})</c:if></em></a>
+    </li>
   </c:forEach>
 </ul>

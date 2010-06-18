@@ -44,12 +44,14 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.connect.web.modules.badges.dao.Badge" %>
-<jsp:useBean id="badgeCategoryList1" class="com.concursive.connect.web.modules.badges.dao.BadgeCategoryList" scope="request" />
 <jsp:useBean id="SKIN" class="java.lang.String" scope="application"/>
 <jsp:useBean id="badgeCategoryId" class="java.lang.String" scope="request"/>
+<jsp:useBean id="badgeCategory" class="com.concursive.connect.web.modules.badges.dao.BadgeCategory" scope="request" />
 <jsp:useBean id="badgeList" class="com.concursive.connect.web.modules.badges.dao.BadgeList" scope="request" />
 <jsp:useBean id="projectCategoryList" class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" scope="request"/>
+<jsp:useBean id="projectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <%-- Initialize the drop-down menus --%>
 <%@ include file="initPopupMenu.jsp" %>
@@ -57,6 +59,8 @@
 <script language="JavaScript" type="text/javascript">
   loadImages('select_<%= SKIN %>');
 </script>
+<c:out value="${projectCategory.label}"/> &gt;
+<c:out value="${badgeCategory.itemName}"/> &gt;
 <a href="<%= ctx %>/AdminBadges.do?command=Modify&badgeCategoryId=<%= badgeCategoryId %>">Add Badge</a><br /><br />
 <table class="pagedList">
   <thead>
@@ -67,11 +71,8 @@
       <th width="10%">
           Logo
       </th>
-      <th width="60%">
+      <th width="80%">
           Name
-      </th>
-      <th width="20%" nowrap>
-          Badge Category
       </th>
       <th width="10%" nowrap>
           Enabled
@@ -109,9 +110,6 @@
       </td>
       <td>
         <a href="<%= ctx %>/AdminBadges.do?command=Modify&badgeId=<%= thisBadge.getId() %>"><%= toHtml(thisBadge.getTitle()) %></a>
-      </td>
-      <td>
-        <%= toHtml(badgeCategoryList1.getValueFromId(thisBadge.getCategoryId())) %>
       </td>
       <td>
       <%= thisBadge.getEnabled()?"Yes":"No" %>

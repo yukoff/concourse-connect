@@ -14,8 +14,8 @@
       <simple>
         <name>twitterQuery</name>
         <group>DEFAULT</group>
-        <start-time>5m</start-time>
-        <repeat-interval>5m</repeat-interval>
+        <start-time>15m</start-time>
+        <repeat-interval>15m</repeat-interval>
       </simple>
     </trigger>
   </job>

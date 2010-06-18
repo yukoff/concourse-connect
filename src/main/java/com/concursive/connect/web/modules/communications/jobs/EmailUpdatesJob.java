@@ -55,6 +55,7 @@ import com.concursive.connect.web.modules.communications.dao.EmailUpdatesQueueLi
 import com.concursive.connect.web.modules.communications.utils.EmailUpdatesUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
+import freemarker.template.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
@@ -62,13 +63,11 @@ import org.quartz.JobExecutionException;
 import org.quartz.SchedulerContext;
 import org.quartz.StatefulJob;
 
+import javax.servlet.ServletContext;
 import java.sql.Connection;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.TimeZone;
-
-import freemarker.template.Configuration;
-import javax.servlet.ServletContext;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Job to process the scheduled email udpates queue and send emails
@@ -82,7 +81,7 @@ public class EmailUpdatesJob implements StatefulJob {
 
   /**
    * Process email updates queue
-   * 
+   *
    * @param context
    * @throws JobExecutionException
    */
@@ -95,7 +94,7 @@ public class EmailUpdatesJob implements StatefulJob {
       ApplicationPrefs prefs = (ApplicationPrefs) schedulerContext.get(
           "ApplicationPrefs");
       ServletContext servletContext = (ServletContext) schedulerContext.get("ServletContext");
-      LOG.info("EmailUpdatesJob triggered...");
+      LOG.debug("EmailUpdatesJob triggered...");
       while (true) {
         //Retrieve retrieve the next item from the email_updates_queue that is scheduled for now.
         EmailUpdatesQueueList queueList = new EmailUpdatesQueueList();
@@ -115,12 +114,8 @@ public class EmailUpdatesJob implements StatefulJob {
             User user = UserUtils.loadUser(queue.getEnteredBy());
 
             //Determine the date range to query the activity stream data
-            Calendar now = Calendar.getInstance();
-            if (user.getTimeZone() != null) {
-              now = Calendar.getInstance(TimeZone.getTimeZone(user.getTimeZone()));
-            }
             Timestamp min = queue.getProcessed();
-            Timestamp max = new Timestamp(now.getTimeInMillis());
+            Timestamp max = new Timestamp(System.currentTimeMillis());
 
             if (min == null) {
               //set the min value to be queue's entered date to restrict picking up all the records in the system
@@ -132,19 +127,20 @@ public class EmailUpdatesJob implements StatefulJob {
             String message = EmailUpdatesUtils.getEmailHTMLMessage(db, prefs, configuration, queue, min, max);
 
             if (message != null) {
-              Calendar today = Calendar.getInstance();
-              if (user.getTimeZone() != null) {
-                today = Calendar.getInstance(TimeZone.getTimeZone(user.getTimeZone()));
-              }
+              // Use the user's locale to format the date
+              SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, user.getLocale());
+              formatter.applyPattern(DateUtils.get4DigitYearDateFormat(formatter.toLocalizedPattern()));
+              String date = formatter.format(max);
+
               String subject = "";
               if (queue.getScheduleOften()) {
-                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Recent updates";
+                subject = "Activity Updates for " + date + " - Recent updates";
               } else if (queue.getScheduleDaily()) {
-                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Daily update";
+                subject = "Activity Updates for " + date + " - Daily update";
               } else if (queue.getScheduleWeekly()) {
-                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Weekly update";
+                subject = "Activity Updates for " + date + " - Weekly update";
               } else if (queue.getScheduleMonthly()) {
-                subject = "Activity Updates for " + DateUtils.getDateString(today) + " - Monthly update";
+                subject = "Activity Updates for " + date + " - Monthly update";
               }
               //Try to send the email
               LOG.debug("Sending email...");

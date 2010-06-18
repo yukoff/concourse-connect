@@ -84,7 +84,7 @@ public class BlogCommentSetRatingViewer implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
 
     // Load the record
     int recordId = Integer.parseInt(request.getParameter("id"));

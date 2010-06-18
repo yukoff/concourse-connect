@@ -1,0 +1,89 @@
+import com.concursive.connect.web.utils.*;
+import com.concursive.connect.web.modules.profile.dao.*;
+import com.concursive.connect.cache.utils.*;
+import com.concursive.connect.web.modules.members.dao.*;
+import com.concursive.connect.Constants;
+
+int count = 0;
+
+LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
+
+PermissionLookupList permissionLookupList = new PermissionLookupList();
+permissionLookupList.buildList(db);
+
+// Get the permission categories for updating and adding permissions
+PermissionCategoryLookupList permissionCategoryList = new PermissionCategoryLookupList();
+permissionCategoryList.buildList(db);
+
+// Add new permissions project-webcasts-view
+if (1 == 1) {
+  String categoryName = "Webcasts";
+  String permissionName = "project-webcasts-view";
+  String permissionDescription = "View currently published webcasts";
+  int permissionLevel = 10;
+  int defaultRole = TeamMember.GUEST;
+  PermissionLookup permission = permissionLookupList.getByPermission(permissionName);
+  if (permission == null) {
+      PermissionCategoryLookup category = permissionCategoryList.getByDescription(categoryName);
+      if (category == null) {
+        category = new PermissionCategoryLookup();
+        category.setGroupId(1);
+        category.setDescription(categoryName);
+        category.setLevel(90);
+        category.insert(db);
+      }
+      permission = new PermissionLookup();
+      permission.setCategoryId(category.getId());
+      permission.setDefaultRole(roleList.getIdFromLevel(defaultRole));
+      permission.setPermission(permissionName);
+      permission.setDescription(permissionDescription);
+      permission.setLevel(permissionLevel);
+      permission.insert(db);
+
+      System.out.println(" Permission inserted: " + permission.getPermission());
+
+      // Update the projects with the new permission
+      PagedListInfo pagedListInfo = new PagedListInfo();
+      pagedListInfo.setItemsPerPage(1000);
+      pagedListInfo.setDefaultSort("project_id", null);
+
+      // Use the paged list to populate it with the list criteria
+      ProjectList projects = new ProjectList();
+      projects.setPortalState(Constants.FALSE);
+      projects.setPagedListInfo(pagedListInfo);
+      projects.setBuildPermissions(true);
+      projects.buildList(db);
+
+      System.out.println("Total projects to process: " + pagedListInfo.getMaxRecords());
+
+      int count = 0;
+      while (projects.size() > 0) {
+        System.out.println(" Page: " + pagedListInfo.getPage() + " of " + pagedListInfo.getNumberOfPages());
+
+        for (Project project : projects) {
+          if (project.getPermissions().get(permissionName) != null) {
+            continue;
+          }
+
+          // Insert the permission
+          Permission thisPermission = new Permission();
+          thisPermission.setProjectId(project.getId());
+          thisPermission.setPermissionId(permission.getId());
+          thisPermission.setUserLevel(permission.getDefaultRole());
+          thisPermission.insert(db);
+          ++count;
+        }
+
+        // Always reset the project list or else they are included on buildList again
+        projects.clear();
+        if (pagedListInfo.getPage() < pagedListInfo.getNumberOfPages()) {
+            pagedListInfo.setCurrentPage(pagedListInfo.getPage() + 1);
+            projects.buildList(db);
+        }
+      }
+
+      System.out.println("   Total projects updated: " + count);
+  }
+}
+
+

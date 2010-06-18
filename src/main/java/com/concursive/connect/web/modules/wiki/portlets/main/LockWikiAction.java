@@ -90,7 +90,7 @@ public class LockWikiAction implements IPortletAction {
     String subject = getPageView(request);
 
     // Find the record to update
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     //Load the wiki page
     Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
     if (!wiki.getReadOnly()) {

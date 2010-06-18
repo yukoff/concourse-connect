@@ -124,6 +124,11 @@ public class HTMLUtilsTest extends TestCase {
           "the mouse moves out of the image area a function called normal_image is called \n" +
           "which changes the image back to Garfield.\n" +
           "</TD></TR></TABLE>\n" +
+          "<object width=\"425\" height=\"344\" data=\"http://www.youtube.com/v/sIFYPQjYhv8\" type=\"application/x-shockwave-flash\">\n" +
+          "<param name=\"movie\" value=\"http://www.youtube.com/v/sIFYPQjYhv8\" />\n" +
+          "<param name=\"allowFullScreen\" value=\"true\" />\n" +
+          "<param name=\"allowscriptaccess\" value=\"always\" />\n" +
+          "</object>" +
           "<!--#exec cgi=\"/perl/adrotate.pl?PATH=/ads/pages/java/bot\" -->\n" +
           "</BODY>\n" +
           "</HTML>";
@@ -138,7 +143,31 @@ public class HTMLUtilsTest extends TestCase {
     assertFalse("event incorrectly found: onmouseover", html.toLowerCase().contains("onmouseover"));
     assertFalse("event incorrectly found: onmouseout", html.toLowerCase().contains("onmouseoout"));
     assertFalse("comment incorrectly found", html.toLowerCase().contains("<!--"));
+    assertFalse("comment incorrectly found", html.contains("exec"));
     assertFalse("font tag incorrectly found", html.contains("<font"));
     assertFalse("color attribute incorrectly found", html.contains("color"));
+    assertFalse("name=\"changing\" attribute incorrectly found: " + html, html.toLowerCase().contains("name=\"changing\""));
+    assertTrue("param's name attribute was incorrectly removed", html.contains("name=\"movie\""));
+  }
+
+  public void testHtmlCleanerWithFontContent() throws Exception {
+    String SAMPLE = "<p><span> </span></p>\n" +
+        "<div class=\"cnn_relpostn\" style=\"font-weight: inherit; font-style: inherit;\">\n" +
+        "<div class=\"cnn_mtt1imgh\" style=\"font-weight: inherit; font-style: inherit; font: normal normal bold 16px/19px arial, Helvetica, Utkal, sans-serif;\">\n" +
+        "<div class=\"cnn_mtt1imghtitle\" style=\"font-weight: inherit; font-style: inherit;\">\n" +
+        "<h1 style=\"font-weight: inherit; font-style: inherit; font: normal normal bold 16px/19px arial, Helvetica, Utkal, sans-serif;\"><span style=\"font-weight: inherit; font-style: inherit;\"><a style=\"font-weight: inherit; font-style: inherit; text-decoration: none;\" href=\"http://www.cnn.com/2010/US/weather/03/16/severe.weather/index.html?hpt=T1\">Northern Plains brace for flooding</a></span></h1>\n" +
+        "</div>\n" +
+        "</div>\n" +
+        "</div>\n" +
+        "<div class=\"cnn_mtt1content\" style=\"font-weight: inherit; font-style: inherit;\">\n" +
+        "<div style=\"font-weight: inherit; font-style: inherit;\">\n" +
+        "<p style=\"font-weight: inherit; font-style: inherit;\">Melting snow and heavy rain are expected to flood the Red River today. Minnesota and North Dakota communities along the river are racing to shore up levees.&nbsp;<a style=\"font-weight: inherit; font-style: inherit; text-decoration: none; font: normal normal bold 10px/12px arial, Helvetica, Utkal, sans-serif;\" href=\"http://www.cnn.com/2010/US/weather/03/16/severe.weather/index.html?hpt=T1\">FULL STORY</a></p>\n" +
+        "</div>\n" +
+        "</div>\n" +
+        "<p>&nbsp;</p>";
+    String html = HTMLUtils.makePublicHtml(SAMPLE).toLowerCase();
+    assertFalse("font attribute incorrectly found in: " + html, html.contains("font:"));
+    assertFalse("inherit value incorrectly found in: " + html, html.contains("inherit"));
+    assertFalse("text-decoration: none value incorrectly found in: " + html, html.contains("text-decoration: none"));
   }
 }

@@ -63,7 +63,7 @@
         <%= showError(request, "actionError", false) %>
         <fieldset id="Terms and Conditions">
           <legend>Review Terms &amp; Conditions</legend>
-          <span><img src="<%= ctx %>/images/icons/stock_print-16.gif" align="absmiddle" title="Print friendly page" border="0"/> <a href="javascript:popURL('<%= ctx %>/PortalTerms.do?popup=true&printButton=true','Terms_and_Conditions','650','375','yes','yes');">Printer Friendly Page</a></span>
+          <span><img src="<%= ctx %>/images/icons/stock_print-16.gif" align="absmiddle" title="Print friendly page" border="0"/> <a href="javascript:popURL('<%= ctx %>/PortalTerms.do?popup=true&printButton=true','650','375','yes','yes');">Printer Friendly Page</a></span>
           <p>Please indicate that you accept the following terms and
             conditions by checking "Accept" and clicking the "Submit" button.</p>
           <textarea WRAP="VIRTUAL" READONLY><%@ include file="../../terms.jsp" %></textarea>

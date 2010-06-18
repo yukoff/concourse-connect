@@ -46,6 +46,7 @@
 package com.concursive.connect.web.modules.calendar.portlets.main;
 
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
+import com.concursive.connect.web.modules.calendar.utils.CalendarEventList;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -88,11 +89,18 @@ public class EventDetailsViewer implements IPortletViewer {
     }
 
     // Determine the connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Meeting meeting = new Meeting(db, recordId, project.getId());
+    meeting.buildAttendeeList(db);
     request.setAttribute(MEETING, meeting);
+
+    // Provide the required object for the events renderer
+    CalendarEventList thisDay = new CalendarEventList();
+    thisDay.setDate(meeting.getStartDate());
+    thisDay.addEvent(CalendarEventList.EVENT_TYPES[CalendarEventList.EVENT], meeting);
+    request.setAttribute("thisDay", thisDay);
 
     // Record that this record has been viewed
     processSelectHook(request, meeting);

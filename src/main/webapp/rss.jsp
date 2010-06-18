@@ -46,6 +46,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <jsp:useBean id="applicationPrefs" class="com.concursive.connect.config.ApplicationPrefs" scope="application"/>
+<jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
+<c:set var="user" value="<%= User %>" scope="request" />
 <%@ include file="initPage.jsp" %>
 All RSS (Really Simple Syndication) feeds from <c:out value="${requestMainProfile.title}"/> are based on the RSS 2.0 specification.
 RSS is a standard for syndicating frequently updated content from a site via a newsreader.<br />
@@ -66,12 +68,14 @@ RSS is a standard for syndicating frequently updated content from a site via a n
       </td>
     </tr>
     <c:forEach items="${tabCategoryList}" var="tabCategory" varStatus="status">
-    <tr class="row1">
-      <td>
-        <img src="<%= ctx %>/images/xml.gif" align="absMiddle" />
-        <a href="http://<%= getServerUrl(request) %>/feed/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}/rss.xml"><c:out value="${tabCategory.description}"/> Feed</a>
-      </td>
-    </tr>
+      <c:if test="${!tabCategory.sensitive || (tabCategory.sensitive && user.loggedIn)}">
+        <tr class="row1">
+          <td>
+            <img src="<%= ctx %>/images/xml.gif" align="absMiddle" />
+            <a href="http://<%= getServerUrl(request) %>/feed/${fn:toLowerCase(fn:replace(tabCategory.description," ","_"))}/rss.xml"><c:out value="${tabCategory.description}"/> Feed</a>
+          </td>
+        </tr>
+      </c:if>
     </c:forEach>
     <tr class="row1">
       <td>
@@ -88,7 +92,7 @@ RSS is a standard for syndicating frequently updated content from a site via a n
     <tr class="row1">
       <td>
         <img src="<%= ctx %>/images/xml.gif" align="absMiddle" />
-        <a href="http://<%= getServerUrl(request) %>/feed/documents.xml">Recent Project Documents</a> (Personalized - Asks for user login)
+        <a href="http://<%= getServerUrl(request) %>/feed/documents.xml">Recent Documents</a> (Personalized - Asks for user login)
       </td>
     </tr>
     <tr class="row1">

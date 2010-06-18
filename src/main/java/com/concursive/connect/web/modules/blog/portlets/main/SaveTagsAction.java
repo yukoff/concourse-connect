@@ -113,7 +113,7 @@ public class SaveTagsAction implements IPortletAction {
     }
 
     // get database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     //Load the object being tagged to make sure it exists
     BlogPost thisArticle = null;

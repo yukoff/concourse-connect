@@ -252,6 +252,9 @@ public class EmailUpdatesQueue {
       } else if (next.get(Calendar.HOUR_OF_DAY) < 16) {
         next.set(Calendar.HOUR_OF_DAY, 16);
         next.set(Calendar.MINUTE, 0);
+      } else if (next.get(Calendar.HOUR_OF_DAY) < 20) {
+        next.set(Calendar.HOUR_OF_DAY, 20);
+        next.set(Calendar.MINUTE, 0);
       } else {
         //next day
         next.add(Calendar.DATE, 1);

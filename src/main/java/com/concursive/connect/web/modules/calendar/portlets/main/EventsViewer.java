@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.calendar.portlets.main;
 
 import com.concursive.commons.text.StringUtils;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.calendar.utils.CalendarBean;
 import com.concursive.connect.web.modules.calendar.utils.CalendarBeanUtils;
 import com.concursive.connect.web.modules.calendar.utils.CalendarView;
@@ -77,6 +78,9 @@ public class EventsViewer implements IPortletViewer {
 
   // Pages
   private static final String VIEW_PAGE = "/projects_center_calendar_details.jsp";
+
+  // Preferences
+  private static final String PREF_SHOW_HOLIDAYS = "showHolidays";
 
   // Object Results
   private static final String CALENDAR_BEAN_BASE = "calendarInfoBean";
@@ -109,6 +113,11 @@ public class EventsViewer implements IPortletViewer {
     // Adjust view settings based on request
     CalendarBeanUtils.updateValues(calendarInfo, request, user);
 
+    // Set any preferences
+    calendarInfo.setShowHolidays(request.getPreferences().getValue(
+        PREF_SHOW_HOLIDAYS,
+        getApplicationPrefs(request).get(ApplicationPrefs.SHOW_HOLIDAYS)));
+
     // Determine the display date, based on the URL
     String selectedDate = PortalUtils.getPageView(request);
     if (StringUtils.hasText(selectedDate)) {
@@ -116,18 +125,18 @@ public class EventsViewer implements IPortletViewer {
       if (dateParts.length > 0) {
         // Year view (defaults to first month in that year for now)
         int year = Integer.parseInt(dateParts[0]);
+        calendarInfo.setPrimaryYear(year);
+        calendarInfo.setPrimaryMonth(1);
         calendarInfo.setYearSelected(year);
         calendarInfo.setMonthSelected(1);
-        //calendarInfo.setPrimaryYear(year);
-        //calendarInfo.setPrimaryMonth(1);
         calendarInfo.setCalendarView("month");
         calendarInfo.resetParams("month");
       }
       if (dateParts.length > 1) {
         // Month view (specific month specified)
         int month = Integer.parseInt(dateParts[1]);
+        calendarInfo.setPrimaryMonth(month);
         calendarInfo.setMonthSelected(month);
-        //calendarInfo.setPrimaryMonth(month);
         calendarInfo.setCalendarView("month");
         calendarInfo.resetParams("month");
       }
@@ -147,10 +156,6 @@ public class EventsViewer implements IPortletViewer {
           // Today
           calendarInfo.setCalendarView("day");
           calendarInfo.resetParams("day");
-          //Calendar cal = Calendar.getInstance();
-          //cal.setTimeZone(calendarInfo.getTimeZone());
-          //calendarInfo.setPrimaryMonth(cal.get(Calendar.MONTH) + 1);
-          //calendarInfo.setPrimaryYear(cal.get(Calendar.YEAR));
         } else {
           // Day view
           calendarInfo.setCalendarView("day");
@@ -167,7 +172,7 @@ public class EventsViewer implements IPortletViewer {
     String filter = null;
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Generate a calendar
     CalendarView calendarView = CalendarViewUtils.generateCalendarView(db, calendarInfo, project, user, filter);

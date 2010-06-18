@@ -124,7 +124,5 @@
       </table>
     </div>
   </div>
-  <div class="pagination">
-    <ccp:paginationControl object="adminUserListInfo"/>
-  </div>
+  <ccp:paginationControl object="adminUserListInfo"/>
 </div>

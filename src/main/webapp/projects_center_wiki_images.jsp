@@ -86,6 +86,21 @@ var ImageSelect = {
         document.getElementById('thumbnail').checked = true;
       }
 
+      // check alignment
+      if (dom.getAttrib(n, 'style').indexOf('float: left') > -1) {
+        document.getElementById('alignL').checked = true;
+      } else if (dom.getAttrib(n, 'style').indexOf('float:left') > -1) {
+        document.getElementById('alignL').checked = true;
+      } else if (dom.getAttrib(n, 'style').indexOf('float: right') > -1) {
+        document.getElementById('alignR').checked = true;
+      } else if (dom.getAttrib(n, 'style').indexOf('float:right') > -1) {
+        document.getElementById('alignR').checked = true;
+      } else if (dom.getAttrib(n, 'style').indexOf('block') > -1) {
+        document.getElementById('alignC').checked = true;
+      } else {
+        document.getElementById('alignN').checked = true;
+      }
+
       // set the current image selection
       var imageFilename;
     <ccp:evaluate if="<%= !hasText(uploadedImage) %>">
@@ -129,13 +144,25 @@ var ImageSelect = {
 
     var wikiImagePanelElm = document.getElementById('wikiimage_tab');
     if (wikiImagePanelElm.className == 'current') {
+      var thisStyle = "";
+      var align = getSelectedCheckboxValue(document.forms['imageForm'].align);
+      if (align == "normal") {
+
+      } else if (align == "left") {
+        thisStyle = 'float: left; margin-right: 8px; margin-bottom: 4px;';
+      } else if (align == "center") {
+        thisStyle = 'display:block; margin: 0 auto;';
+      } else if (align == "right") {
+        thisStyle = 'float: right; margin-left: 8px; margin-bottom: 4px;';
+      }
       var imageList = document.getElementById('imageList');
       tinymce.extend(args, {
         width : document.getElementById('preview').width,
         height : document.getElementById('preview').height,
         alt : imageList.options[imageList.selectedIndex].value,
         title : document.getElementById('caption').value,
-        src : document.getElementById('preview').src
+        src : document.getElementById('preview').src,
+        style : thisStyle
       });
     }
 
@@ -164,7 +191,7 @@ var ImageSelect = {
     }
     tinyMCEPopup.close();
   }
-}
+};
 tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
 </script>
 <script type="text/javascript" src="<%= ctx %>/javascript/checkCheckbox.js"></script>
@@ -202,7 +229,7 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
         thumbnail = "?th=true";
       }
       document.getElementById('preview').src =
-        "<%= ctx %>/show/<%= project.getUniqueId() %>/<%= source %>-image/" + escape(tagName) + thumbnail;
+        "<%= ctx %>/show/<%= project.getUniqueId() %>/<%= source %>-image/" + encodeURIComponent(tagName) + thumbnail;
     } else {
       document.getElementById('preview').src = "<%= ctx %>/images/Empty.png";
     }
@@ -268,9 +295,14 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
         </form>
       </fieldset>
 
-      <form onsubmit="ImageSelect.insertAndClose();return false;" action="#">
+      <form name="imageForm" onsubmit="ImageSelect.insertAndClose();return false;" action="#">
         <fieldset>
           <legend>Selected Image</legend>
+          <input type="radio" id="alignN" name="align" value="normal" /><img align="absmiddle" src="${ctx}/images/icons/stock_wrap-interrupt-left.png" title="Default image placement on it's own line" />
+          <input type="radio" id="alignL" name="align" value="left" /><img align="absmiddle" src="${ctx}/images/icons/stock_wrap-right.png" title="Align the image to the left allowing text to flow around" />
+          <input type="radio" id="alignC" name="align" value="center" /><img align="absmiddle" src="${ctx}/images/icons/stock_wrap-interrupt.png" title="Center the image on it's own line" />
+          <input type="radio" id="alignR" name="align" value="right" /><img align="absmiddle" src="${ctx}/images/icons/stock_wrap-left.png" title="Align the image to the right allowing text to flow around" />
+          <br />
           <input type="checkbox" id="thumbnail" name="thumbnail" value="true" onclick="displayTag();" /> Insert as thumbnail<br />
           Set an optional caption:<br />
           <input type="text" id="caption" name="caption" value="" size="50" /><br />
@@ -290,7 +322,7 @@ tinyMCEPopup.onInit.add(ImageSelect.init, ImageSelect);
         <fieldset>
           <legend>General</legend>
           <label id="webimagelabel" for="webimage">Display the image at the following URL:</label><br />
-          <input name="webimage" type="text" id="webimage" size="80" value="" class="mceFocus url" onchange="displayWebImage(this.value);" /><br />
+          <input name="webimage" type="text" id="webimage" size="80" value="" class="url" onchange="displayWebImage(this.value);" /><br />
           (use the complete url, example: http://www.example.com/images/logo.png)
         </fieldset>
         <fieldset>

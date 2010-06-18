@@ -48,11 +48,11 @@
   <portlet:param name="portlet-action" value="show"/>
   <portlet:param name="portlet-object" value="forum"/>
 </portlet:renderURL>
-<portlet:renderURL var="modifyForumUrl">
+<portlet:renderURL var="jsModifyForumUrl">
   <portlet:param name="portlet-action" value="modify"/>
   <portlet:param name="portlet-object" value="forum"/>
 </portlet:renderURL>
-<portlet:actionURL var="deleteForumUrl">
+<portlet:actionURL var="jsDeleteForumUrl">
   <portlet:param name="portlet-command" value="forum-delete"/>
 </portlet:actionURL>
 <script type="text/javascript" language="javascript">
@@ -72,10 +72,10 @@
     document.location.href='${showForumUrl}/' + thisItemId + '?resetList=true';
   }
   function editItem() {
-    document.location.href='${modifyForumUrl}/' + thisItemId + '?return=list';
+    document.location.href='${jsModifyForumUrl}/' + thisItemId + '?return=list';
   }
   function deleteItem() {
-    confirmDelete('${deleteForumUrl}&forum=' + thisItemId);
+    confirmDelete('${jsDeleteForumUrl}&forum=' + thisItemId);
   }
 </script>
 <%-- List Item Pop-up Menu --%>

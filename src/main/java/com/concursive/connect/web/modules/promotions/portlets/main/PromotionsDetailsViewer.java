@@ -89,7 +89,7 @@ public class PromotionsDetailsViewer implements IPortletViewer {
     int recordId = getPageViewAsInt(request);
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Ad promotion = new Ad(db, recordId, project.getId());

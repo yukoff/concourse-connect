@@ -96,7 +96,7 @@ public class TopicListViewer implements IPortletViewer {
     String resetList = request.getParameter("resetList");
 
     // Build a list of records
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Paging will be used for remembering several list view settings
     if ("true".equals(resetList)) {

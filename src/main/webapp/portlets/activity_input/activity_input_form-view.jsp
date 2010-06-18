@@ -47,36 +47,66 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
+<jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
+<c:set var="user" value="<%= User %>" scope="request" />
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="profile" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <script language="JavaScript" type="text/javascript">
-  function checkActivityInputForm<portlet:namespace/>(form) {
-    var formTest = true;
-    var messageText = "";
-    if (document.inputForm<portlet:namespace/>.body.value.trim() == "") {
-        messageText += "- A message is required\r\n";
-        formTest = false;
-    }
-    if (!formTest) {
-        messageText = "The message could not be sent.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
+  function saveActivity<portlet:namespace/>(form) {
+    <%-- Validate the form --%>
+    if (form.body.value.trim() == "") {
+        messageText = "Please enter some text and try again.";
         alert(messageText);
         return false;
-    } else {
-      if (form.save.value != 'Please Wait...') {
-        // Tell the user to wait
-        form.save.value='Please Wait...';
-        form.save.disabled = true;
-        // find one or more spinners
-        var uItems = YAHOO.util.Dom.getElementsByClassName("submitSpinner");
-        for (var j = 0; j < uItems.length; j++) {
-          YAHOO.util.Dom.setStyle(uItems[j], "display", "inline");
-        }
-        return true;
-      } else {
-        return false;
+    }
+    <%-- Submit the form --%>
+    if (form.save.value != 'Please Wait...') {
+      // Tell the user to wait
+      form.save.value='Please Wait...';
+      form.save.disabled = true;
+      // find one or more spinners
+      var uItems = YAHOO.util.Dom.getElementsByClassName("submitSpinner");
+      for (var j = 0; j < uItems.length; j++) {
+        YAHOO.util.Dom.setStyle(uItems[j], "display", "inline");
       }
+      <c:choose>
+        <c:when test="${!empty namespace}">
+          // Post the data
+          <portlet:actionURL var="saveFormUrl">
+            <portlet:param name="portlet-command" value="saveForm"/>
+          </portlet:actionURL>
+          // Use YUI to properly encode the POST
+          var handleSuccess = function(o) {
+            <%-- Reset the form --%>
+            var form = document.inputForm<portlet:namespace/>;
+            form.body.value='';
+            form.save.value='Share';
+            form.save.disabled = false;
+            // find one or more spinners
+            var uItems = YAHOO.util.Dom.getElementsByClassName("submitSpinner");
+            for (var j = 0; j < uItems.length; j++) {
+              YAHOO.util.Dom.setStyle(uItems[j], "display", "none");
+            }
+            <%-- Refresh the activity stream if there is one associated --%>
+            refreshActivityList${namespace}();
+          };
+          var callback = {
+            success: handleSuccess
+          };
+          var postData =
+              "out=text" +
+              "&body=" + encodeURIComponent(form.body.value.trim());
+          YAHOO.util.Connect.asyncRequest('POST', "${saveFormUrl}", callback, postData);
+          return false;
+        </c:when>
+        <c:otherwise>
+          return true;
+        </c:otherwise>
+      </c:choose>
+    } else {
+      return false;
     }
   }
 </script>
@@ -85,28 +115,31 @@
   <portlet:actionURL var="saveFormUrl">
     <portlet:param name="portlet-command" value="saveForm"/>
   </portlet:actionURL>
-  <form method="POST" name="inputForm<portlet:namespace/>" action="${saveFormUrl}" onSubmit="try {return checkActivityInputForm<portlet:namespace/>(this);}catch(e){return true;}">
+  <form name="inputForm<portlet:namespace/>" onSubmit="try {return saveActivity<portlet:namespace/>(this);}catch(e){alert(e);return true;}" method="POST" action="${saveFormUrl}">
     <ol>
       <li>
         <c:choose>
-          <c:when test="${!empty profile.logo}">
-            <img alt="<c:out value="${profile.title}"/> photo" width="45" height="45"
-                 src="${ctx}/image/<%= profile.getLogo().getUrlName(45,45) %>"/>
+          <c:when test="${!empty user.profileProject.logo}">
+            <img alt="<c:out value="${user.profileProject.title}"/> photo" width="45" height="45"
+                 src="${ctx}/image/<%= User.getProfileProject().getLogo().getUrlName(45,45) %>"/>
           </c:when>
-          <c:when test="${!empty profile.category.logo}">
+          <c:when test="${!empty user.profileProject.category.logo}">
             <img alt="Default user photo" width="45" height="45"
-                 src="${ctx}/image/<%= profile.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
+                 src="${ctx}/image/<%= User.getProfileProject().getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
           </c:when>
         </c:choose>
         <div class="portlet-section-body">
           <%= showError(request, "actionError") %>
           <label for="<portlet:namespace/>body"><c:out value="${title}" /></label>
           <%= showAttribute(request, "bodyError") %>
-          <input id="<portlet:namespace/>body" name="body" type="text" class="input longInput" maxlength="200" value='<c:out value="${body}" />' />
-          <span class="characterCounter">200 characters max</span>
+          <input id="<portlet:namespace/>body" name="body" type="text" class="input longInput" maxlength="512" value='<c:out value="${body}" />' />
+          <span class="characterCounter">512 characters max</span>
         </div>
       </li>
     </ol>
+    <c:if test="${!empty message}">
+      <p><c:out value="${message}" /></p>
+    </c:if>
     <input type="submit" name="save" class="submit" value="Share" />
     <img src="${ctx}/images/loading16.gif" alt="loading please wait" class="submitSpinner" style="display:none"/>
   </form>

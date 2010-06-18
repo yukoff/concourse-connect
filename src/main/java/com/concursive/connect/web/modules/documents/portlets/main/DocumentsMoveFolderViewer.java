@@ -53,6 +53,8 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import static com.concursive.connect.web.portal.PortalUtils.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -66,6 +68,8 @@ import java.sql.Connection;
  * @created January 27, 2009
  */
 public class DocumentsMoveFolderViewer implements IPortletViewer {
+
+  private static Log LOG = LogFactory.getLog(DocumentsMoveFolderViewer.class);
 
   // Pages
   private static final String VIEW_PAGE = "/projects_center_folder_hierarchy.jsp";
@@ -91,9 +95,10 @@ public class DocumentsMoveFolderViewer implements IPortletViewer {
     int recordId = getPageViewAsInt(request);
 
     // Determine the connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the folder being moved
+    LOG.debug("Loading folder: " + recordId + " in project: " + project.getUniqueId());
     FileFolder thisFolder = new FileFolder(db, recordId, project.getId(), Constants.PROJECTS_FILES);
     request.setAttribute(FOLDER, thisFolder);
 

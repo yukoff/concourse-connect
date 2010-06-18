@@ -46,17 +46,23 @@
 
 package com.concursive.connect.web.modules.activity.dao;
 
+import com.concursive.commons.date.DateUtils;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
-import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.Constants;
-import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext;
 import com.concursive.connect.web.modules.wiki.utils.WikiToHTMLUtils;
+import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.*;
-import java.sql.Date;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 /**
  * A collection of ProjectHistory objects
@@ -66,7 +72,9 @@ import java.util.*;
  * @created Feb 11, 2009
  */
 public class ProjectHistoryList extends ArrayList<ProjectHistory> {
-  //object constants to be used while recording history events
+
+  // object constants to be used while recording history events
+  // these map to specific profile objects
   public final static String AD_OBJECT = "ad";
   public final static String BADGE_OBJECT = "badge";
   public final static String BLOG_OBJECT = "blog";
@@ -93,9 +101,26 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static String WIKI_OBJECT = "wiki";
   public final static String WIKI_COMMENT_OBJECT = "wiki-comment";
   public final static String ACTIVITY_ENTRY_OBJECT = "user-entry";
+  // these map to chatter instances
   public final static String SITE_CHATTER_OBJECT = "site-chatter";
   public final static String SITE_TWITTER_OBJECT = "site-twitter";
+  // third party ids
   public final static String TWITTER_OBJECT = "twitter";
+
+  // Define which permission is required to view the object
+  // @note maintain the getPermission() method too
+  public final static String[] PROFILE_PERMISSION = new String[]{PROFILE_OBJECT, CLAIM_OBJECT, IMAGE_OBJECT};
+  public final static String[] ACTIVITY_PERMISSION = new String[]{ACTIVITY_ENTRY_OBJECT};
+  public final static String[] REVIEWS_PERMISSION = new String[]{RATING_OBJECT};
+  public final static String[] TEAM_PERMISSION = new String[]{INVITES_OBJECT, ROLE_OBJECT, TOOLS_OBJECT, MEMBER_OBJECT};
+  public final static String[] DISCUSSION_PERMISSION = new String[]{DISCUSSION_OBJECT, TOPIC_OBJECT, QUESTION_OBJECT, REPLY_OBJECT};
+  public final static String[] WIKI_PERMISSION = new String[]{WIKI_OBJECT, WIKI_COMMENT_OBJECT};
+  public final static String[] BADGES_PERMISSION = new String[]{BADGE_OBJECT};
+  public final static String[] CLASSIFIEDS_PERMISSION = new String[]{CLASSIFIED_OBJECT};
+  public final static String[] ADS_PERMISSION = new String[]{AD_OBJECT};
+  public final static String[] CALENDAR_PERMISSION = new String[]{MEETING_OBJECT};
+  public final static String[] DOCUMENT_PERMISSION = new String[]{DOCUMENT_OBJECT, DOCUMENT_DELETE_OBJECT, DOCUMENT_DOWNLOAD_OBJECT, FOLDER_OBJECT};
+  public final static String[] LISTS_PERMISSION = new String[]{LIST_OBJECT};
 
   //Event constants
   public final static int ADD_PROFILE_EVENT = 2009022601; //profile
@@ -131,7 +156,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   public final static int DELETE_PROFILE_DOCUMENT_EVENT = 2009022628; //document-delete
   public final static int CREATE_PROFILE_FOLDER_EVENT = 2009022629; //folder
   public final static int GRANT_PROFILE_BADGE_EVENT = 2009022630; //badge
-  public final static int ADD_ACTIVITY_ENTRY_EVENT = 2009033118; //badge
+  public final static int ADD_ACTIVITY_ENTRY_EVENT = 2009033118; //activity entry
   public final static int TWITTER_EVENT = 2009110514; //twitter
 
   private PagedListInfo pagedListInfo = null;
@@ -152,11 +177,30 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   private boolean forEmailUpdates = false;
   private int emailUpdatesMember = -1;
   private int emailUpdatesSchedule = -1;
+  private int parentId = -1;
+  private int topId = -1;
+  private int position = -1;
+  private int indent = -1;
+  private Timestamp relativeDate = null;
+  private int relativeEnteredBy = -1;
+  private int forMember = -1;
+  private int userId = -1;
+  private boolean forUserUpdates = false;
+  private int userUpdatesOwnerId = -1;
+  private int userUpdatesUserId = -1;
+  private int userUpdatesOwnerProfileId = -1;
 
-  public void forMemberEmailUpdates(int emailUpdatesMember, int emailUpdatesSchedule) {
+  public void setForMemberEmailUpdates(int emailUpdatesMember, int emailUpdatesSchedule) {
     this.forEmailUpdates = true;
     this.emailUpdatesMember = emailUpdatesMember;
     this.emailUpdatesSchedule = emailUpdatesSchedule;
+  }
+
+  public void setForUserUpdates(int userId, int ownerId, int ownerProfileId) {
+    forUserUpdates = true;
+    userUpdatesUserId = userId;
+    userUpdatesOwnerId = ownerId;
+    userUpdatesOwnerProfileId = ownerProfileId;
   }
 
   public Timestamp getRangeStart() {
@@ -175,6 +219,150 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     this.rangeEnd = rangeEnd;
   }
 
+  /**
+   * @param userId the userId to set
+   */
+  public void setUserId(int userId) {
+    this.userId = userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = Integer.parseInt(userId);
+  }
+
+  /**
+   * @return the userId
+   */
+  public int getUserId() {
+    return userId;
+  }
+
+  /**
+   * @param forMember the forMember to set
+   */
+  public void setForMember(int forMember) {
+    this.forMember = forMember;
+  }
+
+  public void setForMember(String forMember) {
+    this.forMember = Integer.parseInt(forMember);
+  }
+
+  /**
+   * @return the forMember
+   */
+  public int getForMember() {
+    return forMember;
+  }
+
+  /**
+   * @param relativeEnteredBy the relativeEnteredby to set
+   */
+  public void setRelativeEnteredBy(int relativeEnteredBy) {
+    this.relativeEnteredBy = relativeEnteredBy;
+  }
+
+  public void setRelativeEnteredBy(String relativeEnteredBy) {
+    this.relativeEnteredBy = Integer.parseInt(relativeEnteredBy);
+  }
+
+  /**
+   * @return the relativeEnteredby
+   */
+  public int getRelativeEnteredBy() {
+    return relativeEnteredBy;
+  }
+
+  /**
+   * @param relativeDate the relativeDate to set
+   */
+  public void setRelativeDate(Timestamp relativeDate) {
+    this.relativeDate = relativeDate;
+  }
+
+  public void setRelativeDate(String relativeDate) {
+    this.relativeDate = DatabaseUtils.parseTimestamp(relativeDate);
+  }
+
+  /**
+   * @return the relativeDate
+   */
+  public Timestamp getRelativeDate() {
+    return relativeDate;
+  }
+
+  /**
+   * @param indent the indent to set
+   */
+  public void setIndent(int indent) {
+    this.indent = indent;
+  }
+
+  public void setIndent(String indent) {
+    this.indent = Integer.parseInt(indent);
+  }
+
+  /**
+   * @return the indent
+   */
+  public int getIndent() {
+    return indent;
+  }
+
+  /**
+   * @param position the position to set
+   */
+  public void setPosition(int position) {
+    this.position = position;
+  }
+
+  public void setPosition(String position) {
+    this.position = Integer.parseInt(position);
+  }
+
+  /**
+   * @return the position
+   */
+  public int getPosition() {
+    return position;
+  }
+
+  /**
+   * @param topId the topId to set
+   */
+  public void setTopId(int topId) {
+    this.topId = topId;
+  }
+
+  public void setTopId(String topId) {
+    this.topId = Integer.parseInt(topId);
+  }
+
+  /**
+   * @return the topId
+   */
+  public int getTopId() {
+    return topId;
+  }
+
+  /**
+   * @param parentId the parentId to set
+   */
+  public void setParentId(int parentId) {
+    this.parentId = parentId;
+  }
+
+  public void setParentId(String parentId) {
+    this.parentId = Integer.parseInt(parentId);
+  }
+
+  /**
+   * @return the parentId
+   */
+  public int getParentId() {
+    return parentId;
+  }
+
   public int getEventType() {
     return eventType;
   }
@@ -183,12 +371,20 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     this.eventType = eventType;
   }
 
+  public void setEventType(String eventType) {
+    this.eventType = Integer.parseInt(eventType);
+  }
+
   public int getLinkItemId() {
     return linkItemId;
   }
 
   public void setLinkItemId(int linkItemId) {
     this.linkItemId = linkItemId;
+  }
+
+  public void setLinkItemId(String linkItemId) {
+    this.linkItemId = Integer.parseInt(linkItemId);
   }
 
   public String getLinkObject() {
@@ -207,12 +403,20 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     this.enteredBy = enteredBy;
   }
 
+  public void setEnteredBy(String enteredBy) {
+    this.enteredBy = Integer.parseInt(enteredBy);
+  }
+
   public int getProjectId() {
     return projectId;
   }
 
   public void setProjectId(int projectId) {
     this.projectId = projectId;
+  }
+
+  public void setProjectId(String projectId) {
+    this.projectId = Integer.parseInt(projectId);
   }
 
   /**
@@ -283,8 +487,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   }
 
   public static ProjectHistory getObject(ResultSet rs) throws SQLException {
-    ProjectHistory object = new ProjectHistory(rs);
-    return object;
+    return new ProjectHistory(rs);
   }
 
   /**
@@ -327,6 +530,38 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
 
   public void setForParticipant(String tmp) {
     forParticipant = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
+  public boolean getForUserUpdates() {
+    return forUserUpdates;
+  }
+
+  public void setForUserUpdates(boolean forUserUpdates) {
+    this.forUserUpdates = forUserUpdates;
+  }
+
+  public int getUserUpdatesUserId() {
+    return userUpdatesUserId;
+  }
+
+  public void setUserUpdatesUserId(int userUpdatesUserId) {
+    this.userUpdatesUserId = userUpdatesUserId;
+  }
+
+  public int getUserUpdatesOwnerId() {
+    return userUpdatesOwnerId;
+  }
+
+  public void setUserUpdatesOwnerId(int userUpdatesOwnerId) {
+    this.userUpdatesOwnerId = userUpdatesOwnerId;
+  }
+
+  public int getUserUpdatesOwnerProfileId() {
+    return userUpdatesOwnerProfileId;
+  }
+
+  public void setUserUpdatesOwnerProfileId(int userUpdatesOwnerProfileId) {
+    this.userUpdatesOwnerProfileId = userUpdatesOwnerProfileId;
   }
 
   public void select(Connection db) throws SQLException {
@@ -384,7 +619,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     }
 
     //Determine column to sort by
-    pagedListInfo.setDefaultSort("link_start_date DESC", null);
+    pagedListInfo.setDefaultSort("relative_date DESC, top_id, position", null);
     pagedListInfo.appendSqlTail(db, sqlOrder);
 
     //Need to build a base SQL statement for returning records
@@ -420,7 +655,11 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
       sqlFilter = new StringBuffer();
     }
     if (projectId > -1) {
-      sqlFilter.append("AND project_id = ? ");
+      sqlFilter.append("AND (project_id = ? ");
+      if (relativeEnteredBy != -1) {
+        sqlFilter.append("OR relative_enteredby = ? ");
+      }
+      sqlFilter.append(")");
     }
     if (enteredBy > -1) {
       sqlFilter.append("AND enteredby = ? ");
@@ -440,11 +679,26 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     if (rangeEnd != null) {
       sqlFilter.append("AND link_start_date < ? ");
     }
+    if (parentId > -1) {
+      sqlFilter.append("AND parent_id = ? ");
+    }
+    if (topId > -1) {
+      sqlFilter.append("AND top_id = ? ");
+    }
+    if (position > -1) {
+      sqlFilter.append("AND position = ? ");
+    }
+    if (indent > -1) {
+      sqlFilter.append("AND indent = ? ");
+    }
+    if (relativeDate != null) {
+      sqlFilter.append("AND relative_date = ? ");
+    }
     if (untilLinkStartDate != null) {
       sqlFilter.append("AND link_start_date <= ? ");
     }
     if (objectPreferences != null && objectPreferences.size() > 0) {
-      sqlFilter.append(" AND link_object IN ( ");
+      sqlFilter.append("AND link_object IN (");
       Iterator<String> itr = objectPreferences.iterator();
       while (itr.hasNext()) {
         String objectPreference = itr.next();
@@ -455,7 +709,7 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
           sqlFilter.append(",");
         }
       }
-      sqlFilter.append(" ) ");
+      sqlFilter.append(") ");
     }
     if (instanceId > -1 || projectCategoryId > -1) {
       sqlFilter.append("AND project_id IN " +
@@ -471,18 +725,47 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     }
     if (forEmailUpdates) {
       sqlFilter.append("AND ph.project_id IN " +
-              "(SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
-              " AND status IS NULL AND email_updates_schedule = ?) ");
+          "(SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
+          " AND status IS NULL AND email_updates_schedule = ?) ");
     }
     if (publicProjects == Constants.TRUE || forParticipant == Constants.TRUE) {
-      sqlFilter.append("AND project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
+      sqlFilter.append("AND ph.project_id IN (SELECT project_id FROM projects WHERE project_id > 0 ");
       if (publicProjects == Constants.TRUE) {
         sqlFilter.append("AND allow_guests = ? AND approvaldate IS NOT NULL ");
       }
       if (forParticipant == Constants.TRUE) {
-        sqlFilter.append("AND (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL ");
+        sqlFilter.append("AND (allows_user_observers = ? OR allow_guests = ?) AND membership_required = ? AND approvaldate IS NOT NULL ");
       }
       sqlFilter.append(") ");
+    }
+    if (forMember != -1) {
+      sqlFilter.append(
+          "AND (" +
+              // What I'm doing in places I have access to
+              "(relative_enteredby = ? " +
+              "AND " +
+              "(ph.project_id IN (SELECT project_id FROM project_team WHERE user_id = ? AND status IS NULL) " +
+              "OR ph.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL))) " +
+              // What my relationships have going on
+              "OR " +
+              "ph.project_id IN (SELECT project_id FROM project_team WHERE user_id = ? AND status IS NULL) " +
+              ") ");
+    }
+    if (forUserUpdates) {
+      sqlFilter.append(
+          "AND (" +
+              // Shared projects between friends
+              "(relative_enteredby = ? " +
+              "AND ph.project_id IN (SELECT project_id FROM project_team WHERE user_id = ? AND status IS NULL) " +
+              "AND ph.project_id IN (SELECT project_id FROM project_team WHERE user_id = ? AND status IS NULL)) " +
+              // Public projects where the user is attributed
+              "OR " +
+              "(relative_enteredby = ? " +
+              "AND ph.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL)) " +
+              // It's about the owner's profile... comments, auto-updates
+              "OR " +
+              "(ph.project_id = ?) " +
+              ") ");
     }
   }
 
@@ -491,6 +774,9 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     int i = 0;
     if (projectId > -1) {
       pst.setInt(++i, projectId);
+      if (relativeEnteredBy != -1) {
+        pst.setInt(++i, relativeEnteredBy);
+      }
     }
     if (enteredBy > -1) {
       pst.setInt(++i, enteredBy);
@@ -509,6 +795,21 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     }
     if (rangeEnd != null) {
       pst.setTimestamp(++i, rangeEnd);
+    }
+    if (parentId > -1) {
+      pst.setInt(++i, parentId);
+    }
+    if (topId > -1) {
+      pst.setInt(++i, topId);
+    }
+    if (position > -1) {
+      pst.setInt(++i, position);
+    }
+    if (indent > -1) {
+      pst.setInt(++i, indent);
+    }
+    if (relativeDate != null) {
+      pst.setTimestamp(++i, relativeDate);
     }
     if (untilLinkStartDate != null) {
       pst.setTimestamp(++i, untilLinkStartDate);
@@ -542,6 +843,23 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
     if (forParticipant == Constants.TRUE) {
       pst.setBoolean(++i, true);
       pst.setBoolean(++i, true);
+      pst.setBoolean(++i, false);
+    }
+    if (forMember != -1) {
+      pst.setInt(++i, forMember);
+      pst.setInt(++i, forMember);
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
+      pst.setInt(++i, forMember);
+    }
+    if (forUserUpdates) {
+      pst.setInt(++i, userUpdatesOwnerId);
+      pst.setInt(++i, userUpdatesOwnerId);
+      pst.setInt(++i, userUpdatesUserId);
+      pst.setInt(++i, userUpdatesOwnerId);
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
+      pst.setInt(++i, userUpdatesOwnerProfileId);
     }
     return i;
   }
@@ -556,21 +874,54 @@ public class ProjectHistoryList extends ArrayList<ProjectHistory> {
   }
 
   public LinkedHashMap getList(Connection db, int userId, String serverURL) throws SQLException {
+    // Generate the list of history items
     this.buildList(db);
 
-    LinkedHashMap map = new LinkedHashMap();
+    // Use the user's locale to format the date
+    User user = UserUtils.loadUser(userId);
+    SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, user.getLocale());
+    formatter.applyPattern(DateUtils.get4DigitYearDateFormat(formatter.toLocalizedPattern()));
+
+    // Create an ordered map of dates and descriptions
+    LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<String, ArrayList<String>>();
     for (ProjectHistory history : this) {
-      Date historyDate = new Date(history.getLinkStartDate().getTime());
-      ArrayList descriptions = (ArrayList) map.get(historyDate.toString());
+      // Determine the date for the map
+      String date = formatter.format(history.getLinkStartDate());
+      ArrayList<String> descriptions = map.get(date);
       if (descriptions == null) {
-        descriptions = new ArrayList();
-        map.put(historyDate.toString(), descriptions);
+        descriptions = new ArrayList<String>();
+        map.put(date, descriptions);
       }
+      // Add the description, which is in wiki markup
       WikiToHTMLContext wikiToHTMLContext = new WikiToHTMLContext(userId, serverURL);
       String wikiLinkString = WikiToHTMLUtils.getHTML(wikiToHTMLContext, db, history.getDescription());
       descriptions.add(wikiLinkString);
     }
-
     return map;
+  }
+
+  public static String getPermission(String historyObjectName) {
+    // Search for the object name
+    HashMap<String[], String> modules = new HashMap<String[], String>();
+    modules.put(PROFILE_PERMISSION, "project-profile-view");
+    modules.put(ACTIVITY_PERMISSION, "project-profile-activity-view");
+    modules.put(REVIEWS_PERMISSION, "project-reviews-view");
+    modules.put(TEAM_PERMISSION, "project-team-view");
+    modules.put(DISCUSSION_PERMISSION, "project-discussion-forums-view");
+    modules.put(WIKI_PERMISSION, "project-wiki-view");
+    modules.put(BADGES_PERMISSION, "project-badges-view");
+    modules.put(CLASSIFIEDS_PERMISSION, "project-classifieds-view");
+    modules.put(ADS_PERMISSION, "project-ads-view");
+    modules.put(CALENDAR_PERMISSION, "project-calendar-view");
+    modules.put(DOCUMENT_PERMISSION, "project-documents-view");
+    modules.put(LISTS_PERMISSION, "project-lists-view");
+    for (String[] module : modules.keySet()) {
+      for (String object : module) {
+        if (object.equals(historyObjectName)) {
+          return modules.get(module);
+        }
+      }
+    }
+    return null;
   }
 }

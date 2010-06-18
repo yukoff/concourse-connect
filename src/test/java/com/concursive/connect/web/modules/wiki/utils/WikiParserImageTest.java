@@ -77,8 +77,8 @@ public class WikiParserImageTest extends AbstractConnectionPoolTest {
     project.setId(9999999);
     project.setTitle("Some Project");
     project.setUniqueId("some-project");
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, 9999999, project);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", 9999999);
     
     String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample, "", project.getId());
     assertEquals("" +

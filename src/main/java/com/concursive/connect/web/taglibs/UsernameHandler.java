@@ -78,6 +78,7 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
   private boolean showProfile = true;
   private boolean jsEscape = false;
   private boolean jsQuote = false;
+  private boolean showLink = true;
   private boolean showLinkTitle = true;
   private String idTag = null;
   private boolean showCityState = false;
@@ -93,6 +94,7 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
     showProfile = true;
     jsEscape = false;
     jsQuote = false;
+    showLink = true;
     showLinkTitle = true;
     idTag = null;
     showCityState = false;
@@ -132,6 +134,10 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
 
   public void setJsQuote(boolean jsQuote) {
     this.jsQuote = jsQuote;
+  }
+
+  public void setShowLink(boolean showLink) {
+    this.showLink = showLink;
   }
 
   public void setShowLinkTitle(boolean showLinkTitle) {
@@ -207,17 +213,19 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
           }
         }
       }
-      if (userProject != null && showCityState) {
+      if (userProject != null && showCityState && StringUtils.hasText(userProject.getCityStateString())) {
         user = user + " " + userProject.getCityStateString();
       }
       // Output as requested
       if (foundProfile) {
-        this.pageContext.getOut().write(
-            "<a " +
-                "href=\"" + RequestUtils.getAbsoluteServerUrl((HttpServletRequest) pageContext.getRequest()) + "/show/" + userProject.getUniqueId() + "\"" +
-                (idTag != null ? " id=\"" + idTag + "\"" : "") +
-                (showLinkTitle ? " title=\"Profile for " + user + "\"" : "") +
-                ">");
+        if (showLink) {
+          this.pageContext.getOut().write(
+              "<a " +
+                  "href=\"" + RequestUtils.getAbsoluteServerUrl((HttpServletRequest) pageContext.getRequest()) + "/show/" + userProject.getUniqueId() + "\"" +
+                  (idTag != null ? " id=\"" + idTag + "\"" : "") +
+                  (showLinkTitle ? " title=\"Profile for " + user + "\"" : "") +
+                  ">");
+        }
       }
       if (jsEscape) {
         this.pageContext.getOut().write(StringUtils.jsEscape(user));
@@ -227,7 +235,9 @@ public class UsernameHandler extends TagSupport implements TryCatchFinally {
         this.pageContext.getOut().write(StringUtils.toHtml(user));
       }
       if (foundProfile) {
-        this.pageContext.getOut().write("</a>");
+        if (showLink) {
+          this.pageContext.getOut().write("</a>");
+        }
       }
       // display if user is online
       if (showPresence) {

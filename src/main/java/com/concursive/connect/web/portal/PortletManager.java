@@ -56,6 +56,8 @@ import com.concursive.connect.cms.portal.dao.DashboardPortletPrefs;
 import com.concursive.connect.cms.portal.dao.DashboardTemplateList;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.config.ApplicationVersion;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.portal.wsrp4j.consumer.proxyportlet.impl.ProducerRegistryImpl;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -114,6 +116,7 @@ public class PortletManager {
     LOG.debug("processPage");
 
     ApplicationPrefs applicationPrefs = (ApplicationPrefs) context.getServletContext().getAttribute("applicationPrefs");
+    User user = (User) context.getSession().getAttribute(Constants.SESSION_USER);
 
     // The portal is using parameters in the URL, instead of directories, so enable them
     ArrayList<String> moduleParamNames = new ArrayList<String>();
@@ -126,6 +129,20 @@ public class PortletManager {
       moduleParamNames.add("popup");
     }
     context.getRequest().setAttribute(PortalURLParserImpl.ALLOWED_PORTAL_PARAMETERS, moduleParamNames);
+
+    // Populate the principal user that is required by the ProxyPortlet to establish sessions
+    Map userInfo = new HashMap();
+    userInfo.put("map", "init");
+    userInfo.put("user.sessionId", String.valueOf(context.getSession().getId()));
+    if (user != null) {
+      userInfo.put("user.key", String.valueOf(user.getId()));
+      userInfo.put("user.name.given", user.getFirstName());
+      userInfo.put("user.name.family", user.getLastName());
+    } else {
+      userInfo.put("user.key", "-2");
+      userInfo.put("user.name.given", "Guest");
+    }
+    context.getRequest().setAttribute("proxyportlet.user.info", userInfo);
 
     // Override Pluto's default mechanism for PortalURL
     PortalURLParser parser = null;
@@ -182,15 +199,19 @@ public class PortletManager {
         if (!isConsumerRegistered) {
           continue;
         }
-        DashboardPortletPrefs portletHandle = (DashboardPortletPrefs)
-            thisPortlet.getDefaultPreferences().get(ConsumerConstants.WSRP_PORTLET_HANDLE);
-
+        // Set the default portlet settings
+        DashboardPortletPrefs portletHandle = thisPortlet.getDefaultPreferences().get(ConsumerConstants.WSRP_PORTLET_HANDLE);
         DashboardPortletPrefs producerId = new DashboardPortletPrefs(ConsumerConstants.WSRP_PRODUCER_ID, PortletManager.CONCURSIVE_WSRP_PRODUCER_ID);
         DashboardPortletPrefs parentHandle = new DashboardPortletPrefs(ConsumerConstants.WSRP_PARENT_HANDLE, portletHandle.getValues());
-        //inject proxy portlet preferences
+        // Inject proxy portlet preferences
         thisPortlet.getDefaultPreferences().put(ConsumerConstants.WSRP_PRODUCER_ID, producerId);
         thisPortlet.getDefaultPreferences().put(ConsumerConstants.WSRP_PARENT_HANDLE, parentHandle);
+        // @todo if the portlet handle changed for this user, then do something...
+        LOG.debug("portletHandle: " + portletHandle.getValue());
+        LOG.debug("producerId: " + producerId.getValue());
+        LOG.debug("parentHandle: " + parentHandle.getValue());
       }
+
       // Each portlet needs its own PortletWindow
       String windowConfigId;
       if (thisPortlet.getLoaded()) {
@@ -251,12 +272,13 @@ public class PortletManager {
       portalRequestContext.getRequest().setAttribute("connection", db);
       portalRequestContext.getRequest().setAttribute("dashboardPage", thisPage);
       portalRequestContext.getRequest().setAttribute("applicationPrefs", applicationPrefs);
-      portalRequestContext.getRequest().setAttribute("user", context.getSession().getAttribute(Constants.SESSION_USER));
+      portalRequestContext.getRequest().setAttribute("user", user);
       portalRequestContext.getRequest().setAttribute("dashboardPortlet", thisPortlet);
       portalRequestContext.getRequest().setAttribute("objectHookManager", context.getServletContext().getAttribute("ObjectHookManager"));
       portalRequestContext.getRequest().setAttribute("scheduler", context.getServletContext().getAttribute("Scheduler"));
       portalRequestContext.getRequest().setAttribute("freemarkerConfiguration", context.getServletContext().getAttribute("FreemarkerConfiguration"));
       portalRequestContext.getRequest().setAttribute("TEAM.KEY", context.getServletContext().getAttribute("TEAM.KEY"));
+      //portalRequestContext.getRequest().setAttribute("proxyportlet.user.info", context.getRequest().getAttribute("proxyportlet.user.info"));
       // If this portlet is requesting session data, provide it to the portlet
       if (!thisPortlet.getConsumeSessionData().isEmpty()) {
         for (String data : thisPortlet.getConsumeSessionData()) {
@@ -278,6 +300,7 @@ public class PortletManager {
       portalRequestContext.getRequest().setAttribute("secureUrl", url);
       try {
         container.doAction(portletWindow, portalRequestContext.getRequest(), context.getResponse());
+        // @todo I think, if the WSRP portlet handle changed for this user, then record it here so that it can be used on the next request...
       } catch (PortletContainerException ex) {
         throw new ServletException(ex);
       } catch (PortletException ex) {
@@ -316,13 +339,14 @@ public class PortletManager {
         portalRequest.setAttribute("applicationPrefs", applicationPrefs);
         portalRequest.setAttribute("user", context.getSession().getAttribute(Constants.SESSION_USER));
         portalRequest.setAttribute("dashboardPortlet", thisPortlet);
-        portalRequest.setAttribute(AbstractPortletModule.COMMAND, thisPortlet.getViewer());
         portalRequest.setAttribute("objectHookManager", context.getServletContext().getAttribute("ObjectHookManager"));
         portalRequest.setAttribute("scheduler", context.getServletContext().getAttribute("Scheduler"));
         portalRequest.setAttribute("freemarkerConfiguration", context.getServletContext().getAttribute("FreemarkerConfiguration"));
-        portalRequest.setAttribute("TEAM.KEY", context.getServletContext().getAttribute("TEAM.KEY"));
         portalRequest.setAttribute("projectSearcher", context.getRequest().getAttribute("projectSearcher"));
         portalRequest.setAttribute("baseQueryString", context.getRequest().getAttribute("baseQueryString"));
+        portalRequest.setAttribute("TEAM.KEY", context.getServletContext().getAttribute("TEAM.KEY"));
+        portalRequest.setAttribute(AbstractPortletModule.COMMAND, thisPortlet.getViewer());
+        //portalRequest.setAttribute("proxyportlet.user.info", context.getRequest().getAttribute("proxyportlet.user.info"));
         // Framework display parameters
         portalRequest.setAttribute("popup", context.getRequest().getParameter("popup"));
         // Script Node and XHR DataSources
@@ -444,14 +468,20 @@ public class PortletManager {
         RegistrationData registrationData = new RegistrationData();
         registrationData.setConsumerName(consumerName);
         registrationData.setConsumerAgent(consumerAgent);
-        if (consumerCode != null) {
-          //Send the services key as a registration property; Server will authorize by enforcing a valid key
-          Property property = new Property();
-          property.setName(ApplicationPrefs.CONCURSIVE_SERVICES_KEY);
-          property.setStringValue(consumerCode);
-          registrationData.setRegistrationProperties(new Property[1]);
-          registrationData.setRegistrationProperties(0, property);
-        }
+        registrationData.setRegistrationProperties(new Property[2]);
+
+        //Send the services key as a registration property; Server will authorize by enforcing a valid key
+        Property key = new Property();
+        key.setName(ApplicationPrefs.CONCURSIVE_SERVICES_KEY);
+        key.setStringValue(consumerCode);
+
+        //Send the services key as a registration property; Server will authorize by enforcing a valid key
+        Property sessions = new Property();
+        sessions.setName(ApplicationPrefs.CONSUMER_SESSION_SUPPORT);
+        sessions.setStringValue("true");
+
+        registrationData.setRegistrationProperties(0, key);
+        registrationData.setRegistrationProperties(1, sessions);
         //producer.setRegistrationData(registrationData);
 
         //Register the consumer with the remote producer
@@ -476,7 +506,8 @@ public class PortletManager {
     // Portlet Cache Implementation
     // Utilize the cache if the portlet is configured for caching,
     // skip portlets that share data with other portlets
-    if (thisPortlet.getCacheTime() > 0 && thisPortlet.getGenerateDataEvents().isEmpty() && thisPortlet.getGenerateRequestData().isEmpty()) {
+    // skip when this is an ajax request
+    if (!"text".equals(context.getParameter("out")) && thisPortlet.getCacheTime() > 0 && thisPortlet.getGenerateDataEvents().isEmpty() && thisPortlet.getGenerateRequestData().isEmpty()) {
       // Check the cache for this portlet -- use a system-wide unique key
       String key = thisPage.getName() + "|" + thisPortlet.getWindowConfigId();
       LOG.debug("Checking the cache for key: " + key);
@@ -539,6 +570,15 @@ public class PortletManager {
 
     public PortletWindowImpl call() throws Exception {
       try {
+        // Remove the project since it might get set by another project
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("before container.doRender");
+          if (portalRequest.getAttribute("project") != null) {
+            LOG.debug("  The project for rendering: " + ((Project) portalRequest.getAttribute("project")).getUniqueId());
+          }
+        }
+        portalRequest.removeAttribute("project");
+        // Render the portlet
         container.doRender(portletWindow, portalRequest, portalResponse);
       } catch (Exception e) {
         LOG.error("Portlet render exception", e);
@@ -556,6 +596,14 @@ public class PortletManager {
       // for this to be reliable.  So the timeout feature of Executor cannot be used yet
 //      if (thisPortlet.getTimeout() <= 0) {
       if (true) {
+        // Remove the project since it might get set by another project
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("before container.doRender");
+          if (portalRequest.getAttribute("project") != null) {
+            LOG.debug("  The project for rendering: " + ((Project) portalRequest.getAttribute("project")).getUniqueId());
+          }
+        }
+        portalRequest.removeAttribute("project");
         // Render the portlet immediately
         container.doRender(portletWindow, portalRequest, portalResponse);
       } else {

@@ -53,11 +53,11 @@
 <jsp:useBean id="projectRating" class="com.concursive.connect.web.modules.reviews.dao.ProjectRating" scope="request"/>
 <portlet:defineObjects/>
 <%@ include file="initPage.jsp" %>
-  <h1><ccp:tabLabel name="Reviews" object="project"/>
-    <ccp:evaluate if="<%= !User.isLoggedIn() && project.getFeatures().getAllowGuests() %>">
-      <ccp:label name="projectsCenterReviews.loginToRateThisItem">Sign in to create a review.</ccp:label>
-    </ccp:evaluate>
+<ccp:evaluate if="<%= !User.isLoggedIn() && project.getFeatures().getAllowGuests() %>">
+  <h1>
+    <ccp:label name="projectsCenterReviews.loginToRateThisItem">Sign in to create a review.</ccp:label>
   </h1>
+</ccp:evaluate>
 
   <div class="userInputContainer">
     <div class="userInputBody">

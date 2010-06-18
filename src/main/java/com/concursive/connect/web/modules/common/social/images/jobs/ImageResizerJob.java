@@ -163,7 +163,9 @@ public class ImageResizerJob implements StatefulJob {
           renderTasks.add(new TransactionTask(bean, fileItem, bean.getWidth(), bean.getHeight(), false));
         } else {
           // No specific size so for each fileItem, generate several sizes of the image
+          renderTasks.add(new TransactionTask(bean, fileItem, 640, 480, false));
           renderTasks.add(new TransactionTask(bean, fileItem, 210, 150, false));
+          renderTasks.add(new TransactionTask(bean, fileItem, 200, 200, false));
           renderTasks.add(new TransactionTask(bean, fileItem, 133, 133, true));
           renderTasks.add(new TransactionTask(bean, fileItem, 100, 100, false));
           renderTasks.add(new TransactionTask(bean, fileItem, 75, 75, false));

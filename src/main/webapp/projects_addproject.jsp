@@ -272,7 +272,7 @@
     </tr>
     <tr class="containerBody">
       <td class="formLabel">
-        State
+        State/Province
       </td>
       <td>
         <input type="text" name="state" size="35" maxlength="80"
@@ -290,7 +290,7 @@
     </tr>
     <tr class="containerBody">
       <td class="formLabel">
-        Postal Code
+        Zip/Postal Code
       </td>
       <td>
         <input type="text" name="postalCode" size="35" maxlength="12"

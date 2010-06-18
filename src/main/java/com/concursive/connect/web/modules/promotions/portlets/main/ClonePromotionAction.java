@@ -85,7 +85,7 @@ public class ClonePromotionAction implements IPortletAction {
     int id = getPageViewAsInt(request);
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Ad promotion = new Ad(db, id);

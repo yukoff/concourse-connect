@@ -75,7 +75,7 @@ public class SaveEventJoinAction implements IPortletAction {
     String join = request.getParameter("join");
 
     //get connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     //get current user
     User user = getUser(request);

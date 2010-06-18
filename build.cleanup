@@ -171,3 +171,39 @@ WEB-INF/lib/concursive-commons-20090924.jar
 # 2009-12-10
 WEB-INF/lib/concursive-commons-20091207.jar
 WEB-INF/lib/quartz-1.6.4.jar
+
+# 2010-02-02
+WEB-INF/lib/imagescaling_0_7_2.jar
+
+# 2010-02-11
+WEB-INF/lib/concursive-commons-20091210.jar
+
+# 2010-03-12
+WEB-INF/lib/concursive-commons-20100211.jar
+
+# 2010-03-18
+WEB-INF/lib/packtag-3.6.jar
+
+# 2010-04-28
+WEB-INF/lib/concursive-commons-20100316.jar
+WEB-INF/lib/sjsxp-1.0.1.jar
+
+# 2010-05-04
+WEB-INF/lib/concursive-commons-20100428.jar
+
+# 2010-05-05
+WEB-INF/lib/concursive-commons-20100504.jar
+
+# 2010-05-11
+WEB-INF/lib/concursive-commons-20100505.jar
+
+# 2010-05-12
+WEB-INF/lib/concursive-commons-20100511.jar
+
+# 2010-05-17
+WEB-INF/lib/concursive-commons-20100512.jar
+
+# 2010-06-16
+WEB-INF/lib/postgresql-8.3-604.jdbc3.jar
+WEB-INF/lib/concursive-commons-20100517.jar
+

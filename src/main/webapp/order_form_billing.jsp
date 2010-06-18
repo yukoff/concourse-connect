@@ -71,11 +71,11 @@
       formTest = false ;
     }
     if (form.billing_state.value == ""){
-      message += "- State is required\r\n";
+      message += "- State/Province is required\r\n";
       formTest = false ;
     }
     if (form.billing_postalCode.value == ""){
-      message += "- Postal Code is required\r\n";
+      message += "- Zip/Postal Code is required\r\n";
       formTest = false ;
     }
     if (form.billing_country.value == ""){

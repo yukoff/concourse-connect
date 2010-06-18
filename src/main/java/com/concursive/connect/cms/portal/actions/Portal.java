@@ -149,14 +149,17 @@ public final class Portal extends GenericAction {
           }
           String queryString =
               "(approved:1) " +
-              "AND (closed:0) " +
-              "AND (website:0) ";
+                  "AND (closed:0) " +
+                  "AND (website:0) ";
           context.getRequest().setAttribute("projectSearcher", projectSearcher);
           context.getRequest().setAttribute("baseQueryString", queryString);
           // Render the pages
           boolean isAction = PortletManager.processPage(context, db, page);
           if (isAction) {
             return ("-none-");
+          }
+          if ("text".equals(context.getRequest().getParameter("out"))) {
+            context.getRequest().removeAttribute("PageLayout");
           }
           return "ShowPortalPageOK";
         }
@@ -809,8 +812,8 @@ public final class Portal extends GenericAction {
       }
       String queryString =
           "(approved:1) " +
-          "AND (closed:0) " +
-          "AND (website:0) ";
+              "AND (closed:0) " +
+              "AND (website:0) ";
       context.getRequest().setAttribute("projectSearcher", projectSearcher);
       context.getRequest().setAttribute("baseQueryString", queryString);
       boolean isAction = PortletManager.processPage(context, db, page);

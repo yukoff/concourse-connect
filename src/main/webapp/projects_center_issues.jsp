@@ -154,9 +154,7 @@
     <c:choose>
       <c:when test="<%= thisTopic.getReplyCount() > 0 %>">
         <dd>
-          last reply
-          <%-- TODO: relative timestamp --%>
-          on <ccp:tz timestamp="<%= thisTopic.getReplyDate() %>"/>
+          Last reply <ccp:tz timestamp="<%= thisTopic.getReplyDate() %>" pattern="relative" />
           by <ccp:username id="<%= thisTopic.getReplyBy() %>"/>
         </dd>
       </c:when>
@@ -170,6 +168,4 @@
     }
   %>
 </dl>
-<div class="pagination">
-  <ccp:paginationControl object="projectTopicInfo"/>
-</div>
+<ccp:paginationControl object="projectTopicInfo"/>

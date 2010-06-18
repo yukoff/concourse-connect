@@ -84,10 +84,12 @@ public class TeamMemberList extends ArrayList<TeamMember> {
   private int status = -2;
   private boolean tools = false;
   private int withNotificationsSet = Constants.UNDEFINED;
+  private int publicProjectsOnly = Constants.UNDEFINED;
   private int forParticipant = Constants.UNDEFINED;
   private int forTeamMateUserId = -1;
   private int userProfiles = Constants.UNDEFINED;
   private int ignoreOwnerUserId = -1;
+  private int openProjectsOnly = Constants.UNDEFINED;
 
 
   /**
@@ -275,22 +277,22 @@ public class TeamMemberList extends ArrayList<TeamMember> {
    * @return the ignoreUserId
    */
   public int getIgnoreUserId() {
-  	return ignoreUserId;
+    return ignoreUserId;
   }
 
 
-	/**
+  /**
    * @param ignoreUserId the ignoreUserId to set
    */
   public void setIgnoreUserId(int ignoreUserId) {
-  	this.ignoreUserId = ignoreUserId;
+    this.ignoreUserId = ignoreUserId;
   }
 
   public void setIgnoreUserId(String ignoreUserId) {
-  	this.ignoreUserId = Integer.parseInt(ignoreUserId);
+    this.ignoreUserId = Integer.parseInt(ignoreUserId);
   }
 
-	public int getSize() {
+  public int getSize() {
     return this.size();
   }
 
@@ -366,6 +368,18 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     this.withNotificationsSet = DatabaseUtils.parseBooleanToConstant(test);
   }
 
+  public int getPublicProjectsOnly() {
+    return publicProjectsOnly;
+  }
+
+  public void setPublicProjectsOnly(int publicProjectsOnly) {
+    this.publicProjectsOnly = publicProjectsOnly;
+  }
+
+  public void setPublicProjectsOnly(String tmp) {
+    publicProjectsOnly = DatabaseUtils.parseBooleanToConstant(tmp);
+  }
+
   public int getForParticipant() {
     return forParticipant;
   }
@@ -412,6 +426,18 @@ public class TeamMemberList extends ArrayList<TeamMember> {
 
   public void setIgnoreOwnerUserId(String ignoreOwnerUserId) {
     this.ignoreOwnerUserId = Integer.parseInt(ignoreOwnerUserId);
+  }
+
+  public int getOpenProjectsOnly() {
+    return openProjectsOnly;
+  }
+
+  public void setOpenProjectsOnly(int openProjectsOnly) {
+    this.openProjectsOnly = openProjectsOnly;
+  }
+
+  public void setOpenProjectsOnly(String openProjectsOnly) {
+    this.openProjectsOnly = Integer.parseInt(openProjectsOnly);
   }
 
   /**
@@ -527,11 +553,11 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     if (userId > -1) {
       sqlFilter.append("AND t.user_id = ? ");
     }
-    
+
     if (ignoreUserId > -1) {
       sqlFilter.append("AND t.user_id <> ? ");
     }
-    
+
     if (status > -2) {
       if (status == -1) {
         sqlFilter.append("AND t.status IS NULL ");
@@ -542,7 +568,11 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     if (withNotificationsSet != Constants.UNDEFINED) {
       sqlFilter.append("AND t.notification = ? ");
     }
-    if (forTeamMateUserId > -1) {
+    if (publicProjectsOnly != Constants.UNDEFINED) {
+      sqlFilter.append("AND " +
+          "t.project_id IN (SELECT project_id FROM projects WHERE (allow_guests = ?) AND approvaldate IS NOT NULL) ");
+    }
+    if (forTeamMateUserId != -1) {
       sqlFilter.append("AND " +
           "(t.project_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL) " +
           "OR (t.project_id IN (SELECT project_id FROM project_team WHERE user_id = ? AND status IS NULL)))");
@@ -555,6 +585,9 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     }
     if (ignoreOwnerUserId > -1) {
       sqlFilter.append("AND t.project_id NOT IN (SELECT project_id FROM projects WHERE profile = ? AND owner = ?) ");
+    }
+    if (openProjectsOnly != Constants.UNDEFINED) {
+      sqlFilter.append("AND t.project_id NOT IN (SELECT project_id FROM projects WHERE closedate IS NOT NULL) ");
     }
   }
 
@@ -586,7 +619,7 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     if (userId > -1) {
       pst.setInt(++i, userId);
     }
-        
+
     if (ignoreUserId > -1) {
       pst.setInt(++i, ignoreUserId);
     }
@@ -601,7 +634,10 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     if (withNotificationsSet != Constants.UNDEFINED) {
       pst.setBoolean(++i, withNotificationsSet == Constants.TRUE);
     }
-    if (forTeamMateUserId > -1) {
+    if (publicProjectsOnly != Constants.UNDEFINED) {
+      pst.setBoolean(++i, true);
+    }
+    if (forTeamMateUserId != -1) {
       pst.setBoolean(++i, true);
       pst.setBoolean(++i, true);
       pst.setInt(++i, forTeamMateUserId);
@@ -783,6 +819,30 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     return exists;
   }
 
+  public static boolean isOnTeam(Connection db, int projectId, int userId, int status) throws SQLException {
+    boolean exists = false;
+    PreparedStatement pst = db.prepareStatement(
+        "SELECT userlevel " +
+            "FROM project_team " +
+            "WHERE project_id = ? " +
+            "AND user_id = ? " +
+            ((status == -1) ? " AND status IS NULL " : " status = ? "));
+    pst.setInt(1, projectId);
+    pst.setInt(2, userId);
+    if (status == -1) {
+      //do nothing
+    } else {
+      pst.setInt(3, status);
+    }
+    ResultSet rs = pst.executeQuery();
+    if (rs.next()) {
+      exists = true;
+    }
+    rs.close();
+    pst.close();
+    return exists;
+  }
+
 
   /**
    * Gets the userRelated attribute of the TeamMemberList class
@@ -868,33 +928,33 @@ public class TeamMemberList extends ArrayList<TeamMember> {
     pst.close();
     return projectId;
   }
-  
+
   /*
-   * Gets a list of team member names
-   * 
-   * @param numberOfNames the number of names to list, -1 for no limit.
-   * @param ignoreUserId the userId to ignore while building the list of names
-   */
-  public String getCommaSeperatedTeamMemberFirstNames(int numberOfNames){
-  	String teamMemberNames = null;
+  * Gets a list of team member names
+  *
+  * @param numberOfNames the number of names to list, -1 for no limit.
+  * @param ignoreUserId the userId to ignore while building the list of names
+  */
+  public String getCommaSeperatedTeamMemberFirstNames(int numberOfNames) {
+    String teamMemberNames = null;
     StringBuffer teamMemberNamesBuffer = new StringBuffer();
 
     Iterator<TeamMember> teamMemberItr = this.iterator();
     int count = 0;
-    while (teamMemberItr.hasNext()){
-    	TeamMember teamMember = teamMemberItr.next();
-    	teamMemberNamesBuffer.append(UserUtils.loadUser(teamMember.getUserId()).getFirstName());
-    	if (teamMemberItr.hasNext()){
-    		teamMemberNamesBuffer.append(", ");
-    	}
-    	count++;
-    	if (numberOfNames != -1 && numberOfNames == count){
-    		break;
-    	}
+    while (teamMemberItr.hasNext()) {
+      TeamMember teamMember = teamMemberItr.next();
+      teamMemberNamesBuffer.append(UserUtils.loadUser(teamMember.getUserId()).getFirstName());
+      if (teamMemberItr.hasNext()) {
+        teamMemberNamesBuffer.append(", ");
+      }
+      count++;
+      if (numberOfNames != -1 && numberOfNames == count) {
+        break;
+      }
     }
 
     teamMemberNames = teamMemberNamesBuffer.toString();
-  	return teamMemberNames;
+    return teamMemberNames;
   }
 
 }

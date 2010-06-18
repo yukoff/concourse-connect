@@ -1,8 +1,10 @@
 import java.sql.*;
 import java.util.*;
-import com.zeroio.iteam.base.*;
-import org.aspcfs.utils.web.PagedListInfo;
-import com.zeroio.utils.*;
+import com.concursive.connect.Constants;
+import com.concursive.commons.text.*;
+import com.concursive.connect.web.modules.profile.utils.*;
+import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.connect.web.modules.profile.dao.*;
 
 // Page through the updates just in case there are lots of projects do 100 at a time...
 PagedListInfo pagedListInfo = new PagedListInfo();

@@ -6,7 +6,7 @@ ConcourseConnect
 ----------------------------------------------------------------------------
 
 ConcourseConnect
-Copyright 2009 Concursive Corporation
+Copyright 2010 Concursive Corporation
 http://www.concursive.com
 
 Concursive ConcourseConnect is free software: you can redistribute it and/or
@@ -80,48 +80,79 @@ scripts and is available at the http://www.concursive.com web site.
 
 Deploying from a .war file:
 
-1. Install Sun Java (JRE 5+)
+1. Install Java JRE 6
    http://www.java.com/en/download/manual.jsp
-2. Install the Apache Tomcat Web Application Server (Tomcat 5.5+)
+2. Install Apache Tomcat Web Application Server 6.0
    http://tomcat.apache.org
-3. Install the PostgreSQL Database Server (PostgreSQL 8+)
+3. Install PostgreSQL Database Server 8.4
    http://www.postgresql.org
 4. Copy the connect.war file into Tomcat's webapp directory
-5. Access the web app using a browser at "http://localhost/connect" and
-follow the web-based instructions
+5. Access the web app using a browser at "http://localhost:8080/connect"
+6. Follow the web page instructions
 
 For more detailed instructions, download the Setup Guide from:
 http://www.concursive.com/show/concourseconnect/documents
 
 
 ----------------------------------------------------------------------------
+| UPGRADE SUMMARY                                                          |
+----------------------------------------------------------------------------
+
+The developers have include an automated upgrader with the application.
+BACKUP YOUR EXISTING connect database, connect.war and in the fileLibrary,
+backup the build.properties file. If a problem occurs you can restore that
+data.
+
+Upgrading from a .war file:
+
+1. Stop Tomcat
+2. Backup the database, existing connect.war and fileLibrary
+3. Delete the contents of Tomcat's work/ directory
+4. Delete the existing webapps/connect directory
+5. Overwrite the existing connect.war with the new one
+6. Start Tomcat
+7. Review Tomcat's log files to watch the upgrade and to be alerted to any
+   upgrade errors.  logs/catalina.out or logs/stdout.txt
+8. Login and use the application!
+
+For more detailed instructions, or to collaborate on your experience,
+visit:
+http://www.concursive.com/show/concourseconnect-support
+
+
+----------------------------------------------------------------------------
 | SOURCE INSTALLATION                                                      |
 ----------------------------------------------------------------------------
 
-Source versions of ConcourseConnect can be deployed as an exploded webapp
-directory into Apache Tomcat.  This is an easy way to develop
-ConcourseConnect.  You can also deploy within your preferred Java IDE with
-embedded Tomcat container, bypassing the included ant script altogether.
+Source versions of ConcourseConnect can be built using Apache Ant or
+integrated into any Java IDE with embedded Tomcat container, bypassing the
+included ant script altogether.
 
 The following software is required to package and test ConcourseConnect:
 
-  Sun J2SE JDK 6
+  Java 6 SDK
   http://java.sun.com
 
-  Apache Tomcat 6.0, use with Sun J2SE 6.0
+  Apache Tomcat 6.0
   http://tomcat.apache.org
 
-  Apache Ant 1.7.1
+  Apache Ant 1.7.1 (required)
   http://ant.apache.org
 
-  Postgresql 8.3+
+  Postgresql 8.4
   http://www.postgresql.org
 
 Steps for packaging the source:
 
 1. Copy the file build.properties.example to build.properties, be sure to
    edit the new file and update the specified file paths
+
+   cp build.properties.example build.properties
+
 2. Execute "ant package"
+
+   ant package
+
 3. Look in the "target/concourseconnect" directory for the .war file
 
 
@@ -144,14 +175,13 @@ http://www.concursive.com/show/concourseconnect/wiki/Developer+Tools
 
 ConcourseConnect licenses libraries and code from the following
 projects, some are proprietary in which Concursive has been
-granted a license to redistribute, some are open source and are used
+granted a license to redistribute, some are Open Source and are used
 according to the project license:
 
 Project Name                      License
 --------------------------------  -----------------------------------------
 Ant-Contrib                       Apache Software License
-backport-util-concurrent          Public Domain
-Batik                             Apache Software License
+Axis                              Apache Software License
 Bean Shell                        Sun Public License
 Bouncy Castle Crypto API          Bouncy Castle Open Source License
 Castor                            Apache Software License v2.0
@@ -197,6 +227,7 @@ TMExtractors                      Apache style
 Twitter4J                         BSD style
 UnitPNGFix by Unit Interactive    Creative Commons Attribution 3.0 Unported
  http://labs.unitinteractive.com/unitinteractive.com
+WSRP4j                            Apache Software License
 Xerces                            Apache Software License
 Ximian Icons                      LGPL
 Yahoo User Interface (YUI)        BSD

@@ -55,12 +55,12 @@
 <ul class="searchResultsProjectCategoryCounts">
   <li>
     <a href="${ctx}${pageURL}/all/${chosenSort}" <c:if test="${chosenCategory eq 'all'}"> class="active"</c:if>>
-    <span class="searchResultsProjectCategoryCounts_tl"></span><span class="searchResultsProjectCategoryCounts_tr"></span><em>All Categories (${total})</em><span class="searchResultsProjectCategoryCounts_bl"></span><span class="searchResultsProjectCategoryCounts_br"></span></a>
+    <em>All Categories (${total})</em></a>
   </li>
   <c:forEach items="${tagsCountMap}" var="category" varStatus="status">
-  <li>
-    <a href="${ctx}${pageURL}/${fn:toLowerCase(category.key.description)}/${chosenSort}"<c:if test="${!empty chosenCategory and chosenCategory eq fn:toLowerCase(category.key.description)}"> class="active"</c:if>>
-    <span class="searchResultsProjectCategoryCounts_tl"></span><span class="searchResultsProjectCategoryCounts_tr"></span><em><c:out value="${category.key.description}" /><c:if test="${category.value > 0 }">(${category.value})</c:if></em><span class="searchResultsProjectCategoryCounts_bl"></span><span class="searchResultsProjectCategoryCounts_br"></span></a>
-  </li>
+    <li>
+      <a href="${ctx}${pageURL}/${fn:toLowerCase(category.key.description)}/${chosenSort}"<c:if test="${!empty chosenCategory and chosenCategory eq fn:toLowerCase(category.key.description)}"> class="active"</c:if>>
+      <em><c:out value="${category.key.description}" /><c:if test="${category.value > 0 }"> (${category.value})</c:if></em></a>
+    </li>
   </c:forEach>
 </ul>

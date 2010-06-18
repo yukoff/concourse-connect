@@ -60,7 +60,7 @@ import com.concursive.connect.web.modules.wiki.utils.WikiUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -85,12 +85,14 @@ public class ProjectWikiContentViewer implements IPortletViewer {
   private static final String PREF_WIKI = "wiki";
   private static final String PREF_SHOW_TITLE = "showTitle";
   private static final String PREF_CONTENT_BASED_ON_USER = "contentIsBasedOnUser";
+  private static final String PREF_RULE = "rule";
   // Object Results
   private static final String WIKI = "wiki";
   private static final String WIKI_NAME = "wikiName";
   private static final String WIKI_IMAGE_LIST = "imageList";
   private static final String WIKI_HTML = "wikiHtml";
   private static final String SHOW_TITLE = "showTitle";
+  private static final String SHOW_EDIT_LINK = "showEditLink";
 
   public String doView(RenderRequest request, RenderResponse response) throws Exception {
 
@@ -137,8 +139,21 @@ public class ProjectWikiContentViewer implements IPortletViewer {
       return null;
     }
 
+    // See if there are any special rules
+    String rule = request.getPreferences().getValue(PREF_RULE, null);
+    if (rule != null) {
+      if ("onUsersProfilePage".equals(rule)) {
+        // See if the page's project is the user's profile page;
+        // Retrieve the page's project, not the portlet's preference
+        Project testProject = PortalUtils.getProject(request);
+        if (user.getProfileProjectId() != testProject.getId()) {
+          return null;
+        }
+      }
+    }
+
     // Load the wiki record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     Wiki wiki = WikiList.queryBySubject(db, wikiName, project.getId());
     request.setAttribute(WIKI, wiki);
 
@@ -151,13 +166,18 @@ public class ProjectWikiContentViewer implements IPortletViewer {
       // Convert the wiki to html for this user
       // @note the context is used instead of the full URL
       WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, imageList, user.getId(), false, request.getContextPath());
+      wikiContext.setShowEditSection(false);
       String wikiHtml = WikiToHTMLUtils.getHTML(wikiContext, db);
       request.setAttribute(WIKI_HTML, wikiHtml);
+      request.setAttribute(WIKI_NAME, wikiName);
+      if (project.getFeatures().getShowWiki() && ProjectUtils.hasAccess(project.getId(), user, "project-wiki-add")) {
+        request.setAttribute(SHOW_EDIT_LINK, "true");
+      }
     } else {
       LOG.debug("Wiki not found or has no content.");
       // Check if the current user can modify the target wiki content
       request.setAttribute(WIKI_NAME, wikiName);
-      if (ProjectUtils.hasAccess(project.getId(), user, "project-wiki-add")) {
+      if (project.getFeatures().getShowWiki() && ProjectUtils.hasAccess(project.getId(), user, "project-wiki-add")) {
         LOG.debug("Showing edit page information");
         return VIEW_PAGE_MESSAGE;
       }

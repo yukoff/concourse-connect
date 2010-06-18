@@ -549,36 +549,6 @@ public class Forum extends GenericBean {
 
 
   /**
-   * Gets the lastIssueDateString attribute of the IssueCategory object
-   *
-   * @return The lastIssueDateString value
-   */
-  public String getLastPostDateString() {
-    String tmp = "";
-    try {
-      return DateFormat.getDateInstance(3).format(lastPostDate);
-    } catch (NullPointerException e) {
-    }
-    return tmp;
-  }
-
-
-  /**
-   * Gets the lastIssueDateTimeString attribute of the IssueCategory object
-   *
-   * @return The lastIssueDateTimeString value
-   */
-  public String getLastPostDateTimeString() {
-    String tmp = "";
-    try {
-      return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.LONG).format(lastPostDate);
-    } catch (NullPointerException e) {
-    }
-    return tmp;
-  }
-
-
-  /**
    * Gets the valid attribute of the IssueCategory object
    *
    * @return The valid value

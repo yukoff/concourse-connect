@@ -48,7 +48,10 @@ package com.concursive.connect.web.modules.documents.actions;
 import com.concursive.commons.images.ImageUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
+import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.web.controller.actions.GenericAction;
+import com.concursive.connect.web.modules.common.social.images.jobs.ImageResizerBean;
+import com.concursive.connect.web.modules.common.social.images.jobs.ImageResizerJob;
 import com.concursive.connect.web.modules.documents.beans.FileDownload;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
 import com.concursive.connect.web.modules.documents.dao.FileItemVersion;
@@ -58,10 +61,12 @@ import com.concursive.connect.web.modules.documents.utils.HttpMultiPartParser;
 import com.concursive.connect.web.modules.documents.utils.ThumbnailUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import org.quartz.Scheduler;
 
 import java.io.File;
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * Actions to support the Documents
@@ -123,6 +128,8 @@ public final class ProjectManagementFiles extends GenericAction {
         return "PermissionError";
       }
       context.getRequest().setAttribute("project", thisProject);
+      context.getRequest().setAttribute("folderId", folderId);
+      context.getRequest().setAttribute("fid", itemId);
       // Update the database with the resulting file
       if (parts.get("id" + projectId) instanceof FileInfo) {
         FileInfo newFileInfo = (FileInfo) parts.get("id" + projectId);
@@ -170,35 +177,27 @@ public final class ProjectManagementFiles extends GenericAction {
           this.processInsertHook(context, thisItem);
 
           if (thisItem.isImageFormat()) {
-            // @todo use the thumbnail engine
-            // Create a thumbnail if this is an image
-            File thumbnailFile = new File(newFileInfo.getLocalFile().getPath() + "TH");
-            String format = thisItem.getExtension().substring(1);
-            Thumbnail thumbnail = new Thumbnail(ImageUtils.saveThumbnail(newFileInfo.getLocalFile(), thumbnailFile, 133d, 133d, format));
-            // Store thumbnail in database
-            thumbnail.setId(thisItem.getId());
-            thumbnail.setFilename(newFileInfo.getRealFilename() + "TH");
-            thumbnail.setVersion(thisItem.getVersion());
-            thumbnail.setSize((int) thumbnailFile.length());
-            thumbnail.setEnteredBy(thisItem.getEnteredBy());
-            thumbnail.setModifiedBy(thisItem.getModifiedBy());
-            recordInserted = thumbnail.insert(db);
+            // Prepare this image for thumbnail conversion
+            ImageResizerBean bean = new ImageResizerBean();
+            bean.setFileItemId(thisItem.getId());
+            bean.setImagePath(newFileInfo.getLocalFile().getParent());
+            bean.setImageFilename(thisItem.getFilename());
+            bean.setEnteredBy(thisItem.getEnteredBy());
+            // Add this to the ImageResizerJob to multi-thread the thumbnails
+            Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute("Scheduler");
+            ((Vector) scheduler.getContext().get(ImageResizerJob.IMAGE_RESIZER_ARRAY)).add(bean);
+            scheduler.triggerJob("imageResizer", (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
           }
         }
+        return ("AddOK");
       }
-      context.getRequest().setAttribute("folderId", folderId);
-      context.getRequest().setAttribute("fid", itemId);
     } catch (Exception e) {
       context.getRequest().setAttribute("Error", e);
       return ("SystemError");
     } finally {
       freeConnection(context, db);
     }
-    if (recordInserted) {
-      return ("AddOK");
-    }
     return "TODO Error";
-    //return (executeCommandAdd(context));
   }
 
   /**

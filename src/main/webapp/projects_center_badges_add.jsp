@@ -52,7 +52,7 @@
 <%@ include file="initPage.jsp" %>
 <div class="portletWrapper">
   <h1>
-    <ccp:tabLabel name="Badges" object="project"/>
+    <%--<ccp:tabLabel name="Badges" object="project"/>--%>
     <ccp:permission name="project-badges-view">
       <portlet:renderURL var="badgeUrl">
         <portlet:param name="portlet-action" value="show"/>

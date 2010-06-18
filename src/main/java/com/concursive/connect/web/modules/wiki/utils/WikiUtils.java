@@ -50,6 +50,8 @@ import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.dao.WikiList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,6 +69,8 @@ import java.util.Iterator;
  * @created February 7, 2006
  */
 public class WikiUtils {
+
+  private static Log LOG = LogFactory.getLog(WikiUtils.class);
 
   public static void countDiff(DiffCounter counter, String diff) {
     int UNDEFINED = -1;
@@ -151,9 +155,7 @@ public class WikiUtils {
       counter.update();
       in.close();
     } catch (Exception e) {
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("WikiUtils-> countDiff error: " + e.getMessage());
-      }
+      LOG.error("countDiff error", e);
     }
   }
 
@@ -174,22 +176,6 @@ public class WikiUtils {
     }
     rs.close();
     pst.close();
-    // Thumbnail
-    pst = db.prepareStatement(
-        "SELECT client_filename, th.filename, th.image_width, th.image_height, pf.version " +
-            "FROM project_files pf, project_files_thumbnail th " +
-            "WHERE (pf.item_id = th.item_id AND pf.version = th.version) " +
-            "AND link_module_id = ? " +
-            "AND link_item_id = ? ");
-    pst.setInt(1, Constants.PROJECT_WIKI_FILES);
-    pst.setInt(2, projectId);
-    rs = pst.executeQuery();
-    while (rs.next()) {
-      ImageInfo image = new ImageInfo(rs);
-      images.put(image.getFilename(), image);
-    }
-    rs.close();
-    pst.close();
     return images;
   }
 
@@ -200,9 +186,7 @@ public class WikiUtils {
     Iterator i = pageList.iterator();
     while (i.hasNext()) {
       String subject = (String) i.next();
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("WikiUtils-> PageLink: " + subject);
-      }
+      LOG.debug("updatePageLinks - PageLink: " + subject);
     }
   }
 
@@ -229,7 +213,7 @@ public class WikiUtils {
     Iterator i = children.iterator();
     while (i.hasNext()) {
       String pageLink = (String) i.next();
-      System.out.println("Checking: " + pageLink);
+      LOG.debug("Checking getLatestModifiedDate: " + pageLink);
       if (!scanned.contains(pageLink)) {
         scanned.add(pageLink);
         Wiki thisWiki = WikiList.queryBySubject(db, pageLink, wiki.getProjectId());

@@ -209,21 +209,18 @@ public class ProjectUtils {
     }
     // If the user is on the team, check their permission
     TeamMember teamMember = thisProject.getTeam().getTeamMember(thisUser.getId());
-    if (teamMember != null && teamMember.getRoleId() <= projectRoleId) {
-      return true;
+    if (teamMember != null) {
+      // Check if on the team, fully added, and has the correct role
+      if (teamMember.getStatus() == TeamMember.STATUS_ADDED && teamMember.getRoleId() <= projectRoleId) {
+        // On the team and has the correct role
+        return true;
+      }
     }
     if (!thisProject.getApproved()) {
       // If the project isn't approved, and you're not a team member
       LOG.trace("hasAccess: failed - project is not approved");
       return false;
     }
-    /*
-    if (thisProject.getFeatures().getMembershipRequired()) {
-      // If not a member, and membership is required
-      LOG.debug("hasAccess: failed - project requires membership");
-      return false;
-    }
-    */
     // If the permissions allow for participants, return true
     if (thisProject.getFeatures().getAllowParticipants() && thisUser.isLoggedIn()) {
       // This user is logged in, and the project allows participants
@@ -237,7 +234,7 @@ public class ProjectUtils {
         return true;
       }
     }
-    LOG.trace("hasAccess: failed - all access conditions failed: " + permission);
+    LOG.trace("hasAccess: failed - all access conditions failed: " + permission + " projectId: " + projectId + " userId: " + thisUser.getId());
     return false;
   }
 
@@ -264,8 +261,12 @@ public class ProjectUtils {
     }
     // If the user is on the team, check their permission
     TeamMember teamMember = thisProject.getTeam().getTeamMember(thisUser.getId());
-    if (teamMember != null && teamMember.getRoleId() <= projectRoleId) {
-      return true;
+    if (teamMember != null) {
+      // Check if on the team, fully added, and has the correct role
+      if (teamMember.getStatus() == TeamMember.STATUS_ADDED && teamMember.getRoleId() <= projectRoleId) {
+        // On the team and has the correct role
+        return true;
+      }
     }
 
     return false;
@@ -374,7 +375,8 @@ public class ProjectUtils {
             thisProject.getPostalCode().length() != 10)) {
       // not a us zip so do nothing
     } else {
-      if (StringUtils.hasText(thisProject.getPostalCode()) &&
+      if ((!StringUtils.hasText(thisProject.getCountry()) || "UNITED STATES".equals(thisProject.getCountry())) &&
+          StringUtils.hasText(thisProject.getPostalCode()) &&
           (!StringUtils.hasText(thisProject.getCity()) ||
               !StringUtils.hasText(thisProject.getState()))) {
         LocationBean location = LocationUtils.findLocationByZipCode(thisProject.getPostalCode());
@@ -457,7 +459,7 @@ public class ProjectUtils {
 
   public static void formatWebAddress(Project thisProject) {
     if (thisProject.getWebPage() != null) {
-      String page = thisProject.getWebPage().trim().toLowerCase();
+      String page = thisProject.getWebPage().trim();
       if (page.length() == 0) {
         // turn blanks into null
         page = null;
@@ -700,9 +702,20 @@ public class ProjectUtils {
     return !a.equals(b);
   }
 
-  public static boolean isUserProfile(Project project) {
-    User projectOwner = UserUtils.loadUser(project.getOwner());
-    return
-       (projectOwner.getProfileProjectId() == project.getId());
+  public static int retrieveWebcastIdFromProjectId(Connection db, int projectId) throws SQLException {
+    int webcastId = -1;
+    PreparedStatement pst = db.prepareStatement(
+            "SELECT webcast_id " +
+            "FROM project_webcast " +
+            "WHERE project_id = ? ");
+    pst.setInt(1, projectId);
+    ResultSet rs = pst.executeQuery();
+    if (rs.next()) {
+      webcastId = rs.getInt("webcast_id");
+    }
+    rs.close();
+    pst.close();
+
+    return webcastId;
   }
 }

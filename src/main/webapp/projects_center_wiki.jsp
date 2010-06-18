@@ -155,74 +155,72 @@
                 </ccp:permission>
               </ccp:evaluate>
             </ccp:permission>
-            <ccp:permission if="any" name="project-wiki-add,project-wiki-admin,project-wiki-delete">
-              <ccp:evaluate if="<%= wiki.getId() > -1 %>">
-                <portlet:renderURL var="exportUrl">
-                  <portlet:param name="portlet-action" value="export"/>
-                  <portlet:param name="portlet-object" value="wiki"/>
+            <ccp:evaluate if="<%= wiki.getId() > -1 %>">
+              <portlet:renderURL var="exportUrl">
+                <portlet:param name="portlet-action" value="export"/>
+                <portlet:param name="portlet-object" value="wiki"/>
+                <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
+                  <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
+                </ccp:evaluate>
+              </portlet:renderURL>
+              <a href="${exportUrl}" rel="shadowbox" title="Export to PDF">
+                <img src="${ctx}/images/icons/pdf_export.png" border="0" height="16" width="16" alt="Export to PDF"/>
+              </a>
+              <ccp:permission name="project-wiki-add">
+                <portlet:renderURL var="versionsUrl">
+                  <portlet:param name="portlet-action" value="show"/>
+                  <portlet:param name="portlet-object" value="wiki-versions"/>
                   <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
                     <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
                   </ccp:evaluate>
                 </portlet:renderURL>
-                <a href="${exportUrl}" rel="shadowbox" title="Export to PDF">
-                  <img src="${ctx}/images/icons/pdf_export.png" border="0" height="16" width="16" alt="Export to PDF"/>
+                <a href="${versionsUrl}" title="Wiki Versions">
+                  <img src="<%= ctx %>/images/icons/notebooks.png" border="0" height="16" width="16" alt="Wiki Versions"/>
                 </a>
-                <ccp:permission name="project-wiki-add">
-                  <portlet:renderURL var="versionsUrl">
-                    <portlet:param name="portlet-action" value="show"/>
-                    <portlet:param name="portlet-object" value="wiki-versions"/>
-                    <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
-                      <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
-                    </ccp:evaluate>
-                  </portlet:renderURL>
-                  <a href="${versionsUrl}" title="Wiki Versions">
-                    <img src="<%= ctx %>/images/icons/notebooks.png" border="0" height="16" width="16" alt="Wiki Versions"/>
-                  </a>
-                </ccp:permission>
-                <ccp:evaluate if="<%= !wiki.getReadOnly() %>">
-                  <portlet:actionURL var="lockUrl">
+              </ccp:permission>
+              <ccp:evaluate if="<%= !wiki.getReadOnly() %>">
+                <portlet:actionURL var="lockUrl">
+                  <portlet:param name="portlet-action" value="show"/>
+                  <portlet:param name="portlet-object" value="wiki"/>
+                  <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
+                    <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
+                  </ccp:evaluate>
+                  <portlet:param name="portlet-command" value="lock"/>
+                </portlet:actionURL>
+                <a href="${lockUrl}" title="Lock Wiki">
+                  <img src="<%= ctx %>/images/icons/lock_unlock.png" border="0" height="16" width="16" alt="Lock Wiki"/>
+                </a>
+              </ccp:evaluate>
+              <ccp:permission name="project-wiki-admin">
+                <ccp:evaluate if="<%= wiki.getReadOnly() %>">
+                  <portlet:actionURL var="unlockUrl">
                     <portlet:param name="portlet-action" value="show"/>
                     <portlet:param name="portlet-object" value="wiki"/>
                     <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
                       <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
                     </ccp:evaluate>
-                    <portlet:param name="portlet-command" value="lock"/>
+                    <portlet:param name="portlet-command" value="unlock"/>
                   </portlet:actionURL>
-                  <a href="${lockUrl}" title="Lock Wiki">
-                    <img src="<%= ctx %>/images/icons/lock_unlock.png" border="0" height="16" width="16" alt="Lock Wiki"/>
+                  <a href="${unlockUrl}" title="Unlock Wiki">
+                    <img src="<%= ctx %>/images/icons/lock.png" border="0" height="16" width="16" alt="Unlock Wiki"/>
                   </a>
                 </ccp:evaluate>
-                <ccp:permission name="project-wiki-admin">
-                  <ccp:evaluate if="<%= wiki.getReadOnly() %>">
-                    <portlet:actionURL var="unlockUrl">
-                      <portlet:param name="portlet-action" value="show"/>
-                      <portlet:param name="portlet-object" value="wiki"/>
-                      <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
-                        <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
-                      </ccp:evaluate>
-                      <portlet:param name="portlet-command" value="unlock"/>
-                    </portlet:actionURL>
-                    <a href="${unlockUrl}" title="Unlock Wiki">
-                      <img src="<%= ctx %>/images/icons/lock.png" border="0" height="16" width="16" alt="Unlock Wiki"/>
-                    </a>
-                  </ccp:evaluate>
-                </ccp:permission>
-                <ccp:permission name="project-wiki-delete">
-                  <portlet:actionURL var="deleteUrl">
-                      <portlet:param name="portlet-object" value="wiki"/>
-                      <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
-                        <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
-                      </ccp:evaluate>
-                      <portlet:param name="portlet-command" value="delete"/>
-                  </portlet:actionURL>
-                      <a href="javascript:confirmDelete('${deleteUrl}');" title="Delete Wiki">
-                    <img src="<%= ctx %>/images/icons/stock_delete-16.gif"
-                         border="0"  height="16" width="16"
-                         alt="Delete wiki">
-                  </a>
-                </ccp:permission>
-              </ccp:evaluate>
-            </ccp:permission>
+              </ccp:permission>
+              <ccp:permission name="project-wiki-delete">
+                <portlet:actionURL var="deleteUrl">
+                    <portlet:param name="portlet-object" value="wiki"/>
+                    <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
+                      <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
+                    </ccp:evaluate>
+                    <portlet:param name="portlet-command" value="delete"/>
+                </portlet:actionURL>
+                    <a href="javascript:confirmDelete('${deleteUrl}');" title="Delete Wiki">
+                  <img src="<%= ctx %>/images/icons/stock_delete-16.gif"
+                       border="0"  height="16" width="16"
+                       alt="Delete wiki">
+                </a>
+              </ccp:permission>
+            </ccp:evaluate>
           </div>
         </ccp:permission>
       </div>
@@ -278,38 +276,36 @@
   <ccp:evaluate if="<%= wiki.getModified() != null %>">
     <div class="portlet-menu">
       <ul>
-        <ccp:permission if="any" name="project-wiki-add,project-wiki-admin">
-          <ccp:evaluate if="<%= wiki.getId() > -1 %>">
-            <portlet:renderURL var="exportUrl">
-              <portlet:param name="portlet-action" value="export"/>
-              <portlet:param name="portlet-object" value="wiki"/>
+        <ccp:evaluate if="<%= wiki.getId() > -1 %>">
+          <portlet:renderURL var="exportUrl">
+            <portlet:param name="portlet-action" value="export"/>
+            <portlet:param name="portlet-object" value="wiki"/>
+            <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
+              <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
+            </ccp:evaluate>
+          </portlet:renderURL>
+          <li>
+            <a href="${exportUrl}" rel="shadowbox" title="Export to PDF">
+              <img src="<%= ctx %>/images/icons/pdf_export.png" border="0" height="16" width="16" alt="Export to PDF"/>
+              Export
+            </a>
+          </li>
+          <ccp:permission name="project-wiki-add">
+            <portlet:renderURL var="versionsUrl">
+              <portlet:param name="portlet-action" value="show"/>
+              <portlet:param name="portlet-object" value="wiki-versions"/>
               <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
                 <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
               </ccp:evaluate>
             </portlet:renderURL>
             <li>
-              <a href="${exportUrl}" rel="shadowbox" title="Export to PDF">
-                <img src="<%= ctx %>/images/icons/pdf_export.png" border="0" height="16" width="16" alt="Export to PDF"/>
-                Export
+              <a href="${versionsUrl}" title="Wiki Versions">
+                <img src="<%= ctx %>/images/icons/notebooks.png" border="0" height="16" width="16" alt="Wiki Versions"/>
+                Versions
               </a>
             </li>
-            <ccp:permission name="project-wiki-add">
-              <portlet:renderURL var="versionsUrl">
-                <portlet:param name="portlet-action" value="show"/>
-                <portlet:param name="portlet-object" value="wiki-versions"/>
-                <ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">
-                  <portlet:param name="portlet-value" value="<%= wiki.getSubjectLink() %>"/>
-                </ccp:evaluate>
-              </portlet:renderURL>
-              <li>
-                <a href="${versionsUrl}" title="Wiki Versions">
-                  <img src="<%= ctx %>/images/icons/notebooks.png" border="0" height="16" width="16" alt="Wiki Versions"/>
-                  Versions
-                </a>
-              </li>
-            </ccp:permission>
-          </ccp:evaluate>
-        </ccp:permission>
+          </ccp:permission>
+        </ccp:evaluate>
         <ccp:evaluate if="<%= wiki.getId() > -1 && User.isLoggedIn() %>">
           <li>
             <a href="#addComment"><img alt="Add a comment icon" src="${ctx}/images/icons/balloon_plus.png"/> Add a Comment</a>
@@ -460,7 +456,7 @@
               </div>
             </fieldset>
             <input type="submit" name="Save" value="Save" class="submit" />
-            <input type="button" value="Cancel" onclick="hideSpan('thisCommentWindow<%= wiki.getId() %>')" class="cancel" />
+            <input type="button" value="Cancel" onclick="hideSpan('thisCommentWindow<%= wiki.getId() %>');" class="cancel" />
           </form>
         </div>
       </c:when>

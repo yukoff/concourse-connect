@@ -53,8 +53,6 @@ import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.Constants;
-import com.concursive.connect.config.ApplicationPrefs;
-import com.concursive.connect.scheduler.SchedulerUtils;
 import com.concursive.connect.web.modules.issues.dao.TicketContact;
 import com.concursive.connect.web.modules.issues.dao.TicketContactList;
 import com.concursive.connect.web.modules.issues.workflow.LoadTicketDetails;
@@ -69,16 +67,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
-import java.util.*;
-import java.io.StringWriter;
-
-import freemarker.template.Template;
-import freemarker.template.Configuration;
-
-import javax.servlet.ServletContext;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 /**
- * Description of the Class
+ * A component to send emails
  *
  * @author matt rajkowski
  * @created January 14, 2003
@@ -127,12 +121,16 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
    * @return Description of the Return Value
    */
   public boolean execute(ComponentContext context) {
-    boolean result = false;
+
     Connection db = null;
+
+    // The recipients to send email to
+    ArrayList<Integer> users = new ArrayList<Integer>();
+    ArrayList<String> emails = new ArrayList<String>();
+
     try {
+      // Use this database connection sparingly
       db = getConnection(context);
-      ArrayList<Integer> users = new ArrayList<Integer>();
-      ArrayList<String> emails = new ArrayList<String>();
 
       // Add admins
       boolean addAdmins = "true".equals(context.getParameter(NOTIFY_ADMINS));
@@ -255,67 +253,84 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
           users.remove(new Integer(Integer.parseInt(id)));
         }
       }
-      // Send the message(s)
-      if (users.size() > 0 || emails.size() > 0) {
-        LOG.debug("Constructing mail object");
-        SMTPMessage mail = SMTPMessageFactory.createSMTPMessageInstance(context.getApplicationPrefs());
-        String from = StringUtils.toHtmlValue(context.getParameter(FROM));
-        String fromId = StringUtils.toHtmlValue(context.getParameter(USERS_FROM));
-        if (from != null && !"".equals(from)) {
-          mail.setFrom(from);
-        } else if (fromId != null && !"".equals(fromId)) {
-          mail.setFrom(User.getEmailAddressById(db, Integer.parseInt(fromId)));
-        } else {
-          mail.setFrom(context.getParameter("EMAILADDRESS"));
-        }
-        mail.setType("text/html");
-        mail.setSubject(context.getParameter(SUBJECT));
-        /*
-        //TODO: Populate the message using a freemarker template
-        Configuration configuration = (Configuration) context.getAttribute(ComponentContext.FREEMARKER_CONFIGURATION);
-        Template template = configuration.getTemplate("send_user_notification_email-html.ftl");
-        Map bodyMappings = new HashMap();
-        bodyMappings.put("body", context.getParameter(BODY));
-        // Parse and send
-        StringWriter inviteBodyTextWriter = new StringWriter();
-        template.process(bodyMappings, inviteBodyTextWriter);
-        mail.setBody(inviteBodyTextWriter.toString());
-        */
-        mail.setBody(context.getParameter(BODY));
-        // Send to each user
-        Iterator userList = users.iterator();
-        while (userList.hasNext()) {
-          Integer id = (Integer) userList.next();
-          String email = User.getEmailAddressById(db, id);
-          if (email != null) {
-            LOG.debug("Sending to user: " + email);
-            mail.setTo(email);
-            int status = mail.send();
-            LOG.debug("Send status: " + status);
-          }
-        }
-
-        // Send to each contact
-        Iterator emailList = emails.iterator();
-        while (emailList.hasNext()) {
-          String email = (String) emailList.next();
-          if (email != null) {
-            LOG.debug("Sending to contact: " + email);
-            mail.setTo(email);
-            int status = mail.send();
-            LOG.debug("Send status: " + status);
-          }
-        }
-      } else {
-        LOG.warn("No users or emails to send notification to");
-      }
-      result = true;
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.error("build email list", e);
     } finally {
       freeConnection(context, db);
     }
-    return result;
+
+    // NOTE: Now that the database connections are done, send the emails
+    try {
+      sendEmails(context, users, emails);
+      return true;
+    } catch (Exception e) {
+      LOG.error("send emails", e);
+    }
+    return false;
+  }
+
+  /**
+   * Send the emails
+   *
+   * @param context ComponentContext
+   * @param users   List of users
+   * @param emails  List of email addresses
+   * @throws Exception mail error
+   */
+  private void sendEmails(ComponentContext context, ArrayList<Integer> users, ArrayList<String> emails) throws Exception {
+    if (users.size() > 0 || emails.size() > 0) {
+      LOG.debug("Constructing mail object");
+      SMTPMessage mail = SMTPMessageFactory.createSMTPMessageInstance(context.getApplicationPrefs());
+      String from = StringUtils.toHtmlValue(context.getParameter(FROM));
+      String fromId = StringUtils.toHtmlValue(context.getParameter(USERS_FROM));
+      if (from != null && !"".equals(from)) {
+        mail.setFrom(from);
+      } else if (fromId != null && !"".equals(fromId)) {
+        User thisUser = UserUtils.loadUser(Integer.parseInt(fromId));
+        mail.setFrom(thisUser.getEmail());
+      } else {
+        mail.setFrom(context.getParameter("EMAILADDRESS"));
+      }
+      mail.setType("text/html");
+      mail.setSubject(context.getParameter(SUBJECT));
+
+      /*
+      //TODO: Populate the message using a freemarker template
+      Configuration configuration = (Configuration) context.getAttribute(ComponentContext.FREEMARKER_CONFIGURATION);
+      Template template = configuration.getTemplate("send_user_notification_email-html.ftl");
+      Map bodyMappings = new HashMap();
+      bodyMappings.put("body", context.getParameter(BODY));
+      // Parse and send
+      StringWriter inviteBodyTextWriter = new StringWriter();
+      template.process(bodyMappings, inviteBodyTextWriter);
+      mail.setBody(inviteBodyTextWriter.toString());
+      */
+      mail.setBody(context.getParameter(BODY));
+
+      // Send to each user
+      for (Integer id : users) {
+        User thisUser = UserUtils.loadUser(id);
+        String email = thisUser.getEmail();
+        if (email != null) {
+          LOG.debug("Sending to user: " + email);
+          mail.setTo(email);
+          int status = mail.send();
+          LOG.debug("Send status: " + status);
+        }
+      }
+
+      // Send to each contact
+      for (String email : emails) {
+        if (email != null) {
+          LOG.debug("Sending to contact: " + email);
+          mail.setTo(email);
+          int status = mail.send();
+          LOG.debug("Send status: " + status);
+        }
+      }
+    } else {
+      LOG.warn("No users or emails to send notification to");
+    }
   }
 }
 

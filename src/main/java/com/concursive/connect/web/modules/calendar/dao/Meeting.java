@@ -94,6 +94,8 @@ public class Meeting extends GenericBean {
   private int ratingValue = 0;
   private double ratingAvg = 0.0;
   private int inappropriateCount = 0;
+  private boolean isWebcast = false;
+
   // Helper objects
   private MeetingAttendeeList meetingAttendeeList = null;
 
@@ -354,7 +356,8 @@ public class Meeting extends GenericBean {
   }
 
   /**
-   * @param dimdimPassword password to dimdim server
+   * 
+   * @param dimdimMeetingKey
    */
   public void setDimdimMeetingKey(String dimdimMeetingKey) {
     this.dimdimMeetingKey = dimdimMeetingKey;
@@ -480,6 +483,18 @@ public class Meeting extends GenericBean {
     this.meetingAttendeeList = meetingAttendeeList;
   }
 
+  public boolean getIsWebcast() {
+    return isWebcast;
+  }
+
+  public void setIsWebcast(boolean isWebcast) {
+    this.isWebcast = isWebcast;
+  }
+
+  public void setIsWebcast(String tmp) {
+    this.isWebcast = DatabaseUtils.parseBoolean(tmp);
+  }
+
   public boolean hasDuration() {
     return (durationDays > 0 || durationHours > 0 || durationMinutes > 0);
   }
@@ -591,6 +606,7 @@ public class Meeting extends GenericBean {
     dimdimUsername = rs.getString("dimdim_username");
     dimdimPassword = DimDimUtils.decryptData(rs.getString("dimdim_password"));
     dimdimMeetingKey = rs.getString("dimdim_meeting_key");
+    isWebcast = rs.getBoolean("is_webcast");
   }
 
   public boolean isValid() {
@@ -655,7 +671,7 @@ public class Meeting extends GenericBean {
       if (getDimdimMeetingKey() != null) {
         sql.append("dimdim_meeting_key, ");
       }
-      sql.append("owner,enteredby, modifiedby, by_invitation_only, is_dimdim)");
+      sql.append("owner,enteredby, modifiedby, by_invitation_only, is_dimdim, is_webcast)");
       sql.append("VALUES (?, ?, ?, ?, ?, ?, ");
 
       if (entered != null) {
@@ -682,7 +698,7 @@ public class Meeting extends GenericBean {
       if (dimdimMeetingKey != null) {
         sql.append("?, ");
       }
-      sql.append("?,?,?,?,?) ");
+      sql.append("?,?,?,?,?,?) ");
       int i = 0;
       //Insert the Meeting
       PreparedStatement pst = db.prepareStatement(sql.toString());
@@ -721,7 +737,7 @@ public class Meeting extends GenericBean {
       pst.setInt(++i, modifiedBy);
       pst.setBoolean(++i, byInvitationOnly);
       pst.setBoolean(++i, isDimdim);
-
+      pst.setBoolean(++i, isWebcast);
       pst.execute();
       pst.close();
       id = DatabaseUtils.getCurrVal(db, "project_calendar_meeting_meeting_id_seq", -1);
@@ -759,7 +775,7 @@ public class Meeting extends GenericBean {
           "SET title = ?, " +
           "location = ?, end_date = ?, start_date = ?, is_tentative = ?, " +
           "modifiedby = ?, modified = CURRENT_TIMESTAMP, by_invitation_only = ?, " +
-          "is_dimdim = ?, dimdim_meetingid = ? ";
+          "is_dimdim = ?, is_webcast = ?, dimdim_meetingid = ? ";
       if (description != null) {
         sql += ", description = ? ";
       }
@@ -786,6 +802,7 @@ public class Meeting extends GenericBean {
       pst.setInt(++i, this.getModifiedBy());
       pst.setBoolean(++i, byInvitationOnly);
       pst.setBoolean(++i, isDimdim);
+      pst.setBoolean(++i, isWebcast);
       pst.setString(++i, dimdimMeetingId);
       if (description != null) {
         pst.setString(++i, description);

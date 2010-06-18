@@ -48,6 +48,7 @@ package com.concursive.connect.web.controller.hooks;
 
 import com.concursive.commons.web.mvc.servlets.InitFilter;
 import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.Constants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -75,7 +76,7 @@ public class InitHook implements InitFilter {
     LOG.info("Initializing framework...");
     ServletContext context = config.getServletContext();
     ApplicationPrefs prefs = new ApplicationPrefs(context);
-    context.setAttribute("applicationPrefs", prefs);
+    context.setAttribute(Constants.APPLICATION_PREFS, prefs);
   }
 
 

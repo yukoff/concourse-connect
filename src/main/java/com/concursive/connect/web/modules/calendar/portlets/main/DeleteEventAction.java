@@ -93,7 +93,7 @@ public class DeleteEventAction implements IPortletAction {
     }
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record and delete it
     Meeting meeting = new Meeting(db, id, project.getId());

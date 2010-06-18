@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.wiki.portlets.main;
 
+import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -52,7 +53,8 @@ import com.concursive.connect.web.modules.wiki.dao.WikiList;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
+import com.concursive.connect.web.utils.PagedListInfo;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -90,9 +92,13 @@ public class WikiIndexViewer implements IPortletViewer {
     }
 
     // Load the records
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     WikiList wikiList = new WikiList();
     wikiList.setProjectId(project.getId());
+    PagedListInfo pagedList = new PagedListInfo();
+    pagedList.setColumnToSortBy(DatabaseUtils.toLowerCase(db, "w.subject"));
+    pagedList.setItemsPerPage(-1);
+    wikiList.setPagedListInfo(pagedList);
     wikiList.buildList(db);
     request.setAttribute(WIKI_LIST, wikiList);
 

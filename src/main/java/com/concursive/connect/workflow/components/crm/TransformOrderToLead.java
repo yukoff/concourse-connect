@@ -47,12 +47,12 @@
 
 package com.concursive.connect.workflow.components.crm;
 
-import com.concursive.commons.api.DataRecord;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.productcatalog.beans.OrderBean;
 import com.concursive.connect.web.modules.productcatalog.dao.*;
+import com.concursive.crm.api.client.DataRecord;
 
 /**
  * Transform Order information to ConcourseSuite Leads

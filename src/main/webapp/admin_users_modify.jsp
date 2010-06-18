@@ -213,7 +213,7 @@ User Details<br />
     <ccp:evaluate if="<%= concursiveCRMConfigured %>">
       <%-- Management CRM access role --%>
       <tr class="containerBody">
-        <td nowrap class="formLabel">Management CRM Role</td>
+        <td nowrap class="formLabel">Community Management Role</td>
         <td>
           <input type="radio" name="crmRole" value="admin"
           <ccp:evaluate if="<%= thisUser.isConnectCRMAdmin() %>">
@@ -224,7 +224,7 @@ User Details<br />
           <ccp:evaluate if="<%= thisUser.isConnectCRMManager() %>">
             checked
           </ccp:evaluate>
-          /> Manager&nbsp;&nbsp;<input type="button" value="Clear" onclick="javascript:clearRole();"/>
+          /> Manager&nbsp;&nbsp;<input type="button" value="Clear" onclick="clearRole();"/>
         </td>
       </tr>
     </ccp:evaluate>

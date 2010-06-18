@@ -110,6 +110,7 @@ public class CalendarView {
   //Events that can be displayed on the calendar
   protected HashMap<String, CalendarEventList> eventList = new HashMap<String, CalendarEventList>();
   protected boolean sortEvents = false;
+  public final static int AGENDA_DAY_COUNT = 32;
   //NOTE: DO NOT USE THIS LIST DIRECTLY BECAUSE OF LEAP YEARS
   public final static int[] DAYSINMONTH = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
   public final static String[] MONTHS = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
@@ -851,7 +852,7 @@ public class CalendarView {
         today.set(Calendar.MINUTE, 0);
         today.set(Calendar.SECOND, 0);
         today.set(Calendar.MILLISECOND, 0);
-        today.add(Calendar.DATE, 15);
+        today.add(Calendar.DATE, AGENDA_DAY_COUNT);
         displayMonth = today.get(Calendar.MONTH) + 1;
         displayDay = today.get(Calendar.DAY_OF_MONTH);
         displayYear = today.get(Calendar.YEAR);
@@ -1262,8 +1263,8 @@ public class CalendarView {
 
         //get all events categories and respective counts.
         HashMap events = this.getEventList(
-            String.valueOf(displayMonth), String.valueOf(displayDay), String.valueOf(
-                displayYear));
+            String.valueOf(displayMonth), String.valueOf(displayDay), String.valueOf(displayYear));
+
         if (events.size() > 0) {
           html.append(
               "<table width=\"12%\" align=\"center\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" class=\"dayIcon\">");
@@ -1272,11 +1273,12 @@ public class CalendarView {
             if (events.containsKey(eventType)) {
               if (!eventType.equals(CalendarEventList.EVENT_TYPES[7])) {
                 Object eventObj = events.get(eventType);
-                //use reflection to call the size method on the event list object
-                String eventSize = (String) ObjectUtils.getObject(
-                    eventObj, "sizeString");
-                html.append(
-                    "<tr><td>" + CalendarEvent.getIcon(eventType, contextPath) + "</td><td> " + eventSize + "</td></tr>");
+                // use reflection to call the size method on the event list object
+                String eventSize = (String) ObjectUtils.getObject(eventObj, "sizeString");
+                if (!eventSize.equals("0")) {
+                  html.append(
+                      "<tr><td>" + CalendarEvent.getIcon(eventType, contextPath) + "</td><td> " + eventSize + "</td></tr>");
+                }
               }
             }
           }
@@ -1403,7 +1405,7 @@ public class CalendarView {
     tmpCal.set(Calendar.MILLISECOND, 0);
     if (calendarInfo != null) {
       if (calendarInfo.isAgendaView()) {
-        dayCount = 15;
+        dayCount = AGENDA_DAY_COUNT;
       } else if (calendarInfo.getCalendarView().equalsIgnoreCase("day")) {
         dayCount = 1;
         tmpCal.set(
@@ -1494,7 +1496,7 @@ public class CalendarView {
   public void addEvent(String eventDate, String eventType, Object event) {
     CalendarEventList dailyEvents = null;
     if (eventList.containsKey(eventDate)) {
-      dailyEvents = (CalendarEventList) eventList.get(eventDate);
+      dailyEvents = eventList.get(eventDate);
     } else {
       dailyEvents = new CalendarEventList();
     }
@@ -1516,7 +1518,7 @@ public class CalendarView {
   public void addEventCount(String eventDate, String eventType, Object eventCount) {
     CalendarEventList dailyEvents = null;
     if (eventList.containsKey(eventDate)) {
-      dailyEvents = (CalendarEventList) eventList.get(eventDate);
+      dailyEvents = eventList.get(eventDate);
     } else {
       dailyEvents = new CalendarEventList();
     }

@@ -84,6 +84,7 @@ public class ProjectCacheEntryFactory implements CacheEntryFactory {
 
       // Sort the images by newest first
       PagedListInfo imagePaging = new PagedListInfo();
+      imagePaging.setItemsPerPage(0);
       imagePaging.setDefaultSort("f.default_file, f.item_id desc", null);
       project.getImages().setPagedListInfo(imagePaging);
       project.buildImages(db);

@@ -45,15 +45,15 @@
  */
 package com.concursive.connect.web.modules.classifieds.workflow;
 
-import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiLink;
-import com.concursive.connect.web.modules.classifieds.dao.Classified;
+import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.commons.workflow.BusinessProcess;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
+import com.concursive.connect.web.modules.classifieds.dao.Classified;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
-import com.concursive.commons.workflow.BusinessProcess;
-import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.modules.wiki.utils.WikiLink;
 
 import java.sql.Timestamp;
 
@@ -94,7 +94,7 @@ public class SaveClassifiedAdEntryEventTest extends AbstractWorkflowManagerTest 
     classified.setEnteredBy(USER_ID);
     classified.setModifiedBy(USER_ID);
     classified.setPublishDate(new Timestamp(System.currentTimeMillis()));
-    classified.setExpirationDate(new Timestamp(System.currentTimeMillis() + (60*60*1000)));
+    classified.setExpirationDate(new Timestamp(System.currentTimeMillis() + (60 * 60 * 1000)));
     classified.insert(db);
     assertTrue("Unable to add a classified record", classified.getId() > -1);
 
@@ -124,7 +124,9 @@ public class SaveClassifiedAdEntryEventTest extends AbstractWorkflowManagerTest 
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] posted a classified ad [[|" + project.getId() + ":classified-ad|" + classified.getId() + "|Dummy Classified Title]] in [[|" + project.getId() + ":profile||Project SQL Test]]", 
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||Project SQL Test]] " +
+            "posted a classified ad [[|" + project.getId() + ":classified-ad|" + classified.getId() + "|Dummy Classified Title]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.members.portlets.memberRequests;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
@@ -54,7 +55,6 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
-import org.aspcfs.utils.StringUtils;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -98,7 +98,7 @@ public class MemberRequestsViewer implements IPortletViewer {
       String approve = request.getParameter("approve");
 
       // Determine the database connection to use
-      Connection db = getConnection(request);
+      Connection db = useConnection(request);
       if (StringUtils.hasText(approve)) {
         String teamMemberId = request.getParameter("teamMemberId");
         TeamMember teamMember = new TeamMember(db, Integer.parseInt(teamMemberId));

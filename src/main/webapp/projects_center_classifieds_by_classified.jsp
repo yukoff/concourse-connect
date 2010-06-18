@@ -64,7 +64,7 @@
         <tr>
           <td nowrap="" width="100%">
             <div style="vertical-align:baseline;">
-              <a style="color: #000066; font-size: 14px; font-weight: bold; padding-right: 5px; text-decoration:none;" href="javascript:popURL('<%= ctx %>/ProjectManagementClassifieds.do?command=Details&pid=<%= project.getId() %>&id=<%= thisClassified.getId() %>&popup=true','Classified_Detail','600','500','yes','yes');"><%= toHtml(thisClassified.getTitle()) %></a>
+              <a style="color: #000066; font-size: 14px; font-weight: bold; padding-right: 5px; text-decoration:none;" href="javascript:popURL('<%= ctx %>/ProjectManagementClassifieds.do?command=Details&pid=<%= project.getId() %>&id=<%= thisClassified.getId() %>&popup=true','600','500','yes','yes');"><%= toHtml(thisClassified.getTitle()) %></a>
               <font color="red">
               <ccp:evaluate if="<%= thisClassified.getPublishDate() == null %>"><ccp:label name="projectsCenterClassifieds.byClassified.draft">(Draft)</ccp:label></ccp:evaluate>
               <ccp:evaluate if="<%= thisClassified.getPublishDate() != null %>"><ccp:label name="projectsCenterClassifieds.byClassified.approved">(Approved)</ccp:label></ccp:evaluate>&nbsp;
@@ -104,7 +104,7 @@
                            showText='false'
                            count='<%= thisClassified.getRatingCount() %>'
                            value='<%= thisClassified.getRatingValue() %>'
-                           url='<%= ctx + "/ProjectManagementClassifieds.do?command=SetRating&pid=" + thisClassified.getProjectId() + "&id=" + thisClassified.getId() + "&v=${vote}&out=text" %>'/>
+                           url='<%= ctx + "/ProjectManagementClassifieds.do?command=SetRating&pid=" + thisClassified.getProjectId() + "&id=" + thisClassified.getId() + "&v={vote}&out=text" %>'/>
           </td>
         </tr>
         <tr>
@@ -124,7 +124,7 @@
       <%= toHtml(thisClassified.getTitle()) %>
       <ccp:evaluate if="<%= hasText(thisClassified.getDescription()) %>">
         <br />
-        <a style="color:#000066; text-decoration:none;" href="javascript:popURL('<%= ctx %>/ProjectManagementClassifieds.do?command=Details&pid=<%= project.getId() %>&id=<%= thisClassified.getId() %>&popup=true','Classified_Detail','600','500','yes','yes');">Read more &raquo;</a>
+        <a style="color:#000066; text-decoration:none;" href="javascript:popURL('<%= ctx %>/ProjectManagementClassifieds.do?command=Details&pid=<%= project.getId() %>&id=<%= thisClassified.getId() %>&popup=true','600','500','yes','yes');">Read more &raquo;</a>
       </ccp:evaluate>
       </div>
     </td>

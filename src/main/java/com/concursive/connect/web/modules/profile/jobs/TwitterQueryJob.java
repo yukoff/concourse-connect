@@ -181,7 +181,7 @@ public class TwitterQueryJob implements StatefulJob {
 
       long endTime = System.currentTimeMillis();
       long totalTime = endTime - startTime;
-      LOG.info("Finished: " + count + " took " + totalTime + " ms");
+      LOG.debug("Finished: " + count + " took " + totalTime + " ms");
     } catch (Exception e) {
       LOG.error("TwitterQueryJob Exception", e);
       throw new JobExecutionException(e.getMessage());

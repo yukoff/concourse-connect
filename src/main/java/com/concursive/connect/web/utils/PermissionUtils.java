@@ -46,11 +46,14 @@
 
 package com.concursive.connect.web.utils;
 
+import com.concursive.commons.objects.ObjectUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.PortalUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.ServletRequest;
@@ -64,6 +67,8 @@ import java.util.StringTokenizer;
  * @created April 4, 2008
  */
 public class PermissionUtils {
+
+  private static final Log LOG = LogFactory.getLog(PermissionUtils.class);
 
   private static final String ALL = "all";
   private static final String NONE = "none";
@@ -86,17 +91,44 @@ public class PermissionUtils {
       // Check the current portlet first
       PortletRequest renderRequest = (PortletRequest) request.getAttribute(org.apache.pluto.tags.Constants.PORTLET_REQUEST);
       if (renderRequest != null) {
-        thisProject = (Project) renderRequest.getAttribute(thisObjectName);
+        // Get the requested object
+        Object object = null;
+        int dotPos = thisObjectName.indexOf(".");
+        if (dotPos > -1) {
+          // Get the base object from the request
+          String currentObject = thisObjectName.substring(0, dotPos);
+          object = renderRequest.getAttribute(currentObject);
+          // Get the parsed object
+          currentObject = thisObjectName.substring(dotPos + 1);
+          object = ObjectUtils.getObject(object, currentObject);
+          thisProject = (Project) object;
+        } else {
+          thisProject = (Project) renderRequest.getAttribute(thisObjectName);
+        }
         if (thisProject == null && objectName == null) {
           thisProject = PortalUtils.getProject(renderRequest);
         }
       }
       // Check the request object
       if (thisProject == null) {
-        thisProject = (Project) request.getAttribute(thisObjectName);
+        // Get the requested object
+        Object object = null;
+        int dotPos = thisObjectName.indexOf(".");
+        if (dotPos > -1) {
+          // Get the base object from the request
+          String currentObject = thisObjectName.substring(0, dotPos);
+          object = request.getAttribute(currentObject);
+          // Get the parsed object
+          currentObject = thisObjectName.substring(dotPos + 1);
+          object = ObjectUtils.getObject(object, currentObject);
+          thisProject = (Project) object;
+        } else {
+          thisProject = (Project) request.getAttribute(thisObjectName);
+        }
       }
       // Deny if not found
       if (thisProject == null) {
+        LOG.warn("Project is null");
         return false;
       }
 
@@ -149,7 +181,7 @@ public class PermissionUtils {
         return true;
       }
     } catch (Exception e) {
-      System.out.println("PermissionUtils-> Permission Error: " + e.getMessage());
+      LOG.error("hasPermissionToAction", e);
       return false;
     }
   }

@@ -50,16 +50,21 @@
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <h3>View Promotions By</h3>
   <ul>
+    <c:choose>
+	    <c:when test="${!empty query}">
+        	<c:set var="queryString">&query=${query}&location=${location}</c:set>
+ 	    </c:when>
+    </c:choose>
   	<c:choose>
 	<c:when test="${!empty promotionCategoryName}">
-	    <li><a href="${ctx}${pageURL}/${categoryName}/${promotionCategoryName}?sort=alpha" title="Alphabetical"><em>Alphabetical</em></a></li>
-	    <li><a href="${ctx}${pageURL}/${categoryName}/${promotionCategoryName}?sort=expire" title="Expiration Date"><em>Expiration Date</em></a></li>
-	    <li><a href="${ctx}${pageURL}/${categoryName}/${promotionCategoryName}?sort=new" title="Newly Added"><em>Newly Added</em></a></li>
+	    <li><a href="${ctx}${pageURL}/${categoryName}/${promotionCategoryName}?sort=new${queryString}" title="Newly Added"><em>Newly Added</em></a></li>
+	    <li><a href="${ctx}${pageURL}/${categoryName}/${promotionCategoryName}?sort=alpha${queryString}" title="Alphabetical"><em>Alphabetical</em></a></li>
+	    <li><a href="${ctx}${pageURL}/${categoryName}/${promotionCategoryName}?sort=expire${queryString}" title="Expiration Date"><em>Expiration Date</em></a></li>
     </c:when>
     <c:otherwise>
-	    <li><a href="${ctx}${pageURL}/${categoryName}?sort=alpha" title="Alphabetical"><em>Alphabetical</em></a></li>
-	    <li><a href="${ctx}${pageURL}/${categoryName}?sort=expire" title="Expiration Date"><em>Expiration Date</em></a></li>
-	    <li><a href="${ctx}${pageURL}/${categoryName}?sort=new" title="Newly Added"><em>Newly Added</em></a></li>
+	    <li><a href="${ctx}${pageURL}/${categoryName}?sort=new${queryString}" title="Newly Added"><em>Newly Added</em></a></li>
+	    <li><a href="${ctx}${pageURL}/${categoryName}?sort=alpha${queryString}" title="Alphabetical"><em>Alphabetical</em></a></li>
+	    <li><a href="${ctx}${pageURL}/${categoryName}?sort=expire${queryString}" title="Expiration Date"><em>Expiration Date</em></a></li>
     </c:otherwise>
    </c:choose>   
   </ul>

@@ -50,7 +50,7 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.promotions.dao.AdCategoryList;
 import com.concursive.connect.web.modules.promotions.utils.AdCounter;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -86,7 +86,7 @@ public class PromotionsListCounterPortlet extends GenericPortlet {
     }
 
     // Build a list of records
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     try {
       // Build ad counts

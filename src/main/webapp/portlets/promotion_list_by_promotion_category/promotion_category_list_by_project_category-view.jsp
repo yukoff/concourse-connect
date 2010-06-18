@@ -75,24 +75,59 @@
 
 %>
 <h3><c:out value="${title}"/></h3>
+  <div class="box140top">
   <% int lastProjectCategoryId = -1; %>
   <c:forEach items="${dividedLists}" var="cList">
   <ul<c:if test="<%= lists.size() > 1 %>"> style="width:<%= 100 / lists.size() %>%"</c:if>>
-    <c:forEach items="${cList}" var="promotionCategory">
-      <c:set var="promotionCategoryDescription" value="${promotionCategory.itemName}"/>
+    <c:forEach items="${cList}" var="thisPromotionCategory">
+      <c:set var="promotionCategoryDescription" value="${thisPromotionCategory.itemName}"/>
       <jsp:useBean id="promotionCategoryDescription" type="java.lang.String" />
-      <c:set var="promotionCategory" value="${promotionCategory}"/>
-      <jsp:useBean id="promotionCategory" class="com.concursive.connect.web.modules.promotions.dao.AdCategory" />
+      <c:set var="thisPromotionCategory" value="${thisPromotionCategory}"/>
+      <jsp:useBean id="thisPromotionCategory" class="com.concursive.connect.web.modules.promotions.dao.AdCategory" />
       	<c:if test="${showProjectCategoryNameInCategoryList eq 'true'}">
-	      	<c:if test="<%= (lastProjectCategoryId != promotionCategory.getProjectCategoryId()) %>" >
-		        <li class="listing"><h4><c:out value="${promotionCategory.projectCategoryDescription}" /></h4></li>
+	      	<c:if test="<%= (lastProjectCategoryId != thisPromotionCategory.getProjectCategoryId()) %>" >
+				<div class="boxHeader">
+		        	<li class="listing"><h4><c:out value="${thisPromotionCategory.projectCategoryDescription}" /></h4></li>
+				</div>
 			</c:if>
 		</c:if>
-		<li class="listing"><a href='${ctx}${hasMoreURL}/<%= StringUtils.toHtmlValue(StringUtils.replace(promotionCategoryDescription," ", "_").toLowerCase()) %>' title='<c:out value="${promotionCategory.itemName}" />'><c:out value="${promotionCategory.itemName}" /></a></li>
-		<% lastProjectCategoryId = promotionCategory.getProjectCategoryId(); %>
+		<div class="boxContent">
+         <c:choose>
+	        <c:when test="${!empty promotionCategory and promotionCategory.id eq thisPromotionCategory.id}">
+  	          <c:set var="active"> class="selected"</c:set>
+      	    </c:when>
+          	<c:otherwise>
+            		<c:set var="active" value=""/>
+          	</c:otherwise>
+        </c:choose>
+		<c:set var="paramExists" />
+        <c:if test="${!empty sortOrder}">
+   	        <c:set var="paramExists">?</c:set>
+         	<c:set var="sortOrderString">sort=${sortOrder}</c:set>
+  	    </c:if>
+       <c:if test="${!empty query}">
+       <c:choose>
+        <c:when test="${empty paramExists}">
+ 	    	<c:set var="queryString">query=${query}&location=${location}</c:set>
+	     </c:when>
+	     <c:otherwise>
+ 	       <c:set var="queryString">&query=${query}&location=${location}</c:set>
+	     </c:otherwise>
+	     </c:choose>
+  	     <c:set var="paramExists">?</c:set>
+    	</c:if>
+		<li  ${active}>
+			<a href='${ctx}${hasMoreURL}/${thisPromotionCategory.normalizedCategoryName}/${thisPromotionCategory.id}${paramExists}${sortOrderString}${queryString}' title='<c:out value="${thisPromotionCategory.itemName}" />'><c:out value="${thisPromotionCategory.itemName}" /></a>
+			<c:if test="${!empty promotionCategoryCountMap[thisPromotionCategory]}">
+				(<c:out value="${promotionCategoryCountMap[thisPromotionCategory]}" />)
+			</c:if>
+		</li>
+		<% lastProjectCategoryId = thisPromotionCategory.getProjectCategoryId(); %>
+    	</div>
     </c:forEach>
   </ul>
 </c:forEach>
-  <c:if test="${hasMore eq 'true'}">
-    <p class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>">more</a></p>
-  </c:if>
+</div>
+<c:if test="${hasMore eq 'true'}">
+  <p class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>"><c:out value="${hasMoreTitle}"/></a></p>
+</c:if>

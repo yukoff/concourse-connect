@@ -97,21 +97,41 @@
           if (se.isCollapsed() && !ed.dom.getParent(se.getNode(), 'A'))
             return;
 
-          if (ed.dom.getParent(se.getNode(), 'IMG')) {
-            alert('Wiki links can only be used on text.');
+          if (ed.dom.getParent(se.getNode(), 'H1') ||
+              ed.dom.getParent(se.getNode(), 'H2') ||
+              ed.dom.getParent(se.getNode(), 'H3') ||
+              ed.dom.getParent(se.getNode(), 'H4') ||
+              ed.dom.getParent(se.getNode(), 'H5') ||
+              ed.dom.getParent(se.getNode(), 'H6') ||
+              ed.dom.getParent(se.getNode(), 'EM') ||
+              ed.dom.getParent(se.getNode(), 'STRONG')) {
+            alert('Wiki links can only be used on unformatted paragraph body text.');
             return;
           }
 
-          var content = se.getContent();
+          // Set default form data
+          var content = "";
           var link = "";
-          var contentNode = ed.dom.getParent(se.getNode(), 'A');
-          if (contentNode) {
-            content = contentNode.firstChild.nodeValue;
-            link = ed.dom.getAttrib(ed.dom.getParent(se.getNode(), 'A'), 'href');
+
+          // <a href>text</a>
+          // <a href><img/></a>
+
+          // Get the link under any condition
+          var parentLink = ed.dom.getParent(se.getNode(), 'A');
+          if (parentLink) {
+            link = ed.dom.getAttrib(parentLink, 'href');
+          }
+
+          // Get the link text if not an image
+          if (!ed.dom.getParent(se.getNode(), 'IMG')) {
+            content = se.getContent();
+            if (parentLink) {
+              content = parentLink.firstChild.nodeValue;
+            }
           }
 
           ed.windowManager.open({
-            file : teamelements_ctx + "/ProjectManagementWiki.do?command=LinkSelect&popup=true&pid=" + ilId + "&content=" + escape(content) +"&link=" + escape(link),
+            file : teamelements_ctx + "/ProjectManagementWiki.do?command=LinkSelect&popup=true&pid=" + ilId + "&content=" + encodeURIComponent(content) +"&link=" + encodeURIComponent(link),
             width : 440 + parseInt(ed.getLang('advlink.delta_width', 0)),
             height : 480 + parseInt(ed.getLang('advlink.delta_height', 0)),
             inline : 1
@@ -127,10 +147,10 @@
 
         ed.addShortcut('ctrl+k', 'advlink.advlink_desc', 'wikiLink');
 
-        ed.onNodeChange.add(function(ed, cm, n, co) {
-          cm.setActive('link', n.nodeName == 'A' && !n.name  && !n.nodeName == 'IMG');
-          cm.setDisabled('link', (co && n.nodeName != 'A') || (n.nodeName == 'IMG'));
-        });
+//        ed.onNodeChange.add(function(ed, cm, n, co) {
+//          cm.setActive('link', n.nodeName == 'A' && !n.name  && !n.nodeName == 'IMG');
+//          cm.setDisabled('link', (co && n.nodeName != 'A') || (n.nodeName == 'IMG'));
+//        });
       }
 
     });
@@ -175,6 +195,7 @@
     // Start the editor
     tinyMCE.init({
 
+      strict_loading_mode : true,
       width : "100%",
       mode : "exact",
 	    elements : ta,
@@ -188,8 +209,9 @@
       theme_advanced_toolbar_align : "left",
       theme_advanced_statusbar_location : "none",
       theme_advanced_blockformats : "p,h2,h3,h4,h5,h6,pre",
+      extended_valid_elements: "object[width|height|type|data],param[name|value],embed[src|type|width|height|flashvars|wmode]",      
       plugins : "safari,table,-wikiImage,-wikiLink,-wikiVideo,inlinepopups",
-      content_css : "<%= RequestUtils.getAbsoluteServerUrl(request) %>/css/editor.css?v=<%= ApplicationVersion.APP_VERSION %>"
+      content_css : "${ctx}/css/editor.css?v=<%= ApplicationVersion.APP_VERSION %>,${ctx}/css/ccp-typography.css?v=<%= ApplicationVersion.APP_VERSION %>"
     });
   }
 </script>

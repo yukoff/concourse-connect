@@ -206,6 +206,41 @@
     <page name="details">
       <row>
         <column width="250">
+          <!-- todo: make the urls work; need the portlet to generate them -->
+          <!--
+          <portlet name="ProjectActionsPortlet" class="button-list-vertical-">
+            <title>Quick Actions</title>
+            <urls>
+              <value>
+                <![CDATA[
+                  <content>Back to Documents</content>
+                  <title>Return to the list of documents</title>
+                  <href>/show/${project.uniqueId}/documents</href>
+                  <permission>project-documents-view</permission>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Back to Folder</content>
+                  <title>Return to the parent folder for this document</title>
+                  <href>/show/${project.uniqueId}/folder/${currentFolder.id}</href>
+                  <permission>project-documents-view</permission>
+                ]]>
+              </value>
+              <value>
+                <![CDATA[
+                  <content>Add a Version</content>
+                  <title>Upload a new version of this document</title>
+                  <href>/create/${project.uniqueId}/file-version/${id}?folder=${currentFolder.id}</href>
+                  <permission>project-documents-folders-add</permission>
+                ]]>
+              </value>
+            </urls>
+            <portlet-events>
+              <consumes-data>currentFolder</consumes-data>
+            </portlet-events>
+          </portlet>
+          -->
           <portlet name="ProjectPromotionsPortlet" class="basic-list ">
             <title>Promotions</title>
             <category>${category}</category>

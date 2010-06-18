@@ -144,7 +144,7 @@
     <!-- Project Category -->
     <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" id="projectCategoryList">
       <property>categoryId</property>
-      <property>categoryName</property>
+      <property>categoryDescription</property>
       <property>parentCategoryId</property>
       <property>topLevelOnly</property>
       <property>enabled</property>
@@ -152,6 +152,7 @@
 	  </map>
     <map class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" id="projectCategory" shareKey="true">
       <property alias="guid">id</property>
+      <property>label</property>
       <property>description</property>
       <property>enabled</property>
       <property>level</property>
@@ -502,6 +503,12 @@
       <property>radioPhone</property>
       <property>webPage</property>
       <property>twitterId</property>
+      <property>facebookPage</property>
+      <property>youtubeChannelId</property>
+      <property>ustreamId</property>
+      <property>livestreamId</property>
+      <property>justintvId</property>
+      <property>qikId</property>
       <property>addressTo</property>
       <property>addressLine1</property>
       <property>addressLine2</property>
@@ -537,6 +544,7 @@
       <property>features.showAds</property>
       <property>features.showProfile</property>
       <property>features.showMessages</property>
+      <property>features.showWebcasts</property>
 
       <property>features.labelDashboard</property>
       <property>features.labelWiki</property>
@@ -555,6 +563,7 @@
       <property>features.labelAds</property>
       <property>features.labelProfile</property>
       <property>features.labelMessages</property>
+      <property>features.labelWebcasts</property>
 
       <property>features.orderDashboard</property>
       <property>features.orderWiki</property>
@@ -573,6 +582,7 @@
       <property>features.orderAds</property>
       <property>features.orderProfile</property>
       <property>features.orderMessages</property>
+      <property>features.orderWebcasts</property>      
     </map>
     <map class="com.concursive.connect.web.modules.profile.dao.ProjectFeatures" id="projectFeatures" note="updates only" />
     <map class="com.concursive.connect.web.modules.tools.dao.ProjectCRM" id="projectCRM" note="updates only" />
@@ -1138,6 +1148,47 @@
       <property lookup="user">deletedByUserId</property>
       <property>lastReplyDate</property>
       <property lookup="project">linkProjectId</property>
+    </map>
+
+    <map class="com.concursive.connect.web.modules.activity.dao.ProjectHistoryList" id="activityList">
+      <property>projectId</property>
+      <property>parentId</property>
+      <property>topId</property>
+      <property>enteredBy</property>
+      <property>position</property>
+      <property>relativeDate</property>
+      <property>relativeEnteredBy</property>
+      <property>forMember</property>
+      <property>userId</property>
+      <property>forUserUpdates</property>
+      <property>userUpdatesOwnerId</property>
+      <property>userUpdatesUserId</property>
+      <property>userUpdatesOwnerProfileId</property>
+    </map>
+    <map class="com.concursive.connect.web.modules.activity.dao.ProjectHistory" id="activity">
+      <property alias="guid">id</property>
+      <property lookup="project">projectId</property>
+      <property lookup="user">enteredBy</property>
+      <property>description</property>
+      <property type="integer">eventType</property>
+      <!-- optional -->
+      <property>entered</property>
+      <property>enabled</property>
+      <!-- for future entries -->
+      <property>linkStartDate</property>
+      <!-- for object linking -->
+      <property>linkObject</property>
+      <property>linkItemId</property>
+      <!-- for related entries -->
+      <property lookup="activity">topId</property>
+      <property lookup="activity">parentId</property>
+      <property>relativeDate</property>
+      <property lookup="user">relativeEnteredBy</property>
+      <property>position</property>
+      <property>threadPosition</property>
+      <property>indent</property>
+      <property>lineage</property>
+      <property>childCount</property>
     </map>
 
     <!-- IndexerQueryResult -->

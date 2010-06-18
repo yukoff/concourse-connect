@@ -90,7 +90,7 @@ public class ClassifiedsListViewer implements IPortletViewer {
     }
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Determine the paging url
     PortletURL renderURL = response.createRenderURL();

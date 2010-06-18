@@ -151,7 +151,7 @@ public class SetProjectGeocode extends ObjectHookComponent implements ComponentI
       db = getConnection(context);
       thisProject.updateGeocode(db);
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.error("Could not update geocode", e);
     } finally {
       freeConnection(context, db);
     }

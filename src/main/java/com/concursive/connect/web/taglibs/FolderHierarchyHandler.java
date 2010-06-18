@@ -145,7 +145,7 @@ public class FolderHierarchyHandler extends TagSupport {
           final User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
           final String language = (null != user.getLanguage())
               ? user.getLanguage()
-              : prefs.get("SYSTEM.LANGUAGE");
+              : prefs.get(ApplicationPrefs.LANGUAGE);
           final String topFolderName =
               prefs.getLabel("folderHierarchyHandler.topFolder", language);
           this.pageContext.getOut().write(((null != topFolderName)

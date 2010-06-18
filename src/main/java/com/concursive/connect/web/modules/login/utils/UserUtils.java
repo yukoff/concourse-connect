@@ -46,11 +46,16 @@
 
 package com.concursive.connect.web.modules.login.utils;
 
+import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.objects.ObjectUtils;
 import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.workflow.ObjectHookAction;
+import com.concursive.commons.workflow.ObjectHookManager;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.config.ApplicationPrefs;
+import com.concursive.connect.indexer.IndexEvent;
+import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.web.modules.common.social.tagging.dao.TagList;
 import com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplate;
 import com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplateList;
@@ -75,17 +80,16 @@ import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.quartz.Scheduler;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Utilities for working with users of the system
@@ -175,6 +179,7 @@ public class UserUtils {
     user.setGroupId(1);
     user.setFirstName("Guest");
     user.setEnabled(true);
+    // @todo Use applicationPrefs for the correct defaults
     // Set a default time zone for user
     if (user.getTimeZone() == null) {
       user.setTimeZone(TimeZone.getDefault().getID());
@@ -190,25 +195,50 @@ public class UserUtils {
     return user;
   }
 
-  public static void createLoggedInUser(User thisUser, Connection db) throws SQLException {
+  public static void createLoggedInUser(User thisUser, Connection db, ApplicationPrefs prefs, ServletContext context) throws SQLException {
     // Apply limitations
     thisUser.setCurrentAccountSize(FileItemVersionList.queryOwnerSize(db, thisUser.getId()));
     // Use standard template engine
     thisUser.setTemplate("template0");
     // Set a default time zone for user
     if (thisUser.getTimeZone() == null) {
-      thisUser.setTimeZone(TimeZone.getDefault().getID());
+      thisUser.setTimeZone(prefs.get(ApplicationPrefs.TIMEZONE));
     }
     // Set a default currency
     if (thisUser.getCurrency() == null) {
-      thisUser.setCurrency(NumberFormat.getCurrencyInstance().getCurrency().getCurrencyCode());
+      thisUser.setCurrency(prefs.get(ApplicationPrefs.CURRENCY));
     }
     // Set a default locale
     if (thisUser.getLanguage() == null) {
-      thisUser.setLanguage("en_US");
+      thisUser.setLanguage(prefs.get(ApplicationPrefs.LANGUAGE));
     }
     // Show recently accessed projects
     thisUser.queryRecentlyAccessedProjects(db);
+    // Make sure the user has a profile
+    if (thisUser.getProfileProjectId() == -1) {
+      // @todo find out how the user profile is not already generated!
+      LOG.warn("Adding a user profile (should have already existed)");
+      UserUtils.addUserProfile(db, thisUser, prefs);
+
+      // processInsertHook
+      boolean sslEnabled = "true".equals(prefs.get("SSL"));
+      String url = ("http" + (sslEnabled ? "s" : "") + "://" +
+          prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME) +
+          (!"80".equals(prefs.get(ApplicationPrefs.WEB_PORT)) && !"443".equals(prefs.get(ApplicationPrefs.WEB_PORT)) ? ":" + prefs.get(ApplicationPrefs.WEB_PORT) : "") +
+          prefs.get(ApplicationPrefs.WEB_CONTEXT));
+      ObjectHookManager hookManager = (ObjectHookManager) context.getAttribute(Constants.OBJECT_HOOK_MANAGER);
+      hookManager.process(ObjectHookAction.INSERT, null, thisUser.getProfileProject(), thisUser.getId(), url, url, null);
+
+      // indexer
+      Scheduler scheduler = (Scheduler) context.getAttribute(Constants.SCHEDULER);
+      try {
+        IndexEvent indexEvent = new IndexEvent(thisUser.getProfileProject(), IndexEvent.ADD);
+        ((Vector) scheduler.getContext().get("IndexArray")).add(indexEvent);
+        scheduler.triggerJob("indexer", (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
+      } catch (Exception e) {
+        LOG.error("createUser-scheduler-index-profile", e);
+      }
+    }
   }
 
   public static String generateGuid(User thisUser) {
@@ -247,7 +277,15 @@ public class UserUtils {
     return null;
   }
 
-  public static Project addUserProfile(Connection db, User user, ApplicationPrefs prefs) throws SQLException {
+  /**
+   * Creates a user's profile and sets the id on the user object
+   *
+   * @param db
+   * @param user
+   * @param prefs
+   * @throws SQLException
+   */
+  public static void addUserProfile(Connection db, User user, ApplicationPrefs prefs) throws SQLException {
     boolean autoCommit = db.getAutoCommit();
     try {
       if (autoCommit) {
@@ -257,14 +295,34 @@ public class UserUtils {
       ProjectFeatures features = new ProjectFeatures();
       ArrayList<String> modules = new ArrayList<String>();
       modules.add("Profile");
-      modules.add("News=Blog");
-      modules.add("Wiki");
-      modules.add("Classifieds");
-      modules.add("Documents");
-      modules.add("Lists");
-      modules.add("Badges");
-      modules.add("Team=Friends");
-      modules.add("Messages");
+      String enabledModules = prefs.get(ApplicationPrefs.DEFAULT_USER_PROFILE_TABS);
+//      if (enabledModules == null || enabledModules.contains("Reviews")) {
+//       modules.add("Reviews");
+//      }
+      if (enabledModules == null || enabledModules.contains("Blog")) {
+        modules.add("News=My Blog");
+      }
+      if (enabledModules == null || enabledModules.contains("Wiki")) {
+        modules.add("Wiki=About Me");
+      }
+      if (enabledModules == null || enabledModules.contains("Classifieds")) {
+        modules.add("My Classifieds");
+      }
+      if (enabledModules == null || enabledModules.contains("Documents")) {
+        modules.add("Documents=My Documents");
+      }
+      if (enabledModules == null || enabledModules.contains("Lists")) {
+        modules.add("My Lists");
+      }
+      if (enabledModules == null || enabledModules.contains("Badges")) {
+        modules.add("My Badges");
+      }
+      if (enabledModules == null || enabledModules.contains("Friends")) {
+        modules.add("Team=Friends");
+      }
+      if (enabledModules == null || enabledModules.contains("Messages")) {
+        modules.add("Messages");
+      }
       int count = 0;
       for (String modulePreference : modules) {
         String moduleName = null;
@@ -282,14 +340,14 @@ public class UserUtils {
       }
       // Determine the category id
       ProjectCategoryList projectCategoryList = new ProjectCategoryList();
-      projectCategoryList.setCategoryName("People");
+      projectCategoryList.setCategoryDescription("People");
       projectCategoryList.buildList(db);
       ProjectCategory people = projectCategoryList.getFromValue("People");
       // Create a user project profile
       Project project = new Project();
       project.setInstanceId(user.getInstanceId());
       project.setGroupId(1);
-      project.setApproved(true);
+      project.setApproved(user.getEnabled());
       project.setProfile(true);
       project.setCategoryId(people.getId());
       project.setOwner(user.getId());
@@ -343,14 +401,14 @@ public class UserUtils {
       member.setEnteredBy(user.getId());
       member.setModifiedBy(user.getId());
       member.insert(db);
-      // Success
-      CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, user.getId());
       if (autoCommit) {
         db.commit();
       }
-      return project;
+      // Success, now that the database is committed, invalidate the cache
+      CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, user.getId());
+      CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, project.getId());
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.error("addUserProfile", e);
       if (autoCommit) {
         db.rollback();
       }
@@ -372,7 +430,22 @@ public class UserUtils {
     pst.setInt(++i, user.getId());
     int count = pst.executeUpdate();
     pst.close();
+    // Relate the two objects
+    user.setProfileProjectId(project.getId());
     CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, user.getId());
+    return count == 1;
+  }
+
+  public static boolean detachProfile(Connection db, int projectId) throws SQLException {
+    PreparedStatement pst = db.prepareStatement(
+        "UPDATE users " +
+            "SET profile_project_id = ? " +
+            "WHERE profile_project_id = ? ");
+    int i = 0;
+    DatabaseUtils.setInt(pst, ++i, -1);
+    pst.setInt(++i, projectId);
+    int count = pst.executeUpdate();
+    pst.close();
     return count == 1;
   }
 
@@ -383,7 +456,7 @@ public class UserUtils {
   public static void populateUserProfiles(Connection db) throws SQLException {
     // Determine the category id
     ProjectCategoryList projectCategoryList = new ProjectCategoryList();
-    projectCategoryList.setCategoryName("People");
+    projectCategoryList.setCategoryDescription("People");
     projectCategoryList.buildList(db);
     ProjectCategory people = projectCategoryList.getFromValue("People");
 

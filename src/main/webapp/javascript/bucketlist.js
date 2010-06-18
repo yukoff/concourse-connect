@@ -68,6 +68,7 @@ var bucketTooltipTargetId;
         // Load the tooltip
         // NOTE: global teamelements_ctx variable must exist
         var url = teamelements_ctx + "/ProjectManagementListsBuckets.do?command=Tooltip&id=" + target.id + "&out=text";
+        url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
         xmlhttp.open('get', url);
         xmlhttp.onreadystatechange = function() {
           if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -76,7 +77,7 @@ var bucketTooltipTargetId;
               bucketTooltip.cfg.setProperty('text', htmlData);
             }
           }
-        }
+        };
         xmlhttp.send(null);
       } else {
         this.cfg.setProperty('text', null);
@@ -287,6 +288,7 @@ function bucketToggle(columnId) {
 }
 
 function callBucket(url) {
+  url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
   xmlhttp.open('get', url);
   xmlhttp.onreadystatechange = handleBucketResponse;
   xmlhttp.send(null);
@@ -323,6 +325,7 @@ function handleBucketResponse() {
 }
 
 function callDeleteBucketItem(url) {
+  url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
   xmlhttp.open('get', url);
   xmlhttp.onreadystatechange = handleBucketDeleteResponse;
   xmlhttp.send(null);

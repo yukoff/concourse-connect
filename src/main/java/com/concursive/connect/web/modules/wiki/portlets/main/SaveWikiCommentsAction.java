@@ -90,7 +90,7 @@ public class SaveWikiCommentsAction implements IPortletAction {
     String comment = request.getParameter("comment");
 
     // Find the record to record comments against
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
     if (wiki.getId() > -1) {
       WikiComment wikiComment = new WikiComment();

@@ -50,7 +50,7 @@ import com.concursive.connect.web.modules.blog.dao.BlogPostCategoryList;
 import com.concursive.connect.web.modules.blog.utils.BlogPostCounter;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -85,7 +85,7 @@ public class BlogListCounterPortlet extends GenericPortlet {
     }
 
     // Build a list of records
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     try {
       // Build news counts

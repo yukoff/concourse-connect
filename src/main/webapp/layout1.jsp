@@ -55,10 +55,12 @@
 %>
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=8" />
   <title>Window</title>
   <jsp:include page="css_include.jsp" flush="true"/>
 </head>
-<body style="background-color: #FFFFFF !important; margin: 0 !important; padding: 0 !important">
+<body style="background: #FFFFFF none;  margin: 0 !important; padding: 0 !important;">
   <% boolean isPrintButton = "true".equals(request.getParameter("printButton")); %>
   <ccp:evaluate if="<%= isPrintButton %>">
     <table border="0" cellpadding="4" cellspacing="0" id="noPrint" width="100%">

@@ -1,5 +1,5 @@
 #!/bin/sh                                                                                
-//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/concursive-commons-20091210.jar:target/lib/concourseconnect.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/concursive-commons-20100517.jar:target/lib/concourseconnect.jar:lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/opencsv-1.8.jar bsh.Interpreter "$0" "$@"
 
 // Dynamically add to the classpath
 File libDir = new File("lib");
@@ -78,7 +78,10 @@ String[] nextLine = reader.readNext();
 //&latlng=38974431,-77643368
 
 int projectNameColumn = -1;
+int projectDescriptionColumn = -1;
+int projectKeywordsColumn = -1;
 int projectAddressColumn = -1;
+int projectAddress2Column = -1;
 int projectCityColumn = -1;
 int projectStateColumn = -1;
 int projectZipColumn = -1;
@@ -93,33 +96,42 @@ int projectWebsiteColumn = -1;
 int projectSICColumn = -1;
 
 for (int i = 0; i < nextLine.length; i++) {
-  if (nextLine[i].equals("COMPANY_NAME")) {
+  if (nextLine[i].equalsIgnoreCase("NAME") || nextLine[i].equalsIgnoreCase("COMPANY_NAME")) {
     projectNameColumn = i;
-  } else if (nextLine[i].equals("LATITUDE")) {
+  } else if (nextLine[i].equalsIgnoreCase("DESCRIPTION") || nextLine[i].equalsIgnoreCase("SHORT_DESCRIPTION")) {
+    projectDescriptionColumn = i;
+  } else if (nextLine[i].equalsIgnoreCase("KEYWORDS")) {
+    projectKeywordsColumn = i;
+  } else if (nextLine[i].equalsIgnoreCase("LATITUDE") || nextLine[i].equalsIgnoreCase("LAT")) {
     projectLatitudeColumn = i;
-  } else if (nextLine[i].equals("LONGITUDE")) {
+  } else if (nextLine[i].equalsIgnoreCase("LONGITUDE") || nextLine[i].equalsIgnoreCase("LONG")) {
     projectLongitudeColumn = i;
-  } else if (nextLine[i].equals("PRIMARY_PHONE")) {
+  } else if (nextLine[i].equalsIgnoreCase("PHONE") || nextLine[i].equalsIgnoreCase("PRIMARY_PHONE")) {
     projectPhoneColumn = i;
-  } else if (nextLine[i].equals("PRIMARY_FAX")) {
+  } else if (nextLine[i].equalsIgnoreCase("FAX") || nextLine[i].equalsIgnoreCase("PRIMARY_FAX")) {
     projectFaxColumn = i;
-  } else if (nextLine[i].equals("PRIMARY_ADDRESS")) {
+  } else if (nextLine[i].equalsIgnoreCase("ADDRESS") || nextLine[i].equalsIgnoreCase("PRIMARY_ADDRESS")) {
     projectAddressColumn = i;
-  } else if (nextLine[i].equals("PRIMARY_CITY")) {
+  } else if (nextLine[i].equalsIgnoreCase("ADDRESS2") || nextLine[i].equalsIgnoreCase("PRIMARY_ADDRESS_2")) {
+    projectAddress2Column = i;
+  } else if (nextLine[i].equalsIgnoreCase("CITY") || nextLine[i].equalsIgnoreCase("PRIMARY_CITY")) {
     projectCityColumn = i;
-  } else if (nextLine[i].equals("PRIMARY_STATE")) {
+  } else if (nextLine[i].equalsIgnoreCase("STATE") || nextLine[i].equalsIgnoreCase("PRIMARY_STATE")) {
     projectStateColumn = i;
-  } else if (nextLine[i].equals("PRIMARY_ZIP_CODE")) {
+  } else if (nextLine[i].equalsIgnoreCase("ZIP") ||
+      nextLine[i].equalsIgnoreCase("ZIP_CODE") ||
+      nextLine[i].equalsIgnoreCase("POSTAL_CODE") ||
+      nextLine[i].equalsIgnoreCase("PRIMARY_ZIP_CODE")) {
     projectZipColumn = i;
-  } else if (nextLine[i].equals("PROJECT_CATEGORY")){
+  } else if (nextLine[i].equalsIgnoreCase("CATEGORY") || nextLine[i].equalsIgnoreCase("PROJECT_CATEGORY")) {
     projectCategoryColumn = i;
-  } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY1")){
+  } else if (nextLine[i].equalsIgnoreCase("SUB_CATEGORY1") || nextLine[i].equalsIgnoreCase("PROJECT_SUB_CATEGORY1")) {
     projectSubCategory1Column = i;
-  } else if (nextLine[i].equals("PROJECT_SUB_CATEGORY2")){
+  } else if (nextLine[i].equalsIgnoreCase("SUB_CATEGORY2") || nextLine[i].equalsIgnoreCase("PROJECT_SUB_CATEGORY2")) {
     projectSubCategory2Column = i;
-  } else if (nextLine[i].equals("PROJECT_WEB_SITE")){
+  } else if (nextLine[i].equalsIgnoreCase("WEB_SITE") || nextLine[i].equalsIgnoreCase("PROJECT_WEB_SITE")) {
     projectWebsiteColumn = i;
-  } else if (nextLine[i].equals("SIC Code")) {
+  } else if (nextLine[i].equalsIgnoreCase("SIC") || nextLine[i].equalsIgnoreCase("SIC Code")) {
      projectSICColumn = i;
   }
 }
@@ -137,8 +149,7 @@ int primeUserId = -1;
   meta.add("id");
   conn.setTransactionMeta(meta);
 
-  // Find the user...
-  // Note that the user 'imports@connect321.com' must exist for this script to function...
+  // Find the system user...
   DataRecord record = new DataRecord();
   record.setName("userList");
   record.setAction(DataRecord.SELECT);
@@ -151,13 +162,13 @@ int primeUserId = -1;
   }
 
   if (conn.getRecordCount() == 0) {
-    System.out.println("Could not find a valid user");
+    System.out.println("Could not find a valid system user");
     System.exit(2);
   }
 
   int foundValue = Integer.parseInt(conn.getResponseValue("id"));
   primeUserId=foundValue;
-  System.out.println("Using Prime UserId of : " + primeUserId);
+  System.out.println("Using userId: " + primeUserId);
 }
 
 // Insert the projects
@@ -175,23 +186,60 @@ while ((nextLine = reader.readNext()) != null &&
   }
 
   String projectNameValue = nextLine[projectNameColumn].trim();
+  String projectDescriptionValue = nextLine[projectDescriptionColumn].trim();
+  String projectKeywordsValue = "";
+  if (projectKeywordsColumn != -1) {
+    projectKeywordsValue = nextLine[projectKeywordsColumn].trim();
+  }
   String projectLatitudeValue = "";
   if (projectLatitudeColumn != -1){
     projectLatitudeValue = nextLine[projectLatitudeColumn].trim();
   }
 
   String projectLongitudeValue = "";
-  if (projectLongitudeColumn != -1){
+  if (projectLongitudeColumn != -1) {
     projectLongitudeValue = nextLine[projectLongitudeColumn].trim();
   }
 
-  String projectPhoneValue = nextLine[projectPhoneColumn].trim();
-  String projectFaxValue = nextLine[projectFaxColumn].trim();
-  String projectAddressValue = nextLine[projectAddressColumn].trim();
-  String projectCityValue = nextLine[projectCityColumn].trim();
-  String projectStateValue = nextLine[projectStateColumn].trim();
-  String projectZipValue = nextLine[projectZipColumn].trim();
-  String projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
+  String projectPhoneValue = null;
+  if (projectPhoneColumn != -1) {
+    projectPhoneValue = nextLine[projectPhoneColumn].trim();
+  }
+
+  String projectFaxValue = null;
+  if (projectAddressColumn != -1) {
+    projectFaxValue = nextLine[projectFaxColumn].trim();
+  }
+
+  String projectAddressValue = null;
+  if (projectAddressColumn != -1) {
+    projectAddressValue = nextLine[projectAddressColumn].trim();
+  }
+
+  String projectAddress2Value = null;
+  if (projectAddress2Column != -1) {
+    projectAddress2Column = nextLine[projectAddress2Column].trim();
+  }
+
+  String projectCityValue = null;
+  if (projectCityColumn != -1) {
+    projectCityValue = nextLine[projectCityColumn].trim();
+  }
+
+  String projectStateValue = null;
+  if (projectStateColumn != -1) {
+    projectStateValue = nextLine[projectStateColumn].trim();
+  }
+
+  String projectZipValue = null;
+  if (projectZipColumn != -1) {
+    projectZipValue = nextLine[projectZipColumn].trim();
+  }
+
+  String projectWebsiteValue = null;
+  if (projectWebsiteColumn != -1) {
+    projectWebsiteValue = nextLine[projectWebsiteColumn].trim();
+  }
 
   // normalizing website addresses
   if (StringUtils.hasText(projectWebsiteValue)){
@@ -225,13 +273,12 @@ while ((nextLine = reader.readNext()) != null &&
     conn.setAutoCommit(true);
 
     {
-      // See if the project exists and update it
+      // See if the listing exists and update it
       ArrayList meta = new ArrayList();
       meta.add("id");
       meta.add("title");
       meta.add("latitude");
       meta.add("longitude");
-      meta.add("businessPhone");
       conn.setTransactionMeta(meta);
 
       DataRecord record = new DataRecord();
@@ -412,12 +459,18 @@ while ((nextLine = reader.readNext()) != null &&
         record.addField("subCategory1Id", existingSubCategory1Id);
       }
       record.addField("title", projectNameValue);
-      if (StringUtils.hasText(projectSubCategory2Value)) {
+      if (StringUtils.hasText(projectKeywordsValue)) {
+        record.addField("keywords", projectKeywordsValue);
+      }
+      if (StringUtils.hasText(projectDescriptionValue)) {
+        record.addField("shortDescription", projectDescriptionValue);
+      } else if (StringUtils.hasText(projectSubCategory2Value)) {
         record.addField("shortDescription", projectSubCategory2Value);
       } else {
         record.addField("shortDescription", projectNameValue);
       }
       record.addField("addressLine1", projectAddressValue);
+      record.addField("addressLine2", projectAddress2Value);
       record.addField("city", projectCityValue);
       record.addField("state", projectStateValue);
       record.addField("postalCode", projectZipValue);
@@ -449,7 +502,12 @@ while ((nextLine = reader.readNext()) != null &&
           record.addField("subCategory2Id", existingSubCategory2Id);
         }
         record.addField("title", projectNameValue);
-        if (StringUtils.hasText(projectSubCategory2Value)) {
+        if (StringUtils.hasText(projectKeywordsValue)) {
+          record.addField("keywords", projectKeywordsValue);
+        }
+        if (StringUtils.hasText(projectDescriptionValue)) {
+          record.addField("shortDescription", projectDescriptionValue);
+        } else if (StringUtils.hasText(projectSubCategory2Value)) {
           record.addField("shortDescription", projectSubCategory2Value);
         } else {
           record.addField("shortDescription", projectNameValue);
@@ -458,6 +516,7 @@ while ((nextLine = reader.readNext()) != null &&
         record.addField("source", "imported");
         record.addField("approved", "true");
         record.addField("addressLine1", projectAddressValue);
+        record.addField("addressLine2", projectAddress2Value);
         record.addField("city", projectCityValue);
         record.addField("state", projectStateValue);
         record.addField("postalCode", projectZipValue);
@@ -470,7 +529,7 @@ while ((nextLine = reader.readNext()) != null &&
         record.addField("modifiedBy", primeUserId);
         record.addField("groupId", 1);
         record.addField("webPage", projectWebsiteValue);
-        // Setting access preferences
+        // Setting access preferences; GUESTS and PARTICIPANTS enabled
         record.addField("updateAllowGuests", "true");
         record.addField("allowGuests", "true");
         record.addField("updateAllowParticipants", "true");
@@ -479,17 +538,21 @@ while ((nextLine = reader.readNext()) != null &&
         record.addField("membershipRequired", "false");
         // Features
         record.addField("features.showProfile", "true");
-        record.addField("features.showNews", "true");
+        record.addField("features.showBlog", "true");
         record.addField("features.showWiki", "true");
         record.addField("features.showDiscussion", "true");
         record.addField("features.showCalendar", "true");
+        //record.addField("features.showCalendar", "false");
         record.addField("features.showReviews", "true");
         record.addField("features.showAds", "true");
+        //record.addField("features.showAds", "false");
         record.addField("features.showClassifieds", "true");
+        //record.addField("features.showClassifieds", "false");
         record.addField("features.showDocuments", "true");
         record.addField("features.showLists", "true");
         record.addField("features.showTeam", "true");
-        record.addField("features.showMessages", "true");
+        //record.addField("features.showMessages", "true");
+        record.addField("features.showMessages", "false");
         record.addField("features.showBadges", "false");
         conn.save(record);
       }

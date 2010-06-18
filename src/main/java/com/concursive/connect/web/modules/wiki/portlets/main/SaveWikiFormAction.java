@@ -90,7 +90,7 @@ public class SaveWikiFormAction implements IPortletAction {
     }
 
     // Update the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     boolean recordInserted = false;
     int resultCount = -1;
 

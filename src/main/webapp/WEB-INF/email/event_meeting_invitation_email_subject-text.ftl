@@ -1,1 +1,1 @@
-Meeting invitation
+Event invitation

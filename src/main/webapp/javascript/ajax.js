@@ -45,13 +45,15 @@
  */
 String.prototype.trim = function() {
 	return this.replace(/^\s+|\s+$/g,"");
-}
+};
+
 String.prototype.ltrim = function() {
 	return this.replace(/^\s+/,"");
-}
+};
+
 String.prototype.rtrim = function() {
 	return this.replace(/\s+$/,"");
-}
+};
 
 function myXMLHttpRequest() {
   var xmlhttplocal;
@@ -70,6 +72,7 @@ function myXMLHttpRequest() {
 var xmlhttp = myXMLHttpRequest();
 
 function callURL(url) {
+  url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
 	xmlhttp.open('get', url);
   xmlhttp.onreadystatechange = handleResponse;
   xmlhttp.send(null);
@@ -94,7 +97,7 @@ function changeText(div2show,text) {
   // Detect Browser
   var IE = (document.all) ? 1 : 0;
   var DOM = 0;
-  if (parseInt(navigator.appVersion) >=5) {DOM=1};
+  if (parseInt(navigator.appVersion) >=5) {DOM=1;};
   // Grab the content from the requested "div" and show it in the "container"
   if (DOM) {
       document.getElementById(div2show).innerHTML=text;
@@ -108,10 +111,11 @@ function changeText(div2show,text) {
   @id is the div id
  */
 function sendRequest(url,id) {
-    var xmlHttpReq = myXMLHttpRequest();
-    xmlHttpReq.open('get', url);
-    xmlHttpReq.onreadystatechange = function(){getResponse(xmlHttpReq,id);};
-    xmlHttpReq.send(null);
+  var xmlHttpReq = myXMLHttpRequest();
+  url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
+  xmlHttpReq.open('get', url);
+  xmlHttpReq.onreadystatechange = function(){getResponse(xmlHttpReq,id);};
+  xmlHttpReq.send(null);
 }
 
 
@@ -128,18 +132,39 @@ function getResponse(xmlHttpReq,id) {
 }
 
 function copyRequest(url,id,contentId) {
-    var xmlHttpReq = myXMLHttpRequest();
-    xmlHttpReq.open('get', url);
-    xmlHttpReq.onreadystatechange = function(){getCopyResponse(xmlHttpReq, id, contentId);};
-    xmlHttpReq.send(null);
+  var xmlHttpReq = myXMLHttpRequest();
+  url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
+  xmlHttpReq.open('get', url);
+  xmlHttpReq.onreadystatechange = function(){getCopyResponse(xmlHttpReq, id, contentId);};
+  xmlHttpReq.send(null);
 }
 
-function getCopyResponse(xmlHttpReq,id, contentId) {
+function getCopyResponse(xmlHttpReq,id,contentId) {
     if(xmlHttpReq.readyState == 4){
     if (xmlHttpReq.status == 200){
         var viewer = document.getElementById(id) ;
         var content = document.getElementById(contentId);
         viewer.innerHTML=content.innerHTML;
+    }
+  }
+}
+
+function callbackRequest(url,callbackFunction,param) {
+    var xmlHttpReq = myXMLHttpRequest();
+    url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
+    xmlHttpReq.open('get', url);
+    xmlHttpReq.onreadystatechange = function(){getCallbackResponse(xmlHttpReq,callbackFunction,param);};
+    xmlHttpReq.send(null);
+}
+
+function getCallbackResponse(xmlHttpReq,callbackFunction,param) {
+    if(xmlHttpReq.readyState == 4){
+    if (xmlHttpReq.status == 200){
+      if (arguments.length == 3) {
+        eval(callbackFunction + "('" + param + "');");
+      } else {
+        eval(callbackFunction);
+      }
     }
   }
 }

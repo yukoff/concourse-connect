@@ -68,7 +68,7 @@
     confirmDelete('<%= ctx %>/ProjectManagementWiki.do?command=DeleteComment&cid=' + thisCommentId + '&wikiId=' + thisWikiId + '&pid=' + thisPrId);
   }
   function editItem() {
-    popURL('<%= ctx %>/ProjectManagementWiki.do?command=EditComment&cid=' + thisCommentId + '&wikiId=' + thisWikiId + '&pid=' + thisPrId + '&popup=true','Edit_Comment','500','500','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementWiki.do?command=EditComment&cid=' + thisCommentId + '&wikiId=' + thisWikiId + '&pid=' + thisPrId + '&popup=true','500','500','yes','yes');
   }
 </script>
 <%-- List Item Pop-up Menu --%>

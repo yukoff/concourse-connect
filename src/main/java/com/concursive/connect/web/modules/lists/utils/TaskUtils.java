@@ -48,6 +48,7 @@ package com.concursive.connect.web.modules.lists.utils;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.lists.dao.Task;
+import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 
@@ -62,15 +63,17 @@ import java.sql.SQLException;
  * @created Sep 9, 2008
  */
 public class TaskUtils {
-  public static String getLinkItemUrl(String ctx, Task t) {
+  public static String getLinkItemUrl(User user, String ctx, Task t) {
     if (t.getLinkModuleId() == -1 || t.getLinkItemId() == -1) {
       return null;
     } else if (t.getLinkModuleId() == Constants.TASK_CATEGORY_PROJECTS) {
       Project p = ProjectUtils.loadProject(t.getLinkItemId());
-      return ctx + "/show/" + p.getUniqueId();
-    } else {
-      return null;
+      // Only show links that the user has access to...
+      if (ProjectUtils.hasAccess(t.getLinkItemId(), user, "project-profile-view")) {
+        return ctx + "/show/" + p.getUniqueId();
+      }
     }
+    return null;
   }
 
   public static void removeLinkedItemId(Connection db, int linkModuleId, int linkItemId) throws SQLException {

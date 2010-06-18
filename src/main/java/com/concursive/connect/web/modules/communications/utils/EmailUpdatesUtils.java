@@ -146,7 +146,7 @@ public class EmailUpdatesUtils {
       chatter.setRangeStart(min);
       chatter.setRangeEnd(max);
       chatter.setPagedListInfo(info);
-      chatter.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
+      chatter.setForMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
       LinkedHashMap map = chatter.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
       activityCount += map.size();
       if (map.size() != 0) {
@@ -177,11 +177,11 @@ public class EmailUpdatesUtils {
         activities.setRangeEnd(max);
         activities.setObjectPreferences(types);
         activities.setPagedListInfo(info);
-        activities.forMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
+        activities.setForMemberEmailUpdates(user.getId(), emailUpdatesSchedule);
         LinkedHashMap activityMap = activities.getList(db, user.getId(), URLFactory.createURL(prefs.getPrefs()));
         activityCount += activityMap.size();
         if (activityMap.size() != 0) {
-          categories.put(category.getDescription(), activityMap);
+          categories.put(category.getLabel(), activityMap);
         }
       }
 

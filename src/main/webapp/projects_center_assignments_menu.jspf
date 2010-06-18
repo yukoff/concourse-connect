@@ -69,7 +69,7 @@
     return ypSlideOutMenu.displayDropMenu(id, loc);
   }
   function viewOutline() {
-    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&popup=true','Outline_Details','650','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&popup=true','650','375','yes','yes');
   }
   function editOutline() {
     document.location.href='<%= ctx %>/ProjectManagementRequirements.do?command=Modify&rid=' + thisRequirementId + '&pid=' + thisProjectId;
@@ -88,19 +88,19 @@
     }
   }
   function addFolder() {
-    popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=AddFolder&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&parentId=' + thisFolderId + '&prevMapId=' + thisMapId + '&prevIndent=' + thisIndent + '&popup=true&return=ProjectAssignments&param=' + thisProjectId + '','Assignment_Folder','650','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=AddFolder&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&parentId=' + thisFolderId + '&prevMapId=' + thisMapId + '&prevIndent=' + thisIndent + '&popup=true&return=ProjectAssignments&param=' + thisProjectId + '','650','375','yes','yes');
   }
   function updateFolder() {
-    popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=ModifyFolder&pid=' + thisProjectId + '&folderId=' + thisFolderId + '&popup=true&return=ProjectAssignments','Folder_Modify','650','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=ModifyFolder&pid=' + thisProjectId + '&folderId=' + thisFolderId + '&popup=true&return=ProjectAssignments','650','375','yes','yes');
   }
   function addActivity() {
-    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Add&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&folderId=' + thisFolderId + '&prevMapId=' + thisMapId + '&prevIndent=' + thisIndent + '&popup=true&return=ProjectAssignments&param=' + thisProjectId,'Assignment','650','560','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Add&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&folderId=' + thisFolderId + '&prevMapId=' + thisMapId + '&prevIndent=' + thisIndent + '&popup=true&return=ProjectAssignments&param=' + thisProjectId,'650','560','yes','yes');
   }
   function updateActivity() {
-    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Modify&pid=' + thisProjectId + '&aid=' + thisActivityId + '&popup=true&return=ProjectAssignments','Assignment_Modify','650','600','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Modify&pid=' + thisProjectId + '&aid=' + thisActivityId + '&popup=true&return=ProjectAssignments','650','600','yes','yes');
   }
   function moveActivity() {
-    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Move&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&popup=true&return=ProjectAssignments&param=' + thisProjectId,'Assignment_Move','400','475','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Move&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&popup=true&return=ProjectAssignments&param=' + thisProjectId,'400','475','yes','yes');
   }
   function moveItemRight() {
     scrollReload('<%= ctx %>/ProjectManagementAssignments.do?command=MoveItem&dir=r&pid=' + thisProjectId + '&rid=' + thisRequirementId + '&aid=' + thisActivityId + '&folderId=' + thisFolderId);

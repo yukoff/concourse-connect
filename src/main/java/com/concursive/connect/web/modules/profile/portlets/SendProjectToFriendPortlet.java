@@ -248,7 +248,7 @@ public class SendProjectToFriendPortlet extends GenericPortlet {
     String projectIdStr = request.getParameter(PROJECT_ID);
     SendProjectToFriendFormBean formBean = new SendProjectToFriendFormBean();
     PortalUtils.populateObject(formBean, request);
-    db = PortalUtils.getConnection(request);
+    db = PortalUtils.useConnection(request);
     if (formBean.getProjectId() <= 0) {
       formBean.addError("projectNotFoundError", "No existing project was specified");
     }

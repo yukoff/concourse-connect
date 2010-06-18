@@ -361,6 +361,7 @@
     <forward name="ModifyLocationOK" resource="/user_profile_location.jsp"/>
     <forward name="SaveLocationOK" resource="/Profile.do?command=Default"/>
     <forward name="ViewTimeOK" resource="/user_profile_show_time.jsp"/>
+    <forward name="MyProfileOK" resource="/user_profile_refresh.jsp"/>
   </action>
   <action name="Password" class="com.concursive.connect.web.modules.userprofile.actions.Profile">
     <bean name="password" class="com.concursive.connect.web.modules.login.beans.Password" scope="request"/>
@@ -628,6 +629,7 @@
     <forward name="SetupStep1OK" resource="/reports_setup_step1.jsp"/>
     <forward name="SetupStep2OK" resource="/reports_setup_step2.jsp"/>
     <forward name="DetailsOK" resource="/reports_details.jsp"/>
+    <forward name="CriteriaERROR" resource="/reports_details.jsp"/>
     <forward name="GenerateOK" resource="/reports_refresh.jsp"/>
     <forward name="UpdateOK" resource="/reports_refresh.jsp"/>
     <forward name="DeleteOK" resource="/reports_refresh.jsp"/>

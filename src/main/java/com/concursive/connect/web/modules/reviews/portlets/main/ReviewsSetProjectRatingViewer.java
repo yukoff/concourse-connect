@@ -98,7 +98,7 @@ public class ReviewsSetProjectRatingViewer implements IPortletViewer {
 
     PortletURL renderURL = response.createRenderURL();
     renderURL.setParameter("portlet-command", "setProjectRating");
-    renderURL.setParameter("v", "${vote}");
+    renderURL.setParameter("v", "{vote}");
     renderURL.setParameter("out", "text");
     if ("true".equals(request.getParameter("popup"))) {
       renderURL.setParameter("popup", "true");

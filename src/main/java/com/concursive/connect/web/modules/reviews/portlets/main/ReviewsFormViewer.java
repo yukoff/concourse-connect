@@ -94,7 +94,7 @@ public class ReviewsFormViewer implements IPortletViewer {
     }
 
     // Determine the connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Determine if adding or updating a record
     int reviewId = getPageViewAsInt(request);

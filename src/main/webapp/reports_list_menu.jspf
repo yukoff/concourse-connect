@@ -70,7 +70,7 @@
   }
 
   function viewReport() {
-    popURL('${ctx}/Reports.do?command=View&queueId=' + thisQueueId,'Report_View','770','575','yes','yes');
+    popURL('${ctx}/Reports.do?command=View&queueId=' + thisQueueId,'770','575','yes','yes');
   }
   function deleteReport() {
     confirmDelete('${ctx}/Reports.do?command=Delete&queueId=' + thisQueueId);

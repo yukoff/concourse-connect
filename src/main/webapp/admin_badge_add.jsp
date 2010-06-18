@@ -44,12 +44,14 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="initPage.jsp" %>
 <%@ page import="com.concursive.connect.web.modules.documents.dao.FileItem" %>
 <jsp:useBean id="badge" class="com.concursive.connect.web.modules.badges.dao.Badge" scope="request" />
 <jsp:useBean id="badgeCategoryId" class="java.lang.String" scope="request" />
 <jsp:useBean id="fileItemList" class="com.concursive.connect.web.modules.documents.dao.FileItemList" scope="request"/>
 <jsp:useBean id="badgeCategoryList" class="com.concursive.connect.web.modules.badges.dao.BadgeCategoryList" scope="request" />
+<jsp:useBean id="projectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
 <script language="JavaScript" type="text/javascript">
   function checkForm(form) {
     var formTest = true;
@@ -107,6 +109,14 @@
           </td>
           <td>
             <textarea rows="3" cols="50" name="description"><%= toString(badge.getDescription()) %></textarea>
+          </td>
+        </tr>
+        <tr class="containerBody">
+          <td class="formLabel">
+            Project Category
+          </td>
+          <td>
+            <c:out value="${projectCategory.label}" />
           </td>
         </tr>
         <tr class="containerBody">
@@ -226,7 +236,7 @@
         </tr>
         <tr class="containerBody">
           <td class="formLabel">
-            State
+            State/Province
           </td>
           <td>
             <input type="text" name="state" size="35" maxlength="80" value="<%= toHtmlValue(badge.getState()) %>">
@@ -242,7 +252,7 @@
         </tr>
         <tr class="containerBody">
           <td class="formLabel">
-            Postal Code
+            Zip/Postal Code
           </td>
           <td>
             <input type="text" name="postalCode" size="35" maxlength="12" value="<%= toHtmlValue(badge.getPostalCode()) %>">

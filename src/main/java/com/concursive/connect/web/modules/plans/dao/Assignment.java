@@ -46,6 +46,7 @@
 
 package com.concursive.connect.web.modules.plans.dao;
 
+import com.concursive.commons.date.DateUtils;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
@@ -1389,8 +1390,9 @@ public class Assignment extends GenericBean {
       assignDueDateTest.setTime(dueDate);
       assignDueDateTest.set(Calendar.HOUR_OF_DAY, 0);
       assignDueDateTest.set(Calendar.MINUTE, 0);
-      DateFormat formatter = DateFormat.getDateInstance(
+      SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(
           DateFormat.SHORT, locale);
+      formatter.applyPattern(DateUtils.get4DigitYearDateFormat(formatter.toLocalizedPattern()));
       if (!this.getComplete() && rightNow.after(assignDueDateTest)) {
         return "<font color='red'>" + formatter.format(dueDate) + "</font>";
       } else {

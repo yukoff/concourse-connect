@@ -55,7 +55,7 @@
 <jsp:useBean id="userReviewId" class="java.lang.String" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
-  <h1><ccp:tabLabel name="Reviews" object="project"/></h1>
+  <%--<h1><ccp:tabLabel name="Reviews" object="project"/></h1>--%>
   <ccp:evaluate if="<%= !User.isLoggedIn() && project.getFeatures().getAllowGuests() %>">
     <span><em><ccp:label name="projectsCenterReviews.loginToRateThisItem">Sign in to create a review.</ccp:label></em></span>
   </ccp:evaluate>
@@ -108,9 +108,9 @@
           <portlet:param name="portlet-object" value="reviews"/>
           <portlet:param name="portlet-value" value="recent"/>
         </portlet:renderURL>
-        sort by
-        <a href="${sortByUsefulUrl}">useful</a> or
-        <a href="${sortByRecentUrl}">recent</a>
+        Sort by
+        <a href="${sortByUsefulUrl}">most useful</a> or
+        <a href="${sortByRecentUrl}">most recent</a>
       </div>
     </c:otherwise>
   </c:choose>

@@ -403,7 +403,7 @@ public class PagedListStatusHandler extends BodyTagSupport {
           final User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
           final String language = (null != user.getLanguage())
               ? user.getLanguage()
-              : prefs.get("SYSTEM.LANGUAGE");
+              : prefs.get(ApplicationPrefs.LANGUAGE);
           final String newTitle =
               prefs.getLabel("pagedListInfo.pagedListStatus." + title,
                   language);

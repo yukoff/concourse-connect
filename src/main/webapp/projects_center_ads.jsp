@@ -57,11 +57,11 @@
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
 <div class="portletWrapper">
-  <h1><ccp:tabLabel name="Ads" object="project"/></h1>
+  <%--<h1><ccp:tabLabel name="Ads" object="project"/></h1>--%>
   <c:if test="${!empty actionError}"><%= showError(request, "actionError") %></c:if>
   <%-- If there are no promotions --%>
   <c:if test="${empty promotionsList}">
-    <ccp:label name="projectsCenterAds.noAds"><p>There are currently no promotions.</p></ccp:label>
+    <div class="portlet-message-info"><p><ccp:label name="projectsCenterAds.noAds">There are currently no promotions.</ccp:label></p></div>
   </c:if>
 <%
   Iterator i = promotionsList.iterator();
@@ -96,6 +96,7 @@
           <div>
             <ccp:label name="promotion.expires">Expires</ccp:label>
             <ccp:tz timestamp="<%= promotion.getExpirationDate() %>" dateFormat="<%= DateFormat.LONG %>" />
+            (<ccp:tz timestamp="<%= promotion.getExpirationDate() %>" pattern="relative" />)
           </div>
         </ccp:evaluate>
         <ccp:permission name="project-ads-admin">
@@ -158,7 +159,7 @@
           <portlet:param name="portlet-object" value="promotions"/>
           <portlet:param name="portlet-value" value="${promotion.id}"/>
           <portlet:param name="portlet-command" value="setRating"/>
-          <portlet:param name="v" value="\${vote}"/>
+          <portlet:param name="v" value="{vote}"/>
           <portlet:param name="out" value="text"/>
         </portlet:renderURL>
         <ccp:rating id='${promotion.id}'
@@ -180,7 +181,7 @@
       </c:if>
       <p><c:out value="${promotion.content}"/></p>
       <c:if test="${!empty promotion.webPage && !empty promotion.destinationUrl && fn:startsWith(promotion.destinationUrl, 'http')}">
-        <cite><a target="_blank" rel="nofollow" href="<c:out value="${promotion.destinationUrl}"/>"><c:out value="${promotion.webPage}"/></a></cite>
+        <p><cite><a target="_blank" rel="nofollow" href="<c:out value="${promotion.destinationUrl}"/>"><c:out value="${promotion.webPage}"/></a></cite></p>
       </c:if>
       <span class="tagListAd">
       	<portlet:renderURL var="setTagsUrl" windowState="maximized">
@@ -190,7 +191,7 @@
         	<portlet:param name="portlet-value" value="${promotion.id}"/>
         	<portlet:param name="popup" value="true" />
 	      </portlet:renderURL>
-      	<br/><ccp:tags url="${setTagsUrl}" />
+      	<ccp:tags url="${setTagsUrl}" />
       </span>
     </div>
   </div>
@@ -198,8 +199,6 @@
   }
 %>
   <c:if test="${projectPromotionsInfo.numberOfPages > 1}">
-    <div class="pagination">
-      <ccp:paginationControl object="projectPromotionsInfo"/>
-    </div>
+    <ccp:paginationControl object="projectPromotionsInfo"/>
   </c:if>
 </div>

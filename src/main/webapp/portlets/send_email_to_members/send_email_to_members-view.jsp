@@ -68,10 +68,10 @@
 </script>
 <div class="sendMessageToMembers">
   <c:if test="${!empty actionError}">
-    <p><font color="red"><c:out value="${actionError}"/></font></p>
+  	<%= showError(request, "actionError") %>
   </c:if>
   <c:if test="${!empty projectNotFoundError}">
-    <p><font color="red"><c:out value="${projectNotFoundError}"/></font></p>
+  	<%= showError(request, "projectNotFoundError") %>
   </c:if>
   <div class="formContainer">
 	<portlet:actionURL var="submitContentUrl">
@@ -81,7 +81,7 @@
     <input id="projectId" name="projectId" type="hidden" value="<c:out value='${project.id}'/>">
     <fieldset id="sendmessagetomembers">
       <legend><c:out value="${title}"/></legend>
-      <label for="message">Message<font color="red">*</font><%= showAttribute(request, "messageError") %></label>
+      <label for="message">Message<font color="red">*</font></label><%= showAttribute(request, "messageError") %>
       <textarea id="message" name="message" rows="5" cols="35"><c:out value='${message}'/></textarea>
 	  <span class="characterCounter">1000 characters max</span>
 	  <label>Broadcast messages go to those members that have opted-in to receive messages.</label>

@@ -62,16 +62,17 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.translation.dao.WebSiteLanguageList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import com.concursive.connect.web.webdav.servlets.WebdavServlet;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.sql.*;
 import java.util.*;
-import java.io.StringWriter;
-import java.io.IOException;
-
-import freemarker.template.Template;
-import freemarker.template.Configuration;
-import freemarker.template.TemplateException;
 
 /**
  * Represents a user of the system
@@ -82,6 +83,7 @@ import freemarker.template.TemplateException;
  */
 public class User extends GenericBean {
 
+  private static Log LOG = LogFactory.getLog(User.class);
   public final static String lf = System.getProperty("line.separator");
 
   // Properties
@@ -202,9 +204,12 @@ public class User extends GenericBean {
       throw new SQLException("User-> Invalid userId specified: " + userId);
     }
     String sql =
-        "SELECT u.*, d.description as department " +
-            "FROM users u LEFT JOIN departments d ON (u.department_id = d.code) " +
-            "WHERE user_id = ? " + (groupId > -1 ? "AND u.group_id = ? " : "");
+        "SELECT u.*, d.description AS department, p.projecttextid " +
+            "FROM users u " +
+            "LEFT JOIN departments d ON (u.department_id = d.code) " +
+            "LEFT JOIN projects p ON (u.profile_project_id = p.project_id) " +
+            "WHERE user_id = ? " +
+            (groupId > -1 ? "AND u.group_id = ? " : "");
     PreparedStatement pst = db.prepareStatement(sql);
     pst.setInt(1, userId);
     if (groupId > -1) {
@@ -220,7 +225,7 @@ public class User extends GenericBean {
 
 
   /**
-   * Description of the Method
+   * Set the properties of the User object from the ResultSet
    *
    * @param rs Description of the Parameter
    * @throws SQLException Description of the Exception
@@ -255,15 +260,15 @@ public class User extends GenericBean {
     this.setLanguage(rs.getString("language"));
     modified = rs.getTimestamp("modified");
     modifiedBy = rs.getInt("modifiedby");
-    // new fields not in original
     try {
+      // new fields not in original (in order of the user table)
       accessAddProjects = rs.getBoolean("access_add_projects");
       accessViewAllContacts = rs.getBoolean("access_contacts_view_all");
       accessEditAllContacts = rs.getBoolean("access_contacts_edit_all");
       watchForums = rs.getBoolean("watch_forums");
       nickname = rs.getString("nickname");
       salutationId = rs.getInt("salutation");
-      profileProjectId = rs.getInt("profile_project_id");
+      profileProjectId = DatabaseUtils.getInt(rs, "profile_project_id");
       showProfileTo = DatabaseUtils.getInt(rs, "show_profile_to", Constants.WITH_ANYONE);
       showFullNameTo = DatabaseUtils.getInt(rs, "show_fullname_to", Constants.WITH_FRIENDS);
       showEmailTo = DatabaseUtils.getInt(rs, "show_email_to", Constants.WITH_NO_ONE);
@@ -271,23 +276,19 @@ public class User extends GenericBean {
       showLocationTo = DatabaseUtils.getInt(rs, "show_location_to", Constants.WITH_ANYONE);
       showCompanyTo = DatabaseUtils.getInt(rs, "show_company_to", Constants.WITH_ANYONE);
       points = rs.getInt("points");
-      //department table
-      department = rs.getString("department");
       instanceId = DatabaseUtils.getInt(rs, "instance_id", -1);
-      //connect-crm roles
       connectCRMAdmin = rs.getBoolean("connect_crm_admin");
       connectCRMManager = rs.getBoolean("connect_crm_manager");
+      // department table
+      department = rs.getString("department");
+      // project table
+      profileUniqueId = rs.getString("projecttextid");
     } catch (Exception e) {
       // since these field may not exist in an upgraded system,
       // do not throw an error
     }
     //cleanup
     idRange = String.valueOf(id);
-
-    if (getProfileProject() != null) {
-      this.profileUniqueId = getProfileProject().getUniqueId();
-    }
-
   }
 
   public int getInstanceId() {
@@ -1068,9 +1069,6 @@ public class User extends GenericBean {
    * @return The firstName value
    */
   public String getFirstName() {
-    if (StringUtils.hasText(firstName) && firstName.length() > 0) {
-      return String.valueOf(firstName.charAt(0)).toUpperCase() + (firstName.length() > 1 ? firstName.substring(1) : "");
-    }
     return firstName;
   }
 
@@ -1112,7 +1110,7 @@ public class User extends GenericBean {
         name.append(" ");
       }
       if (lastName.length() > 0) {
-        name.append(lastName.substring(0, 1).toUpperCase()).append(".");
+        name.append(lastName.substring(0, 1)).append(".");
       }
     }
     return name.toString();
@@ -1843,14 +1841,16 @@ public class User extends GenericBean {
       }
       if (!isApiRestore()) {
         // Insert a corresponding user profile project
-        Project project = UserUtils.addUserProfile(db, this, prefs);
-        profileProjectId = project.getId();
+        UserUtils.addUserProfile(db, this, prefs);
+        if (profileProjectId == -1) {
+          LOG.error("profileProjectId did not get assigned!");
+        }
       }
       if (commit) {
         db.commit();
       }
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.error("adding user", e);
       if (commit) {
         db.rollback();
       }
@@ -1914,7 +1914,9 @@ public class User extends GenericBean {
 
 
   /**
-   * Description of the Method
+   * There's quite a bit of work to delete a user, so active users will
+   * not be able to be deleted; this will simply delete a user without any
+   * related data and without a profile
    *
    * @param db Description of the Parameter
    * @return Description of the Return Value
@@ -1927,18 +1929,15 @@ public class User extends GenericBean {
       if (commit) {
         db.setAutoCommit(false);
       }
-      // Delete the user's profile
-      if (profileProjectId > -1) {
-        Project project = new Project(db, profileProjectId);
-        project.delete(db, null);
-      }
-      // Delete related data
-      PreparedStatement pst = db.prepareStatement("DELETE FROM user_log where user_id = ?");
+      // Delete any login records
+      PreparedStatement pst = db.prepareStatement(
+          "DELETE FROM user_log WHERE user_id = ?");
       pst.setInt(1, id);
       pst.execute();
       pst.close();
       // Delete the user
-      pst = db.prepareStatement("DELETE FROM users where user_id = ?");
+      pst = db.prepareStatement(
+          "DELETE FROM users WHERE user_id = ?");
       pst.setInt(1, id);
       count = pst.executeUpdate();
       pst.close();
@@ -2004,10 +2003,11 @@ public class User extends GenericBean {
     message.setTo(email);
     message.setFrom(prefs.get("EMAILADDRESS"));
     message.setSubject("Your Password");
+    message.setType("text/html");
     try {
       // Populate the message template
       Configuration configuration = ApplicationPrefs.getFreemarkerConfiguration(context.getServletContext());
-      Template template = configuration.getTemplate("blog_article_email_me_notification-html.ftl");
+      Template template = configuration.getTemplate("user_reset_password_email-html.ftl");
       Map bodyMappings = new HashMap();
       bodyMappings.put("firstname", firstName);
       bodyMappings.put("temporaryPassword", temporaryPassword);

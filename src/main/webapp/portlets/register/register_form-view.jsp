@@ -78,10 +78,10 @@
         <label for="city">City</label>
         <%=  showAttribute(request, "cityError") %>
         <input type="text" name="city" id="city" value="<c:out value="${registerBean.city}"/>">
-        <label for="state">State</label>
+        <label for="state">State/Province</label>
         <%=  showAttribute(request, "stateError") %>
         <input type="text" name="state" id="state" value="<c:out value="${registerBean.state}"/>">
-        <label for="postalCode">Postal Code <span class="required">*</span></label>
+        <label for="postalCode">Zip/Postal Code (if applicable)<span class="required">*</span></label>
         <%= showAttribute(request, "postalCodeError") %>
         <input type="text" name="postalCode" id="postalCode" value="<c:out value="${registerBean.postalCode}"/>">
         <%-- hidden variables --%>
@@ -96,7 +96,7 @@
             <label for="terms">
               <input name="terms" id="terms" type="checkbox" class="checkbox" value="accept" <c:if test="${registerBean.terms == true}">checked</c:if> />
               I have read &amp; agree to the
-              <a href="javascript:popURL('<%= ctx %>/show/${requestMainProfile.uniqueId}/wiki/Terms+and+Conditions?popup=true','Terms_of_use','650','375','yes','yes');">terms of use</a>
+              <a href="javascript:popURL('<%= ctx %>/show/${requestMainProfile.uniqueId}/wiki/Terms+and+Conditions?popup=true','650','375','yes','yes');">terms of use</a>
             </label>
           </span>
         </div>
@@ -126,7 +126,7 @@
       <li>You must register with your actual name and a valid email address</li>
       <li>A valid email address is required so that we can send you your
         login account information</li>
-      <li>A valid postal code is required so that we can tailor information to your account</li>
+      <li>When applicable, a valid zip or postal code is required so that we can tailor information to your account</li>
       <li>You will receive a confirmation by email with your login information</li>
       <%--
       <ccp:evaluate if="<%= \"true\".equals(applicationPrefs.get(\"START_PROJECTS\")) %>">

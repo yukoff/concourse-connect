@@ -93,7 +93,7 @@ public class DeleteReplyAction implements IPortletAction {
     }
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Reply reply = new Reply(db, id);

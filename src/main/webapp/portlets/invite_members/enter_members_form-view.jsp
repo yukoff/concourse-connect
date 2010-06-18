@@ -115,7 +115,8 @@
 	    	<label for="<portlet:namespace/>membersToInvite">
 		    	Enter names or email addresses of recipients
 		    	<span class="required">*</span>
-          <em>separate multiple recipients with commas</em>
+          <em>Separate multiple recipients with commas</em>
+          <em>Ex. Mary Smith &lt;mary.smith@example.com&gt;, John Smith &lt;john.smith@example.com&gt;</em>
 		      <%= showAttribute(request, "membersToInviteError") %>
 	    	</label>
 			  <textarea name="membersToInvite" id="<portlet:namespace/>membersToInvite"><c:out value="${membersToInvite}"/></textarea>

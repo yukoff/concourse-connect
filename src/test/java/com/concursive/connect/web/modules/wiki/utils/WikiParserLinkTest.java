@@ -48,9 +48,9 @@ package com.concursive.connect.web.modules.wiki.utils;
 import com.concursive.commons.db.AbstractConnectionPoolTest;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
-import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 
 import java.util.HashMap;
 
@@ -73,6 +73,9 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
           "<a class=\"wikiLink\" href=\"/show/some-project/wiki/Frequently+Asked+Questions\">Frequently Asked Questions</a> " +
           "<a href=\"/show/some-project/topic/3353\">info</a> for you" +
           "</p>\n" +
+          "<h3><span>How do I get it?</span></h3>\n" +
+          "<p>View our <a class=\"wikiLink external\" href=\"https://www.concursive.com/show/concourseconnect/wiki/Versions\" target=\"_blank\">comparison chart</a> to select the version of ConcourseConnect that&rsquo;s right for you.</p>\n" +
+          "<p><a href=\"https://www.concursive.com/try-buy.shtml\"><img src=\"/show/main-profile/wiki-image/Screen+shot+2010-02-04+at+1.59.16+PM.png\" alt=\"Screen shot 2010-02-04 at 1.59.16 PM.png\" width=\"189\" height=\"34\" /></a></p>" +
           "<p>&nbsp;</p>";
 
   public void testHTMLToWikiLinks() throws Exception {
@@ -81,8 +84,8 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
     project.setId(9999999);
     project.setTitle("Some Project");
     project.setUniqueId("some-project");
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, "9999999", project);
-    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", new Integer(9999999));
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, 9999999, project);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", 9999999);
     // Parse it
     String wiki = HTMLToWikiUtils.htmlToWiki(htmlSample1, "", project.getId());
     assertEquals("" +
@@ -98,7 +101,13 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
         "[[Technical Documentation]] (Owner)\n" +
         "[[Security, Registration, Invitation|Installation Options]]\n" +
         "[[Frequently Asked Questions]] " +
-        "[[|9999999:topic|3353|info]] for you\n", wiki);
+        "[[|9999999:topic|3353|info]] for you\n" +
+        "\n" +
+        "=== How do I get it? ===\n" +
+        "\n" +
+        "View our [[https://www.concursive.com/show/concourseconnect/wiki/Versions comparison chart]] to select the version of ConcourseConnect that’s right for you.\n" +
+        "\n" +
+        "[[Image:Screen shot 2010-02-04 at 1.59.16 PM.png|link=https://www.concursive.com/try-buy.shtml]]\n", wiki);
   }
 
   public void testWikiLinksToHtml() throws Exception {
@@ -106,6 +115,46 @@ public class WikiParserLinkTest extends AbstractConnectionPoolTest {
     String wikiSample = "This is a [[page with a link]].";
     String htmlSample = "<p>This is a <a class=\"wikiLink newWiki\" href=\"/show//wiki/page+with+a+link\">page with a link</a>.</p>\n";
     Wiki wiki = new Wiki();
+    wiki.setContent(wikiSample);
+    // Parse it
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap<String, ImageInfo>(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
+    assertEquals(htmlSample, html);
+  }
+
+  public void testInternalWikiLinksToHtml() throws Exception {
+    // Test converting a link to html
+    String wikiSample = "Look at [[|our wiki]].";
+    String htmlSample = "<p>Look at <a class=\"wikiLink newWiki\" href=\"/show//wiki\">our wiki</a>.</p>\n";
+    Wiki wiki = new Wiki();
+    wiki.setContent(wikiSample);
+    // Parse it
+    WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap<String, ImageInfo>(), -1, false, "");
+    String html = WikiToHTMLUtils.getHTML(wikiContext, null);
+    assertEquals(htmlSample, html);
+  }
+
+  public void testWikiLinkSpacingToHtml() throws Exception {
+    // Stage a project and ticket for the cache
+    Project project = new Project();
+    project.setId(9999999);
+    project.setTitle("Some Time");
+    project.setUniqueId("some-time");
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_CACHE, 9999999, project);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_UNIQUE_ID_CACHE, "some-project", 9999999);
+    CacheUtils.updateValue(Constants.SYSTEM_PROJECT_TICKET_ID_CACHE, "9999999-1", 200);
+    // Test converting a link to html
+    String wikiSample =
+        "This is [[some content]] to " +
+            "[[see what|see what ]]happens at " +
+            "[[|9999999:profile|some-time|Some Time]] today.";
+    String htmlSample =
+        "<p>This is <a class=\"wikiLink newWiki\" href=\"/show/some-time/wiki/some+content\">some content</a> to " +
+            "<a class=\"wikiLink newWiki\" href=\"/show/some-time/wiki/see+what\">see what</a> happens at " +
+            "<a class=\"wikiLink external\" href=\"/show/some-time\">Some Time</a> today.</p>\n";
+
+    Wiki wiki = new Wiki();
+    wiki.setProjectId(project.getId());
     wiki.setContent(wikiSample);
     // Parse it
     WikiToHTMLContext wikiContext = new WikiToHTMLContext(wiki, new HashMap<String, ImageInfo>(), -1, false, "");

@@ -60,7 +60,7 @@
 <%--@elvariable id="user" type="com.concursive.connect.web.modules.login.dao.User"--%>
   <h3><c:out value="${title}"/></h3>
   <c:if test="${!empty projectRatingList}">
-    <p><c:out value="${user.firstName}"/> has contributed ${pagedListInfo.maxRecords} review<c:if test="${pagedListInfo.maxRecords > 1}">s</c:if>.</p>
+    <p><c:out value="${profileUser.firstName}"/> has contributed ${pagedListInfo.maxRecords} review<c:if test="${pagedListInfo.maxRecords > 1}">s</c:if>.</p>
   </c:if>
   <c:if test="${!empty projectRatingList}">
   <ol>

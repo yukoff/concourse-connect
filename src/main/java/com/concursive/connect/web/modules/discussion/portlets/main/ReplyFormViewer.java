@@ -105,7 +105,7 @@ public class ReplyFormViewer implements IPortletViewer {
     User user = getUser(request);
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Check the request for the record and provide a value for the request scope
     Reply thisReply = (Reply) PortalUtils.getFormBean(request, REPLY, Reply.class);

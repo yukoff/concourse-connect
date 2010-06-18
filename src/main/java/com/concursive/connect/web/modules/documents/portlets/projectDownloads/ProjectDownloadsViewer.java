@@ -97,7 +97,7 @@ public class ProjectDownloadsViewer implements IPortletViewer {
     String limit = request.getPreferences().getValue(PREF_LIMIT, "5");
 
     User user = getUser(request);
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     // Look for project documents
     FileItemList fileItemList = new FileItemList();
     fileItemList.setLinkModuleId(Constants.PROJECTS_FILES);
@@ -119,7 +119,7 @@ public class ProjectDownloadsViewer implements IPortletViewer {
       ProjectCategoryList categories = new ProjectCategoryList();
       categories.setEnabled(true);
       categories.setTopLevelOnly(true);
-      categories.setCategoryNameLowerCase(category);
+      categories.setCategoryDescriptionLowerCase(category);
       categories.buildList(db);
       if (categories.size() == 0) {
         throw new PortletException("Category not found");

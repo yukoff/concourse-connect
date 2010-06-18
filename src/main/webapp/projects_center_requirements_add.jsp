@@ -107,27 +107,10 @@
     document.getElementById("attachmentText").value = newVal;
   }
   function showTemplates() {
-    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Templates&pid=<%= project.getId() %>&popup=true','Import_Templates','550','520','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Templates&pid=<%= project.getId() %>&popup=true','550','520','yes','yes');
   }
 </script>
 <form method="POST" name="inputForm" action="<%= ctx %>/ProjectManagementRequirements.do?command=<%= Requirement.getId() == -1?"Insert":"Update" %>&auto-populate=true" onSubmit="return checkForm(this);">
-<table border="0" cellpadding="1" cellspacing="0" width="100%">
-  <tr class="subtab">
-    <td>
-      <img border="0" src="<%= ctx %>/images/icons/stock_list_bullet2-16.gif" align="absmiddle">
-      <a href="<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Requirements&pid=<%= project.getId() %>"><ccp:label name="projectsCenterRequirements.add.outlines">Outlines</ccp:label></a> >
-      <ccp:evaluate if="<%= Requirement.getId() == -1 %>">
-        <ccp:label name="projectsCenterRequirements.add.add">Add</ccp:label>
-      </ccp:evaluate>
-      <ccp:evaluate if="<%= Requirement.getId() != -1 %>">
-        <ccp:label name="projectsCenterRequirenemts.add.modify">Modify</ccp:label>
-      </ccp:evaluate>
-    </td>
-  </tr>
-</table>
-<br>
-  <input type="submit" value="<ccp:label name="button.save">Save</ccp:label>">
-  <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onclick="window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Requirements&pid=<%= project.getId() %>';"><br>
   <%= showError(request, "actionError") %>
   <table class="pagedList">
     <thead>

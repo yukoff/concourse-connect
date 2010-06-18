@@ -86,7 +86,7 @@ public class AdIndexer implements Indexer {
   public void add(IIndexerService writer, Connection db, IndexerContext context) throws Exception {
     int count = 0;
     PreparedStatement pst = db.prepareStatement(
-        "SELECT ad_id, project_id, heading, content, publish_date, expiration_date, modified " +
+        "SELECT ad_id, project_id, heading, content, publish_date, expiration_date, modified, ad_category_id " +
             "FROM ad " +
             "WHERE project_id > -1 ");
     ResultSet rs = pst.executeQuery();
@@ -101,6 +101,7 @@ public class AdIndexer implements Indexer {
       ad.setPublishDate(rs.getTimestamp("publish_date"));
       ad.setExpirationDate(rs.getTimestamp("expiration_date"));
       ad.setModified(rs.getTimestamp("modified"));
+      ad.setCategoryId(rs.getInt("ad_category_id"));
       // add to index
       writer.indexAddItem(ad, false);
     }
@@ -127,6 +128,11 @@ public class AdIndexer implements Indexer {
     document.add(new Field("type", "ads", Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("adId", String.valueOf(ad.getId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("projectId", String.valueOf(ad.getProjectId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    if (ad.getCategoryId() != -1){
+    	document.add(new Field("categoryId", String.valueOf(ad.getCategoryId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
+    }
+    document.add(new Field("location", String.valueOf(ProjectUtils.loadProject(ad.getProjectId()).getLocation()), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("instanceId", String.valueOf(ProjectUtils.loadProject(ad.getProjectId()).getInstanceId()), Field.Store.YES, Field.Index.UN_TOKENIZED));
     if (ad.getProjectId() > -1) {
       // use the project's general access to speedup guest projects
       Project project = ProjectUtils.loadProject(ad.getProjectId());
@@ -141,6 +147,7 @@ public class AdIndexer implements Indexer {
       document.add(new Field("membership", String.valueOf(membership), Field.Store.YES, Field.Index.UN_TOKENIZED));
     }
     document.add(new Field("title", ad.getHeading(), Field.Store.YES, Field.Index.TOKENIZED));
+    document.add(new Field("titleFull", ad.getHeading(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("titleLower", ad.getHeading().toLowerCase(), Field.Store.YES, Field.Index.UN_TOKENIZED));
     document.add(new Field("contents",
         ad.getHeading() + " " +

@@ -72,27 +72,61 @@
     lists.add(cList);
   }
   request.setAttribute("dividedLists", lists);
-
 %>
 <h3><c:out value="${title}"/></h3>
-  <% int lastProjectCategoryId = -1; %>
-  <c:forEach items="${dividedLists}" var="cList">
-  <ul<c:if test="<%= lists.size() > 1 %>"> style="width:<%= 100 / lists.size() %>%"</c:if>>
-    <c:forEach items="${cList}" var="classifiedCategory">
-      <c:set var="classifiedCategoryDescription" value="${classifiedCategory.itemName}"/>
-      <jsp:useBean id="classifiedCategoryDescription" type="java.lang.String" />
-      <c:set var="classifiedCategory" value="${classifiedCategory}"/>
-      <jsp:useBean id="classifiedCategory" class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategory" />
-      	<c:if test="${showProjectCategoryNameInCategoryList eq 'true'}">
-	      	<c:if test="<%= (lastProjectCategoryId != classifiedCategory.getProjectCategoryId()) %>" >
-		        <li class="listing"><h4><c:out value="${classifiedCategory.projectCategoryDescription}" /></h4></li>
-			</c:if>
-		</c:if>
-		<li class="listing"><a href='${ctx}${hasMoreURL}/<%= StringUtils.toHtmlValue(StringUtils.replace(classifiedCategoryDescription," ", "_").toLowerCase()) %>' title='<c:out value="${classifiedCategory.itemName}" />'><c:out value="${classifiedCategory.itemName}" /></a></li>
-		<% lastProjectCategoryId = classifiedCategory.getProjectCategoryId(); %>
-    </c:forEach>
-  </ul>
-</c:forEach>
-  <c:if test="${hasMore eq 'true'}">
-    <p class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>">more</a></p>
-  </c:if>
+  <div class="box140top">
+	  <% int lastProjectCategoryId = -1; %>
+	  <c:forEach items="${dividedLists}" var="cList">
+		  <ul<c:if test="<%= lists.size() > 1 %>"> style="width:<%= 100 / lists.size() %>%"</c:if>>
+		    <c:forEach items="${cList}" var="thisClassifiedCategory">
+		      <c:set var="classifiedCategoryDescription" value="${thisClassifiedCategory.itemName}"/>
+		      <jsp:useBean id="classifiedCategoryDescription" type="java.lang.String" />
+		      <c:set var="thisClassifiedCategory" value="${thisClassifiedCategory}"/>
+		      <jsp:useBean id="thisClassifiedCategory" class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategory" />
+          <c:if test="${showProjectCategoryNameInCategoryList eq 'true'}">
+            <c:if test="<%= (lastProjectCategoryId != thisClassifiedCategory.getProjectCategoryId()) %>" >
+              <div class="boxHeader">
+                <li class="listing"><h4><c:out value="${thisClassifiedCategory.projectCategoryDescription}" /></h4></li>
+              </div>
+            </c:if>
+          </c:if>
+          <div class="boxContent">
+            <c:choose>
+              <c:when test="${!empty classifiedCategory and classifiedCategory.id eq thisClassifiedCategory.id}">
+                <c:set var="active"> class="selected"</c:set>
+              </c:when>
+              <c:otherwise>
+                <c:set var="active" value=""/>
+              </c:otherwise>
+            </c:choose>
+            <c:set var="paramExists" />
+            <c:if test="${!empty sortOrder}">
+              <c:set var="paramExists">?</c:set>
+              <c:set var="sortOrderString">sort=${sortOrder}</c:set>
+            </c:if>
+            <c:if test="${!empty query}">
+              <c:choose>
+                <c:when test="${empty paramExists}">
+                  <c:set var="queryString">query=${query}&location=${location}</c:set>
+                </c:when>
+                <c:otherwise>
+                  <c:set var="queryString">&query=${query}&location=${location}</c:set>
+                </c:otherwise>
+              </c:choose>
+              <c:set var="paramExists">?</c:set>
+            </c:if>
+            <li  ${active}>
+              <a href='${ctx}${hasMoreURL}/${thisClassifiedCategory.normalizedCategoryName}/${thisClassifiedCategory.id}${paramExists}${sortOrderString}${queryString}' title='<c:out value="${thisClassifiedCategory.itemName}" />'><c:out value="${thisClassifiedCategory.itemName}" /></a>
+                <c:if test="${!empty classifiedsCategoryCountMap[thisClassifiedCategory]}">
+                  (<c:out value="${classifiedsCategoryCountMap[thisClassifiedCategory]}" />)
+                </c:if>
+            </li>
+          </div>
+          <% lastProjectCategoryId = thisClassifiedCategory.getProjectCategoryId(); %>
+		    </c:forEach>
+		  </ul>
+	  </c:forEach>
+  </div>
+<c:if test="${hasMore eq 'true'}">
+    <p class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>"><c:out value="${hasMoreTitle}"/></a></p>
+</c:if>

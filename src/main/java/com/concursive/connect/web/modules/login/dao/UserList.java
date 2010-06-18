@@ -270,8 +270,8 @@ public class UserList extends ArrayList<User> {
     // Build a base SQL statement for counting records
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
-        "FROM users u " +
-        "WHERE u.user_id > -1 ");
+            "FROM users u " +
+            "WHERE u.user_id > -1 ");
     createFilter(sqlFilter, db);
     if (pagedListInfo != null) {
       //Get the total number of records matching filter
@@ -312,9 +312,11 @@ public class UserList extends ArrayList<User> {
       sqlSelect.append("SELECT ");
     }
     sqlSelect.append(
-        "u.*, d.description as department " +
-        "FROM users u LEFT JOIN departments d ON (u.department_id = d.code) " +
-        "WHERE u.user_id > -1 ");
+        "u.*, d.description AS department, p.projecttextid " +
+            "FROM users u " +
+            "LEFT JOIN departments d ON (u.department_id = d.code) " +
+            "LEFT JOIN projects p ON (u.profile_project_id = p.project_id) " +
+            "WHERE u.user_id > -1 ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -453,9 +455,9 @@ public class UserList extends ArrayList<User> {
               }
 
               sqlFilter.append(" (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() + " AND pt.userlevel " + operator + " " + value + " )) ");
-              if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() );
-                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+              if (searchCriteria.getIsTeamMember() == Constants.TRUE) {
+                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId());
+                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED) {
                   sqlFilter.append(" AND notification = ? ");
                 }
                 sqlFilter.append("))");
@@ -503,9 +505,9 @@ public class UserList extends ArrayList<User> {
               }
 
               sqlFilter.append("(u.user_id in (SELECT pr.enteredby FROM projects_rating pr WHERE pr.project_id = " + activeProject.getId() + " AND pr.rating " + operator + " " + value + " )) ");
-              if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() );
-                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+              if (searchCriteria.getIsTeamMember() == Constants.TRUE) {
+                sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId());
+                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED) {
                   sqlFilter.append(" AND notification = ? ");
                 }
                 sqlFilter.append("))");
@@ -550,9 +552,9 @@ public class UserList extends ArrayList<User> {
                 }
 
                 sqlFilter.append("(u.user_id IN (SELECT pv.user_id FROM projects_view pv WHERE pv.project_id = " + activeProject.getId() + " AND pv.view_date " + operator + " '" + DatabaseUtils.parseDateToTimestamp(value) + "') )");
-                if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() );
-                  if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
+                if (searchCriteria.getIsTeamMember() == Constants.TRUE) {
+                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId());
+                  if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED) {
                     sqlFilter.append(" AND notification = ? ");
                   }
                   sqlFilter.append("))");
@@ -618,8 +620,8 @@ public class UserList extends ArrayList<User> {
                     "WHERE iss.project_id = " + activeProject.getId() + " " +
                     "AND pir.entered " + operator + "'" + DatabaseUtils.parseDateToTimestamp(value) + "') ");
                 sqlFilter.append(") ");
-                if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId()  + " )) ");
+                if (searchCriteria.getIsTeamMember() == Constants.TRUE) {
+                  sqlFilter.append(" AND (u.user_id in (SELECT pt.user_id FROM project_team pt WHERE pt.project_id = " + activeProject.getId() + " )) ");
                 }
                 previousOp = operator;
                 termsProcessed++;
@@ -639,8 +641,8 @@ public class UserList extends ArrayList<User> {
     if (guid != null) {
       // From UserUtils.generateGuid
       sqlFilter.append("AND " + DatabaseUtils.getSubString(db, "password", 3, 13) + " = ? ");
-      sqlFilter.append("AND entered = ? ");
-      sqlFilter.append("AND user_id = ? ");
+      sqlFilter.append("AND u.entered = ? ");
+      sqlFilter.append("AND u.user_id = ? ");
     }
     if (isAdmin != Constants.UNDEFINED) {
       sqlFilter.append("AND u.access_admin = ? ");
@@ -736,30 +738,60 @@ public class UserList extends ArrayList<User> {
       if (searchCriteria.getContentEditor() != Constants.UNDEFINED) {
         pst.setBoolean(++i, searchCriteria.getContentEditor() == Constants.TRUE);
       }
-      
-      
+
+
       if (StringUtils.hasText(searchCriteria.getActiveProject())) {
         if (searchCriteria.getRoleIds() != null && searchCriteria.getRoleIds().size() > 0) {
-          if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-            if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
-              pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+          HashMap roleIds = searchCriteria.getRoleIds();
+          Iterator operators = roleIds.keySet().iterator();
+          while (operators.hasNext()) {
+            String operator = (String) operators.next();
+            ArrayList values = (ArrayList) roleIds.get(operator);
+            Iterator iter = values.iterator();
+            while (iter.hasNext()) {
+              String value = (String) iter.next();
+              if (searchCriteria.getIsTeamMember() == Constants.TRUE) {
+                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED) {
+                  pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+                }
+              }
             }
           }
         }
         if (searchCriteria.getRatings() != null && searchCriteria.getRatings().size() > 0) {
-          if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-            if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
-              pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+          HashMap ratings = searchCriteria.getRatings();
+          Iterator operators = ratings.keySet().iterator();
+          while (operators.hasNext()) {
+            String operator = (String) operators.next();
+            ArrayList values = (ArrayList) ratings.get(operator);
+            Iterator iter = values.iterator();
+            while (iter.hasNext()) {
+              String value = (String) iter.next();
+              if (searchCriteria.getIsTeamMember() == Constants.TRUE) {
+                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED) {
+                  pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+                }
+              }
             }
           }
         }
         if (searchCriteria.getLastViewed() != null && searchCriteria.getLastViewed().size() > 0) {
-          if (searchCriteria.getIsTeamMember() == Constants.TRUE){
-            if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED){
-              pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+          HashMap lastViewed = searchCriteria.getLastViewed();
+          Iterator operators = lastViewed.keySet().iterator();
+          while (operators.hasNext()) {
+            String operator = (String) operators.next();
+            ArrayList values = (ArrayList) lastViewed.get(operator);
+            Iterator iter = values.iterator();
+            while (iter.hasNext()) {
+              String value = (String) iter.next();
+              if (searchCriteria.getIsTeamMember() == Constants.TRUE) {
+                if (searchCriteria.getIsNotificationEnabled() != Constants.UNDEFINED) {
+                  pst.setBoolean(++i, searchCriteria.getIsNotificationEnabled() == Constants.TRUE);
+                }
+              }
             }
           }
-        }        
+        }
       }
     }
     if (guid != null) {
@@ -784,8 +816,8 @@ public class UserList extends ArrayList<User> {
   public static int buildUserCount(Connection db) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "SELECT COUNT(*) AS recordcount " +
-        "FROM users u " +
-        "WHERE user_id > -1 ");
+            "FROM users u " +
+            "WHERE user_id > -1 ");
     ResultSet rs = pst.executeQuery();
     rs.next();
     int count = rs.getInt("recordcount");

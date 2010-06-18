@@ -48,39 +48,39 @@
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-<portlet:actionURL var="submitUrl" portletMode="view" />
-<div class="formContainer">
-  <form method="POST" name="<portlet:namespace/>inputForm" action="${submitUrl}">
-    <c:choose>
-      <c:when test="${'true' eq isUserProfile}">
-        <h3>Friends?</h3>
-      </c:when>
-      <c:otherwise>
-        <h3>Join</h3>
-      </c:otherwise>
-    </c:choose>
-    <p>
-      <c:choose>
-	    <c:when test="${'true' eq isUserProfile}">
-          Become a friend of <strong><c:out value="${project.title}"/></strong> to share information and stay up-to-date.
-	    </c:when>
-	    <c:otherwise>
-          Become a member of <strong><c:out value="${project.title}"/></strong> so that you can participate
-          and receive the latest news.
-	    </c:otherwise>
-      </c:choose>
-    </p>
-    <c:if test="${canJoin eq 'true'}">
-      <input type="submit" class="submit" name="save" value="Join Now" />
-    </c:if>
-    <c:if test="${canRequestToJoin eq 'true' && !isUserProfile}">
-      <input type="submit" class="submit" name="save" value="Ask to Become a Member" />
-    </c:if>
-    <c:if test="${isUserProfile eq 'true'}">
-      <input type="submit" class="submit" name="save" value="Ask to Become a Friend" />
-    </c:if>
-  </form>
-</div>
+<c:choose>
+  <c:when test="${'true' eq isUserProfile}">
+    <h3>Friends?</h3>
+  </c:when>
+  <c:otherwise>
+    <h3>Join</h3>
+  </c:otherwise>
+</c:choose>
+<p>
+  <c:choose>
+    <c:when test="${'true' eq isUserProfile}">
+      Become a friend of <strong><c:out value="${project.title}"/></strong> to share information and stay up-to-date.
+    </c:when>
+    <c:otherwise>
+      Become a member of <strong><c:out value="${project.title}"/></strong> so that you can participate
+      and receive the latest news.
+    </c:otherwise>
+  </c:choose>
+</p>
+<ul>
+  <c:forEach items="${urlList}" var="url">
+    <li>
+      <a href="<c:if test='${!fn:contains(url["href"], "http")}'>${ctx}</c:if><c:out value='${url["href"]}'/>"
+        <c:if test='${!empty url["target"]}'>target="<c:out value='${url["target"]}'/>"</c:if>
+        <c:if test='${!empty url["rel"]}'>rel="<c:out value='${url["rel"]}'/>"</c:if>
+        <c:if test='${!empty url["title"]}'>title="<c:out value='${url["title"]}'/>"</c:if>
+      ><em><c:out value='${url["content"]}'/></em></a>
+    </li>
+  </c:forEach>
+</ul>
+<br/>
+<a href="javascript:showPanel('Report this Profile','${ctx}/show/${project.uniqueId}/app/report_inappropriate?module=profile&pid=${project.id}&id=${project.id}',700)">Report this Profile</a>

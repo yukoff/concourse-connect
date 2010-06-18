@@ -63,7 +63,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Represents a project's category
+ * Represents a project's category; the name of a category is the display name
+ * while the description is used for underlying templates and such.
  *
  * @author matt rajkowski
  * @version $Id$
@@ -73,6 +74,7 @@ public class ProjectCategory extends GenericBean {
 
   // Properties
   private int id = -1;
+  private String label = null;
   private String description = null;
   private boolean enabled = true;
   private int level = -1;
@@ -86,7 +88,7 @@ public class ProjectCategory extends GenericBean {
   private FileItem logo = null;
   private String attachmentList = null;
 
-  //Constants (Kind of a reserved category name)
+  // Constants (Kind of a reserved category name)
   public static final String CATEGORY_NAME_ALL = "all";
 
   public ProjectCategory() {
@@ -117,6 +119,13 @@ public class ProjectCategory extends GenericBean {
     this.id = Integer.parseInt(tmp);
   }
 
+  public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
   public String getDescription() {
     return description;
@@ -294,6 +303,7 @@ public class ProjectCategory extends GenericBean {
     style = rs.getString("style");
     styleEnabled = rs.getBoolean("style_enabled");
     sensitive = rs.getBoolean("is_sensitive");
+    label = rs.getString("label");
   }
 
 
@@ -335,9 +345,10 @@ public class ProjectCategory extends GenericBean {
       }
       PreparedStatement pst = db.prepareStatement(
           "INSERT INTO lookup_project_category " +
-              "(description, enabled, level, logo_id, parent_category, style, style_enabled, is_sensitive) VALUES " +
-              "(?, ?, ?, ?, ?, ?, ?, ?) ");
+              "(label, description, enabled, level, logo_id, parent_category, style, style_enabled, is_sensitive) VALUES " +
+              "(?, ?, ?, ?, ?, ?, ?, ?, ?) ");
       int i = 0;
+      pst.setString(++i, label);
       pst.setString(++i, description);
       pst.setBoolean(++i, enabled);
       pst.setInt(++i, level);
@@ -380,9 +391,10 @@ public class ProjectCategory extends GenericBean {
     int resultCount = 0;
     PreparedStatement pst = db.prepareStatement(
         "UPDATE lookup_project_category " +
-            "SET description = ?, enabled = ?, level = ?, logo_id = ?, parent_category = ?, style = ?, style_enabled = ?, is_sensitive = ? " +
+            "SET label = ?, description = ?, enabled = ?, level = ?, logo_id = ?, parent_category = ?, style = ?, style_enabled = ?, is_sensitive = ? " +
             "WHERE code = ? ");
     int i = 0;
+    pst.setString(++i, label);
     pst.setString(++i, description);
     pst.setBoolean(++i, enabled);
     pst.setInt(++i, level);
@@ -486,6 +498,14 @@ public class ProjectCategory extends GenericBean {
    * @return The valid value
    */
   private boolean isValid() {
+    // Backwards compatibility with several scripts and API
+    if (label == null) {
+      label = description;
+    }
+    // When using a form, the value will be blank
+    if (label == null || "".equals(label.trim())) {
+      errors.put("labelError", "Label is required");
+    }
     if (description == null || "".equals(description.trim())) {
       errors.put("descriptionError", "Description is required");
     }
@@ -536,7 +556,7 @@ public class ProjectCategory extends GenericBean {
   }
 
   public String getNormalizedCategoryName() {
-  	return getNormalizedCategoryName(description);
+    return getNormalizedCategoryName(description);
   }
 
   public static String getNormalizedCategoryName(String projectCategoryName) {
@@ -546,8 +566,8 @@ public class ProjectCategory extends GenericBean {
 
     return null;
   }
-  
-  public static String getCategoryNameFromNormalizedCategoryName(String normalizedCategoryName){
+
+  public static String getCategoryNameFromNormalizedCategoryName(String normalizedCategoryName) {
     if (StringUtils.hasText(normalizedCategoryName)) {
       return StringUtils.jsUnEscape(StringUtils.replace(normalizedCategoryName, "_", " "));
     }

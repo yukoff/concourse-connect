@@ -67,7 +67,7 @@
   %>
   <li>
     <a href="${ctx}<%= searchBean.getUrlByCategory(category.getId()) %>"<c:if test="<%= searchBean.getCategoryId() == category.getId() %>"> class="active"</c:if>>
-    <span class="searchResultsProjectCategoryCounts_tl"></span><span class="searchResultsProjectCategoryCounts_tr"></span><em><%= StringUtils.toHtml(category.getDescription()) %><ccp:evaluate if="<%= count > 0 %>"> (<%= count %>)</ccp:evaluate></em><span class="searchResultsProjectCategoryCounts_bl"></span><span class="searchResultsProjectCategoryCounts_br"></span></a>
+    <span class="searchResultsProjectCategoryCounts_tl"></span><span class="searchResultsProjectCategoryCounts_tr"></span><em><%= StringUtils.toHtml(category.getLabel()) %><ccp:evaluate if="<%= count > 0 %>"> (<%= count %>)</ccp:evaluate></em><span class="searchResultsProjectCategoryCounts_bl"></span><span class="searchResultsProjectCategoryCounts_br"></span></a>
   </li>
   <%
     }

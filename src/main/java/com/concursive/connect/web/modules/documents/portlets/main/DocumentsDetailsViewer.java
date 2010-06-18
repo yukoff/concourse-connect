@@ -91,7 +91,7 @@ public class DocumentsDetailsViewer implements IPortletViewer {
     int recordId = getPageViewAsInt(request);
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the specified record
     FileItem thisItem = new FileItem(db, recordId, project.getId(), Constants.PROJECTS_FILES);

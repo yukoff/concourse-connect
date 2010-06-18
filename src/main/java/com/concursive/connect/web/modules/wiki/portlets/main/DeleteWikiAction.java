@@ -53,9 +53,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.dao.WikiList;
 import com.concursive.connect.web.portal.IPortletAction;
-
+import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -92,7 +91,7 @@ public class DeleteWikiAction implements IPortletAction {
     String subject = getPageView(request);
 
     // Find the record to update
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the wiki page
     Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
@@ -104,7 +103,14 @@ public class DeleteWikiAction implements IPortletAction {
     // Send to workflow
     processDeleteHook(request, wiki);
 
-    if (StringUtils.hasText(wiki.getSubjectLink())) {
+    // This call will perform redirects back to a requested page
+    String redirectTo = request.getParameter("redirectTo");
+
+    if (StringUtils.hasText(redirectTo)) {
+      // This call will close panels and perform redirects
+      return (PortalUtils.performRefresh(request, response, null));
+    } else if (StringUtils.hasText(wiki.getSubjectLink())) {
+      // This will refresh back to the deleted wiki
       response.setRenderParameter("portlet-value", wiki.getSubjectLink());
     }
     return null;

@@ -1,1 +1,1 @@
-Meeting Change Notification
+Event Change Notification

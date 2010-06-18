@@ -123,7 +123,7 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
 
         defaultView = CLOSE_PAGE;
       } else if (SAVE_FAILURE.equals(viewType)) {
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
         //Build country list
         CountrySelect countrySelect = new CountrySelect();
         request.setAttribute(COUNTRY_LIST, countrySelect);
@@ -165,7 +165,7 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
           ProjectFormBean projectBean = new ProjectFormBean();
           projectBean.buildBeanFromProject(project);
           request.setAttribute(PROJECT_BEAN, projectBean);
-          Connection db = PortalUtils.getConnection(request);
+          Connection db = PortalUtils.useConnection(request);
 
           // Build display preferences for editing
           String categoryName = getProjectCategoryName(db, project);
@@ -264,7 +264,7 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
   private Project updateProject(ActionRequest request) throws Exception {
     int saved = -1;
     Connection db = null;
-    db = PortalUtils.getConnection(request);
+    db = PortalUtils.useConnection(request);
     // Load the previous state of the project for comparison
     Project prevProject = new Project(db, PortalUtils.getProject(request).getId());
 
@@ -314,6 +314,7 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
         }
       }
     }
+    request.getPortletSession().setAttribute(PROJECT_BEAN, projectBean);
     if (saved == -1) {
       //set project to the session so that errors can be displayed in the form
       request.getPortletSession().setAttribute(PROJECT, projectToEdit);
@@ -322,7 +323,6 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
       PortalUtils.indexAddItem(request, projectToEdit);
       PortalUtils.processUpdateHook(request, prevProject, projectToEdit);
     }
-    request.getPortletSession().setAttribute(PROJECT_BEAN, projectBean);
     return projectToEdit;
   }
 

@@ -53,14 +53,10 @@
 <jsp:include page="tinymce_include.jsp" flush="true"/>
 <script language="javascript" type="text/javascript">
   initEditor('message');
-</script>
-<%-- Setup Image Library --%>
-<script language="javascript" type="text/javascript">
-    var ilConstant = <%= Constants.BLOG_POST_FILES %>;
-    var ilId = <%= newsArticle.getId() %>;
-</script>
-<%-- Validations --%>
-<script language="javascript" type="text/javascript">
+  <%-- Setup Image Library --%>
+  var ilConstant = <%= Constants.BLOG_POST_FILES %>;
+  var ilId = <%= newsArticle.getId() %>;
+  <%-- Validations --%>
   function checkForm(form) {
     try { tinyMCE.triggerSave(false); } catch(e) { }
     var formTest = true;

@@ -66,7 +66,7 @@ public class TestProjectCategory extends ObjectHookComponent implements Componen
   public final static String PROJECT_CATEGORY = "project.category";
 
   public String getDescription() {
-    return "Tests if the projects category matches the specified category";
+    return "Tests if the project's category matches the specified comma-separated categories";
   }
 
   public boolean execute(ComponentContext context) {

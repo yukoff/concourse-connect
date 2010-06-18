@@ -124,7 +124,7 @@
             <urls>
               <value>
                 <![CDATA[
-                <content>Back to the calendar</content>
+                <content>Show calendar</content>
                 <title>${project.title:html} calendar</title>
                 <href>/show/${project.uniqueId}/calendar</href>
                 <permission>project-calendar-view</permission>
@@ -136,11 +136,6 @@
         <column width="auto" class="main">
           <portlet name="CalendarPortlet" viewer="details">
             <title>${project.features.labelCalendar}</title>
-          </portlet>
-        </column>
-        <column width="300">
-          <portlet name="ContentPortlet">
-            <content>Events</content>
           </portlet>
         </column>
       </row>

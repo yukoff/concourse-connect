@@ -83,7 +83,7 @@
       parentId =  document.getElementById('level' + parentLevel).options[document.getElementById('level' + parentLevel).selectedIndex].value;
     }
     var projectId =  document.getElementById('projectId').value;
-    popURL('<%= ctx %>/ProjectManagementTicketsConfig.do?command=EditTicketList&form=categoryEditor&field=level' + currentLevel + '&parentId=' + parentId + '&catLevel=' + currentLevel + '&projectId=' + projectId + '&popup=true','EditList','600','300','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementTicketsConfig.do?command=EditTicketList&form=categoryEditor&field=level' + currentLevel + '&parentId=' + parentId + '&catLevel=' + currentLevel + '&projectId=' + projectId + '&popup=true','600','300','yes','yes');
   }
   function resetList(list) {
     list.options.length = 0;

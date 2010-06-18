@@ -45,6 +45,7 @@
  */
 package com.concursive.connect.web.modules.calendar.utils;
 
+import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.connect.web.modules.login.dao.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,6 +83,7 @@ public class CalendarBean {
   private ArrayList alertTypes = new ArrayList();
   private TimeZone timeZone = null;
   private String source = null;
+  private boolean showHolidays = true;
 
   /**
    * Constructor for the CalendarBean object
@@ -459,5 +461,17 @@ public class CalendarBean {
       startMonthOfWeek = -1;
       agendaView = true;
     }
+  }
+
+  public boolean getShowHolidays() {
+    return showHolidays;
+  }
+
+  public void setShowHolidays(boolean showHolidays) {
+    this.showHolidays = showHolidays;
+  }
+
+  public void setShowHolidays(String showHolidays) {
+    this.showHolidays = DatabaseUtils.parseBoolean(showHolidays);
   }
 }

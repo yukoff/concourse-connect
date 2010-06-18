@@ -1,5 +1,3 @@
-<%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
-<%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
 <%--
 ~ ConcourseConnect
 ~ Copyright 2009 Concursive Corporation
@@ -73,7 +71,36 @@
               <img alt="Default photo" width="45" height="45" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>" class="default-photo" />
             </c:when>
           </c:choose>
-          <h4><a href="${ctx}/show/${project.uniqueId}" title="<c:out value="${meeting.title}"/> link"><c:out value="${meeting.title}"/></a></h4>
+          <c:choose>
+            <c:when test="${showLinks eq 'false'}">
+              <h4><c:out value="${meeting.title}"/></h4>
+              <c:if test="${meeting.isDimdim eq 'true'}">(Web Meeting)</c:if>
+              <c:if test="${meeting.isWebcast eq 'true'}">(Webcast)</c:if>
+            </c:when>
+            <c:when test="${project.title eq meeting.title}">
+              <h4><a href="${ctx}/show/${project.uniqueId}" title="<c:out value="${meeting.title}"/> link"><c:out value="${meeting.title}"/></a></h4>
+            </c:when>
+            <c:otherwise>
+              <c:set var="dateLink"><ccp:tz timestamp="${meeting.startDate}" dateOnly="true" pattern="yyyy-MM-dd"/></c:set>
+              <h4><a href="${ctx}/show/${project.uniqueId}/calendar/${dateLink}?view=day" title="<c:out value="${meeting.title}"/> link"><c:out value="${meeting.title}"/></a></h4>
+            </c:otherwise>
+          </c:choose>
+          <c:if test="${meeting.isDimdim eq 'true' && showLinks eq 'true'}">(Web Meeting)</c:if>
+          <c:if test="${meeting.isWebcast eq 'true' && showLinks eq 'true'}">
+            <ccp:permission name="project-webcasts-view">
+              <c:choose>
+                <c:when test="${project.features.showWebcasts && project.webcastInfoExists}">
+                  (<a href="${ctx}/show/${project.uniqueId}/webcasts">Webcast</a>)
+                </c:when>
+                <c:otherwise>
+                  (Webcast)
+                </c:otherwise>
+              </c:choose>
+            </ccp:permission>
+            <ccp:permission name="project-webcasts-view" if="none">
+              (Webcast)
+            </ccp:permission>
+          </c:if>
           <c:set var="startDate"><ccp:tz timestamp="${meeting.startDate}" dateOnly="true"/></c:set>
           <c:set var="endDate"><ccp:tz timestamp="${meeting.endDate}" dateOnly="true"/></c:set>
           <c:choose>

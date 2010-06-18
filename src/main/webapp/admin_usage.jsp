@@ -155,7 +155,7 @@
               <td nowrap class="formLabel">Lucene Disk Index</td>
               <td>
                 Disk Index
-                [<a href="javascript:popURL('<%= ctx %>/reindex.html','Indexing','500','325','yes','yes');">Reindex</a>]
+                [<a href="javascript:popURL('<%= ctx %>/reindex.html','500','325','yes','yes');">Reindex</a>]
               </td>
             </tr>
             <tr class="containerBody">

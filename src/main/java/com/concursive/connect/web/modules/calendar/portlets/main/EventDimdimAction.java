@@ -81,7 +81,7 @@ public class EventDimdimAction implements IPortletAction {
     }
 
     //get connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     //get current user
     User currentUser = getUser(request);

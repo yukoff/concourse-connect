@@ -48,6 +48,8 @@ package com.concursive.connect.web.controller.servlets;
 import com.concursive.commons.db.ConnectionElement;
 import com.concursive.commons.db.ConnectionPool;
 import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.URLFactory;
+import com.concursive.connect.cms.portal.beans.PortalBean;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.beans.URLControllerBean;
 import org.apache.commons.logging.Log;
@@ -79,17 +81,83 @@ public class URLControllerServlet extends HttpServlet {
   }
 
   public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    LOG.debug("service called");
+    LOG.debug("requestCharacterEncoding=" + request.getCharacterEncoding());
+    try {
+      request.setCharacterEncoding("UTF-8");
+    } catch (Exception e) {
+      LOG.warn("Unsupported encoding");
+    }
+
+    // Check the preferences to see if the correct domain name is being used, else do a redirect
+    ApplicationPrefs prefs = (ApplicationPrefs) request.getSession().getServletContext().getAttribute("applicationPrefs");
+    boolean redirect = false;
+
+    String contextPath = request.getContextPath();
+    String uri = request.getRequestURI();
+    String queryString = request.getQueryString();
+    String path = uri.substring(contextPath.length()) + (queryString == null ? "" : "?" + queryString);
+    LOG.debug("path: " + path);
+    request.setAttribute("requestedURL", path);
+
+    // It's important the user is using the correct URL for accessing content;
+    // The portal has it's own redirect scheme, this is a another catch all
+    // to see if an old domain name or context is used
+    PortalBean bean = new PortalBean(request);
+    String expectedDomainName = prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME);
+    LOG.debug("expectedDomainName: " + expectedDomainName);
+    LOG.debug("domainName: " + bean.getServerName());
+    String expectedContext = prefs.get(ApplicationPrefs.WEB_CONTEXT);
+    LOG.debug("expectedContextPath: " + expectedContext);
+    LOG.debug("contextPath: " + contextPath);
+    if (StringUtils.hasText(expectedContext) &&
+        !expectedContext.equals(contextPath) ||
+        (expectedDomainName != null && path.length() > 0 &&
+            !"127.0.0.1".equals(bean.getServerName()) &&
+            !"127.0.0.1".equals(expectedDomainName) &&
+            !"localhost".equals(bean.getServerName()) &&
+            !"localhost".equals(expectedDomainName) &&
+            !bean.getServerName().startsWith("10.") &&
+            !bean.getServerName().startsWith("172.") &&
+            !bean.getServerName().startsWith("192.") &&
+            !bean.getServerName().equals(expectedDomainName))) {
+      if (uri.length() > 0 && !uri.substring(1).equals(prefs.get("PORTAL.INDEX"))) {
+        String newUrl = URLFactory.createURL(prefs.getPrefs()) + path;
+        request.setAttribute("redirectTo", newUrl);
+        LOG.debug("redirectTo: " + newUrl);
+        request.removeAttribute("PageLayout");
+        redirect = true;
+      }
+    }
+
+    if (redirect) {
+      try {
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/redirect301.jsp");
+        dispatcher.forward(request, response);
+      } catch (Exception e) {
+
+      }
+    } else {
+      mapToMVCAction(request, response);
+    }
+  }
+
+  private void mapToMVCAction(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     // Translate the URI into its parts
     // URLControllerServlet-> contextPath: /context
-    // URLControllerServlet-> path: /context/show/something
-    String path = request.getRequestURI();
+    // URLControllerServlet-> path: /show/something
+    String uri = request.getRequestURI();
     String contextPath = request.getContextPath();
-    URLControllerBean bean = new URLControllerBean(path, contextPath);
+
+    LOG.debug("Using uri: " + uri);
+    URLControllerBean bean = new URLControllerBean(uri, contextPath);
     String queryString = request.getQueryString();
-    String requestedURL = path.substring(contextPath.length()) + (queryString == null ? "" : "?" + queryString);
-    request.setAttribute("requestedURL", requestedURL);
+    String path = uri.substring(contextPath.length()) + (queryString == null ? "" : "?" + queryString);
+    request.setAttribute("requestedURL", path);
+    LOG.debug("Requested path: " + path);
+
     // Map to the MVC Action
-    Connection db = null;
     String mappedPath = null;
     try {
       if (bean.getAction().equals(URLControllerBean.EDITOR)) {

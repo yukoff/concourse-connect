@@ -135,7 +135,6 @@ public class AdminPortalUtils {
         DashboardPage dashboardPage = DashboardUtils.loadDashboardPage(DashboardTemplateList.TYPE_CONTROLLER, (portalBean.isPopup() ? page + "-popup" : page), moduleLayout);
         if (dashboardPage == null) {
           LOG.warn("Page not found: " + page);
-          System.out.println("AdminPortalUtils-> * PAGE NOT FOUND *");
           return null;
         }
         return dashboardPage;

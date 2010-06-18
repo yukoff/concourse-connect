@@ -1,0 +1,1 @@
+ALTER TABLE project_calendar_meeting ADD is_webcast BIT DEFAULT 0;

@@ -62,6 +62,9 @@
       <url name="/create" object="/post" page="form"/>
       <url name="/modify" object="/post" page="form"/>
     </module>
+    <module name="webcasts" layout="webcasts-portal-layout.xml" permission="project-webcasts-view">
+      <url name="/show" object="/webcasts" page="overview"/>
+    </module>
     <module name="calendar" layout="calendar-portal-layout.xml" permission="project-calendar-view">
     	<url name="/modify" object="/calendar" page="form"/>
       <url name="/show" object="/calendar" page="agenda"/>

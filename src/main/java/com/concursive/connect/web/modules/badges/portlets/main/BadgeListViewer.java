@@ -95,7 +95,7 @@ public class BadgeListViewer implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the records
     ProjectBadgeList projectBadges = new ProjectBadgeList();

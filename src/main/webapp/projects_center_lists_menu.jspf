@@ -58,13 +58,13 @@
   }
   //Menu link functions
   function viewItem() {
-    popURL('<%= ctx %>/ProjectManagementLists.do?command=Details&pid=<%= project.getId() %>&cid=<%= category.getId() %>&id=' + thisListId + '&popup=true','List_Details','650','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementLists.do?command=Details&pid=<%= project.getId() %>&cid=<%= category.getId() %>&id=' + thisListId + '&popup=true','650','375','yes','yes');
   }
   function editItem() {
     document.location.href='<%= ctx %>/ProjectManagementLists.do?command=Modify&pid=<%= project.getId() %>&cid=<%= category.getId() %>&id=' + thisListId;
   }
   function moveItem() {
-    popURL('<%= ctx %>/ProjectManagementLists.do?command=Move&pid=<%= project.getId() %>&id=' + thisListId + '&popup=true','Lists_Mover','325','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementLists.do?command=Move&pid=<%= project.getId() %>&id=' + thisListId + '&popup=true','325','375','yes','yes');
   }
   function deleteItem() {
     if (confirm('Are you sure?')) {

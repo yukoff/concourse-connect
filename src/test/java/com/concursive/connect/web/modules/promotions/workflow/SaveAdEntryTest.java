@@ -126,7 +126,7 @@ public class SaveAdEntryTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = (ProjectHistory) historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] added a promotion [[|" + project.getId() + ":promotion|" + ad.getId() + "|Dummy Heading]] for [[|" + project.getId() + ":profile||Project SQL Test]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] @[[|" + project.getId() + ":profile||Project SQL Test]] added a promotion [[|" + project.getId() + ":promotion|" + ad.getId() + "|Dummy Heading]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

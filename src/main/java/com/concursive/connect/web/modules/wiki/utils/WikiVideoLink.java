@@ -46,10 +46,9 @@
 
 package com.concursive.connect.web.modules.wiki.utils;
 
+import com.concursive.commons.video.EmbedVideo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.net.URL;
 
 /**
  * Processes the wiki link as a video
@@ -68,43 +67,26 @@ public class WikiVideoLink {
   public WikiVideoLink(String link, boolean editMode, String contextPath) {
     String video = link.substring(6);
     String title = null;
+    int thumbnail = -1;
     if (video.indexOf("|") > 0) {
       // the video is first
       video = video.substring(0, video.indexOf("|"));
       // any directives are next
+      thumbnail = link.indexOf("|thumb");
       // the optional caption is last
       int last = link.lastIndexOf("|");
-      title = link.substring(last + 1);
+      if (last > thumbnail) {
+        title = link.substring(last + 1);
+      }
     }
 
     // A video, including alternate text:
     // [[Video:http://www.youtube.com/watch?v=3LkNlTNHZzE|Alternate text]]
     // [[Video:http://www.youtube.com/v/8ab67NJ6wGk]]
+    // [[Video:http://www.youtube.com/v/8ab67NJ6wGk|thumb]]
 
     // Output the video
-    if (video.startsWith("http") &&
-        ((video.contains(".youtube.com") || video.contains("video.google.")))) {
-      try {
-        if (video.startsWith("http://www.youtube.com?v=") || video.startsWith("http://www.youtube.com/watch?v=")) {
-          int index = video.indexOf("?v=") + 3;
-          video = "http://www.youtube.com/v/" + video.substring(index);
-          if (video.contains("&")) {
-            video = video.substring(0, video.indexOf("&"));
-          }
-        }
-        // Test the URL and set the output
-        URL url = new URL(video);
-        value =
-            "<object width=\"425\" height=\"344\">" +
-                "<param name=\"movie\" value=\"" + video + "\"></param>" +
-                (editMode ? "" :
-                    "<param name=\"wmode\" value=\"transparent\"></param>" +
-                        "<embed src=\"" + video + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"344\"></embed>") +
-                "</object>" + (editMode ? "&nbsp;" : "");
-      } catch (Exception e) {
-        LOG.error("Could not create a URL", e);
-      }
-    }
+    value = EmbedVideo.embed(video, thumbnail > -1, editMode) + (editMode ? "&nbsp;" : "");
   }
 
   public String getValue() {

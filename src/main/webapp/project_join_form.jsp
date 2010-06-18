@@ -72,7 +72,7 @@
         <input type="radio" name="emailNotification" id="emailNotification" value="<%= TeamMember.EMAIL_NEVER %>"> Never
       </div>
     </fieldset>
-    <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" />
+    <input type="submit" class="submit" value="<ccp:label name="button.save">Join</ccp:label>" />
     <c:choose>
       <c:when test="${'true' eq param.popup || 'true' eq popup}">
         <input type="button" value="Cancel" class="cancel" id="panelCloseButton">

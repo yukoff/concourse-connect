@@ -51,10 +51,10 @@
 <portlet:defineObjects/>
 <%@ include file="initPage.jsp" %>
 <div class="portletWrapper">
-  <h1><ccp:tabLabel name="Badges" object="project"/></h1>
+  <%--<h1><ccp:tabLabel name="Badges" object="project"/></h1>--%>
   <c:choose>
     <c:when test="${empty badgeList}">
-      <p><ccp:label name="projectsCenterBadges.noBadges">This profile doesn't have any badges to display.</ccp:label></p>
+      <div class="portlet-message-info"><p><ccp:label name="projectsCenterBadges.noBadges">This profile doesn't have any badges to display.</ccp:label></p></div>
     </c:when>
     <c:otherwise>
       <ul class="bucketlist bucketlistBadges">

@@ -71,9 +71,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Currency;
-import java.util.LinkedHashMap;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Class to manipulate wiki objects
@@ -148,12 +146,17 @@ public class WikiToHTMLUtils {
     // Images
     // [[Image:Filename.jpg]]
     // [[Image:Filename.jpg|A caption]]
+    // [[Image:Filename.jpg|link=wiki]]
     // [[Image:Filename.jpg|thumb]]
     // [[Image:Filename.jpg|right]]
     // [[Image:Filename.jpg|left]]
 
     // Videos
     // [[Video:http://www.youtube.com/watch?v=3LkNlTNHZzE]]
+    // [[Video:http://www.ustream.tv/flash/live/1/371673]]
+    // [[Video:http://www.justin.tv/vasalini]]
+    // [[Video:http://www.livestream.com/spaceflightnow]]
+    // [[Video:http://qik.com/zeroio]]
 
     // Forms
     // [{form name="wikiForm"}]
@@ -220,6 +223,7 @@ public class WikiToHTMLUtils {
         preText = preText.substring(0, preText.length() - 1);
       }
       String text = StringUtils.toHtmlValue(preText, false, false);
+      text = processMarkupCharacters(text);
       if (editMode) {
         text = StringUtils.toBasicHtmlChars(text);
       }
@@ -238,6 +242,10 @@ public class WikiToHTMLUtils {
   }
 
   public static String getHTML(WikiToHTMLContext context, Connection db, String content) {
+    return getHTML(context, db, content, false);
+  }
+
+  private static String getHTML(WikiToHTMLContext context, Connection db, String content, boolean inTable) {
     boolean inParagraph = false;
     boolean unorderedList = false;
     int unorderedIndent = 0;
@@ -276,7 +284,7 @@ public class WikiToHTMLUtils {
             append(context, sb, CRLF);
             inParagraph = false;
           }
-          // parseTable operates over all the lines that make of the table
+          // parseTable operates over all the lines that make up the table,
           // it will have to look forward so it returns an unparsed line
           line = parseTable(context, db, in, line, sb);
           if (line == null) {
@@ -307,7 +315,7 @@ public class WikiToHTMLUtils {
             append(context, sb, CRLF);
             inParagraph = false;
           }
-          // parseTable operates over all the lines that make of the table
+          // parseForm operates over all the lines that make up the form,
           // it will have to look forward so it returns an unparsed line
           parseForm(context, db, in, line, sb);
           continue;
@@ -351,15 +359,20 @@ public class WikiToHTMLUtils {
           }
           append(context, sb, "<h" + hCount + (headerAnchor != null ? " id=\"" + headerAnchor + "\"" : "") + ">");
           if (context.canAppend()) {
-            if (!context.isEditMode()) {
+            if (!context.isEditMode() && context.getShowEditSection() && !inTable) {
               if (hasUserProjectAccess(db, context.getUserId(), context.getProjectId(), "wiki", "add")) {
                 sb.append("<span class=\"editsection\"><a href=\"" + context.getServerUrl() + "/modify/" + context.getProject().getUniqueId() + "/wiki" + (StringUtils.hasText(context.getWiki().getSubject()) ? "/" + context.getWiki().getSubjectLink() : "") + "?section=" + context.getSectionIdCount() + "\">edit</a></span>");
               }
             }
           }
-          append(context, sb, "<span>");
+
+          if (context.isEditMode()) {
+            append(context, sb, "<span>");
+          }
           append(context, sb, StringUtils.toHtml(section));
-          append(context, sb, "</span>");
+          if (context.isEditMode()) {
+            append(context, sb, "</span>");
+          }
           append(context, sb, "</h" + hCount + ">");
           append(context, sb, CRLF);
           continue;
@@ -389,7 +402,7 @@ public class WikiToHTMLUtils {
             unorderedIndent = hCount;
           }
           append(context, sb, "<li>");
-          parseLine(context, db, line.substring(hCount), sb);
+          parseLine(context, db, line.substring(hCount).trim(), sb);
           append(context, sb, "</li>");
           append(context, sb, CRLF);
           continue;
@@ -421,7 +434,7 @@ public class WikiToHTMLUtils {
             orderedIndent = hCount;
           }
           append(context, sb, "<li>");
-          parseLine(context, db, line.substring(hCount), sb);
+          parseLine(context, db, line.substring(hCount).trim(), sb);
           append(context, sb, "</li>");
           append(context, sb, CRLF);
           continue;
@@ -509,10 +522,15 @@ public class WikiToHTMLUtils {
     // |colA1|colA2
     // !continued
     // !continued|
-    // |colB1|colB2|
+    // |colB1|colB2 [[Security, Registration, Invitation|Installation Options]]|
     append(context, sb, "<table class=\"wikiTable\">");
     append(context, sb, CRLF);
-    int row = 0;
+    int rowHighlight = 0;
+    int rowCount = 0;
+
+    // Keep track of the table's custom styles
+    HashMap<Integer, String> cStyle = new HashMap<Integer, String>();
+
     while (line != null && (line.startsWith("|") || line.startsWith("!"))) {
 
       // Build a complete line
@@ -529,55 +547,108 @@ public class WikiToHTMLUtils {
       }
       line = lineToParse;
 
-      // Header (can be on 2+ lines)
+      // Determine if the row can output
+      boolean canOutput = true;
+
+      // Track the row being processed
+      ++rowCount;
+
+      String cellType = null;
+      Scanner sc = null;
       if (line.startsWith("||") && line.endsWith("||")) {
-        sb.append("<tr>");
+        cellType = "th";
+        sc = new Scanner(line).useDelimiter("[|][|]");
+//        sc = new Scanner(line.substring(2, line.length() - 2)).useDelimiter("[|][|]");
+      } else if (line.startsWith("|")) {
+        cellType = "td";
+        sc = new Scanner(line.substring(1, line.length() - 1)).useDelimiter("\\|(?=[^\\]]*(?:\\[|$))");
+      }
+
+      if (sc != null) {
+
+        // Determine the column span
         int colSpan = 1;
-        String[] sp = line.substring(2, line.length() - 2).split("[|][|]");
-        for (String token : sp) {
-          if (token.length() == 0) {
+        // Determine the cell being output
+        int cellCount = 0;
+
+        while (sc.hasNext()) {
+          String cellData = sc.next();
+          if (cellData.length() == 0) {
             ++colSpan;
             continue;
           }
-          if (colSpan == 1) {
-            append(context, sb, "<th>");
-          } else {
-            append(context, sb, "<th colspan=\"" + colSpan + "\">");
+
+          // Track the cell count being output
+          ++cellCount;
+
+          if (rowCount == 1) {
+            // Parse and validate the style input
+            LOG.debug("Checking style value: " + cellData);
+            if (cellData.startsWith("{") && cellData.endsWith("}")) {
+              String[] style = cellData.substring(1, cellData.length() - 1).split(":");
+              String attribute = style[0].trim();
+              String value = style[1].trim();
+              if ("width".equals(attribute)) {
+                // Validate the width style
+                if (StringUtils.hasAllowedOnly("0123456789%.", value)) {
+                  cStyle.put(cellCount, attribute + ": " + value + ";");
+                }
+              } else {
+                LOG.debug("Unsupported style: " + cellData);
+              }
+              canOutput = false;
+            }
           }
-          if (" ".equals(token)) {
-            append(context, sb, "&nbsp;");
-          } else {
-            parseLine(context, db, token, sb);
+
+          // Output the header
+          if (canOutput) {
+
+            if (cellCount == 1) {
+              // This is the table header row
+              if ("td".equals(cellType)) {
+                rowHighlight = (rowHighlight != 1 ? 1 : 2);
+                append(context, sb, "<tr class=\"row" + rowHighlight + "\">");
+              } else {
+                append(context, sb, "<tr>");
+              }
+            }
+
+            // Start the cell output
+            append(context, sb, "<" + cellType);
+            // Output the colspan
+            if (colSpan > 1) {
+              append(context, sb, " colspan=\"" + colSpan + "\"");
+            }
+            // Output any style
+            if (cStyle.size() > 0 && rowCount == 2) {
+              String style = cStyle.get(cellCount);
+              if (style != null) {
+                append(context, sb, " style=\"" + style + "\"");
+              }
+            }
+            // End the cell output
+            append(context, sb, ">");
+
+            // Output the data
+            if (" ".equals(cellData) || "¬†".equals(cellData)) {
+              // Put a blank space in blank cells for output consistency
+              append(context, sb, "&nbsp;");
+            } else {
+              // Output the cell as a complete wiki
+              String formatted = getHTML(context, db, cellData, true).trim();
+              LOG.trace(formatted);
+              sb.append(formatted);
+            }
+
+            // Close the cell
+            append(context, sb, "</" + cellType + ">");
           }
-          append(context, sb, "</th>");
         }
-        append(context, sb, "</tr>");
-        append(context, sb, CRLF);
-      } else if (line.startsWith("|") && line.endsWith("|")) {
-        // Regular row (can be on 2+ lines)
-        row = (row != 1 ? 1 : 2);
-        append(context, sb, "<tr class=\"row" + row + "\">");
-        int colSpan = 1;
-        String[] sp = line.substring(1, line.length() - 1).split("[|]");
-        for (String token : sp) {
-          if (token.length() == 0) {
-            ++colSpan;
-            continue;
-          }
-          if (colSpan == 1) {
-            append(context, sb, "<td>");
-          } else {
-            append(context, sb, "<td colSpan=\"" + colSpan + "\">");
-          }
-          if (" ".equals(token) || " ".equals(token)) {
-            append(context, sb, "&nbsp;");
-          } else {
-            parseLine(context, db, token, sb);
-          }
-          append(context, sb, "</td>");
+        if (canOutput) {
+          append(context, sb, "</tr>");
+          append(context, sb, CRLF);
         }
-        append(context, sb, "</tr>");
-        append(context, sb, CRLF);
+
       }
       // read another line to see if it's part of the table
       line = in.readLine();
@@ -657,6 +728,7 @@ public class WikiToHTMLUtils {
     if (context.canAppend()) {
       // Output the form based on editmode
       if (context.isEditMode()) {
+        LOG.debug("parseForm: editMode");
         // Construct an HTML form for filling out
         int groupCount = 0;
         for (CustomFormGroup group : form) {
@@ -669,9 +741,21 @@ public class WikiToHTMLUtils {
             sb.append("<tr><th colspan=\"2\">").append(StringUtils.toHtml(group.getName())).append("</th></tr>");
           }
           for (CustomFormField field : group) {
+            // Determine if there is a property supplied for this field's value
+            if (context.getFormPropertyMap() != null) {
+              Map<String, String> propertyMap = context.getFormPropertyMap();
+              LOG.debug("Looking up propertyMap for name: " + field.getName());
+              if (propertyMap.containsKey(field.getName())) {
+                String thisValue = propertyMap.get(field.getName());
+                if (StringUtils.hasText(thisValue)) {
+                  LOG.debug("  Setting value: " + thisValue);
+                  field.setValue(thisValue);
+                }
+              }
+            }
             sb.append("<tr class=\"containerBody\">" +
                 "<td valign=\"top\" class=\"formLabel\">").append(StringUtils.toHtml(field.getLabel())).append("</td>" +
-                "<td valign=\"top\">").append(toHtmlFormField(field, context.getServerUrl()));
+                "<td valign=\"top\">").append(toHtmlFormField(field, context));
             if (StringUtils.hasText(field.getAdditionalText())) {
               sb.append("&nbsp;").append(StringUtils.toHtml(field.getAdditionalText()));
             }
@@ -681,6 +765,7 @@ public class WikiToHTMLUtils {
         }
         sb.append(CRLF);
       } else {
+        LOG.debug("parseForm: displayMode");
         // Construct HTML output for viewing the form data
         LOG.debug("constructing html output...");
         boolean dataOutput = false;
@@ -800,7 +885,7 @@ public class WikiToHTMLUtils {
         if (linkL == 2 && linkR == 2) {
           flushData(data, sb);
           // Different type of links...
-          String link = subject.toString().trim();
+          String link = subject.toString();
 
           if (link.startsWith("Image:") || link.startsWith("image:")) {
             // Image link
@@ -815,15 +900,17 @@ public class WikiToHTMLUtils {
           } else {
             // Any other kind of link
             // Parser for inter-project wiki links
-            WikiLink wikiLink = new WikiLink(context.getProjectId(), link);
+            WikiLink wikiLink = new WikiLink(link, context.getProjectId());
             // Place a wiki link
             String cssClass = "wikiLink";
             String url = null;
             if (WikiLink.REFERENCE.equals(wikiLink.getStatus())) {
               sb.append("<a class=\"wikiLink external\" target=\"_blank\" href=\"" + wikiLink.getEntity() + "\">" + StringUtils.toHtml(wikiLink.getName()) + "</a>");
             } else {
+              LOG.debug("Found wiki link: " + wikiLink.toString());
               Project thisProject = null;
               if (wikiLink.getProjectId() > -1) {
+                LOG.debug("Loading wiki link project: " + wikiLink.getProjectId());
                 thisProject = ProjectUtils.loadProject(wikiLink.getProjectId());
               } else {
                 thisProject = new Project();
@@ -862,11 +949,22 @@ public class WikiToHTMLUtils {
                 url = context.getServerUrl() + "/show/" + thisProject.getUniqueId() + "/" + wikiLink.getArea().toLowerCase() + (StringUtils.hasText(wikiLink.getEntity()) ? "/" + wikiLink.getEntityId() : "");
               }
               // Display the resulting URL
-              if (wikiLink.getProjectId() == -1 || wikiLink.getProjectId() == context.getProjectId() || hasUserProjectAccess(db, context.getUserId(), wikiLink.getProjectId(), wikiLink.getPermissionArea(), "view")) {
-                sb.append("<a class=\"" + cssClass + "\" href=\"" + url + "\">" + StringUtils.toHtml(wikiLink.getName()) + "</a>");
+              if (wikiLink.getProjectId() == -1 ||
+                  wikiLink.getProjectId() == context.getProjectId() ||
+                  hasUserProjectAccess(db, context.getUserId(), wikiLink.getProjectId(), wikiLink.getPermissionArea(), "view")) {
+                String rel = "";
+                if ("app".equals(wikiLink.getArea())) {
+                  // open apps in a panel
+                  rel = " rel=\"shadowbox\"";
+                }
+                sb.append("<a class=\"" + cssClass + "\" href=\"" + url + "\"" + rel + ">" + StringUtils.toHtml(wikiLink.getName().trim()) + "</a>");
+                if (wikiLink.getName().endsWith(" ")) {
+                  sb.append(" ");
+                }
               } else {
+                LOG.debug("USING DENIED LINK");
                 cssClass = "wikiLink denied";
-                sb.append("<a class=\"" + cssClass + "\" href=\"#\" onmouseover=\"window.status='" + url + "'\">" + StringUtils.toHtml(wikiLink.getName()) + "</a>");
+                sb.append("<a class=\"" + cssClass + "\" href=\"#\" onmouseover=\"window.status='" + StringUtils.jsStringEscape(url) + ";'\">" + StringUtils.toHtml(wikiLink.getName()) + "</a>");
               }
             }
           }
@@ -897,9 +995,9 @@ public class WikiToHTMLUtils {
           data.append(c);
           underline = true;
         } else {
-          data.append(c);
           flushData(data, sb);
           sb.append("</span>");
+          data.append(c);
           underline = false;
         }
         underlineAttr = 0;
@@ -996,13 +1094,17 @@ public class WikiToHTMLUtils {
 
   protected static void append(WikiToHTMLContext context, StringBuffer sb, String content) {
     if (context.canAppend()) {
-      sb.append(content);
+      String value = content;
+      value = processMarkupCharacters(value);
+      sb.append(value);
     }
   }
 
   protected static void flushData(StringBuffer data, StringBuffer sb) {
     if (data.length() > 0) {
-      sb.append(StringUtils.toHtmlValue(data.toString(), false, false));
+      String value = data.toString();
+      value = processMarkupCharacters(value);
+      sb.append(StringUtils.toHtmlValue(value, false, false));
       data.setLength(0);
     }
   }
@@ -1017,6 +1119,7 @@ public class WikiToHTMLUtils {
     try {
       thisUser = UserUtils.loadUser(userId);
     } catch (Exception notAUser) {
+      LOG.debug("hasUserProjectAccess: userId not found - " + userId + " - using a guest user");
       thisUser = UserUtils.createGuestUser();
     }
     // Check access
@@ -1037,7 +1140,7 @@ public class WikiToHTMLUtils {
     return line.substring(start, end);
   }
 
-  public static String toHtmlFormField(CustomFormField field, String contextPath) {
+  public static String toHtmlFormField(CustomFormField field, WikiToHTMLContext context) {
     // Set a default value
     if (field.getValue() == null) {
       field.setValue(field.getDefaultValue());
@@ -1078,7 +1181,7 @@ public class WikiToHTMLUtils {
         String language = System.getProperty("LANGUAGE");
         String country = System.getProperty("COUNTRY");
         return ("<input type=\"text\" name=\"" + fieldName + "\" id=\"" + fieldName + "\" size=\"10\" value=\"" + StringUtils.toHtmlValue(calendarValue) + "\" > " +
-            "<a href=\"javascript:popCalendar('inputForm', '" + fieldName + "','" + language + "','" + country + "');\">" + "<img src=\"" + contextPath + "/images/icons/stock_form-date-field-16.gif\" " + "border=\"0\" align=\"absmiddle\" height=\"16\" width=\"16\"/></a>");
+            "<a href=\"javascript:popCalendar('inputForm', '" + fieldName + "','" + language + "','" + country + "');\">" + "<img src=\"" + context.getServerUrl() + "/images/icons/stock_form-date-field-16.gif\" " + "border=\"0\" align=\"absmiddle\" height=\"16\" width=\"16\"/></a>");
       case CustomFormField.PERCENT:
         return ("<input type=\"text\" name=\"" + fieldName + "\" size=\"5\" value=\"" + StringUtils.toHtmlValue(field.getValue()) + "\"> " + "%");
       case CustomFormField.INTEGER:
@@ -1258,4 +1361,20 @@ public class WikiToHTMLUtils {
     }
   }
 
+  /**
+   * When round-tripping wiki markup, these characters are escaped for proper
+   * parsing.
+   *
+   * @param text
+   * @return
+   */
+  public static String processMarkupCharacters(String text) {
+    text = StringUtils.replace(text, "\\*", "*");
+    text = StringUtils.replace(text, "\\#", "#");
+    text = StringUtils.replace(text, "\\=", "=");
+    text = StringUtils.replace(text, "\\|", "|");
+    text = StringUtils.replace(text, "\\{", "[");
+    text = StringUtils.replace(text, "\\}", "]");
+    return text;
+  }
 }

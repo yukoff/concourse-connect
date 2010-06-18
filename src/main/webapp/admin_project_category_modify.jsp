@@ -61,7 +61,7 @@ Add Site Category
 <% } %>
 <br /><br />
 <script language="JavaScript" type="text/javascript">
-  YAHOO.util.Event.onDOMReady(function() { document.inputForm.description.focus();} );
+  YAHOO.util.Event.onDOMReady(function() { document.inputForm.label.focus();} );
   function setAttachmentList(newVal) {
     document.getElementById("attachmentList").value = newVal;
   }
@@ -76,8 +76,12 @@ Add Site Category
     var messageText = "";
 
     //Check required field
+    if (form.label.value == "") {
+      messageText += "- Label is a required field.\r\n";
+      formTest = false;
+    }
     if (form.description.value == "") {
-      messageText += "- Name is a required field.\r\n";
+      messageText += "- Template is a required field.\r\n";
       formTest = false;
     }
     if (!checkNumber(form.level.value)) {
@@ -105,10 +109,18 @@ Add Site Category
     </thead>
     <tbody>
       <tr class="containerBody">
-        <td nowrap class="formLabel"><ccp:label name="">Name</ccp:label></td>
+        <td nowrap class="formLabel"><ccp:label name="">Label</ccp:label></td>
+        <td>
+          <input type="text" name="label" size="30" value="<%=toHtmlValue(projectCategory.getLabel()) %>"/><span class="required">*</span>
+          <%= showAttribute(request,"labelError") %>
+        </td>
+      </tr>
+      <tr class="containerBody">
+        <td nowrap class="formLabel"><ccp:label name="">Template</ccp:label></td>
         <td>
           <input type="text" name="description" size="30" value="<%=toHtmlValue(projectCategory.getDescription()) %>"/><span class="required">*</span>
           <%= showAttribute(request,"descriptionError") %>
+          This value is typically not changed since the template must match the application's configuration files.
         </td>
       </tr>
       <tr class="containerBody">

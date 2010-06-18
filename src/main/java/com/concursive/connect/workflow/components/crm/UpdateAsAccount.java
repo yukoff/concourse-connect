@@ -50,8 +50,8 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
-import org.aspcfs.apps.transfer.DataRecord;
-import org.aspcfs.utils.CRMConnection;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -48,15 +48,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.concursive.commons.text.StringUtils" %>
-<jsp:useBean id="classifiedList" class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedList" scope="request"/>
+<jsp:useBean id="classifiedList" class="com.concursive.connect.indexer.IndexerQueryResultList" scope="request"/>
 <jsp:useBean id="classifiedCategory" class="com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategory" scope="request"/>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
   <c:if test="${empty classifiedCategory.itemName}">
-    <h3><c:out value="${title}"/></h3>
+    <h2><c:out value="${title}"/></h2>
   </c:if>
   <c:if test="${!empty classifiedCategory.itemName}">
-    <h3>Classifieds (<c:out value="${classifiedCategory.itemName}"/>)</h3>
+    <h2>Classifieds (<c:out value="${classifiedCategory.itemName}"/>)</h2>
   </c:if>
   <c:if test="${empty classifiedList}">
     No classifieds found.
@@ -70,10 +70,14 @@
         <c:forEach items="${classifiedList}" var="classified">
           <li>
 	          <dl>
-    	      	<dt><a href="${ctx}/show/${classified.project.uniqueId}/classified-ad/${classified.id}" title="<c:out value="${classified.title}"/>"><c:out value="${classified.title}"/></a></dt>
-	            <c:if test="${!empty classified.description}">
-	            	<dd><c:out value="${classified.description}"/></dd>
+    	      	<dt><a href="${ctx}/show/${classified.projectUniqueId}/classified-ad/${classified.objectId}" title="<c:out value="${classified.title}"/>"><c:out value="${classified.title}"/></a></dt>
+	            <c:if test="${!empty classified.contents}">
+	            	<dd><c:out value="${classified.contents}"/></dd>
 	            </c:if>
+              <cite>
+                <c:out value="${classified.projectTitle}"/>
+                <c:if test="${!empty classified.projectLocation}">- (<c:out value="${classified.projectLocation}"/>)</c:if>
+              </cite>
 	          </dl>  
         </c:forEach>
       </c:if>
@@ -91,11 +95,31 @@
 		  			</c:set>
 		  		</c:otherwise>
 		  	</c:choose>
+		  	<c:choose>
+		  		<c:when test="${empty query}">
+		  			<c:set var="queryString" />
+		  		</c:when>
+		  		<c:otherwise>
+		  			<c:set var="queryString">
+		  				query=${query}
+		  			</c:set>
+		  		</c:otherwise>
+		  	</c:choose>
+		  	<c:choose>
+		  		<c:when test="${empty location}">
+		  			<c:set var="locationString" />
+		  		</c:when>
+		  		<c:otherwise>
+		  			<c:set var="locationString">
+		  				location=${location}
+		  			</c:set>
+		  		</c:otherwise>
+		  	</c:choose>
 	      <c:if test="${!empty classifiedCategory.itemName}">
-	        <ccp:paginationControl object="classifiedListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(StringUtils.replace(classifiedCategory.getItemName().toLowerCase()," ", "_")) %>' urlSuffix='${sortURL}' />
+	        <ccp:paginationControl object="classifiedListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(classifiedCategory.getNormalizedCategoryName()) + "/" +classifiedCategory.getId() %>' urlParams='${sortURL},${queryString},${locationString}' />
 	      </c:if>
 	      <c:if test="${empty classifiedCategory.itemName}">
-	        <ccp:paginationControl object="classifiedListInfo" url='<%= hasMoreURL %>' urlSuffix='${sortURL}' />
+	        <ccp:paginationControl object="classifiedListInfo" url='<%= hasMoreURL %>' urlParams='${sortURL},${queryString},${locationString}' />
 	      </c:if>
 	    </c:if>
 	  </c:if>

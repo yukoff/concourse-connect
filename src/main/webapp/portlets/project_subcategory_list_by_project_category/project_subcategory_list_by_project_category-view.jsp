@@ -83,7 +83,7 @@
       <jsp:useBean id="subProjectCategoryDescription" type="java.lang.String" />
       <c:set var="subProjectCategory" value="${subProjectCategory}"/>
       <jsp:useBean id="subProjectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
-        <li class="listing"><a href='${ctx}${hasMoreURL}/<%= ProjectCategory.getNormalizedCategoryName(subProjectCategoryDescription) %>' title='<c:out value="${subProjectCategory.description}" />'><c:out value="${subProjectCategory.description}" /></a></li>
+        <li class="listing"><a href='${ctx}${hasMoreURL}/<%= ProjectCategory.getNormalizedCategoryName(subProjectCategoryDescription) %>' title='<c:out value="${subProjectCategory.label}" />'><c:out value="${subProjectCategory.label}" /></a></li>
     </c:forEach>
   </ul>
   <ccp:evaluate if='<%= "true".equals(hasMore) %>'>

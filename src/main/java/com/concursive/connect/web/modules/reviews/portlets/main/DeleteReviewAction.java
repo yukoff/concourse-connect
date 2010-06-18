@@ -83,7 +83,7 @@ public class DeleteReviewAction implements IPortletAction {
     }
 
     // Update the review
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Get the request parameter
     int id = getPageViewAsInt(request);

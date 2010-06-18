@@ -50,6 +50,8 @@ import com.concursive.connect.indexer.IIndexerSearch;
 import com.concursive.connect.indexer.IndexerQueryResultList;
 
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.portal.PortalUtils;
+
 import javax.portlet.*;
 import java.io.IOException;
 
@@ -96,6 +98,10 @@ public class SearchResultsByWikiPortlet extends GenericPortlet {
         if (categoryId > -1) {
           queryString += " AND (projectCategoryId:" + categoryId + ")";
         }
+      }
+      // Fetch only wiki in this instanceId
+      if (PortalUtils.getInstance(request).getId() != -1){
+      	queryString += " AND (instanceId:" + PortalUtils.getInstance(request).getId() + ")";
       }
 
       // Customize the string

@@ -105,7 +105,7 @@ public class SaveWikiConfigureListsAction implements IPortletAction {
     }
 
     // Find the record to record comments against
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the previous category list
     ProjectItemList itemList = new ProjectItemList();

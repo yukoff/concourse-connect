@@ -105,7 +105,7 @@ public class DocumentsFileFormViewer implements IPortletViewer {
     FileItem thisItem = (FileItem) PortalUtils.getFormBean(request, FILE_ITEM, FileItem.class);
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Generate a list of folders which will be displayed in a drop-down
     FileFolderList folderList = new FileFolderList();

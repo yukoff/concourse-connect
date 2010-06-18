@@ -44,13 +44,14 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.concursive.commons.http.RequestUtils" %>
 <%@ page import="com.concursive.commons.text.StringUtils" %>
 <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
 <jsp:useBean id="targetWiki" class="com.concursive.connect.web.modules.wiki.dao.Wiki" scope="request"/>
-<jsp:useBean id="content" class="java.lang.String" scope="request"/>
 <jsp:useBean id="link" class="java.lang.String" scope="request"/>
 <%@ include file="initPage.jsp" %>
+<script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/div.js?1"></script>
 <script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/tiny_mce_popup.js?1"></script>
 <script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/utils/mctabs.js"></script>
 <script type="text/javascript" src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/javascript/tiny_mce-3.2.7/utils/validate.js"></script>
@@ -63,49 +64,75 @@ var LinkSelect = {
       //var title = dom.getAttrib(n, 'title');
       //alert("found: " + href + "\n" + title);
     }
+
+    <%--
+    <c:choose>
+      <c:when test="<%= hasText(link) %>">
+        this.showWikiLinkPreview("<%= StringUtils.toHtmlValue(link) %>");
+      </c:when>
+      <c:otherwise>
+        this.showWikiLinkPreview("<%= StringUtils.toHtmlValue(targetWiki.getSubject()) %>");
+      </c:otherwise>
+    </c:choose>
+    --%>
   },
 
   insertAndClose : function() {
     var ed = tinyMCEPopup.editor, args = {}, el;
+    var dom = ed.dom;
     tinyMCEPopup.restoreSelection();
 		// Fixes crash in Safari
     if (tinymce.isWebKit)
       ed.getWin().focus();
 
-    // Set the variables based on the tab
+     // Set the variables based on the tab
     var linkHref = '';
-    //var linkTitle = '';
 
-    // If wiki link
-    var wikiLinkPanelElm = document.getElementById('wikilink_tab');
-    if (wikiLinkPanelElm.className == 'current') {
-      var subject = escape(document.getElementById('wikilink').value);
+    // Determine if an internal or external link
+    var subject = document.getElementById('wikilink').value;
+    if (subject.indexOf("http://") == 0 ||
+        subject.indexOf("https://") == 0 ||
+        subject.indexOf("/") == 0 ||
+        subject.indexOf("ftp://") == 0 ||
+        subject.indexOf("mailto:") == 0) {
+      linkHref = subject;
+    } else {
+      // URL reserved
+      //      subject = subject.replace(/=/g, "_");
+      //      subject = subject.replace(/;/g, "_");
+      subject = subject.replace(/\//g, "_");
+      subject = subject.replace(/#/g, "_");
+      //      subject = subject.replace(/\?/g, "_");
+      subject = escape(subject);
+      // Conformity
       subject = subject.replace(/%20/g, "+");
-      linkHref = "<%= ctx %>/show/<%= project.getUniqueId() %>/wiki/" + subject;
-      //linkTitle = document.getElementById('wikilinkalt').value;
+      subject = subject.replace(/&apos;/gi, "'");
+      subject = subject.replace(/%u2019/gi, "'");
+      subject = subject.replace(/'/g, "%27");
+      subject = subject.replace(/\"/g, "%22");
+      linkHref = "${ctx}/show/<%= project.getUniqueId() %>/wiki/" + subject;
     }
-
-    // If external website
-    var webLinkPanelElm = document.getElementById('weblink_tab');
-    if (webLinkPanelElm.className == 'current') {
-      linkHref = document.getElementById('weblink').value;
-      //linkTitle = document.getElementById('weblinkalt').value;
-    }
-
-    // If a search result
-
 
     // Update the editor
     tinyMCEPopup.execCommand("mceBeginUndoLevel");
-
     el = ed.selection.getNode();
+
     if (el && el.nodeName == 'A') {
-      ed.dom.setAttrib(el, 'href', linkHref);
-      //ed.dom.setAttrib(el, 'title', linkTitle);
+      dom.setAttrib(el, 'href', linkHref);
     } else {
+      // TinyMCE CreateLink will not create links to images with block style
+      var center = false;
+      if (el && el.nodeName == 'IMG') {
+        if (dom.getAttrib(el, 'style').indexOf('block') > -1) {
+          center = true;
+          dom.setAttrib(el, 'style', 'display:inline;');
+        }
+      }
+
+      // Make the link
       var elm, elementArray, i;
       tinyMCEPopup.execCommand("CreateLink", false, "#mce_temp_url#", {skip_undo : 1});
-      elementArray = tinymce.grep(ed.dom.select("a"), function(n) {return ed.dom.getAttrib(n, 'href') == '#mce_temp_url#';});
+      elementArray = tinymce.grep(dom.select("a"), function(n) {return dom.getAttrib(n, 'href') == '#mce_temp_url#';});
       for (i=0; i<elementArray.length; i++) {
         elm = elementArray[i];
         try {
@@ -113,14 +140,38 @@ var LinkSelect = {
         } catch (ex) {
           // Ignore
         }
-        ed.dom.setAttrib(elm, 'href', linkHref);
-        //ed.dom.setAttrib(elm, 'title', linkTitle);
+        dom.setAttrib(elm, 'href', linkHref);
+      }
+
+      // Revert the centering
+      if (center) {
+        dom.setAttrib(el, 'style', 'display:block; margin: 0 auto;');
       }
     }
     tinyMCEPopup.execCommand("mceEndUndoLevel");
     tinyMCEPopup.close();
   }
-}
+
+  <%--
+  showWikiLinkPreview : function(value) {
+
+    var linkHref = "";
+    // Determine if an internal or external link
+    var subject = document.getElementById('wikilink').value;
+    if (subject.indexOf("http://") == 0 || linkHref.indexOf("https://") == 0) {
+      linkHref = subject;
+    } else {
+      subject = escape(subject);
+      subject = subject.replace(/%20/g, "+");
+      linkHref = "<%= RequestUtils.getAbsoluteServerUrl(request) %>/show/<%= project.getUniqueId() %>/wiki/" + subject;
+    }
+
+    var preview = '<a target="_blank" class="wikiLink<%= targetWiki.getId() == -1 ? " newWiki" : ""%>" href="' + linkHref + '">' + value + '</a>';
+    changeDivContent('wikilinkpreview', preview);
+  }
+  --%>
+};
+
 tinyMCEPopup.onInit.add(LinkSelect.init, LinkSelect);
 function onCancel() {
   tinyMCEPopup.close();
@@ -132,53 +183,79 @@ function onCancel() {
     <h1>Insert a Link</h1>
     <div class="tabs">
        <ul>
-         <li id="wikilink_tab" <ccp:evaluate if="<%= !hasText(link) %>"> class="current"</ccp:evaluate>><span><a href="javascript:mcTabs.displayTab('wikilink_tab','wikilink_panel');" onmousedown="return false;">Wiki Link</a></span></li>
-         <li id="weblink_tab" <ccp:evaluate if="<%= hasText(link) %>"> class="current"</ccp:evaluate>><span><a href="javascript:mcTabs.displayTab('weblink_tab','weblink_panel');" onmousedown="return false;">Web Link</a></span></li>
+         <li id="wikilink_tab" class="current"><span><a href="javascript:mcTabs.displayTab('wikilink_tab','wikilink_panel');" onmousedown="return false;">Wiki Link</a></span></li>
          <%--
+         <li id="weblink_tab" <ccp:evaluate if="<%= hasText(link) %>"> class="current"</ccp:evaluate>><span><a href="javascript:mcTabs.displayTab('weblink_tab','weblink_panel');" onmousedown="return false;">Web Link</a></span></li>
          <li id="search_tab"><span><a href="javascript:mcTabs.displayTab('search_tab','search_panel');" onmousedown="return false;">Search</a></span></li>
          --%>
       </ul>
     </div>
     <div class="panel_wrapper" style="height:365px">
       <%-- WIKI LINK --%>
-      <div id="wikilink_panel" class="panel<ccp:evaluate if="<%= !hasText(link) %>"> current</ccp:evaluate>">
+      <div id="wikilink_panel" class="panel current">
         <fieldset>
-          <legend>General</legend>
+          <legend>Create a Link</legend>
           <div class="wikiHeader">
-            <label id="wikilinklabel" for="wikilink">Link to the following page:</label>
+            <label id="wikilinklabel" for="wikilink">Link to the following wiki, profile page, or external web site:</label>
           </div>
           <div class="wikiBody">
-            <input name="wikilink" type="text" id="wikilink" size="50" value="<%= StringUtils.toHtmlValue(targetWiki.getSubject()) %>" class="mceFocus" onchange="LinkSelect.showWikiLinkPreview(this.value);" />
+            <input name="wikilink" type="text" id="wikilink" size="50"
+            <c:choose>
+              <c:when test="<%= hasText(link) %>">
+                value="<%= StringUtils.toHtmlValue(link) %>"
+              </c:when>
+              <c:otherwise>
+                value="<%= StringUtils.toHtmlValue(targetWiki.getSubject()) %>"
+              </c:otherwise>
+            </c:choose>
+            class="mceFocus" />
           </div>
+          <%--
           <div class="wikiHeader">
-            <label id="wikilinkaltlabel" for="wikilinkalt">Display the link with a different name:</label>
+            <label id="wikilinkaltlabel" for="wikilinkalt">Display the link with different text:</label>
           </div>
           <div class="wikiBody">
-            <input id="wikilinkalt" name="wikilinkalt" type="text" size="50" value="<%= StringUtils.toHtmlValue(content) %>" />
+            <input id="wikilinkalt" name="wikilinkalt" type="text" size="50" value="<%= StringUtils.toHtmlValue(content) %>" onkeyup="LinkSelect.showWikiLinkPreview(this.value);" />
           </div>
+          --%>
         </fieldset>
         <fieldset>
           <legend>Notes</legend>
           <div class="wikiHeader">
-            <ccp:evaluate if="<%= targetWiki.getId() > -1 %>">
-              The target wiki page exists.
-            </ccp:evaluate>
-            <ccp:evaluate if="<%= targetWiki.getId() == -1 %>">
-              If the target wiki page doesn't exist yet, the link
-              will have a reminder appear as part of the link.  Once the target
-              page has content, the reminder icon will automatically disappear.
-            </ccp:evaluate>
+            <p>There are two kinds of links that can be created</p>
+            <%--<ul>--%>
+              <li>Links to external websites</li>
+              <li>Links to other documents on this site, including wikis and other pages</li>
+            <%--</ul>--%>
+            <p>To link to external websites, be sure to use http:// or https:// at the beginning of the link.</p>
+            <p>To link to documents on this site, paste the target URL or type the name of a Wiki Page.</p>
+            <c:if test="<%= !hasText(link) %>">
+              <p><strong>
+                <ccp:evaluate if="<%= targetWiki.getId() > -1 %>">
+                  A target wiki page exists for this link.
+                </ccp:evaluate>
+                <ccp:evaluate if="<%= targetWiki.getId() == -1 %>">
+                  If you are linking to a wiki page, then the target wiki page doesn't
+                  appear to exist yet, so the link
+                  will have a reminder icon appear next to the link.  Once the target
+                  page has content, the reminder icon will automatically disappear.
+                </ccp:evaluate>
+              </strong></p>
+            </c:if>
           </div>
         </fieldset>
+        <%--
         <fieldset>
-          <legend>Preview</legend>
+          <legend>Preview of the link</legend>
             <div id="wikilinkpreview">
-              <a class="wikiLink<%= targetWiki.getId() == -1 ? " newWiki" : ""%>" href="#"><%= StringUtils.toHtmlValue(content) %></a>
+              <a target="_blank" class="wikiLink<%= targetWiki.getId() == -1 ? " newWiki" : ""%>" href="#"><%= StringUtils.toHtmlValue(content) %></a>
           </div>
         </fieldset>
+        --%>
       </div>
       <%-- WEB LINK --%>
-      <div id="weblink_panel" class="panel<ccp:evaluate if="<%= hasText(link) %>"> current</ccp:evaluate>">
+      <%--
+      <div id="weblink_panel" class="panel">
         <fieldset>
           <legend>General</legend>
           <p>
@@ -186,12 +263,6 @@ function onCancel() {
             <input name="weblink" type="text" id="weblink" size="50" value="<%= StringUtils.toHtmlValue(link) %>" class="mceFocus url" onchange="LinkSelect.showWebLinkPreview(this.value);" /><br />
             (use the complete url, example: http://www.concursive.com)
           </p>
-          <%--
-          <p>
-            <label id="weblinkaltlabel" for="weblinkalt">Display the link with a different name:</label><br />
-            <input id="weblinkalt" name="weblinkalt" type="text" size="50" value="<%= StringUtils.toHtmlValue(content) %>" />
-          </p>
-          --%>
         </fieldset>
         <fieldset>
           <legend>Preview</legend>
@@ -200,7 +271,9 @@ function onCancel() {
           </div>
         </fieldset>
       </div>
+      --%>
       <%-- SEARCH FOR A LINK --%>
+      <%--
       <div id="search_panel" class="panel">
         <fieldset>
           <legend>Search</legend>
@@ -240,6 +313,7 @@ function onCancel() {
           </div>
         </fieldset>
       </div>
+      --%>
     </div>
     <div class="mceActionPanel">
       <div style="float: left">

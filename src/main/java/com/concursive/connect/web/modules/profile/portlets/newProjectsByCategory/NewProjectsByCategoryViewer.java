@@ -46,6 +46,7 @@
 package com.concursive.connect.web.modules.profile.portlets.newProjectsByCategory;
 
 import com.concursive.connect.Constants;
+import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
@@ -71,12 +72,15 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
   //request attributes
   private static final String TITLE = "title";
   private static final String PROJECT_LIST = "projectList";
-
+  private static final String SHOW_RATING = "showRating";
+  private static final String SHOW_POINTS = "showPoints";
 
   // Preferences
   private static final String PREF_TITLE = "title";
   private static final String PREF_LIMIT = "limit";
   private static final String PREF_CATEGORY = "category";
+  private static final String PREF_SHOW_RATING = "showRating";
+  private static final String PREF_SHOW_POINTS = "showPoints";
 
   public String doView(RenderRequest request, RenderResponse response)
       throws Exception {
@@ -87,14 +91,16 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
     String categoryName = request.getPreferences().getValue(PREF_CATEGORY, "");
     String title = request.getPreferences().getValue(PREF_TITLE, "");
     String limitString = request.getPreferences().getValue(PREF_LIMIT, "0");
+    request.setAttribute(SHOW_RATING, request.getPreferences().getValue(PREF_SHOW_RATING, null));
+    request.setAttribute(SHOW_POINTS, request.getPreferences().getValue(PREF_SHOW_POINTS, null));
 
     request.setAttribute(TITLE, title);
 
     //Get category id from name
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
 
     ProjectCategoryList categories = new ProjectCategoryList();
-    categories.setCategoryName(categoryName);
+    categories.setCategoryDescription(categoryName);
     categories.setEnabled(true);
     categories.setTopLevelOnly(true);
     categories.buildList(db);
@@ -110,12 +116,22 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
       projectList.setPagedListInfo(projectListInfo);
       projectList.setApprovedOnly(true);
       projectList.setOpenProjectsOnly(true);
-      if (PortalUtils.canShowSensitiveData(request)) {
-        // Use the most generic settings since this portlet is cached
-        projectList.setForParticipant(Constants.TRUE);
+      if (PortalUtils.getDashboardPortlet(request).isCached()) {
+        if (PortalUtils.canShowSensitiveData(request)) {
+          // Use the most generic settings since this portlet is cached
+          projectList.setForParticipant(Constants.TRUE);
+        } else {
+          // Use the most generic settings since this portlet is cached
+          projectList.setPublicOnly(true);
+        }
       } else {
-        // Use the most generic settings since this portlet is cached
-        projectList.setPublicOnly(true);
+        // Use the current user's setting
+        User thisUser = PortalUtils.getUser(request);
+        if (thisUser.isLoggedIn()) {
+          projectList.setForParticipant(Constants.TRUE);
+        } else {
+          projectList.setPublicOnly(true);
+        }
       }
       projectList.setProfileEnabled(Constants.TRUE);
       projectList.setBuildImages(true);

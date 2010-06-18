@@ -95,7 +95,7 @@ public class ReplySetInappropriateViewer implements IPortletViewer {
 
 
     // Determine the database connection to use
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
 
     // Load the reply
     Reply thisReply = new Reply(db, recordId);

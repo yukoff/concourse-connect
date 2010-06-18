@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.wiki.utils;
 
 import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.xml.XMLUtils;
 import com.concursive.connect.web.controller.beans.URLControllerBean;
 import com.concursive.connect.web.modules.wiki.dao.CustomForm;
 import com.concursive.connect.web.modules.wiki.dao.CustomFormField;
@@ -101,9 +102,13 @@ public class HTMLToWikiUtils {
       Node n = document.getChildNodes().item(i);
       nodeList.add(n);
     }
-    processChildNodes(nodeList, sb, 0, true, true, false, contextPath, projectId);
+    processChildNodes(nodeList, sb, 0, true, true, false, "", contextPath, projectId);
     if (sb.length() > 0) {
       String content = sb.toString().trim();
+      if (content.contains("&apos;")) {
+        // Determine if this is where the &apos; is being introduced
+        content = StringUtils.replace(content, "&apos;", "'");
+      }
       if (!content.endsWith(CRLF)) {
         return content + CRLF;
       } else {
@@ -114,7 +119,7 @@ public class HTMLToWikiUtils {
     }
   }
 
-  public static void processChildNodes(ArrayList<Node> nodeList, StringBuffer sb, int indentLevel, boolean doText, boolean withFormatting, boolean trim, String contextPath, int projectId) {
+  public static void processChildNodes(ArrayList<Node> nodeList, StringBuffer sb, int indentLevel, boolean doText, boolean withFormatting, boolean trim, String appendToCRLF, String contextPath, int projectId) {
     Iterator nodeI = nodeList.iterator();
     while (nodeI.hasNext()) {
       Node n = (Node) nodeI.next();
@@ -122,11 +127,30 @@ public class HTMLToWikiUtils {
         if (n.getNodeType() == Node.TEXT_NODE ||
             n.getNodeType() == Node.CDATA_SECTION_NODE) {
           if (doText) {
-            LOG.trace(" <text>");
+            String value = n.getNodeValue();
+            // Escaped characters
+            value = StringUtils.replace(value, "*", "\\*");
+            value = StringUtils.replace(value, "#", "\\#");
+            value = StringUtils.replace(value, "=", "\\=");
+            value = StringUtils.replace(value, "|", "\\|");
+            value = StringUtils.replace(value, "[", "\\{");
+            value = StringUtils.replace(value, "]", "\\}");
             if (trim && !nodeI.hasNext()) {
-              sb.append(StringUtils.fromHtmlValue(n.getNodeValue().trim()));
+              // If within a cell, make sure returns include the cell value
+//              String value = (appendToCRLF.length() > 0 ? StringUtils.replace(n.getNodeValue(), CRLF, CRLF + appendToCRLF) : n.getNodeValue());
+              LOG.trace(" <text:trim>");
+              // Output the value, trim is required
+              sb.append(StringUtils.fromHtmlValue(value.trim()));
             } else {
-              sb.append(StringUtils.fromHtmlValue(n.getNodeValue()));
+              // If within a cell, make sure returns include the cell value
+              if (appendToCRLF.length() > 0 && (hasParentNodeType(n, "th") || hasParentNodeType(n, "td")) && value.trim().length() == 0) {
+                // This is an empty value... check to see if the previous line has content or not before appending a new line
+              } else {
+                LOG.trace(" <text>");
+                sb.append(StringUtils.fromHtmlValue(
+                    (appendToCRLF.length() > 0 ? StringUtils.replace(value, CRLF, CRLF + appendToCRLF) : value)
+                ));
+              }
             }
           }
         } else if (n.getNodeType() == Node.ELEMENT_NODE) {
@@ -134,23 +158,23 @@ public class HTMLToWikiUtils {
           String tag = element.getTagName();
           LOG.trace(tag);
           if ("h1".equals(tag)) {
-            startOnNewLine(sb);
-            sb.append("= ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" =").append(CRLF);
+            startOnNewLine(sb, appendToCRLF);
+            sb.append("= ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" =").append(CRLF + appendToCRLF);
           } else if ("h2".equals(tag)) {
-            startOnNewLine(sb);
-            sb.append("== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ==").append(CRLF);
+            startOnNewLine(sb, appendToCRLF);
+            sb.append("== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ==").append(CRLF + appendToCRLF);
           } else if ("h3".equals(tag)) {
-            startOnNewLine(sb);
-            sb.append("=== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ===").append(CRLF);
+            startOnNewLine(sb, appendToCRLF);
+            sb.append("=== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ===").append(CRLF + appendToCRLF);
           } else if ("h4".equals(tag)) {
-            startOnNewLine(sb);
-            sb.append("==== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ====").append(CRLF);
+            startOnNewLine(sb, appendToCRLF);
+            sb.append("==== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ====").append(CRLF + appendToCRLF);
           } else if ("h5".equals(tag)) {
-            startOnNewLine(sb);
-            sb.append("===== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" =====").append(CRLF);
+            startOnNewLine(sb, appendToCRLF);
+            sb.append("===== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" =====").append(CRLF + appendToCRLF);
           } else if ("h6".equals(tag)) {
-            startOnNewLine(sb);
-            sb.append("====== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ======").append(CRLF);
+            startOnNewLine(sb, appendToCRLF);
+            sb.append("====== ").append(StringUtils.fromHtmlValue(element.getTextContent().trim())).append(" ======").append(CRLF + appendToCRLF);
           } else if ("p".equals(tag) || "div".equals(tag)) {
             if (n.getChildNodes().getLength() > 0 &&
                 (hasTextContent(n) || hasImageNodes(n.getChildNodes()))) {
@@ -159,25 +183,25 @@ public class HTMLToWikiUtils {
               getNodes(n.getChildNodes(), subNodes, new String[]{"table", "ul", "ol", "object"}, false);
               if (subNodes.size() > 0) {
                 LOG.trace("  nonTextNodes - yes");
-                processChildNodes(subNodes, sb, indentLevel, true, true, false, contextPath, projectId);
+                processChildNodes(subNodes, sb, indentLevel, true, true, false, appendToCRLF, contextPath, projectId);
               } else {
                 LOG.trace("  nonTextNodes - no");
-                startOnNewLine(sb);
-                processChildNodes(getNodeList(n), sb, indentLevel, true, true, false, contextPath, projectId);
+                startOnNewLine(sb, appendToCRLF);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, true, false, appendToCRLF, contextPath, projectId);
               }
             }
           } else if ("strong".equals(tag) || "b".equals(tag)) {
             if (n.getChildNodes().getLength() > 0) {
               if ("".equals(StringUtils.fromHtmlValue(n.getTextContent()).trim())) {
-                processChildNodes(getNodeList(n), sb, indentLevel, true, false, false, contextPath, projectId);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, false, false, appendToCRLF, contextPath, projectId);
               } else {
                 if (hasNonTextNodes(n.getChildNodes())) {
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, contextPath, projectId);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, appendToCRLF, contextPath, projectId);
                 } else {
                   if (withFormatting) {
                     sb.append("'''");
                   }
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, contextPath, projectId);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, false, appendToCRLF, contextPath, projectId);
                   if (withFormatting) {
                     sb.append("'''");
                   }
@@ -187,15 +211,15 @@ public class HTMLToWikiUtils {
           } else if ("em".equals(tag) || "i".equals(tag)) {
             if (n.getChildNodes().getLength() > 0) {
               if ("".equals(StringUtils.fromHtmlValue(n.getTextContent()).trim())) {
-                processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, contextPath, projectId);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, appendToCRLF, contextPath, projectId);
               } else {
                 if (hasNonTextNodes(n.getChildNodes())) {
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath, projectId);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, appendToCRLF, contextPath, projectId);
                 } else {
                   if (withFormatting) {
                     sb.append("''");
                   }
-                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath, projectId);
+                  processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, appendToCRLF, contextPath, projectId);
                   if (withFormatting) {
                     sb.append("''");
                   }
@@ -220,7 +244,7 @@ public class HTMLToWikiUtils {
                     sb.append("''");
                   }
                 }
-                processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, contextPath, projectId);
+                processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, appendToCRLF, contextPath, projectId);
                 if (withFormatting) {
                   if (value.contains("italic")) {
                     sb.append("''");
@@ -235,17 +259,31 @@ public class HTMLToWikiUtils {
                     sb.append("__");
                   }
                 }
+              } else {
+                processChildNodes(getNodeList(n), sb, indentLevel, true, withFormatting, trim, appendToCRLF, contextPath, projectId);
               }
             }
           } else if ("ul".equals(tag) || "ol".equals(tag) || "dl".equals(tag)) {
             ++indentLevel;
             if (indentLevel == 1) {
-              startOnNewLine(sb);
+              if (appendToCRLF.length() == 0) {
+                startOnNewLine(sb, appendToCRLF);
+              } else {
+                // Something\n
+                // !
+                // !* Item 1
+                // !* Item 2
+                if (!sb.toString().endsWith("|") && !sb.toString().endsWith(CRLF + appendToCRLF)) {
+                  LOG.trace("ul newline CRLF");
+                  sb.append(CRLF + appendToCRLF);
+                }
+              }
             }
-            if (indentLevel > 1 && !sb.toString().endsWith(CRLF)) {
-              sb.append(CRLF);
+            if (indentLevel > 1 && !sb.toString().endsWith(CRLF + appendToCRLF)) {
+              LOG.trace("ul indent CRLF");
+              sb.append(CRLF + appendToCRLF);
             }
-            processChildNodes(getNodeList(n), sb, indentLevel, false, false, trim, contextPath, projectId);
+            processChildNodes(getNodeList(n), sb, indentLevel, false, false, trim, appendToCRLF, contextPath, projectId);
             --indentLevel;
           } else if ("li".equals(tag)) {
             String parentTag = ((Element) element.getParentNode()).getTagName();
@@ -257,67 +295,92 @@ public class HTMLToWikiUtils {
               }
             }
             sb.append(" ");
-            processChildNodes(getNodeList(n), sb, indentLevel, true, false, true, contextPath, projectId);
-            if (!sb.toString().endsWith(CRLF)) {
-              sb.append(CRLF);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, false, true, appendToCRLF, contextPath, projectId);
+            if (!sb.toString().endsWith(CRLF + appendToCRLF)) {
+              LOG.trace("li CRLF");
+              sb.append(CRLF + appendToCRLF);
             }
           } else if ("dt".equals(tag) || "dd".equals(tag)) {
-            processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, contextPath, projectId);
-            if (!sb.toString().endsWith(CRLF)) {
-              sb.append(CRLF);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, false, trim, appendToCRLF, contextPath, projectId);
+            if (!sb.toString().endsWith(CRLF + appendToCRLF)) {
+              LOG.trace("dt CRLF");
+              sb.append(CRLF + appendToCRLF);
             }
           } else if ("pre".equals(tag)) {
-            startOnNewLine(sb);
+            startOnNewLine(sb, appendToCRLF);
             sb.append("<pre>");
-            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, contextPath, projectId);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, appendToCRLF, contextPath, projectId);
             sb.append("</pre>");
             if (nodeI.hasNext()) {
-              sb.append(CRLF);
-              sb.append(CRLF);
+              sb.append(CRLF + appendToCRLF);
+              sb.append(CRLF + appendToCRLF);
             }
           } else if ("code".equals(tag)) {
-            startOnNewLine(sb);
+            startOnNewLine(sb, appendToCRLF);
             sb.append("<code>");
-            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, contextPath, projectId);
+            processChildNodes(getNodeList(n), sb, indentLevel, true, true, trim, appendToCRLF, contextPath, projectId);
             sb.append("</code>");
             if (nodeI.hasNext()) {
-              sb.append(CRLF);
-              sb.append(CRLF);
+              sb.append(CRLF + appendToCRLF);
+              sb.append(CRLF + appendToCRLF);
             }
           } else if ("br".equals(tag)) {
-            sb.append(CRLF);
+            LOG.trace("br CRLF");
+            sb.append(CRLF + appendToCRLF);
           } else if ("table".equals(tag)) {
             // Always start a table on a new line
-            startOnNewLine(sb);
-            processTable(n.getChildNodes(), sb, 0, false, false);
+            startOnNewLine(sb, appendToCRLF);
+            processTable(n.getChildNodes(), sb, 0, false, false, contextPath, projectId, 0);
             //if (nodeI.hasNext()) {
             //  sb.append(CRLF);
             //}
           } else if ("form".equals(tag)) {
             // Always start a form on a new line
-            startOnNewLine(sb);
+            startOnNewLine(sb, appendToCRLF);
             CustomForm form = processForm(n);
             convertFormToWiki(form, sb);
           } else if ("a".equals(tag)) {
-            processLink(sb, element, contextPath, projectId);
+            // Determine if the link is around text or around an image
+            if (n.getChildNodes().getLength() > 0 && hasImageNodes(n.getChildNodes())) {
+              // The link is around an image
+              LOG.debug("Processing link as an image");
+              // Get the img tag and pass to processImage...
+              ArrayList<Node> subNodes = new ArrayList<Node>();
+              getNodes(n.getChildNodes(), subNodes, new String[]{"img"}, false);
+              processImage(sb, subNodes.get(0), (Element) subNodes.get(0), appendToCRLF, contextPath, projectId);
+            } else {
+              // The link is around text
+              processLink(sb, element, appendToCRLF, contextPath, projectId);
+            }
           } else if ("img".equals(tag)) {
-            processImage(sb, n, element, contextPath);
+            processImage(sb, n, element, appendToCRLF, contextPath, projectId);
           } else if ("object".equals(tag)) {
-            startOnNewLine(sb);
-            processVideo(sb, n, element, contextPath);
+            startOnNewLine(sb, appendToCRLF);
+            processVideo(sb, n, element, appendToCRLF, contextPath);
           } else {
-            processChildNodes(getNodeList(n), sb, indentLevel, false, true, trim, contextPath, projectId);
+            processChildNodes(getNodeList(n), sb, indentLevel, false, true, trim, appendToCRLF, contextPath, projectId);
           }
         }
       }
     }
   }
 
-  private static void startOnNewLine(StringBuffer sb) {
+  private static void startOnNewLine(StringBuffer sb, String appendToCRLF) {
     if (sb.length() > 0) {
-      while (!sb.toString().endsWith(CRLF + CRLF)) {
-        LOG.trace("CRLF");
-        sb.append(CRLF);
+      if (appendToCRLF.length() == 0) {
+        while (!sb.toString().endsWith(CRLF + CRLF)) {
+          LOG.trace("startOnNewLine CRLF");
+          sb.append(CRLF);
+        }
+      } else {
+        // Something\n
+        // !
+        // !* Item 1
+        // !* Item 2
+        if (!sb.toString().endsWith("|") && !sb.toString().endsWith(CRLF + appendToCRLF + CRLF + appendToCRLF)) {
+          LOG.trace("startOnNewLine CRLF");
+          sb.append(CRLF + appendToCRLF + CRLF + appendToCRLF);
+        }
       }
     }
   }
@@ -421,172 +484,179 @@ public class HTMLToWikiUtils {
   }
 
 
-  public static void processTable(NodeList nodeList, StringBuffer sb, int rowCount, boolean doText, boolean anyNodeType) {
+  public static void processTable(NodeList nodeList, StringBuffer sb, int rowCount, boolean doText, boolean anyNodeType, String contextPath, int projectId, int pass) {
+    LOG.trace("line reset");
     for (int i = 0; i < nodeList.getLength(); i++) {
       Node n = nodeList.item(i);
       if (n != null) {
         if (n.getNodeType() == Node.TEXT_NODE ||
             n.getNodeType() == Node.CDATA_SECTION_NODE) {
           if (doText && anyNodeType) {
-            LOG.trace("table - text");
-            String thisLine = StringUtils.fromHtmlValue(n.getNodeValue());
-            sb.append(thisLine);
+            if (StringUtils.hasText(n.getNodeValue())) {
+              String thisLine = StringUtils.fromHtmlValue(n.getNodeValue());
+              LOG.trace("table - text: " + thisLine);
+              sb.append(thisLine);
+            }
           }
         } else if (n.getNodeType() == Node.ELEMENT_NODE) {
           Element element = ((Element) n);
           String tag = element.getTagName();
           if ("tr".equals(tag)) {
+            LOG.trace("table - tr");
             ++rowCount;
-            processTable(n.getChildNodes(), sb, rowCount, false, false);
+            if (rowCount == 1) {
+              LOG.debug("Looking for style");
+              processTable(n.getChildNodes(), sb, rowCount, false, false, contextPath, projectId, 1);
+            }
+            processTable(n.getChildNodes(), sb, rowCount, false, false, contextPath, projectId, 2);
             sb.append(CRLF);
           } else if ("td".equals(tag) || "th".equals(tag)) {
+            if (LOG.isTraceEnabled()) {
+              LOG.trace("table - " + tag + " - " + i + " " + hasNonTextNodes(n.getChildNodes()) + " - pass " + pass);
+            }
             String separator = "|";
-            if (rowCount == 1) {
+            if (tag.equals("th")) {
               separator = "||";
             }
+
+            // Determin how many columns are spanned by this column
             int colspan = 1;
             if (element.hasAttribute("colspan")) {
               colspan = Integer.parseInt(element.getAttribute("colspan"));
             }
-            for (int sI = 0; sI < colspan; sI++) {
-              sb.append(separator);
+//            if (sb.toString().endsWith(separator)) {
+//              sb.append(" ");
+//            }
+
+            // Style pass
+            boolean hasStyle = false;
+            if (pass == 1) {
+              if (element.hasAttribute("style")) {
+                String style = element.getAttribute("style");
+                if (style.endsWith(";")) {
+                  style = style.substring(0, style.length() - 1);
+                }
+                // Start the wiki markup
+                for (int sI = 0; sI < colspan; sI++) {
+                  sb.append(separator);
+                }
+                // Append the style data
+                sb.append("{").append(style).append("}");
+                hasStyle = true;
+              }
+
+              // Close the wiki markup if the last cell
+              if (hasStyle) {
+                if (i + 1 == nodeList.getLength()) {
+                  sb.append(separator);
+                  // The style pass needs to add it's own CRLF
+                  sb.append(CRLF);
+                }
+              }
             }
-            if (n.getChildNodes().getLength() > 0) {
-              if (hasNonTextNodes(n.getChildNodes())) {
-                processTable(n.getChildNodes(), sb, rowCount, true, false);
+
+            // Data pass
+            if (pass == 2) {
+
+              // Start the wiki markup
+              for (int sI = 0; sI < colspan; sI++) {
+                sb.append(separator);
+              }
+
+              if (n.getChildNodes().getLength() > 0) {
+                // Cell data uses a "!" for each return
+                if (hasNonTextNodes(n.getChildNodes())) {
+                  processChildNodes(getNodeList(n), sb, 0, true, true, false, "!", contextPath, projectId);
+                } else {
+                  processChildNodes(getNodeList(n), sb, 0, true, true, false, "!", contextPath, projectId);
+                }
+                // If the cell didn't have any data, then add a space
+                if (sb.toString().endsWith(separator)) {
+                  sb.append(" ");
+                }
               } else {
-                processTable(n.getChildNodes(), sb, rowCount, true, true);
+                sb.append(" ");
               }
-            } else {
-              sb.append(" ");
-            }
-            if (i + 1 == nodeList.getLength()) {
-              sb.append(separator);
-            }
-          } else if ("p".equals(tag) || "div".equals(tag)) {
-            if (i > 1) {
-              sb.append("\n");
-              sb.append("!");
-            }
-            processTable(n.getChildNodes(), sb, rowCount, true, true);
-          } else if ("br".equals(tag)) {
-            //if (i > 1) {
-            sb.append("\n");
-            sb.append("!");
-            //}
-            processTable(n.getChildNodes(), sb, rowCount, true, true);
-          } else if ("strong".equals(tag) || "b".equals(tag)) {
-            sb.append("'''");
-            processTable(n.getChildNodes(), sb, rowCount, true, true);
-            sb.append("'''");
-          } else if ("em".equals(tag) || "i".equals(tag)) {
-            sb.append("''");
-            processTable(n.getChildNodes(), sb, rowCount, true, true);
-            sb.append("''");
-          } else if ("span".equals(tag)) {
-            if (element.hasAttribute("style")) {
-              String value = element.getAttribute("style");
-              // apply the style
-              if (value.contains("underline")) {
-                sb.append("__");
-              }
-              if (value.contains("line-through")) {
-                sb.append("<s>");
-              }
-              if (value.contains("bold")) {
-                sb.append("'''");
-              }
-              if (value.contains("italic")) {
-                sb.append("''");
-              }
-              processTable(n.getChildNodes(), sb, rowCount, true, true);
-              // apply in reverse
-              if (value.contains("italic")) {
-                sb.append("''");
-              }
-              if (value.contains("bold")) {
-                sb.append("'''");
-              }
-              if (value.contains("line-through")) {
-                sb.append("</s>");
-              }
-              if (value.contains("underline")) {
-                sb.append("__");
+
+              // Close the wiki markup
+              if (i + 1 == nodeList.getLength()) {
+                sb.append(separator);
               }
             }
-          } else if ("a".equals(tag)) {
-            // @todo not supported because parser does a split on | which
-            // is allowed in links...
-            //processLink(sb, element);
-          } else if ("img".equals(tag)) {
-            // @todo not supported because parser does a split on | which
-            // is allowed in images...
-            // processImage(sb, n, element);
           } else {
-            processTable(n.getChildNodes(), sb, rowCount, true, true);
+            LOG.trace("table - text - ** " + tag);
+            processTable(n.getChildNodes(), sb, rowCount, true, true, contextPath, projectId, 0);
           }
         }
       }
     }
   }
 
-  public static void processLink(StringBuffer sb, Element element, String contextPath, int projectId) {
+  public static void processLink(StringBuffer sb, Element element, String appendToCRLF, String contextPath, int projectId) {
     // take the href and rip out the document section
     // output the text associated with the link
     String href = element.getAttribute("href").trim();
+
+    // See if the href has content, it won't if it is an image link
     String value = element.getTextContent();
-    if (StringUtils.hasText(value)) {
-      //"<a class=\"wikiLink\" title=\"UI Configurability\" href=\"/team/ProjectManagement.do?command=ProjectCenter&amp;section=Wiki&amp;pid=177&amp;subject=UI+Configurability\">UI Configurability</a></p>\n" +
-      sb.append("[[");
-      if (isExternalLink(href, contextPath)) {
-        // [[http://www.concursive.com Concursive]]
-        sb.append(href);
-        if (!href.equals(value)) {
-          sb.append(" ").append(StringUtils.fromHtmlValue(value.trim()));
+
+    // Create the markup
+    //"<a class=\"wikiLink\" title=\"UI Configurability\" href=\"/team/ProjectManagement.do?command=ProjectCenter&amp;section=Wiki&amp;pid=177&amp;subject=UI+Configurability\">UI Configurability</a></p>\n" +
+    sb.append("[[");
+    if (isExternalLink(href, contextPath)) {
+      // [[http://www.concursive.com Concursive]]
+      sb.append(href);
+      if (StringUtils.hasText(value) && !href.equals(value)) {
+        // The link has a name
+        sb.append(" ").append(StringUtils.fromHtmlValue(value.trim()));
+      }
+    } else {
+      URLControllerBean url = new URLControllerBean(href, contextPath);
+      if ("wiki".equals(url.getDomainObject()) &&
+          (url.getProjectId() == projectId || url.getProjectId() == -1)) {
+        String subject = url.getObjectValue();
+        // The incoming link will have a + for a space
+        subject = StringUtils.replace(subject, "+", " ");
+        // The incoming link will be url encoded
+        subject = StringUtils.jsUnEscape(subject);
+        sb.append(subject);
+        // Base the display on the content of the 'a' tag
+        if (StringUtils.hasText(value) && !subject.equals(StringUtils.fromHtmlValue(value))) {
+          sb.append("|").append(StringUtils.fromHtmlValue(value));
         }
-      } else {
-        URLControllerBean url = new URLControllerBean(href, contextPath);
-        if ("wiki".equals(url.getDomainObject()) && url.getProjectId() == projectId) {
-          String subject = url.getObjectValue();
-          // The incoming link will have a + for a space
-          subject = StringUtils.replace(subject, "+", " ");
-          // The incoming link will be url encoded
-          subject = StringUtils.jsUnEscape(subject);
-          sb.append(subject);
-          // Base the display on the content of the 'a' tag
-          if (!subject.equals(StringUtils.fromHtmlValue(value))) {
-            sb.append("|").append(StringUtils.fromHtmlValue(value));
-          }
-        } else if (!url.hasDomainObject()) {
-          // "[[|9999999:project|project unique id|project title]]"
-          sb.append("|");
-          sb.append(url.getProjectId());
-          sb.append(":profile");
-          sb.append("|");
-          sb.append(url.getProjectTitle());
+      } else if (!url.hasDomainObject()) {
+        // "[[|9999999:project|project unique id|project title]]"
+        sb.append("|");
+        sb.append(url.getProjectId());
+        sb.append(":profile");
+        sb.append("|");
+        sb.append(url.getProjectTitle());
+        if (StringUtils.hasText(value)) {
           sb.append("|");
           sb.append(StringUtils.fromHtmlValue(value));
-        } else {
-          // "[[|9999999:issue|200|Some issue]]"
-          sb.append("|");
-          sb.append(url.getProjectId());
-          sb.append(":").append(url.getDomainObject());
-          sb.append("|");
-           String subject = url.getObjectValue();
-          // The incoming link will have a + for a space
-          subject = StringUtils.replace(subject, "+", " ");
-          // The incoming link will be url encoded
-          subject = StringUtils.jsUnEscape(subject);
-          sb.append(subject);
+        }
+      } else {
+        // "[[|9999999:issue|200|Some issue]]"
+        sb.append("|");
+        sb.append(url.getProjectId());
+        sb.append(":").append(url.getDomainObject());
+        sb.append("|");
+        String subject = url.getObjectValue();
+        // The incoming link will have a + for a space
+        subject = StringUtils.replace(subject, "+", " ");
+        // The incoming link will be url encoded
+        subject = StringUtils.jsUnEscape(subject);
+        sb.append(subject);
+        if (StringUtils.hasText(value)) {
           sb.append("|");
           sb.append(StringUtils.fromHtmlValue(value));
         }
       }
-      sb.append("]]");
     }
+    sb.append("]]");
   }
 
-  public static void processImage(StringBuffer sb, Node n, Element element, String contextPath) {
+  public static void processImage(StringBuffer sb, Node n, Element element, String appendToCRLF, String contextPath, int projectId) {
     // Images
     // [[Image:Filename.jpg]]
     // [[Image:Filename.jpg|A caption]]
@@ -596,6 +666,7 @@ public class HTMLToWikiUtils {
 
     // <img
     // style="float: right;"
+    // style="display:block;margin: 0 auto;"
     // title="This is the title of the image"
     // longdesc="http://i.l.cnn.net/cnn/2008/LIVING/personal/04/08/fees/art.fees.jpg?1"
     // src="http://i.l.cnn.net/cnn/2008/LIVING/personal/04/08/fees/art.fees.jpg"
@@ -612,6 +683,29 @@ public class HTMLToWikiUtils {
     // width="315"
     // height="362" />
 
+    // See if the parent is a link
+    String link = null;
+    String title = null;
+    if (hasParentNodeType(n, "a")) {
+      // Get the attributes of the link
+      StringBuffer linkSB = new StringBuffer();
+      processLink(linkSB, (Element) element.getParentNode(), appendToCRLF, contextPath, projectId);
+      link = linkSB.substring(2, linkSB.length() - 2);
+    } else {
+      // tooltip (will be used as caption), but not for links
+      title = element.getAttribute("title");
+    }
+
+    // Determine if this is an embedded video link
+    if (link != null && link.startsWith("http://www.youtube.com/v/")) {
+      processVideoLink(sb, n, element, appendToCRLF, contextPath, link);
+    } else {
+      processImage(sb, n, element, appendToCRLF, contextPath, projectId, link, title);
+    }
+  }
+
+  private static void processImage(StringBuffer sb, Node n, Element element, String appendToCRLF, String contextPath, int projectId, String link, String title) {
+
     // if image ends in -th, then this is in thumbnail mode
     String src = element.getAttribute("src");
     String classAttr = element.getAttribute("class");
@@ -619,8 +713,6 @@ public class HTMLToWikiUtils {
     String style = element.getAttribute("style");
     // displays while loading, or if cannot load (defaults to image name on conversion)
     //String alt = element.getAttribute("alt");
-    // tooltip (will be used as caption)
-    String title = element.getAttribute("title");
 
     // Construct the wiki markup
     sb.append("[[Image:");
@@ -636,6 +728,8 @@ public class HTMLToWikiUtils {
       URLControllerBean url = new URLControllerBean(src, contextPath);
       String subject = StringUtils.jsUnEscape(url.getObjectValue());
       subject = StringUtils.replace(subject, "+", " ");
+      subject = StringUtils.replace(subject, "[", "\\{");
+      subject = StringUtils.replace(subject, "]", "\\}");
       sb.append(subject);
     }
 
@@ -649,15 +743,22 @@ public class HTMLToWikiUtils {
     }
     // position
     if (style != null) {
-      if (style.contains("right")) {
+      if (style.contains("float: right") || style.contains("float:right")) {
         sb.append("|right");
-      } else if (style.contains("left")) {
+      } else if (style.contains("float: left") || style.contains("float:left")) {
         sb.append("|left");
+      } else if (style.contains("block")) {
+        sb.append("|center");
       }
     }
-    // caption
+    // caption (but not for links)
     if (StringUtils.hasText(title)) {
       sb.append("|").append(StringUtils.fromHtmlValue(title));
+    }
+    // link
+    // @note link= must be last!
+    if (link != null) {
+      sb.append("|link=").append(link);
     }
 
     // Close the markup
@@ -669,37 +770,139 @@ public class HTMLToWikiUtils {
     if ((!StringUtils.hasText(title) && hasParentNodeType(n, "div") && !hasParentNodeType(n, "p"))) {
       LOG.trace("CRLF");
       LOG.trace("CRLF");
-      sb.append(CRLF);
-      sb.append(CRLF);
+      sb.append(CRLF + appendToCRLF);
+      sb.append(CRLF + appendToCRLF);
     }
   }
 
-  public static void processVideo(StringBuffer sb, Node n, Element element, String contextPath) {
-    // Videos
-    // [[Video:http://www.youtube.com/watch?v=3LkNlTNHZzE]]
+  public static void processVideo(StringBuffer sb, Node n, Element element, String appendToCRLF, String contextPath) {
+    // Determine if a thumbnail
+    boolean thumbnail = false;
+    if ("120".equals(element.getAttribute("width"))) {
+      thumbnail = true;
+    }
 
-    // <object width=\"425\" height=\"344\">\n
-    //     <param name=\"movie\" value=\"" + video + "\"></param>\n" +
-    //     <param name=\"wmode\" value=\"transparent\"></param>\n" +
-    //     <embed src=\"" + video + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></embed>\n" +
-    // </object>
+    // Object (w/out embed)
+    if (element.hasAttribute("value")) {
+      //<object width="400" height="300" value="http://vimeo.com/moogaloop.swf?clip_id=11513988&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1">
+      String video = element.getAttribute("value");
+      if (video.contains("http://www.vimeo.com/") || video.contains("http://vimeo.com/")) {
+        video = video.substring(video.indexOf("/", video.indexOf("http://") + 7) + 1);
+        if (video.contains("#")) {
+          video = video.substring(0, video.indexOf("#"));
+        }
+        if (video.contains("&")) {
+          video = video.substring(0, video.indexOf("&"));
+        }
+        video = "http://www.vimeo.com/" + video.substring(video.indexOf("clip_id") + 8);
+      }
+      // Write out the markup
+      try {
+        URL url = new URL(video);
+        sb.append("[[Video:" + video + (thumbnail ? "|thumb" : "") + "]]");
+      } catch (Exception e) {
+        LOG.error("Could not create URL", e);
+      }
+    } else if (element.hasAttribute("data")) {
+      //<object width="425" height="344" type="application/x-shockwave-flash" data="http://www.youtube.com/v/CreiaYbjda4"></object>
+      String video = element.getAttribute("data");
 
-    // Parse the object
-    NodeList objectNodes = element.getChildNodes();
-    for (int i = 0; i < objectNodes.getLength(); i++) {
-      // For each object, parse the params
-      Node node = objectNodes.item(i);
-      if (node.getNodeType() == Node.ELEMENT_NODE && "param".equals(((Element) node).getTagName())) {
-        if ("movie".equals(((Element) node).getAttribute("name"))) {
-          String video = ((Element) node).getAttribute("value");
-          try {
-            URL url = new URL(video);
-            sb.append("[[Video:" + video + "]]").append(CRLF).append(CRLF);
-          } catch (Exception e) {
-            LOG.error("Could not create URL", e);
+      // Justin.tv
+      //<object type="application/x-shockwave-flash" height="300" width="400" id="live_embed_player_flash" data="http://www.justin.tv/widgets/live_embed_player.swf?channel=redspades" bgcolor="#000000"><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="allowNetworking" value="all" /><param name="movie" value="http://www.justin.tv/widgets/live_embed_player.swf" /><param name="flashvars" value="channel=redspades&auto_play=false&start_volume=25" /></object><a href="http://www.justin.tv/redspades#r=TRp3S20~&s=em" class="trk" style="padding:2px 0px 4px; display:block; width:345px; font-weight:normal; font-size:10px; text-decoration:underline; text-align:center;">Watch live video from RedSpades Live! Show on Justin.tv</a>
+      if (video.contains("http://www.justin.tv/")) {
+        video = "http://www.justin.tv/" + video.substring(video.indexOf("channel=") + 8);
+        if (video.contains("#")) {
+          video = video.substring(0, video.indexOf("#"));
+        }
+      }
+      // otherwise Youtube/Google
+
+      // Write out the markup
+      try {
+        URL url = new URL(video);
+        sb.append("[[Video:" + video + (thumbnail ? "|thumb" : "") + "]]");
+      } catch (Exception e) {
+        LOG.error("Could not create URL", e);
+      }
+    } else {
+      // Parse the object parameters
+
+      // <object width=\"425\" height=\"344\">\n
+      //     <param name=\"movie\" value=\"" + video + "\"></param>\n" +
+      //     <param name=\"wmode\" value=\"transparent\"></param>\n" +
+      //     <embed src=\"" + video + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></embed>\n" +
+      // </object>
+
+      NodeList objectNodes = element.getChildNodes();
+      boolean foundQikVideo = false;
+      boolean handleException = false;
+      for (int i = 0; i < objectNodes.getLength(); i++) {
+        // For each object, parse the params
+        Node node = objectNodes.item(i);
+        if (node.getNodeType() == Node.ELEMENT_NODE && "param".equals(((Element) node).getTagName())) {
+          if ("movie".equals(((Element) node).getAttribute("name"))) {
+            String video = ((Element) node).getAttribute("value");
+            // Ustream
+            if (video.contains("ustream.tv/")) {
+              handleException = true;
+              String ustreamLink = XMLUtils.toString(n);
+              ustreamLink = StringUtils.replace(ustreamLink, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
+              ustreamLink = StringUtils.replace(ustreamLink, "\r", "");
+              ustreamLink = StringUtils.replace(ustreamLink, "\n", "");
+              ustreamLink = StringUtils.replace(ustreamLink, "&#13;", "");
+              sb.append("[[Video:" + ustreamLink + "]]");
+            }
+            // Qik.com
+            if (video.contains("qik.com")) {
+              foundQikVideo = true;
+              handleException = true;
+            }
+            // Livestream.com
+            if (video.indexOf("livestream.com") > -1) {
+              //"<param name=\"movie\" value=\"http://cdn.livestream.com/grid/LSPlayer.swf?channel=" + channel + "&amp;autoPlay=true\"></param>" +
+              String channel = video.substring(video.indexOf("channel=") + 8, video.indexOf("&"));
+              video = "http://www.livestream.com/" + channel;
+            }
+            // otherwise assume Youtube/Google
+            if (!handleException) {
+              // Write out the markup
+              try {
+                URL url = new URL(video);
+                sb.append("[[Video:" + video + (thumbnail ? "|thumb" : "") + "]]");
+              } catch (Exception e) {
+                LOG.error("Could not create URL", e);
+              }
+            }
+          } else if ("FlashVars".equals(((Element) node).getAttribute("name"))) {
+            String value = ((Element) node).getAttribute("value");
+            // Qik.com
+            if (foundQikVideo && value.contains("username=")) {
+              String username = value.substring(value.indexOf("username=") + 9);
+              sb.append("[[Video:" + "http://qik.com/" + username + (thumbnail ? "|thumb" : "") + "]]");
+            }
           }
         }
       }
+    }
+  }
+
+  public static void processVideoLink(StringBuffer sb, Node n, Element element, String appendToCRLF, String contextPath, String link) {
+    // Videos
+    // [[Video:http://www.youtube.com/watch?v=3LkNlTNHZzE|thumb]]
+
+    // <div class="video-thumbnail">
+    // <a class="video-thumbnail" href=\"" + video + "?autoplay=1\" title=\"click to play\" target=\"_blank\"><img src=\"http://img.youtube.com/vi/" + videoKey + "/default.jpg\" /></a>
+    // </div>
+
+    String video = link;
+    if (video.contains("?")) {
+      video = video.substring(0, video.indexOf("?"));
+    }
+    try {
+      URL url = new URL(video);
+      sb.append("[[Video:" + video + "|thumb]]");
+    } catch (Exception e) {
+      LOG.error("Could not create URL", e);
     }
   }
 
@@ -856,6 +1059,9 @@ public class HTMLToWikiUtils {
       index = href.indexOf("&amp;" + param + "=");
       attrLength = 6;
     }
+    if (index == -1) {
+      return null;
+    }
     int end = href.indexOf("&", index + 1);
     if (end == -1) {
       end = href.length();
@@ -871,6 +1077,7 @@ public class HTMLToWikiUtils {
     } else if (!href.startsWith("http://") &&
         !href.startsWith("https://") &&
         !href.startsWith("ftp://") &&
+        !href.startsWith("mailto:") &&
         !href.startsWith("/")) {
       isExternal = false;
     }

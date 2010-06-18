@@ -127,8 +127,14 @@ public final class Setup extends GenericAction {
         // Mac OSX
         fileLibrary = "/Library/Application Support/Concursive/" + contextPath + "/fileLibrary";
       } else {
-        // Linux, Solaris, SunOS, OS/2, HP-UX, AIX, FreeBSD, etc
-        fileLibrary = "/var/lib/concursive/" + contextPath + "/fileLibrary";
+        File testDirectory = new File("/opt");
+        if (testDirectory.exists()) {
+          // Linux, Solaris, SunOS, OS/2, HP-UX, AIX, FreeBSD, etc
+          fileLibrary = "/opt/concursive/" + contextPath + "/fileLibrary";
+        } else {
+          // Linux, Solaris, SunOS, OS/2, HP-UX, AIX, FreeBSD, etc
+          fileLibrary = "/var/lib/concursive/" + contextPath + "/fileLibrary";
+        }
       }
     }
     context.getRequest().setAttribute("directory", fileLibrary);
@@ -469,6 +475,7 @@ public final class Setup extends GenericAction {
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_project_ads.sql"));
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_project_badges.sql"));
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_project_classifieds.sql"));
+        DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_project_webcast.sql"));
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_task.sql"));
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_ticket.sql"));
         DatabaseUtils.executeSQL(db, context.getServletContext().getResourceAsStream("/WEB-INF/database/" + pathType + "/new_order.sql"));
@@ -541,10 +548,10 @@ public final class Setup extends GenericAction {
         bean.setGoogleMapsAPIKey(getPref(context, ApplicationPrefs.GOOGLE_MAPS_API_KEY));
       }
       if (hasPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_ID)) {
-        bean.setTwitterHashtag(getPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_ID));
+        bean.setGoogleAnalyticsId(getPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_ID));
       }
       if (hasPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_VERIFY)) {
-        bean.setTwitterHashtag(getPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_VERIFY));
+        bean.setGoogleAnalyticsVerifyCode(getPref(context, ApplicationPrefs.GOOGLE_ANALYTICS_VERIFY));
       }
       if (hasPref(context, ApplicationPrefs.TWITTER_HASH)) {
         bean.setTwitterHashtag(getPref(context, ApplicationPrefs.TWITTER_HASH));
@@ -833,7 +840,6 @@ public final class Setup extends GenericAction {
     }
     // Tell setup we are done!
     getApplicationPrefs(context).add("CONFIGURING", null);
-    getApplicationPrefs(context).add("AUTO_UPGRADE", true);
     // save the prefs so user can login
     getApplicationPrefs(context).save();
     // startup the rest of the application

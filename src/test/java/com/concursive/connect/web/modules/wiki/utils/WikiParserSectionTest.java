@@ -138,21 +138,11 @@ public class WikiParserSectionTest extends TestCase {
     assertTrue("Requested section not found", html.contains("Section 3.0"));
     assertEquals(
         "<h2 id=\"Section_3.0_(5)\"><span>Section 3.0 (5)</span></h2>\n" +
-            "<p>some section text and lots of it 3.0.1<br />" +
-            "some section text and lots of it 3.0.2<br />" +
-            "some section text and lots of it 3.0.3<br />" +
-            "some section text and lots of it 3.0.4<br />" +
-            "some section text and lots of it 3.0.5</p>\n" +
+            "<p>some section text and lots of it 3.0.1<br />some section text and lots of it 3.0.2<br />some section text and lots of it 3.0.3<br />some section text and lots of it 3.0.4<br />some section text and lots of it 3.0.5</p>\n" +
             "<h3><span>Section 3.1 (6)</span></h3>\n" +
-            "<p>some section text and lots of it 3.1.0<br />" +
-            "some section text and lots of it 3.1.1</p>\n" +
+            "<p>some section text and lots of it 3.1.0<br />some section text and lots of it 3.1.1</p>\n" +
             "<h3><span>Section 3.2 (7)</span></h3>\n" +
-            "<p>some section text and lots of it 3.2.1<br />" +
-            "some section text and lots of it 3.2.2<br />" +
-            "some section text and lots of it 3.2.3<br />" +
-            "some section text and lots of it 3.2.4<br />" +
-            "some section text and lots of it 3.2.5<br />" +
-            "some section text and lots of it 3.2.6</p>\n", html);
+            "<p>some section text and lots of it 3.2.1<br />some section text and lots of it 3.2.2<br />some section text and lots of it 3.2.3<br />some section text and lots of it 3.2.4<br />some section text and lots of it 3.2.5<br />some section text and lots of it 3.2.6</p>\n", html);
     assertFalse("Unrequested section was incorrectly found", html.contains("Section 4.0"));
     assertFalse("Unrequested text was incorrectly found", html.contains("the end text"));
   }

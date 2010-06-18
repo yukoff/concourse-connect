@@ -64,7 +64,7 @@ import java.util.Iterator;
  * @created June 23, 2003
  */
 public class BlogPostList extends ArrayList<BlogPost> {
-  //filters
+  // filters
   private int instanceId = -1;
   private int projectId = -1;
   private boolean overviewAll = false;
@@ -89,10 +89,13 @@ public class BlogPostList extends ArrayList<BlogPost> {
   private Timestamp startOfCurrentMonth = null;
   private Timestamp startOfNextMonth = null;
   private int projectCategoryId = -1;
-
-  //calendar
-  protected java.sql.Timestamp alertRangeStart = null;
-  protected java.sql.Timestamp alertRangeEnd = null;
+  // ratings
+  private int minimumRatingCount = -1;
+  private double minimumRatingAvg = -1;
+  private int filterInappropriate = Constants.UNDEFINED;
+  // calendar
+  protected Timestamp alertRangeStart = null;
+  protected Timestamp alertRangeEnd = null;
   private boolean buildCommentCount = false;
 
 
@@ -313,6 +316,41 @@ public class BlogPostList extends ArrayList<BlogPost> {
     this.pagedListInfo = tmp;
   }
 
+  public int getMinimumRatingCount() {
+    return minimumRatingCount;
+  }
+
+  public void setMinimumRatingCount(int minimumRatingCount) {
+    this.minimumRatingCount = minimumRatingCount;
+  }
+
+  public void setMinimumRatingCount(String minimumRatingCount) {
+    this.minimumRatingCount = Integer.parseInt(minimumRatingCount);
+  }
+
+  public double getMinimumRatingAvg() {
+    return minimumRatingAvg;
+  }
+
+  public void setMinimumRatingAvg(double minimumRatingAvg) {
+    this.minimumRatingAvg = minimumRatingAvg;
+  }
+
+  public void setMinimumRatingAvg(String minimumRatingAvg) {
+    this.minimumRatingAvg = Double.parseDouble(minimumRatingAvg);
+  }
+
+  public int getFilterInappropriate() {
+    return filterInappropriate;
+  }
+
+  public void setFilterInappropriate(int filterInappropriate) {
+    this.filterInappropriate = filterInappropriate;
+  }
+
+  public void setFilterInappropriate(String filterInappropriate) {
+    this.filterInappropriate = Integer.parseInt(filterInappropriate);
+  }
 
   /**
    * Sets the alertRangeStart attribute of the NewsArticleList object
@@ -801,6 +839,15 @@ public class BlogPostList extends ArrayList<BlogPost> {
     if (projectCategoryId != -1) {
       sqlFilter.append(" AND n.project_id IN ( SELECT project_id FROM projects WHERE category_id = ? ) ");
     }
+    if (minimumRatingCount != -1) {
+      sqlFilter.append("AND rating_count >= ? ");
+    }
+    if (minimumRatingAvg != -1) {
+      sqlFilter.append("AND rating_avg >= ? ");
+    }
+    if (filterInappropriate != Constants.UNDEFINED) {
+      sqlFilter.append("AND (inappropriate_count IS NULL OR inappropriate_count = ?) ");
+    }
   }
 
 
@@ -871,6 +918,15 @@ public class BlogPostList extends ArrayList<BlogPost> {
     }
     if (projectCategoryId != -1) {
       pst.setInt(++i, projectCategoryId);
+    }
+    if (minimumRatingCount != -1) {
+      pst.setInt(++i, minimumRatingCount);
+    }
+    if (minimumRatingAvg != -1) {
+      pst.setDouble(++i, minimumRatingAvg);
+    }
+    if (filterInappropriate != Constants.UNDEFINED) {
+      pst.setInt(++i, 0);
     }
     return i;
   }

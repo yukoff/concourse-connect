@@ -103,7 +103,7 @@ public class AddWikiFormViewer implements IPortletViewer {
     String templatesToExclude = request.getPreferences().getValue(PREF_TEMPLATES_TO_EXCLUDE, null);
 
     // Determine the database connection to use
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
 
     // Query the templates
     if (showTemplates) {

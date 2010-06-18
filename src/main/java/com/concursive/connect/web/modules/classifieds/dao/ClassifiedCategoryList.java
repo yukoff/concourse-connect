@@ -499,5 +499,14 @@ public class ClassifiedCategoryList extends ArrayList<ClassifiedCategory> {
       return "";
     }
   }
+
+  public ClassifiedCategory getCategoryFromId(int selectedId) {
+    for (ClassifiedCategory thisElement : this) {
+      if (thisElement.getId() == selectedId) {
+        return thisElement;
+      }
+    }
+    return null;
+  }
 }
 

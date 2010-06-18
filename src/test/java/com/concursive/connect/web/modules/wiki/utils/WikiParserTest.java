@@ -45,8 +45,8 @@
  */
 package com.concursive.connect.web.modules.wiki.utils;
 
-import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.documents.dao.ImageInfo;
+import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import junit.framework.TestCase;
 import org.suigeneris.jrcs.diff.Diff;
 import org.suigeneris.jrcs.diff.Revision;
@@ -78,6 +78,21 @@ public class WikiParserTest extends TestCase {
       "<li>Indent 2</li>\n" +
       "</ol></li>\n" +
       "</ol>";
+
+  protected final static String htmlSampleWikiOutput =
+      "<h1>Heading 1</h1>\n" +
+          "<p>Paragraph 1</p>\n" +
+          "<h2 id=\"Heading_2\">Heading 2</h2>\n" +
+          "<p>Paragraph 2</p>\n" +
+          "<p>This is <strong>bold</strong> and this is <em>itals</em> and this is <strong><em>both</em></strong> and this is <span style=\"text-decoration: underline;\">underline</span> and this is <span style=\"text-decoration: line-through;\">strikethrough</span>.</p>\n" +
+          "<ul><li>Unord 1 in bold</li>\n" +
+          "<li>Unord 2</li>\n" +
+          "</ul>\n" +
+          "<ol><li>Ord 1</li>\n" +
+          "<li>Ord 2</li>\n" +
+          "<ol><li>Indent 1</li>\n" +
+          "<li>Indent 2</li>\n" +
+          "</ol></ol>\n";
 
   protected final static String wikiSample =
       "= Heading 1 =\n" +
@@ -128,10 +143,25 @@ public class WikiParserTest extends TestCase {
     // Parse it
     WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), -1, false, "");
     String html = WikiToHTMLUtils.getHTML(wikiContext, null);
-    String wiki = HTMLToWikiUtils.htmlToWiki(html, "", -1);
-
     assertNotNull(html);
+    assertEquals(htmlSampleWikiOutput, html);
+
+    String wiki = HTMLToWikiUtils.htmlToWiki(html, "", -1);
     assertNotNull(wiki);
+    assertEquals(wikiSample, wiki);
+
+    // Do a second roundtrip
+    Wiki thisWiki2 = new Wiki();
+    thisWiki2.setContent(wiki);
+    // Parse it
+    WikiToHTMLContext wikiContext2 = new WikiToHTMLContext(thisWiki2, new HashMap<String, ImageInfo>(), -1, false, "");
+    String html2 = WikiToHTMLUtils.getHTML(wikiContext2, null);
+    assertNotNull(html2);
+    assertEquals(html, html2);
+
+    String wiki2 = HTMLToWikiUtils.htmlToWiki(html2, "", -1);
+    assertNotNull(wiki2);
+    assertEquals(wikiSample, wiki);
 
     Revision revision = Diff.diff(
         ToString.stringToArray(wikiSample),

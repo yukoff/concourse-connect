@@ -96,6 +96,8 @@
     <portlet:renderURL var="calendarUrl">
       <portlet:param name="portlet-action" value="show"/>
       <portlet:param name="portlet-object" value="calendar"/>
+      <portlet:param name="portlet-value" value="{view}"/>
+      <portlet:param name="view" value="day"/>
     </portlet:renderURL>
     if (month.length == 1) {
       month = "0" + month;
@@ -104,13 +106,15 @@
       day = "0" + day;
     }
     //sendRequest('${calendarUrl}&year='+year+'&month='+month+'&day='+day+'<%=returnPage!=null?"&return="+StringUtils.encodeUrl(returnPage):""%>','calendarDetails');
-    window.location.href="${calendarUrl}/" + year + "-" + month + "-" + day;
+    window.location.href="${calendarUrl}".replace("{view}", year + "-" + month + "-" + day);
   }
   function showToDaysEvents(month,day,year){
     //&filter='+document.getElementById('filter').value
     <portlet:renderURL var="calendarUrl">
       <portlet:param name="portlet-action" value="show"/>
       <portlet:param name="portlet-object" value="calendar"/>
+      <portlet:param name="portlet-value" value="{view}"/>
+      <portlet:param name="view" value="day"/>
     </portlet:renderURL>
     if (month.length == 1) {
       month = "0" + month;
@@ -119,7 +123,7 @@
       day = "0" + day;
     }
     //sendRequest('${calendarUrl}&month='+month +'&day='+day+'&year='+year+'&reloadCalendar=true<%= returnPage!=null ? "&return="+returnPage : "" %>','calendarDetails');
-    window.location.href="${calendarUrl}/" + year + "-" + month + "-" + day;
+    window.location.href="${calendarUrl}".replace("{view}", year + "-" + month + "-" + day);
   }
   function goToMonth(month) {
     <portlet:renderURL var="calendarUrl">
@@ -133,6 +137,8 @@
     <portlet:renderURL var="calendarUrl">
       <portlet:param name="portlet-action" value="show"/>
       <portlet:param name="portlet-object" value="calendar"/>
+      <portlet:param name="portlet-value" value="{view}"/>
+      <portlet:param name="view" value="week"/>
     </portlet:renderURL>
     if (month.length == 1) {
       month = "0" + month;
@@ -141,7 +147,7 @@
       day = "0" + day;
     }
     //sendRequest('${calendarUrl}&year='+year+'&month='+month+'&startMonthOfWeek='+month+'&startDayOfWeek='+day+'<%=returnPage!=null?"&return="+returnPage:""%>','calendarDetails');
-    window.location.href="${calendarUrl}/" + year + "-" + month + "-" + day + "?view=week";
+    window.location.href="${calendarUrl}".replace("{view}", year + "-" + month + "-" + day);
   }
   function reloadCalendarDetails(){
     <portlet:renderURL var="calendarUrl" windowState="maximized">

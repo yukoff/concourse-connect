@@ -49,8 +49,11 @@ import com.concursive.commons.images.ImageUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
+import com.concursive.connect.scheduler.ScheduledJobs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.controller.beans.URLControllerBean;
+import com.concursive.connect.web.modules.common.social.images.jobs.ImageResizerBean;
+import com.concursive.connect.web.modules.common.social.images.jobs.ImageResizerJob;
 import com.concursive.connect.web.modules.documents.beans.FileDownload;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
 import com.concursive.connect.web.modules.documents.dao.FileItemList;
@@ -62,10 +65,11 @@ import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.dao.WikiList;
 import com.concursive.connect.web.modules.wiki.utils.HTMLToWikiUtils;
+import org.quartz.Scheduler;
 
-import java.io.File;
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * Actions for working with Wikis
@@ -82,6 +86,7 @@ public final class ProjectManagementWiki extends GenericAction {
     String pid = context.getRequest().getParameter("pid");
     String filename = context.getRequest().getParameter("subject");
     String thumbnailValue = context.getRequest().getParameter("th");
+    String panelValue = context.getRequest().getParameter("panel");
     FileDownload fileDownload = null;
     FileItem fileItem = null;
     Thumbnail thumbnail = null;
@@ -111,14 +116,23 @@ public final class ProjectManagementWiki extends GenericAction {
       if (fileItemList.size() > 0) {
         fileItem = fileItemList.get(0);
         if (showThumbnail) {
-          thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, 0, 0, this.getPath(context, "projects"));
+          thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, 210, 150, this.getPath(context, "projects"));
           String filePath = this.getPath(context, "projects") + getDatePath(fileItem.getModified()) + thumbnail.getFilename();
           fileDownload.setFullPath(filePath);
           fileDownload.setFileTimestamp(fileItem.getModificationDate().getTime());
         } else {
-          String filePath = this.getPath(context, "projects") + getDatePath(fileItem.getModified()) + (showThumbnail ? fileItem.getThumbnailFilename() : fileItem.getFilename());
-          fileDownload.setFullPath(filePath);
-          fileDownload.setDisplayName(fileItem.getClientFilename());
+          if ("true".equals(panelValue)) {
+            // This retrieves a standard size resolution for a panel...
+            thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, 640, 480, this.getPath(context, "projects"));
+            String filePath = this.getPath(context, "projects") + getDatePath(fileItem.getModified()) + thumbnail.getFilename();
+            fileDownload.setFullPath(filePath);
+            fileDownload.setFileTimestamp(fileItem.getModificationDate().getTime());
+          } else {
+            // This retrieves the full resolution image...
+            String filePath = this.getPath(context, "projects") + getDatePath(fileItem.getModified()) + (showThumbnail ? fileItem.getThumbnailFilename() : fileItem.getFilename());
+            fileDownload.setFullPath(filePath);
+            fileDownload.setDisplayName(fileItem.getClientFilename());
+          }
         }
       }
     } catch (Exception e) {
@@ -229,20 +243,16 @@ public final class ProjectManagementWiki extends GenericAction {
           processErrors(context, thisItem.getErrors());
         } else {
           if (thisItem.isImageFormat() && thisItem.hasValidImageSize()) {
-            // Create a thumbnail if this is an image
-            String format = thisItem.getExtension().substring(1);
-            File thumbnailFile = new File(newFileInfo.getLocalFile().getPath() + "TH");
-            Thumbnail thumbnail = new Thumbnail(ImageUtils.saveThumbnail(newFileInfo.getLocalFile(), thumbnailFile, 200d, 200d, format));
-            if (thumbnail != null) {
-              // Store thumbnail in database
-              thumbnail.setId(thisItem.getId());
-              thumbnail.setFilename(newFileInfo.getRealFilename() + "TH");
-              thumbnail.setVersion(thisItem.getVersion());
-              thumbnail.setSize((int) thumbnailFile.length());
-              thumbnail.setEnteredBy(thisItem.getEnteredBy());
-              thumbnail.setModifiedBy(thisItem.getModifiedBy());
-              recordInserted = thumbnail.insert(db);
-            }
+            // Prepare this image for thumbnail conversion
+            ImageResizerBean bean = new ImageResizerBean();
+            bean.setFileItemId(thisItem.getId());
+            bean.setImagePath(newFileInfo.getLocalFile().getParent());
+            bean.setImageFilename(thisItem.getFilename());
+            bean.setEnteredBy(thisItem.getEnteredBy());
+            // Add this to the ImageResizerJob to multi-thread the thumbnails
+            Scheduler scheduler = (Scheduler) context.getServletContext().getAttribute("Scheduler");
+            ((Vector) scheduler.getContext().get(ImageResizerJob.IMAGE_RESIZER_ARRAY)).add(bean);
+            scheduler.triggerJob("imageResizer", (String) scheduler.getContext().get(ScheduledJobs.CONTEXT_SCHEDULER_GROUP));
           }
         }
         context.getRequest().setAttribute("popup", "true");
@@ -268,13 +278,15 @@ public final class ProjectManagementWiki extends GenericAction {
   public String executeCommandLinkSelect(ActionContext context) {
     Connection db = null;
     //Parameters
-    String projectId = context.getRequest().getParameter("pid");
+    int projectId = Integer.parseInt(context.getRequest().getParameter("pid"));
     String content = StringUtils.fromHtmlValue(context.getRequest().getParameter("content"));
     String link = context.getRequest().getParameter("link");
+    LOG.debug("Content: " + content);
+    LOG.debug("Link: " + link);
     try {
       db = getConnection(context);
       // Load the project
-      Project thisProject = retrieveAuthorizedProject(Integer.parseInt(projectId), context);
+      Project thisProject = retrieveAuthorizedProject(projectId, context);
       if (!hasProjectAccess(context, thisProject.getId(), "project-wiki-add")) {
         return "PermissionError";
       }
@@ -288,29 +300,34 @@ public final class ProjectManagementWiki extends GenericAction {
       if (!StringUtils.hasText(contextPath)) {
         contextPath = "";
       }
-      if (HTMLToWikiUtils.isExternalLink(link, contextPath)) {
+
+      if (!StringUtils.hasText(link)) {
+        // No link, so use the selected content
+        context.getRequest().setAttribute("link", content);
+      } else if (HTMLToWikiUtils.isExternalLink(link, contextPath)) {
+        // Send the link
         context.getRequest().setAttribute("link", link);
       } else {
-        // Check to see if the target wiki exists
-        String subject = null;
-        if (StringUtils.hasText(link)) {
-          URLControllerBean url = new URLControllerBean(link, contextPath);
-          subject = StringUtils.jsUnEscape(url.getObjectValue());
+        // Decide if a local wiki or another internal link
+        URLControllerBean url = new URLControllerBean(link, contextPath);
+        if ("wiki".equals(url.getDomainObject()) &&
+            (url.getProjectId() == projectId || url.getProjectId() == -1)) {
+          String subject = url.getObjectValue();
+          // The incoming link will have a + for a space
           subject = StringUtils.replace(subject, "+", " ");
-        } else {
-          if (HTMLToWikiUtils.isExternalLink(content, contextPath)) {
-            context.getRequest().setAttribute("link", content);
-          } else {
-            subject = content;
-          }
-        }
-        if (subject != null) {
+          // The incoming link will be url encoded
+          subject = StringUtils.jsUnEscape(subject);
+          context.getRequest().setAttribute("link", subject);
+          LOG.debug("Setting link to: " + subject);
+          // Let user know if wiki exists
           Wiki targetWiki = WikiList.queryBySubject(db, subject, thisProject.getId());
           context.getRequest().setAttribute("targetWiki", targetWiki);
+        } else {
+          // Generate an inter-profile object link
+          context.getRequest().setAttribute("link", link);
+          LOG.debug("Setting (inter-profile) link to: " + link);
         }
       }
-      // Regardless, send the displayed value
-      context.getRequest().setAttribute("content", content);
       return ("LinkSelectOK");
     } catch (Exception errorMessage) {
       context.getRequest().setAttribute("Error", errorMessage);

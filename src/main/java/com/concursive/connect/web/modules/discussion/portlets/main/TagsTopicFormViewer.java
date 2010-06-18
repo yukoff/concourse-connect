@@ -46,7 +46,7 @@
 package com.concursive.connect.web.modules.discussion.portlets.main;
 
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import static com.concursive.connect.web.portal.PortalUtils.getUser;
 
 import java.sql.Connection;
@@ -116,7 +116,7 @@ public class TagsTopicFormViewer implements IPortletViewer {
     }
 
     // get database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     //Load the object being tagged to make sure it exists
     try {

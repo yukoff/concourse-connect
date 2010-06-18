@@ -80,7 +80,7 @@ public class SaveTopicAction implements IPortletAction {
     User user = getUser(request);
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     boolean recordInserted = false;
     int resultCount = -1;
 

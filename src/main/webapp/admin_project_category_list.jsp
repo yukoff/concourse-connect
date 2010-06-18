@@ -43,6 +43,7 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.ProjectCategory" %>
 <jsp:useBean id="SKIN" class="java.lang.String" scope="application"/>
@@ -68,7 +69,7 @@
           Logo
       </th>
       <th width="40%">
-          Name
+          Label
       </th>
       <th width="30%">
           Parent
@@ -108,15 +109,16 @@
       </ccp:evaluate>&nbsp;
     </td>
     <td>
-      <a href="<%= ctx %>/AdminProjectCategories.do?command=Modify&projectCategoryId=<%= thisProjectCategory.getId() %>"><%= thisProjectCategory.getDescription() %></a>
+      <a href="<%= ctx %>/AdminProjectCategories.do?command=Modify&projectCategoryId=<%= thisProjectCategory.getId() %>"><c:out value="<%= thisProjectCategory.getLabel() %>"/></a>
+      <c:if test="<%= !thisProjectCategory.getLabel().equals(thisProjectCategory.getDescription())%>">(<c:out value="<%= thisProjectCategory.getDescription() %>"/>)</c:if>
     </td>
     <td>
       <ccp:evaluate if="<%= thisProjectCategory.getParentCategoryId() > -1 %>">
-        <a href="<%= ctx %>/AdminProjectCategories.do?command=Modify&projectCategoryId=<%= thisProjectCategory.getParentCategoryId() %>"><%= projectCategoryList.getValueFromId(thisProjectCategory.getParentCategoryId()) %></a>
+        <a href="<%= ctx %>/AdminProjectCategories.do?command=Modify&projectCategoryId=<%= thisProjectCategory.getParentCategoryId() %>"><c:out value="<%= projectCategoryList.getValueFromId(thisProjectCategory.getParentCategoryId()) %>"/></a>
       </ccp:evaluate>&nbsp;
     </td>
     <td>
-		<%= thisProjectCategory.getEnabled()?"Yes":"No" %>
+		  <c:out value='<%= thisProjectCategory.getEnabled()?"Yes":"No" %>'/>
     </td>
   </tr>
 	<%

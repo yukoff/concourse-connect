@@ -92,7 +92,7 @@ public class DeleteTopicAction implements IPortletAction {
     }
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Topic topic = new Topic(db, id, project.getId());

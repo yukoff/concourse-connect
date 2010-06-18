@@ -112,7 +112,7 @@ public class TagsFormViewer implements IPortletViewer {
     }
 
     // get database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     //Load the object being tagged to make sure it exists
     try {

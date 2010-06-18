@@ -106,7 +106,7 @@ public class SaveTagsAction implements IPortletAction {
     }
 
     // get database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // update the tag changes
     UserTagLogList userTagLogList = new UserTagLogList();

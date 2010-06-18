@@ -56,7 +56,7 @@ import com.concursive.connect.web.modules.wiki.dao.WikiList;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -87,7 +87,7 @@ public class WikiSetRatingViewer implements IPortletViewer {
       throw new PortletException("Unauthorized to rate in this project");
     }
 
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     String subject = request.getParameter("subject");

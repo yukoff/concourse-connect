@@ -97,7 +97,7 @@ public class BadgeRemoveViewer implements IPortletViewer {
     int projectBadgeId = Integer.parseInt(request.getParameter("id"));
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Verify the requested mapping belongs to this project
     ProjectBadge projectBadge = new ProjectBadge(db, projectBadgeId);

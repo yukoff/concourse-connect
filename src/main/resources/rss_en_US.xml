@@ -127,18 +127,19 @@
     <entry>rating</entry>
   </feed>
   -->
-  <feed url="category,products" limit="50" useDefaultProfile="true">
+  <feed url="category,products" limit="50">
     <entry>blog</entry>
   </feed>
-  <feed url="category,solutions" limit="50" useDefaultProfile="true">
+  <feed url="category,solutions" limit="50">
     <entry>blog</entry>
   </feed>
-  <feed url="category,partners" limit="50" useDefaultProfile="true">
+  <feed url="category,partners" limit="50">
     <entry>blog</entry>
+  </feed>
+  <feed url="category,ideas" limit="50">
+    <entry>profile</entry>
   </feed>
   <feed url="category" limit="50">
-    <entry>topic</entry>
-    <entry>question</entry>
     <entry>blog</entry>
     <entry>rating</entry>
   </feed>

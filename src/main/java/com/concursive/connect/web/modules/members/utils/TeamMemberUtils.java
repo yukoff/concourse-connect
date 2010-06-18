@@ -62,51 +62,39 @@ public class TeamMemberUtils {
   private static final Log LOG = LogFactory.getLog(TeamMemberUtils.class);
 
   public static boolean userCanJoin(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
+    if (user != null && user.getId() > 0) {
+      TeamMember member = project.getTeam().getTeamMember(user.getId());
+      if (member != null) {
         //user is already a member of this project
         return false;
       }
-    }
-    return
-     (user.getId() > 0
-         && project.getFeatures().getAllowParticipants() 
-         && !project.getFeatures().getMembershipRequired());
-  }
-
-  public static boolean userCanRequestToJoin(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
-        //user is already a member of this project
-        return false;
-      }
-    }
-    return
-      (user != null && user.getId() > 0
-          && (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants())
-          && project.getFeatures().getMembershipRequired());
-  }
-
-  public static boolean isActiveMember(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
-        //user is already a member of this project
-        return (member.getStatus() == TeamMember.STATUS_ADDED);
-      }
+      return
+              (project.getFeatures().getAllowParticipants()
+                      && !project.getFeatures().getMembershipRequired());
     }
     return false;
   }
 
-  public static TeamMember getMember(User user, Project project) {
-    TeamMemberList members = project.getTeam();
-    for (TeamMember member : members) {
-      if (member.getUserId() == user.getId()) {
-        return member;
+  public static boolean userCanRequestToJoin(User user, Project project) {
+    if (user != null && user.getId() > 0) {
+      TeamMember member = project.getTeam().getTeamMember(user.getId());
+      if (member != null) {
+        //user is already a member of this project
+        return false;
       }
+      return
+          ((project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants())
+            && project.getFeatures().getMembershipRequired());
     }
-    return null;
+    return false;
+  }
+
+  public static boolean isActiveMember(User user, Project project) {
+    TeamMember member = project.getTeam().getTeamMember(user.getId());
+    if (member != null) {
+      //user is already a member of this project
+      return (member.getStatus() == TeamMember.STATUS_ADDED);
+    }
+    return false;
   }
 }

@@ -44,15 +44,12 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
-<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project"
-             scope="request"/>
-<jsp:useBean id="currentMember" class="com.concursive.connect.web.modules.members.dao.TeamMember"
-             scope="request"/>
+<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
+<jsp:useBean id="currentMember" class="com.concursive.connect.web.modules.members.dao.TeamMember" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <div class="portletWrapper">
   <h1><ccp:label name="projectsCenterSetup.setup">Setup</ccp:label></h1>
-  <ccp:permission name="project-setup-customize,project-setup-permissions"
-                     if="any">
+  <ccp:permission name="project-setup-customize,project-setup-permissions" if="any">
     <div class="g_tabsContainer">
       <ul class="g_tabsList">
         <ccp:permission name="project-setup-customize">

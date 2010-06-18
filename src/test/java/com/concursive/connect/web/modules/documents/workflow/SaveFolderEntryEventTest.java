@@ -124,7 +124,9 @@ public class SaveFolderEntryEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] created a folder [[|" + project.getId() + ":folder|" + folder.getId() + "|Dummy Folder]] in [[|" + project.getId() + ":profile||Project SQL Test]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||Project SQL Test]] " +
+            "created a folder [[|" + project.getId() + ":folder|" + folder.getId() + "|Dummy Folder]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

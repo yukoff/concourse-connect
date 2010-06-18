@@ -45,11 +45,13 @@
  */
 package com.concursive.connect.web.modules.blog.portlets.recentBlogPosts;
 
+import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.blog.dao.BlogPostList;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
@@ -79,6 +81,9 @@ public class RecentBlogPostsViewer implements IPortletViewer {
   private static final String PREF_TITLE = "title";
   private static final String PREF_LIMIT = "limit";
   private static final String PREF_CATEGORY = "category";
+  private static final String PREF_PREF_MINIMUM_RATING_COUNT = "minimumRatingCount";
+  private static final String PREF_PREF_MINIMUM_RATING_AVG = "minimumRatingAvg";
+  private static final String PREF_FILTER_INAPPROPRIATE = "filterInappropriate";
 
   // Object Results
   private static final String TITLE = "title";
@@ -88,10 +93,19 @@ public class RecentBlogPostsViewer implements IPortletViewer {
 
   public String doView(RenderRequest request, RenderResponse response)
       throws Exception {
+
     String defaultView = VIEW_PAGE;
+
+    // Preferences
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
     String limit = request.getPreferences().getValue(PREF_LIMIT, null);
-    Connection db = PortalUtils.getConnection(request);
+
+    // Filter Preferences
+    String minimumRatingCount = request.getPreferences().getValue(PREF_PREF_MINIMUM_RATING_COUNT, null);
+    String minimumRatingAvg = request.getPreferences().getValue(PREF_PREF_MINIMUM_RATING_AVG, null);
+    String filterInappropriate = request.getPreferences().getValue(PREF_FILTER_INAPPROPRIATE, null);
+
+    Connection db = PortalUtils.useConnection(request);
 
     //Get the project if available
     Project project = PortalUtils.findProject(request);
@@ -102,25 +116,39 @@ public class RecentBlogPostsViewer implements IPortletViewer {
     recentBlogPostListInfo.setItemsPerPage(limit);
     blogPostList.setPagedListInfo(recentBlogPostListInfo);
 
-    //if no project is available, look for category in preferences
+    // Filters based on ratings
+    if (StringUtils.hasText(minimumRatingCount) && StringUtils.isNumber(minimumRatingCount)) {
+      blogPostList.setMinimumRatingCount(minimumRatingCount);
+    }
+    if (StringUtils.hasText(minimumRatingAvg)) {
+      blogPostList.setMinimumRatingAvg(minimumRatingAvg);
+    }
+    if ("true".equals(filterInappropriate)) {
+      blogPostList.setFilterInappropriate(Constants.TRUE);
+    }
+
+    // if no project is available, look for category in preferences
     if (project == null) {
-      LOG.debug("A project was not found... using the whole category");
       blogPostList.setInstanceId(PortalUtils.getInstance(request).getId());
-      String category = request.getPreferences().getValue(PREF_CATEGORY, null);
-      if (category == null) {
-        LOG.debug("A category was not found... doing nothing");
-        return null;
-      }
-      ProjectCategoryList categories = new ProjectCategoryList();
-      categories.setEnabled(true);
-      categories.setTopLevelOnly(true);
-      categories.setCategoryNameLowerCase(category.toLowerCase());
-      categories.buildList(db);
-      if (categories.size() > 0) {
-        blogPostList.setProjectCategoryId(categories.get(0).getId());
+      boolean privateCategory = false;
+      String categoryValue = request.getPreferences().getValue(PREF_CATEGORY, null);
+      if (categoryValue != null) {
+        ProjectCategoryList categories = new ProjectCategoryList();
+        categories.setEnabled(true);
+        categories.setTopLevelOnly(true);
+        categories.setCategoryDescriptionLowerCase(categoryValue.toLowerCase());
+        categories.buildList(db);
+        if (categories.size() > 0) {
+          LOG.debug("A category was found: " + categoryValue);
+          ProjectCategory category = categories.get(0);
+          if (category.getSensitive()) {
+            privateCategory = true;
+          }
+          blogPostList.setProjectCategoryId(category.getId());
+        }
       }
       if (PortalUtils.getDashboardPortlet(request).isCached()) {
-        if (PortalUtils.canShowSensitiveData(request)) {
+        if (PortalUtils.canShowSensitiveData(request) || privateCategory) {
           // Use the most generic settings since this portlet is cached
           blogPostList.setForParticipant(Constants.TRUE);
         } else {
@@ -130,22 +158,28 @@ public class RecentBlogPostsViewer implements IPortletViewer {
       } else {
         // Use the current user's setting
         User thisUser = PortalUtils.getUser(request);
-        blogPostList.setForUser(thisUser.getId());
+        if (thisUser.isLoggedIn()) {
+          blogPostList.setForUser(thisUser.getId());
+        } else {
+          blogPostList.setPublicProjectPosts(Constants.TRUE);
+        }
       }
       request.setAttribute(SHOW_PROJECT_TITLE, "true");
       request.setAttribute(SHOW_BLOG_LINK, "true");
     } else {
       LOG.debug("A project was found");
-      //Determine if blogs are enable for the project
+      // determine if blogs are enable for the project
       if (!project.getFeatures().getShowNews()) {
         LOG.debug("Blog is disabled");
         return null;
       }
-      //determine if the user has access to view blogs of the project
+      // determine if the user has access to view blogs of the project
       User user = getUser(request);
-      if (ProjectUtils.hasAccess(project.getId(), user, "project-news-view")) {
-        request.setAttribute(SHOW_BLOG_LINK, "true");
+      if (!ProjectUtils.hasAccess(project.getId(), user, "project-news-view")) {
+        LOG.debug("User doesn't have access to the blog");
+        return null;
       }
+      request.setAttribute(SHOW_BLOG_LINK, "true");
       blogPostList.setProjectId(project.getId());
     }
     blogPostList.setCurrentNews(Constants.TRUE);

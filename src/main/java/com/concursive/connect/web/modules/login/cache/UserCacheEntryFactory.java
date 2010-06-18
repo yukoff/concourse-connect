@@ -47,6 +47,7 @@ package com.concursive.connect.web.modules.login.cache;
 
 import com.concursive.connect.cache.CacheContext;
 import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
 
@@ -69,8 +70,22 @@ public class UserCacheEntryFactory implements CacheEntryFactory {
   public Object createEntry(Object key) throws Exception {
     Connection db = null;
     try {
+      ApplicationPrefs prefs = context.getApplicationPrefs();
       db = CacheUtils.getConnection(context);
-      return new User(db, Integer.parseInt(key.toString()));
+      User thisUser = new User(db, Integer.parseInt(key.toString()));
+      // Set a default time zone for user
+      if (thisUser.getTimeZone() == null) {
+        thisUser.setTimeZone(prefs.get(ApplicationPrefs.TIMEZONE));
+      }
+      // Set a default currency
+      if (thisUser.getCurrency() == null) {
+        thisUser.setCurrency(prefs.get(ApplicationPrefs.CURRENCY));
+      }
+      // Set a default locale
+      if (thisUser.getLanguage() == null) {
+        thisUser.setLanguage(prefs.get(ApplicationPrefs.LANGUAGE));
+      }
+      return thisUser;
     } catch (Exception e) {
       throw new Exception(e);
     } finally {

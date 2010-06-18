@@ -95,7 +95,8 @@ public class WikiFormViewer implements IPortletViewer {
     LOG.debug("Viewer... " + view);
 
     // The bean that holds the form validations
-    PortalUtils.getFormBean(request, "contactUs", ContactUsBean.class);
+    // @todo use a new wiki form validator
+    ContactUsBean bean = (ContactUsBean) PortalUtils.getFormBean(request, "contactUs", ContactUsBean.class);
 
     if ("success".equals(view)) {
       // Set the portlet preferences
@@ -117,6 +118,8 @@ public class WikiFormViewer implements IPortletViewer {
     thisWiki.setContent(request.getPreferences().getValue(PREF_FORM_CONTENT, null));
     // @note the context is used instead of the full URL
     WikiToHTMLContext wikiContext = new WikiToHTMLContext(thisWiki, new HashMap<String, ImageInfo>(), -1, true, request.getContextPath());
+    wikiContext.setFormPropertyMap(bean.getPropertyMap());
+    LOG.debug("beanProperties: " + bean.getPropertyMap());
     String html = WikiToHTMLUtils.getHTML(wikiContext, null);
 
     // Set the portlet preferences

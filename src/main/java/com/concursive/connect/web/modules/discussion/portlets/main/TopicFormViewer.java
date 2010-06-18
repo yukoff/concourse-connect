@@ -101,7 +101,7 @@ public class TopicFormViewer implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Check the request for the record and provide a value for the request scope
     Topic thisTopic = (Topic) PortalUtils.getFormBean(request, TOPIC, Topic.class);

@@ -71,6 +71,7 @@ import com.concursive.connect.web.modules.issues.dao.TicketCategoryList;
 import com.concursive.connect.web.modules.issues.dao.TicketList;
 import com.concursive.connect.web.modules.lists.dao.TaskCategoryList;
 import com.concursive.connect.web.modules.lists.utils.TaskUtils;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.messages.dao.PrivateMessageList;
 import com.concursive.connect.web.modules.plans.dao.RequirementList;
@@ -81,6 +82,7 @@ import com.concursive.connect.web.modules.reviews.dao.ProjectRatingList;
 import com.concursive.connect.web.modules.services.dao.ServiceList;
 import com.concursive.connect.web.modules.timesheet.dao.DailyTimesheetList;
 import com.concursive.connect.web.modules.wiki.dao.WikiList;
+import com.concursive.connect.web.modules.webcast.dao.Webcast;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -191,6 +193,13 @@ public class Project extends GenericBean {
   private int subCategory1Id = -1;
   private int subCategory2Id = -1;
   private int subCategory3Id = -1;
+  private String facebookPage = null;
+  private String youtubeChannelId = null;
+  // Live Video properties
+  private String ustreamId = null;
+  private String livestreamId = null;
+  private String justintvId = null;
+  private String qikId = null;
   // Helper properties
   private String userRange = null;
   private boolean apiRestore = false;
@@ -257,15 +266,15 @@ public class Project extends GenericBean {
     StringBuffer sql = new StringBuffer();
     sql.append(
         "SELECT * " +
-        "FROM projects p " +
-        "WHERE p.project_id = ? ");
+            "FROM projects p " +
+            "WHERE p.project_id = ? ");
     if (userRange != null) {
       sql.append(
           "AND (project_id in (SELECT DISTINCT project_id FROM project_team WHERE user_id IN (" + userRange + ") " +
-          "AND project_id = ?) " +
-          "OR p.enteredby IN (" + userRange + ") " +
-          "OR (p.allow_guests = ? AND p.membership_required = ?) " +
-          "OR p.portal = ?) ");
+              "AND project_id = ?) " +
+              "OR p.enteredby IN (" + userRange + ") " +
+              "OR (p.allow_guests = ? AND p.membership_required = ?) " +
+              "OR p.portal = ?) ");
     }
 
     PreparedStatement pst = db.prepareStatement(sql.toString());
@@ -283,6 +292,15 @@ public class Project extends GenericBean {
     }
     rs.close();
     pst.close();
+  }
+
+  public boolean getWebcastInfoExists() {
+    return
+        (StringUtils.hasText(livestreamId) ||
+            StringUtils.hasText(justintvId) ||
+            StringUtils.hasText(ustreamId) ||
+            StringUtils.hasText(qikId)
+        );
   }
 
   public int getInstanceId() {
@@ -1974,20 +1992,20 @@ public class Project extends GenericBean {
   }
 
   /**
-	 * @param twitterId the twitterId to set
-	 */
-	public void setTwitterId(String twitterId) {
-		this.twitterId = twitterId;
-	}
+   * @param twitterId the twitterId to set
+   */
+  public void setTwitterId(String twitterId) {
+    this.twitterId = twitterId;
+  }
 
-	/**
-	 * @return the twitterId
-	 */
-	public String getTwitterId() {
-		return twitterId;
-	}
+  /**
+   * @return the twitterId
+   */
+  public String getTwitterId() {
+    return twitterId;
+  }
 
-	public String getAddressTo() {
+  public String getAddressTo() {
     return addressTo;
   }
 
@@ -2110,6 +2128,14 @@ public class Project extends GenericBean {
     return subCategory1Id;
   }
 
+  public ProjectCategory getSubCategory1() {
+    if (subCategory1Id > -1) {
+      return ProjectUtils.loadProjectCategory(subCategory1Id);
+    } else {
+      return null;
+    }
+  }
+
   /**
    * @param subCategory1Id the subCategory1Id to set
    */
@@ -2164,6 +2190,54 @@ public class Project extends GenericBean {
    */
   public void setSubCategory3Id(String subCategory3Id) {
     this.subCategory3Id = Integer.parseInt(subCategory3Id);
+  }
+
+  public String getFacebookPage() {
+    return facebookPage;
+  }
+
+  public void setFacebookPage(String facebookPage) {
+    this.facebookPage = facebookPage;
+  }
+
+  public String getYoutubeChannelId() {
+    return youtubeChannelId;
+  }
+
+  public void setYoutubeChannelId(String youtubeChannelId) {
+    this.youtubeChannelId = youtubeChannelId;
+  }
+
+  public String getUstreamId() {
+    return ustreamId;
+  }
+
+  public void setUstreamId(String ustreamId) {
+    this.ustreamId = ustreamId;
+  }
+
+  public String getLivestreamId() {
+    return livestreamId;
+  }
+
+  public void setLivestreamId(String livestreamId) {
+    this.livestreamId = livestreamId;
+  }
+
+  public String getJustintvId() {
+    return justintvId;
+  }
+
+  public void setJustintvId(String justintvId) {
+    this.justintvId = justintvId;
+  }
+
+  public String getQikId() {
+    return qikId;
+  }
+
+  public void setQikId(String qikId) {
+    this.qikId = qikId;
   }
 
   public int getLogoId() {
@@ -2375,7 +2449,7 @@ public class Project extends GenericBean {
       StringBuffer sql = new StringBuffer();
       sql.append(
           "INSERT INTO projects " +
-          "(" + (id > -1 ? "project_id, " : "") + "instance_id, group_id, department_id, category_id, owner, enteredby, modifiedby, template_id, ");
+              "(" + (id > -1 ? "project_id, " : "") + "instance_id, group_id, department_id, category_id, owner, enteredby, modifiedby, template_id, ");
       if (entered != null) {
         sql.append("entered, ");
       }
@@ -2384,27 +2458,28 @@ public class Project extends GenericBean {
       }
       sql.append(
           "title, projecttextid, shortdescription, requestedby, requesteddept, requestdate, " +
-          (features.getUpdateAllowGuests() ? "allow_guests," : "") +
-          (features.getUpdateAllowParticipants() ? "allows_user_observers," : "") +
-          (features.getUpdateMembershipRequired() ? "membership_required," : "") +
-          "calendar_enabled, dashboard_enabled, news_enabled, wiki_enabled, details_enabled, " +
-          "team_enabled, plan_enabled, lists_enabled, discussion_enabled, " +
-          "tickets_enabled, documents_enabled, " +
-          "badges_enabled, reviews_enabled, classifieds_enabled, ads_enabled, profile_enabled, messages_enabled, " +
-          (level > -1 ? "level, " : "") +
-          "approvaldate, closedate, est_closedate, budget, budget_currency, description, template, language_id," +
-          "address_to, addrline1, addrline2, addrline3, city, state, country, postalcode, " +
-          "latitude, longitude, " +
-          "email1, email2, email3, " +
-          "home_phone, home_phone_ext, home2_phone, home2_phone_ext, home_fax, " +
-          "business_phone, business_phone_ext, business2_phone, business2_phone_ext, business_fax, " +
-          "mobile_phone, pager_number, car_phone, radio_phone, web_page, twitter_id, " +
-          "subcategory1_id, subcategory2_id, subcategory3_id, keywords, profile, source) " +
-          "VALUES (?, ?, ?, ?, ?, " +
-          (features.getUpdateAllowGuests() ? "?," : "") +
-          (features.getUpdateAllowParticipants() ? "?," : "") +
-          (features.getUpdateMembershipRequired() ? "?," : "") +
-          "?, ?, ");
+              (features.getUpdateAllowGuests() ? "allow_guests," : "") +
+              (features.getUpdateAllowParticipants() ? "allows_user_observers," : "") +
+              (features.getUpdateMembershipRequired() ? "membership_required," : "") +
+              "calendar_enabled, dashboard_enabled, news_enabled, wiki_enabled, details_enabled, " +
+              "team_enabled, plan_enabled, lists_enabled, discussion_enabled, " +
+              "tickets_enabled, documents_enabled, " +
+              "badges_enabled, reviews_enabled, classifieds_enabled, ads_enabled, profile_enabled, messages_enabled, webcasts_enabled, " +
+              (level > -1 ? "level, " : "") +
+              "approvaldate, closedate, est_closedate, budget, budget_currency, description, template, language_id," +
+              "address_to, addrline1, addrline2, addrline3, city, state, country, postalcode, " +
+              "latitude, longitude, " +
+              "email1, email2, email3, " +
+              "home_phone, home_phone_ext, home2_phone, home2_phone_ext, home_fax, " +
+              "business_phone, business_phone_ext, business2_phone, business2_phone_ext, business_fax, " +
+              "mobile_phone, pager_number, car_phone, radio_phone, web_page, twitter_id, " +
+              "subcategory1_id, subcategory2_id, subcategory3_id, keywords, profile, source, " +
+              "facebook_page, youtube_channel_id, ustream_id, livestream_id, justintv_id, qik_id) " +
+              "VALUES (?, ?, ?, ?, ?, " +
+              (features.getUpdateAllowGuests() ? "?," : "") +
+              (features.getUpdateAllowParticipants() ? "?," : "") +
+              (features.getUpdateMembershipRequired() ? "?," : "") +
+              "?, ?, ");
       if (id > -1) {
         sql.append("?, ");
       }
@@ -2418,7 +2493,8 @@ public class Project extends GenericBean {
         sql.append("?, ");
       }
       sql.append("?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?," +
-          "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
+          "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
+          "?, ?, ?, ?, ?, ?) ");
       int i = 0;
       PreparedStatement pst = db.prepareStatement(sql.toString());
       if (id > -1) {
@@ -2473,6 +2549,7 @@ public class Project extends GenericBean {
       pst.setBoolean(++i, features.getShowAds());
       pst.setBoolean(++i, features.getShowProfile());
       pst.setBoolean(++i, features.getShowMessages());
+      pst.setBoolean(++i, features.getShowWebcasts());
       if (level > -1) {
         pst.setInt(++i, level);
       }
@@ -2532,9 +2609,22 @@ public class Project extends GenericBean {
       pst.setString(++i, keywords);
       pst.setBoolean(++i, profile);
       pst.setString(++i, source);
+      pst.setString(++i, facebookPage);
+      pst.setString(++i, youtubeChannelId);
+      pst.setString(++i, ustreamId);
+      pst.setString(++i, livestreamId);
+      pst.setString(++i, justintvId);
+      pst.setString(++i, qikId);
       pst.execute();
       pst.close();
       id = DatabaseUtils.getCurrVal(db, "projects_project_id_seq", id);
+
+      // insert corresponding webcast info
+      Webcast webcast = new Webcast();
+      webcast.setProjectId(id);
+      webcast.setEnteredBy(enteredBy);
+      webcast.insert(db);
+
       // Turn off with a restore operation
       if (!isApiRestore()) {
         ProjectTicketCount.insertProjectTicketCount(db, id);
@@ -2590,6 +2680,9 @@ public class Project extends GenericBean {
       if (commit) {
         db.setAutoCommit(false);
       }
+      if (profile) {
+        UserUtils.detachProfile(db, id);
+      }
       MeetingList.delete(db, id);
       WikiList.delete(db, id);
 
@@ -2613,6 +2706,12 @@ public class Project extends GenericBean {
       ProjectItemList.delete(db, id, ProjectItemList.TICKET_CAUSE);
       ProjectItemList.delete(db, id, ProjectItemList.TICKET_RESOLUTION);
       ProjectItemList.delete(db, id, ProjectItemList.TICKET_ESCALATION);
+
+      // Delete the ticket that is linked to this project if any
+      TicketList linkedTickets = new TicketList();
+      linkedTickets.setLinkProjectId(id);
+      linkedTickets.buildList(db);
+      linkedTickets.delete(db, basePath);
 
       TaskCategoryList taskCategories = new TaskCategoryList();
       taskCategories.setProjectId(id);
@@ -2655,6 +2754,7 @@ public class Project extends GenericBean {
 
       ReportQueueList reportQueueList = new ReportQueueList();
       reportQueueList.setProjectId(id);
+      reportQueueList.setEnabled(false);
       reportQueueList.buildList(db);
       reportQueueList.delete(db, basePath);
 
@@ -2709,10 +2809,13 @@ public class Project extends GenericBean {
 
       ProjectHistoryList.delete(db, id);
 
+      Webcast webcast = new Webcast(db, ProjectUtils.retrieveWebcastIdFromProjectId(db, id));
+      webcast.delete(db);
+
       // Delete the actual project
       PreparedStatement pst = db.prepareStatement(
           "DELETE FROM projects " +
-          "WHERE project_id = ? ");
+              "WHERE project_id = ? ");
       pst.setInt(1, id);
       recordCount = pst.executeUpdate();
       pst.close();
@@ -2801,26 +2904,27 @@ public class Project extends GenericBean {
     // Update the project
     int resultCount = 0;
     PreparedStatement pst = db.prepareStatement(
-        "UPDATE projects " +
-        "SET department_id = ?, category_id = ?, title = ?, shortdescription = ?, requestedby = ?, " +
-        "requesteddept = ?, requestdate = ?, " +
-        "approvaldate = ?, closedate = ?, owner = ?, est_closedate = ?, budget = ?, " +
-        "budget_currency = ?, template = ?, " +
-        (features.getUpdateAllowGuests() ? "allow_guests = ?, " : "") +
-        (features.getUpdateAllowParticipants() ? "allows_user_observers = ?, " : "") +
-        (features.getUpdateMembershipRequired() ? "membership_required = ?, " : "") +
-        (level > -1 ? "level = ?, " : "") +
-        "description = ?, " +
-        "address_to = ?, addrline1 = ?, addrline2 = ?, addrline3 = ?, city = ?, state = ?, country = ?, postalcode = ?, " +
-        "latitude = ?, longitude = ?, " +
-        "email1 = ?, email2 = ?, email3 = ?, " +
-        "home_phone = ?, home_phone_ext = ?, home2_phone = ?, home2_phone_ext = ?, home_fax = ?, " +
-        "business_phone = ?, business_phone_ext = ?, business2_phone = ?, business2_phone_ext = ?, business_fax = ?, " +
-        "mobile_phone = ?, pager_number = ?, car_phone = ?, radio_phone = ?, web_page = ?, twitter_id = ?, " +
-        "subcategory1_id = ?, subcategory2_id = ?, subcategory3_id = ?, keywords = ?, " +
-        "modifiedby = ?, modified = CURRENT_TIMESTAMP " +
-        "WHERE project_id = ? " +
-        "AND modified = ? ");
+            "UPDATE projects " +
+                    "SET department_id = ?, category_id = ?, title = ?, shortdescription = ?, requestedby = ?, " +
+                    "requesteddept = ?, requestdate = ?, " +
+                    "approvaldate = ?, closedate = ?, owner = ?, est_closedate = ?, budget = ?, " +
+                    "budget_currency = ?, template = ?, " +
+                    (features.getUpdateAllowGuests() ? "allow_guests = ?, " : "") +
+                    (features.getUpdateAllowParticipants() ? "allows_user_observers = ?, " : "") +
+                    (features.getUpdateMembershipRequired() ? "membership_required = ?, " : "") +
+                    (level > -1 ? "level = ?, " : "") +
+                    "description = ?, " +
+                    "address_to = ?, addrline1 = ?, addrline2 = ?, addrline3 = ?, city = ?, state = ?, country = ?, postalcode = ?, " +
+                    "latitude = ?, longitude = ?, " +
+                    "email1 = ?, email2 = ?, email3 = ?, " +
+                    "home_phone = ?, home_phone_ext = ?, home2_phone = ?, home2_phone_ext = ?, home_fax = ?, " +
+                    "business_phone = ?, business_phone_ext = ?, business2_phone = ?, business2_phone_ext = ?, business_fax = ?, " +
+                    "mobile_phone = ?, pager_number = ?, car_phone = ?, radio_phone = ?, web_page = ?, twitter_id = ?, " +
+                    "subcategory1_id = ?, subcategory2_id = ?, subcategory3_id = ?, keywords = ?, " +
+                    "facebook_page = ?, youtube_channel_id = ?, ustream_id = ?, livestream_id = ?, justintv_id = ?, qik_id = ?, " +
+                    "modifiedby = ?, modified = CURRENT_TIMESTAMP " +
+                    "WHERE project_id = ? " +
+                    "AND modified = ? ");
     int i = 0;
     DatabaseUtils.setInt(pst, ++i, departmentId);
     DatabaseUtils.setInt(pst, ++i, categoryId);
@@ -2832,8 +2936,7 @@ public class Project extends GenericBean {
     if (previouslyApproved && approved) {
       pst.setTimestamp(++i, previousApprovalDate);
     } else if (!previouslyApproved && approved) {
-      java.util.Date tmpDate = new java.util.Date();
-      approvalDate = new java.sql.Timestamp(tmpDate.getTime());
+      approvalDate = new Timestamp(System.currentTimeMillis());
       approvalDate.setNanos(0);
       pst.setTimestamp(++i, approvalDate);
     } else if (!approved) {
@@ -2842,8 +2945,7 @@ public class Project extends GenericBean {
     if (previouslyClosed && closed) {
       pst.setTimestamp(++i, previousCloseDate);
     } else if (!previouslyClosed && closed) {
-      java.util.Date tmpDate = new java.util.Date();
-      closeDate = new java.sql.Timestamp(tmpDate.getTime());
+      closeDate = new Timestamp(System.currentTimeMillis());
       closeDate.setNanos(0);
       pst.setTimestamp(++i, closeDate);
     } else if (!closed) {
@@ -2900,11 +3002,18 @@ public class Project extends GenericBean {
     DatabaseUtils.setInt(pst, ++i, subCategory2Id);
     DatabaseUtils.setInt(pst, ++i, subCategory3Id);
     pst.setString(++i, keywords);
+    pst.setString(++i, facebookPage);
+    pst.setString(++i, youtubeChannelId);
+    pst.setString(++i, ustreamId);
+    pst.setString(++i, livestreamId);
+    pst.setString(++i, justintvId);
+    pst.setString(++i, qikId);
     pst.setInt(++i, this.getModifiedBy());
     pst.setInt(++i, this.getId());
     pst.setTimestamp(++i, modified);
     resultCount = pst.executeUpdate();
     pst.close();
+
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_NAME_CACHE, id);
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, id);
     if (profile && owner > -1) {
@@ -2957,8 +3066,8 @@ public class Project extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-        "SET portal = ?, portal_key = ?, portal_default = ?, portal_page_type = ? " +
-        "WHERE project_id = ?");
+            "SET portal = ?, portal_key = ?, portal_default = ?, portal_page_type = ? " +
+            "WHERE project_id = ?");
     pst.setBoolean(1, portal);
     pst.setString(2, portalKey);
     pst.setBoolean(3, portalDefault);
@@ -2986,8 +3095,8 @@ public class Project extends GenericBean {
       if (currentDefault > -1 && currentDefault != id) {
         pst = db.prepareStatement(
             "UPDATE projects " +
-            "SET system_default = ? " +
-            "WHERE project_id = ?");
+                "SET system_default = ? " +
+                "WHERE project_id = ?");
         pst.setBoolean(1, false);
         pst.setInt(2, currentDefault);
         pst.execute();
@@ -2997,8 +3106,8 @@ public class Project extends GenericBean {
       // Turn on the new default
       pst = db.prepareStatement(
           "UPDATE projects " +
-          "SET system_default = ? " +
-          "WHERE project_id = ?");
+              "SET system_default = ? " +
+              "WHERE project_id = ?");
       pst.setBoolean(1, true);
       pst.setInt(2, id);
       pst.execute();
@@ -3200,7 +3309,16 @@ public class Project extends GenericBean {
     shortDescription = rs.getString("shortdescription");
     instanceId = DatabaseUtils.getInt(rs, "instance_id", -1);
     twitterId = rs.getString("twitter_id");
-
+    facebookPage = rs.getString("facebook_page");
+    youtubeChannelId = rs.getString("youtube_channel_id");
+    ustreamId = rs.getString("ustream_id");
+    livestreamId = rs.getString("livestream_id");
+    justintvId = rs.getString("justintv_id");
+    qikId = rs.getString("qik_id");
+    features.setShowWebcasts(rs.getBoolean("webcasts_enabled"));
+    features.setLabelWebcasts(rs.getString("webcasts_label"));
+    features.setOrderWebcasts(rs.getInt("webcasts_order"));
+    features.setDescriptionWebcasts(rs.getString("webcasts_description"));
     //Set the related objects
     team.setProjectId(this.getId());
   }
@@ -3366,8 +3484,8 @@ public class Project extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-        "SET latitude = ?, longitude = ? " +
-        "WHERE project_id = ?");
+            "SET latitude = ?, longitude = ? " +
+            "WHERE project_id = ?");
     pst.setDouble(1, latitude);
     pst.setDouble(2, longitude);
     pst.setInt(3, id);
@@ -3382,8 +3500,8 @@ public class Project extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-        "SET latitude = ?, longitude = ?, city = ?, state = ?, postalcode = ?, country = ? " +
-        "WHERE project_id = ?");
+            "SET latitude = ?, longitude = ?, city = ?, state = ?, postalcode = ?, country = ? " +
+            "WHERE project_id = ?");
     pst.setDouble(1, latitude);
     pst.setDouble(2, longitude);
     pst.setString(3, city);
@@ -3408,8 +3526,8 @@ public class Project extends GenericBean {
       // set the project default
       PreparedStatement pst = db.prepareStatement(
           "UPDATE projects " +
-          "SET logo_id = ? " +
-          "WHERE project_id = ?");
+              "SET logo_id = ? " +
+              "WHERE project_id = ?");
       DatabaseUtils.setInt(pst, 1, logoId);
       pst.setInt(2, this.getId());
       pst.execute();
@@ -3418,8 +3536,8 @@ public class Project extends GenericBean {
         // set the file item list default
         pst = db.prepareStatement(
             "UPDATE project_files " +
-            "SET default_file = ? " +
-            "WHERE item_id = ?");
+                "SET default_file = ? " +
+                "WHERE item_id = ?");
         pst.setBoolean(1, true);
         DatabaseUtils.setInt(pst, 2, logoId);
         pst.execute();
@@ -3428,8 +3546,8 @@ public class Project extends GenericBean {
       // unset the others
       pst = db.prepareStatement(
           "UPDATE project_files " +
-          "SET default_file = ? " +
-          "WHERE link_module_id = ? AND link_item_id = ? AND default_file = ? AND item_id <> ?");
+              "SET default_file = ? " +
+              "WHERE link_module_id = ? AND link_item_id = ? AND default_file = ? AND item_id <> ?");
       pst.setBoolean(1, false);
       pst.setInt(2, Constants.PROJECT_IMAGE_FILES);
       pst.setInt(3, id);
@@ -3459,8 +3577,8 @@ public class Project extends GenericBean {
     }
     PreparedStatement pst = db.prepareStatement(
         "UPDATE projects " +
-        "SET style = ?, style_enabled = ? " +
-        "WHERE project_id = ?");
+            "SET style = ?, style_enabled = ? " +
+            "WHERE project_id = ?");
     int i = 1;
     pst.setString(i++, style);
     pst.setBoolean(i++, styleEnabled);

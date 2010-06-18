@@ -100,7 +100,7 @@ public class PrivateMessageViewer implements IPortletViewer {
     request.setAttribute(FOLDER, folder);
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     boolean validAccess = false;
     String messageId = PortalUtils.getPageParameter(request);
     PrivateMessage privateMessage = new PrivateMessage(db, Integer.parseInt(messageId));

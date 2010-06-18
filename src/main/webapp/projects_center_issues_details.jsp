@@ -187,10 +187,10 @@
         </ccp:permission>
         <%--<ccp:label name="projectsCenterIssues.details.postedOn">Posted on</ccp:label>--%>
         <span class="date">
-           <ccp:tz timestamp="<%= topic.getEntered() %>" pattern="MMM, dd yyyy"/>
+           <ccp:tz timestamp="<%= topic.getEntered() %>" dateOnly="true"/>
         </span>
         <span class="time">
-          <ccp:tz timestamp="<%= topic.getEntered() %>" pattern="h:mm a"/>
+          <ccp:tz timestamp="<%= topic.getEntered() %>" timeOnly="true"/>
         </span>
         <ccp:evaluate if="<%= !(topic.getModified().equals(topic.getEntered())) %>">
             <span class="modified"><ccp:label name="projectsCenterIssues.details.edited">(edited)</ccp:label></span>
@@ -239,8 +239,8 @@
             while (issueFiles.hasNext()) {
               FileItem thisFile = (FileItem) issueFiles.next();
           %>
-                  <%= thisFile.getImageTag("-23", ctx) %>
-                  <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&iid=<%= topic.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a>
+              <%= thisFile.getImageTag("-23", ctx) %>
+              <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&iid=<%= topic.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[topicImages];width=660;imageWidth=640;imageHeight=480"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a>
           <%
             }
           %>
@@ -363,10 +363,10 @@
       <span class="count"><%= replyCount %>.</span>
       <span class="date">
         <%-- <ccp:label name="projectsCenterIssues.details.postedOn">Posted on</ccp:label> --%>
-        <ccp:tz timestamp="<%= thisReply.getEntered() %>" pattern="MMM, dd yyyy"/>
+        <ccp:tz timestamp="<%= thisReply.getEntered() %>" dateOnly="true"/>
       </span>
         <span class="time">
-          <ccp:tz timestamp="<%= thisReply.getEntered() %>" pattern="h:mm a"/>
+          <ccp:tz timestamp="<%= thisReply.getEntered() %>" timeOnly="true"/>
       </span>
       <c:if test="${topic.question && topic.solutionReplyId == thisReply.id}">
         <div class="portlet-message-success">
@@ -446,7 +446,7 @@
             FileItem thisFile = (FileItem) files.next();
         %>
             <%= thisFile.getImageTag("-23", ctx) %>
-            <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&rid=<%= thisReply.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a><br />
+            <a href="<%= ctx %>/DiscussionActions.do?command=Download&pid=<%= project.getId() %>&rid=<%= thisReply.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"<ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[topicImages];width=660;imageWidth=640;imageHeight=480"</ccp:evaluate>><%= toHtml(thisFile.getClientFilename()) %></a><br />
         <%
           }
         %>
@@ -500,9 +500,7 @@
   <%
     }
   %>
-  <div class="pagination">
-    <ccp:paginationControl object="projectReplyInfo"/>
-  </div>
+  <ccp:paginationControl object="projectReplyInfo"/>
   <%
     if (request.getParameter("popup") != null) {
   %>

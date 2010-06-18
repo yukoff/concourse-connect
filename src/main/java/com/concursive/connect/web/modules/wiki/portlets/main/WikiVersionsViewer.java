@@ -54,7 +54,7 @@ import com.concursive.connect.web.modules.wiki.dao.WikiVersionList;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -105,7 +105,7 @@ public class WikiVersionsViewer implements IPortletViewer {
     String subject = PortalUtils.getPageView(request);
 
     // Load the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     Wiki wiki = WikiList.queryBySubject(db, subject, project.getId());
     request.setAttribute(WIKI, wiki);
 

@@ -58,10 +58,12 @@
 </h1>
 <div class="portlet-section-body">
   <div>
-    <img alt="" src="<%= ctx %>/images/tree7o.gif" border="0" align="absmiddle" height="16" width="19"/>
-    <img alt="" src="<%= ctx %>/images/icons/stock_open-16-19.gif" border="0" align="absmiddle" height="16" width="19"/>
+    <img alt="" src="${ctx}/images/tree7o.gif" border="0" align="absmiddle" height="16" width="19" />
+    <img alt="" src="${ctx}/images/icons/stock_open-16-19.gif" border="0" align="absmiddle" height="16" width="19" />
     <portlet:actionURL var="moveUrl">
       <portlet:param name="portlet-command" value="moveFile"/>
+      <portlet:param name="portlet-object" value="file"/>
+      <portlet:param name="portlet-value" value="${fileItem.id}"/>
       <portlet:param name="newFolderId" value="-1"/>
     </portlet:actionURL>
     <a href="${moveUrl}"><ccp:label name="projectsCenterFile.hierarchy.home">Top Folder</ccp:label></a>
@@ -78,11 +80,13 @@
     request.setAttribute("thisFolder", thisFolder);
 %>
   <div>
-    <% for(int j=1;j<thisFolder.getLevel();j++){ %><img border="0" src="<%= ctx %>/images/treespace.gif" align="absmiddle" height="16" width="19">&nbsp;<%}%><img border="0" src="<%= ctx %>/images/treespace.gif" align="absmiddle" height="16" width="19">
-    <img alt="" src="<%= ctx %>/images/tree7o.gif" border="0" align="absmiddle" height="16" width="19"/>
-    <img border="0" src="<%= ctx %>/images/icons/stock_open-16-19.gif" align="absmiddle">
+    <% for(int j=1;j<thisFolder.getLevel();j++){ %><img border="0" src="${ctx}/images/treespace.gif" align="absmiddle" height="16" width="19" />&nbsp;<%}%><img border="0" src="<%= ctx %>/images/treespace.gif" align="absmiddle" height="16" width="19" />
+    <img alt="" src="${ctx}/images/tree7o.gif" border="0" align="absmiddle" height="16" width="19" />
+    <img border="0" src="${ctx}/images/icons/stock_open-16-19.gif" align="absmiddle" />
     <portlet:actionURL var="moveUrl">
       <portlet:param name="portlet-command" value="moveFile"/>
+      <portlet:param name="portlet-object" value="file"/>
+      <portlet:param name="portlet-value" value="${fileItem.id}"/>
       <portlet:param name="newFolderId" value="${thisFolder.id}"/>
     </portlet:actionURL>
     <a href="${moveUrl}"><%= toHtml(thisFolder.getSubject()) %></a>

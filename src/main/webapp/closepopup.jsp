@@ -51,7 +51,7 @@
   String location = null;
   String returnPage = (String) request.getAttribute("return");
   if (returnPage == null) {
-    returnPage = (String) request.getParameter("return");
+    returnPage = request.getParameter("return");
   }
   String param = (String) request.getAttribute("param");
   if (param == null) {
@@ -78,6 +78,8 @@
     } else if ("ProjectMeetings".equals(returnPage)) {
       location = ctx + "/ProjectManagement.do?command=ProjectCenter&section=Calendar&source=Calendar&reloadCalendarDetails=true&pid=" + param ;
       scrollReload = true;
+    } else {
+      location = returnPage;
     }
   }
   

@@ -43,9 +43,6 @@
   ~ Attribution Notice: ConcourseConnect is an Original Work of software created
   ~ by Concursive Corporation
   --%>
-<%@ page import="com.concursive.connect.web.modules.profile.dao.ProjectCategory" %>
-<%@ page import="com.concursive.commons.text.StringUtils" %>
-<%@ page import="java.util.Iterator" %>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -54,15 +51,13 @@
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <ul>
   <li>
-    <a href="${ctx}${pageURL}/all/${normalizedTag}/${sortOrder}" <c:if test="${chosenCategory eq 'all'}"> class="active"</c:if>>
-      <em>All Categories (${total})</em>
-    </a>
+    <a href="${ctx}${pageURL}/all/${normalizedTag}/${sortOrder}" <c:if test="${chosenCategory eq 'all'}"> class="active"</c:if>><em>All Categories (${total})</em></a>
   </li>
   <c:forEach items="${tagsCountMap}" var="category" varStatus="status">
   <li>
-    <a href="${ctx}${pageURL}/${fn:toLowerCase(category.key.description)}/${normalizedTag}/${sortOrder}"<c:if test="${! empty chosenCategory and chosenCategory eq category.key.description}"> class="active"</c:if>>
-      <em><c:out value="${category.key.description}" /><c:if test="${category.value > 0 }">(${category.value})</c:if></em>
-    </a>
+    <a
+       href="${ctx}${pageURL}/${fn:toLowerCase(category.key.description)}/${normalizedTag}/${sortOrder}"<c:if test="${! empty chosenCategory and chosenCategory eq category.key.description}">
+       class="active"</c:if>><em><c:out value="${category.key.description}" /><c:if test="${category.value > 0 }"> (${category.value})</c:if></em></a>
   </li>
   </c:forEach>
 </ul>

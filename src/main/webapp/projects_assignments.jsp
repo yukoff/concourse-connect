@@ -101,10 +101,10 @@
               <%= thisAssignment.getStatusGraphicTag(ctx) %>
             </td>
             <td>
-              <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Modify&pid=<%= thisAssignment.getProjectId() %>&aid=<%= thisAssignment.getId() %>&popup=true','ITEAM_Activity','650','600','yes','yes');"><%= toHtml(thisAssignment.getRole()) %></a>
+              <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Modify&pid=<%= thisAssignment.getProjectId() %>&aid=<%= thisAssignment.getId() %>&popup=true','650','600','yes','yes');"><%= toHtml(thisAssignment.getRole()) %></a>
               (<a href="<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Assignments&rid=<%= thisAssignment.getRequirementId() %>&pid=<%= thisAssignment.getProjectId() %>"><%= toHtml(requirementList.getRequirement(thisAssignment.getRequirementId())) %></a>)
               <ccp:evaluate if="<%= thisAssignment.hasNotes() %>">
-                <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= thisAssignment.getProjectId() %>&aid=<%= thisAssignment.getId() %>&popup=true','ITEAM_Assignment_Notes','400','500','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></a>
+                <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= thisAssignment.getProjectId() %>&aid=<%= thisAssignment.getId() %>&popup=true','400','500','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></a>
                 <%= thisAssignment.getNoteCount() %>
               </ccp:evaluate>
               <br />

@@ -12,16 +12,17 @@ if (libDir.isDirectory()) {
   }
 }
 
-import com.zeroio.utils.APIConnection;
-import com.zeroio.utils.PhoneNumberUtils;
-import com.zeroio.transfer.DataRecord;
-import au.com.bytecode.opencsv.CSVReader;
-import com.zeroio.iteam.base.Project;
-import com.zeroio.iteam.base.ProjectCategory;
-import com.zeroio.utils.StringUtils;
+import com.concursive.commons.api.APIConnection;
+import com.concursive.commons.api.DataRecord;
+import com.concursive.commons.phone.PhoneNumberUtils;
+import com.concursive.connect.web.modules.login.dao.UserList;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
+import com.concursive.commons.text.StringUtils;
 import java.util.Date;
-com.zeroio.controller.UserList;
-com.zeroio.controller.User;
+import au.com.bytecode.opencsv.CSVReader;
+
 
 if (bsh.args.length == 0) {
   print("Usage:");

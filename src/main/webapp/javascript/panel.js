@@ -194,6 +194,9 @@ function showImage(title, url, width, imageHeight, imageWidth, groupName) {
     listeners[2] = new YAHOO.util.KeyListener(document, { keys:39 },
       { fn:showNextImage, scope:imagePanel, correctScope:true }, "keyup");
     imagePanel.cfg.queueProperty("keylisteners", listeners);
+  } else {
+    // Reposition
+    imagePanel.cfg.setProperty("y", 0);
   }
 
   // Determine the html
@@ -207,7 +210,7 @@ function showImage(title, url, width, imageHeight, imageWidth, groupName) {
   if (groupName) {
     paginationString = createImagePagination(groupName, url);
   }
-  imagePanel.setFooter(paginationString + "<input type='button' id='panelCloseButton' value='Close' class='cancel'/>");
+  imagePanel.setFooter(paginationString + "<p><input type='button' id='panelCloseButton' value='Close' class='cancel'/></p>");
   imagePanel.render(document.getElementById("popupLayer"));
 
   // Attach cancel to the buttons
@@ -271,35 +274,35 @@ function createImagePagination(groupName, currentUrl) {
       for (var index in panelGroups[tmpGroupName]) {
         var img = panelGroups[tmpGroupName][index];
         var url = img.url;
-        var title = encodeURIComponent(img.title);
+        var title = escape(img.title);
         var width = img.width;
         var imageHeight = img.imageHeight;
         var imageWidth = img.imageWidth;
         var link = 'javascript:showImage("' + title + '","' + url + '",' + width +
                      ',' + imageHeight + ',' + imageWidth + ',"' + groupName + '")';
-        if (currentUrl == url) { // this is active so no direct link, create prev and next buttons as needed
+        if (currentUrl == url || currentUrl.indexOf(url) > -1) { // this is active so no direct link, create prev and next buttons as needed
           // if the first link is not active print enabled prev button, otherwise print disabled prev button
           if(counter == 1) {
-            pagStart += "<li class='previous-off'>&lt; Previous</li>";
+            pagStart += "<li class='previous-off'><a>&lt; Previous</a></li>";
           } else {
             var prevImg = panelGroups[tmpGroupName][(counter-2)];
-            var prevLink = 'javascript:showImage("' + encodeURIComponent(prevImg.title) + '","' + prevImg.url + '",' + prevImg.width +
+            var prevLink = 'javascript:showImage("' + escape(prevImg.title) + '","' + escape(prevImg.url) + '",' + prevImg.width +
                      ',' + prevImg.imageHeight + ',' + prevImg.imageWidth + ',"' + groupName + '")';
             pagStart += "<li class='previous'><a href='" + prevLink + "'>&lt; Previous</a></li>";
           }
           // current page
-          paginationString += "<li class='active'>" + counter + "</li>";
+          paginationString += "<li class='active'><a>" + counter + "</a></li>";
           // create next link
           if(counter == panelGroups[tmpGroupName].length) {
-            pagEnd = "<li class='next-off'>Next &gt;</li>"+pagEnd;
+            pagEnd = "<li class='next-off'><a>Next &gt;</a></li>"+pagEnd;
           } else {
             var nextImg = panelGroups[tmpGroupName][counter];
-            var nextLink = 'javascript:showImage("' + encodeURIComponent(nextImg.title) + '","' + nextImg.url + '",' + nextImg.width +
+            var nextLink = 'javascript:showImage("' + escape(nextImg.title) + '","' + escape(nextImg.url) + '",' + nextImg.width +
                      ',' + nextImg.imageHeight + ',' + nextImg.imageWidth + ',"' + groupName + '")';
             pagEnd = "<li class='next'><a href='" + nextLink + "'>Next &gt;</a></li>"+pagEnd;
           }
         } else {
-          paginationString += "<li><a href='" + link + "'>" + counter + "</a></li>";
+          paginationString += "<li class='page'><a href='" + link + "'>" + counter + "</a></li>";
         }
         counter++;
       }
@@ -333,7 +336,7 @@ function showPanel(title, url, width, id) {
     width:width + "px",
     x:posx,
     y:0,
-    close:false,
+    close:true,
     constraintoviewport:true,
     draggable:false,
     underlay:"shadow",
@@ -407,9 +410,12 @@ function showPanel(title, url, width, id) {
     // failed alert("Failed: " + o.status);
   };
 
+  // Close on escape
+  /*
   var kl = new YAHOO.util.KeyListener(document, { keys:27 },
     { fn:panel.cancel, scope:panel, correctScope:true }, "keyup");
   panel.cfg.queueProperty("keylisteners", kl);
+  */
 
   // Wire up the success and failure handlers
   panel.callback = { upload: handleUpload, success: handleSuccess, failure: handleFailure };

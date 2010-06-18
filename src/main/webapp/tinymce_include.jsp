@@ -55,6 +55,7 @@
   function initEditor(ta) {
 
     tinyMCE.init({
+      strict_loading_mode : true,
       width : "100%",
       mode : "exact",
 	    elements : ta,

@@ -1,1 +1,1 @@
-Meeting Invitation Rejected
+Event Invitation Rejected

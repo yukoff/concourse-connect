@@ -58,7 +58,7 @@ b, em, dt {
 */
 
 pre, code {
-  line-height:125%;
+  line-height: inherit !important;
   font-size:120%;
 }
 

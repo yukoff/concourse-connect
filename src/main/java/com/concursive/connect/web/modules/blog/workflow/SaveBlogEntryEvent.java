@@ -84,7 +84,10 @@ public class SaveBlogEntryEvent extends ObjectHookComponent implements Component
       BlogPost thisArticle = (BlogPost) context.getThisObject();
       BlogPost previousArticle = (BlogPost) context.getPreviousObject();
 
-      // Load the user that submitted the blog entry
+      // Load the user that submitted the blog entry (or who created it originally)
+      if (previousArticle != null && thisArticle.getEnteredBy() == -1) {
+        thisArticle.setEnteredBy(previousArticle.getEnteredBy());
+      }
       User user = UserUtils.loadUser(thisArticle.getEnteredBy());
       Project userProfile = ProjectUtils.loadProject(user.getProfileProjectId());
 
@@ -122,6 +125,11 @@ public class SaveBlogEntryEvent extends ObjectHookComponent implements Component
         }
         history.insert(db);
       }
+
+      // @todo Update a previous history item...
+
+      // @todo Delete a previous history item...
+
 
       result = true;
     } catch (Exception e) {

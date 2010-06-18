@@ -51,6 +51,8 @@ import com.concursive.connect.indexer.IndexerFactory;
 import com.concursive.connect.web.modules.common.social.geotagging.utils.LocationBean;
 import com.concursive.connect.web.modules.common.social.geotagging.utils.LocationUtils;
 import com.concursive.connect.web.modules.search.beans.SearchBean;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -59,8 +61,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Utilities to work with search strings and Lucene queries
@@ -288,18 +288,18 @@ public class SearchUtils {
 
     String thisQuery =
         "(approved:1) " +
-        (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
-        "AND (" +
-        "(guests:1) " +
-        (userId > 0 ? "OR (participants:1) " : "") +
-        (StringUtils.hasText(projectList) ? "OR " + "(projectId:(" + projectList + ")) " : "") +
-        ") " +
-        "AND (closed:0) " +
-        "AND (website:0) " +
-        (search.getProjectId() > -1 ? "AND (projectId:" + search.getProjectId() + ") " : "") +
-        (StringUtils.hasText(search.getQuery()) ? 
-          "AND (title:(" + titleValues.toString() + ") OR (keywords:(" + keywordValues.toString() + ")) OR (" + termValues.toString() + ")) " : "") +
-        (StringUtils.hasText(locationTerm) ? "AND (location:(" + locationTerm + ")) " : "");
+            (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
+            "AND (" +
+            "(guests:1) " +
+            (userId > 0 ? "OR (participants:1) " : "") +
+            (StringUtils.hasText(projectList) ? "OR " + "(projectId:(" + projectList + ")) " : "") +
+            ") " +
+            "AND (closed:0) " +
+            "AND (website:0) " +
+            (search.getProjectId() > -1 ? "AND (projectId:" + search.getProjectId() + ") " : "") +
+            (StringUtils.hasText(search.getQuery()) ?
+                "AND (title:(" + titleValues.toString() + ") OR (keywords:(" + keywordValues.toString() + ")) OR (" + termValues.toString() + ")) " : "") +
+            (StringUtils.hasText(locationTerm) ? "AND (location:(" + locationTerm + ")) " : "");
 
     LOG.debug("Built Query: " + thisQuery);
 
@@ -319,9 +319,9 @@ public class SearchUtils {
    */
   public static String generateDataQueryString(SearchBean search, int userId, int instanceId, String projectListings) throws SQLException {
     // Generate the string
-    return (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") " : "") +
-        (instanceId > -1 ? "AND (instanceId:" + instanceId + ") " : "") +
-        "AND (" +
+    return (StringUtils.hasText(search.getQuery()) ? "(" + search.getParsedQuery() + ") AND " : "") +
+        (instanceId > -1 ? "(instanceId:" + instanceId + ") AND " : "") +
+        "(" +
         "(" +
         "((guests:1) AND (membership:0)) " +
         (userId > 0 ? " OR ((participants:1) AND (membership:0)) " : "") +
@@ -331,6 +331,23 @@ public class SearchUtils {
   }
 
   public static String generateValidProjects(Connection db, int userId, int specificProjectId) throws SQLException {
+    return generateValidProjects(db, userId, specificProjectId, -1);
+  }
+
+  /**
+   * Generates a list of projects that the user has access to
+   *
+   * @param db
+   * @param userId
+   * @param specificProjectId
+   * @param specificCategoryId
+   * @return
+   * @throws SQLException
+   */
+  public static String generateValidProjects(Connection db, int userId, int specificProjectId, int specificCategoryId) throws SQLException {
+    if (userId < 1) {
+      return "";
+    }
     // @todo get ids from user cache
     // @update cache everytime a user is added or removed from a project team
     // get the projects for the user
@@ -339,14 +356,18 @@ public class SearchUtils {
     StringBuffer projectList = new StringBuffer();
     PreparedStatement pst = db.prepareStatement(
         "SELECT project_id " +
-        "FROM project_team " +
-        "WHERE user_id = ? " +
-        "AND status IS NULL " +
-        (specificProjectId > -1 ? "AND project_id = ? " : ""));
+            "FROM project_team " +
+            "WHERE user_id = ? " +
+            "AND status IS NULL " +
+            (specificProjectId > -1 ? "AND project_id = ? " : "") +
+            (specificCategoryId > -1 ? "AND project_id IN (SELECT project_id FROM projects WHERE category_id = ?) " : ""));
     int i = 0;
     pst.setInt(++i, userId);
     if (specificProjectId > -1) {
       pst.setInt(++i, specificProjectId);
+    }
+    if (specificCategoryId > -1) {
+      pst.setInt(++i, specificCategoryId);
     }
     ResultSet rs = pst.executeQuery();
     while (rs.next()) {

@@ -96,7 +96,7 @@ public class ExportAction implements IPortletAction {
     WikiExportBean exportBean = (WikiExportBean) getFormBean(request, WikiExportBean.class);
 
     // Load the wiki page
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     Wiki wiki = WikiList.queryBySubject(db, exportBean.getSubject(), project.getId());
 
     // Validate the bean

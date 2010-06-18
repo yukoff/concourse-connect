@@ -191,6 +191,9 @@ public final class Reports extends GenericAction {
         retrieveAuthorizedProject(params.getValueAsInt("projectId"), context);
       }
       if (!valid) {
+        context.getRequest().setAttribute("parameterList", params);
+        context.getRequest().setAttribute("Error", "The form did not validate");
+        processErrors(context, params.getErrors());
         return "CriteriaERROR";
       }
       //queue.setReportId(thisReport.getId());

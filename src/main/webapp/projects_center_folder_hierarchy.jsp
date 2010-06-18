@@ -57,7 +57,7 @@
   <td>
     <ccp:label name="projectsCenterFolder.hierarchy.selectMessage">Select a folder to move the item to:</ccp:label>
     <br />
-    <img src="<%= ctx %>/images/icons/stock_folder-16-19.gif" border="0" align="absmiddle" />
+    <img src="${ctx}/images/icons/stock_folder-16-19.gif" border="0" align="absmiddle" />
     <%= toHtml(fileFolder.getSubject()) %>
   </td>
 </tr>
@@ -66,11 +66,13 @@
 <table cellpadding="0" cellspacing="0" width="100%" border="1" rules="cols">
   <tr class="section">
     <td valign="top" width="100%">
-      <img alt="" src="<%= ctx %>/images/tree7o.gif" border="0" align="absmiddle" height="16" width="19"/>
-      <img alt="" src="<%= ctx %>/images/icons/stock_open-16-19.gif" border="0" align="absmiddle" height="16" width="19"/>
+      <img alt="" src="${ctx}/images/tree7o.gif" border="0" align="absmiddle" height="16" width="19"/>
+      <img alt="" src="${ctx}/images/icons/stock_open-16-19.gif" border="0" align="absmiddle" height="16" width="19"/>
     <ccp:evaluate if="<%= fileFolder.getParentId() != -1 %>">
       <portlet:actionURL var="moveUrl">
         <portlet:param name="portlet-command" value="moveFolder"/>
+        <portlet:param name="portlet-object" value="folder"/>
+        <portlet:param name="portlet-value" value="${fileFolder.id}"/>
         <portlet:param name="newParentId" value="-1"/>
       </portlet:actionURL>
       <a href="${moveUrl}">Top Level</a>
@@ -97,6 +99,8 @@
     <% if(fileFolder.getParentId() != thisFolder.getId() && fileFolder.getId() != thisFolder.getId()) {  %>
       <portlet:actionURL var="moveUrl">
         <portlet:param name="portlet-command" value="moveFolder"/>
+        <portlet:param name="portlet-object" value="folder"/>
+        <portlet:param name="portlet-value" value="${fileFolder.id}"/>
         <portlet:param name="newParentId" value="${thisFolder.id}"/>
       </portlet:actionURL>
       <a href="${moveUrl}"><%= toHtml(thisFolder.getSubject()) %></a>

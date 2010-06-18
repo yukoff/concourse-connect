@@ -45,10 +45,9 @@
  */
 package com.concursive.connect.workflow.components.crm;
 
-import com.concursive.connect.workflow.components.crm.AbstractToolsAPITest;
 import com.concursive.commons.xml.XMLUtils;
-import org.aspcfs.apps.transfer.DataRecord;
-import org.aspcfs.utils.CRMConnection;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 
 import java.util.*;
 import java.util.concurrent.*;

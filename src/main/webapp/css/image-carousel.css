@@ -1,0 +1,103 @@
+/*
+ * Style Type: Image carousel styles
+ * Date:       January 25, 2010
+ * Author:     Nanda Kumar
+ *
+ */
+
+#container {
+	height: 250px;
+  border: none;
+}
+
+/* Selected item styles */
+.yui-carousel-element .yui-carousel-item-selected {
+	/*opacity: 1;*/
+	border: none;
+	outline: none;
+}
+
+/* Give margin for each items(image+text) */
+.yui-carousel-element li, .yui-carousel-element .yui-carousel-item-selected {
+	margin: 0 5px 0 5px;
+}
+
+/* Always be sure to give your carousel items a width and a height */
+.yui-carousel-element li {
+	width: 215px;
+	/*opacity: 0.6;*/
+	border:none;
+}
+
+/* Set container & item height */
+.yui-carousel-content,.yui-carousel-element li {
+	height: 215px;
+}
+
+/* Navigation Button options */
+.yui-skin-sam .yui-carousel-nav {
+  background: none;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 31px;
+	line-height: 30px;
+	
+}
+
+/* Navigation Prev Next Button options */
+.yui-skin-sam .yui-carousel-nav .yui-carousel-button{
+	width:30px;
+	height:22px;
+	background-color:transparent;
+}
+.yui-skin-sam .yui-carousel-nav .yui-carousel-next-button{
+	background: url(../images/imageCarousel/right-e.png) no-repeat;
+}
+.yui-skin-sam .yui-carousel-nav .yui-carousel-button-disabled{
+	background: url(../images/imageCarousel/right.png) no-repeat;
+}
+.yui-skin-sam .yui-carousel-nav .yui-carousel-first-button{
+	background: url(../images/imageCarousel/left-e.png) no-repeat;
+	margin-right:35px;
+}
+.yui-skin-sam .yui-carousel-nav .yui-carousel-first-button-disabled{
+	background: url(../images/imageCarousel/left.png) no-repeat;
+	margin-right:35px;
+}
+
+/* Navigation Round Button options */
+.yui-carousel-nav ul li.yui-carousel-nav-page-selected a.yui-carousel-pager-item{
+	background-image:url(../images/imageCarousel/round-black.png);
+}
+.yui-skin-sam ul li a.yui-carousel-pager-item {
+	background:url(../images/imageCarousel/round-white.png);
+}
+
+.yui-carousel-element ul li {
+	position: static;
+}
+
+.yui-carousel-element ol {
+	margin: 0;
+	padding: 0;
+  /* Set width to disply in the absence of javascript*/
+	width: 1000px;
+}
+
+.yui-carousel-element ol li {
+	display: inline;
+	position: static;
+	float: left;
+	text-align: left;
+}
+
+.yui-carousel-element li .itemTable {
+	text-align: left;
+}
+
+.yui-carousel-element li a img {
+	/*border-color:#e9e9e9 #e3e3e3 #ddd;*/
+  /*border: 1px solid #ccc;*/
+}

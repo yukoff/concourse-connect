@@ -62,7 +62,7 @@
     document.location.href='<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=' + thisFileId;
   }
   function viewFile() {
-    popURL('<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=' + thisFileId + '&view=true','Content_' + thisFileId,700,580,1,1);
+    popURL('<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=' + thisFileId + '&view=true',700,580,1,1);
   }
   function deleteFile() {
     confirmDelete('<%= ctx %>/ProjectManagementTickets.do?command=FileDelete&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=' + thisFileId);

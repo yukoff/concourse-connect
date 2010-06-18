@@ -121,6 +121,7 @@
     // Start the editor
     tinyMCE.init({
 
+      strict_loading_mode : true,
       width : "100%",
       mode : "exact",
 	    elements : ta,
@@ -135,7 +136,7 @@
       theme_advanced_statusbar_location : "none",
       theme_advanced_blockformats : "p,h2,h3,h4,h5,h6,pre",
       plugins : "safari,table,-wikiImage,-wikiVideo,inlinepopups",
-      content_css : "<%= RequestUtils.getAbsoluteServerUrl(request) %>/css/editor.css?v=<%= ApplicationVersion.APP_VERSION %>"
+      content_css : "${ctx}/css/editor.css?v=<%= ApplicationVersion.APP_VERSION %>,${ctx}/css/ccp-typography.css?v=<%= ApplicationVersion.APP_VERSION %>"
     });
   }
 </script>

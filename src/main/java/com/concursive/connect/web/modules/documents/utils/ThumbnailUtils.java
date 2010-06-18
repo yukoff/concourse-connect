@@ -68,7 +68,6 @@ import java.sql.SQLException;
 public class ThumbnailUtils {
 
   public static Thumbnail retrieveThumbnail(Connection db, FileItem fileItem, int width, int height, String path) throws SQLException, IOException {
-    // TODO: Use the ImageResizerJob instead
     // See if the thumbnail exists
     ThumbnailList thumbnailList = new ThumbnailList();
     thumbnailList.setItemId(fileItem.getId());

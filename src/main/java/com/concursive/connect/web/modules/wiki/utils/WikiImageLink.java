@@ -79,7 +79,10 @@ public class WikiImageLink {
     int thumbnail = -1;
     int left = -1;
     int right = -1;
+    int center = -1;
     int none = -1;
+    int imageLink = -1;
+    int alt = -1;
     if (image.indexOf("|") > 0) {
       // the image is first
       image = image.substring(0, image.indexOf("|"));
@@ -88,20 +91,27 @@ public class WikiImageLink {
       thumbnail = link.indexOf("|thumb");
       left = link.indexOf("|left");
       right = link.indexOf("|right");
+      center = link.indexOf("|center");
       none = link.indexOf("|none");
+      imageLink = link.indexOf("|link=");
+      alt = link.indexOf("|alt=");
       // the optional caption is last
       int last = link.lastIndexOf("|");
       if (last > frame &&
           last > thumbnail &&
           last > left &&
           last > right &&
-          last > none) {
+          last > center &&
+          last > none &&
+          last > imageLink &&
+          last > alt) {
         title = link.substring(last + 1);
       }
     }
 
     // Determine if local or external image
     String imageUrl = null;
+    String panelImageUrl = null;
     if (!image.contains(".do?command=Img") &&
         !image.contains("/wiki-image/") &&
         (image.startsWith("http://") || image.startsWith("https://"))) {
@@ -114,13 +124,16 @@ public class WikiImageLink {
       }
     } else {
       // local image
+      image = StringUtils.replace(image, "\\{", "[");
+      image = StringUtils.replace(image, "\\}", "]");
       imageUrl = contextPath + "/show/" + project.getUniqueId() + "/wiki-image/" + StringUtils.replace(StringUtils.jsEscape(image) + (thumbnail > -1 ? "?th=true" : ""), "%20", "+");
+      panelImageUrl = contextPath + "/show/" + project.getUniqueId() + "/wiki-image/" + StringUtils.replace(StringUtils.jsEscape(image), "%20", "+") + "?panel=true";
     }
 
     if (imageUrl != null) {
 
       //A picture, including alternate text:
-      //[[Image:Wiki.png|The logo for this Wiki]]
+      // [[Image:Wiki.png|The logo for this Wiki]]
 
       //You can put the image in a frame with a caption:
       //[[Image:Wiki.png|frame|The logo for this Wiki]]
@@ -129,19 +142,22 @@ public class WikiImageLink {
       int width = 0;
       int height = 0;
       int fullWidth = 0;
-      ImageInfo imageInfo = imageList.get(image + (thumbnail > -1 ? "-TH" : ""));
-      if (imageInfo != null) {
-        // Determine the width and height for the output
-        width = imageInfo.getWidth();
-        height = imageInfo.getHeight();
-        fullWidth = width;
+      ImageInfo imageInfo = imageList.get(image);
+      if (imageInfo == null) {
+        LOG.warn("Image not found: " + image);
+      } else {
         if (thumbnail > -1) {
-          ImageInfo fullImageInfo = imageList.get(image);
-          if (fullImageInfo != null) {
-            fullWidth = fullImageInfo.getWidth();
-          }
+          // Use the typical thumbnail dimensions
+          width = 210;
+          height = 150;
+          fullWidth = imageInfo.getWidth();
+        } else {
+          // Determine the width and height for the output from the image
+          width = imageInfo.getWidth();
+          height = imageInfo.getHeight();
+          fullWidth = width;
         }
-        // Determine if the version so that an image isn't cached with a prior version
+        // Determine the version so that an image isn't cached with a prior version
         if (imageInfo.getVersion() > 1.0) {
           imageUrl += (!imageUrl.contains("?") ? "?" : "&") + "v=" + imageInfo.getVersion();
         }
@@ -152,13 +168,58 @@ public class WikiImageLink {
           // Width = the image width + border size * 2 + margin * 2 of inner div
           // Output the frame
           sb.append(
-              "<div style=\"" +
-                  (width > 0 ? "width: " + (width + 12) + "px; " : "") +
-                  (right > -1 ? "float: right; " : "") +
-                  (left > -1 ? "float: left; " : "") +
-                  "position:relative; border: 1px solid #999999; margin-bottom: 5px; \">" +
-                  "<div style=\"border: 1px solid #999999; margin: 5px;\">");
+              "<div style=\"background: white; " +
+                  (width > 0 ? "max-width: " + width + "px; " : "") +
+                  (right > -1 ? "float: right; margin-left: 8px; margin-bottom: 4px; padding: 3px; text-align: center; " : "") +
+                  (left > -1 ? "float: left; margin-right: 8px; margin-bottom: 4px; padding: 3px; text-align: center; " : "") +
+                  (center > -1 ? "display: block; margin: 0 auto; " : "") +
+                  "position:relative; border: 1px solid #999999; margin-bottom: 5px; padding:5px; \">");
         }
+      }
+
+      // Alt
+      String altText = null;
+      if (alt > -1) {
+        int startIndex = alt + 4;
+        int endIndex = link.indexOf("|", startIndex);
+        if (endIndex == -1) {
+          endIndex = link.length();
+        }
+        altText = link.substring(startIndex, endIndex);
+      }
+
+      // Looks like the image needs a link (which is always last)
+      if (imageLink > -1) {
+        // Get the entered link
+        int startIndex = imageLink + 6;
+        int endIndex = link.length();
+        String href = link.substring(startIndex, endIndex);
+
+        // Treat as a wikiLink to validate and to create a proper url
+        LOG.debug("Create a wiki link from: " + href);
+        WikiLink wikiLink = new WikiLink(project.getId(), (altText != null ? href + " " + altText : href));
+
+        String url = wikiLink.getUrl(contextPath);
+        sb.append("<a href=\"");
+        sb.append(url);
+        sb.append("\"");
+
+        if (!editMode && "app".equals(wikiLink.getArea())) {
+          // open apps in a panel
+          sb.append(" rel=\"shadowbox\"");
+        }
+
+        // If an external link, open in a new window
+        if (wikiLink.getStatus().equals(WikiLink.REFERENCE)) {
+          if (url.startsWith("http://") || url.startsWith("https://")) {
+            sb.append(" target=\"_blank\"");
+          }
+        }
+        // Show alt text
+        if (StringUtils.hasText(wikiLink.getName())) {
+          sb.append(" alt=\"").append(StringUtils.toHtmlValue(wikiLink.getName())).append("\"");
+        }
+        sb.append(">");
       }
 
       // Output the image
@@ -166,26 +227,42 @@ public class WikiImageLink {
           "<img " +
               (width > 0 ? "width=\"" + width + "\" " : "") +
               (height > 0 ? "height=\"" + height + "\" " : "") +
-              (right > -1 ? "style=\"float: right;\" " : "") +
-              (left > -1 ? "style=\"float: left;\" " : "") +
+              (right > -1 && ((frame == -1 && thumbnail == -1) || editMode) ? "style=\"float: right; margin-left: 8px; margin-bottom: 4px;\" " : "") +
+              (left > -1 && ((frame == -1 && thumbnail == -1) || editMode) ? "style=\"float: left; margin-right: 8px; margin-bottom: 4px;\" " : "") +
+              (center > -1 ? "style=\"display: block; margin: 0 auto;\" " : "") +
               "src=\"" + imageUrl + "\" " +
               (StringUtils.hasText(title) ? "title=\"" + StringUtils.toHtmlValue(title) + "\"" : "") + " " +
               "alt=\"" + StringUtils.toHtmlValue(image) + "\" />");
 
+      // Close the image link
+      if (imageLink > -1) {
+        sb.append("</a>");
+      }
+
       if (!editMode) {
         if (frame > -1 || thumbnail > -1) {
-          sb.append("</div>");
-          sb.append("<div id=\"caption\" style=\"margin-bottom: 5px; margin-left: 5px; margin-right: 5px; text-align: left;\">");
+          sb.append("<div id=\"caption\" style=\"text-align: left;\">");
         }
         if (thumbnail > -1) {
-          sb.append("<div style=\"float:right\"><a href=\"" + contextPath + "/show/" + project.getUniqueId() + "/wiki-image/" + StringUtils.replace(StringUtils.jsEscape(image), "%20", "+") + "\" rel=\"shadowbox;width=" + fullWidth + "\"><img src=\"" + contextPath + "/images/magnify-clip.png\" width=\"15\" height=\"11\" alt=\"Enlarge\" border=\"0\" /></a></div>");
+          sb.append(
+              "<div style=\"float:right\">" +
+                  "<a " +
+                  "href=\"" + panelImageUrl + "\" " +
+                  "rel=\"shadowbox[wikiImages];width=660;imageWidth=640;imageHeight=480;imageUrl=" + panelImageUrl + "\" " +
+                  "title=\"" +(StringUtils.hasText(title) ? StringUtils.toHtmlValue(title) : "&nbsp;") + "\">" +
+                  "<img src=\"" + contextPath + "/images/magnify-clip.png\" width=\"15\" height=\"11\" alt=\"Enlarge\" border=\"0\" />" +
+                  "</a>" +
+                  "</div>");
         }
         if (frame > -1 || thumbnail > -1) {
           if (title != null) {
             sb.append(StringUtils.toHtml(title));
+          } else {
+            sb.append("&nbsp;");
           }
           sb.append("</div></div>");
         }
+        // Close the frame
         if (none > -1) {
           sb.append("<br clear=\"all\">");
         }

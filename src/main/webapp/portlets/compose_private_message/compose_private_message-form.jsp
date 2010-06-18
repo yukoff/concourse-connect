@@ -54,31 +54,19 @@
 <%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <script language="JavaScript" type="text/javascript">
-  <%-- Onload --%>
-  YAHOO.util.Event.onDOMReady(function() { document.inputForm.body.focus(); });
-
-  function checkForm(form) {
+  function checkForm<portlet:namespace/>(form) {
     var formTest = true;
-    var messageText = "";
-    
+    var message = "";
+    if (form.body.value == "") {
+      message += "- Message is required\r\n";
+      formTest = false;
+    }
     if (!formTest) {
-        messageText = "The message could not be sent.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
-        alert(messageText);
+        message = "The message could not be sent.          \r\nPlease verify the following items:\r\n\r\n" + message;
+        alert(message);
         return false;
     } else {
-      if (form.save.value != 'Please Wait...') {
-        // Tell the user to wait
-        form.save.value='Please Wait...';
-        form.save.disabled = true;
-        // find one or more spinners
-        var uItems = YAHOO.util.Dom.getElementsByClassName("submitSpinner");
-        for (var j = 0; j < uItems.length; j++) {
-          YAHOO.util.Dom.setStyle(uItems[j], "display", "inline");
-        }
         return true;
-      } else {
-        return false;
-      }
     }
   }
 </script>
@@ -87,7 +75,7 @@
     <portlet:actionURL var="saveFormUrl">
       <portlet:param name="portlet-command" value="saveForm"/>
     </portlet:actionURL>
-    <form method="POST" name="inputForm" action="${saveFormUrl}" onSubmit="try {return checkForm(this);}catch(e){return true;}">
+    <form method="POST" name="inputForm" action="${saveFormUrl}" onSubmit="try {return checkForm<portlet:namespace/>(this);}catch(e){return true;}">
       <fieldset id="<portlet:namespace/>Add">
         <legend><c:out value="${title}" /></legend>
         <%= showError(request, "actionError") %>

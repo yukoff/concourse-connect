@@ -55,6 +55,8 @@ import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiLink;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 
@@ -65,6 +67,9 @@ import java.sql.Connection;
  * @created Feb 20, 2009
  */
 public class SaveProjectAddEvent extends ObjectHookComponent implements ComponentInterface {
+
+  private static final Log LOG = LogFactory.getLog(SaveProjectAddEvent.class);
+
   public final static String HISTORY_TEXT = "history.text";
 
   public String getDescription() {
@@ -91,6 +96,9 @@ public class SaveProjectAddEvent extends ObjectHookComponent implements Componen
       // Prepare the wiki links
       context.setParameter("user", WikiLink.generateLink(userProfile));
       context.setParameter("profile", WikiLink.generateLink(thisProject));
+      if (thisProject.getCategoryId() > -1) {
+        context.setParameter("category", thisProject.getCategory().getDescription());
+      }
 
       if (userProfile.getId() != thisProject.getId()) {
         // Insert the history
@@ -105,7 +113,7 @@ public class SaveProjectAddEvent extends ObjectHookComponent implements Componen
       }
       result = true;
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.error("execute", e);
     } finally {
       freeConnection(context, db);
     }

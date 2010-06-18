@@ -62,7 +62,7 @@ function page_init() {
 %>
   if ( !(inArray(parent.document.getElementById("selProjectList"), <%= member.getUserId() %>)) ) {
     var newOpt = parent.document.createElement("OPTION");
-    newOpt.text='<ccp:username id="<%= member.getUserId() %>" showPresence="false" jsQuote="true" />';
+    newOpt.text='<ccp:username id="<%= member.getUserId() %>" showCityState="true" showLink="false" showPresence="false" jsQuote="true" />';
     newOpt.value='<%= member.getUserId() %>';
     list.options[list.length] = newOpt;
   }

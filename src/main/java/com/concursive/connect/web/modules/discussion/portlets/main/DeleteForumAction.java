@@ -97,7 +97,7 @@ public class DeleteForumAction implements IPortletAction {
     }
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     Forum forum = new Forum(db, id, project.getId());

@@ -89,7 +89,7 @@
 
 <%-- Display back link --%>
 <ccp:evaluate if="<%= !calendarInfo.isAgendaView() %>">
-  <a href="javascript:agendaView()">Back To Upcoming Events</a>
+  <a href="javascript:agendaView()">Back to Upcoming Events</a>
 </ccp:evaluate>
 <%-- Display the days, always starting with today in Agenda View --%>
 
@@ -139,6 +139,7 @@
     while (days.hasNext()) {
       CalendarEventList thisDay = (CalendarEventList) days.next();
       Calendar thisCal = Calendar.getInstance();
+      thisCal.setTimeZone(timeZone);
       thisCal.setTime(thisDay.getDate());
       boolean isToday =
         ((thisCal.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) &&

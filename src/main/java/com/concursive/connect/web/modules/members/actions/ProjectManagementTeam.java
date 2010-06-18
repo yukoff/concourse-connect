@@ -61,6 +61,7 @@ import com.concursive.connect.web.modules.members.dao.Invitation;
 import com.concursive.connect.web.modules.members.dao.InvitationList;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
+import com.concursive.connect.web.modules.members.utils.TeamMemberUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.utils.LookupList;
@@ -245,7 +246,7 @@ public final class ProjectManagementTeam extends GenericAction {
         // Project permissions
         project = retrieveAuthorizedProject(projectId, context);
         // Check that the user can join the project (userCanJoin rule)
-        boolean canJoin = (user.getId() > 0 && project.getFeatures().getAllowParticipants() && !project.getFeatures().getMembershipRequired());
+        boolean canJoin = TeamMemberUtils.userCanJoin(user, project);
         if (!canJoin) {
           return "PermissionError";
         }
@@ -286,10 +287,7 @@ public final class ProjectManagementTeam extends GenericAction {
         // Project permissions
         project = retrieveAuthorizedProject(projectId, context);
         // canRequestToJoin rule
-        boolean canRequestToJoin =
-            (user.getId() > 0 &&
-                (project.getFeatures().getAllowGuests() || project.getFeatures().getAllowParticipants()) &&
-                project.getFeatures().getMembershipRequired());
+        boolean canRequestToJoin = TeamMemberUtils.userCanRequestToJoin(user, project);
         if (!canRequestToJoin) {
           return "PermissionError";
         }
@@ -461,10 +459,7 @@ public final class ProjectManagementTeam extends GenericAction {
         // Project permissions
         targetProject = retrieveAuthorizedProject(projectId, context);
         // userCanRequestToJoin rule
-        boolean canRequestToJoin =
-            (user != null && user.getId() > 0 &&
-                (targetProject.getFeatures().getAllowGuests() || targetProject.getFeatures().getAllowParticipants()) &&
-                targetProject.getFeatures().getMembershipRequired());
+        boolean canRequestToJoin = TeamMemberUtils.userCanRequestToJoin(user, targetProject);
         if (!canRequestToJoin) {
           return "PermissionError";
         }
@@ -540,7 +535,7 @@ public final class ProjectManagementTeam extends GenericAction {
         // Project permissions
         project = retrieveAuthorizedProject(projectId, context);
         // userCanJoin rule
-        boolean canJoin = (user.getId() > 0 && project.getFeatures().getAllowParticipants() && !project.getFeatures().getMembershipRequired());
+        boolean canJoin = TeamMemberUtils.userCanJoin(user, project);
         if (!canJoin) {
           return "PermissionError";
         }

@@ -60,9 +60,6 @@
           <dt>
             <a href="${ctx}/show/${classified.project.uniqueId}/classified-ad/${classified.id}" title="<c:out value="${classified.project.title}"/> classified details"><c:out value="${classified.title}"/></a>
           </dt>
-<%--
-          <c:if test="${!empty classified.description}"><dd><c:out value="${classified.description}"/></dd></c:if>
---%>
           <cite>
             <c:out value="${classified.project.title}"/>
             <c:if test="${!empty classified.project.location}">- (<c:out value="${classified.project.location}"/>)</c:if>

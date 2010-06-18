@@ -59,7 +59,7 @@
 <%@ include file="reports_list_menu.jspf" %>
 <script language="JavaScript" type="text/javascript">
   function view(thisQueueId) {
-    popURL('Reports.do?command=View&queueId=' + thisQueueId,'Report_View','750','575','yes','yes');
+    popURL('Reports.do?command=View&queueId=' + thisQueueId,'750','575','yes','yes');
   }
 </script>
 <%-- Temp. fix for Weblogic --%>

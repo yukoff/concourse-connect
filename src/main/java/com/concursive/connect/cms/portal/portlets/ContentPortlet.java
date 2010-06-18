@@ -107,7 +107,7 @@ public class ContentPortlet extends GenericPortlet {
     String styleImage = request.getPreferences().getValue(STYLE_IMAGE, null);
     if (styleImage != null) {
       // Determine the database connection
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       // Use the project for this rule
       Project project = PortalUtils.findProject(request);
       if (project != null) {

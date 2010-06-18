@@ -94,11 +94,11 @@
             </ccp:evaluate>
           </c:if>
         </li>
-        <%--
-        <li class="more"><a href="#" title="more reviews">more</a></li>
-        --%>
       </c:forEach>
     </ol>
+    <c:if test="${!empty project}">
+      <p class="more"><a href="${ctx}/show/${project.uniqueId}/reviews" title="more reviews">see all reviews</a> &raquo;</p>
+    </c:if>
   </c:if>
   <c:if test="${empty projectRatingList}">
     <p>There are no reviews at this time.</p>

@@ -586,7 +586,7 @@ public class ClassifiedCategory extends GenericBean {
 
   public String getNormalizedCategoryName() {
     if (StringUtils.hasText(itemName)) {
-      return StringUtils.replace(itemName.toLowerCase(), " ", "_");
+      return getNormalizedCategoryName(itemName);
     }
 
     return null;
@@ -594,9 +594,17 @@ public class ClassifiedCategory extends GenericBean {
 
   public static String getNormalizedCategoryName(String classifiedCategoryName) {
     if (StringUtils.hasText(classifiedCategoryName)) {
-      return StringUtils.replace(classifiedCategoryName.toLowerCase(), " ", "_");
+      return StringUtils.jsEscape(StringUtils.replace(classifiedCategoryName.toLowerCase(), " ", "_"));
     }
 
+    return null;
+  }
+
+
+  public static String getCategoryNameFromNormalizedCategoryName(String normalizedCategoryName) {
+    if (StringUtils.hasText(normalizedCategoryName)) {
+      return StringUtils.jsUnEscape(StringUtils.replace(normalizedCategoryName, "_", " "));
+    }
     return null;
   }
 }

@@ -49,6 +49,7 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.modules.reviews.dao.ProjectRatingList;
 import com.concursive.connect.web.portal.PortalUtils;
@@ -121,7 +122,7 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
       ProjectRatingList projectRatingList = new ProjectRatingList();
 
       try {
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
 
         ProjectCategoryList categories = new ProjectCategoryList();
         categories.setEnabled(true);
@@ -130,8 +131,14 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
         request.setAttribute(PROJECT_CATEGORY_LIST, categories);
 
         int categoryId = -1;
-        if (!"".equals(categoryName)) {
-          categoryId = categories.size() > 0 ? categories.getIdFromValue(categoryName) : -1;
+        boolean privateCategory = false;
+        if (StringUtils.hasText(categoryName)) {
+          ProjectCategory category = categories.getFromValue(categoryName);
+          if (category != null) {
+            if (category.getSensitive()) {
+              privateCategory = true;
+            }
+          }
         }
 
         // Use paged data for sorting
@@ -157,7 +164,7 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
         projectRatingList.setLoadProject(true);
         projectRatingList.setOpenProjectsOnly(true);
         if ("-1".equals(projectId)) {
-          if (PortalUtils.getDashboardPortlet(request).isCached()) {
+          if (PortalUtils.getDashboardPortlet(request).isCached() || privateCategory) {
             if (PortalUtils.canShowSensitiveData(request)) {
               // Use the most generic settings since this portlet is cached
               projectRatingList.setForParticipant(Constants.TRUE);
@@ -179,7 +186,7 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
           projectRatingList.setFilterInappropriate(Constants.TRUE);
         }
 
-        projectRatingList.buildList(PortalUtils.getConnection(request));
+        projectRatingList.buildList(PortalUtils.useConnection(request));
         request.setAttribute(PROJECT_RATING_LIST, projectRatingList);
 
         request.setAttribute(TITLE, title);

@@ -83,3 +83,30 @@
   padding: 0 !important;
   border: 0 !important;
 }
+
+.points-rating {
+  float: right;
+  clear: right;
+  margin-bottom: 2px;
+  margin-left: 3px;
+}
+.points-ratingValue {
+  text-align: center;
+  white-space:nowrap;
+  font-size: 90%;
+  color: #ffffff;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background-color: #ff9933;
+  padding: 0 3px;
+}
+.points-ratingCount {
+  text-align: center;
+  white-space:nowrap;
+  font-size: 90%;
+  color: #777777;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background-color: #cccccc;
+  padding: 0 3px;
+}

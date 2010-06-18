@@ -88,6 +88,7 @@ public class TicketList extends ArrayList<Ticket> {
   private String description = null;
   private int minutesOlderThan = -1;
   private int projectId = -1;
+  private int linkProjectId = -1;
   private int forProjectUser = -1;
   private boolean onlyIfProjectOpen = false;
   private int ownTickets = -1;
@@ -106,6 +107,17 @@ public class TicketList extends ArrayList<Ticket> {
   public TicketList() {
   }
 
+  public int getLinkProjectId() {
+    return linkProjectId;
+  }
+
+  public void setLinkProjectId(int linkProjectId) {
+    this.linkProjectId = linkProjectId;
+  }
+
+  public void setLinkProjectId(String tmp) {
+    this.linkProjectId = Integer.parseInt(tmp);  
+  }
 
   /**
    * Sets the lastAnchor attribute of the TicketList object
@@ -975,6 +987,9 @@ public class TicketList extends ArrayList<Ticket> {
     if (projectId > 0) {
       sqlFilter.append("AND t.ticketid IN (SELECT ticket_id FROM ticketlink_project WHERE project_id = ?) ");
     }
+    if (linkProjectId > 0) {
+      sqlFilter.append("AND t.link_project_id = ? ");
+    }
     if (forProjectUser > -1) {
       sqlFilter.append("AND t.ticketid IN (SELECT ticket_id FROM ticketlink_project WHERE project_id in (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
           "AND status IS NULL " +
@@ -1052,6 +1067,9 @@ public class TicketList extends ArrayList<Ticket> {
     }
     if (projectId > 0) {
       pst.setInt(++i, projectId);
+    }
+    if (linkProjectId > 0) {
+      pst.setInt(++i, linkProjectId);
     }
     if (forProjectUser > -1) {
       pst.setInt(++i, forProjectUser);

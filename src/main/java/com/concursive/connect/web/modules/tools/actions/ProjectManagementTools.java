@@ -55,10 +55,10 @@ import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.utils.LookupList;
-import java.net.URLEncoder;
-import org.aspcfs.apps.transfer.DataRecord;
-import org.aspcfs.utils.CRMConnection;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Random;
@@ -129,7 +129,7 @@ public class ProjectManagementTools extends GenericAction {
           redirect = "CampaignManager.do?command=Default";
         }
         // Link back to this page
-        String returnURL = (String) context.getRequest().getParameter("returnURL");
+        String returnURL = context.getRequest().getParameter("returnURL");
         if (returnURL != null) {
           try {
             returnURL = RequestUtils.getAbsoluteServerUrl(context.getRequest()) + URLEncoder.encode(returnURL, "UTF-8");
@@ -182,6 +182,7 @@ public class ProjectManagementTools extends GenericAction {
     }
     return success;
   }
+
   static Random random = new Random();
   static String validCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy0123456789";
 

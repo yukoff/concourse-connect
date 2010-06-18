@@ -113,7 +113,7 @@
     document.location.href='<%= ctx %>/ProjectManagementRequirements.do?command=Modify&rid=' + thisOutlineId + '&pid='+ thisProjectId + '&return=Calendar';
   }
   function viewProjectOutline() {
-    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=' + thisProjectId + '&rid=' + thisOutlineId + '&popup=true','Outline_Details','650','375','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=' + thisProjectId + '&rid=' + thisOutlineId + '&popup=true','650','375','yes','yes');
   }
 
 

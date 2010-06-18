@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ ConcourseConnect
+  ~ Copyright 2009 Concursive Corporation
+  ~ http://www.concursive.com
+  ~
+  ~ This file is part of ConcourseConnect, an open source social business
+  ~ software and community platform.
+  ~
+  ~ Concursive ConcourseConnect is free software: you can redistribute it and/or
+  ~ modify it under the terms of the GNU Affero General Public License as published
+  ~ by the Free Software Foundation, version 3 of the License.
+  ~
+  ~ Under the terms of the GNU Affero General Public License you must release the
+  ~ complete source code for any application that uses any part of ConcourseConnect
+  ~ (system header files and libraries used by the operating system are excluded).
+  ~ These terms must be included in any work that has ConcourseConnect components.
+  ~ If you are developing and distributing open source applications under the
+  ~ GNU Affero General Public License, then you are free to use ConcourseConnect
+  ~ under the GNU Affero General Public License.  
+  ~
+  ~ If you are deploying a web site in which users interact with any portion of
+  ~ ConcourseConnect over a network, the complete source code changes must be made
+  ~ available.  For example, include a link to the source archive directly from
+  ~ your web site.
+  ~
+  ~ For OEMs, ISVs, SIs and VARs who distribute ConcourseConnect with their
+  ~ products, and do not license and distribute their source code under the GNU
+  ~ Affero General Public License, Concursive provides a flexible commercial
+  ~ license.
+  ~
+  ~ To anyone in doubt, we recommend the commercial license. Our commercial license
+  ~ is competitively priced and will eliminate any confusion about how
+  ~ ConcourseConnect can be used and distributed.
+  ~
+  ~ ConcourseConnect is distributed in the hope that it will be useful, but WITHOUT
+  ~ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+  ~ FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
+  ~ details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with ConcourseConnect.  If not, see <http://www.gnu.org/licenses/>.
+  ~
+  ~ Attribution Notice: ConcourseConnect is an Original Work of software created
+  ~ by Concursive Corporation
+  -->
+<module>
+  <navigation>
+    <!-- Webcasts -->
+    <page name="overview">
+      <row>
+        <column width="240">
+          <portlet name="ActionsPortlet" class="button-list-vertical-">
+            <xml-include fragment="portal-fragments-get-started"/>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" isSensitive="true">
+            <project>${project.uniqueId}</project>
+            <wiki>Webcasts Overview</wiki>
+            <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
+          </portlet>
+          <portlet name="UpcomingEventListPortlet" cache="10" class="detailed-list " isSensitive="true">
+            <title>Upcoming Webcasts</title>
+            <limit>10</limit>
+            <showLinks>false</showLinks>
+            <showWebcastTitle>false</showWebcastTitle>
+            <webcastsOnly>true</webcastsOnly>
+            <successMessage>You have successfully joined this event!</successMessage>
+          </portlet>
+          <portlet name="ProxyPortlet" cache="3700" timeout="3" class="ads">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>Ad-${project.category.description}-Webcasts-Left-240</adContext>
+          </portlet>
+        </column>
+        <column width="auto" class="main">
+          <portlet name="WebcastPortlet">
+          	<title>${project.features.labelWebcasts}</title>
+          </portlet>
+          <portlet name="ContentPortlet" isUser="false">
+            <content>
+              <![CDATA[
+                <div style="text-align: center">
+                  <p>
+                    <strong>If you have a user account with us,</strong><br />
+                    <a href="${ctx}/login?redirectTo=/show/${project.uniqueId}/webcasts">Sign in to participate.</a>
+                  </p>
+                  <p>
+                    <strong>Don't have an account?</strong><br />
+                    <a href="${ctx}/register">Sign up.</a>
+                  </p>
+                </div>
+              ]]>
+            </content>
+          </portlet>
+          <portlet name="ProjectWikiContentPortlet" isSensitive="true">
+            <project>${project.uniqueId}</project>
+            <wiki>Webcast information</wiki>
+            <showTitle>false</showTitle>
+            <contentIsBasedOnUser>true</contentIsBasedOnUser>
+          </portlet>
+        </column>
+        <column width="300">
+          <portlet name="ProxyPortlet"  timeout="3" class="ads" cache="3600">
+            <wsrp_portlet_handle>/mobilize-ad-portlet/MobilizeAdPortlet</wsrp_portlet_handle>
+            <adContext>Ad-${project.category.description}-Webcasts-Right-300</adContext>
+          </portlet>
+          <portlet name="ActivityInputPortlet" class="detailed-list " isUser="true">
+            <title>Write something for others to see...</title>
+            <project>${project.uniqueId}</project>
+            <allowUsers>true</allowUsers>
+            <event>webcasts-chatter</event>
+            <portlet-events>
+              <consumes-data>namespace-chatter</consumes-data>
+            </portlet-events>
+          </portlet>
+          <portlet name="ActivityStreamPortlet" class="activity-list " cache="10" isSensitive="true">
+            <title>Share your views</title>
+            <content>Here's what others are saying...</content>
+            <project>${project.uniqueId}</project>
+            <showControls>false</showControls>
+            <allowReplies>false</allowReplies>
+            <events>
+              <value>webcasts-chatter</value>
+            </events>
+            <limit>10</limit>
+            <portlet-events>
+              <generates-data>namespace-chatter</generates-data>
+            </portlet-events>
+          </portlet>
+        </column>
+      </row>
+    </page>
+  </navigation>
+</module>

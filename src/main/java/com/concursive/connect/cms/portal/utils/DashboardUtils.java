@@ -75,10 +75,10 @@ public class DashboardUtils {
       // Load the entry from cache
       Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_DASHBOARD_PAGE_CACHE);
       Element element = cache.get(type + "|" + name + (fileName != null ? "|" + fileName : ""));
-      if (element == null) {
+      if (element == null || element.getObjectValue() == null) {
         return null;
       }
-      return (DashboardPage) element.getObjectValue();
+      return new DashboardPage((DashboardTemplate) element.getObjectValue());
     } else {
       // Load the entry from disk
       LOG.debug("Loading from disk: " + name);

@@ -92,7 +92,7 @@ CREATE TABLE users (
   watch_forums BOOLEAN DEFAULT false NOT NULL,
   nickname VARCHAR(255),
   salutation INTEGER REFERENCES lookup_title(code),
-  profile_project_id INTEGER DEFAULT -1,
+  profile_project_id INTEGER,
   show_profile_to INTEGER DEFAULT 0,
   show_fullname_to INTEGER DEFAULT 0,
   show_email_to INTEGER DEFAULT 0,

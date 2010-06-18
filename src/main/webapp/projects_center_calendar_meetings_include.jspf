@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ page import="java.sql.Timestamp" %>
+<%@ page import="javax.portlet.ActionRequest" %>
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.calendar.dao.Meeting" %>
 <%@ page import="com.concursive.connect.web.modules.calendar.utils.MeetingEventList" %>
@@ -54,18 +55,19 @@
   MeetingEventList meetingEventList = (MeetingEventList) thisDay.get(category);
 %>
 <%-- include Meetings --%>
-<%@page import="javax.portlet.ActionRequest"%>
 <div id="message" class="menu">
     <p>Thank you for your valuable feedback.</p>
   </div>
 <ccp:evaluate if="<%= meetingEventList.getMeetingList().size() > 0 %>">
   <div id="projectMeetingDetails<%= StringUtils.toFullDateString(thisDay.getDate()) %>" class="eventsListContainer">
-      <%-- title row --%>
-    <h3 class="eventName">
-        <%-- <img border="0" src="<%= ctx %>/images/box.gif" align="absmiddle" title="Events" />  --%>
-      Events
-      <span><em>(<%= meetingEventList.getMeetingList().size() %>)</em></span>
-    </h3>
+
+    <%-- title row --%>
+    <c:if test="<%= meetingEventList.getMeetingList().size() > 1 %>">
+      <h3 class="eventName">
+        Events <span><em>(<%= meetingEventList.getMeetingList().size() %>)</em></span>
+      </h3>
+    </c:if>
+
     <ol>
       <%-- include Meeting details --%>
       <%
@@ -81,14 +83,7 @@
         <div class="timeContainer">
           <div class="timeWrapper">
            <span class="hour">
-             <ccp:tz timestamp="<%= thisMeeting.getStartDate() %>" pattern="hh" timeOnly="true"/>
-           </span>
-            :
-           <span class="hour">
-             <ccp:tz timestamp="<%= thisMeeting.getStartDate() %>" pattern="mm" timeOnly="true"/>
-           </span>
-           <span class="ampm">
-             <ccp:tz timestamp="<%= thisMeeting.getStartDate() %>" pattern="a" timeOnly="true"/>
+             <ccp:tz timestamp="<%= thisMeeting.getStartDate() %>" timeOnly="true"/>
            </span>
           </div>
         </div>
@@ -111,11 +106,24 @@
               <%= toHtml(thisMeeting.getLocation()) %>
             </span>
           </c:if>
-          <c:if test="${!empty thisMeeting.duration}">
-            <span class="duration">
-              for <%=toHtml(thisMeeting.getDuration())%>
-            </span>
-          </c:if>
+          <%-- show duration --%>
+          <c:set var="startDate"><ccp:tz timestamp="${thisMeeting.startDate}" dateOnly="true"/></c:set>
+          <c:set var="endDate"><ccp:tz timestamp="${thisMeeting.endDate}" dateOnly="true"/></c:set>
+          <c:choose>
+            <c:when test="${startDate eq endDate}">
+              <c:if test="${!empty thisMeeting.duration}">
+                <span class="duration">
+                  for <%=toHtml(thisMeeting.getDuration())%>
+                </span>
+              </c:if>
+            </c:when>
+            <c:otherwise>
+              <p>
+                <em>Starts ${startDate} at <ccp:tz timestamp="${thisMeeting.startDate}" timeOnly="true"/>;
+                Ends ${endDate} at <ccp:tz timestamp="${thisMeeting.endDate}" timeOnly="true"/></em>
+              </p>
+            </c:otherwise>
+          </c:choose>
           <c:if test="${!empty thisMeeting.description}">
             <span class="description">
               <%=toHtml(thisMeeting.getDescription()) %>
@@ -232,6 +240,21 @@
               </c:if>
             </c:otherwise>
           </c:choose>
+          <ccp:evaluate if="<%= thisMeeting.getIsWebcast() %>">
+            <ccp:permission name="project-webcasts-view">
+              <c:choose>
+                <c:when test="${project.features.showWebcasts && project.webcastInfoExists}">
+                  <a href="${ctx}/show/${project.uniqueId}/webcasts">See the webcast</a>
+                </c:when>
+                <c:otherwise>
+                  This is a webcast
+                </c:otherwise>
+              </c:choose>
+            </ccp:permission>
+            <ccp:permission name="project-webcasts-view" if="none">
+              This is a webcast
+            </ccp:permission>
+          </ccp:evaluate>
         </div>
 		    <div class="userInputFooter">
 		      <ccp:evaluate if="<%= thisMeeting.getRatingCount() > 0 %>">

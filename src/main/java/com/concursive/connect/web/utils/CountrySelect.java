@@ -166,6 +166,7 @@ public class CountrySelect extends HtmlSelect {
     this.addItem("HAITI", "HAITI");
     this.addItem("HONDURAS", "HONDURAS");
     this.addItem("HONG KONG", "HONG KONG");
+    this.addItem("HUNGARY", "HUNGARY");
     this.addItem("ICELAND", "ICELAND");
     this.addItem("INDIA", "INDIA");
     this.addItem("INDONESIA", "INDONESIA");

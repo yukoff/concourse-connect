@@ -55,22 +55,26 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request" />
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
-  <h3>Summary</h3>
+  <h3>Folders</h3>
   <%-- Folders --%>
   <div class="box140top">
     <div class="box140bottom">
-      <div class="boxHeader">
-        Folders
-      </div>
       <div class="boxContent">
         <ul>
-          <portlet:renderURL var="homeUrl">
-            <portlet:param name="portlet-action" value="show"/>
-            <portlet:param name="portlet-object" value="documents"/>
-            <c:if test="${!empty param.view}">
-              <portlet:param name="view" value="${param.view}"/>
-            </c:if>
-          </portlet:renderURL>
+          <c:choose>
+            <c:when test="${!empty namespace}">
+              <c:set var="homeUrl" value="javascript:goToFolder${namespace}(-1);"/>
+            </c:when>
+            <c:otherwise>
+              <portlet:renderURL var="homeUrl">
+                <portlet:param name="portlet-action" value="show"/>
+                <portlet:param name="portlet-object" value="documents"/>
+                <c:if test="${!empty param.view}">
+                  <portlet:param name="view" value="${param.view}"/>
+                </c:if>
+              </portlet:renderURL>
+            </c:otherwise>
+          </c:choose>
           <c:choose>
             <c:when test="${empty currentFolder || currentFolder.id == -1}">
               <c:set var="active"> class="selected"</c:set>
@@ -84,10 +88,6 @@
               (${fileItemCounter.total})
             </c:if>
           </li>
-          <portlet:renderURL var="filterUrl">
-            <portlet:param name="portlet-action" value="show"/>
-            <portlet:param name="portlet-object" value="folder"/>
-          </portlet:renderURL>
           <c:forEach items="${fileFolderList}" var="thisFolder">
             <c:set var="thisFolder" value="${thisFolder}" scope="request"/>
             <c:choose>
@@ -99,14 +99,21 @@
               </c:otherwise>
             </c:choose>
             <jsp:useBean id="thisFolder" class="com.concursive.connect.web.modules.documents.dao.FileFolder" scope="request"/>
-            <portlet:renderURL var="filterUrl">
-              <portlet:param name="portlet-action" value="show"/>
-              <portlet:param name="portlet-object" value="folder"/>
-              <portlet:param name="portlet-value" value="${thisFolder.id}"/>
-              <c:if test="${!empty param.view}">
-                <portlet:param name="view" value="${param.view}"/>
-              </c:if>
-            </portlet:renderURL>
+            <c:choose>
+              <c:when test="${!empty namespace}">
+                <c:set var="filterUrl" value="javascript:goToFolder${namespace}(${thisFolder.id});"/>
+              </c:when>
+              <c:otherwise>
+                <portlet:renderURL var="filterUrl">
+                  <portlet:param name="portlet-action" value="show"/>
+                  <portlet:param name="portlet-object" value="folder"/>
+                  <portlet:param name="portlet-value" value="${thisFolder.id}"/>
+                  <c:if test="${!empty param.view}">
+                    <portlet:param name="view" value="${param.view}"/>
+                  </c:if>
+                </portlet:renderURL>
+              </c:otherwise>
+            </c:choose>
             <li ${active}><a href="${filterUrl}"><%= toHtml(thisFolder.getSubject()) %></a>
             <c:set var="thisFolderCount">
               <%= fileItemCounter.getFolders().get(String.valueOf(thisFolder.getId())) %>
@@ -121,6 +128,7 @@
     </div>
   </div>
   <%-- Dates --%>
+<c:if test="${empty namespace}">
   <ccp:evaluate if="<%= fileItemCounter.getDates().size() > 0 %>">
     <div class="box140top">
       <div class="box140bottom">
@@ -134,8 +142,8 @@
                 <portlet:param name="portlet-action" value="show"/>
                 <portlet:param name="portlet-object" value="documents"/>
                 <c:if test="${!empty param.view}">
-                <portlet:param name="view" value="${param.view}"/>
-              </c:if>
+                  <portlet:param name="view" value="${param.view}"/>
+                </c:if>
               </portlet:renderURL>
               <li><a href="${filterUrl}">All</a> (<%=fileItemCounter.getDates().getTotal()%>)</li>
             </ccp:evaluate>
@@ -143,15 +151,22 @@
               for (CounterPair thisItem : fileItemCounter.getDates().getSortedPairs()) {
                 request.setAttribute("thisItem", thisItem);
             %>
-              <portlet:renderURL var="filterUrl">
-                <portlet:param name="portlet-action" value="show"/>
-                <portlet:param name="portlet-object" value="documents"/>
-                <portlet:param name="portlet-value" value="date"/>
-                <portlet:param name="portlet-params" value="${thisItem.name}"/>
-                <c:if test="${!empty param.view}">
-                  <portlet:param name="view" value="${param.view}"/>
-                </c:if>
-              </portlet:renderURL>
+              <c:choose>
+                <c:when test="${!empty namespace}">
+                  <c:set var="filterUrl" value="javascript:goToFolderDate${namespace}('${thisItem.name}');"/>
+                </c:when>
+                <c:otherwise>
+                  <portlet:renderURL var="filterUrl">
+                    <portlet:param name="portlet-action" value="show"/>
+                    <portlet:param name="portlet-object" value="documents"/>
+                    <portlet:param name="portlet-value" value="date"/>
+                    <portlet:param name="portlet-params" value="${thisItem.name}"/>
+                    <c:if test="${!empty param.view}">
+                      <portlet:param name="view" value="${param.view}"/>
+                    </c:if>
+                  </portlet:renderURL>
+                </c:otherwise>
+              </c:choose>
               <li><a href="${filterUrl}"><ccp:tz timestamp="<%= DatabaseUtils.parseTimestamp(thisItem.getName()) %>" pattern="MMMM yyyy" default="Draft" /></a> (<%=thisItem.getValue()%>)</li>
             <%
               }
@@ -161,3 +176,4 @@
       </div>
     </div>
   </ccp:evaluate>
+</c:if>

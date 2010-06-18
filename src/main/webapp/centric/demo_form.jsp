@@ -129,13 +129,13 @@
                 <%= showAttribute(request, "cityError") %>
               </div>
               <div class="half">
-                <h6><em>*</em>State</h6>
+                <h6><em>*</em>State/Province</h6>
                 <input type="text" name="state" maxlength="50" class="smallhalf"
                        value="<%= toHtmlValue(demoBean.getState()) %>"/>
                 <%= showAttribute(request, "stateError") %>
               </div>
               <div class="half">
-                <h6><em>*</em>Postal Code</h6>
+                <h6><em>*</em>Zip/Postal Code</h6>
                 <input type="text" name="postalCode" maxlength="50" class="bighalf"
                        value="<%= toHtmlValue(demoBean.getPostalCode()) %>"/>
                 <%= showAttribute(request, "postalCodeError") %>
@@ -217,7 +217,7 @@
               </div>
 
               <h5 class="comments">Terms and conditions</h5>
-              <a href="javascript:popURL('<%= ctx %>/PortalTerms.do?popup=true&printButton=true','Terms_and_Conditions','650','375','yes','yes');">Printer Friendly Page</a>
+              <a href="javascript:popURL('<%= ctx %>/PortalTerms.do?popup=true&printButton=true','650','375','yes','yes');">Printer Friendly Page</a>
               <textarea rows="8" cols="80" WRAP="VIRTUAL" READONLY style="border-style: solid; border-width: 2;"><%@ include file="../terms.jsp" %></textarea>
 
               <div class="checkbox">

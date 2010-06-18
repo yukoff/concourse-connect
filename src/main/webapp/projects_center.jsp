@@ -100,6 +100,8 @@
   String reviewsUrl = ctx + "/show/" + project.getUniqueId() + "/reviews";
   String messagesLabel = project.getLabel("Messages");
   String messagesUrl = ctx + "/show/" + project.getUniqueId() + "/messages";
+  String webcastsLabel = project.getLabel("Webcasts");
+  String webcastsUrl = ctx + "/show/" + project.getUniqueId() + "/webcasts";
 %>
 <ccp:evaluate if="<%= !isPopup(request) %>">
 <%-- TODO: Remove portletWindow layer once portlets have been created --%>
@@ -133,7 +135,14 @@
                 <ccp:evaluate if="<%= project.hasCategoryId() && project.getCategory().hasLogoId() %>">
                   <div class="portlet-section-footer">
                     <div class="icon">
-                      <img alt="Default photo" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(50,50) %>" width="50" height="50" class="default-photo" />
+                      <c:choose>
+                        <c:when test="${!empty project.logo}">
+                          <img alt="<c:out value="${project.title}"/> photo" width="50" height="50" src="${ctx}/image/<%= project.getLogo().getUrlName(50,50) %>" />
+                        </c:when>
+                        <c:when test="${!empty project.category.logo}">
+                          <img alt="Default photo" width="50" height="50" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(50,50) %>" class="default-photo" />
+                        </c:when>
+                      </c:choose>
                     </div>
                   </div>
                 </ccp:evaluate>
@@ -155,10 +164,10 @@
                         <ccp:permission name="project-profile-admin">
                         <c:choose>
                           <c:when test="${empty project.description}">
-                            <span><a href="javascript:showPanel('','${ctx}/show/${project.uniqueId}/app/edit_profile','600')">Edit Profile</a></span>
+                            <span><a href="javascript:showPanel('','${ctx}/show/${project.uniqueId}/app/edit_profile','600')">Update contact information</a></span>
                           </c:when>
                           <c:otherwise>
-                            <span><a href="${ctx}/modify/${project.uniqueId}/profile">Edit Profile</a></span>
+                            <span><a href="${ctx}/modify/${project.uniqueId}/profile">Update contact information</a></span>
                           </c:otherwise>
                         </c:choose>
                       </ccp:permission>
@@ -267,14 +276,21 @@
                     <ccp:tabbedMenu text="<%= dashboardLabel %>" key="dashboard" value="<%= section %>" url="<%= dashboardUrl %>" type="li"/>
                   </c:if>
                 </ccp:permission>
-                <ccp:permission name="project-reviews-view">
-                  <c:if test="${project.features.showReviews}">
-                    <ccp:tabbedMenu text="<%= reviewsLabel %>" key="reviews" value="<%= section %>" url="<%= reviewsUrl %>" type="li"/>
+                <ccp:permission name="project-webcasts-view">
+                  <c:if test="${project.features.showWebcasts}">
+                    <c:if test="${project.webcastInfoExists}">
+                      <ccp:tabbedMenu text="<%= webcastsLabel %>" key="webcasts" value="<%= section %>" url="<%= webcastsUrl %>" type="li"/>
+                    </c:if>
                   </c:if>
                 </ccp:permission>
                 <ccp:permission name="project-news-view">
                   <c:if test="${project.features.showNews}">
                     <ccp:tabbedMenu text="<%= newsLabel %>" key="home,news,blog" value="<%= section %>" url="<%= newsUrl %>" type="li"/>
+                  </c:if>
+                </ccp:permission>
+                <ccp:permission name="project-reviews-view">
+                  <c:if test="${project.features.showReviews}">
+                    <ccp:tabbedMenu text="<%= reviewsLabel %>" key="reviews" value="<%= section %>" url="<%= reviewsUrl %>" type="li"/>
                   </c:if>
                 </ccp:permission>
                 <ccp:permission name="project-calendar-view">

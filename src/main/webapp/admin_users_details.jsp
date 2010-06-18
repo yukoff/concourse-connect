@@ -194,23 +194,23 @@ User Details<br />
 
     <%-- Management CRM access role --%>
     <tr class="containerBody">
-      <td nowrap class="formLabel">Management CRM Role</td>
+      <td nowrap class="formLabel">Community Management Role</td>
       <td>
         <ccp:evaluate if="<%= !thisUser.isConnectCRMAdmin() %>">
           <img border="0" src="<%= ctx %>/images/box.gif" alt="" align="absmiddle" />
-          <i>User does not have 'Management CRM' Administrator access</i>
+          <i>User does not have 'Community Management' Administrator access</i>
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisUser.isConnectCRMAdmin() %>">
           <img border="0" src="<%= ctx %>/images/box-checked.gif" alt="" align="absmiddle" />
-          <i>User has 'Management CRM' Administrator access</i>
+          <i>User has 'Community Management' Administrator access</i>
         </ccp:evaluate><br/>
         <ccp:evaluate if="<%= !thisUser.isConnectCRMManager() %>">
           <img border="0" src="<%= ctx %>/images/box.gif" alt="" align="absmiddle" />
-          <i>User does not have 'Management CRM' Manager access</i>
+          <i>User does not have 'Community Management' Manager access</i>
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisUser.isConnectCRMManager() %>">
           <img border="0" src="<%= ctx %>/images/box-checked.gif" alt="" align="absmiddle" />
-          <i>User has 'Management CRM' Manager access</i>
+          <i>User has 'Community Management' Manager access</i>
         </ccp:evaluate>
       </td>
     </tr>

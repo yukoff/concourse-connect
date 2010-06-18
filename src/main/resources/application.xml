@@ -56,18 +56,26 @@
       </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.profile.beans.ProjectFormBean" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.claim"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.claim"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.register.beans.RegisterBean" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.portal.register"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.portal.register"/>
+      </actions>
     </hook>
     <!--
     <hook class="com.concursive.connect.web.modules.members.dao.TeamMember" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.become-fan"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.become-fan"/>
+      </actions>
     </hook>
     -->
     <hook class="com.concursive.connect.web.modules.lists.dao.TaskList" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.favorite-list"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.favorite-list"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.members.dao.TeamMember" module="Project Management">
       <actions>
@@ -82,8 +90,10 @@
       </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.blog.dao.BlogPost" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.post-blog"/></actions>
-      <actions><action type="update" process="teamelements.application.project.post-blog"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.post-blog"/>
+        <action type="update" process="teamelements.application.project.post-blog"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.calendar.dao.Meeting" module="Project Management">
       <actions>
@@ -104,19 +114,29 @@
       </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.discussion.dao.Forum" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.create-forum"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.create-forum"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.discussion.dao.Topic" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.post-question"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.post-question"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.discussion.dao.Reply" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.post-answer"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.post-answer"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.promotions.dao.Ad" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.add-promotion"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.add-promotion"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.classifieds.dao.Classified" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.post-classified-ad"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.post-classified-ad"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.documents.dao.FileItem" module="Project Management">
       <actions>
@@ -125,13 +145,19 @@
       </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.documents.dao.FileItemList" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.share-image"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.share-image"/>
+      </actions>
     </hook>  
     <hook class="com.concursive.connect.web.modules.documents.beans.FileDownload" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.download-document"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.download-document"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.documents.dao.FileFolder" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.create-folder"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.create-folder"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.badges.dao.Badge" module="Project Management">
       <actions>
@@ -140,10 +166,14 @@
       </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.badges.dao.ProjectBadge" module="Project Management">
-      <actions><action type="insert" process="teamelements.application.project.grant-badge"/></actions>
+      <actions>
+        <action type="insert" process="teamelements.application.project.grant-badge"/>
+      </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean" module="Project Management">
-      <actions><action type="insert" process="connect.event.meetinginvitation"/></actions>
+      <actions>
+        <action type="insert" process="connect.event.meetinginvitation"/>
+      </actions>
     </hook>
   </hooks>
 
@@ -159,7 +189,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.SaveProjectAddEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} created the profile ${profile}</parameter>
+            <parameter name="history.text">${user} created the profile ${profile} under ${category}</parameter>
           </parameters>
         </component>
       </components>
@@ -201,7 +231,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.SaveTeamMemberAddEvents" enabled="true">
           <parameters>
-            <parameter name="history.invite.text">${user} invited ${member} to ${profile}</parameter>
+            <parameter name="history.invite.text">${user} @${profile} invited ${member}</parameter>
             <parameter name="history.fan.text">${member} became a member of ${profile}</parameter>
             <parameter name="history.friend.text">${member} became a friend of ${profile}</parameter>
           </parameters>
@@ -214,7 +244,7 @@
         <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.SaveTeamMemberUpdateEvents" enabled="true">
           <parameters>
             <parameter name="history.friend.invite.text">${member} became a friend of ${user}</parameter>
-            <parameter name="history.invite.text">${member} accepted an invitation from ${user} to join ${profile}</parameter>
+            <parameter name="history.invite.text">${member} @${profile} accepted an invitation from ${user} to join</parameter>
             <parameter name="history.membership.invite.text">${user} approved ${member} for membership in ${profile}</parameter>
             <parameter name="history.promote.text">${user} promoted ${member} to ${profile} ${role}</parameter>
             <parameter name="history.grant.text">${user} granted tools access to ${member}</parameter>  
@@ -238,7 +268,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.profile.workflow.SaveProjectShareImageEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} shared an image with ${profile}</parameter>
+            <parameter name="history.text">${user} @${profile} added an image</parameter>
             <parameter name="history.update-user-profile.text">${user} added an image</parameter>
           </parameters>
         </component>
@@ -249,7 +279,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.reviews.workflow.SaveProjectRatingEvent" enabled="true">
           <parameters>
-            <parameter name="history.addreview.text">${user} added a review ${review} to ${profile}</parameter>
+            <parameter name="history.addreview.text">${user} @${profile} added a review ${review}</parameter>
           </parameters>
         </component>
       </components>
@@ -259,7 +289,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.reviews.workflow.SaveProjectRatingEvent" enabled="true">
           <parameters>
-            <parameter name="history.updatereview.text">${user} updated a review ${review} for ${profile}</parameter>
+            <parameter name="history.updatereview.text">${user} @${profile} updated a review ${review}</parameter>
           </parameters>
         </component>
       </components>
@@ -269,7 +299,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.blog.workflow.SaveBlogEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} published ${blog} in ${profile}</parameter>
+            <parameter name="history.text">${user} @${profile} published ${blog}</parameter>
             <parameter name="history.user-profile.text">${user} published ${blog}</parameter>
           </parameters>
         </component>
@@ -280,7 +310,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.calendar.workflow.SaveMeetingEvent" enabled="true">
           <parameters>
-            <parameter name="history.addevent.text">${user} scheduled ${event} in ${profile}</parameter>
+            <parameter name="history.addevent.text">${user} @${profile} scheduled ${event}</parameter>
             <parameter name="history.user-profile.addevent.text">${user} scheduled ${event}</parameter>
           </parameters>
         </component>
@@ -291,7 +321,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.calendar.workflow.SaveMeetingEvent" enabled="true">
           <parameters>
-            <parameter name="history.updateevent.text">${user} re-scheduled ${event} in ${profile}</parameter>
+            <parameter name="history.updateevent.text">${user} @${profile} re-scheduled ${event}</parameter>
             <parameter name="history.user-profile.updateevent.text">${user} re-scheduled ${event}</parameter>
           </parameters>
         </component>
@@ -302,7 +332,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.wiki.workflow.SaveWikiEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} contributed to ${wiki} in ${profile}</parameter>
+            <parameter name="history.text">${user} @${profile} contributed to the wiki ${wiki}</parameter>
             <parameter name="history.user-profile.text">${user} contributed to ${wiki}</parameter>
           </parameters>
         </component>
@@ -313,8 +343,8 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.wiki.workflow.SaveWikiCommentEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} commented on ${wiki} in ${profile}</parameter>
-            <parameter name="history.user-profile.text">${user} commented on ${wiki}</parameter>
+            <parameter name="history.text">${user} @${profile} commented on the wiki ${wiki}</parameter>
+            <parameter name="history.user-profile.text">${user} commented on the wiki ${wiki}</parameter>
           </parameters>
         </component>
       </components>
@@ -324,8 +354,8 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.SaveForumEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} created a forum ${forum} in ${profile}</parameter>
-            <parameter name="history.user-profile.text">${user} created a forum ${forum}</parameter>
+            <parameter name="history.text">${user} @${profile} created a discussion forum ${forum}</parameter>
+            <parameter name="history.user-profile.text">${user} created a discussion forum ${forum}</parameter>
           </parameters>
         </component>
       </components>
@@ -335,8 +365,8 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.SaveForumTopicEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.question.text">${user} posted the question ${topic} in ${profile}</parameter>
-            <parameter name="history.topic.text">${user} posted the topic ${topic} in ${profile}</parameter>
+            <parameter name="history.question.text">${user} @${profile} posted the question ${topic}</parameter>
+            <parameter name="history.topic.text">${user} @${profile} posted the topic ${topic}</parameter>
           </parameters>
         </component>
       </components>
@@ -346,10 +376,10 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.discussion.workflow.SaveForumTopicResponseEvent" enabled="true">
           <parameters>
-            <parameter name="history.postreply.text">${user} posted a reply to ${topic} in ${profile}</parameter>
-            <parameter name="history.postanswer.text">${user} posted a reply to ${topic} in ${profile}</parameter>
-            <parameter name="history.markanswer.text">${user} marked an answer by ${answeredby} as correct for ${topic} in ${profile}</parameter>
-            <parameter name="history.markanswer.user-profile.text">${user} found an answer for ${topic} in ${profile}</parameter>
+            <parameter name="history.postreply.text">${user} @${profile} posted a reply to ${topic}</parameter>
+            <parameter name="history.postanswer.text">${user} @${profile} posted a reply to ${topic}</parameter>
+            <parameter name="history.markanswer.text">${user} @${profile} marked an answer by ${answeredby} as correct for ${topic}</parameter>
+            <parameter name="history.markanswer.user-profile.text">${user} @${profile} found an answer for ${topic}</parameter>
           </parameters>
         </component>
       </components>
@@ -359,7 +389,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.promotions.workflow.SaveAdEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} added a promotion ${promotion} for ${profile}</parameter>
+            <parameter name="history.text">${user} @${profile} added a promotion ${promotion}</parameter>
             <parameter name="history.user-profile.text">${user} added a promotion ${promotion}</parameter>
           </parameters>
         </component>
@@ -370,7 +400,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.classifieds.workflow.SaveClassifiedAdEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} posted a classified ad ${classified} in ${profile}</parameter>
+            <parameter name="history.text">${user} @${profile} posted a classified ad ${classified}</parameter>
             <parameter name="history.user-profile.text">${user} posted a classified ad ${classified}</parameter>
           </parameters>
         </component>
@@ -381,7 +411,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.documents.workflow.SaveDocumentEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} shared the file ${document} in ${profile}</parameter>
+            <parameter name="history.text">${user} @${profile} shared the file ${document}</parameter>
             <parameter name="history.user-profile.text">${user} shared the file ${document}</parameter>
           </parameters>
         </component>
@@ -412,7 +442,7 @@
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.documents.workflow.SaveFolderEntryEvent" enabled="true">
           <parameters>
-            <parameter name="history.text">${user} created a folder ${folder} in ${profile}</parameter>
+            <parameter name="history.text">${user} @${profile} created a folder ${folder}</parameter>
             <parameter name="history.user-profile.text">${user} created a folder ${folder}</parameter>
           </parameters>
         </component>

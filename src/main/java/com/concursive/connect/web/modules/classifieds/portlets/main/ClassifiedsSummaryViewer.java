@@ -51,7 +51,7 @@ import com.concursive.connect.web.modules.classifieds.utils.ClassifiedsCounter;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.getConnection;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -86,7 +86,7 @@ public class ClassifiedsSummaryViewer implements IPortletViewer {
     }
 
     // Build a list of records
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Build ad counts
     ClassifiedsCounter classifiedsCounter = new ClassifiedsCounter();

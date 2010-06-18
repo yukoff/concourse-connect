@@ -44,7 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
-<script language="javascript">
+<script language="javascript" type="text/javascript">
   var thisReqId = -1;
   var thisPrId = -1;
   var menu_init = false;
@@ -72,7 +72,7 @@
     confirmDelete('<%= ctx %>/ProjectManagementRequirements.do?command=Delete&rid=' + thisReqId + '&pid=' + thisPrId);
   }
   function cloneRequirement() {
-    popURL('CloneProjectRequirement.do?command=Wizard&rid=' + thisReqId + '&pid=' + thisPrId + '&popup=true','Clone_Wizard','500','500','yes','yes');
+    popURL('CloneProjectRequirement.do?command=Wizard&rid=' + thisReqId + '&pid=' + thisPrId + '&popup=true','500','500','yes','yes');
   }
 </script>
 <%-- List Item Pop-up Menu --%>
@@ -135,4 +135,3 @@
     </table>
   </div>
 </div>
-

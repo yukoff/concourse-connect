@@ -118,8 +118,10 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
       // Check user credentials
       int i = 0;
       PreparedStatement pst = db.prepareStatement(
-          "SELECT u.*, d.description as department " +
-              "FROM users u LEFT JOIN departments d ON (u.department_id = d.code) " +
+          "SELECT u.*, d.description AS department, p.projecttextid " +
+              "FROM users u " +
+              "LEFT JOIN departments d ON (u.department_id = d.code) " +
+              "LEFT JOIN projects p ON (u.profile_project_id = p.project_id) " +
               "WHERE lower(username) = ? " +
               "AND (password = ? OR temporary_password = ?) ");
       pst.setString(++i, loginBean.getUsername().toLowerCase());
@@ -147,7 +149,7 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
         thisUser.updateLogin(db, context.getRequest(), prefs, loginBean.getPassword());
         thisUser.setBrowserType(context.getBrowser());
         // Apply any defaults
-        UserUtils.createLoggedInUser(thisUser, db);
+        UserUtils.createLoggedInUser(thisUser, db, prefs, context.getServletContext());
         // Check if this user can perform an upgrade
         if (upgradeMode && thisUser.getAccessAdmin()) {
           context.getSession().setAttribute("UPGRADEOK", "UPGRADEOK");

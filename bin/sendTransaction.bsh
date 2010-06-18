@@ -1,28 +1,27 @@
 #!/bin/sh
-//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:target/lib/aspcfs.jar:/usr/java/tomcat/common/lib/servlet-api.jar:lib/concourse_tools-5.0.5.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:$CATALINA_HOME/common/lib/servlet-api.jar:lib/bsh-2.0b4.jar:lib/concursive-commons-20100517.jar:lib/concoursesuite-tools-20100402.jar:lib/log4j-1.2.15.jar:lib/commons-logging-1.1.1.jar bsh.Interpreter "$0" "$@"
 
 /* Servlet API is required and may not be set */
 
-import com.zeroio.transfer.*;
-import com.zeroio.utils.HTTPUtils;
-import com.zeroio.utils.StringUtils;
-import org.aspcfs.utils.CRMConnection;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 
 print("Starting transaction...");
 
 CRMConnection crm = new CRMConnection();
   crm.setUrl("http://crmserver");
   crm.setId("crmserver");
+  int clientId = 1;
   crm.setCode("value");
-  int clientId = 8;
   crm.setClientId(clientId);
   crm.setAutoCommit(false);
 
 DataRecord record = new DataRecord();
     record.setName("contact");
     record.setAction(DataRecord.INSERT);
-    // accessType depends on target CRM database lookup
-    record.addField("accessType", 2);
+    // accessType depends on target CRM database lookup (public record)
+    record.addField("instanceId", 1);
+    record.addField("accessType", 1);
     record.addField("nameFirst", "test_first");
     record.addField("nameLast", "test_last");
     record.addField("company", "test_company");
@@ -37,9 +36,7 @@ crm.save(record);
 
 boolean success = crm.commit();
 if (!success) {
-  System.out.println("SaveLead-> Commit message: " + crm.getLastResponse());
+  System.out.println("Saving a Lead... Commit message: " + crm.getLastResponse());
 }
 
 System.out.println(crm.getLastResponse());
-
-

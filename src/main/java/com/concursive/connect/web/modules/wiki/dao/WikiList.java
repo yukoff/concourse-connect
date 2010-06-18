@@ -229,7 +229,7 @@ public class WikiList extends ArrayList<Wiki> {
     rs.close();
     pst.close();
     //Determine column to sort by
-    pagedListInfo.setDefaultSort("w.subject", null);
+    pagedListInfo.setDefaultSort(DatabaseUtils.toLowerCase(db, "w.subject"), null);
     pagedListInfo.appendSqlTail(db, sqlOrder);
     //Need to build a base SQL statement for returning records
     if (pagedListInfo != null) {

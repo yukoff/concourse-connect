@@ -78,10 +78,10 @@
           <label>City</label>
           <b><%= showAttribute(request, "cityError") %></b>
           <input type="text" name="city" id="city" value="<%= toHtmlValue(adminBean.getCity()) %>">
-          <label>State</label>
+          <label>State/Province</label>
           <b><%= showAttribute(request, "stateError") %></b>
           <input type="text" name="state" id="state" value="<%= toHtmlValue(adminBean.getState()) %>">
-          <label>Postal Code</label>
+          <label>Zip/Postal Code</label>
           <b><%= showAttribute(request, "postalCodeError") %></b>
           <input type="text" name="postalCode" id="postalCode" value="<%= toHtmlValue(adminBean.getPostalCode()) %>">
           <label><font color="red">*</font>Password</label>

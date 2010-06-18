@@ -47,9 +47,11 @@ package com.concursive.connect.web.modules.calendar.workflow;
 
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
+import com.concursive.commons.i18n.LocalizationUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.calendar.dao.MeetingAttendee;
 import com.concursive.connect.web.modules.calendar.utils.DimDimUtils;
 import com.concursive.connect.web.modules.calendar.utils.MeetingInviteesBean;
@@ -61,8 +63,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.StringWriter;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Sends mails for meeting to attendees
@@ -81,7 +88,6 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
   private SMTPMessage message = null;
   private Map<String, String> subjectMap = null;
   private Map<String, Object> bodyMap = null;
-  private Calendar calendar = null;
 
   public boolean execute(ComponentContext context) {
     try {
@@ -134,15 +140,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       String url = context.getParameter("url");
       bodyMap.put("url", url);
 
-      TimeZone timeZone = Calendar.getInstance().getTimeZone();
-      if (hostUser.getTimeZone() != null) {
-        timeZone = TimeZone.getTimeZone(hostUser.getTimeZone());
-      }
-      calendar = Calendar.getInstance(timeZone);
-      bodyMap.put("startDate", longDateToString(meetingInviteesBean.getMeeting().getStartDate()));
+      // This uses the host's startDate, but a user can override this when sent
+      bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), hostUser));
 
       Project project = meetingInviteesBean.getProject();
-      bodyMap.put("eventUrl", url + "/show/" + project.getUniqueId() + "/calendar/" + shortDateToString(meetingInviteesBean.getMeeting().getStartDate()));
+      bodyMap.put("eventUrl", url + "/show/" + project.getUniqueId() + "/calendar/" + generateCalendarURL(meetingInviteesBean.getMeeting().getStartDate(), LocalizationUtils.getLocale(prefs.get(ApplicationPrefs.LANGUAGE))));
 
       switch (meetingInviteesBean.getAction()) {
         case DimDimUtils.ACTION_MEETING_DIMDIM_EDIT:
@@ -210,6 +212,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       //set additional mail parameter maps
       bodyMap.put("invitee", thisInvitee);
 
+      // override the date formatting
+      if (thisInvitee.getLocale() != null) {
+        bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), thisInvitee));
+      }
+
       //set to mailid
       message.setTo(thisInvitee.getEmail());
 
@@ -250,6 +257,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       //set additional mail parameter maps
       bodyMap.put("invitee", thisInvitee);
 
+      // override the date formatting
+      if (thisInvitee.getLocale() != null) {
+        bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), thisInvitee));
+      }
+
       //set to mailid
       message.setTo(thisInvitee.getEmail());
 
@@ -285,6 +297,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     //set additional mail parameter maps
     User inviteeUser = UserUtils.loadUser(meetingInviteesBean.getMeetingAttendee().getUserId());
     bodyMap.put("invitee", inviteeUser);
+
+    // override the date formatting
+    if (inviteeUser.getLocale() != null) {
+      bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), inviteeUser));
+    }
 
     bodyMap.put("status", "is tentative about");
     if (meetingInviteesBean.getMeetingAttendee().getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_ACCEPTED) {
@@ -337,6 +354,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
         //set additional mail parameter maps
         bodyMap.put("invitee", thisInvitee);
 
+        // override the date formatting
+        if (thisInvitee.getLocale() != null) {
+          bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), thisInvitee));
+        }
+
         //set to mailid
         message.setTo(thisInvitee.getEmail());
 
@@ -380,6 +402,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
       //set additional mail parameter maps
       bodyMap.put("invitee", thisInvitee);
 
+      // override the date formatting
+      if (thisInvitee.getLocale() != null) {
+        bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), thisInvitee));
+      }
+
       //set to mailid
       message.setTo(thisInvitee.getEmail());
 
@@ -415,6 +442,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     //set additional mail parameter maps
     User inviteeUser = UserUtils.loadUser(meetingInviteesBean.getMeetingAttendee().getUserId());
     bodyMap.put("invitee", inviteeUser);
+
+    // override the date formatting
+    if (inviteeUser.getLocale() != null) {
+      bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), inviteeUser));
+    }
 
     bodyMap.put("status", "but is tentative about");
     if (meetingInviteesBean.getMeetingAttendee().getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_ACCEPTED ||
@@ -459,6 +491,11 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     User inviteeUser = UserUtils.loadUser(meetingInviteesBean.getMeetingAttendee().getUserId());
     bodyMap.put("invitee", inviteeUser);
 
+    // override the date formatting
+    if (inviteeUser.getLocale() != null) {
+      bodyMap.put("startDate", formatUserTimestamp(meetingInviteesBean.getMeeting().getStartDate(), inviteeUser));
+    }
+
     bodyMap.put("status", "rejected");
     if (meetingInviteesBean.getMeetingAttendee().getDimdimStatus() == MeetingAttendee.STATUS_DIMDIM_ACCEPTED) {
       bodyMap.put("status", "approved");
@@ -487,16 +524,28 @@ public class SendEventMeetingInvitation extends ObjectHookComponent implements C
     return false;
   }
 
-  private String longDateToString(Date date) {
-    SimpleDateFormat dtFormater = new SimpleDateFormat("MMM dd, yyyy hh:mm a z");
-    calendar.setTime(date);
-    return dtFormater.format(calendar.getTime());
+  private String formatUserTimestamp(Timestamp timestamp, User user) {
+    // Use the user's locale
+    SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateTimeInstance(
+        DateFormat.LONG, DateFormat.SHORT, user.getLocale());
+    // Adjust the date/time based on any timezone
+    if (user.getTimeZone() != null) {
+      TimeZone tz = TimeZone.getTimeZone(user.getTimeZone());
+      formatter.setTimeZone(tz);
+    }
+    return formatter.format(timestamp);
   }
 
-  private String shortDateToString(Date date) {
-    SimpleDateFormat dtFormater = new SimpleDateFormat("yyyy-MM-dd");
-    calendar.setTime(date);
-    return dtFormater.format(calendar.getTime());
+  /**
+   * The calendar module has a specific format for the url and must match the application's locale
+   *
+   * @param date
+   * @param locale
+   * @return
+   */
+  private String generateCalendarURL(Timestamp date, Locale locale) {
+    SimpleDateFormat dtFormater = new SimpleDateFormat("yyyy-MM-dd", locale);
+    return dtFormater.format(date);
   }
 
   public String getDescription() {

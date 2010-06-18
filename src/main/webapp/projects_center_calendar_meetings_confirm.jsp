@@ -57,7 +57,7 @@
 <div class="formContainer">
   <form name="inputForm" method="post" action="${saveFormUrl}">
     <fieldset>
-      <h3>The meeting has been saved, but requires additional information</h3>
+      <h3>The event has been saved, but requires additional information</h3>
       <c:if test="${!empty meetingInviteesBean.membersFoundList}">
         <fieldset>
           <p>The following participants were added:</p>

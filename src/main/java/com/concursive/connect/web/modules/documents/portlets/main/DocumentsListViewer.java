@@ -56,6 +56,8 @@ import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 import static com.concursive.connect.web.portal.PortalUtils.*;
 import com.concursive.connect.web.utils.PagedListInfo;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletURL;
@@ -71,10 +73,16 @@ import java.sql.Connection;
  */
 public class DocumentsListViewer implements IPortletViewer {
 
+  private static Log LOG = LogFactory.getLog(DocumentsListViewer.class);
+
   // Pages
   private static final String VIEW_PAGE = "/projects_center_file_library.jsp";
 
+  // Preferences
+  private static final String PREF_TITLE = "title";
+
   // Object Results
+  private static final String TITLE = "title";
   private static final String CURRENT_FOLDER = "currentFolder";
   private static final String FILE_LIST = "fileItemList";
   private static final String FOLDER_LIST = "folderList";
@@ -93,8 +101,21 @@ public class DocumentsListViewer implements IPortletViewer {
       throw new PortletException("Unauthorized to view in this project");
     }
 
+    // Check preferences
+    String title = request.getPreferences().getValue(PREF_TITLE, null);
+    if (title != null) {
+      request.setAttribute(TITLE, title);
+    }
+
+    // Share the namespace of this portlet so it can be controlled
+    for (String event : PortalUtils.getDashboardPortlet(request).getGenerateDataEvents()) {
+      if (event.startsWith("namespace-")) {
+        PortalUtils.setGeneratedData(request, event, response.getNamespace());
+      }
+    }
+
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Determine the paging url
     PortletURL renderURL = response.createRenderURL();
@@ -122,8 +143,10 @@ public class DocumentsListViewer implements IPortletViewer {
       files.setFolderId(fileFolder.getId());
       request.setAttribute(CURRENT_FOLDER, fileFolder);
       PortalUtils.setGeneratedData(request, CURRENT_FOLDER, fileFolder);
+      LOG.debug("setGeneratedData folder (a): " + fileFolder.getSubject());
     } else {
       PortalUtils.setGeneratedData(request, CURRENT_FOLDER, new FileFolder());
+      LOG.debug("setGeneratedData folder (b): new FileFolder()");
     }
     if ("date".equals(getPageView(request))) {
       // A specific month is requested

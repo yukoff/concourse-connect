@@ -47,20 +47,19 @@ package com.concursive.connect.web.taglibs;
 
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.web.controller.beans.URLControllerBean;
-import static com.concursive.connect.web.portal.PortalUtils.*;
-
-import java.sql.Connection;
-
-import javax.portlet.PortletRequest;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.TagSupport;
-
 import com.concursive.connect.web.modules.ModuleUtils;
 import com.concursive.connect.web.modules.common.social.tagging.dao.TagList;
 import com.concursive.connect.web.modules.login.dao.User;
+import static com.concursive.connect.web.portal.PortalUtils.useConnection;
+import static com.concursive.connect.web.portal.PortalUtils.getUser;
 import com.concursive.connect.web.utils.PagedListInfo;
 
+import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.TagSupport;
+import javax.servlet.jsp.tagext.TryCatchFinally;
+import java.sql.Connection;
 
 /**
  * Builds the panel for setting up tags
@@ -68,7 +67,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Nanda Kumar
  * @created Aug 17, 2009
  */
-public class TagsHandler extends TagSupport {
+public class TagsHandler extends TagSupport implements TryCatchFinally {
 
   private String url = null;
 
@@ -83,10 +82,19 @@ public class TagsHandler extends TagSupport {
     return url;
   }
 
+  public void doCatch(Throwable throwable) throws Throwable {
+    // Required but not needed
+  }
+
+  public void doFinally() {
+    // Reset each property or else the value gets reused
+    url = null;
+  }
+
   public int doStartTag() throws JspException {
     try {
       // Get the portlet's database connection
-      Connection db = getConnection((PortletRequest) pageContext.getRequest());
+      Connection db = useConnection((PortletRequest) pageContext.getRequest());
 
       // Get current user
       User user = getUser((PortletRequest) pageContext.getRequest());
@@ -95,7 +103,10 @@ public class TagsHandler extends TagSupport {
       String context = ((HttpServletRequest) pageContext.getRequest()).getContextPath();
       URLControllerBean bean = new URLControllerBean(url, context);
       String moduleName = bean.getDomainObject();
-      int linkItemId = Integer.parseInt(bean.getObjectValue());
+      if (bean.getObjectValue() == null) {
+        return SKIP_BODY;
+      }
+      int linkItemId = bean.getObjectValueAsInt();
 
       // Show a list of tags for this item
       TagList moduleTagList = new TagList();
@@ -109,9 +120,9 @@ public class TagsHandler extends TagSupport {
       String tagsAsString = moduleTagList.getTagsAsString(",");
 
       if (!StringUtils.hasText(tagsAsString) && !user.isLoggedIn()) {
-      	return SKIP_BODY;
+        return SKIP_BODY;
       }
-      
+
       // Generate and output the HTML
       String html = "Tags: " +
           "<span id='messageTags_" + moduleName + linkItemId + "'>" +

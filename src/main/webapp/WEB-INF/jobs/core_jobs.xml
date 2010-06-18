@@ -55,6 +55,7 @@
       </simple>
     </trigger>
   </job>
+  <!--
   <job pref="BACKGROUND.DELETE_DISABLED_USERS">
     <job-detail>
       <name>deleteDisabledUsersJob</name>
@@ -71,6 +72,7 @@
       </simple>
     </trigger>
   </job>
+  -->
   <job pref="BACKGROUND.SCHEDULED_EMAIL_UPDATES">
     <job-detail>
       <name>scheduledEmailUpdatesJob</name>
@@ -78,7 +80,6 @@
       <description>Process scheduled email updates queue and send emails</description>
       <job-class>com.concursive.connect.web.modules.communications.jobs.EmailUpdatesJob</job-class>
     </job-detail>
-    <!--
     <trigger>
       <simple>
         <name>scheduledEmailUpdatesJob</name>
@@ -87,6 +88,5 @@
         <repeat-interval>5m</repeat-interval>
       </simple>
     </trigger>
-    -->
   </job>
 </quartz>

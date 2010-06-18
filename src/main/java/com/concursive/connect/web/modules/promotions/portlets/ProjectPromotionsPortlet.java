@@ -136,7 +136,7 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
       }
 
       // Determine the database connection to use
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
 
       // Ads to show - use paged data for sorting
       PagedListInfo pagedListInfo = new PagedListInfo();

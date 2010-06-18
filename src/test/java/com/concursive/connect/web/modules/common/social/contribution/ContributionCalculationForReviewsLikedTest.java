@@ -109,7 +109,6 @@ public class ContributionCalculationForReviewsLikedTest extends AbstractConnecti
     projectRating.setComment("Project Comment");
     projectRating.setProjectId(project.getId());
     projectRating.setEnteredBy(USER_ID);
-    projectRating.setModifiedBy(USER_ID);
     boolean projectRatingInserted = ProjectRating.save(db, projectRating);
     assertTrue("Issue Category was not inserted", projectRatingInserted);
     assertTrue("Inserted issue category did not have an id", projectRating.getId() > -1);

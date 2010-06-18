@@ -58,11 +58,11 @@
 <c:if test="${empty projectSubCategory.description}">
   <h3><c:out value="${title}"/></h3>
 </c:if>
-<c:if test="${!empty projectSubCategory.description}">
-  <h3><c:out value="${projectSubCategory.description}"/></h3>
+<c:if test="${!empty projectSubCategory.label}">
+  <h3><c:out value="${projectSubCategory.label}"/></h3>
 </c:if>
 <c:if test="${empty hits}">
-  No <c:out value="${projectCategory.description}"/> found.
+  No <c:out value="${projectCategory.label}"/> found.
 </c:if>
 <c:if test="${!empty hits}">
   <ul>
@@ -90,14 +90,29 @@
       </c:choose>
     </c:if>
     <c:if test="${showCategoryLandingPageLink}">
-      <li><a href='${ctx}/${fn:toLowerCase(fn:replace(projectCategory.description," ","_"))}.shtml'>All <c:out value="${projectCategory.description}"/></a></li>
+      <li><a href='${ctx}/${fn:toLowerCase(fn:replace(projectCategory.description," ","_"))}.shtml'><c:out value="${projectCategory.label}"/> Overview</a></li>
     </c:if>
     <c:forEach items="${hits}" var="document">
       <c:set var="projectId">${document.projectId}</c:set>
       <c:set var="title">${document.title}</c:set>
-      <% pageContext.setAttribute("project", ProjectUtils.loadProject((Integer.parseInt((String)pageContext.getAttribute("projectId"))))); %>
-      <li><a href="${ctx}/show/${project.uniqueId}" title="<c:out value="${project.title}"/>"><c:out value="${project.title}"/></a>
-      <c:if test="${!empty project.location}"><address><c:out value="${project.location}"/></address></c:if></li>
+      <% request.setAttribute("project", ProjectUtils.loadProject((Integer.parseInt((String)pageContext.getAttribute("projectId"))))); %>
+      <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request" />
+      <li>
+        <c:if test="${!empty project.category.logo}">
+          <c:choose>
+            <c:when test="${!empty project.logo}">
+              <img alt="<c:out value="${project.title}"/> photo" src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>" />
+            </c:when>
+            <c:when test="${!empty project.category.logo}">
+              <img alt="Default category photo" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>"  class="default-photo" />
+            </c:when>
+          </c:choose>
+        </c:if>
+        <h3><a href="${ctx}/show/${project.uniqueId}" title="<c:out value="${project.title}"/>"><c:out value="${project.title}"/></a></h3>
+        <c:if test="${!empty project.location}">
+          <address><c:out value="${project.location}"/></address>
+        </c:if>
+      </li>
     </c:forEach>
   </ul>
   <c:if test="${hasPaging eq 'true'}">

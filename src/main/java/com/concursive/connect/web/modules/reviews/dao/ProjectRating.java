@@ -293,6 +293,28 @@ public class ProjectRating extends GenericBean {
   }
 
   /**
+   * @return the modifiedBy
+   */
+  public int getModifiedBy() {
+    return modifiedBy;
+  }
+
+
+  /**
+   * @param modifiedBy the modifiedBy to set
+   */
+  public void setModifiedBy(int modifiedBy) {
+    this.modifiedBy = modifiedBy;
+  }
+
+  /**
+   * @param modifiedBy the modifiedBy to set
+   */
+  public void setModifiedBy(String modifiedBy) {
+    this.modifiedBy = Integer.parseInt(modifiedBy);
+  }
+
+  /**
    * @return the projectId
    */
   public int getProjectId() {
@@ -395,28 +417,6 @@ public class ProjectRating extends GenericBean {
     this.inappropriateCount = Integer.parseInt(inappropriateCount);
   }
 
-
-  /**
-   * @return the modifiedBy
-   */
-  public int getModifiedBy() {
-    return modifiedBy;
-  }
-
-
-  /**
-   * @param modifiedBy the modifiedBy to set
-   */
-  public void setModifiedBy(int modifiedBy) {
-    this.modifiedBy = modifiedBy;
-  }
-
-  /**
-   * @param modifiedBy the modifiedBy to set
-   */
-  public void setModifiedBy(String modifiedBy) {
-    this.modifiedBy = Integer.parseInt(modifiedBy);
-  }
 
   /**
    * @return the project
@@ -542,7 +542,11 @@ public class ProjectRating extends GenericBean {
     pst.setString(++i, projectRating.getTitle());
     pst.setString(++i, projectRating.getComment());
     pst.setInt(++i, projectRating.getEnteredBy());
-    pst.setInt(++i, projectRating.getModifiedBy());
+    if (projectRating.getModifiedBy() > -1) {
+      pst.setInt(++i, projectRating.getModifiedBy());
+    } else {
+      pst.setInt(++i, projectRating.getEnteredBy());
+    }
     if (projectRating.getEntered() != null) {
       pst.setTimestamp(++i, projectRating.getEntered());
     }

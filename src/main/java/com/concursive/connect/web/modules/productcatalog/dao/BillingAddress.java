@@ -467,10 +467,10 @@ public class BillingAddress extends GenericBean {
       errors.put("cityError", "City is required");
     }
     if (state == null || "".equals(state.trim())) {
-      errors.put("stateError", "State is required");
+      errors.put("stateError", "State/Province is required");
     }
     if (postalCode == null || "".equals(postalCode.trim())) {
-      errors.put("postalCodeError", "Postal Code is required");
+      errors.put("postalCodeError", "Zip/Postal Code is required");
     }
     if (country == null || "".equals(country.trim())) {
       errors.put("countryError", "Country is required");
@@ -536,8 +536,8 @@ public class BillingAddress extends GenericBean {
     out.append("Address Line 2: " + StringUtils.toString(this.getAddressLine2()) + "\r\n");
     out.append("Address Line 3: " + StringUtils.toString(this.getAddressLine3()) + "\r\n");
     out.append("City: " + StringUtils.toString(this.getCity()) + "\r\n");
-    out.append("State: " + StringUtils.toString(this.getState()) + "\r\n");
-    out.append("Postal Code: " + StringUtils.toString(this.getPostalCode()) + "\r\n");
+    out.append("State/Province: " + StringUtils.toString(this.getState()) + "\r\n");
+    out.append("Zip/Postal Code: " + StringUtils.toString(this.getPostalCode()) + "\r\n");
     out.append("Country: " + StringUtils.toString(this.getCountry()) + "\r\n");
     out.append("Email: " + StringUtils.toString(this.getEmail()) + "\r\n");
     out.append("\r\n");

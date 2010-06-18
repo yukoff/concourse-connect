@@ -153,7 +153,7 @@ public class SaveTeamMemberAddEventsTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] invited [[|" + memberProfile.getId() + ":profile||" + memberProfile.getTitle() + "]] to [[|" + project.getId() + ":profile||Concursive Test]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] @[[|" + project.getId() + ":profile||Concursive Test]] invited [[|" + memberProfile.getId() + ":profile||" + memberProfile.getTitle() + "]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)
@@ -163,6 +163,7 @@ public class SaveTeamMemberAddEventsTest extends AbstractWorkflowManagerTest {
     thisMember.delete(db);
 
     //delete the user record
+    memberUser.getProfileProject().delete(db, null);
     memberUser.delete(db);
 
     //delete the project
@@ -260,6 +261,7 @@ public class SaveTeamMemberAddEventsTest extends AbstractWorkflowManagerTest {
     thisMember.delete(db);
 
     //delete the user record
+    memberUser.getProfileProject().delete(db, null);
     memberUser.delete(db);
 
     //delete the project

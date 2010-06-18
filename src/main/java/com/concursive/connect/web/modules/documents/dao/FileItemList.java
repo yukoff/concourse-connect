@@ -75,7 +75,7 @@ public class FileItemList extends ArrayList<FileItem> {
 
   private static Log LOG = LogFactory.getLog(FileItemList.class);
 
-  //filters
+  // filters
   protected PagedListInfo pagedListInfo = null;
   protected int linkModuleId = -1;
   protected int linkItemId = -1;
@@ -90,17 +90,19 @@ public class FileItemList extends ArrayList<FileItem> {
   protected String filename = null;
   protected int ignoreId = -1;
   protected int featuredFilesOnly = Constants.UNDEFINED;
+  // these filters can only be used when the linkModuleId maps the linkItemId to a project
   protected int publicProjectFiles = Constants.UNDEFINED;
   protected int projectCategoryId = -1;
+  protected int forProjectUser = -1;
+
   // calendar
   protected java.sql.Timestamp alertRangeStart = null;
   protected java.sql.Timestamp alertRangeEnd = null;
   protected String modifiedYearMonth = null;
   protected Timestamp startOfCurrentMonth = null;
   protected Timestamp startOfNextMonth = null;
-  // custom for projects, otherwise need to extend class
-  protected int forProjectUser = -1;
-  //html select
+
+  // html select
   protected String htmlJsEvent = "";
 
 
@@ -758,8 +760,9 @@ public class FileItemList extends ArrayList<FileItem> {
       sqlFilter.append("AND f.modified < ? ");
     }
     if (forProjectUser > -1) {
-      sqlFilter.append("AND (f.link_item_id in (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
-          "AND status IS NULL) OR f.link_item_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
+      sqlFilter.append(
+          "AND (f.link_item_id in (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? AND status IS NULL) " +
+              "OR f.link_item_id IN (SELECT project_id FROM projects WHERE (allows_user_observers = ? OR allow_guests = ?) AND approvaldate IS NOT NULL)) ");
     }
     if (defaultFile != Constants.UNDEFINED) {
       sqlFilter.append("AND f.default_file = ? ");
@@ -777,13 +780,13 @@ public class FileItemList extends ArrayList<FileItem> {
       sqlFilter.append("AND f.featured_file = ? ");
     }
     if (publicProjectFiles != Constants.UNDEFINED) {
-      sqlFilter.append("AND f.link_module_id = ? AND f.link_item_id IN ( SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL ) ");
+      sqlFilter.append("AND f.link_item_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL) ");
     }
     if (projectCategoryId != -1) {
-      sqlFilter.append(" AND  f.link_module_id = ? AND f.link_item_id IN ( SELECT project_id FROM projects WHERE category_id = ? ) ");
+      sqlFilter.append("AND f.link_item_id IN (SELECT project_id FROM projects WHERE category_id = ?) ");
     }
     if (modifiedYearMonth != null) {
-      sqlFilter.append(" AND ( f.modified >= ? AND f.modified < ? )");
+      sqlFilter.append("AND ( f.modified >= ? AND f.modified < ? )");
     }
   }
 
@@ -818,6 +821,7 @@ public class FileItemList extends ArrayList<FileItem> {
     if (forProjectUser > -1) {
       pst.setInt(++i, forProjectUser);
       pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
     }
     if (defaultFile != Constants.UNDEFINED) {
       pst.setBoolean(++i, defaultFile == Constants.TRUE);
@@ -835,11 +839,9 @@ public class FileItemList extends ArrayList<FileItem> {
       pst.setBoolean(++i, featuredFilesOnly == Constants.TRUE);
     }
     if (publicProjectFiles != Constants.UNDEFINED) {
-      pst.setInt(++i, Constants.PROJECTS_FILES);
       pst.setBoolean(++i, true);
     }
     if (projectCategoryId != -1) {
-      pst.setInt(++i, Constants.PROJECTS_FILES);
       pst.setInt(++i, projectCategoryId);
     }
     if (modifiedYearMonth != null) {

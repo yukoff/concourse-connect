@@ -140,6 +140,15 @@ public class CacheUtils {
     }
   }
 
+  public static void updateValue(String cacheName, int key, Object value) {
+    Ehcache cache = getCache(cacheName);
+    if (value != null) {
+      cache.put(new Element(key, value));
+    } else {
+      invalidateValue(cacheName, key);
+    }
+  }
+
   public static void updateValue(String cacheName, String key, Object value) {
     Ehcache cache = getCache(cacheName);
     if (value != null) {

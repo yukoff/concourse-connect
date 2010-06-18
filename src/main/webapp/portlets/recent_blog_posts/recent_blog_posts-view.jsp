@@ -88,6 +88,9 @@
       </li>
     </c:forEach>
   </ol>
+  <c:if test="${!empty project}">
+    <p class="more"><a href="${ctx}/show/${project.uniqueId}/blog" title="more blog entries">see all posts</a> &raquo;</p>
+  </c:if>
 </c:if>
 <c:if test="${empty blogPostList}">
   <p>There are no blog posts</p>

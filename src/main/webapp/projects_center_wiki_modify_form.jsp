@@ -79,7 +79,7 @@
       Home
     </ccp:evaluate>
   </h2>
-  <img src="<%= ctx %>/images/icons/stock_help-16.png" border="0" align="absmiddle" height="16" width="16"/> <a href="javascript:popURL('<%= ctx %>/WikiHelp.do?popup=true','Tips','450','560','yes','yes');"><ccp:label name="projectsCenterWiki.add.help">help</ccp:label></a>
+  <img src="<%= ctx %>/images/icons/stock_help-16.png" border="0" align="absmiddle" height="16" width="16"/> <a href="javascript:popURL('<%= ctx %>/WikiHelp.do?popup=true','450','560','yes','yes');"><ccp:label name="projectsCenterWiki.add.help">help</ccp:label></a>
   <div class="formContainer">
     <portlet:actionURL var="saveFormUrl">
       <portlet:param name="portlet-command" value="saveWikiForm"/>

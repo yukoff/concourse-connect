@@ -85,7 +85,7 @@ public class DeleteBlogAction implements IPortletAction {
     int id = getPageViewAsInt(request);
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record
     BlogPost thisArticle = new BlogPost(db, id, project.getId());

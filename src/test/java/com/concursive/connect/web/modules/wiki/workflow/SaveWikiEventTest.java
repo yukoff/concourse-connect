@@ -45,15 +45,15 @@
  */
 package com.concursive.connect.web.modules.wiki.workflow;
 
-import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiLink;
-import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.commons.workflow.BusinessProcess;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
-import com.concursive.connect.web.modules.profile.dao.ProjectList;
 import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.commons.workflow.BusinessProcess;
-import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.connect.web.modules.profile.dao.ProjectList;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import com.concursive.connect.web.modules.wiki.utils.WikiLink;
 
 import java.sql.Timestamp;
 
@@ -123,7 +123,9 @@ public class SaveWikiEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] contributed to [[|" + project.getId() + ":wiki|Dummy Wiki Subject|Dummy Wiki Subject]] in [[|" + project.getId() + ":profile||Project SQL Test]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||Project SQL Test]] " +
+            "contributed to the wiki [[|" + project.getId() + ":wiki|Dummy Wiki Subject|Dummy Wiki Subject]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

@@ -75,12 +75,12 @@
     }
   }
 </script>
-<div class="sendProjectToFriendEdit">
+<div class="sendProjectToFriendPortletEdit">
   <c:if test="${!empty actionError}">
-    <p><font color="red"><c:out value="${actionError}"/></font></p>
+      <%= showError(request,"actionError")%>
   </c:if>
   <c:if test="${!empty projectNotFoundError}">
-    <p><font color="red"><c:out value="${projectNotFoundError}"/></font></p>
+      <%= showError(request,"projectNotFoundError")%>
   </c:if>
   <div class="formContainer">
 	<portlet:actionURL var="submitContentUrl" portletMode="view" />
@@ -88,19 +88,22 @@
     <input id="projectId" name="projectId" type="hidden" value="<c:out value='${sendProjectToFriendFormBean.projectId}'/>">
     <fieldset id="sendtofriend">
       <legend><c:out value="${title}"/></legend>
-      <label for="sentFromEmail">Your Email Address <span class="required">* &nbsp;<c:out value="${sentFromEmailError}"/></span></label>
+      <label for="sentFromEmail">Your Email Address <span class="required">*</span></label>
       <c:choose>
         <c:when test="${user.id >= 1 && !empty user.email}"><c:set var="fromEmailValue">${user.email}</c:set></c:when>
         <c:otherwise><c:set var="fromEmailValue">${sendProjectToFriendFormBean.sentFromEmail}</c:set></c:otherwise>
       </c:choose>
+      <%= showAttribute(request,"sentFromEmailError")%>
       <input id="sentFromEmail" name="sentFromEmail" type="text" size="35" maxlength="255" value="<c:out value='${fromEmailValue}'/>">
-      <label for="sentFromName">Your Name <span class="required">* &nbsp;<c:out value="${sentFromNameError}"/></span></label>
+      <label for="sentFromName">Your Name <span class="required">*</span></label>
       <c:choose>
         <c:when test="${user.id >= 1}"><c:set var="fromNameValue">${user.nameFirstLast}</c:set></c:when>
         <c:otherwise><c:set var="fromNameValue">${sendProjectToFriendFormBean.sentFromName}</c:set></c:otherwise>
       </c:choose>
+      <%= showAttribute(request,"sentFromNameError")%>
       <input id="sentFromName" name="sentFromName" type="text" size="35" maxlength="255" value="<c:out value='${fromNameValue}'/>">
-      <label for="sendToEmails">Email Address of Recipient(s) <span class="required">* &nbsp;<c:out value="${sendToEmailsError}"/></span></label>
+      <label for="sendToEmails">Email Address of Recipient(s) <span class="required">*</span></label>
+      <%= showAttribute(request,"sendToEmailsError")%>
       <input id="sendToEmails" name="sendToEmails" type="text" size="35" maxlength="255" value="<c:out value='${sendProjectToFriendFormBean.sendToEmails}'/>">
       <p>(separate multiple email addresses with commas)</p>
       <label for="note">Note</label>

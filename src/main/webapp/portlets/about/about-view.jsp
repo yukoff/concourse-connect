@@ -46,6 +46,7 @@
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <portlet:defineObjects/>
+<h2>About Portlet</h2>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 Context: ${ctx}<br />
 <br />
@@ -56,6 +57,7 @@ This is a portlet fragment called by VIEW, with the following info:<br />
 Current Portlet Mode: <%= renderRequest.getPortletMode() %><br />
 Current Window State: <%= renderRequest.getWindowState() %><br />
 Namespace: <portlet:namespace/><br />
+RenderParam: <c:out value="${param.test}"/><br />
 <br />
 <portlet:renderURL var="editUrl" portletMode="edit" />
 <a href="<%= pageContext.getAttribute("editUrl") %>">Show Edit Mode</a>

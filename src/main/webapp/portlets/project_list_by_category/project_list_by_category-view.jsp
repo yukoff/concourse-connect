@@ -48,20 +48,33 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
-  <c:if test="${!empty title}"><h3><c:out value="${title}"/></h3></c:if>
-  <c:choose>
-    <c:when test="${!empty projectList}">
-      <ul>
-        <c:forEach items="${projectList}" var="project">
-          <li>
-            <a href="${ctx}/show/${project.uniqueId}"><c:out value="${project.title}"/></a>
-          </li>
-        </c:forEach>
-      </ul>
-    </c:when>
-    <c:otherwise>
-      <p>There are currently no items to display.</p>
-    </c:otherwise>
-  </c:choose>
-
-
+<c:if test="${!empty title}"><h3><c:out value="${title}"/></h3></c:if>
+<c:choose>
+  <c:when test="${!empty projectList}">
+    <ul>
+      <c:forEach items="${projectList}" var="project">
+        <c:set var="project" value="${project}" scope="request"/>
+        <jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
+        <li>
+          <c:if test="${!empty project.category.logo}">
+            <c:choose>
+              <c:when test="${!empty project.logo}">
+                <img alt="<c:out value="${project.title}"/> photo" src="${ctx}/image/<%= project.getLogo().getUrlName(45,45) %>" />
+              </c:when>
+              <c:when test="${!empty project.category.logo}">
+                <img alt="Default category photo" src="${ctx}/image/<%= project.getCategory().getLogo().getUrlName(45,45) %>"  class="default-photo" />
+              </c:when>
+            </c:choose>
+          </c:if>
+          <h3><a href="${ctx}/show/${project.uniqueId}"><c:out value="${project.title}"/></a></h3>
+          <c:if test="${!empty project.location}">
+            <address><c:out value="${project.location}"/></address>
+          </c:if>
+        </li>
+      </c:forEach>
+    </ul>
+  </c:when>
+  <c:otherwise>
+    <p>There are currently no items to display.</p>
+  </c:otherwise>
+</c:choose>

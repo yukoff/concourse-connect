@@ -45,12 +45,12 @@
  */
 
 package com.concursive.connect.web.modules.tools.dao;
-import com.concursive.connect.web.modules.api.beans.TransactionItem;
-import com.concursive.connect.web.modules.api.services.CustomActionHandler;
-import com.concursive.commons.db.DatabaseUtils;
-import com.concursive.commons.web.mvc.beans.GenericBean;
+
+import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.web.modules.api.beans.TransactionItem;
+import com.concursive.connect.web.modules.api.services.CustomActionHandler;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
@@ -60,12 +60,8 @@ import com.concursive.connect.web.utils.LookupList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.util.HashMap;
 
-import org.aspcfs.utils.StringUtils;
 
 /**
  * Represents a member of a project
@@ -91,74 +87,74 @@ public class TeamMemberCRM implements CustomActionHandler {
    * @return the projectProfileId
    */
   public String getProjectProfileId() {
-  	return projectProfileId;
+    return projectProfileId;
   }
 
-	/**
+  /**
    * @param projectProfileId the projectProfileId to set
    */
   public void setProjectProfileId(String projectProfileId) {
-  	this.projectProfileId = projectProfileId;
+    this.projectProfileId = projectProfileId;
   }
 
-	/**
+  /**
    * @return the userProfileId
    */
   public String getUserProfileId() {
-  	return userProfileId;
+    return userProfileId;
   }
 
-	/**
+  /**
    * @param userProfileId the userProfileId to set
    */
   public void setUserProfileId(String userProfileId) {
-  	this.userProfileId = userProfileId;
+    this.userProfileId = userProfileId;
   }
 
-	/**
+  /**
    * @return the teamMemberRoleName
    */
   public String getTeamMemberRoleName() {
-  	return teamMemberRoleName;
+    return teamMemberRoleName;
   }
 
-	/**
+  /**
    * @param teamMemberRoleName the teamMemberRoleName to set
    */
   public void setTeamMemberRoleName(String teamMemberRoleName) {
-  	this.teamMemberRoleName = teamMemberRoleName;
+    this.teamMemberRoleName = teamMemberRoleName;
   }
 
-	/**
+  /**
    * @return the modifiedBy
    */
   public int getModifiedBy() {
-  	return modifiedBy;
+    return modifiedBy;
   }
 
-	/**
+  /**
    * @param modifiedBy the modifiedBy to set
    */
   public void setModifiedBy(int modifiedBy) {
-  	this.modifiedBy = modifiedBy;
+    this.modifiedBy = modifiedBy;
   }
 
   public void setModifiedBy(String modifiedBy) {
-  	this.modifiedBy = Integer.parseInt(modifiedBy);
+    this.modifiedBy = Integer.parseInt(modifiedBy);
   }
 
   /**
    * @return the claimStatus
    */
   public String getClaimStatus() {
-  	return claimStatus;
+    return claimStatus;
   }
 
-	/**
+  /**
    * @param claimStatus the claimStatus to set
    */
   public void setClaimStatus(String claimStatus) {
-  	this.claimStatus = claimStatus;
+    this.claimStatus = claimStatus;
   }
 
 
@@ -168,47 +164,47 @@ public class TeamMemberCRM implements CustomActionHandler {
     int userId = -1;
     int userLevel = -1;
 
-  	/*
-  	HashMap values = (HashMap) transactionItem.getObject();
+    /*
+    HashMap values = (HashMap) transactionItem.getObject();
     String projectProfileId = (String) values.get("projectProfileId");
     String userProfileId = (String) values.get("userProfileId");
     String claimStatus = (String) values.get("claimStatus");
     */
-  	
-		if (StringUtils.hasText(projectProfileId)){
-			Project project  = ProjectUtils.loadProject(projectProfileId);
-			if (project != null){
-				projectId = project.getId();
-			}
-		}
-		if (StringUtils.hasText(userProfileId)){
-			Project project  = ProjectUtils.loadProject(userProfileId);
-			if (project.getProfile()){
-				User user = UserUtils.loadUser(project.getOwner());
-				if (user != null){
-					userId = user.getId();
-				}
-			}
-		}
+
+    if (StringUtils.hasText(projectProfileId)) {
+      Project project = ProjectUtils.loadProject(projectProfileId);
+      if (project != null) {
+        projectId = project.getId();
+      }
+    }
+    if (StringUtils.hasText(userProfileId)) {
+      Project project = ProjectUtils.loadProject(userProfileId);
+      if (project.getProfile()) {
+        User user = UserUtils.loadUser(project.getOwner());
+        if (user != null) {
+          userId = user.getId();
+        }
+      }
+    }
     if (projectId == -1) {
       throw new SQLException("ProjectId was not specified");
     }
     if (userId == -1) {
       throw new SQLException("UserId was not specified");
     }
-      
-    if ("Claimed".equals(claimStatus)){
-    	
-    	//set the userlevel as 'manager' role
+
+    if ("Claimed".equals(claimStatus)) {
+
+      //set the userlevel as 'manager' role
       LookupList roleList = CacheUtils.getLookupList("lookup_project_role");
       userLevel = roleList.getIdFromLevel(TeamMember.MANAGER);
 
-  		PreparedStatement pst = db.prepareStatement(
+      PreparedStatement pst = db.prepareStatement(
           "UPDATE project_team " +
               "SET " +
               "tools = ?, status = ?, userlevel = ?, " +
               "modifiedby = ?, modified = CURRENT_TIMESTAMP " +
-              "WHERE project_id = ? " + 
+              "WHERE project_id = ? " +
               "AND user_id = ? ");
       int i = 0;
       pst.setBoolean(++i, true);
@@ -219,7 +215,7 @@ public class TeamMemberCRM implements CustomActionHandler {
       pst.setInt(++i, userId);
       pst.executeUpdate();
       pst.close();
-    	
+
       //Remove owner field from the project
       Project project = ProjectUtils.loadProject(projectId);
       project.setOwner(userId);
@@ -228,13 +224,13 @@ public class TeamMemberCRM implements CustomActionHandler {
 
       //Remove owner field from the project
       Project project = ProjectUtils.loadProject(projectId);
-      if (project.getOwner() == userId){
+      if (project.getOwner() == userId) {
         project.setOwner(-1);
         project.update(db);
       }
     }
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, projectId);
-	  return true;
+    return true;
   }
 
 }

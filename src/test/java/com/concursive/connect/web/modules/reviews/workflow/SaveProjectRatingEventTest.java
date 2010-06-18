@@ -97,7 +97,6 @@ public class SaveProjectRatingEventTest extends AbstractWorkflowManagerTest {
     rating.setTitle("Dummy Rating Title");
     rating.setComment("Dummy Rating Comment");
     rating.setEnteredBy(USER_ID);
-    rating.setModifiedBy(USER_ID);
     ProjectRating.save(db, rating);
     assertTrue("Project rating was not saved..", rating.getId() > -1);
 
@@ -127,7 +126,7 @@ public class SaveProjectRatingEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] added a review [[|" + project.getId() + ":review|" + rating.getId() + "|Dummy Rating Title]] to [[|" + project.getId() + ":profile||Project SQL Test]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] @[[|" + project.getId() + ":profile||Project SQL Test]] added a review [[|" + project.getId() + ":review|" + rating.getId() + "|Dummy Rating Title]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)
@@ -172,7 +171,6 @@ public class SaveProjectRatingEventTest extends AbstractWorkflowManagerTest {
     rating.setTitle("Dummy Rating Title");
     rating.setComment("Dummy Rating Comment");
     rating.setEnteredBy(USER_ID);
-    rating.setModifiedBy(USER_ID);
     ProjectRating.save(db, rating);
     assertTrue("Project rating was not saved..", rating.getId() > -1);
 
@@ -207,7 +205,9 @@ public class SaveProjectRatingEventTest extends AbstractWorkflowManagerTest {
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] updated a review [[|" + project.getId() + ":review|" + rating.getId() + "|Dummy Rating Title]] for [[|" + project.getId() + ":profile||Project SQL Test]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||Project SQL Test]] " +
+            "updated a review [[|" + project.getId() + ":review|" + rating.getId() + "|Dummy Rating Title]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

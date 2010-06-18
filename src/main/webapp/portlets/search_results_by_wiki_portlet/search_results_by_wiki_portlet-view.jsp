@@ -73,7 +73,9 @@
     <li>
       <%-- broken --%>
       <a href="${ctx}/show/<%= project.getUniqueId() %>/wiki<%= wikiSubject %>"><ccp:evaluate if="<%= StringUtils.hasText(document.getTitle()) %>"><%= StringUtils.toHtml(document.getTitle()) %></ccp:evaluate><ccp:evaluate if="<%= !StringUtils.hasText(document.getTitle()) %>"><ccp:project id="<%= document.getProjectId() %>"/></ccp:evaluate></a><br />
-      Source: <ccp:project id="<%= document.getProjectId() %>"/> wiki
+      <cite>
+      	<ccp:project id="<%= document.getProjectId() %>"/>
+      </cite>
     </li>
 <%
   }

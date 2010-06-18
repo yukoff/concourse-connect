@@ -19,7 +19,6 @@ print("Starting transaction...");
 APIConnection conn = new APIConnection();
 conn.setUrl("http://127.0.0.1:8080");
 conn.setClientId(1);
-conn.setSystemId(1);
 conn.setCode("plaintext-code-in-database");
 
 // Example which adds a project and a team member in one transaction

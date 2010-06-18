@@ -50,6 +50,8 @@ import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.modules.common.social.rating.beans.RatingBean;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.*;
 
@@ -62,20 +64,20 @@ import java.sql.*;
  */
 public class Rating {
 
+  private static Log LOG = LogFactory.getLog(Rating.class);
+
   public static final int INAPPROPRIATE_COMMENT = -2;
-
-  int id = -1;
-  int objectId = -1;
-  String uniqueField = null;
-  int rating = 0;
-  boolean inappropriate = false;
-  int enteredby = -1;
-  Timestamp entered = null;
-  int projectId = -1;
-
   public static final String PRIMARY_KEY_RECORD_ID = "record_id";
   public static final String PRIMARY_KEY_RATING_ID = "rating_id";
 
+  private int id = -1;
+  private int objectId = -1;
+  private String uniqueField = null;
+  private int rating = 0;
+  private boolean inappropriate = false;
+  private int enteredby = -1;
+  private Timestamp entered = null;
+  private int projectId = -1;
 
   public Rating() {
   }
@@ -273,7 +275,8 @@ public class Rating {
   public static int queryObjectRatingValue(Connection db, int objectId, String table, String uniqueField) throws SQLException {
     int count = -1;
     PreparedStatement pst = db.prepareStatement(
-        "SELECT rating_value FROM " + table + " WHERE " + uniqueField + " = ? ");
+        "SELECT rating_value FROM " + table + " " +
+            "WHERE " + uniqueField + " = ? ");
     pst.setInt(1, objectId);
     ResultSet rs = pst.executeQuery();
     if (rs.next()) {
@@ -385,7 +388,9 @@ public class Rating {
       if (setInappropriateColumn != Constants.UNDEFINED) {
         int inappropriateCount = 0;
         pst = db.prepareStatement(
-            "SELECT count(*) AS ic FROM " + table + "_rating WHERE " + uniqueField + " = ? AND inappropriate = ?");
+            "SELECT count(*) AS ic " +
+                "FROM " + table + "_rating " +
+                "WHERE " + uniqueField + " = ? AND inappropriate = ?");
         int i = 0;
         pst.setInt(++i, objectId);
         pst.setBoolean(++i, true);
@@ -397,8 +402,9 @@ public class Rating {
         pst.close();
 
         pst = db.prepareStatement(
-            "UPDATE " + table + " SET  inappropriate_count = ? WHERE " + uniqueField + " = ? ");
-
+            "UPDATE " + table + " " +
+                "SET  inappropriate_count = ? " +
+                "WHERE " + uniqueField + " = ? ");
         i = 0;
         pst.setInt(++i, inappropriateCount);
         pst.setInt(++i, objectId);
@@ -433,6 +439,7 @@ public class Rating {
       if (commit) {
         db.rollback();
       }
+      LOG.error("save", e);
       throw new SQLException(e.getMessage());
     } finally {
       if (commit) {
@@ -452,7 +459,8 @@ public class Rating {
    */
   public static void delete(Connection db, int objectId, String table, String uniqueField) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
-        "DELETE FROM " + table + "_rating WHERE " + uniqueField + " = ? ");
+        "DELETE FROM " + table + "_rating " +
+            "WHERE " + uniqueField + " = ? ");
     pst.setInt(1, objectId);
     pst.execute();
     pst.close();

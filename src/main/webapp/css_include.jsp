@@ -78,15 +78,16 @@
   <src>/css/ccp-profile.css</src>
   <src>/css/star_rating.css</src>
   <src>/css/bucketlist.css</src>
-  <src>/javascript/yui-2.8r4/build/calendar/assets/skins/sam/calendar.css</src>
   <src>/javascript/yui-2.8r4/build/container/assets/skins/sam/container.css</src>
   <src>/javascript/yui-2.8r4/build/container/assets/container.css</src>
+  <src>/javascript/yui-2.8r4/build/carousel/assets/skins/sam/carousel.css</src>
+  <src>/css/image-carousel.css</src>
+  <src>/javascript/yui-2.8r4/build/calendar/assets/skins/sam/calendar.css</src>
+  <src>/javascript/yui-2.8r4/build/button/assets/skins/sam/button.css</src>
+  <src>/javascript/yui-2.8r4/build/menu/assets/skins/sam/menu.css</src>
 </pack:style>
-<%-- These don't like running through pack tag --%>
-<link rel="stylesheet" href="<%= ctx %>/javascript/yui-2.8r4/build/button/assets/skins/sam/button.css" />
-<link rel="stylesheet" href="<%= ctx %>/javascript/yui-2.8r4/build/menu/assets/skins/sam/menu.css" />
 <c:if test="${!empty templateColorScheme}">
-  <link rel="stylesheet" href="${ctx}/themes/${templateTheme}/color-schemes/${templateColorScheme}/css/ccp-color.css?3" />
+  <link rel="stylesheet" href="${ctx}/themes/${templateTheme}/color-schemes/${templateColorScheme}/css/ccp-color.css?<%= ApplicationVersion.APP_VERSION %>" />
 </c:if>
 <%-- RSS Feeds --%>
 <ccp:evaluate if='<%= !"intranet".equals(applicationPrefs.get("PURPOSE")) || User.isLoggedIn() || !"true".equals(applicationPrefs.get(ApplicationPrefs.INFORMATION_IS_SENSITIVE)) %>'>
@@ -137,13 +138,13 @@
   <src>/javascript/checkCheckbox.js</src>
   <src>/javascript/captcha.js</src>
   <src>/javascript/AC_RunActiveContent.js</src>
-  <src>/javascript/yui-2.8r4/build/yahoo/yahoo.js</src>
-  <src>/javascript/yui-2.8r4/build/event/event.js</src>
-  <src>/javascript/yui-2.8r4/build/dom/dom.js</src>
-  <src>/javascript/yui-2.8r4/build/element/element.js</src>
-  <src>/javascript/yui-2.8r4/build/connection/connection.js</src>
-  <src>/javascript/yui-2.8r4/build/animation/animation.js</src>
-  <src>/javascript/yui-2.8r4/build/dragdrop/dragdrop.js</src>
+  <src>/javascript/yui-2.8r4/build/yahoo/yahoo-min.js</src>
+  <src>/javascript/yui-2.8r4/build/event/event-min.js</src>
+  <src>/javascript/yui-2.8r4/build/dom/dom-min.js</src>
+  <src>/javascript/yui-2.8r4/build/element/element-min.js</src>
+  <src>/javascript/yui-2.8r4/build/connection/connection-min.js</src>
+  <src>/javascript/yui-2.8r4/build/animation/animation-min.js</src>
+  <src>/javascript/yui-2.8r4/build/dragdrop/dragdrop-min.js</src>
   <src>/javascript/yui-2.8r4/build/calendar/calendar-min.js</src>
   <src>/javascript/yui-2.8r4/build/container/container-min.js</src>
   <src>/javascript/yui-2.8r4/build/datasource/datasource-min.js</src>
@@ -154,6 +155,7 @@
   <src>/javascript/carousel_min.js</src>
   <src>/javascript/trackMouse.js</src>
   <src>/javascript/tags_form_add.js</src>
+  <src>/javascript/yui-2.8r4/build/carousel/carousel-min.js</src>
 </pack:script>
 <%--
 <script src="<%= yuiURL %>/datatable/datatable-beta-min.js" type="text/javascript"></script>
@@ -173,7 +175,7 @@
 <![endif]-->
 <%
   if(request.getAttribute("project") == null) {
-    pageContext.setAttribute("project",request.getAttribute("Project"));
+    request.setAttribute("project",request.getAttribute("Project"));
   }
 %>
 <ccp:permission name="project-setup-style">

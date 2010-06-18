@@ -47,10 +47,13 @@ package com.concursive.connect.web.modules.classifieds.portlets.classifiedResult
 
 import com.concursive.commons.text.StringUtils;
 import com.concursive.connect.Constants;
+import com.concursive.connect.indexer.IIndexerSearch;
+import com.concursive.connect.indexer.IndexerQueryResultList;
 import com.concursive.connect.web.modules.classifieds.dao.ClassifiedCategory;
-import com.concursive.connect.web.modules.classifieds.dao.ClassifiedList;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.modules.search.beans.SearchBean;
+import com.concursive.connect.web.modules.search.utils.SearchUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
 
@@ -59,6 +62,8 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
 
 /**
@@ -83,6 +88,8 @@ public class ClassifiedResultsCategoryCountsViewer implements IPortletViewer {
   private static final String SORT_ORDER = "sortOrder";
   private static final String PAGE_URL = "pageURL";
   private static final String TOTAL = "total";
+  private static final String QUERY = "query";
+  private static final String LOCATION = "location";
 
 
   public String doView(RenderRequest request, RenderResponse response)
@@ -90,7 +97,19 @@ public class ClassifiedResultsCategoryCountsViewer implements IPortletViewer {
     try {
       String defaultView = VIEW_PAGE1;
 
-      Connection db = PortalUtils.getConnection(request);
+      String query = PortalUtils.getQueryParameter(request, "query");
+      String location = PortalUtils.getQueryParameter(request, "location");
+
+      // Use a search bean to validate the search input
+      SearchBean search = new SearchBean();
+      search.setQuery(query);
+      search.setLocation(location);
+      search.parseQuery();
+      if (!search.isValid()) {
+        if (StringUtils.hasText(query)) {
+          return "SearchERROR";
+        }
+      }
 
       // Set global preferences
       ProjectCategoryList categoriesToShow = null;
@@ -123,30 +142,47 @@ public class ClassifiedResultsCategoryCountsViewer implements IPortletViewer {
       }
 
       request.setAttribute(SORT_ORDER, PortalUtils.getQueryParameter(request, "sort"));
+      request.setAttribute(QUERY, PortalUtils.getQueryParameter(request, "query"));
+      request.setAttribute(LOCATION, PortalUtils.getQueryParameter(request, "location"));
 
       int total = 0;
       LinkedHashMap<ProjectCategory, Integer> classifiedCountMap = new LinkedHashMap<ProjectCategory, Integer>();
+      Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 
-      // build the tags for the chosen categories
+      // Determine the database connection to use
+      Connection db = PortalUtils.useConnection(request);
+
       for (ProjectCategory category : categoriesToShow) {
-        // Get this project's tag cloud
-        int categoryId = category.getId();
 
-        ClassifiedList classifiedListByProjectCategory = new ClassifiedList();
-        classifiedListByProjectCategory.setProjectCategoryId(categoryId);
-        classifiedListByProjectCategory.setCurrentClassifieds(Constants.TRUE);
-        classifiedListByProjectCategory.setOpenProjectsOnly(true);
-        classifiedListByProjectCategory.setInstanceId(PortalUtils.getInstance(request).getId());
-        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
-          classifiedListByProjectCategory.setForParticipant(Constants.TRUE);
-        } else {
-          // Use the most generic settings since this portlet is cached
-          classifiedListByProjectCategory.setPublicProjects(Constants.TRUE);
+        // Retrieve the user's allowed projects
+        String projectListings = SearchUtils.generateValidProjects(db, PortalUtils.getUser(request).getId(), -1, category.getId());
+
+        // Generate a valid data query string
+        String dataQueryString = SearchUtils.generateDataQueryString(search, PortalUtils.getUser(request).getId(), PortalUtils.getInstance(request).getId(), projectListings);
+        dataQueryString += " AND (type:classifieds) ";
+
+        // Fetch only those that are published.
+        dataQueryString += " AND published:[20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "]");
+        // Fetch only those that have not expired
+        dataQueryString += " AND NOT (expired:{20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "})");
+        // Fetch only promotions in this instanceId
+        if (PortalUtils.getInstance(request).getId() != -1) {
+          dataQueryString += " AND (instanceId:" + PortalUtils.getInstance(request).getId() + ")";
         }
-        classifiedListByProjectCategory.buildList(db);
+        if (category.getId() != -1) {
+          dataQueryString += " AND (projectCategoryId:" + category.getId() + ") ";
+        }
 
-        classifiedCountMap.put(category, classifiedListByProjectCategory.size());
-        total = total + classifiedListByProjectCategory.size();
+        IndexerQueryResultList queryResultList = new IndexerQueryResultList();
+        queryResultList.setQueryIndexType(Constants.INDEXER_FULL);
+        queryResultList.setQueryString(dataQueryString);
+
+        IIndexerSearch searcher = SearchUtils.retrieveSearcher(Constants.INDEXER_FULL);
+        searcher.search(queryResultList);
+
+        classifiedCountMap.put(category, queryResultList.size());
+        total = total + queryResultList.size();
       }
       request.setAttribute(CLASSIFIEDS_COUNTS_MAP, classifiedCountMap);
       request.setAttribute(TOTAL, String.valueOf(total));

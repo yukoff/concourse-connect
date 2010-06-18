@@ -46,14 +46,15 @@
 
 package com.concursive.connect.web.modules.wiki.utils;
 
+import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.dao.CustomForm;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
-import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Encapsulates objects used by the parser
@@ -75,9 +76,11 @@ public class WikiToHTMLContext {
   // properties that affect the output
   private String serverUrl;
   private boolean editMode;
+  private boolean showEditSection = true;
   private int editSectionId = -1;
   private int editSectionHeaderLevel = -1;
   private int editFormId = -1;
+  private Map<String, String> formPropertyMap = null;
 
   /**
    * The context provides essential properties for the underlying operation -- when using
@@ -257,5 +260,21 @@ public class WikiToHTMLContext {
     } else {
       return -1;
     }
+  }
+
+  public boolean getShowEditSection() {
+    return showEditSection;
+  }
+
+  public void setShowEditSection(boolean showEditSection) {
+    this.showEditSection = showEditSection;
+  }
+
+  public Map<String, String> getFormPropertyMap() {
+    return formPropertyMap;
+  }
+
+  public void setFormPropertyMap(Map<String, String> formPropertyMap) {
+    this.formPropertyMap = formPropertyMap;
   }
 }

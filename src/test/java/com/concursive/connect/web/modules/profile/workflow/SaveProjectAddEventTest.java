@@ -45,17 +45,17 @@
  */
 package com.concursive.connect.web.modules.profile.workflow;
 
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
-import com.concursive.connect.web.modules.wiki.utils.WikiLink;
-import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.commons.workflow.BusinessProcess;
+import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistory;
 import com.concursive.connect.web.modules.activity.dao.ProjectHistoryList;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
+import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
-import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.commons.workflow.BusinessProcess;
-import com.concursive.commons.workflow.AbstractWorkflowManagerTest;
+import com.concursive.connect.web.modules.wiki.utils.WikiLink;
 import com.concursive.connect.web.utils.LookupList;
 
 import java.sql.Timestamp;
@@ -97,7 +97,7 @@ public class SaveProjectAddEventTest extends AbstractWorkflowManagerTest {
     Project userProfile = ProjectUtils.loadProject(user.getProfileProjectId());
 
     //Trigger the workflow
-    BusinessProcess thisProcess = (BusinessProcess) processList.get(PROCESS_NAME);
+    BusinessProcess thisProcess = processList.get(PROCESS_NAME);
     assertTrue("Process not found...", thisProcess != null);
     context.setPreviousObject(null);
     context.setThisObject(project);
@@ -120,9 +120,17 @@ public class SaveProjectAddEventTest extends AbstractWorkflowManagerTest {
     assertTrue("History event was not recorded!", historyList.size() == 1);
 
     ProjectHistory history = historyList.get(0);
-    assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] created the profile [[|" + project.getId() + ":profile||Concursive Test]]", 
-        history.getDescription());
+
+    // Category is required in production, may not be configured for testing yet
+    if (project.getCategoryId() > -1) {
+      assertEquals("Recorded event mismatch",
+          "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] created the profile [[|" + project.getId() + ":profile||Concursive Test]] under Businesses",
+          history.getDescription());
+    } else {
+      assertEquals("Recorded event mismatch",
+          "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] created the profile [[|" + project.getId() + ":profile||Concursive Test]] under ",
+          history.getDescription());
+    }
 
     //Delete the history item because the test is done (and any other needed objects)
     history.delete(db);

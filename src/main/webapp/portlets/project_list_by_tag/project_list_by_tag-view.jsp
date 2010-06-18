@@ -85,8 +85,8 @@
       <ol>
       <c:if test="${!empty projectListByTag}">
         <c:forEach items="${projectListByTag}" var="project">
-        	<c:set var="project" value="${project}" />
-        	<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" />
+        	<c:set var="project" value="${project}" scope="request" />
+        	<jsp:useBean id="project" class="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
         	<li>
             <c:if test="${!empty project.category.logo}">
                 <c:choose>

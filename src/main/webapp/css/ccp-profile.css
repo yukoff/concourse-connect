@@ -95,22 +95,22 @@ IE fix
 
 .profile-header .portlet1,
   .projectCenterContainer .portlet1 {
-  
+
 }
 
 .profile-header .portlet2,
   .projectCenterContainer .portlet2 {
-  
+
 }
 
 .profile-header .portlet3,
   .projectCenterContainer .portlet4 {
-  
+
 }
 
 .profile-header .portlet4,
   .projectCenterContainer .portlet4 {
-  
+
 }
 
 .profile-header .portletWrapper,
@@ -139,7 +139,7 @@ IE fix
 
 .profile-header .portlet-section-body .vcard address.adr,
   .projectCenterHeaderContainer address {
-  
+
 }
 
 .profile-header .portlet-section-body .vcard h2,
@@ -155,27 +155,27 @@ IE fix
 
 .profile-header .portlet-section-body .vcard address.adr .street-address,
   .projectCenterHeaderContainer address span.addressTo {
-  
+
 }
 
 .profile-header .portlet-section-body .vcard address.adr .locality,
   .projectCenterHeaderContainer address span.city {
-  
+
 }
 
 .profile-header .portlet-section-body .vcard address.adr .region,
   .projectCenterHeaderContainer address span.state {
-  
+
 }
 
 .profile-header .portlet-section-body .vcard address.adr .postal-code,
   .projectCenterHeaderContainer address span.zip {
-  
+
 }
 
 .profile-header .portlet-section-body .vcard address.adr .country-name,
   .projectCenterHeaderContainer address span.country {
-  
+
 }
 
 /* @end */
@@ -280,7 +280,7 @@ IE fix
 
 .profile-header .portlet-section-footer .icon,
   .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImage {
-  
+
 }
 
 .profile-header .portlet-section-footer .icon img,
@@ -292,7 +292,7 @@ IE fix
 
 .profile-header .portlet-section-footer .no-photo,
   .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImageText {
-  
+
 }
 
 .profile-header .portlet-section-footer .no-photo p,
@@ -302,7 +302,7 @@ IE fix
 
 .profile-header .portlet-section-footer .no-photo p span,
   .projectCenterHeaderContainer .rightColumn .projectCenterHeaderImageText p span {
-  
+
 }
 
 /* @end */
@@ -328,22 +328,22 @@ IE fix
 
 .profile-menu.portlet1,
   .projectCenterPortletLinksBackground .portlet1 {
-  
+
 }
 
 .profile-menu.portlet2,
   .projectCenterPortletLinksBackground .portlet2 {
-  
+
 }
 
 .profile-menu.portlet3,
   .projectCenterPortletLinksBackground .portlet3 {
-  
+
 }
 
 .profile-menu.portlet4,
   .projectCenterPortletLinksBackground .portlet4 {
-  
+
 }
 
 .profile-menu .portletWrapper,
@@ -406,18 +406,18 @@ IE fix
 }
 
 .profile-portlet-body.portletWindowBackground {
-  
+
 }
 
 .profile-portlet-body .portlet1,
   .profile-portlet-body .portlet2,
   .profile-portlet-body .portlet3,
   .profile-portlet-body .portlet4 {
-  
+
 }
 
 .profile-portlet-body .portletWrapper {
-  
+
 }
 
 /* @end */
@@ -667,11 +667,10 @@ IE fix
 
 .profile-portlet-body .portlet-section-body p,
   .projectCenterProfileContainer .leftColumn p {
-  
+
 }
 
-.profile-portlet-body .portlet-section-body p span,
-  .projectCenterProfileContainer .leftColumn p span,
+.projectCenterProfileContainer .leftColumn p span,
   .profile-portlet-body .portlet-section-body li span,
   .projectCenterProfileContainer .leftColumn li span {
   font-weight: bold;
@@ -689,7 +688,6 @@ IE fix
   float: none;
   clear: none;
   padding: 0;
-  margin: 0;
   display: block;
   margin: 0 0 10px 0;
 }
@@ -708,7 +706,7 @@ IE fix
 
 .profile-portlet-body .portlet-section-body dl ul,
   .projectCenterProfileContainer .leftColumn dl ul {
-  
+
 }
 
 .profile-portlet-body .portlet-section-footer h4,
@@ -724,7 +722,8 @@ IE fix
   list-style: none;
 }
 
-.profile-portlet-body .portlet-section-footer ul:after {
+.profile-portlet-body .portlet-section-footer ul:after,
+.projectCenterProfileContainer .leftColumn ul:after {
   content: "." !important;
   display: block !important;
   height: 0 !important;
@@ -733,9 +732,10 @@ IE fix
 }
 
 .profile-portlet-body .portlet-section-footer ul li,
-  .projectCenterProfileContainer .leftColumn ul li {
+.projectCenterProfileContainer .leftColumn ul li {
   float: left;
   width: 50%;
+  *min-width: 45%;
 }
 
 /* @end */
@@ -813,7 +813,7 @@ IE fix
 }
 
 .teams-list {
-  
+
 }
 
 .team-list-portletWindowBackground .portlet-section-header {
@@ -980,7 +980,7 @@ IE fix
 
 .privateMessagesNavigation ul li, .privateMessagesNavigation ul li a { display:inline;  }
 
-.privateMessagesNavigation ul li a em, .privateMessagesNavigation ul li em { font-style:normal; padding:5px; margin:0 5px 0 0; font-style:none  }
+.privateMessagesNavigation ul li a em, .privateMessagesNavigation ul li em { padding:5px; margin:0 5px 0 0; font-style:none; }
 
 .privateMessagesNavigation ul li:hover,
 .privateMessagesNavigation ul li.active {  }
@@ -993,7 +993,7 @@ IE fix
 
 .privateMessagesContainer dl.new { background:#eefeff }
 
-.privateMessagesContainer dl dt { float:left; width:180px; clear:left; height:55px  }
+.privateMessagesContainer dl dt { float:left; width:230px; clear:left; height:55px  }
 
 .privateMessagesContainer dl dt ul { margin:0 0 0 5px; padding:0; /* float:left - breaks concursive.com */ }
 
@@ -1036,7 +1036,7 @@ IE fix
 
 .privateMessagesNavigation ul li:hover,
   .privateMessagesNavigation ul li.active {
-  
+
 }
 
 /* rename to private-messages */
@@ -1150,7 +1150,7 @@ IE fix
 }
 
 .monthName {
-  
+
 }
 
 .monthName a {
@@ -1158,19 +1158,19 @@ IE fix
 }
 
 .monthArrowPrev {
-  
+
 }
 
 .monthArrowNext {
-  
+
 }
 
 .dayName {
-  
+
 }
 
 .eventName {
-  
+
 }
 
 .weekName {
@@ -1194,7 +1194,7 @@ IE fix
 }
 
 .selectedDay a {
-  
+
 }
 
 .day {
@@ -1210,19 +1210,19 @@ IE fix
 }
 
 .highlightday {
-  
+
 }
 
 .noday {
-  
+
 }
 
 .today {
-  
+
 }
 
 .dayIcon td {
-  
+
 }
 
 .smallcalendar {
@@ -1235,11 +1235,11 @@ IE fix
 }
 
 .smallcalendar th {
-  
+
 }
 
 .smallcalendar td {
-  
+
 }
 
 .smallmonthName {
@@ -1249,11 +1249,11 @@ IE fix
 }
 
 .smallmonthArrowPrev {
-  
+
 }
 
 .smallmonthArrowNext {
-  
+
 }
 
 .smallweekName {
@@ -1371,7 +1371,7 @@ h3.eventName span em {
 }
 
 .dateWrapper .dateCurrent .year {
-  
+
 }
 
 .dateWrapper .month {
@@ -1389,7 +1389,7 @@ h3.eventName span em {
 }
 
 .dateCurrent .month {
-  
+
 }
 
 .dateWrapper .date {
@@ -1405,7 +1405,7 @@ h3.eventName span em {
 }
 
 .dateCurrent .date {
-  
+
 }
 
 .dateWrapper .day {
@@ -1420,7 +1420,7 @@ h3.eventName span em {
 }
 
 .dateWrapper .dateCurrent .day {
-  
+
 }
 
 .dateCurrent .today {
@@ -1459,7 +1459,8 @@ h3.eventName span em {
   border-style: solid;
   color: #333!important;
   background: #666;
-  padding: 1px
+  padding: 1px;
+  text-align: center;
 }
 
 .timeWrapper {
@@ -1491,7 +1492,7 @@ h3.eventName span em {
 }
 
 .eventsListItemContainer {
-  
+
 }
 
 .eventsListItemContainer .title {
@@ -1626,18 +1627,17 @@ h3.eventName span em {
 
 .userInputFooter {
   clear: both;
-  clear: both;
-  margin: 0 0 0 27%;
+  margin: 0;
   text-align: right;
-  width: 68%;
-  background: url(../themes/default/images/box/userInput_callout_D6E0EE.png) repeat-x top left;
+  width: 100%;
   position: relative;
   top: -2px;
   padding: 10px 0 0 0
 }
 
 .userInputFooter p {
- display:inline; 
+  display:inline;
+  padding-right: 5px;
 }
 
 .modifiedName, .modifiedName span {
@@ -1654,7 +1654,7 @@ h3.eventName span em {
 
 /* @group Wiki and Blog Article Styles */
 
-/* @group $_articleContainer (needs to be article-portlet) */
+/* @group $_articleContainer (need to create a wikiContainer based on this) */
 
 .articleContainer .actions {
   clear: both;
@@ -1663,19 +1663,14 @@ h3.eventName span em {
 
 .articleContainer .details {
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 /* @group article header */
 
 .articleHeader {
-  -moz-border-radius: 0 5px 5px 0;
-  -webkit-border-top-right-radius: 5px;
-  -webkit-border-bottom-right-radius: 5px;
   position: relative;
-  border-bottom: 1px dotted #ddd;
-  border-right: 1px solid #ddd;
-  margin: 0;
+  margin: 0px 0px 10px 0px;
 }
 
 .articleHeader:after {
@@ -1713,7 +1708,6 @@ h3.eventName span em {
 
 .articleHeader .permissions a {
   display: block;
-  margin: 5px 0;
   border-left: 1px #c1840f solid;
   background:#F9B757;
   padding:4px;
@@ -1722,16 +1716,18 @@ h3.eventName span em {
 
 .articleHeader h3, .articleHeader h2 {
   display: block!important;
-  margin: 0 90px 0 0!important;
+  margin: 0 7px 0 0!important;
   font-family: "Times New Roman", Times, serif!important;
   font-size: x-Large;
   font-weight: 300;
+  line-height: 1;
 }
 
 .articleHeader h3 a, .articleHeader h3 {
   font-family: "Times New Roman", Times, serif!important;
-  font-weight: 300;
   font-size: x-Large;
+  font-weight: 300;
+  line-height: 1;
 }
 
 .articleHeader h3 a span, .articleHeader h3 span {
@@ -1788,15 +1784,16 @@ h3.eventName span em {
 
 .articleHeader .details ul {
   list-style: none;
-  margin:0;
+  margin: 0 0 0 30px;
 }
 
 .articleHeader .details ul li {
   list-style: none;
+  padding-bottom: 3px;
 }
 
 .articleHeader .details ul li span {
-  font-weight: 900
+  font-weight: 900;
 }
 
 /* @end */
@@ -1810,11 +1807,11 @@ h3.eventName span em {
   margin: 0;
 }
 
-.articleBody h2,
-  .articleBody.admin h3,
-  .articleBody.admin h4,
-  .articleBody.admin h5,
-  .articleBody.admin h6 {
+.articleContainer .articleBody h2,
+.articleContainer .articleBody.admin h3,
+.articleContainer .articleBody.admin h4,
+.articleContainer .articleBody.admin h5,
+.articleContainer .articleBody.admin h6 {
   border-bottom: #ddd 1px solid
 }
 
@@ -1823,18 +1820,77 @@ h3.eventName span em {
   font-weight:300;
 }
 
+.articleBody .readMore {
+  font-weight: bold;
+}
+
 /* The following is breaking paragraphs in the wiki, when images are floated
 .articleBody p { overflow:auto }
 */
+
+.editwiki {
+  position: absolute;
+  background: red;
+  top: -5px;
+  right: 5px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  padding: 0 3px;
+  margin: 0;
+  z-index: 1;
+}
+
+.editwiki a {
+  color: white;
+  font-weight: bold;
+}
 
 .editsection {
   float: right;
 }
 
 .articleBody table {
-  empty-cells: show;
-  padding: 0 0 1em 0;
-  margin: 0;
+  clear: both;
+  border: 1px solid #ddd;
+  border-spacing: 0;
+  margin:10px 0 10px 0;
+  background: #fff;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.articleBody th {
+  margin: 0!important;
+  background:#ededed url(../themes/default/images/graphics/pagedList_bg.png) repeat-x scroll 0 bottom;
+  border-bottom: 1px solid #DDDDDD;
+  border-right: 1px solid #DDDDDD;
+  padding: 5px;
+  text-align: center;
+}
+
+.articleBody td {
+  vertical-align: top;
+  border-bottom: 1px solid #DDDDDD;
+  border-right: 1px solid #D3D3D3;
+  padding: 5px;
+  /*width: 10%;*/
+}
+
+.articleBody table p {
+  margin: 0.5em 0 0.5em 0;
+  padding: 0;
+}
+
+.articleBody table ul {
+  margin: 0 0 0 1.5em;
+  padding: 0;
+  list-style: square url(../images/list-bullet.gif);
+
+}
+
+.articleBody table ul li {
+  padding: 0;
+  margin: 0 0 6px 0;
 }
 
 .articleBody pre {
@@ -1848,6 +1904,17 @@ h3.eventName span em {
   white-space: pre-wrap;
 }
 
+.articleBody ul {
+  margin: 0 0 1.5em 1.5em;
+  padding: 0;
+  list-style: square url(../images/list-bullet.gif);
+
+}
+
+.articleBody ul li {
+  padding: 0;
+  margin: 0 0 6px 1.5em;
+}
 
 /* Wiki Info Box */
 
@@ -1888,27 +1955,27 @@ h3.eventName span em {
 }
 
 .wikiLink {
-  
+
 }
 
 .wikiLink:active {
-  
+
 }
 
 .wikiLink:visited {
-  
+
 }
 
 .wikiLink:hover {
-  
+
 }
 
 .wikiLink:visited:hover {
-  
+
 }
 
 .wikiTab {
-  
+
 }
 
 .wikiTab td {
@@ -1916,9 +1983,6 @@ h3.eventName span em {
 }
 
 /* @group Wiki Stuff */
-.articleBody img {
-  max-width: 100%!important
-}
 
 .external {
   background: url(../images/external.gif) center right no-repeat;
@@ -1951,8 +2015,6 @@ ul.wikiExtras li a {
   color: #F7931E;
 }
 
-/* @end */
-
 .infobox {
   margin:0;
   float: right;
@@ -1965,6 +2027,85 @@ ul.wikiExtras li a {
 .infobox table {
   width: 265px;
   float: right;
+}
+
+.wikiTable {
+  clear: both;
+  border: 1px solid #ddd;
+  border-spacing: 0;
+  margin:10px 0 10px 0;
+  background: #fff;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.wikiTable th {
+  margin: 0!important;
+  background:#ededed url(../themes/default/images/graphics/pagedList_bg.png) repeat-x scroll 0 bottom;
+  border-bottom: 1px solid #DDDDDD;
+  border-right: 1px solid #DDDDDD;
+  padding: 5px;
+  text-align: center;
+}
+.wikiTable th h2 {
+  border-bottom: none !important;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+}
+
+.wikiTable td {
+  vertical-align: top;
+  border-bottom: 1px solid #DDDDDD;
+  border-right: 1px solid #D3D3D3;
+  padding: 10px;
+}
+
+.wikiTable p {
+  margin: 0.5em 0 0.5em 0;
+  padding: 0;
+}
+
+.wikiTable ul {
+  margin: 0 0 0 1.5em;
+  padding: 0;
+  list-style: square url(../images/list-bullet.gif);
+
+}
+
+.wikiTable ul li {
+  padding: 0;
+  margin: 0 0 6px 0;
+}
+
+.video-thumbnail {
+  width: 120px;
+  height: 90px;
+  overflow:hidden;
+}
+
+.video-thumbnail a span {
+  margin: 0;
+  display: block;
+  font-size: large;
+  position: relative;
+  top: -60px;
+  left: 45px;
+  width: 20px;
+  padding: 4px 4px 4px 8px;
+  background: #CCC;
+  border: 2px solid #999;
+  -moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+}
+
+.video-thumbnail a {
+  color: #666;
+  text-decoration: none;
+}
+
+.video-thumbnail a:hover {
+  color: #000;
+  text-decoration: none;
 }
 
 .article-portlet {
@@ -2046,6 +2187,8 @@ ul.wikiExtras li a {
   position: relative;
   background: #eee;
   border: 1px dotted #ccc;
+  -moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
   padding: 5px;
   margin: 5px 30px 5px 0
 }
@@ -2058,16 +2201,19 @@ ul.wikiExtras li a {
 
 .listingHeaderContainer .permissions a {
   display: block;
-  margin: 5px 0;
+  margin: 0;
   background: #f9b757;
   padding: 4px;
-  border-left: 1px #c1840f solid
+  border-left: 1px #c1840f solid;
 }
 
 .listingHeaderContainer {
   background: #d5dffc;
   padding: 5px;
-  border: 1px solid #c3d1fc
+  border: 1px solid #c3d1fc;
+  -moz-border-radius: 7px 7px 0 0;
+  -webkit-border-top-left-radius: 7px;
+  -webkit-border-top-right-radius: 7px;
 }
 
 .listingHeaderContainer h3 {
@@ -2079,7 +2225,7 @@ ul.wikiExtras li a {
 }
 
 .listingHeaderContainer .details {
-  
+
 }
 
 .listingHeaderContainer .ratings {
@@ -2092,7 +2238,10 @@ ul.wikiExtras li a {
 .listingBodyContainer {
   background: #fff;
   padding: 5px;
-  border: 1px solid #ddd
+  border: 1px solid #ddd;
+  -moz-border-radius: 0 0 7px 7px;
+  -webkit-border-bottom-left-radius: 7px;
+  -webkit-border-bottom-right-radius: 7px;
 }
 
 .listingBodyContainer .attachments {
@@ -2214,9 +2363,9 @@ ul.wikiExtras li a {
 
 .postFooter { clear:both; margin:4px 0; }
 
-.postFooterFiles { position:relative; clear:both; top:10px; margin:5px 0; border:1px dotted #e2ecf3; background:#eef3f7; padding:10px }
+.postFooterFiles { position:relative; clear:both; margin:10px 0; border:1px dotted #e2ecf3; background:#eef3f7; padding: 20px 10px; }
 
-.postFooterFiles p.files { position:absolute; font-size:medium; opacity:.5; top:-21px  }
+.postFooterFiles p.files { position:absolute; font-size:medium; opacity:.5; top:-21px; }
 
 /* @end */
 
@@ -2258,7 +2407,7 @@ ul.wikiExtras li a {
 .profile-portlet-tickets .profile-portlet-body .portlet-table th,
 .profile-portlet-tickets .profile-portlet-body .portlet-table td
 {
-  
+
 }
 
 .profile-portlet-tickets .portlet-table-body .portlet-table-text dl dt,
@@ -2277,4 +2426,44 @@ ul.wikiExtras li a {
   height: 0 !important;
   clear: both !important;
   visibility: hidden !important;
+}
+
+
+
+.button-single a, .button-single em {
+	background: url(../themes/default/images/buttons/sprite_buttons_all-gray.png) 100% -60px no-repeat;
+}
+
+.button-single a, .button-single em, .button-single {
+	font-style: normal;
+  position: relative;
+  height: 30px;
+  display: block;
+  -moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	width: auto;
+	text-align: center;
+}
+.button-single a {
+ 	line-height: 30px;
+	color: #333;
+	text-decoration: none;
+	background-color: #ddd;
+}
+.button-single a:hover {
+  background-position: 0 -30px;
+}
+.button-single a:hover em {
+	background-position: 100% -30px;
+}
+.button-single a:active, .button-single a  {
+	background-position: 0 0;
+}
+.button-single a:active em, .button-single a em {
+	background-position: 100% 0;
+}
+.button-single  {
+	border-width: 1px;
+	border: 1px solid #c0c0c0;
+	background: url(../images/loading16.gif) 50% 50% no-repeat;
 }

@@ -97,7 +97,7 @@
       }
       document.forms['imageForm'].tag.value = "[[Image:" + tagName + frame + label + "]]";
       if (tagName + frame != imageId) {
-        document.forms['imageForm'].preview.src = "<%= ctx %>/ProjectManagementWiki.do?command=Img&pid=<%= project.getId() %>&subject=" + escape(tagName) + thumbnail;
+        document.forms['imageForm'].preview.src = "<%= ctx %>/ProjectManagementWiki.do?command=Img&pid=<%= project.getId() %>&subject=" + encodeURIComponent(tagName) + thumbnail;
       }
       imageId = tagName + frame;
     } else {

@@ -86,6 +86,7 @@ public class WikiPortlet extends AbstractPortletModule {
   public static final String SEARCH_VIEW = "search";
   public static final String SEARCH_RESULTS_VIEW = "search-results";
   public static final String TABLE_OF_CONTENTS_VIEW = "tableOfContents";
+  public static final String DELETE_CONFIRMATION_VIEW = "delete";
 
   // Actions
   public static final String SAVE_WIKI_ACTION = "save";
@@ -125,6 +126,7 @@ public class WikiPortlet extends AbstractPortletModule {
 //    viewers.put(SEARCH_VIEW, new WikiSearchViewer());
 //    viewers.put(SEARCH_RESULTS_VIEW, new WikiSearchResultsViewer());
     viewers.put(TABLE_OF_CONTENTS_VIEW, new WikiTableOfContentsViewer());
+    viewers.put(DELETE_CONFIRMATION_VIEW, new WikiDeleteConfirmationViewer());
 
     // Actions
     actions.put(SAVE_WIKI_ACTION, new SaveWikiAction());

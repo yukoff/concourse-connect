@@ -89,7 +89,7 @@ public class MoveFolderAction implements IPortletAction {
     int newParentId = Integer.parseInt(request.getParameter("newParentId"));
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the records to verify they exist correctly
     FileFolder thisFolder = new FileFolder(db, id, project.getId(), Constants.PROJECTS_FILES);

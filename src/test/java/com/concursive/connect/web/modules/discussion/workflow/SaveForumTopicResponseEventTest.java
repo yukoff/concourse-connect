@@ -148,7 +148,9 @@ public class SaveForumTopicResponseEventTest extends AbstractWorkflowManagerTest
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] posted a reply to [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]] in [[|" + project.getId() + ":profile||" + project.getTitle() + "]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||" + project.getTitle() + "]] " +
+            "posted a reply to [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)
@@ -266,8 +268,9 @@ public class SaveForumTopicResponseEventTest extends AbstractWorkflowManagerTest
 
     ProjectHistory history = historyList.get(0);
     assertEquals("Recorded event mismatch",
-        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] found an answer for [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]] " +
-            "in [[|" + project.getId() + ":profile||" + project.getTitle() + "]]",
+        "[[|" + userProfile.getId() + ":profile||" + userProfile.getTitle() + "]] " +
+            "@[[|" + project.getId() + ":profile||" + project.getTitle() + "]] " +
+            "found an answer for [[|" + project.getId() + ":topic|" + topic.getId() + "|Dummy Subject]]",
         history.getDescription());
 
     //Delete the history item because the test is done (and any other needed objects)

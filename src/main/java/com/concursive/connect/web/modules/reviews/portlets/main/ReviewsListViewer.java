@@ -52,6 +52,7 @@ import com.concursive.connect.web.modules.reviews.dao.ProjectRatingList;
 import com.concursive.connect.web.portal.IPortletViewer;
 import static com.concursive.connect.web.portal.PortalUtils.*;
 import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.connect.Constants;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -107,7 +108,7 @@ public class ReviewsListViewer implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the records
     ProjectRatingList projectRatings = new ProjectRatingList();

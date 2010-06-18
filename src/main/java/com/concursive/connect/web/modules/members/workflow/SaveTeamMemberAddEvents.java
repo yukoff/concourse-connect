@@ -56,6 +56,8 @@ import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.utils.WikiLink;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 
@@ -66,6 +68,9 @@ import java.sql.Connection;
  * @created Feb 20, 2009
  */
 public class SaveTeamMemberAddEvents extends ObjectHookComponent implements ComponentInterface {
+
+  private static Log LOG = LogFactory.getLog(SaveTeamMemberAddEvents.class);
+
   public final static String HISTORY_INVITE_TEXT = "history.invite.text";
   public final static String HISTORY_FAN_TEXT = "history.fan.text";
   public final static String HISTORY_FRIEND_TEXT = "history.friend.text";
@@ -79,8 +84,7 @@ public class SaveTeamMemberAddEvents extends ObjectHookComponent implements Comp
     Connection db = null;
 
     try {
-      db = getConnection(context);
-
+      // @note the db connection isn't obtained yet
       TeamMember thisMember = (TeamMember) context.getThisObject();
 
       //load the user who created this member record
@@ -90,9 +94,15 @@ public class SaveTeamMemberAddEvents extends ObjectHookComponent implements Comp
       //load the user that is being invited
       User member = UserUtils.loadUser(thisMember.getUserId());
       Project memberProfile = ProjectUtils.loadProject(member.getProfileProjectId());
+      if (memberProfile == null) {
+        throw new Exception("Member doesn't have a profile for recording history; skipping");
+      }
 
       //load the project profile
       Project projectProfile = ProjectUtils.loadProject(thisMember.getProjectId());
+
+      // Use the database connection since everything is now ready...
+      db = getConnection(context);
 
       if (thisMember.getStatus() == TeamMember.STATUS_PENDING) {
         // Prepare the wiki links
@@ -134,7 +144,7 @@ public class SaveTeamMemberAddEvents extends ObjectHookComponent implements Comp
       }
       result = true;
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.warn("Save error", e);
     } finally {
       freeConnection(context, db);
     }

@@ -50,6 +50,7 @@ import com.concursive.connect.web.modules.issues.dao.Ticket;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.documents.dao.ImageInfo;
 
@@ -109,6 +110,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
     ticket.setEnteredBy(user.getId());
     ticket.setModifiedBy(user.getId());
     ticket.insert(db);
+    
+    assertTrue("Cached project was not found", (ProjectUtils.loadProject(project.getId())).getId() == project.getId());
 
     try {
 
@@ -122,9 +125,13 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals(
             "<p><a class=\"wikiLink newWiki\" href=\"/modify/" + project.getUniqueId() + "/wiki/Standard+link\">Standard link</a></p>\n", html);
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), thisWiki.getContent());
+        WikiLink wikiLink = new WikiLink(thisWiki.getContent(), project.getId());
+        assertTrue(wikiLink.getProjectId() > -1);
         assertEquals("wiki", wikiLink.getArea());
         assertEquals("Standard link", wikiLink.getName());
+        assertEquals("Standard link", wikiLink.getEntity());
+        assertEquals("simple", wikiLink.getStatus());
+        assertEquals("/show/" + project.getUniqueId() + "/wiki/Standard+link", wikiLink.getUrl());
       }
 
       {
@@ -137,10 +144,11 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals(
             "<p><a class=\"wikiLink newWiki\" href=\"/modify/" + project.getUniqueId() + "/wiki/Standard+link\">Renamed</a></p>\n", html);
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), thisWiki.getContent());
+        WikiLink wikiLink = new WikiLink(thisWiki.getContent(), project.getId());
         assertEquals("wiki", wikiLink.getArea());
         assertEquals("Renamed", wikiLink.getName());
         assertEquals("Standard link", wikiLink.getEntity());
+        assertEquals("/show/" + project.getUniqueId() + "/wiki/Standard+link", wikiLink.getUrl());
       }
 
       {
@@ -159,17 +167,19 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">Some Ticket</a></p>\n", html);
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), thisWiki.getContent());
+        WikiLink wikiLink = new WikiLink(thisWiki.getContent(), project.getId());
         assertEquals("issue", wikiLink.getArea());
         assertEquals("Some Ticket", wikiLink.getName());
         assertEquals(project.getId(), wikiLink.getProjectId());
-        assertEquals(ticket.getId(), wikiLink.getEntityId());
+        assertEquals(ticket.getId(), Integer.parseInt(wikiLink.getEntityId()));
+        assertEquals("/show/" + project.getUniqueId() + "/issue/" + ticket.getId(), wikiLink.getUrl());
         // Test the link without the project id specified
         WikiLink wikiLink2 = new WikiLink(thisWiki.getContent());
         assertEquals("issue", wikiLink2.getArea());
         assertEquals("Some Ticket", wikiLink2.getName());
         assertEquals(project.getId(), wikiLink2.getProjectId());
-        assertEquals(ticket.getId(), wikiLink2.getEntityId());
+        assertEquals(ticket.getId(), Integer.parseInt(wikiLink2.getEntityId()));
+        assertEquals("/show/" + project.getUniqueId() + "/issue/" + ticket.getId(), wikiLink.getUrl());
       }
 
       {
@@ -182,11 +192,12 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), thisWiki.getContent());
+        WikiLink wikiLink = new WikiLink(thisWiki.getContent(), project.getId());
         assertEquals("issue", wikiLink.getArea());
         assertEquals("", wikiLink.getName());
         assertEquals(project.getId(), wikiLink.getProjectId());
-        assertEquals(ticket.getId(), wikiLink.getEntityId());
+        assertEquals(ticket.getId(), Integer.parseInt(wikiLink.getEntityId()));
+        assertEquals("/show/" + project.getUniqueId() + "/issue/" + ticket.getId(), wikiLink.getUrl());
       }
 
       {
@@ -204,7 +215,8 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals("issue", wikiLink.getArea());
         assertEquals("", wikiLink.getName());
         assertEquals(project.getId(), wikiLink.getProjectId());
-        assertEquals(ticket.getId(), wikiLink.getEntityId());
+        assertEquals(ticket.getId(), Integer.parseInt(wikiLink.getEntityId()));
+        assertEquals("/show/" + project.getUniqueId() + "/issue/" + ticket.getId(), wikiLink.getUrl());
       }
 
       {
@@ -218,11 +230,12 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), thisWiki.getContent());
+        WikiLink wikiLink = new WikiLink(thisWiki.getContent(), project.getId());
         assertEquals("issue", wikiLink.getArea());
         assertEquals("", wikiLink.getName());
         assertEquals(project.getId(), wikiLink.getProjectId());
-        assertEquals(ticket.getId(), wikiLink.getEntityId());
+        assertEquals(ticket.getId(), Integer.parseInt(wikiLink.getEntityId()));
+        assertEquals("/show/" + project.getUniqueId() + "/issue/" + ticket.getId(), wikiLink.getUrl());
       }
 
       {
@@ -236,11 +249,12 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals(
             "<p><a class=\"wikiLink external\" href=\"/show/" + project.getUniqueId() + "/issue/" + ticket.getId() + "\">&nbsp;</a></p>\n", html);
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), thisWiki.getContent());
+        WikiLink wikiLink = new WikiLink(thisWiki.getContent(), project.getId());
         assertEquals("issue", wikiLink.getArea());
         assertEquals("", wikiLink.getName());
         assertEquals(project.getId(), wikiLink.getProjectId());
-        assertEquals(ticket.getId(), wikiLink.getEntityId());
+        assertEquals(ticket.getId(), Integer.parseInt(wikiLink.getEntityId()));
+        assertEquals("/show/" + project.getUniqueId() + "/issue/" + ticket.getId(), wikiLink.getUrl());
       }
 
       {
@@ -254,25 +268,28 @@ public class WikiParserTest6 extends AbstractConnectionPoolTest {
         assertEquals(
             "<p><a class=\"wikiLink external\" target=\"_blank\" href=\"http://www.concursive.com?hello=0&world=1\">test</a></p>\n", html);
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), "http://www.concursive.com?hello=0&world=1 test");
+        WikiLink wikiLink = new WikiLink("http://www.concursive.com?hello=0&world=1 test", project.getId());
         assertEquals("test", wikiLink.getName());
         assertEquals("http://www.concursive.com?hello=0&world=1", wikiLink.getEntity());
         assertEquals(WikiLink.REFERENCE, wikiLink.getStatus());
         assertEquals("", wikiLink.getArea());
+        assertEquals("http://www.concursive.com?hello=0&world=1", wikiLink.getUrl());
       }
 
       {
         // Test the link
-        WikiLink wikiLink = new WikiLink(project.getId(), "[[http://www.concursive.com?hello=0&world=1]]");
+        WikiLink wikiLink = new WikiLink("[[http://www.concursive.com?hello=0&world=1]]", project.getId());
         assertEquals("http://www.concursive.com?hello=0&world=1", wikiLink.getEntity());
         assertEquals(WikiLink.REFERENCE, wikiLink.getStatus());
         assertEquals("", wikiLink.getArea());
+        assertEquals("http://www.concursive.com?hello=0&world=1", wikiLink.getUrl());
       }
 
     } catch (Exception e) {
 
     } finally {
       project.delete(db, null);
+      user.getProfileProject().delete(db, null);
       user.delete(db);
     }
   }

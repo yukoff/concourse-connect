@@ -46,10 +46,10 @@
 package com.concursive.connect.workflow.components.crm;
 
 import com.concursive.commons.xml.XMLUtils;
+import com.concursive.crm.api.client.CRMConnection;
 import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.aspcfs.utils.CRMConnection;
 
 import java.sql.SQLException;
 

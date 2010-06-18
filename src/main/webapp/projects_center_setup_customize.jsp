@@ -181,6 +181,12 @@
             <td><ccp:label name="projectsCenterSetup.customize.messages">Messages</ccp:label></td>
             <td><input type="text" name="features_labelMessages" value="<%= toHtmlValue(project.getFeatures().getLabelMessages()) %>" maxlength="50"/></td>
           </tr>
+          <tr>
+            <td align="center"><input type="checkbox" name="features_showWebcasts" value="ON"<%= project.getFeatures().getShowWebcasts() ? " checked" : "" %>></td>
+            <td><input type="text" name="features_orderWebcasts" value="<%= project.getFeatures().getOrderWebcasts() %>" size="3" maxlength="10"/></td>
+            <td><ccp:label name="projectsCenterSetup.customize.webcasts">Webcasts</ccp:label></td>
+            <td><input type="text" name="features_labelWebcasts" value="<%= toHtmlValue(project.getFeatures().getLabelWebcasts()) %>" maxlength="50"/></td>
+          </tr>
         </table>
       </fieldset>
       <input type="submit" class="submit" value="<ccp:label name="button.update">Update</ccp:label>">

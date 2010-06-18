@@ -117,7 +117,7 @@ public class SessionValidator implements ISessionValidator {
           thisUser.updateLogin(db, request, prefs, null);
           thisUser.setBrowserType(request.getHeader("USER-AGENT"));
           // Apply defaults
-          UserUtils.createLoggedInUser(thisUser, db);
+          UserUtils.createLoggedInUser(thisUser, db, prefs, context);
           // Extend the cookie
           Cookie userCookie = new Cookie(Constants.COOKIE_USER_GUID, UserUtils.generateGuid(thisUser));
           userCookie.setPath("/");

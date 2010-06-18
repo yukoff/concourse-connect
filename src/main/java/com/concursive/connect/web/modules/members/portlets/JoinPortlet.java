@@ -45,23 +45,21 @@
  */
 package com.concursive.connect.web.modules.members.portlets;
 
+import com.concursive.commons.objects.ObjectUtils;
+import com.concursive.commons.text.Template;
+import com.concursive.commons.xml.XMLUtils;
+import com.concursive.connect.web.modules.login.dao.User;
+import com.concursive.connect.web.modules.members.utils.TeamMemberUtils;
+import com.concursive.connect.web.modules.profile.dao.Project;
+import com.concursive.connect.web.portal.PortalUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
 
 import javax.portlet.*;
 import java.io.IOException;
-import java.sql.Connection;
-
-import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
-import com.concursive.connect.web.modules.members.utils.TeamMemberUtils;
-import com.concursive.connect.web.modules.members.dao.TeamMemberList;
-import com.concursive.connect.web.modules.members.dao.TeamMember;
-import static com.concursive.connect.web.portal.PortalUtils.findProject;
-import static com.concursive.connect.web.portal.PortalUtils.getUser;
-import com.concursive.connect.web.portal.PortalUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Join a profile or request to become a member portlet
@@ -73,143 +71,89 @@ public class JoinPortlet extends GenericPortlet {
   private static Log LOG = LogFactory.getLog(JoinPortlet.class);
   //Pages
   private static final String MEMBER_JOIN_PROFILE_FORM = "/portlets/member_profile_join/member_profile_join-view.jsp";
+  //Preferences
+  private static final String PREF_URLS = "urls";
   // Attribute names for objects available in the view
-  private static final String CAN_JOIN = "canJoin";
-  private static final String CAN_REQUEST_TO_JOIN = "canRequestToJoin";
   private static final String IS_USER_PROFILE = "isUserProfile";
+  private static final String URL_LIST = "urlList";
 
   public void doView(RenderRequest request, RenderResponse response)
-          throws PortletException, IOException {
+      throws PortletException, IOException {
     // Determine the project container to use
-    Project project = findProject(request);
+    Project project = PortalUtils.findProject(request);
 
     // Check the user's permissions
-    User user = getUser(request);
-    // Check that the user can join the project (userCanJoin rule)
-    boolean canJoin = TeamMemberUtils.userCanJoin(user, project);
-    // userCanRequestToJoin rule
-    boolean canRequestToJoin = TeamMemberUtils.userCanRequestToJoin(user, project);
-
-    if (canJoin || canRequestToJoin) {
-      if (user.getProfileProjectId() != project.getId()) {
-        if (ProjectUtils.isUserProfile(project)) {
-          request.setAttribute(IS_USER_PROFILE, "true");
-        }
-        request.setAttribute(CAN_JOIN, canJoin ? "true" : "false");
-        request.setAttribute(CAN_REQUEST_TO_JOIN, canRequestToJoin ? "true" : "false");
-
-        PortletContext context = getPortletContext();
-        PortletRequestDispatcher requestDispatcher = context.getRequestDispatcher(MEMBER_JOIN_PROFILE_FORM);
-        requestDispatcher.include(request, response);
-      }
-    }
-  }
-
-  public void processAction(ActionRequest request, ActionResponse response)
-          throws PortletException, IOException {
-    Project project = PortalUtils.getProject(request);
     User user = PortalUtils.getUser(request);
 
-    boolean canJoin = TeamMemberUtils.userCanJoin(user, project);
-    boolean canRequestToJoin = TeamMemberUtils.userCanRequestToJoin(user, project);
-
-    if (user.getProfileProjectId() != project.getId()) {
-      try {
-        Connection db = PortalUtils.getConnection(request);
-        if (canJoin) {
-          //Check for an existing team member record if the status is less then joined update to joined and save
-          TeamMemberList members = new TeamMemberList();
-          members.setProjectId(project.getId());
-          members.setUserId(user.getId());
-          members.buildList(db);
-          if (members.size() == 1 && members.get(0).getStatus() != TeamMember.STATUS_ADDED) {
-            TeamMember member = members.get(0);
-            if (member.getRoleId() > TeamMember.MEMBER) {
-              // If membership is not required
-              member.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-              member.setModifiedBy(user.getId());
-              member.setStatus(TeamMember.STATUS_ADDED);
-              member.update(db);
-              // TODO If membership is required
-              // TeamMember.PARTICIPANT
-              // TeamMember.STATUS_JOINED_NEEDS_APPROVAL
+    try {
+      // Get the urls to display
+      ArrayList<HashMap> urlList = new ArrayList<HashMap>();
+      String[] urls = request.getPreferences().getValues(PREF_URLS, new String[0]);
+      for (String urlPreference : urls) {
+        XMLUtils xml = new XMLUtils("<values>" + urlPreference + "</values>", true);
+        ArrayList<Element> items = new ArrayList<Element>();
+        XMLUtils.getAllChildren(xml.getDocumentElement(), items);
+        HashMap<String, String> url = new HashMap<String, String>();
+        for (Element thisItem : items) {
+          String name = thisItem.getTagName();
+          String value = thisItem.getTextContent();
+          if (value.contains("${")) {
+            Template template = new Template(value);
+            for (String templateVariable : template.getVariables()) {
+              String[] variable = templateVariable.split("\\.");
+              template.addParseElement("${" + templateVariable + "}", ObjectUtils.getParam(PortalUtils.getGeneratedData(request, variable[0]), variable[1]));
             }
-          } else if (members.isEmpty()) {
-            // Otherwise insert new team member with status set to joined
-            TeamMember thisMember = new TeamMember();
-            thisMember.setProjectId(project.getId());
-            thisMember.setUserId(user.getId());
-            thisMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-            thisMember.setStatus(TeamMember.STATUS_ADDED);
-            thisMember.setEnteredBy(user.getId());
-            thisMember.setModifiedBy(user.getId());
-            if (thisMember.insert(db)) {
-              PortalUtils.processInsertHook(request, thisMember);
-            }
+            value = template.getParsedText();
           }
+          url.put(name, value);
+        }
 
-          //Handle reciprocate membership if the user has accepted to be member of a user profile
-          Project targetProject = ProjectUtils.loadProject(project.getId());
-          if (targetProject.getOwner() != -1) {
-            User ownerOfTargetProject = UserUtils.loadUser(targetProject.getOwner());
-            if (ownerOfTargetProject.getProfileProjectId() == targetProject.getId()) {
-              Project thisUserProfileProject = user.getProfileProject();
-              TeamMemberList teamMemberList = thisUserProfileProject.getTeam();
-              TeamMember reciprocatingTeamMember = null;
-              //Determine if the reciprocal already exists, then update if necessary
-              if (teamMemberList.hasUserId(targetProject.getOwner())) {
-                reciprocatingTeamMember = thisUserProfileProject.getTeam().getTeamMember(user.getId());
-                if (reciprocatingTeamMember.getStatus() == TeamMember.STATUS_ADDED) {
-                  // DO Nothing
-                } else {
-                  reciprocatingTeamMember.setStatus(TeamMember.STATUS_ADDED);
-                  if (reciprocatingTeamMember.getUserLevel() > TeamMember.MEMBER) {
-                    reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-                  }
-                  reciprocatingTeamMember.update(db);
-                }
-              } else {
-                //Reciprocal does not exist, therefore create one
-                reciprocatingTeamMember = new TeamMember();
-                reciprocatingTeamMember.setProjectId(thisUserProfileProject.getId());
-                reciprocatingTeamMember.setUserId(targetProject.getOwner());
-                reciprocatingTeamMember.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-                reciprocatingTeamMember.setEnteredBy(user.getId());
-                reciprocatingTeamMember.setModifiedBy(user.getId());
-                reciprocatingTeamMember.insert(db);
-              }
+        // Determine if the url can be shown
+        boolean valid = true;
+        // See if there are any special rules
+        if (url.containsKey("rule")) {
+          String rule = url.get("rule");
+          if ("userCanRequestToJoin".equals(rule)) {
+            boolean canRequestToJoin = TeamMemberUtils.userCanRequestToJoin(user, project);
+            if (!canRequestToJoin) {
+              valid = false;
             }
-          }
-        } else if (canRequestToJoin) {
-          //Check for an existing team member record if the status is less then joined update to joined and save
-          TeamMemberList members = new TeamMemberList();
-          members.setProjectId(project.getId());
-          members.setUserId(user.getId());
-          members.buildList(db);
-          if (members.size() == 0) {
-            TeamMember member = new TeamMember();
-            member.setProjectId(project.getId());
-            member.setUserId(user.getId());
-            if (project.getFeatures().getAllowParticipants()) {
-              member.setUserLevel(UserUtils.getUserLevel(TeamMember.PARTICIPANT));
-            } else {
-              member.setUserLevel(UserUtils.getUserLevel(TeamMember.GUEST));
+          } else if ("userCanJoin".equals(rule)) {
+            // TODO: Update the code that adds the user, and set the team member status to pending, then remove the membership required part
+            boolean canJoin = TeamMemberUtils.userCanJoin(user, project);
+            if (!canJoin) {
+              valid = false;
             }
-            //if a user profile, set to TeamMember.MEMBER
-            User ownerOfTargetProject = UserUtils.loadUser(project.getOwner());
-            if (ownerOfTargetProject.getProfileProjectId() == project.getId()) {
-              member.setUserLevel(UserUtils.getUserLevel(TeamMember.MEMBER));
-            }
-            member.setStatus(TeamMember.STATUS_JOINED_NEEDS_APPROVAL);
-            member.setEnteredBy(user.getId());
-            member.setModifiedBy(user.getId());
-            member.insert(db);
-            PortalUtils.processInsertHook(request, member);
+          } else {
+            LOG.error("Rule not found: " + rule);
+            valid = false;
           }
         }
-      } catch (Exception e) {
-        throw new RuntimeException(e);
+
+        if (valid) {
+          // Add to the list
+          urlList.add(url);
+        }
       }
+      request.setAttribute(URL_LIST, urlList);
+
+      // Only output the portlet if there are any urls to show
+      if (urlList.size() > 0) {
+        // Don't show the portlet on the user's own page
+        if (user.getProfileProjectId() != project.getId()) {
+          // Let the view know if this is a user profile
+          if (project.getProfile()) {
+            request.setAttribute(IS_USER_PROFILE, "true");
+          }
+          // Show the view
+          PortletContext context = getPortletContext();
+          PortletRequestDispatcher requestDispatcher = context.getRequestDispatcher(MEMBER_JOIN_PROFILE_FORM);
+          requestDispatcher.include(request, response);
+        }
+      }
+    } catch (Exception e) {
+      LOG.error("doView", e);
+      throw new PortletException(e.getMessage());
     }
   }
 }

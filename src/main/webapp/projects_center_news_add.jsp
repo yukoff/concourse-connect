@@ -59,8 +59,6 @@
 <script language="javascript" type="text/javascript">
   initEditor('intro,message');
   var ilId = <%= project.getId() %>;
-</script>
-<script language="JavaScript" type="text/javascript">
   <%-- Onload --%>
   YAHOO.util.Event.onDOMReady(function() { document.inputForm.subject.focus(); });
   <%-- Validations --%>
@@ -119,7 +117,7 @@
     <label for="intro"><ccp:label name="projectsCenterNews.add.summaryOrIntroduction">Summary or Introduction</ccp:label></label>
     <textarea id="intro" name="intro"><%= toString(blog.getIntro()) %></textarea>
     <ccp:label name="projectsCenterNews.add.body">Body</ccp:label>
-    <textarea rows="20" id="message" name="message" class="height300"><%= toString(blog.getMessage()) %></textarea>
+    <textarea rows="20" id="message" name="message" class="height400"><%= toString(blog.getMessage()) %></textarea>
 
     <fieldset>
       <legend><ccp:label name="projectsCenterNews.add.startDate">Start Date/Time</ccp:label></legend>
@@ -137,7 +135,7 @@
       <%= blogCategoryList.getHtmlSelect("categoryId", blog.getCategoryId()) %>
     </span>
     <ccp:permission name="project-news-add">
-      <a name="lists" id="lists" href="javascript:popURL('<%= ctx %>/BlogActions.do?command=EditCategoryList&pid=<%= project.getId() %>&form=inputForm&field=categoryId&previousId=' + document.inputForm.categoryId.options[document.inputForm.categoryId.selectedIndex].value + '&popup=true','EditList','600','300','yes','yes');"><ccp:label name="projectsCenterNews.add.editList">Add/Modify Categories</ccp:label></a>
+      <a name="lists" id="lists" href="javascript:popURL('<%= ctx %>/BlogActions.do?command=EditCategoryList&pid=<%= project.getId() %>&form=inputForm&field=categoryId&previousId=' + document.inputForm.categoryId.options[document.inputForm.categoryId.selectedIndex].value + '&popup=true','600','300','yes','yes');"><ccp:label name="projectsCenterNews.add.editList">Add/Modify Categories</ccp:label></a>
     </ccp:permission>
     <span>
       <label for="priorityId"><input type="checkbox" name="priorityId" id="priorityId" value="5" class="checkbox" <ccp:evaluate if="<%= blog.getPriorityId() < 10 %>" >checked</ccp:evaluate> />

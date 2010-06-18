@@ -58,7 +58,7 @@
 %>
 <%= showError(request, "actionError", false) %>
 <div class="formContainer">
-  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if='<%= request.getParameter("pid") != null %>'>&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %></ccp:evaluate>&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>&selectorMode=<%= selectorMode %>&added=true&popup=true&out=text" enctype="multipart/form-data">
+  <form method="POST" name="inputForm" action="<%= ctx %>/FileAttachments.do?command=Attach<ccp:evaluate if='<%= request.getParameter("pid") != null %>'>&pid=<%= StringUtils.encodeUrl(request.getParameter("pid")) %></ccp:evaluate>&lmid=<%= StringUtils.encodeUrl(request.getParameter("lmid")) %>&liid=<%= StringUtils.encodeUrl(request.getParameter("liid")) %>&selectorId=<%= StringUtils.encodeUrl(request.getParameter("selectorId")) %>&selectorMode=<%= selectorMode %>&added=true<c:if test="${'true' eq param.popup || 'true' eq popup}">&popup=true&out=text</c:if>" enctype="multipart/form-data">
     <fieldset id="fileListing">
       <legend><ccp:label name="fileAttach.title">File Attachments</ccp:label></legend>
       <c:choose>
@@ -91,8 +91,10 @@
       <input type="hidden" name="selectorId" value="<%= toHtmlValue(request.getParameter("selectorId")) %>" />
       <input type="hidden" name="selectorMode" value="<%= toHtmlValue(selectorMode) %>" />
       <input type="hidden" name="added" value="true" />
-      <input type="hidden" name="popup" value="true" />
-      <input type="hidden" name="out" value="text" />
+      <c:if test="${'true' eq param.popup || 'true' eq popup}">
+        <input type="hidden" name="popup" value="true" />
+        <input type="hidden" name="out" value="text" />
+      </c:if>
       <c:if test="${param.allowCaption == 'true'}">
         <p>
           <label><ccp:label name="fileAttach.setCaption">Enter a caption to be displayed</ccp:label></label>
@@ -101,14 +103,24 @@
         </p>
       </c:if>
       <ccp:evaluate if='<%= "single".equals(selectorMode)  %>'>
-        <c:if test="${'true' eq param.popup || 'true' eq popup}">
-          <p>
-            <c:if test="${param.allowCaption == 'true'}">
-              <input type="button" value="Submit" class="submit" id="panelSubmitButton" onClick="panel.submit();"/>
-            </c:if>
-            <input type="button" value="Cancel" class="cancel" id="panelCloseButton" />
-          </p>
-        </c:if>
+        <c:choose>
+          <c:when test="${'true' eq param.popup || 'true' eq popup}">
+            <p>
+              <c:if test="${param.allowCaption == 'true'}">
+                <input type="button" value="Submit" class="submit" id="panelSubmitButton" onClick="panel.submit();"/>
+              </c:if>
+              <input type="button" value="Cancel" class="cancel" id="panelCloseButton" />
+            </p>
+          </c:when>
+          <c:otherwise>
+            <p>
+              <c:if test="${param.allowCaption == 'true'}">
+                <input type="submit" value="Submit" class="submit" id="panelSubmitButton"/>
+              </c:if>
+              <%--<input type="button" value="Cancel" class="cancel" id="panelCloseButton" />--%>
+            </p>
+          </c:otherwise>
+        </c:choose>
       </ccp:evaluate>
       <fieldset id="progressBar" style="display:none" class="submitSpinner">
         <div class="portlet-message-info">

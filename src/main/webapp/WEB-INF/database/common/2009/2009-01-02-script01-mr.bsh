@@ -31,6 +31,8 @@ UserList users = new UserList();
 users.setPagedListInfo(pagedListInfo);
 users.buildList(db);
 
+System.out.println("Preferences found: " + prefs.getPrefs().size());
+
 System.out.println("Total users to process: " + pagedListInfo.getMaxRecords());
 
 int count = 0;
@@ -39,7 +41,7 @@ while (users.size() > 0) {
 
  for (User user : users) {
    // Check to see if the user has a profile, skip if they do
-   if (user.getProfileProjectId() > -1) {
+   if (!user.getEnabled() || user.getProfileProjectId() > -1) {
      continue;
    }
    ++count;

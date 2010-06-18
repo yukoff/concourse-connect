@@ -37,12 +37,12 @@ body {
 /* Reset Global Links */
 a {
   text-decoration:none;
-  color:#1B88B1;
+  color:#1a4686;
 }
 
 a:hover {
   text-decoration:underline;
-  color:#1a4686;
+  color:#1B88B1;
 }
 
 /* Remove Borders from Image Links */
@@ -431,7 +431,6 @@ img:after {
     .mainportletColumn .portletWindowBackground {
       border: none;
       background:none;
-      margin-bottom:0;
     }
 
       .mainportletColumn .portletWindow {
@@ -447,10 +446,6 @@ img:after {
 
         .mainportletColumn .portletWindowLast {
           border: none;
-        }
-
-        .mainportletColumn .portletWindowBackground {
-
         }
 
           /* Clean up space within portlets for main content */

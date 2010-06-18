@@ -46,10 +46,9 @@
 package com.concursive.connect.web.modules.login.dao;
 
 import com.concursive.commons.api.AbstractAPITest;
-import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.commons.api.DataRecord;
 import com.concursive.commons.codec.PasswordHash;
+import com.concursive.connect.web.modules.login.utils.UserUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -93,6 +92,7 @@ public class UserAPITest extends AbstractAPITest {
 
     //delete the inserted user
     User thisUser = new User(db, newUserId);
+    thisUser.getProfileProject().delete(db, null);
     assertTrue(thisUser.delete(db) == 1);
   }
 
@@ -142,6 +142,7 @@ public class UserAPITest extends AbstractAPITest {
       user = (User) userObject;
       User thisUser = new User(db, user.getId());
       assertTrue("Password isn't encrypted", !thisUser.getPassword().equals("password"));
+      thisUser.getProfileProject().delete(db, null);
       assertTrue("Password isn't encrypted", thisUser.getPassword().equals(PasswordHash.encrypt("password")));
       assertTrue(thisUser.delete(db) == 1);
       count++;
@@ -250,6 +251,7 @@ public class UserAPITest extends AbstractAPITest {
         }
 
         User thisUser = new User(db, user.getId());
+        thisUser.getProfileProject().delete(db, null);
         assertTrue("Delete inserted user error", 1 == thisUser.delete(db));
         count++;
       }
@@ -400,6 +402,9 @@ public class UserAPITest extends AbstractAPITest {
       User thisUser = new User(db, userId);
       assertTrue("Should have found the user", thisUser.getId() == userId);
 
+      // Delete the user's profile, then delete the user
+      thisUser.getProfileProject().delete(db, null);
+
       // Construct a delete request
       DataRecord record = new DataRecord();
       record.setName("user");
@@ -485,11 +490,13 @@ public class UserAPITest extends AbstractAPITest {
     }
 
 
+    int userProfileProjectId = -1;
     {
       /* Verify the user can be found when querying invalidUsers */
       ArrayList<String> meta = new ArrayList<String>();
       meta.add("id");
       meta.add("expiration");
+      meta.add("profileProjectId");
       api.setTransactionMeta(meta);
 
       DataRecord record = new DataRecord();
@@ -504,6 +511,9 @@ public class UserAPITest extends AbstractAPITest {
 
       User thisUser = new User(db, api.getResponseValueAsInt("id"));
       assertTrue(UserUtils.isUserDisabled(thisUser));
+
+      userProfileProjectId = api.getResponseValueAsInt("profileProjectId");
+      assertTrue("profileProjectId was not retrieved", userProfileProjectId > -1);
     }
 
     {
@@ -523,6 +533,18 @@ public class UserAPITest extends AbstractAPITest {
       User thisUser = new User(db, userId);
       assertTrue("API didn't set the value to null", thisUser.getExpiration() == null);
 
+    }
+
+    {
+      // Delete the user's profile
+      DataRecord record = new DataRecord();
+      record.setName("project");
+      record.setAction(DataRecord.DELETE);
+      record.addField("id", userProfileProjectId);
+      api.save(record);
+
+      processTheTransactions(api, packetContext);
+      assertFalse("API reported a transaction error: " + api.getLastResponse(), api.hasError());
     }
 
     {

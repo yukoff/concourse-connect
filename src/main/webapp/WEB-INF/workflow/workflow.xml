@@ -87,8 +87,8 @@
     <hook class="com.concursive.connect.web.modules.blog.dao.BlogPost">
       <actions>
         <action type="select" process="concursive.newsArticle.recordview"/>
-        <action type="insert" process="concursive.newsArticle.notify"/>
-        <action type="update" process="concursive.newsArticle.notify"/>
+        <!--<action type="insert" process="concursive.newsArticle.notify"/>-->
+        <!--<action type="update" process="concursive.newsArticle.notify"/>-->
       </actions>
     </hook>
     <hook class="com.concursive.connect.web.modules.blog.dao.BlogPostList">
@@ -137,13 +137,7 @@
       <actions>
         <action type="insert" process="concursive.privateMessage.sendMessageToMembers"/>
       </actions>
-     </hook>
-    <hook class="com.concursive.connect.web.modules.contactus.dao.ContactUsBean" module="Contact Us">
-      <actions>
-        <action type="insert" process="connect.contactus.insert"/>
-      </actions>
     </hook>
-
     <hook class="com.concursive.connect.web.modules.members.beans.TeamMemberEmailBean">
       <actions>
         <action type="insert" process="connect.teamMembers.sendEmail"/>
@@ -537,19 +531,18 @@ ${this.message:html}<br />
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>The following listing was added and needs approval:</strong><br />
-                      <blockquote>
+                      <p>
                         ${this.title?html} (${this.category.description?html})<br />
                         <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
                         Listing Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br />
                         Listing Location: ${this.location:html} &nbsp; ${this.country:html}<br />
-                      </blockquote>
-                      <br />
-                      <blockquote>
+                      </p>
+                      <p>
                         It was claimed by ${userInfo.nameFirstLast?html}<br />
                         <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
                         ${userInfo.email}<br />
                         ${userInfo.profileProject.location?html}
-                      </blockquote>
+                      </p>
                     </td>
                   </tr>
                 </table>
@@ -566,19 +559,18 @@ ${this.message:html}<br />
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>The following listing was added and needs approval:</strong><br />
-                      <blockquote>
+                      <p>
                         ${this.title?html} (${this.category.description?html})<br />
                         <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
                         Listing Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br />
                         Listing Location: ${this.location:html} &nbsp; ${this.country:html}<br />
-                      </blockquote>
-                      <br />
-                      <blockquote>
+                      </p>
+                      <p>
                         It was created by ${userInfo.nameFirstLast?html}<br />
                         <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
                         ${userInfo.email}<br />
                         ${userInfo.profileProject.location?html}
-                      </blockquote>
+                      </p>
                     </td>
                   </tr>
                 </table>
@@ -589,25 +581,24 @@ ${this.message:html}<br />
         <component id="8" parent="4" if="true" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
           <parameters>
             <parameter name="notification.addAdmins" value="true"/>
-            <parameter name="notification.subject">New listing: ${this.title} (${this.category.description?html})</parameter>
+            <parameter name="notification.subject">New listing (claimed): ${this.title} (${this.category.description?html})</parameter>
             <parameter name="notification.body"><![CDATA[
                 <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>The following listing was added:</strong><br />
-                      <blockquote>
+                      <p>
                         ${this.title?html} (${this.category.description?html})<br />
                         <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
                         Listing Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br />
                         Listing Location: ${this.location:html} &nbsp; ${this.country:html}<br />
-                      </blockquote>
-                      <br />
-                      <blockquote>
+                      </p>
+                      <p>
                         It was created by ${userInfo.nameFirstLast?html}<br />
                         <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
                         ${userInfo.email}<br />
                         ${userInfo.profileProject.location?html}
-                      </blockquote>
+                      </p>
                     </td>
                   </tr>
                 </table>
@@ -618,25 +609,24 @@ ${this.message:html}<br />
         <component id="9" parent="4" if="false" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
           <parameters>
             <parameter name="notification.addAdmins" value="true"/>
-            <parameter name="notification.subject">New listing (claimed): ${this.title} (${this.category.description?html})</parameter>
+            <parameter name="notification.subject">New listing: ${this.title} (${this.category.description?html})</parameter>
             <parameter name="notification.body"><![CDATA[
                 <table id="Table_01" width="800" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto; border:1px solid #999;" bgcolor="ffffff">
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>The following listing was added:</strong><br />
-                      <blockquote>
+                      <p>
                         ${this.title?html} (${this.category.description?html})<br />
                         <a href="${secureUrl}/show/${this.uniqueId?html}" target="_blank">${secureUrl}/show/${this.uniqueId?html}</a><br />
                         Listing Phone: ${this.businessPhone:html} - (${this.businessPhoneExt:html})<br />
                         Listing Location: ${this.location:html} &nbsp; ${this.country:html}<br />
-                      </blockquote>
-                      <br />
-                      <blockquote>
+                      </p>
+                      <p>
                         It was claimed by ${userInfo.nameFirstLast?html}<br />
                         <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
                         ${userInfo.email}<br />
                         ${userInfo.profileProject.location?html}
-                      </blockquote>
+                      </p>
                     </td>
                   </tr>
                 </table>
@@ -666,19 +656,18 @@ ${this.message:html}<br />
                   <tr>
                     <td bgcolor="ffffff" style="font-family:Arial, Helvetica, sans-serif; padding:10px">
                       <strong>This listing was just claimed and needs follow-up.</strong><br />
-                      <blockquote>
+                      <p>
                         ${this.project.title?html} (${this.project.category.description?html}) *claimed*<br />
                         <a href="${secureUrl}/show/${this.project.uniqueId?html}" target="_blank">${secureUrl}/show/${this.project.uniqueId?html}</a><br />
                         Listing Phone: ${this.project.businessPhone:html} - (${this.project.businessPhoneExt:html})<br />
                         Listing Location: ${this.project.location:html} &nbsp; ${this.project.country:html}<br />
-                      </blockquote>
-                      <br />
-                      <blockquote>
+                      </p>
+                      <p>
                         Claimed by ${userInfo.nameFirstLast?html}<br />
                         <a href="${secureUrl}/show/${userInfo.profileProject.uniqueId?html}" target="_blank">${secureUrl}/show/${userInfo.profileProject.uniqueId?html}</a><br />
                         ${userInfo.email}<br />
                         ${userInfo.profileProject.location?html}
-                      </blockquote>
+                      </p>
                     </td>
                   </tr>
                 </table>
@@ -1148,10 +1137,10 @@ ${this.message:html}<br />
   </body>
 </html>
 ]]></parameter>
-        </parameters>
-      </component>
-    </components>
-  </process>
+          </parameters>
+        </component>
+      </components>
+    </process>
 
     <process name="concursive.teamMember.saveAsLeadInSuite" description="Update Concourse Suite" startId="1">
       <components>
@@ -1385,41 +1374,14 @@ Profile:
       </components>
     </process>
 
-    <process name="connect.contactus.insert" description="Contact Us" startId="1">
-      <components>
-        <component id="1" parent="0" class="com.concursive.connect.web.modules.userprofile.workflow.SendUserNotification">
-          <parameters>
-            <parameter name="notification.addAdmins" value="true"/>
-            <parameter name="notification.subject">Web site inquiry - ${this.formDataString?html}</parameter>
-            <parameter name="notification.body"><![CDATA[The following information was filled out:<br />
-<br />--- Contact Us Inquiry ---<br />
-<br />
-First Name: ${this.nameFirst?html}<br />
-Last Name: ${this.nameLast?html}<br />
-Email: ${this.email?html}<br />
-Company: ${this.organization?html}<br />
-Business Phone: ${this.businessPhone?html} - (${this.businessPhoneExt?html})<br /><br />
-Address: ${this.addressLine1?html} &nbsp; ${this.addressLine2?html}<br />
-City: ${this.city?html}<br />
-State: ${this.state?html}<br />
-Country: ${this.country?html}<br />
-Postal Code: ${this.postalCode?html}<br /><br />
-Other: ${this.formDataString?html}<br /><br />
-Comments: ${this.description?html}<br />
-                        ]]></parameter>
-          </parameters>
-        </component>
-      </components>
-    </process>
-
     <process name="connect.teamMembers.sendEmail" description="Send Email to all TeamMembers" startId="1">
       <components>
         <component id="1" parent="0" class="com.concursive.connect.web.modules.members.workflow.SendEmailToAllTeamMembers">
           <parameters>
             <parameter name="emailToSender" value="false"/>
             <parameter name="url" value="${secureUrl}"/>
-           </parameters> 
-       </component> 
+           </parameters>
+       </component>
         <component id="2" parent="1" class="com.concursive.connect.web.modules.members.workflow.SendEmailCopyToSender" />
        </components>
     </process>

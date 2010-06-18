@@ -49,6 +49,7 @@
 <%@ page import="com.concursive.connect.web.modules.profile.utils.ProjectUtils" %>
 <%@ page import="com.concursive.connect.web.modules.profile.dao.Project" %>
 <%@ page import="com.concursive.connect.web.modules.members.dao.TeamMember" %>
+<jsp:useBean id="clientType" class="com.concursive.connect.web.utils.ClientType" scope="session"/>
 <%--@elvariable id="title" type="java.lang.String"--%>
 <%--@elvariable id="teamMemberList" type="com.concursive.connect.web.modules.members.dao.TeamMemberList"--%>
 <%@ include file="../../initPage.jsp" %>
@@ -58,11 +59,21 @@
 <c:choose>
   <c:when test="${modifyNotification eq true}">
     <%-- Use the drop-down menu for notifications --%>
-    <%@ include file="projects_by_user_menu.jspf" %>
+    <c:if test="${empty clientType || !(clientType.id eq 2 && clientType.version eq 7.0)}">
+      <%-- sorry, ie7 doesn't like this yet due to div z-index --%>
+      <%@ include file="projects_by_user_menu.jspf" %>
+    </c:if>
     <div class="portlet-message-info">
       <div class="horizontal-list">
         <dl class="ccp-schedule-legend">
-          <dt>For each profile, choose a preference:</dt>
+          <c:choose>
+            <c:when test="${!empty clientType && (clientType.id eq 2 && clientType.version eq 7.0)}">
+              <dt>Choose a preference for each profile by clicking on the profile button below and then adjusting your settings in the right column of the group profile page.</dt>
+            </c:when>
+            <c:otherwise>
+              <dt>Choose a preference for each profile:</dt>
+            </c:otherwise>
+          </c:choose>
           <dd class="ccp-schedule-0">never</dd>
           <dd class="ccp-schedule-1">often</dd>
           <dd class="ccp-schedule-2">daily</dd>
@@ -85,7 +96,15 @@
             <c:when test="${teamMember.project.profile && teamMember.project.owner == teamMember.userId}"><c:set var="nameToDisplay" value="Me"/></c:when>
             <c:otherwise><c:set var="nameToDisplay" value="${teamMember.project.title}"/></c:otherwise>
           </c:choose>
-          <input class="ccp-schedule-${emailUpdatesSchedule}" type="button" id="<portlet:namespace/>splitbutton_${teamMember.id}" name="${teamMember.id},'${teamMember.project.uniqueId}',${teamMember.notification},${teamMember.emailUpdatesSchedule}" value="<c:out value="${nameToDisplay}" />">
+          <input
+              class="ccp-schedule-${emailUpdatesSchedule}"
+              type="button"
+              id="<portlet:namespace/>splitbutton_${teamMember.id}"
+              name="${teamMember.id},'${teamMember.project.uniqueId}',${teamMember.notification},${teamMember.emailUpdatesSchedule}"
+              <c:if test="${!empty clientType && (clientType.id eq 2 && clientType.version eq 7.0)}">
+                onclick="window.location.href='${ctx}/show/${teamMember.project.uniqueId}'"
+              </c:if>
+              value="<c:out value="${nameToDisplay}" />">
         </c:forEach>
       </div>
     </div>

@@ -86,6 +86,13 @@ public class ProjectFormBean extends GenericBean {
   private String country = null;
   private String webPage = null;
   private String twitterId = null;
+  private String facebookPage = null;
+  private String youtubeChannelId = null;
+  // Live Video properties
+  private String ustreamId = null;
+  private String livestreamId = null;
+  private String justintvId = null;
+  private String qikId = null;
   private String phone = null;
   private String fax = null;
   private String comments = null;
@@ -256,6 +263,54 @@ public class ProjectFormBean extends GenericBean {
 	public String getTwitterId() {
 		return twitterId;
 	}
+
+  public String getFacebookPage() {
+    return facebookPage;
+  }
+
+  public void setFacebookPage(String facebookPage) {
+    this.facebookPage = facebookPage;
+  }
+
+  public String getYoutubeChannelId() {
+    return youtubeChannelId;
+  }
+
+  public void setYoutubeChannelId(String youtubeChannelId) {
+    this.youtubeChannelId = youtubeChannelId;
+  }
+
+  public String getUstreamId() {
+    return ustreamId;
+  }
+
+  public void setUstreamId(String ustreamId) {
+    this.ustreamId = ustreamId;
+  }
+
+  public String getLivestreamId() {
+    return livestreamId;
+  }
+
+  public void setLivestreamId(String livestreamId) {
+    this.livestreamId = livestreamId;
+  }
+
+  public String getJustintvId() {
+    return justintvId;
+  }
+
+  public void setJustintvId(String justintvId) {
+    this.justintvId = justintvId;
+  }
+
+  public String getQikId() {
+    return qikId;
+  }
+
+  public void setQikId(String qikId) {
+    this.qikId = qikId;
+  }
 
 	public String getPhone() {
     return phone;
@@ -461,6 +516,12 @@ public class ProjectFormBean extends GenericBean {
     this.postalCode = project.getPostalCode();
     this.webPage = project.getWebPage();
     this.twitterId=project.getTwitterId();
+    this.facebookPage = project.getFacebookPage();
+    this.youtubeChannelId = project.getYoutubeChannelId();
+    this.ustreamId = project.getUstreamId();
+    this.livestreamId = project.getLivestreamId();
+    this.justintvId = project.getJustintvId();
+    this.qikId = project.getQikId();
     this.phone = project.getBusinessPhone();
     this.fax = project.getBusinessFax();
     this.email = project.getEmail1();
@@ -484,6 +545,12 @@ public class ProjectFormBean extends GenericBean {
     project.setPostalCode(this.postalCode);
     project.setWebPage(this.webPage);
     project.setTwitterId(this.twitterId);
+    project.setFacebookPage(this.facebookPage);
+    project.setYoutubeChannelId(this.youtubeChannelId);
+    project.setUstreamId(this.ustreamId);
+    project.setLivestreamId(this.livestreamId);
+    project.setJustintvId(this.justintvId);
+    project.setQikId(this.qikId);
     project.setBusinessPhone(this.phone);
     project.setBusinessFax(this.fax);
     project.setEmail1(this.email);
@@ -535,6 +602,24 @@ public class ProjectFormBean extends GenericBean {
     if (preferenceMap.get("twitterId") != null) {
       project.setTwitterId(this.twitterId);  
     }
+    if (preferenceMap.get("facebookPage") != null) {
+      project.setFacebookPage(this.facebookPage);
+    }
+    if (preferenceMap.get("youtubeChannelId") != null) {
+      project.setYoutubeChannelId(this.youtubeChannelId);
+    }
+    if (preferenceMap.get("ustreamId") != null) {
+      project.setUstreamId(this.ustreamId);
+    }
+    if (preferenceMap.get("livestreamId") != null) {
+      project.setLivestreamId(this.livestreamId);
+    }
+    if (preferenceMap.get("justintvId") != null) {
+      project.setJustintvId(this.justintvId);
+    }
+    if (preferenceMap.get("qikId") != null) {
+      project.setQikId(this.qikId);
+    }    
     if (preferenceMap.get("businessPhone") != null) {
       project.setBusinessPhone(this.phone);
     }

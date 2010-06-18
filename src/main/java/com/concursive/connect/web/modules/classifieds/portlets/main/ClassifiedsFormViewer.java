@@ -95,7 +95,7 @@ public class ClassifiedsFormViewer implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Check the request for the record and provide a value for the request scope
     Classified classified = (Classified) PortalUtils.getFormBean(request, CLASSIFIED_AD, Classified.class);

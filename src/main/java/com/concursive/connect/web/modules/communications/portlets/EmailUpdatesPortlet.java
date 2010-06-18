@@ -86,13 +86,13 @@ public class EmailUpdatesPortlet extends GenericPortlet {
     boolean isActive = TeamMemberUtils.isActiveMember(user, project);
     if (isActive) {
       if (user.getProfileProjectId() != project.getId()) {
-        TeamMember member = TeamMemberUtils.getMember(user, project);
+        TeamMember member = project.getTeam().getTeamMember(user.getId());
         request.setAttribute(MEMBER, member);
         // Determine the action or viewer
         String notifications = request.getParameter("notifications");
         String schedule = request.getParameter("schedule");
         try {
-          Connection db = PortalUtils.getConnection(request);
+          Connection db = PortalUtils.useConnection(request);
           // Handle the request
           if (notifications != null || schedule != null) {
             setAjaxNotification(request, db, member);

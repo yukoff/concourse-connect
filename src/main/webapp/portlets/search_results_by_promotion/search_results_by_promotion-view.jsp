@@ -50,6 +50,7 @@
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="../../initPage.jsp" %>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <c:set var="hits" value="${hits}"/>
@@ -58,18 +59,18 @@
 <jsp:useBean id="limit" type="java.lang.String"/>
 <h3><c:out value="${title}"/></h3>
 <div>
-<ul>
-<%
-  for (int i = 0; i < hits.size() && i < Integer.parseInt(limit); i++) {
-    IndexerQueryResult document = hits.get(i);
-    int projectId = Integer.parseInt(document.getProjectId());
-    Project project = ProjectUtils.loadProject(projectId);
-%>
-    <li>
-      <a href="${ctx}/show/<%= project.getUniqueId() %>/promotion/<%= document.getObjectId() %>"><ccp:evaluate if="<%= StringUtils.hasText(document.getTitle()) %>"><%= StringUtils.toHtml(document.getTitle()) %></ccp:evaluate><ccp:evaluate if="<%= !StringUtils.hasText(document.getTitle()) %>"><ccp:project id="<%= document.getProjectId() %>"/></ccp:evaluate></a><br />
-    </li>
-<%
-  }
-%>
-</ul>
+  <ul>
+    <c:forEach items="${hits}" var="ad">
+      <jsp:useBean id="ad" type="com.concursive.connect.indexer.IndexerQueryResult" />
+      <li>
+        <a href="${ctx}/show/${ad.projectUniqueId}/promotion/${ad.objectId}">
+        <ccp:evaluate if="${!empty ad.title}"><c:out value="${ad.title}" /></ccp:evaluate>
+        <ccp:evaluate if="${empty ad.title}"><ccp:project id="${ad.projectId}"/></ccp:evaluate></a><br />
+        <cite>
+          <c:out value="${ad.projectTitle}" />
+          <c:if test="${!empty ad.projectLocation}">- (<c:out value="${ad.projectLocation}"/>)</c:if>
+        </cite>
+      </li>
+    </c:forEach>
+  </ul>
 </div>

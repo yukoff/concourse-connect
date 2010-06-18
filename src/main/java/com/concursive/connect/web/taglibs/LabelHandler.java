@@ -135,7 +135,7 @@ public class LabelHandler extends TagSupport implements TryCatchFinally {
     if (null == language) {
       if (prefs != null) {
         newLabel = prefs.getLabel(labelName,
-            prefs.get("SYSTEM.LANGUAGE"));
+            prefs.get(ApplicationPrefs.LANGUAGE));
       }
     } else {
       // Look up the label key in system status to get the value

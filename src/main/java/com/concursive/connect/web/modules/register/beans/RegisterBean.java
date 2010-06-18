@@ -60,14 +60,12 @@ import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import nl.captcha.Captcha;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletSession;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 /**
  * HTML form bean for the registration process
@@ -77,6 +75,8 @@ import java.sql.Timestamp;
  * @created September 30, 2003
  */
 public class RegisterBean extends GenericBean {
+
+  private static Log LOG = LogFactory.getLog(RegisterBean.class);
 
   public final static String lf = System.getProperty("line.separator");
   // Bean properties
@@ -98,10 +98,10 @@ public class RegisterBean extends GenericBean {
   private String data = null;
   private Timestamp entered = null;
   private Timestamp modified = null;
-  
+
   // Resulting user
   private User user = null;
-  
+
 
   /**
    * Constructor for the RegisterBean object
@@ -373,36 +373,36 @@ public class RegisterBean extends GenericBean {
    * @return the entered
    */
   public Timestamp getEntered() {
-  	return entered;
+    return entered;
   }
 
-	/**
+  /**
    * @param entered the entered to set
    */
   public void setEntered(Timestamp entered) {
-  	this.entered = entered;
+    this.entered = entered;
   }
 
   public void setEntered(String entered) {
-  	this.entered = DatabaseUtils.parseTimestamp(entered);
+    this.entered = DatabaseUtils.parseTimestamp(entered);
   }
 
   /**
    * @return the modified
    */
   public Timestamp getModified() {
-  	return modified;
+    return modified;
   }
 
-	/**
+  /**
    * @param modified the modified to set
    */
   public void setModified(Timestamp modified) {
-  	this.modified = modified;
+    this.modified = modified;
   }
 
   public void setModified(String modified) {
-  	this.modified = DatabaseUtils.parseTimestamp(modified);
+    this.modified = DatabaseUtils.parseTimestamp(modified);
   }
 
   /**
@@ -442,13 +442,13 @@ public class RegisterBean extends GenericBean {
     if (!StringUtils.hasText(country)) {
       errors.put("countryError", "Required field");
     }
-    if (!StringUtils.hasText(postalCode)) {
-      errors.put("postalCodeError", "Required field");
-    } else {
-      if ("UNITED STATES".equals(country)) {
+    if ("UNITED STATES".equals(country)) {
+      if (!StringUtils.hasText(postalCode)) {
+        errors.put("postalCodeError", "Required field");
+      } else {
         LocationBean location = LocationUtils.findLocationByZipCode(postalCode);
         if (location == null) {
-          errors.put("postalCodeError", "Could not locate this postal code");
+          errors.put("postalCodeError", "Could not locate this zip or postal code");
         }
       }
     }
@@ -465,9 +465,9 @@ public class RegisterBean extends GenericBean {
   public boolean isAlreadyRegistered(Connection db) throws SQLException {
     PreparedStatement pst = db.prepareStatement(
         "SELECT count(*) AS records " +
-        "FROM users " +
-        "WHERE lower(email) = ? " +
-        "AND registered = ?");
+            "FROM users " +
+            "WHERE lower(email) = ? " +
+            "AND registered = ?");
     pst.setString(1, email.toLowerCase());
     pst.setBoolean(2, true);
     ResultSet rs = pst.executeQuery();
@@ -524,8 +524,9 @@ public class RegisterBean extends GenericBean {
       user.setState(state);
       user.setCountry(country);
       user.setPostalCode(postalCode);
+
       if (user.getId() == -1) {
-        // This is a new account, so insert
+        // This is a new user, so insert
         user.insert(db, userIp, prefs);
       } else {
         // Else set the status as registered and update the info
@@ -534,13 +535,8 @@ public class RegisterBean extends GenericBean {
       if (commit) {
         db.commit();
       }
-      // Reload the complete user record
-      user = UserUtils.loadUser(user.getId());
-
-      this.setEntered(user.getEntered());
-      this.setModified(user.getModified());
-      
     } catch (Exception e) {
+      LOG.error("save", e);
       if (commit) {
         db.rollback();
       }
@@ -550,36 +546,65 @@ public class RegisterBean extends GenericBean {
         db.setAutoCommit(true);
       }
     }
+    // After the commit, reload the complete user record
+    CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, user.getId());
+    CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, user.getProfileProjectId());
+    user = UserUtils.loadUser(user.getId());
+    this.setEntered(user.getEntered());
+    this.setModified(user.getModified());
     return true;
   }
 
   /**
    * Description of the Method
    *
-   * @param db   Description of the Parameter
-   * @param user Description of the Parameter
+   * @param db                Description of the Parameter
+   * @param partialUserRecord Description of the Parameter
    * @return Description of the Return Value
    * @throws SQLException Description of the Exception
    */
-  private static boolean updateRegisteredStatus(Connection db, User user) throws SQLException {
-    PreparedStatement pst = db.prepareStatement(
-        "UPDATE users " +
-        "SET first_name = ?, last_name = ?, password = ?, " +
-        "company = ?, registered = ?, enabled = ?, terms = ? " +
-        "WHERE user_id = ? ");
-    int i = 0;
-    pst.setString(++i, user.getFirstName());
-    pst.setString(++i, user.getLastName());
-    pst.setString(++i, user.getPassword());
-    pst.setString(++i, user.getCompany());
-    pst.setBoolean(++i, true);
-    pst.setBoolean(++i, true);
-    pst.setBoolean(++i, user.getTerms());
-    pst.setInt(++i, user.getId());
-    int count = pst.executeUpdate();
-    pst.close();
-    CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, user.getId());
-    return count == 1;
+  private static void updateRegisteredStatus(Connection db, User partialUserRecord) throws SQLException {
+    // NOTE: Assume the user object isn't complete, so can't load it, etc.
+    {
+      // Approve the user
+      PreparedStatement pst = db.prepareStatement(
+          "UPDATE users " +
+              "SET first_name = ?, last_name = ?, password = ?, " +
+              "company = ?, registered = ?, enabled = ?, terms = ? " +
+              "WHERE user_id = ? ");
+      int i = 0;
+      pst.setString(++i, partialUserRecord.getFirstName());
+      pst.setString(++i, partialUserRecord.getLastName());
+      pst.setString(++i, partialUserRecord.getPassword());
+      pst.setString(++i, partialUserRecord.getCompany());
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, true);
+      pst.setBoolean(++i, partialUserRecord.getTerms());
+      pst.setInt(++i, partialUserRecord.getId());
+      pst.executeUpdate();
+      pst.close();
+      CacheUtils.invalidateValue(Constants.SYSTEM_USER_CACHE, partialUserRecord.getId());
+    }
+
+    {
+      // Approve the user's profile and update their location
+      User user = UserUtils.loadUser(partialUserRecord.getId());
+      if (user == null) {
+        LOG.warn("updateRegisteredStatus - USER RECORD IS NULL");
+      } else {
+        Project profile = ProjectUtils.loadProject(user.getProfileProjectId());
+        if (profile == null) {
+          LOG.warn("updateRegisteredStatus - PROFILE RECORD IS NULL");
+        } else {
+          profile.setApproved(true);
+          profile.setCity(partialUserRecord.getCity());
+          profile.setState(partialUserRecord.getState());
+          profile.setCountry(partialUserRecord.getCountry());
+          profile.setPostalCode(partialUserRecord.getPostalCode());
+          profile.update(db);
+        }
+      }
+    }
   }
 }
 

@@ -16,7 +16,7 @@ INSERT INTO lookup_project_status (group_id, level, description, type, graphic) 
 INSERT INTO lookup_project_status (group_id, level, description, type, graphic) VALUES
   (1, 5, 'On Hold', 5, 'box-hold.gif');
 INSERT INTO lookup_project_status (group_id, level, description, type, graphic) VALUES
-  (1, 6, 'Waiting on Reqs', 5, 'box-hold.gif');
+  (1, 6, 'Waiting', 5, 'box-hold.gif');
 INSERT INTO lookup_project_status (group_id, level, description, type, graphic) VALUES
   (1, 3, 'Complete', 3, 'box-checked.gif');
 INSERT INTO lookup_project_status (group_id, level, description, type, graphic) VALUES
@@ -155,20 +155,23 @@ INSERT INTO lookup_project_permission (group_id, category_id, level, default_rol
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 20, 2, 'project-profile-admin', 'Configure the profile');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 30, 5, 'project-profile-images-add', 'Contribute images');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 33, 2, 'project-profile-images-delete', 'Delete images sent by other users');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 39, 7, 'project-profile-activity-view', 'View activity');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 40, 5, 'project-profile-activity-add', 'Add activity');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 45, 5, 'project-profile-activity-reply', 'Reply to activity');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 50, 2, 'project-profile-activity-delete', 'Delete activity');
 
 INSERT INTO lookup_project_permission_category (group_id, level, description) VALUES (1, 88, 'Reviews');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 17, 10, 7, 'project-reviews-view', 'View reviews');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 17, 20, 6, 'project-reviews-add', 'Add reviews');
 INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 17, 30, 1, 'project-reviews-admin', 'Administrate reviews');
 
-INSERT INTO lookup_project_permission_category (group_id, level, description) VALUES (1, 89, 'Messages');
-INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 18, 10, 2, 'project-private-messages-view', 'View private messages');
-INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 18, 20, 2, 'project-private-messages-reply', 'Reply to private messages');
-INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 18, 30, 1, 'project-private_messages-delete', 'Delete private messages');
+INSERT INTO lookup_project_permission_category (group_id, level, description) VALUES (1, 89, 'Webcasts');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 18, 10, 7, 'project-webcasts-view', 'View webcasts');
 
--- More permissions for the profile
-INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 40, 2, 'project-profile-activity-add', 'Add activity');
-INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 16, 50, 2, 'project-profile-activity-delete', 'Delete activity');
+INSERT INTO lookup_project_permission_category (group_id, level, description) VALUES (1, 90, 'Messages');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 19, 10, 2, 'project-private-messages-view', 'View private messages');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 19, 20, 2, 'project-private-messages-reply', 'Reply to private messages');
+INSERT INTO lookup_project_permission (group_id, category_id, level, default_role, permission, description) VALUES (1, 19, 30, 1, 'project-private-messages-delete', 'Delete private messages');
 
 -- Contributions
 INSERT INTO lookup_contribution (constant, description, level, points_awarded) VALUES ('com.concursive.connect.web.modules.wiki.contribution.ContributionCalculationForWikiPagesModified',     'Wiki pages added or updated', 10,              25);

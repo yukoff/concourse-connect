@@ -55,6 +55,7 @@
 <jsp:useBean id="categoryName" class="java.lang.String" scope="request"/>
 <jsp:useBean id="isSubCategoryModifiable" class="java.lang.String" scope="request"/>
 <jsp:useBean id="showAllowGuestsOption" class="java.lang.String" scope="request"/>
+<jsp:useBean id="showAllowParticipantsOption" class="java.lang.String" scope="request"/>
 <jsp:useBean id="showRequiresMembershipOption" class="java.lang.String" scope="request"/>
 <jsp:useBean id="states" class="com.concursive.connect.web.utils.StateSelect" scope="request"/>
 <jsp:useBean id="countries" class="com.concursive.connect.web.utils.CountrySelect" scope="request"/>
@@ -68,8 +69,128 @@
 <%-- Use the minimal TinyMCE Editor for blog posts --%>
 <jsp:include page="../../tinymce_comments_include.jsp" flush="true"/>
 <script language="javascript" type="text/javascript">
-  initEditor('description');
+  // editor variable
   var ilId = <%= project.getId() %>;
+  initEditor('description');
+  
+  //focus
+  YAHOO.util.Event.onDOMReady(function() {
+    document.inputForm.title.focus();
+  } );
+
+  // form validation
+  function checkForm(form) {
+    var formTest = true;
+    var messageText = "";
+    <%-- Validations --%>
+    <c:if test="${requiresStartEndDate eq 'true'}">
+      if (!document.getElementById("requestDate").value) {
+        messageText += "- Start Date is a required field\r\n";
+        formTest = false;
+      }
+      if (!document.getElementById("estimatedCloseDate").value) {
+        messageText += "- End Date is a required field\r\n";
+        formTest = false;
+      }
+    </c:if>
+    <%-- End Validations --%>
+    if (!formTest) {
+      messageText = "The form could not be submitted.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
+      alert(messageText);
+      return false;
+    } else {
+      if (form.save.value != 'Please Wait...') {
+        form.save.value='Please Wait...';
+        form.save.disabled = true;
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+  <c:choose>
+	  <c:when test="<%= allowedCategoryList.size() <= 3 %>">
+	  	var eventName = 'click';
+	  </c:when>
+    <c:otherwise>
+	  	var eventName = 'change';
+    </c:otherwise>
+  </c:choose>
+  YAHOO.util.Event.on('<portlet:namespace/>categoryId',eventName,function (e) {
+    // Get the div element in which to report messages from the server
+    var msg_section = YAHOO.util.Dom.get('<portlet:namespace/>subCategory1Id');
+    msg_section.innerHTML = '<p>&nbsp;</p>';
+    // Define the callbacks for the asyncRequest
+    var callbacks = {
+        success : function (o) {
+          var messages = [];
+          try {
+              messages = YAHOO.lang.JSON.parse(o.responseText);
+          }
+          catch (x) {
+              alert("Connection to server failed.");
+              return;
+          }
+          if (messages.length > 0) {
+            msg_section.innerHTML = '&nbsp;';
+            var sel = document.createElement('select');
+            sel.name = 'subCategory1Id';
+            msg_section.appendChild(sel);
+            for (var i = 0, len = messages.length; i < len; ++i) {
+                var m = messages[i];
+                var optionNew = document.createElement('option');
+                optionNew.text = m.text;
+                optionNew.value = m.value;
+                sel.options[i] = optionNew;
+            }
+          } else {
+            msg_section.innerHTML = '<p>None to choose from</p>';
+          }
+        },
+
+        failure : function (o) {
+            if (!YAHOO.util.Connect.isCallInProgress(o)) {
+                alert("Call failed!");
+            }
+        },
+        timeout : 3000
+    };
+    <portlet:renderURL var="urlSubCategories" portletMode="view"  windowState="maximized">
+      <portlet:param name="viewType" value="getSubCategories"/>
+    </portlet:renderURL>
+    <c:choose>
+      <c:when test="<%= allowedCategoryList.size() <= 3 %>">
+        var val = 0;
+        for( i = 0; i < document.inputForm.categoryId.length ; i++ ){
+          if(document.inputForm.categoryId[i].checked)
+            val = document.inputForm.categoryId[i].value;
+        }
+        YAHOO.util.Connect.asyncRequest('GET',"<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=" + val + "&out=text", callbacks);
+      </c:when>
+      <c:otherwise>
+        YAHOO.util.Connect.asyncRequest('GET','<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=' + document.inputForm.categoryId.value + '&out=text', callbacks);
+      </c:otherwise>
+    </c:choose>
+  });
+  function calendarTrigger(fieldName) {
+    var startDateEl = document.getElementById('requestDate');
+    var endDateEl = document.getElementById('estimatedCloseDate');
+    if (fieldName == 'requestDate') {
+      if (dateIsLaterThan(startDateEl, endDateEl)) {
+        endDateEl.value = startDateEl.value;
+      }
+    } else if (fieldName == 'estimatedCloseDate') {
+      if (dateIsLaterThan(startDateEl, endDateEl)) {
+        startDateEl.value = endDateEl.value;
+      }
+    }
+  }
+  function setAttachmentList(newVal) {
+    document.getElementById("attachmentList").value = newVal;
+  }
+  function setAttachmentText(newVal) {
+    document.getElementById("attachmentText").value = newVal;
+  }
 </script>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <h2><c:out value="${title}"/></h2>
@@ -127,10 +248,10 @@
               <label for="city">City</label>
               <input type="text" name="city" id="city" class="input city" maxlength="80" value="<%= toHtmlValue(project.getCity()) %>" />
               <span class="characterCounter">80 characters max</span>
-              <label for="state">State</label>
+              <label for="state">State/Province</label>
               <input type="text" name="state" id="state" class="input state" maxlength="80" value="<%= toHtmlValue(project.getState()) %>" />
               <span class="characterCounter">80 characters max</span>
-              <label for="postalCode">Postal Code</label>
+              <label for="postalCode">Zip/Postal Code</label>
               <input type="text" name="postalCode" id="postalCode" class="input zipInput" maxlength="12" value="<%= toHtmlValue(project.getPostalCode()) %>" />
                <label for="country">Country</label>
               <div class="displayCountries">
@@ -164,7 +285,7 @@
                     <label>
                         <%--@elvariable id="allowedCategory" type="com.concursive.connect.web.modules.profile.dao.ProjectCategory"--%>
                       <input type="radio" name="categoryId" value="${allowedCategory.id}"<c:if test="${allowedCategory.id == project.categoryId}"> checked</c:if>/>
-                      <c:out value="${allowedCategory.description}"/>
+                      <c:out value="${allowedCategory.label}"/>
                     </label>
                   </c:forEach>
                 </div>
@@ -174,7 +295,7 @@
                   <select name="categoryId" id="<portlet:namespace/>categoryId" class="input selectInput">
                       <%--@elvariable id="allowedCategory" type="com.concursive.connect.web.modules.profile.dao.ProjectCategory"--%>
                     <c:forEach items="${allowedCategoryList}" var="allowedCategory">
-                      <option value="${allowedCategory.id}"<c:if test="${allowedCategory.id == project.categoryId}"> selected</c:if>><c:out value="${allowedCategory.description}"/></option>
+                      <option value="${allowedCategory.id}"<c:if test="${allowedCategory.id == project.categoryId}"> selected</c:if>><c:out value="${allowedCategory.label}"/></option>
                     </c:forEach>
                   </select>
                 </label>
@@ -258,16 +379,22 @@
             <input type="text" name="keywords" id="keywords" class="input longInput" maxlength="255" value="<%= toHtmlValue(project.getKeywords()) %>" />
             <span class="characterCounter">255 characters max</span>
           </c:if>
-          <c:if test='${showAllowGuestsOption == "true"}'>
-            <label for="features_allowGuests">
-              <input type="checkbox" class="checkbox" name="features_allowGuests" id="features_allowGuests" value="ON" />
-              <ccp:label name="projectsAddProject.allowGuests">Allow others to search for and view this listing information in the directory, otherwise the listing is private and by invitation only</ccp:label>
-            </label>
-          </c:if>
           <c:if test='${showWebsite == "true"}'>
             <label for="webPage">Website</label>
             <input type="text" id="webPage" name="webPage" class="input longInput" maxlength="200" value="<%= toHtmlValue(project.getWebPage()) %>" />
             <span class="characterCounter">200 characters max</span>
+          </c:if>
+          <c:if test='${showAllowGuestsOption == "true"}'>
+            <label for="features_allowGuests">
+              <input type="checkbox" class="checkbox" name="features_allowGuests" id="features_allowGuests" value="ON" checked />
+              <ccp:label name="projectsAddProject.allowGuests">Allow others to search for and view this listing information in the directory, otherwise the listing is private and by invitation only</ccp:label>
+            </label>
+          </c:if>
+          <c:if test='${showAllowParticipantsOption == "true"}'>
+            <label for="features_allowParticipants">
+              <input type="checkbox" class="checkbox" name="features_allowParticipants" id="features_allowParticipants" value="ON" checked />
+              <ccp:label name="projectsAddProject.allowParticipants">Allow others to search for and view this listing information in the directory, otherwise the listing is private and by invitation only</ccp:label>
+            </label>
           </c:if>
           <c:if test='${showRequiresMembershipOption == "true"}'>
             <label for="features_membershipRequired">
@@ -333,116 +460,6 @@
         </label>
       </fieldset>
     </c:if>
-    <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" />
+    <input type="submit" class="submit" name="save" value="<ccp:label name="button.save">Save</ccp:label>" />
   </form>
 </div>
-<script language="javascript" type="text/javascript">
-  // form validation
-  function checkForm(form) {
-    var formTest = true;
-    var messageText = "";
-    <%-- Validations --%>
-    <c:if test="${requiresStartEndDate eq 'true'}">
-      if (!document.getElementById("requestDate").value) {
-        messageText += "- Start Date is a required field\r\n";
-        formTest = false;
-      }
-      if (!document.getElementById("estimatedCloseDate").value) {
-        messageText += "- End Date is a required field\r\n";
-        formTest = false;
-      }
-    </c:if>
-    <%-- End Validations --%>
-    if (!formTest) {
-      messageText = "The form could not be submitted.          \r\nPlease verify the following items:\r\n\r\n" + messageText;
-      alert(messageText);
-      return false;
-    }
-    return true;
-  }
-  //focus
-  YAHOO.util.Event.onDOMReady(function() { document.inputForm.title.focus();} );
-  <c:choose>
-	  <c:when test="<%= allowedCategoryList.size() <= 3 %>">
-	  	var eventName = 'click';
-	  </c:when>
-    <c:otherwise>
-	  	var eventName = 'change';
-    </c:otherwise>
-  </c:choose>
-  YAHOO.util.Event.on('<portlet:namespace/>categoryId',eventName,function (e) {
-    // Get the div element in which to report messages from the server
-    var msg_section = YAHOO.util.Dom.get('<portlet:namespace/>subCategory1Id');
-    msg_section.innerHTML = '<p>&nbsp;</p>';
-    // Define the callbacks for the asyncRequest
-    var callbacks = {
-        success : function (o) {
-          var messages = [];
-          try {
-              messages = YAHOO.lang.JSON.parse(o.responseText);
-          }
-          catch (x) {
-              alert("Connection to server failed.");
-              return;
-          }
-          if (messages.length > 0) {
-            msg_section.innerHTML = '&nbsp;';
-            var sel = document.createElement('select');
-            sel.name = 'subCategory1Id';
-            msg_section.appendChild(sel);
-            for (var i = 0, len = messages.length; i < len; ++i) {
-                var m = messages[i];
-                var optionNew = document.createElement('option');
-                optionNew.text = m.text;
-                optionNew.value = m.value;
-                sel.options[i] = optionNew;
-            }
-          } else {
-            msg_section.innerHTML = '<p>None to choose from</p>';
-          }
-        },
-
-        failure : function (o) {
-            if (!YAHOO.util.Connect.isCallInProgress(o)) {
-                alert("Call failed!");
-            }
-        },
-        timeout : 3000
-    }
-    <portlet:renderURL var="urlSubCategories" portletMode="view"  windowState="maximized">
-      <portlet:param name="viewType" value="getSubCategories"/>
-    </portlet:renderURL>
-    <c:choose>
-      <c:when test="<%= allowedCategoryList.size() <= 3 %>">
-        var val = 0;
-        for( i = 0; i < document.inputForm.categoryId.length ; i++ ){
-          if(document.inputForm.categoryId[i].checked)
-            val = document.inputForm.categoryId[i].value;
-        }
-        YAHOO.util.Connect.asyncRequest('GET',"<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=" + val + "&out=text", callbacks);
-      </c:when>
-      <c:otherwise>
-        YAHOO.util.Connect.asyncRequest('GET','<%= pageContext.getAttribute("urlSubCategories") %>&__rp<%=PortalUtils.getDashboardPortlet((PortletRequest)request).getWindowConfigId()%>_category=' + document.inputForm.categoryId.value + '&out=text', callbacks);
-      </c:otherwise>
-    </c:choose>
-  });
-  function calendarTrigger(fieldName) {
-    var startDateEl = document.getElementById('requestDate');
-    var endDateEl = document.getElementById('estimatedCloseDate');
-    if (fieldName == 'requestDate') {
-      if (dateIsLaterThan(startDateEl, endDateEl)) {
-        endDateEl.value = startDateEl.value;
-      }
-    } else if (fieldName == 'estimatedCloseDate') {
-      if (dateIsLaterThan(startDateEl, endDateEl)) {
-        startDateEl.value = endDateEl.value;
-      }
-    }
-  }
-  function setAttachmentList(newVal) {
-    document.getElementById("attachmentList").value = newVal;
-  }
-  function setAttachmentText(newVal) {
-    document.getElementById("attachmentText").value = newVal;
-  }
-</script>

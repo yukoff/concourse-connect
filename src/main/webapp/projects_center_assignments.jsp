@@ -89,24 +89,17 @@
     document.getElementById("attachmentText").value = newVal;
   }
   function showTemplates() {
-    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Templates&pid=<%= project.getId() %>&popup=true','Import_Templates','550','520','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Templates&pid=<%= project.getId() %>&popup=true','550','520','yes','yes');
   }
 
 </script>
-<table border="0" cellpadding="1" cellspacing="0" width="100%">
-  <tr class="subtab">
-    <td>
-      <img border="0" src="<%= ctx %>/images/icons/stock_list_bullet2-16.gif" align="absmiddle">
-      <a href="<%= ctx %>/show/<%= project.getUniqueId() %>/plans">Outlines</a> >
-      <%= toHtml(requirement.getShortDescription()) %>
-    </td>
-  </tr>
-</table>
-<br>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-  <tr>
+<p><a href="<%= ctx %>/show/<%= project.getUniqueId() %>/plans">Back to list</a></p>
+<h2><%= toHtml(requirement.getShortDescription()) %></h2>
+<ccp:evaluate if="<%= requirement.getReadOnly()%>">
+  <div class="portlet-message-info"><p><ccp:label name="projectsCenterAssignments.planIsReadOnly">plan is marked read-only</ccp:label></p></div>
+</ccp:evaluate>
+<p>
     <form name="listView" method="post" action="<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Assignments&pid=<%= project.getId() %>&rid=<%= requirement.getId() %>">
-    <td nowrap>
       <img alt="" src="<%= ctx %>/images/icons/stock_filter-data-by-criteria-16.gif" align="absmiddle">
       <select size="1" name="listView" onChange="document.forms['listView'].submit();">
         <option <%= projectAssignmentsInfo.getOptionValue("all") %>><ccp:label name="projectsCenterAssignments.allActivities">All Activities</ccp:label></option>
@@ -118,24 +111,11 @@
     PriorityList.addItem(-1, "All Priorities");
 %>
       <%= PriorityList.getHtmlSelect("listFilter1", projectAssignmentsInfo.getFilterValue("listFilter1")) %>
-    </td>
-    <ccp:evaluate if="<%= requirement.getReadOnly()%>">
-      <td align="right" nowrap>
-        <ccp:label name="projectsCenterAssignments.planIsReadOnly">[plan is marked read-only]</ccp:label>
-      </td>
-    </ccp:evaluate>
     </form>
-  </tr>
-</table>
-<table cellpadding="0" cellspacing="0" width="100%"
-  <ccp:evaluate if="<%= clientType.getId() != ClientType.APPLEWEBKIT %>">
-    border="1"
-  </ccp:evaluate>
-  <ccp:evaluate if="<%= clientType.getId() == ClientType.APPLEWEBKIT %>">
-    border="0"
-  </ccp:evaluate>
-  rules="cols">
-  <tr class="pagedList">
+</p>
+<table class="pagedList">
+  <thead>
+  <tr>
     <th width="60%" nowrap colspan="2"><ccp:label name="projectsCenterAssignments.planOutline">Plan Outline</ccp:label></th>
     <th width="8%" align="center"><ccp:label name="projectsCenterAssignments.pri">Pri</ccp:label></th>
     <th width="8%" align="center" nowrap><ccp:label name="projectsCenterAssignments.assignedTo">Assigned To</ccp:label></th>
@@ -145,6 +125,8 @@
     <th width="8%" align="center"><ccp:label name="projectsCenterAssignments.start">Start</ccp:label></th>
     <th width="8%" align="center" nowrap><ccp:label name="projectsCenterAssignmens.end">End</ccp:label></th>
   </tr>
+  </thead>
+  <tbody>
 <%
   Requirement thisRequirement = requirement;
 %>    
@@ -159,10 +141,10 @@
            onMouseOver="window.status='Click to show drop-down menu';return true;"
            onmouseout="window.status='';hideMenu('menuRequirement');"><%= toHtml(thisRequirement.getShortDescription()) %></a>
       (<%= mapList.size() %> item<%= (mapList.size() == 1?"":"s") %>)
-      <a href="javascript:popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=<%= project.getId() %>&rid=<%= requirement.getId() %>&popup=true','Outline_Details','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absbottom" /></a>
+      <a href="javascript:popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=<%= project.getId() %>&rid=<%= requirement.getId() %>&popup=true','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absbottom" /></a>
       <ccp:permission name="project-wiki-view">
         <ccp:evaluate if="<%= hasText(requirement.getWikiLink()) %>">
-          <a href="javascript:popURL('<%= ctx %>/show/<%= project.getUniqueId() %>/wiki/<%= requirement.getWikiSubject() %>?popup=true','Wiki','700','600','yes','yes');"><img src="<%= ctx %>/images/icons/stock_macro-objects-16.gif" border="0" align="absbottom" /></a>
+          <a href="javascript:popURL('<%= ctx %>/show/<%= project.getUniqueId() %>/wiki/<%= requirement.getWikiSubject() %>?popup=true','700','600','yes','yes');"><img src="<%= ctx %>/images/icons/stock_macro-objects-16.gif" border="0" align="absbottom" /></a>
         </ccp:evaluate>
       </ccp:permission>
     </td>
@@ -252,7 +234,7 @@
       </ccp:evaluate>
       <%-- Show more nodes --%>
       <ccp:evaluate if="<%= !isClosed.booleanValue() %>">
-        </td><td class="repeatLine" valign="top" align="center"><img alt="" src="<%= ctx %>/images/tree/tree8.gif" border="0" align="absmiddle" height="18" width="19"/>
+        </td><td class="repeatLine" valign="top" align="center"><img alt="" src="<%= ctx %>/images/tree/tree3.gif" border="0" align="absmiddle" height="18" width="19"/>
       </ccp:evaluate>
 <%
       } else {
@@ -286,7 +268,7 @@
           <%= toHtml(thisAssignment.getRole()) %>
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisAssignment.hasNotes() %>">
-          <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= thisAssignment.getProjectId() %>&aid=<%= thisAssignment.getId() %>&popup=true','ITEAM_Assignment_Notes','400','500','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></a>
+          <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= thisAssignment.getProjectId() %>&aid=<%= thisAssignment.getId() %>&popup=true','400','500','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></a>
         </ccp:evaluate>
       </td>
       </tr>
@@ -333,29 +315,29 @@
       &nbsp;<ccp:tz timestamp="<%= thisAssignment.getEstStartDate() %>" dateOnly="true"/>&nbsp;
     </td>
     <td valign="top" align="center" nowrap>
-      &nbsp;<%= thisAssignment.getRelativeDueDateString(User.getTimeZone(), User.getLocale()) %>&nbsp;
+      <%-- display whether before today, today, or overdue --%>
+      &nbsp;<%= thisAssignment.getRelativeDueDateString(User.getTimeZone(), User.getLocale()) %>&nbsp
     </td>
 <%
       } else if (mapItem.getFolderId() > -1) {
         //Assignment Folder
-        AssignmentFolder thisFolder = (AssignmentFolder) folders.getAssignmentFolder(mapItem.getFolderId());
+        AssignmentFolder thisFolder = folders.getAssignmentFolder(mapItem.getFolderId());
 %>
-      </td>
       <td valign="top" align="center">
-        <img border="0" src="<%= ctx %>/images/icons/stock_open-16-19.gif" align="absmiddle">
+        <img border="0" src="<%= ctx %>/images/icons/stock_open-16-19.gif" align="absmiddle" />
       </td>
       <td>
-      <ccp:evaluate if="<%= !thisRequirement.getReadOnly() %>">
-        <a class="rollover" name="f<%= thisFolder.getId() %>" id="f<%= thisFolder.getId() %>" href="javascript:displayMenu('f<%= thisFolder.getId() %>', 'menuFolder',<%= project.getId() %>,<%= thisRequirement.getId() %>,<%= thisFolder.getId() %>,-1,<%= mapItem.getId() %>,<%= mapItem.getIndent() %>);"
-           onMouseOver="window.status='Click to show drop-down menu';return true;"
-           onmouseout="window.status='';hideMenu('menuFolder');"><%= toHtml(thisFolder.getName()) %></a>
-      </ccp:evaluate>
-      <ccp:evaluate if="<%= thisRequirement.getReadOnly() %>">
-        <%= toHtml(thisFolder.getName()) %>
-      </ccp:evaluate>
-      <ccp:evaluate if="<%= hasText(thisFolder.getDescription()) %>">
-        <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=FolderDetails&pid=<%= project.getId() %>&folderId=<%= mapItem.getFolderId() %>&popup=true','Folder_Details','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle"/></a>
-      </ccp:evaluate>
+        <ccp:evaluate if="<%= !thisRequirement.getReadOnly() %>">
+          <a class="rollover" name="f<%= thisFolder.getId() %>" id="f<%= thisFolder.getId() %>" href="javascript:displayMenu('f<%= thisFolder.getId() %>', 'menuFolder',<%= project.getId() %>,<%= thisRequirement.getId() %>,<%= thisFolder.getId() %>,-1,<%= mapItem.getId() %>,<%= mapItem.getIndent() %>);"
+             onMouseOver="window.status='Click to show drop-down menu';return true;"
+             onmouseout="window.status='';hideMenu('menuFolder');"><%= toHtml(thisFolder.getName()) %></a>
+        </ccp:evaluate>
+        <ccp:evaluate if="<%= thisRequirement.getReadOnly() %>">
+          <%= toHtml(thisFolder.getName()) %>
+        </ccp:evaluate>
+        <ccp:evaluate if="<%= hasText(thisFolder.getDescription()) %>">
+          <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignmentsFolder.do?command=FolderDetails&pid=<%= project.getId() %>&folderId=<%= mapItem.getFolderId() %>&popup=true','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle"/></a>
+        </ccp:evaluate>
       </td>
       </tr>
       </table>
@@ -388,7 +370,7 @@
     }
 %>
 <%-- Menu system for selected items --%>
-  <tr>
+  <tr class="sectionTotal">
     <td colspan="4" class="section">
       &nbsp;
     </td>
@@ -402,6 +384,7 @@
       &nbsp;
     </td>
   </tr>
+  </tbody>
 </table>
 <%--
 <img src="<%= ctx %>/images/icons/stock_new-dir-16.gif" border="0" align="absmiddle" height="16" width="16"/>

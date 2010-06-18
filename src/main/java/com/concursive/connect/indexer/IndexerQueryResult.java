@@ -47,8 +47,10 @@
 package com.concursive.connect.indexer;
 
 import com.concursive.commons.objects.ObjectUtils;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.Constants;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -211,6 +213,27 @@ public class IndexerQueryResult extends GenericBean {
 
   public void setProjectId(String projectId) {
     this.projectId = projectId;
+  }
+
+  public String getProjectUniqueId() {
+  	if (StringUtils.hasText(this.projectId)){
+  		return ProjectUtils.loadProject(Integer.parseInt(this.projectId)).getUniqueId();
+  	}
+    return null;
+  }
+
+  public String getProjectTitle() {
+  	if (StringUtils.hasText(this.projectId)){
+  		return ProjectUtils.loadProject(Integer.parseInt(this.projectId)).getTitle();
+  	}
+    return null;
+  }
+
+  public String getProjectLocation() {
+  	if (StringUtils.hasText(this.projectId)){
+  		return ProjectUtils.loadProject(Integer.parseInt(this.projectId)).getLocation();
+  	}
+    return null;
   }
 
   public String getTitle() {

@@ -112,7 +112,7 @@ public class ScrumReleaseBurnDownPortlet extends GenericPortlet {
         // Portlet is configured
         int releaseId = Integer.parseInt(releaseValue);
 
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
         Project thisProject = PortalUtils.getProject(request);
 
         ProjectItem release = new ProjectItem(db, ProjectItemList.LIST_TARGET_RELEASE, releaseId);
@@ -225,7 +225,7 @@ public class ScrumReleaseBurnDownPortlet extends GenericPortlet {
   protected void doEdit(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
     try {
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       Project thisProject = PortalUtils.getProject(request);
 
       // Get the categories for the user

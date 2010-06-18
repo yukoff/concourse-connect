@@ -495,4 +495,13 @@ public class AdCategoryList extends ArrayList<AdCategory> {
       return "";
     }
   }
+
+  public AdCategory getCategoryFromId(int selectedId) {
+    for (AdCategory thisElement : this) {
+      if (thisElement.getId() == selectedId) {
+        return thisElement;
+      }
+    }
+    return null;
+  }
 }

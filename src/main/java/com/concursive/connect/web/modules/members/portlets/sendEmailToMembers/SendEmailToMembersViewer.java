@@ -102,7 +102,7 @@ public class SendEmailToMembersViewer implements IPortletViewer {
       // Set global preferences
       request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
 
-      Connection db = PortalUtils.getConnection(request);
+      Connection db = PortalUtils.useConnection(request);
       TeamMemberList teamMembers = new TeamMemberList();
       teamMembers.setProjectId(project.getId());
       teamMembers.setWithNotificationsSet(Constants.TRUE);

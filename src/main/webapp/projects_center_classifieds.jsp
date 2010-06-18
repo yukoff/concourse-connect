@@ -57,7 +57,7 @@
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
-  <h1><ccp:tabLabel name="Classifieds" object="project"/></h1>
+  <%--<h1><ccp:tabLabel name="Classifieds" object="project"/></h1>--%>
   <c:if test="${!empty actionError}"><%= showError(request, "actionError") %></c:if>
   <c:if test="${empty classifiedList}">
     <ccp:label name="projectsCenterAds.noAds"><p>There are currently no classifieds.</p></ccp:label>
@@ -71,19 +71,15 @@
     <div class="listingContainer">
       <div class="listingHeaderContainer">
         <h3><%= toHtml(thisClassified.getTitle()) %></h3>
-        <div class="version">
-          <span class="red">
-            <ccp:evaluate if="<%= thisClassified.getPublishDate() == null %>">
-              <ccp:label name="classified.unpublished">Unpublished</ccp:label>
-            </ccp:evaluate>
-            <ccp:evaluate if="<%= thisClassified.isExpired() %>">
-              <ccp:label name="classified.expired">Expired</ccp:label>
-            </ccp:evaluate>
-            <ccp:evaluate if="<%= thisClassified.isScheduledInFuture() %>">
-              <ccp:label name="classified.expired">Scheduled in future</ccp:label>
-            </ccp:evaluate>
-          </span>
-        </div>
+        <ccp:evaluate if="<%= thisClassified.getPublishDate() == null %>">
+          <div class="portlet-message-alert"><p><ccp:label name="classified.unpublished">Unpublished</ccp:label></p></div>
+        </ccp:evaluate>
+        <ccp:evaluate if="<%= thisClassified.isExpired() %>">
+          <div class="portlet-message-alert"><p><ccp:label name="classified.expired">Expired</ccp:label></p></div>
+        </ccp:evaluate>
+        <ccp:evaluate if="<%= thisClassified.isScheduledInFuture() %>">
+          <div class="portlet-message-alert"><p><ccp:label name="classified.expired">Scheduled in future</ccp:label></p></div>
+        </ccp:evaluate>
         <div class="details">
           <ccp:evaluate if="<%= thisClassified.getPublishDate() != null %>">
             <div>
@@ -95,6 +91,7 @@
             <div>
               <ccp:label name="classified.expires">Expires</ccp:label>
               <ccp:tz timestamp="<%= thisClassified.getExpirationDate() %>" dateFormat="<%= DateFormat.LONG %>" />
+              (<ccp:tz timestamp="<%= thisClassified.getExpirationDate() %>" pattern="relative" />)
               <ccp:permission name="project-classifieds-admin">
                 <ccp:evaluate if="<%= !thisClassified.isExpired() %>">
                   <portlet:actionURL var="expireUrl" portletMode="view">
@@ -170,7 +167,7 @@
             <portlet:param name="portlet-object" value="classifieds"/>
             <portlet:param name="portlet-value" value="${thisClassified.id}"/>
             <portlet:param name="portlet-command" value="setRating"/>
-            <portlet:param name="v" value="\${vote}"/>
+            <portlet:param name="v" value="{vote}"/>
             <portlet:param name="out" value="text"/>
           </portlet:renderURL>
           <ccp:rating id='${thisClassified.id}'
@@ -187,12 +184,12 @@
             <% FileItem thisFile = (FileItem)pageContext.getAttribute("fileItem"); %>
             <c:choose>
              <c:when test="<%= thisFile.isImageFormat() %>">
-              <div<%-- MOVED TO CSS style="float:left; text-align:center;"--%>>
-                <img <%--style="margin: 5px;"  --%>
+              <div>
+                <img
                      src="<%= ctx %>/ProjectManagementClassifieds.do?command=Download&pid=<%= project.getId() %>&cid=${thisClassified.id}&fid=${fileItem.id}&view=true&ext=${fileItem.extension}&size=<%=Classified.DEFAULT_IMAGE_WIDTH%>x<%=Classified.DEFAULT_IMAGE_HEIGHT%>"
                      alt="<c:out value='${fileItem.subject} - ${project.title}'/> image" title="<c:out value='${fileItem.subject} - ${project.title}'/> image"/>
                 <ccp:permission name="project-classifieds-add">
-                  <br/><a href="javascript:confirmDelete('<%= ctx %>/ProjectManagementClassifieds.do?command=FileDelete&pid=<%= project.getId()%>&fid=${fileItem.id}&cid=${thisClassified.id}')"><em>(Delete?)</em></a>
+                  <br /><a href="javascript:confirmDelete('<%= ctx %>/ProjectManagementClassifieds.do?command=FileDelete&pid=<%= project.getId()%>&fid=${fileItem.id}&cid=${thisClassified.id}')"><em>(Delete?)</em></a>
                 </ccp:permission>
               </div>
              </c:when>
@@ -207,35 +204,35 @@
             </c:choose>
           </c:forEach>
           <c:if test="${!empty nonImageList}">
-          <h6><ccp:label name="classifieds.attachments">Attachments</ccp:label></h6>
-          <ul>
-            <c:forEach var="fileItem" items="${nonImageList}">
-              <li>
-                <%-- todo
-                <portlet:renderURL var="downloadUrl">
-                  <portlet:param name="portlet-action" value="download"/>
-                  <portlet:param name="portlet-object" value="classified-ad-file"/>
-                  <portlet:param name="portlet-params" value="${fileItem.id}"/>
-                </portlet:renderURL>
-                --%>
-               <a href="<%= ctx %>/ProjectManagementClassifieds.do?command=Download&pid=<%= project.getId() %>&cid=${thisClassified.id}&fid=${fileItem.id}"><c:out value="${fileItem.clientFilename}"/></a>
-               <ccp:permission name="project-classifieds-add">
-                 <a href="javascript:confirmDelete('<%= ctx %>/ProjectManagementClassifieds.do?command=FileDelete&pid=<%= project.getId()%>&fid=${fileItem.id}&cid=${thisClassified.id}')"><em>(Delete?)</em></a>
-               </ccp:permission>
-              </li>
-            </c:forEach>
-          </ul>
-        </c:if>
-        <span class="tagList">
-      		<portlet:renderURL var="setTagsUrl" windowState="maximized">
-      			<portlet:param name="portlet-action" value="modify"/>
-        		<portlet:param name="portlet-command" value="setTags" />
-        		<portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_CLASSIFIEDS %>"/>
-        		<portlet:param name="portlet-value" value="${thisClassified.id}"/>
-        		<portlet:param name="popup" value="true" />
-	      	</portlet:renderURL>
-  	    	<ccp:tags url="${setTagsUrl}" />
-    		</span>
+            <h6><ccp:label name="classifieds.attachments">Attachments</ccp:label></h6>
+            <ul>
+              <c:forEach var="fileItem" items="${nonImageList}">
+                <li>
+                  <%-- todo
+                  <portlet:renderURL var="downloadUrl">
+                    <portlet:param name="portlet-action" value="download"/>
+                    <portlet:param name="portlet-object" value="classified-ad-file"/>
+                    <portlet:param name="portlet-params" value="${fileItem.id}"/>
+                  </portlet:renderURL>
+                  --%>
+                 <a href="<%= ctx %>/ProjectManagementClassifieds.do?command=Download&pid=<%= project.getId() %>&cid=${thisClassified.id}&fid=${fileItem.id}"><c:out value="${fileItem.clientFilename}"/></a>
+                 <ccp:permission name="project-classifieds-add">
+                   <a href="javascript:confirmDelete('<%= ctx %>/ProjectManagementClassifieds.do?command=FileDelete&pid=<%= project.getId()%>&fid=${fileItem.id}&cid=${thisClassified.id}')"><em>(Delete?)</em></a>
+                 </ccp:permission>
+                </li>
+              </c:forEach>
+            </ul>
+          </c:if>
+          <span class="tagList">
+            <portlet:renderURL var="setTagsUrl" windowState="maximized">
+              <portlet:param name="portlet-action" value="modify"/>
+              <portlet:param name="portlet-command" value="setTags" />
+              <portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_CLASSIFIEDS %>"/>
+              <portlet:param name="portlet-value" value="${thisClassified.id}"/>
+              <portlet:param name="popup" value="true" />
+            </portlet:renderURL>
+            <ccp:tags url="${setTagsUrl}" />
+          </span>
         </div>
       </div>
       <% pageContext.removeAttribute("nonImageList"); %>
@@ -243,8 +240,6 @@
 <%
   }
 %>
-  <c:if test="${projectClassifiedsInfo.numberOfPages > 1}">
-    <div class="pagination">
-      <ccp:paginationControl object="projectClassifiedsInfo"/>
-    </div>
-  </c:if>
+<c:if test="${projectClassifiedsInfo.numberOfPages > 1}">
+  <ccp:paginationControl object="projectClassifiedsInfo"/>
+</c:if>

@@ -142,14 +142,13 @@
             <ul>
               <c:choose>
                 <c:when test="${folder eq 'inbox'}">
-					<li>From: <ccp:username id="${privateMessage.enteredBy}" showPresence="${true}"/></li>
+			        		<li>From: <ccp:username id="${privateMessage.enteredBy}" showPresence="${true}"/></li>
                 </c:when>
                 <c:when test="${folder eq 'sent'}">
                   <li>To: <ccp:username id="${privateMessage.project.owner}" showPresence="${true}"/></li>
                 </c:when>
               </c:choose>
-              <li class="date"><ccp:tz timestamp="${privateMessage.entered}" dateFormat="<%= DateFormat.SHORT %>"
-                                          default="&nbsp;"/></li>
+              <li class="date"><ccp:tz timestamp="${privateMessage.entered}" dateFormat="<%= DateFormat.SHORT %>" default="&nbsp;"/></li>
             </ul>
           </dt>
           <dd>
@@ -159,12 +158,10 @@
                   <li>
                   	<c:choose>
                   		<c:when test="${empty privateMessage.linkProject}">
-		                  	About this <a href="${ctx}/show/${privateMessage.project.uniqueId}/${privateMessage.itemLink}"><c:out
-		                    value="${privateMessage.itemLabel}"/></a>
+		                  	&raquo; About this <a href="${ctx}/show/${privateMessage.project.uniqueId}${privateMessage.itemLink}"><c:out value="${privateMessage.itemLabel}"/></a>
 	                    </c:when>
 	                    <c:otherwise>
-		                  	About this <a href="${ctx}/show/${privateMessage.linkProject.uniqueId}/${privateMessage.itemLink}"><c:out
-		                    value="${privateMessage.itemLabel}"/></a>
+		                  	&raquo; About this <a href="${ctx}/show/${privateMessage.linkProject.uniqueId}${privateMessage.itemLink}"><c:out value="${privateMessage.itemLabel}"/></a>
 	                    </c:otherwise>
 	                </c:choose>
 	                </li>
@@ -176,7 +173,7 @@
                     <c:if test="${fn:length(privateMessage.body) <= 100}" > [<a href="${ctx}/show/${project.uniqueId}/message/${folder}/${privateMessage.id}">show message</a>]</c:if>
                     <c:if test="${folder ne 'sent'}">
                       <ccp:permission name="project-private-messages-reply">
-                        &nbsp;[<a href="javascript:showPanel('ContactUs','${ctx}/show/${privateMessage.user.profileProject.uniqueId}/app/compose_message?module=inbox&id=${privateMessage.id}',700)">Reply</a>]
+                        &nbsp;[<a href="javascript:showPanel('ContactUs','${ctx}/show/${privateMessage.user.profileProject.uniqueId}/app/compose_message?module=inbox&id=${privateMessage.id}',700)">reply</a>]
                       </ccp:permission>
                     </c:if>
                   </span>

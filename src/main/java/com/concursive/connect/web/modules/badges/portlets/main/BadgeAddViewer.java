@@ -97,7 +97,7 @@ public class BadgeAddViewer implements IPortletViewer {
     int badgeId = Integer.parseInt(request.getParameter("id"));
 
     // Determine the database connection
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Make sure the badge matches the project category
     Badge badge = BadgeUtils.loadBadge(badgeId);

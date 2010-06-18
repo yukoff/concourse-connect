@@ -57,8 +57,7 @@ response.setStatus(404);
 <body>
 <h1>404: Page Not Found</h1>
 <p>
-  You may be able to hit the back button on your browser, review your selection,
-  and try your request again.
+  The page you are trying to access could not be found at this time.
 </p>
 </body>
 </html>

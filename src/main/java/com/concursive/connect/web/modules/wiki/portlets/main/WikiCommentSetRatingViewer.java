@@ -85,7 +85,7 @@ public class WikiCommentSetRatingViewer implements IPortletViewer {
     }
 
     // Determine the database connection
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
 
     //load the wiki
     String subject = request.getParameter("subject");

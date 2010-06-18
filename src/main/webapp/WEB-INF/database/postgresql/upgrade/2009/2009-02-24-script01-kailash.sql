@@ -1,13 +1,13 @@
-ALTER TABLE project_news_rating ADD COLUMN inappropriate BOOLEAN DEFAULT FALSE;
-ALTER TABLE project_news ADD COLUMN inappropriate_count INTEGER DEFAULT 0;
+ALTER TABLE project_news_rating ADD inappropriate BOOLEAN DEFAULT FALSE;
+ALTER TABLE project_news ADD inappropriate_count INTEGER DEFAULT 0;
 
-ALTER TABLE project_wiki_rating ADD COLUMN inappropriate BOOLEAN DEFAULT FALSE;
-ALTER TABLE project_wiki ADD COLUMN inappropriate_count INTEGER DEFAULT 0;
+ALTER TABLE project_wiki_rating ADD inappropriate BOOLEAN DEFAULT FALSE;
+ALTER TABLE project_wiki ADD inappropriate_count INTEGER DEFAULT 0;
 
-ALTER TABLE project_issues ADD COLUMN rating_count INTEGER DEFAULT 0 NOT NULL;
-ALTER TABLE project_issues ADD COLUMN rating_value INTEGER DEFAULT 0 NOT NULL;
-ALTER TABLE project_issues ADD COLUMN rating_avg FLOAT DEFAULT 0 NOT NULL;
-ALTER TABLE project_issues ADD COLUMN inappropriate_count INTEGER DEFAULT 0;
+ALTER TABLE project_issues ADD rating_count INTEGER DEFAULT 0 NOT NULL;
+ALTER TABLE project_issues ADD rating_value INTEGER DEFAULT 0 NOT NULL;
+ALTER TABLE project_issues ADD rating_avg FLOAT DEFAULT 0 NOT NULL;
+ALTER TABLE project_issues ADD inappropriate_count INTEGER DEFAULT 0;
 
 CREATE TABLE project_issues_rating (
   rating_id BIGSERIAL PRIMARY KEY,

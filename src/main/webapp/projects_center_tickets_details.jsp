@@ -253,7 +253,7 @@
           <td valign="top">
            <c:choose>
              <c:when test="${ticket.foundTicketLinkObject eq true}">
-                <a href="${ctx}/show/${ticket.linkProject.uniqueId}/${ticket.itemLink}">${ticket.itemLabel}</a>
+                <a href="${ctx}/show/${ticket.linkProject.uniqueId}${ticket.itemLink}">${ticket.itemLabel}</a>
               </c:when>
               <c:otherwise>
                 ${ticket.itemLabel}
@@ -376,11 +376,9 @@
                 %>
                   <li>
                     <div class="portlet-section-body">
-                      <%= thisFile.getImageTag("-23", ctx) %>
+                      <div style="float:left;"><%= thisFile.getImageTag("-23", ctx) %></div>
                       <h3>
-                        <a href="<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"
-                          <ccp:evaluate if="<%= thisFile.isImageFormat() %>"> rel="shadowbox[Images]"</ccp:evaluate>><%= toHtml(thisFile.getSubject()) %>
-                        </a>
+                        <%= toHtml(thisFile.getSubject()) %>
                       </h3>
                       <dl>
                         <dt>
@@ -415,8 +413,7 @@
                           <%-- Download --%>
                           <a href="${downloadUrl}">
                             <img src="${ctx}/images/icons/get_32x32.png" alt="Download icon"/>
-                            <a href="<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=<%= thisFile.getId()%>">
-                              download
+                            <a href="<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=<%= thisFile.getId()%>">download</a>
                               <span><%= thisFile.getRelativeSize() %>KB&nbsp;</span>
                           </a>
                         </p>
@@ -424,11 +421,7 @@
                       <ul>
                         <ccp:evaluate if="<%= thisFile.isImageFormat() %>">
                           <li>
-                            <a href="<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>"
-                               rel="shadowbox[Images]">
-                              <img src="<%= ctx %>/images/icons/magnifier_search.png" alt="Zoom icon"/>
-                              preview
-                            </a>
+                            <a href="<%= ctx %>/ProjectManagementTickets.do?command=FileDownload&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&fid=<%= thisFile.getId() %><%= thisFile.isImageFormat() ? "&view=true&ext=" + thisFile.getExtension() : "" %>" rel="shadowbox[ticketImages];width=660;imageWidth=640;imageHeight=480"><img src="<%= ctx %>/images/icons/magnifier_search.png" alt="Zoom icon"/>preview</a>
                           </li>
                         </ccp:evaluate>
                         <li>

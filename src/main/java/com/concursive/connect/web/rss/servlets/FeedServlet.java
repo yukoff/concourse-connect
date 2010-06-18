@@ -100,6 +100,11 @@ public class FeedServlet extends HttpServlet {
   }
 
   public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    try {
+      request.setCharacterEncoding("UTF-8");
+    } catch (Exception e) {
+      LOG.warn("Unsupported encoding");
+    }
     Connection db = null;
     try {
 
@@ -163,8 +168,8 @@ public class FeedServlet extends HttpServlet {
               String requestedFeed = path.substring(path.indexOf("/feed/") + "/feed/".length(), path.indexOf(".xml")) + ".xml";
               LOG.debug("Requested feed: " + requestedFeed);
               feed = FeedUtils.loadFeed(requestedFeed + "," + purpose, url);
-              feed.setTitle(prefs.get("TITLE") + " - " + projectCategory.getDescription());
-              feed.setDescription(prefs.get("TITLE") + " - " + projectCategory.getDescription() + " feed");
+              feed.setTitle(prefs.get("TITLE") + " - " + projectCategory.getLabel());
+              feed.setDescription(prefs.get("TITLE") + " - " + projectCategory.getLabel() + " feed");
               break;
             }
           }

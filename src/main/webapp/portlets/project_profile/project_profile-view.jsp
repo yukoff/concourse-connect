@@ -112,8 +112,8 @@
       } else {
         hideSpan('<portlet:namespace/>profileImageDelete');
       }
-      var link = "${ctx}/show/${project.uniqueId}/image/" + url.replace("210x150", "0x0");
-      YAHOO.util.Dom.get('<portlet:namespace/>profileImage').innerHTML = "<a href=\"javascript:<portlet:namespace/>showImage('" + escape(link) + "',null,'<portlet:namespace/>images');\">" +
+      var link = "${ctx}/show/${project.uniqueId}/image/" + url.replace("210x150", "640x480");
+      YAHOO.util.Dom.get('<portlet:namespace/>profileImage').innerHTML = "<a href=\"javascript:<portlet:namespace/>showImage('" + escape(link) + "',660,'<portlet:namespace/>Images');\">" +
                                                                          "<img src='${ctx}/show/${project.uniqueId}/image/" + url + "' /></a>";
     }
     function <portlet:namespace/>deleteImage() {
@@ -132,17 +132,17 @@
       profileImages : [
         <c:forEach items="${project.images}" var="img" varStatus="status">
         <c:set var="pImage" value="${img}"/>
-        { url: "${ctx}/show/${project.uniqueId}/image/<%= ((FileItem)pageContext.getAttribute("pImage")).getUrlName(0,0) %>",
+        { url: "${ctx}/show/${project.uniqueId}/image/<%= ((FileItem)pageContext.getAttribute("pImage")).getUrlName(640,480) %>",
           <c:choose>
           <c:when test="${!empty img.comment}">
-          title: "<c:out value="${img.comment}" />",
+            title: "<c:out value="${img.comment}" />",
           </c:when>
           <c:otherwise>
-          title: "<c:if test="${!empty img.subject}"><c:out value='${img.subject} -' /></c:if><c:out value='${project.title}'/> image",
+            title: "<c:if test="${!empty img.subject}"><c:out value='${img.subject} -' /></c:if><c:out value='${project.title}'/> image",
           </c:otherwise>
           </c:choose>
-          height: ${img.imageHeight},
-          width: ${img.imageWidth}
+          width: 640,
+          height: 480
         }<c:if test="${!status.last}">,</c:if>
         </c:forEach>
       ]};
@@ -179,12 +179,8 @@ Can be removed and made into a seperate portlet --%>
 <c:choose>
   <c:when test="${!empty project.images}">
     <c:set var="startImage" value="<%= project.getImages().get(0) %>" scope="request"/>
-    <c:set var="startImageUrlName0" scope="request">
-      <%= project.getImages().get(0).getUrlName(0,0) %>
-    </c:set>
-    <c:set var="startImageUrlName210" scope="request">
-      <%= project.getImages().get(0).getUrlName(210,150) %>
-    </c:set>
+    <c:set var="startImageUrlName0" scope="request"><%= project.getImages().get(0).getUrlName(640,480) %></c:set>
+    <c:set var="startImageUrlName210" scope="request"><%= project.getImages().get(0).getUrlName(210,150) %></c:set>
   </c:when>
   <c:otherwise>
     <c:set var="startImage" value="<%= new FileItem() %>" scope="request"/>
@@ -229,12 +225,11 @@ Can be removed and made into a seperate portlet --%>
         </li>
         <c:choose>
           <c:when test="${!empty startImage.comment}">
-            <c:set var="siTitle" value="${startImage.comment}"/>
+            <c:set var="siTitle"><c:out value="${startImage.comment}"/></c:set>
           </c:when>
           <c:otherwise>
             <c:set var="siTitle">
-              <c:if test="${!empty startImage.subject}"><c:out value='${startImage.subject} -'/></c:if><c:out
-                value='${project.title}'/> image
+            <c:if test="${!empty startImage.subject}"><c:out value='${startImage.subject} - '/></c:if><c:out value='${project.title}'/> image
             </c:set>
           </c:otherwise>
         </c:choose>
@@ -250,12 +245,11 @@ Can be removed and made into a seperate portlet --%>
          <p>1 / <%= project.getImages().size() %></p>
     --%>
     <c:if test="${!empty project.images}">
+      <jsp:useBean id="siTitle" class="java.lang.String"/>
       <p>
-        <a href="javascript:showImage('<c:out value="${siTitle}" />','${ctx}/show/${project.uniqueId}/image/${startImageUrlName0}', null, ${startImage.imageHeight}, ${startImage.imageWidth}, '<portlet:namespace/>images');"
-           title="Start Slideshow">
-          <img src="${ctx}/images/imageCarousel/grfx_pc_Slideshow.png"
-               alt="<ccp:label name="profile.enlargeImages">Enlarge images</ccp:label>"> Enlarge images
-        </a>
+        <a href="javascript:showImage('<%= StringUtils.jsQuote(StringUtils.toHtmlValue(siTitle)) %>','${ctx}/show/${project.uniqueId}/image/${startImageUrlName0}',660,480,640,'<portlet:namespace/>Images');"
+           title="Start Slideshow"><img src="${ctx}/images/imageCarousel/grfx_pc_Slideshow.png"
+               alt="<ccp:label name="profile.enlargeImages">Enlarge images</ccp:label>"> Enlarge images</a>
       </p>
     </c:if>
   </div>
@@ -265,26 +259,39 @@ Can be removed and made into a seperate portlet --%>
     <c:if test="${empty project.images}">
       <div class="portlet-menu-caption">
         <img src="${ctx}/images/imageCarousel/no_photo_image.png" alt="no image">
-
-        <p>
-          <span>Share your Images of <c:out value="${project.title}"/></span>
-        </p>
         <ccp:permission name="project-profile-images-add">
+          <p>
+            <span>Share your Images of <c:out value="${project.title}"/></span>
+          </p>
           <p><a
               href="${ctx}/FileAttachments.do?command=ShowForm&lmid=<%= Constants.PROJECT_IMAGE_FILES %>&pid=${project.id}&liid=${project.id}&selectorId=<%= FileItem.createUniqueValue() %>&selectorMode=single&allowCaption=true"
               rel="shadowbox">Upload Now!</a></p>
         </ccp:permission>
         <ccp:permission name="project-profile-images-add" if="none">
-          <p>
-            <a href="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/login<ccp:evaluate if='<%= request.getAttribute("requestedURL") != null %>'>?redirectTo=<%= URLEncoder.encode((String)request.getAttribute("requestedURL"), "UTF-8") %></ccp:evaluate>"
-               title="Login to <c:out value="${requestMainProfile.title}"/>" accesskey="s" rel="nofollow">Sign In</a>
-            <ccp:evaluate if='<%= "true".equals(applicationPrefs.get("REGISTER")) %>'>
-              or
-              <a href="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/register"
-                 title="Register with  <c:out value="${requestMainProfile.title}"/>" accesskey="r"
-                 rel="nofollow">Register</a>
-            </ccp:evaluate>
-          </p>
+          <c:choose>
+            <c:when test="${user.loggedIn}">
+              <%-- User is logged in but can't add images --%>
+              <p>
+                <span>There are no Images of <c:out value="${project.title}"/></span>
+              </p>
+            </c:when>
+            <c:otherwise>
+              <%-- User isn't logged in, and it's unknown if they can upload images --%>
+              <p>
+                <span>Share your Images of <c:out value="${project.title}"/></span>
+              </p>
+              <p>
+                <a href="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/login<ccp:evaluate if='<%= request.getAttribute("requestedURL") != null %>'>?redirectTo=<%= URLEncoder.encode((String)request.getAttribute("requestedURL"), "UTF-8") %></ccp:evaluate>"
+                 title="Login to <c:out value="${requestMainProfile.title}"/>" accesskey="s" rel="nofollow">Sign In</a>
+                <ccp:evaluate if='<%= "true".equals(applicationPrefs.get("REGISTER")) %>'>
+                  or
+                  <a href="http<ccp:evaluate if="<%= sslEnabled %>">s</ccp:evaluate>://<%= getServerUrl(request) %>/register"
+                     title="Register with  <c:out value="${requestMainProfile.title}"/>" accesskey="r"
+                     rel="nofollow">Register</a>
+                </ccp:evaluate>
+              </p>
+            </c:otherwise>
+          </c:choose>
         </ccp:permission>
       </div>
     </c:if>
@@ -292,18 +299,18 @@ Can be removed and made into a seperate portlet --%>
     <c:if test="${!empty project.images}">
       <c:choose>
         <c:when test="${!empty startImage.comment}">
-          <c:set var="imageCaption" value="${startImage.comment}"/>
+          <c:set var="imageCaption"><c:out value="${startImage.comment}"/></c:set>
         </c:when>
         <c:otherwise>
           <c:set var="imageCaption">
-            <c:if test="${!empty startImage.subject}"><c:out value='${startImage.subject} -'/></c:if><c:out
-              value='${project.title}'/> image
+            <c:if test="${!empty startImage.subject}"><c:out value='${startImage.subject} - '/></c:if><c:out value='${project.title}'/> image
           </c:set>
         </c:otherwise>
       </c:choose>
+      <jsp:useBean id="imageCaption" class="java.lang.String"/>
       <div id="<portlet:namespace/>profileImage">
         <a title="<c:out value='${imageCaption}'/>"
-           href="javascript:showImage('<c:out value="${imageCaption}" />','${ctx}/show/${project.uniqueId}/image/${startImageUrlName0}',null,${startImage.imageHeight},${startImage.imageWidth}, '<portlet:namespace/>images');">
+           href="javascript:showImage('<%= StringUtils.jsQuote(StringUtils.toHtmlValue(imageCaption))%>','${ctx}/show/${project.uniqueId}/image/${startImageUrlName0}',660,480,640, '<portlet:namespace/>Images');">
           <img alt="<c:out value='${startImage.subject} - ${project.title}'/> image"
                src="<%= ctx %>/show/${project.uniqueId}/image/${startImageUrlName210}"/>
         </a>
@@ -346,19 +353,18 @@ Can be removed and made into a seperate portlet --%>
           <c:forEach items="${project.images}" var="fileItem" varStatus="rowCounter">
             <c:choose>
               <c:when test="${!empty fileItem.comment}">
-                <c:set var="fiTitle" value="${fileItem.comment}"/>
+                <c:set var="fiTitle"><c:out value="${fileItem.comment}"/></c:set>
               </c:when>
               <c:otherwise>
                 <c:set var="fiTitle">
-                  <c:if test="${!empty fileItem.subject}"><c:out value='${fileItem.subject} -'/></c:if><c:out
-                    value='${project.title}'/> image
+                  <c:if test="${!empty fileItem.subject}"><c:out value='${fileItem.subject} - '/></c:if><c:out value='${project.title}'/> image
                 </c:set>
               </c:otherwise>
             </c:choose>
             <c:set var="fileItem" value="${fileItem}" scope="request"/>
             <jsp:useBean id="fileItem" class="com.concursive.connect.web.modules.documents.dao.FileItem" scope="request"/>
             <li id="<portlet:namespace/>mycarousel-item-${rowCounter.count}"><a
-                rel="shadowbox[<portlet:namespace/>images];width=;imageWidth=${fileItem.imageWidth};imageHeight=${fileItem.imageHeight};imageUrl=${ctx}/show/${project.uniqueId}/image/<%= fileItem.getUrlName(0,0) %>"
+                rel="shadowbox[<portlet:namespace/>Images];width=;imageWidth=640;imageHeight=480;imageUrl=${ctx}/show/${project.uniqueId}/image/<%= fileItem.getUrlName(640,480) %>"
                 title="<c:out value='${fiTitle}'/>"
                 href="javascript:<portlet:namespace/>spotlight('<%= StringUtils.jsStringEscape(fileItem.getUrlName(210,150)) %>',<%= fileItem.getEnteredBy() %>);"><img
                 width="50" height="50" alt="<c:out value='${fileItem.subject} - ${project.title}'/> image"
@@ -390,7 +396,9 @@ Can be removed and made into a seperate portlet --%>
 
 <%-- Begin Actual Content : --%>
 <div class="portlet-section-body">
-<h3><c:out value="${title}"/></h3>
+<c:if test="${!empty title}">  
+  <h3><c:out value="${title}"/></h3>
+</c:if>
 <%-- Display Basic Info Test --%>
 <c:if test="${hideBasicInformation ne 'true'}">
   <h1>
@@ -442,8 +450,7 @@ Can be removed and made into a seperate portlet --%>
       <p class="category">
         <span>Category:</span>
         <a href="${ctx}/page/categories/<c:out value="${fn:toLowerCase(project.category.description)}"/>/<c:out value="${fn:toLowerCase(fn:replace(subCategory1.description, ' ', '_'))}"/>"
-           title="Category <c:out value="${subCategory1.description}"/>"><c:out
-            value="${subCategory1.description}"/></a>
+           title="Category <c:out value="${subCategory1.label}"/>"><c:out value="${subCategory1.label}"/></a>
       </p>
     </c:if>
       <%--
@@ -463,7 +470,7 @@ Can be removed and made into a seperate portlet --%>
 <c:if test="${!empty wiki}">
   <ccp:permission name="project-profile-admin">
     <a href="javascript:showPanel('','${ctx}/show/${project.uniqueId}/app/edit_wiki','600')"
-       class="portlet-menu-edit">Edit Details</a>
+       class="portlet-menu-edit">Edit profile</a>
   </ccp:permission>
 </c:if>
 <c:if test="${showAuthor eq 'true'}">
@@ -516,10 +523,14 @@ Can be removed and made into a seperate portlet --%>
   <%--@elvariable id="projectBadge" type="com.concursive.connect.web.modules.badges.dao.ProjectBadge"--%>
   <%--@elvariable id="badge" type="com.concursive.connect.web.modules.badges.dao.Badge"--%>
 <c:if test="${!empty projectBadgeList}">
-  <dl>
+  <dl class="horizontal-list">
     <dt>Badges</dt>
     <c:forEach items="${projectBadgeList}" var="projectBadge">
-      <dd><c:out value="${projectBadge.badge.title}"/></dd>
+      <c:set var="projectBadge" value="${projectBadge}" scope="request"/>
+      <jsp:useBean id="projectBadge" class="com.concursive.connect.web.modules.badges.dao.ProjectBadge" scope="request"/>
+      <ccp:evaluate if="<%= projectBadge.getBadge().getLogoId() != -1 %>">
+        <dd><a href="${ctx}/badge/${projectBadge.badge.id}" rel="shadowbox"><img alt="<c:out value="${projectBadge.badge.title}"/>" title="<c:out value="${projectBadge.badge.title}"/>" src="${ctx}/image/<%= projectBadge.getBadge().getLogo().getUrlName(45,45) %>" width="45" height="45" class="badgeImage" /></a></dd>
+      </ccp:evaluate>
     </c:forEach>
   </dl>
 </c:if>

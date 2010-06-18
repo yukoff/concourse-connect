@@ -83,11 +83,28 @@ public class MeetingList extends ArrayList<Meeting> {
   private int projectCategoryId = -1;
   private List<Integer> projectCategoryIdList = null; // set if multiple category ids are needed for filter
   private boolean isDimdim = false;
+  private boolean isWebcast = false;
+
+  public boolean isWebcast() {
+    return isWebcast;
+  }
+
+  public void setIsWebcast(boolean isWebcast) {
+    this.isWebcast = isWebcast;
+  }
+
+  public void setIsWebcast(String tmp) {
+    this.isWebcast = DatabaseUtils.parseBoolean(tmp);
+  }
+
   private boolean buildAttendees = false;
 
-  //calendar
+  // api - based on the start date of the event (start date only)
   protected java.sql.Timestamp alertRangeStart = null;
   protected java.sql.Timestamp alertRangeEnd = null;
+  // calendar - takes into account duration of an event (start and end date)
+  protected java.sql.Timestamp eventSpanStart = null;
+  protected java.sql.Timestamp eventSpanEnd = null;
 
 
   public MeetingList() {
@@ -176,6 +193,30 @@ public class MeetingList extends ArrayList<Meeting> {
 
   public java.sql.Timestamp getAlertRangeEnd() {
     return alertRangeEnd;
+  }
+
+  public void setEventSpanStart(java.sql.Timestamp tmp) {
+    this.eventSpanStart = tmp;
+  }
+
+  public void setEventSpanStart(String tmp) {
+    this.eventSpanStart = DatabaseUtils.parseTimestamp(tmp);
+  }
+
+  public java.sql.Timestamp getEventSpanStart() {
+    return eventSpanStart;
+  }
+
+  public void setEventSpanEnd(java.sql.Timestamp tmp) {
+    this.eventSpanEnd = tmp;
+  }
+
+  public void setEventSpanEnd(String tmp) {
+    this.eventSpanEnd = DatabaseUtils.parseTimestamp(tmp);
+  }
+
+  public java.sql.Timestamp getEventSpanEnd() {
+    return eventSpanEnd;
   }
 
   /**
@@ -374,6 +415,19 @@ public class MeetingList extends ArrayList<Meeting> {
     if (alertRangeEnd != null) {
       sqlFilter.append("AND m.start_date < ? ");
     }
+    if (eventSpanStart != null && eventSpanEnd != null) {
+      // Find events within a start and end date
+      sqlFilter.append("AND (");
+      sqlFilter.append("(m.start_date >= ? AND m.start_date < ?) ");
+      sqlFilter.append("OR (m.start_date <= ? AND m.end_date >= ?) ");
+      sqlFilter.append(") ");
+    } else if (eventSpanStart != null) {
+      // Find the next upcoming events given just a start date
+      sqlFilter.append("AND (");
+      sqlFilter.append("(m.start_date >= ?) ");
+      sqlFilter.append("OR (m.start_date <= ? AND m.end_date >= ?) ");
+      sqlFilter.append(") ");
+    }
     if (byInvitationOnly != Constants.UNDEFINED) {
       sqlFilter.append("AND by_invitation_only = ? ");
     }
@@ -399,6 +453,9 @@ public class MeetingList extends ArrayList<Meeting> {
     if (isDimdim) {
       sqlFilter.append("AND m.is_dimdim = ? ");
     }
+    if (isWebcast) {
+      sqlFilter.append("AND m.is_webcast = ? ");
+    }
   }
 
 
@@ -417,6 +474,16 @@ public class MeetingList extends ArrayList<Meeting> {
     if (alertRangeEnd != null) {
       pst.setTimestamp(++i, alertRangeEnd);
     }
+    if (eventSpanStart != null && eventSpanEnd != null) {
+      pst.setTimestamp(++i, eventSpanStart);
+      pst.setTimestamp(++i, eventSpanEnd);
+      pst.setTimestamp(++i, eventSpanStart);
+      pst.setTimestamp(++i, eventSpanStart);
+    } else if (eventSpanStart != null) {
+      pst.setTimestamp(++i, eventSpanStart);
+      pst.setTimestamp(++i, eventSpanStart);
+      pst.setTimestamp(++i, eventSpanStart);
+    }
     if (byInvitationOnly != Constants.UNDEFINED) {
       pst.setBoolean(++i, (byInvitationOnly == Constants.TRUE));
     }
@@ -434,6 +501,9 @@ public class MeetingList extends ArrayList<Meeting> {
       pst.setInt(++i, projectCategoryId);
     }
     if (isDimdim) {
+      pst.setBoolean(++i, true);
+    }
+    if (isWebcast) {
       pst.setBoolean(++i, true);
     }
     return i;
@@ -479,27 +549,27 @@ public class MeetingList extends ArrayList<Meeting> {
    * @return
    * @throws SQLException
    */
-  public HashMap queryRecordCount(Connection db, TimeZone timeZone) throws SQLException {
+  public HashMap<String, Integer> queryRecordCount(Connection db, TimeZone timeZone) throws SQLException {
     HashMap<String, Integer> events = new HashMap<String, Integer>();
     StringBuffer sqlCount = new StringBuffer();
     StringBuffer sqlFilter = new StringBuffer();
     StringBuffer sqlTail = new StringBuffer();
     sqlCount.append(
-        "SELECT " +
-            DatabaseUtils.castDateTimeToDate(db, "m.start_date") + " AS group_date, " +
-            "COUNT(*) AS recordcount " +
+        "SELECT m.start_date " +
             "FROM project_calendar_meeting m " +
             "WHERE m.meeting_id > -1 " +
             "AND m.start_date IS NOT NULL ");
-    sqlTail.append("GROUP BY group_date ");
     createFilter(sqlFilter);
     PreparedStatement pst = db.prepareStatement(sqlCount.toString() + sqlFilter.toString() + sqlTail.toString());
     prepareFilter(pst);
     ResultSet rs = pst.executeQuery();
     while (rs.next()) {
-      String alertDate = DateUtils.getServerToUserDateString(timeZone, DateFormat.SHORT, rs.getTimestamp("group_date"));
-      int alertCount = rs.getInt("recordcount");
-      events.put(alertDate, new Integer(alertCount));
+      String alertDate = DateUtils.getServerToUserDateString(timeZone, DateFormat.SHORT, rs.getTimestamp("start_date"));
+      int alertCount = 1;
+      if (events.containsKey(alertDate)) {
+        alertCount = events.get(alertDate) + 1;
+      }
+      events.put(alertDate, alertCount);
     }
     rs.close();
     pst.close();

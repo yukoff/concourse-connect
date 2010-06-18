@@ -46,11 +46,12 @@
 
 package com.concursive.connect.workflow.components.crm;
 
-import com.concursive.commons.api.DataRecord;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.contactus.dao.ContactUsBean;
+import com.concursive.crm.api.client.DataRecord;
 
 /**
  * Prepares the ContactUs information for sending to ConcourseSuite
@@ -79,41 +80,49 @@ public class TransformContactUsToLead extends ObjectHookComponent implements Com
     record.addField("nameLast", bean.getNameLast());
     record.addField("company", bean.getOrganization());
     // Process any notes...
-    StringBuffer notes = new StringBuffer(bean.getDescription());
-    if (bean.getFormData() != null) {
-      for (int i = 0; i < bean.getFormData().length; i++) {
-        if (notes.length() > 0) {
-          notes.append("; ");
-          notes.append(bean.getFormData()[i]);
+    if (StringUtils.hasText(bean.getDescription())) {
+      StringBuffer notes = new StringBuffer(bean.getDescription());
+      if (bean.getFormData() != null) {
+        for (int i = 0; i < bean.getFormData().length; i++) {
+          if (notes.length() > 0) {
+            notes.append("; ");
+            notes.append(bean.getFormData()[i]);
+          }
         }
       }
+      record.addField("notes", notes.toString());
     }
-    record.addField("notes", notes.toString());
     context.setAttribute(SaveLead.LEAD, record);
     // Transform the email
-    DataRecord email = new DataRecord();
-    email.setName("contactEmailAddress");
-    email.setAction(DataRecord.INSERT);
-    email.addField("email", bean.getEmail());
-    context.setAttribute(SaveLead.LEAD_EMAIL, email);
+    if (StringUtils.hasText(bean.getEmail())) {
+      DataRecord email = new DataRecord();
+      email.setName("contactEmailAddress");
+      email.setAction(DataRecord.INSERT);
+      email.addField("email", bean.getEmail());
+      context.setAttribute(SaveLead.LEAD_EMAIL, email);
+    }
     // Transform the phone number
-    DataRecord phone = new DataRecord();
-    phone.setName("contactPhoneNumber");
-    phone.setAction(DataRecord.INSERT);
-    phone.addField("number", bean.getBusinessPhone());
-    phone.addField("extension", bean.getBusinessPhoneExt());
-    context.setAttribute(SaveLead.LEAD_PHONE, phone);
+    if (StringUtils.hasText(bean.getBusinessPhone())) {
+      DataRecord phone = new DataRecord();
+      phone.setName("contactPhoneNumber");
+      phone.setAction(DataRecord.INSERT);
+      phone.addField("number", bean.getBusinessPhone());
+      phone.addField("extension", bean.getBusinessPhoneExt());
+      context.setAttribute(SaveLead.LEAD_PHONE, phone);
+    }
     // Transform the address
-    DataRecord address = new DataRecord();
-    address.setName("contactAddress");
-    address.setAction(DataRecord.INSERT);
-    address.addField("streetAddressLine1", bean.getAddressLine1());
-    address.addField("streetAddressLine2", bean.getAddressLine2());
-    address.addField("city", bean.getCity());
-    address.addField("state", bean.getState());
-    address.addField("zip", bean.getPostalCode());
-    address.addField("country", bean.getCountry());
-    context.setAttribute(SaveLead.LEAD_ADDRESS, address);
+    if (StringUtils.hasText(bean.getAddressLine1()) || StringUtils.hasText(bean.getState())) {
+      DataRecord address = new DataRecord();
+      address.setName("contactAddress");
+      address.setAction(DataRecord.INSERT);
+      address.addField("streetAddressLine1", bean.getAddressLine1());
+      address.addField("streetAddressLine2", bean.getAddressLine2());
+      address.addField("city", bean.getCity());
+      address.addField("state", bean.getState());
+      address.addField("zip", bean.getPostalCode());
+      address.addField("country", bean.getCountry());
+      context.setAttribute(SaveLead.LEAD_ADDRESS, address);
+    }
     return true;
   }
 }

@@ -155,7 +155,7 @@ public class TabbedMenuHandler extends TagSupport {
     final User user = (User) pageContext.getSession().getAttribute(Constants.SESSION_USER);
     final String language = (null != user.getLanguage())
         ? user.getLanguage()
-        : prefs.get("SYSTEM.LANGUAGE");
+        : prefs.get(ApplicationPrefs.LANGUAGE);
     final String newText = StringUtils.toHtml(StringUtils.getText(prefs.getLabel("tabbedMenu.tab." + text, language), text));
     // use the project title for the href title
     String title = newText;
@@ -182,7 +182,11 @@ public class TabbedMenuHandler extends TagSupport {
       } else if ("li".equals(type)) {
         // Render as list items
         out.write("<li>" +
-            "<a href=\"" + url + "\" title=\"" + title + "\"" + (selected ? " class=\"active\"" : "") + ">" +
+            "<a " +
+            (StringUtils.hasText(key) ? "id=\"ccp-tab-" + key + "\" " : "") +
+            "href=\"" + url + "\" " +
+            "title=\"" + title + "\"" +
+            (selected ? " class=\"active\"" : "") + ">" +
             "<span class=\"projectCenterList_tl\"></span><span class=\"projectCenterList_tr\"></span><em>" + newText + "</em><span class=\"projectCenterList_bl\"></span><span class=\"projectCenterList_br\"></span></a></li>");
       } else {
         // Render as table cells

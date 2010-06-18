@@ -1,8 +1,9 @@
 import java.sql.*;
 import java.util.*;
-import com.zeroio.iteam.base.*;
-import org.aspcfs.utils.web.PagedListInfo;
-import com.zeroio.utils.*;
+import com.concursive.connect.Constants;
+import com.concursive.connect.cache.utils.CacheUtils;
+import com.concursive.connect.web.utils.PagedListInfo;
+import com.concursive.connect.web.modules.profile.dao.*;
 
 // Get the categoryId for the permissions
 PermissionCategoryLookupList categoryList = new PermissionCategoryLookupList();

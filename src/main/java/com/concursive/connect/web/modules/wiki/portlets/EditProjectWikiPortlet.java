@@ -46,7 +46,6 @@
 package com.concursive.connect.web.modules.wiki.portlets;
 
 import com.concursive.commons.text.StringUtils;
-import com.concursive.commons.web.URLFactory;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
@@ -116,7 +115,7 @@ public class EditProjectWikiPortlet extends GenericPortlet {
       request.setAttribute(PROJECT, project);
 
       Connection db = null;
-      db = PortalUtils.getConnection(request);
+      db = PortalUtils.useConnection(request);
       if (!ProjectUtils.hasAccess(PortalUtils.getProject(request).getId(), PortalUtils.getUser(request), "project-profile-admin")) {
         request.setAttribute(HAS_PROJECT_ACCESS, "false");
       } else if (CLOSE.equals(viewType)) {
@@ -200,7 +199,7 @@ public class EditProjectWikiPortlet extends GenericPortlet {
   private int updateWiki(ActionRequest request) throws Exception {
     Project project = PortalUtils.getProject(request);
     Connection db = null;
-    db = PortalUtils.getConnection(request);
+    db = PortalUtils.useConnection(request);
     int resultCount = -1;
     // Existing entry
     Wiki originalWiki = WikiList.queryBySubject(db, "", project.getId());

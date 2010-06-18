@@ -91,7 +91,7 @@ public class DeleteTeamMemberAction implements IPortletAction {
     }
 
     // Determine the database connectivity
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Load the record and delete it
     TeamMember memberBeingChanged = new TeamMember(db, project.getId(), id);

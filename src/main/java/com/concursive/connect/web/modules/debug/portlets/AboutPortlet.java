@@ -46,6 +46,9 @@
 
 package com.concursive.connect.web.modules.debug.portlets;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import javax.portlet.*;
 import java.io.IOException;
 
@@ -57,6 +60,9 @@ import java.io.IOException;
  * @created Feb 9, 2007
  */
 public class AboutPortlet extends GenericPortlet {
+
+  private static Log LOG = LogFactory.getLog(AboutPortlet.class);
+
   private static final String VIEW_PAGE = "/portlets/about/about-view.jsp";
   private static final String EDIT_PAGE = "/portlets/about/about-edit.jsp";
   private static final String HELP_PAGE = "/portlets/about/about-help.jsp";
@@ -65,9 +71,7 @@ public class AboutPortlet extends GenericPortlet {
 
   public void doView(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("AboutPortlet-> doView");
-    }
+    LOG.debug("doView");
 
     // Generate a URL
     //PortletURL renderURL = response.createRenderURL();
@@ -87,6 +91,24 @@ public class AboutPortlet extends GenericPortlet {
     PortletPreferences prefs = request.getPreferences();
     String[] stringArrayNullValues = prefs.getValues("stringArrayNullValues", new String[]{null, "notNull", "notNull"});
 
+    // See if the session value is unique
+    PortletSession session = request.getPortletSession();
+    if (session == null) {
+      LOG.debug("Session is null!");
+    } else {
+      LOG.debug("Found session...");
+      // Retrieve from session
+      String value = (String) session.getAttribute("sessionValue");
+      LOG.debug(" Getting the session value...");
+      LOG.debug("  Value = " + value);
+      request.setAttribute("sessionValue", value);
+      // Set a value and try it right away
+      LOG.debug(" Setting the session value...");
+      request.getPortletSession().setAttribute("sessionValue", String.valueOf(System.currentTimeMillis()));
+      LOG.debug(" Getting the session value...");
+      LOG.debug("  Value = " + session.getAttribute("sessionValue"));
+    }
+
     // Dispatch to JSP
     PortletContext context = getPortletContext();
 
@@ -99,9 +121,7 @@ public class AboutPortlet extends GenericPortlet {
 
   protected void doEdit(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("AboutPortlet-> doEdit");
-    }
+    LOG.debug("doEdit");
     PortletContext context = getPortletContext();
     PortletRequestDispatcher requestDispatcher =
         context.getRequestDispatcher(EDIT_PAGE);
@@ -110,9 +130,7 @@ public class AboutPortlet extends GenericPortlet {
 
   protected void doHelp(RenderRequest request, RenderResponse response)
       throws PortletException, IOException {
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("AboutPortlet-> doHelp");
-    }
+    LOG.debug("doHelp");
     PortletContext context = getPortletContext();
     PortletRequestDispatcher requestDispatcher =
         context.getRequestDispatcher(HELP_PAGE);
@@ -121,11 +139,9 @@ public class AboutPortlet extends GenericPortlet {
 
   public void processAction(ActionRequest request, ActionResponse response)
       throws PortletException, IOException {
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("AboutPortlet-> processAction");
-    }
+    LOG.debug("processAction");
 
-    System.out.println("AboutPortlet-> Writing prefs...");
+    LOG.debug("Writing prefs...");
     PortletPreferences prefs = request.getPreferences();
     prefs.setValue("nullValue", null);
     prefs.setValue("stringValue", "StringValue");
@@ -135,6 +151,8 @@ public class AboutPortlet extends GenericPortlet {
 
     prefs.reset("stringArrayValues");
     prefs.store();
+
+    response.setRenderParameter("test", "\"true\"");
 
     //response.setPortletMode(PortletMode.VIEW);
     //response.sendRedirect("/");

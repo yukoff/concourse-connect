@@ -49,8 +49,8 @@ package com.concursive.connect.workflow.components.crm;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
-import org.aspcfs.apps.transfer.DataRecord;
-import org.aspcfs.utils.CRMConnection;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 
 /**
  * Saves a Lead to ConcourseSuite CRM using HTTP-XML API
@@ -89,6 +89,7 @@ public class SaveLead extends ObjectHookComponent implements ComponentInterface 
       return false;
     }
     contact.setShareKey(true);
+    contact.addField("instanceId", 1);
     contact.addField("isLead", "true");
     contact.addField("leadStatus", 1);
     contact.addField("enteredBy", 0);
@@ -107,6 +108,7 @@ public class SaveLead extends ObjectHookComponent implements ComponentInterface 
     // Save the Lead's email address
     DataRecord email = (DataRecord) context.getAttribute(LEAD_EMAIL);
     if (email != null && email.getValue("email") != null) {
+      email.addField("instanceId", 1);
       email.addField("contactId", "$C{contact.id}");
       email.addField("type", 1);
       email.addField("enteredBy", 0);
@@ -116,6 +118,7 @@ public class SaveLead extends ObjectHookComponent implements ComponentInterface 
     // Save the Lead's phone number
     DataRecord phone = (DataRecord) context.getAttribute(LEAD_PHONE);
     if (phone != null && phone.getValue("number") != null) {
+      phone.addField("instanceId", 1);
       phone.addField("contactId", "$C{contact.id}");
       phone.addField("type", 1);
       phone.addField("enteredBy", 0);
@@ -125,6 +128,7 @@ public class SaveLead extends ObjectHookComponent implements ComponentInterface 
     // Save the Lead's address
     DataRecord address = (DataRecord) context.getAttribute(LEAD_ADDRESS);
     if (address != null && address.getValue("streetAddressLine1") != null) {
+      address.addField("instanceId", 1);
       address.addField("contactId", "$C{contact.id}");
       address.addField("type", 1);
       address.addField("enteredBy", 0);

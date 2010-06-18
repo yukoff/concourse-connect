@@ -86,21 +86,21 @@
 function updateSubList1() {
   var sel = document.forms['ticketForm'].elements['catCode'];
   var value = sel.options[sel.selectedIndex].value;
-  var url = "<%= ctx %>/ProjectManagementTickets.do?command=CategoryJSList&projectId=<%= project.getId() %>&categoryId=" + escape(value) + "&nextLevel=1";
+  var url = "<%= ctx %>/ProjectManagementTickets.do?command=CategoryJSList&projectId=<%= project.getId() %>&categoryId=" + encodeURIComponent(value) + "&nextLevel=1";
   window.frames['server_commands'].location.href=url;
 	hideSubCats(1, value);
 }
 function updateSubList2() {
   var sel = document.forms['ticketForm'].elements['subCat1'];
   var value = sel.options[sel.selectedIndex].value;
-  var url = "<%= ctx %>/ProjectManagementTickets.do?command=CategoryJSList&projectId=<%= project.getId() %>&categoryId=" + escape(value) + "&nextLevel=2";
+  var url = "<%= ctx %>/ProjectManagementTickets.do?command=CategoryJSList&projectId=<%= project.getId() %>&categoryId=" + encodeURIComponent(value) + "&nextLevel=2";
   window.frames['server_commands'].location.href=url;
 	hideSubCats(2, value);
 }
 function updateSubList3() {
   var sel = document.forms['ticketForm'].elements['subCat2'];
   var value = sel.options[sel.selectedIndex].value;
-  var url = "<%= ctx %>/ProjectManagementTickets.do?command=CategoryJSList&projectId=<%= project.getId() %>&categoryId=" + escape(value) + "&nextLevel=3";
+  var url = "<%= ctx %>/ProjectManagementTickets.do?command=CategoryJSList&projectId=<%= project.getId() %>&categoryId=" + encodeURIComponent(value) + "&nextLevel=3";
   window.frames['server_commands'].location.href=url;
 	hideSubCats(3, value);
 }
@@ -114,8 +114,18 @@ function setAttachmentText(newVal) {
 function hideSubCats(subCatID, value) {
   if (value >= 1) {
 	  document.getElementById("cat" + subCatID).style.display="block";
-		for (c = subCatID+1; c < 4; c++) document.getElementById("cat" + c).style.display="none";
-	} else for(c = subCatID; c < 4; c++) document.getElementById("cat" + c).style.display="none";
+		for (c = subCatID+1; c < 4; c++) {
+      if (document.getElementById("cat" + c)) {
+        document.getElementById("cat" + c).style.display="none";
+      }
+    }
+	} else {
+    for(c = subCatID; c < 4; c++) {
+      if (document.getElementById("cat" + c)) {
+        document.getElementById("cat" + c).style.display="none";
+      }
+    }
+  }
 }
 </script>
 <body onLoad="document.ticketForm.problem.focus(); hideSubCats(1, 0);">
@@ -196,7 +206,7 @@ function hideSubCats(subCatID, value) {
         }
       %>
       <ccp:evaluate if="<%= ticket.getFiles().size() > 0 %>"></ccp:evaluate>
-      <img src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
+      <img alt="reminder" src="<%= ctx %>/images/icons/stock_navigator-reminder-16.gif" border="0" align="absmiddle" />
       <a href="${ctx}/FileAttachments.do?command=ShowForm&pid=<%= project.getId() %>&lmid=<%= Constants.PROJECT_TICKET_FILES %>&liid=<%= ticket.getId() %>&selectorId=<%= FileItem.createUniqueValue() %>&popup=true"
          rel="shadowbox" title="Share an attachment">Attach Files</a>
       <input type="hidden" id="attachmentList" name="attachmentList" value="" />
@@ -238,7 +248,7 @@ function hideSubCats(subCatID, value) {
       <fieldset id="assigned">
         <legend><ccp:label name="projectsCenterTickets.add.assigned">Assignment</ccp:label></legend>
         <ccp:evaluate if="<%= TicketEscalationList.size() > 0 %>">
-          <label for="escalationId"><ccp:label name="projectsCenterTickets.add.escalationLevel">Escalation Level</ccp:label>
+          <label for="escalationId"><ccp:label name="projectsCenterTickets.add.escalationLevel">Escalation Level</ccp:label></label>
           <%= TicketEscalationList.getHtmlSelect("escalationId", ticket.getEscalationId()) %>
         </ccp:evaluate>
         <label for="priorityCode"><ccp:label name="projectsCenterTickets.add.priority">Priority</ccp:label></label>
@@ -271,129 +281,128 @@ function hideSubCats(subCatID, value) {
         </fieldset>
       </fieldset>
     </ccp:permission>
-  <%-- Communication --%>
-  <ccp:permission name="project-tickets-assign,project-tickets-edit" if="any">
-    <fieldset id="<ccp:label name="projectsCenterTickets.add.communication">Communication</ccp:label>">
-      <legend><ccp:label name="projectsCenterTickets.add.communication">Communication</ccp:label></legend>
-      <label for="comment"><ccp:label name="projectsCenterTickets.add.addComments">Add Comments</ccp:label></label>
-      <textarea name="comment" cols="55" rows="5"><%= toString(ticket.getComment()) %></textarea>
-    </fieldset>
-  </ccp:permission>
-  <%-- Resolution --%>
-  <ccp:permission name="project-tickets-edit,project-tickets-assign" if="any">
-    <fieldset id="resolution">
-      <legend><ccp:label name="projectsCenterTickets.add.resolution">Resolution</ccp:label></legend>
-      <ccp:evaluate if="<%= TicketResolutionList.size() > 0 %>">
-        <label for="resolutionId"><ccp:label name="projectsCenterTickets.add.category">Category</ccp:label></label>
-        <%= TicketResolutionList.getHtmlSelect("resolutionId", ticket.getResolutionId()) %>
-        <%-- edit --%>
-      </ccp:evaluate>
-      <label for="solution"><ccp:label name="projectsCenterTickets.add.solution">Solution</ccp:label></label>
-      <textarea name="solution" cols="55" rows="8"><%= toString(ticket.getSolution()) %></textarea>
-      <%= showAttribute(request, "readyForClose") %>
-      <label for="ticketReadyToClose">
-        <input type="checkbox" name="readyForClose" id="ticketReadyToClose" value="ON"<ccp:evaluate if="<%= ticket.getReadyForClose() %>"> checked</ccp:evaluate>>
-        <ccp:label name="projectsCenterTicket.add.ticketReadyToClose">Ticket is ready to be closed</ccp:label>
-      </label>
-      <ccp:permission name="project-tickets-close">
-        <label for="closeNow">
-          <input type="checkbox" name="closeNow" id="closeNow"> Close ticket <%= showAttribute(request, "closedError") %>
+    <%-- Communication --%>
+    <ccp:permission name="project-tickets-assign,project-tickets-edit" if="any">
+      <fieldset id="<ccp:label name="projectsCenterTickets.add.communication">Communication</ccp:label>">
+        <legend><ccp:label name="projectsCenterTickets.add.communication">Communication</ccp:label></legend>
+        <label for="comment"><ccp:label name="projectsCenterTickets.add.addComments">Add Comments</ccp:label></label>
+        <textarea name="comment" cols="55" rows="5"><%= toString(ticket.getComment()) %></textarea>
+      </fieldset>
+    </ccp:permission>
+    <%-- Resolution --%>
+    <ccp:permission name="project-tickets-edit,project-tickets-assign" if="any">
+      <fieldset id="resolution">
+        <legend><ccp:label name="projectsCenterTickets.add.resolution">Resolution</ccp:label></legend>
+        <ccp:evaluate if="<%= TicketResolutionList.size() > 0 %>">
+          <label for="resolutionId"><ccp:label name="projectsCenterTickets.add.category">Category</ccp:label></label>
+          <%= TicketResolutionList.getHtmlSelect("resolutionId", ticket.getResolutionId()) %>
+          <%-- edit --%>
+        </ccp:evaluate>
+        <label for="solution"><ccp:label name="projectsCenterTickets.add.solution">Solution</ccp:label></label>
+        <textarea name="solution" cols="55" rows="8"><%= toString(ticket.getSolution()) %></textarea>
+        <%= showAttribute(request, "readyForClose") %>
+        <label for="ticketReadyToClose">
+          <input type="checkbox" name="readyForClose" id="ticketReadyToClose" value="ON"<ccp:evaluate if="<%= ticket.getReadyForClose() %>"> checked</ccp:evaluate>>
+          <ccp:label name="projectsCenterTicket.add.ticketReadyToClose">Ticket is ready to be closed</ccp:label>
         </label>
-      </ccp:permission>
-    </fieldset>
-  </ccp:permission>
-  <%-- Distribution List --%>
-  <ccp:permission name="project-tickets-assign,project-tickets-edit" if="any">
-    <fieldset id="distributionListContainer">
-      <legend><ccp:label name="projectsCenterTickets.add.distributionList">Distribution List</ccp:label></legend>
-      <label for="selDirectory"><ccp:label name="projectsCenterTickets.add.addContactFrom">Add a contact from:</ccp:label></label>
-      <select name='selDirectory' id='selDirectory' onChange="updateCategory();">
-        <option value="">Select An Option</option>
-        <ccp:permission name="project-team-view">
-          <ccp:evaluate if="<%= project.getFeatures().getShowTeam() %>">
-            <option value="this|this|<%= project.getId() %>"><ccp:label name="projectsCenterTickets.add.thisProject">This project</ccp:label></option>
-          </ccp:evaluate>
+        <ccp:permission name="project-tickets-close">
+          <label for="closeNow">
+            <input type="checkbox" name="closeNow" id="closeNow"> Close ticket <%= showAttribute(request, "closedError") %>
+          </label>
         </ccp:permission>
-        <option value="my|open"><ccp:label name="projectsCenterTickets.add.openProjects">Open projects</ccp:label></option>
-        <option value="my|closed"><ccp:label name="projectsCenterTickets.add.closedProjects">Closed projects</ccp:label></option>
-        <option value="contacts|search"><ccp:label name="projectsCenterTickets.add.contacts">Contacts</ccp:label></option>
-        <ccp:permission name="project-tickets-assign,project-tickets-edit" if="any">
-          <option value="email|one"><ccp:label name="projectsCenterTickets.add.email">Email address</ccp:label></option>
-        </ccp:permission>
-      </select>
-      <fieldset id="listSpan" style="display:none">
-        <legend id="select1SpanDepartment" style="display:none"><ccp:label name="projectsCenterTickets.add.selectDepartment">Select a department:</ccp:label></legend>
-        <legend id="select1SpanProject" style="display:none"><ccp:label name="projectsCenterTickets.add.selectProject">Select a project:</ccp:label></legend>
-        <select name='selDepartment' id='selDepartment' onChange="updateItemList();">
-        </select>
       </fieldset>
-      <%-- Only show if permission to --%>
-      <fieldset id="emailSpan" style="display:none">
-        <legend><ccp:label name="projectsCenterTickets.add.emailOfContactToAdd">Email Address of contact to add:</ccp:label></legend>
-        <input type="text" name="email" value="" />
-        <input type="button" class="submit" name="<ccp:label name="button.addgt">Add ></ccp:label>" value ="Add >" onClick="addEmail(this.form);" />
-      </fieldset>
-      <fieldset id="contactSpan" style="display:none" class="leftColumn">
-        <legend id="select1SpanContacts"><ccp:label name="projectsCenterTickets.add.searchContacts">Search Contacts:</ccp:label></legend>
-        <label for="searchValue">Text to search for:</label>
-        <span>(name, org or email)</span>
-        <input type="text" name="searchValue" value="" />
-        <input type="button" class="submit" name="<ccp:label name="button.search">Search</ccp:label>" value="Search" onClick="searchName(this.form);" />
-      </fieldset>
-      <fieldset id="emailSpan2" style="display:none">
-        &nbsp;
-      </fieldset>
-      <fieldset id="listSpan2" style="display:none">
-        <legend id="select2Span" style="display:none"><ccp:label name="projectsCenterTickets.ass.selectContact">Select a contact:</ccp:label></legend>
-        <legend id="select1SpanDepartment" style="display:none"><ccp:label name="projectsCenterTickets.add.selectDepartment">Select a department:</ccp:label></legend>
-        <legend id="select2SpanContacts" style="display:none">Search results:</legend>
-        <select name='selTotalList' id='selTotalList' onClick="addList(this.form)">
-        </select>
-      </fieldset>
-      <fieldset id="distributionList">
+    </ccp:permission>
+    <%-- Distribution List --%>
+    <ccp:permission name="project-tickets-assign,project-tickets-edit" if="any">
+      <fieldset id="distributionListContainer">
         <legend><ccp:label name="projectsCenterTickets.add.distributionList">Distribution List</ccp:label></legend>
-        <%= distributionList.getHtml("selProjectList", 0) %>
-        <span><label for="selProjectList"><ccp:label name="projectsCenterTickets.add.clickToRemove">(click contact to remove)</ccp:label></label></span>
-        <input type="hidden" name="insertMembers" id="insertMembers">
-        <input type="hidden" name="deleteMembers">
+        <label for="selDirectory"><ccp:label name="projectsCenterTickets.add.addContactFrom">Add a contact from:</ccp:label></label>
+        <select name='selDirectory' id='selDirectory' onChange="updateCategory();">
+          <option value="">Select An Option</option>
+          <ccp:permission name="project-team-view">
+            <ccp:evaluate if="<%= project.getFeatures().getShowTeam() %>">
+              <option value="this|this|<%= project.getId() %>"><ccp:label name="projectsCenterTickets.add.thisProject">This project</ccp:label></option>
+            </ccp:evaluate>
+          </ccp:permission>
+          <option value="my|open"><ccp:label name="projectsCenterTickets.add.openProjects">Open projects</ccp:label></option>
+          <option value="my|closed"><ccp:label name="projectsCenterTickets.add.closedProjects">Closed projects</ccp:label></option>
+          <option value="contacts|search"><ccp:label name="projectsCenterTickets.add.contacts">Contacts</ccp:label></option>
+          <ccp:permission name="project-tickets-assign,project-tickets-edit" if="any">
+            <option value="email|one"><ccp:label name="projectsCenterTickets.add.email">Email address</ccp:label></option>
+          </ccp:permission>
+        </select>
+        <fieldset id="listSpan" style="display:none">
+          <legend id="select1SpanDepartment" style="display:none"><ccp:label name="projectsCenterTickets.add.selectDepartment">Select a department:</ccp:label></legend>
+          <legend id="select1SpanProject" style="display:none"><ccp:label name="projectsCenterTickets.add.selectProject">Select a project:</ccp:label></legend>
+          <select name='selDepartment' id='selDepartment' onChange="updateItemList();">
+          </select>
+        </fieldset>
+        <%-- Only show if permission to --%>
+        <fieldset id="emailSpan" style="display:none">
+          <legend><ccp:label name="projectsCenterTickets.add.emailOfContactToAdd">Email Address of contact to add:</ccp:label></legend>
+          <input type="text" name="email" value="" />
+          <input type="button" class="submit" name="<ccp:label name="button.addgt">Add ></ccp:label>" value ="Add >" onClick="addEmail(this.form);" />
+        </fieldset>
+        <fieldset id="contactSpan" style="display:none" class="leftColumn">
+          <legend id="select1SpanContacts"><ccp:label name="projectsCenterTickets.add.searchContacts">Search Contacts:</ccp:label></legend>
+          <label for="searchValue">Text to search for:</label>
+          <span>(name, org or email)</span>
+          <input type="text" name="searchValue" value="" />
+          <input type="button" class="submit" name="<ccp:label name="button.search">Search</ccp:label>" value="Search" onClick="searchName(this.form);" />
+        </fieldset>
+        <fieldset id="emailSpan2" style="display:none">
+          &nbsp;
+        </fieldset>
+        <fieldset id="listSpan2" style="display:none">
+          <legend id="select2Span" style="display:none"><ccp:label name="projectsCenterTickets.ass.selectContact">Select a contact:</ccp:label></legend>
+          <legend id="select1SpanDepartment" style="display:none"><ccp:label name="projectsCenterTickets.add.selectDepartment">Select a department:</ccp:label></legend>
+          <legend id="select2SpanContacts" style="display:none">Search results:</legend>
+          <select name='selTotalList' id='selTotalList' onClick="addList(this.form)">
+          </select>
+        </fieldset>
+        <fieldset id="distributionList">
+          <legend><ccp:label name="projectsCenterTickets.add.distributionList">Distribution List</ccp:label></legend>
+          <%= distributionList.getHtml("selProjectList", 0) %>
+          <span><label for="selProjectList"><ccp:label name="projectsCenterTickets.add.clickToRemove">(click contact to remove)</ccp:label></label></span>
+          <input type="hidden" name="insertMembers" id="insertMembers">
+          <input type="hidden" name="deleteMembers">
+        </fieldset>
       </fieldset>
-    </fieldset>
-  </ccp:permission>
-  <ccp:evaluate if="<%= ticket.getId() == -1 || !distributionList.hasKey(String.valueOf(User.getId())) %>">
-    <label for="emailUpdates"><input type="checkbox" name="emailUpdates" value="ON" /> <ccp:label name="projectsCenterTickets.add.emailOnChange">Email me every time this ticket is updated</ccp:label></label>
-  </ccp:evaluate>
-  <ccp:evaluate if="<%= ticket.getId() > -1 && distributionList.hasKey(String.valueOf(User.getId())) %>">
-    <label for="doNotEmailUpdates"><input type="checkbox" name="doNotEmailUpdates" value="ON" /> <ccp:label name="projectsCenterTickets.add.noEmailOnChange">Do not email me when this ticket is updated (currently subscribed)</ccp:label></label>
-  </ccp:evaluate>
-  
-  <%--
-  Next action, after saving:<br />
-  <input type="radio" name="nextAction" value="returnToList" checked /> Return to ticket list<br />
-  <input type="radio" name="nextAction" value="viewDetails" /> Review saved ticket<br />
-  <input type="radio" name="nextAction" value="attachFiles" /> Attach files<br />
-  <input type="radio" name="nextAction" value="newTicket" /> Create a new ticket<br />
-  <br />
-  --%>
-  
-  <% if (ticket.getClosed() != null) { %>
-    <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>')">
-  <%} else {%>
-    <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>">
-  <%}%>
-  <% if ("list".equals(request.getParameter("return")) || ticket.getId() == -1) {%>
-    <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issues'">
-  <%} else {%>
-    <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issue/<%= ticket.getProjectTicketCount() %>?return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
-  <%}%>
-  <input type="hidden" name="modified" value="<%= ticket.getModified() %>">
-  <input type="hidden" name="pid" value="<%= project.getId() %>">
-  <input type="hidden" name="id" value="<%= ticket.getId() %>">
-  <input type="hidden" name="orgId" value="<%= ticket.getOrgId() %>">
-  <input type="hidden" name="contactId" value="<%= ticket.getContactId() %>">
-  <input type="hidden" name="companyName" value="<%= toHtmlValue(ticket.getCompanyName()) %>">
-  <input type="hidden" name="close" value="">
-  <input type="hidden" name="return" value="<%= toHtmlValue(request.getParameter("return")) %>">
-  </form>
-  <iframe src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/empty.html" name="server_commands" id="server_commands" style="visibility:hidden" height="0"></iframe>
+    </ccp:permission>
+    <ccp:evaluate if="<%= ticket.getId() == -1 || !distributionList.hasKey(String.valueOf(User.getId())) %>">
+      <label for="emailUpdates"><input type="checkbox" name="emailUpdates" value="ON" /> <ccp:label name="projectsCenterTickets.add.emailOnChange">Email me every time this ticket is updated</ccp:label></label>
+    </ccp:evaluate>
+    <ccp:evaluate if="<%= ticket.getId() > -1 && distributionList.hasKey(String.valueOf(User.getId())) %>">
+      <label for="doNotEmailUpdates"><input type="checkbox" name="doNotEmailUpdates" value="ON" /> <ccp:label name="projectsCenterTickets.add.noEmailOnChange">Do not email me when this ticket is updated (currently subscribed)</ccp:label></label>
+    </ccp:evaluate>
+    <%--
+    Next action, after saving:<br />
+    <input type="radio" name="nextAction" value="returnToList" checked /> Return to ticket list<br />
+    <input type="radio" name="nextAction" value="viewDetails" /> Review saved ticket<br />
+    <input type="radio" name="nextAction" value="attachFiles" /> Attach files<br />
+    <input type="radio" name="nextAction" value="newTicket" /> Create a new ticket<br />
+    <br />
+    --%>
+    <% if (ticket.getClosed() != null) { %>
+      <input type="button" class="submit" value="<ccp:label name="button.reopen">Re-open</ccp:label>" onClick="confirmForward('<%= ctx %>/ProjectManagementTickets.do?command=Reopen&pid=<%= project.getId() %>&id=<%= ticket.getId() %>&return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>')">
+    <%} else {%>
+      <input type="submit" class="submit" value="<ccp:label name="button.save">Save</ccp:label>">
+    <%}%>
+    <% if ("list".equals(request.getParameter("return")) || ticket.getId() == -1) {%>
+      <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issues'">
+    <%} else {%>
+      <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/issue/<%= ticket.getProjectTicketCount() %>?return=<%= StringUtils.encodeUrl(request.getParameter("return")) %>'">
+    <%}%>
+    <input type="hidden" name="modified" value="<%= ticket.getModified() %>">
+    <input type="hidden" name="pid" value="<%= project.getId() %>">
+    <input type="hidden" name="id" value="<%= ticket.getId() %>">
+    <input type="hidden" name="orgId" value="<%= ticket.getOrgId() %>">
+    <input type="hidden" name="contactId" value="<%= ticket.getContactId() %>">
+    <input type="hidden" name="companyName" value="<%= toHtmlValue(ticket.getCompanyName()) %>">
+    <input type="hidden" name="close" value="">
+    <input type="hidden" name="return" value="<%= toHtmlValue(request.getParameter("return")) %>">
   </div>
 </div>
+</form>
+<iframe src="<%= RequestUtils.getAbsoluteServerUrl(request) %>/empty.html" name="server_commands" id="server_commands" style="visibility:hidden" height="0"></iframe>
+</body>

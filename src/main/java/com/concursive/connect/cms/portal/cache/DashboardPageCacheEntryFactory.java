@@ -46,7 +46,6 @@
 package com.concursive.connect.cms.portal.cache;
 
 import com.concursive.connect.cache.CacheContext;
-import com.concursive.connect.cms.portal.dao.DashboardPage;
 import com.concursive.connect.cms.portal.dao.DashboardTemplate;
 import com.concursive.connect.cms.portal.dao.DashboardTemplateList;
 import net.sf.ehcache.constructs.blocking.CacheEntryFactory;
@@ -95,6 +94,6 @@ public class DashboardPageCacheEntryFactory implements CacheEntryFactory {
     if (template == null) {
       return null;
     }
-    return new DashboardPage(template);
+    return template;
   }
 }

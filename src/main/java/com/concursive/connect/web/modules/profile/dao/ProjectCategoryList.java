@@ -75,8 +75,8 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
   private int categoriesForProjectUser = -1;
   private int categoryId = -1;
   private boolean buildLogos = false;
-  private String categoryName = null;
-  private String categoryNameLowerCase = null;
+  private String categoryDescription = null;
+  private String categoryDescriptionLowerCase = null;
   private int parentCategoryId = -1;
   private boolean topLevelOnly = false;
   private int sensitive = Constants.UNDEFINED;
@@ -154,26 +154,35 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     this.categoryId = categoryId;
   }
 
-  public String getCategoryName() {
-    return categoryName;
+  public String getCategoryDescription() {
+    return categoryDescription;
   }
 
-  public void setCategoryName(String categoryName) {
-    this.categoryName = categoryName;
+  /**
+   * For API backwards compatibility
+   *
+   * @param categoryDescription
+   */
+  public void setCategoryName(String categoryDescription) {
+    this.categoryDescription = categoryDescription;
+  }
+
+  public void setCategoryDescription(String categoryDescription) {
+    this.categoryDescription = categoryDescription;
   }
 
   /**
    * @return the categoryNameLowerCase
    */
-  public String getCategoryNameLowerCase() {
-    return categoryNameLowerCase;
+  public String getCategoryDescriptionLowerCase() {
+    return categoryDescriptionLowerCase;
   }
 
   /**
-   * @param categoryNameLowerCase the categoryNameLowerCase to set
+   * @param categoryDescriptionLowerCase the categoryNameLowerCase to set
    */
-  public void setCategoryNameLowerCase(String categoryNameLowerCase) {
-    this.categoryNameLowerCase = categoryNameLowerCase;
+  public void setCategoryDescriptionLowerCase(String categoryDescriptionLowerCase) {
+    this.categoryDescriptionLowerCase = categoryDescriptionLowerCase;
   }
 
   public int getParentCategoryId() {
@@ -246,8 +255,8 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     //Need to build a base SQL statement for counting records
     sqlCount.append(
         "SELECT COUNT(*) AS recordcount " +
-        "FROM lookup_project_category pc " +
-        "WHERE code > -1 ");
+            "FROM lookup_project_category pc " +
+            "WHERE code > -1 ");
     createFilter(sqlFilter, db);
     if (pagedListInfo == null) {
       pagedListInfo = new PagedListInfo();
@@ -282,15 +291,15 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     }
 
     //Determine column to sort by
-    pagedListInfo.setDefaultSort("parent_category desc,level,description", null);
+    pagedListInfo.setDefaultSort("parent_category desc,level,label", null);
     pagedListInfo.appendSqlTail(db, sqlOrder);
 
     //Need to build a base SQL statement for returning records
     pagedListInfo.appendSqlSelectHead(db, sqlSelect);
     sqlSelect.append(
         " * " +
-        "FROM lookup_project_category pc " +
-        "WHERE code > -1 ");
+            "FROM lookup_project_category pc " +
+            "WHERE code > -1 ");
     pst = db.prepareStatement(sqlSelect.toString() + sqlFilter.toString() + sqlOrder.toString());
     items = prepareFilter(pst);
     rs = pst.executeQuery();
@@ -365,7 +374,7 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     if (categoriesForProjectUser > -1) {
       sqlFilter.append(
           "AND (pc.code IN (SELECT category_id FROM projects WHERE project_id IN (SELECT DISTINCT project_id FROM project_team WHERE user_id = ? " +
-          "AND status IS NULL) OR project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
+              "AND status IS NULL) OR project_id IN (SELECT project_id FROM projects WHERE allow_guests = ? AND approvaldate IS NOT NULL)) ");
       if (includeId > -1) {
         sqlFilter.append("OR pc.code = ? ");
       }
@@ -374,10 +383,10 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     if (categoryId > -1) {
       sqlFilter.append("AND pc.code = ? ");
     }
-    if (categoryName != null) {
+    if (categoryDescription != null) {
       sqlFilter.append("AND pc.description = ? ");
     }
-    if (categoryNameLowerCase != null) {
+    if (categoryDescriptionLowerCase != null) {
       sqlFilter.append("AND " + DatabaseUtils.toLowerCase(db, "pc.description") + " = ? ");
     }
     if (parentCategoryId > -1) {
@@ -416,11 +425,11 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     if (categoryId > -1) {
       pst.setInt(++i, categoryId);
     }
-    if (categoryName != null) {
-      pst.setString(++i, categoryName);
+    if (categoryDescription != null) {
+      pst.setString(++i, categoryDescription);
     }
-    if (categoryNameLowerCase != null) {
-      pst.setString(++i, categoryNameLowerCase.toLowerCase());
+    if (categoryDescriptionLowerCase != null) {
+      pst.setString(++i, categoryDescriptionLowerCase.toLowerCase());
     }
     if (parentCategoryId > -1) {
       pst.setInt(++i, parentCategoryId);
@@ -512,60 +521,11 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     return thisSelect;
   }
 
-  public void updateValues(Connection db, String[] params, String[] names) throws SQLException {
-
-    // Put into something manageable
-    ArrayList<String> arrayList = new ArrayList<String>();
-    for (int i = 0; i < params.length; i++) {
-      System.out.println("ProjectCategoryList-> Name: " + names[i]);
-      System.out.println("ProjectCategoryList-> Param: " + params[i]);
-      arrayList.add(params[i]);
-    }
-
-    // BEGIN TRANSACTION
-
-    // Iterate through this article list
-    Iterator items = this.iterator();
-    while (items.hasNext()) {
-      ProjectCategory thisCategory = (ProjectCategory) items.next();
-      // If item is not in the passed array, then disable the entry
-      if (!arrayList.contains(String.valueOf(thisCategory.getId()))) {
-        thisCategory.setEnabled(false);
-        thisCategory.update(db);
-        items.remove();
-      }
-    }
-
-    // Iterate through the array
-    for (int i = 0; i < params.length; i++) {
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("ProjectCategoryList-> Name: " + names[i]);
-        System.out.println("ProjectCategoryList-> Param: " + params[i]);
-      }
-      if (params[i].startsWith("*")) {
-        // TODO: Check to see if a previously disabled entry has the same name,
-        // and enable it
-
-        // New item, add it at the correct position
-        ProjectCategory thisCategory = new ProjectCategory();
-        thisCategory.setDescription(names[i]);
-        thisCategory.setLevel(i);
-        thisCategory.insert(db);
-        this.add(thisCategory);
-      } else {
-        // Existing item, update the name and position
-        updateName(db, Integer.parseInt(params[i]), names[i]);
-        updateLevel(db, Integer.parseInt(params[i]), i);
-      }
-    }
-
-    // END TRANSACTION
-  }
-
   public void updateLevel(Connection db, int id, int level) throws SQLException {
-    PreparedStatement pst = db.prepareStatement("UPDATE lookup_project_category " +
-        "SET level = ? " +
-        "WHERE code = ? ");
+    PreparedStatement pst = db.prepareStatement(
+        "UPDATE lookup_project_category " +
+            "SET level = ? " +
+            "WHERE code = ? ");
     int i = 0;
     pst.setInt(++i, level);
     pst.setInt(++i, id);
@@ -574,10 +534,11 @@ public class ProjectCategoryList extends ArrayList<ProjectCategory> {
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CATEGORY_LIST_CACHE, id);
   }
 
-  public void updateName(Connection db, int id, String name) throws SQLException {
-    PreparedStatement pst = db.prepareStatement("UPDATE lookup_project_category " +
-        "SET description = ? " +
-        "WHERE code = ? ");
+  public void updateLabel(Connection db, int id, String name) throws SQLException {
+    PreparedStatement pst = db.prepareStatement(
+        "UPDATE lookup_project_category " +
+            "SET label = ? " +
+            "WHERE code = ? ");
     int i = 0;
     pst.setString(++i, name);
     pst.setInt(++i, id);

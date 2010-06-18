@@ -53,8 +53,10 @@ import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
+import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.IPortletViewer;
 import com.concursive.connect.web.portal.PortalUtils;
+import static com.concursive.connect.web.portal.PortalUtils.getUser;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -89,17 +91,24 @@ public class TopContributionsViewer implements IPortletViewer {
     String defaultView = VIEW_PAGE;
     request.setAttribute(TITLE, request.getPreferences().getValue(PREF_TITLE, null));
     int limit = Integer.parseInt(request.getPreferences().getValue(PREF_LIMIT, "-1"));
-    String daysLimit = request.getPreferences().getValue(PREF_DAYS_LIMIT, "1");
+    String daysLimit = request.getPreferences().getValue(PREF_DAYS_LIMIT, "0");
     String projectCategoryName = request.getPreferences().getValue(PREF_CATEGORY, null);
 
-    Connection db = PortalUtils.getConnection(request);
+    Connection db = PortalUtils.useConnection(request);
     Project project = PortalUtils.findProject(request);
 
     UserContributionLogList thisUserContributionLogList = new UserContributionLogList();
-    thisUserContributionLogList.setSinceContributionDate(new Timestamp(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * Long.parseLong(daysLimit)));
+    if (!"0".equals(daysLimit)) {
+      thisUserContributionLogList.setSinceContributionDate(new Timestamp(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * Long.parseLong(daysLimit)));
+    }
     thisUserContributionLogList.setEnabledUsers(Constants.TRUE);
 
     if (project != null && project.getId() != -1) {
+      // determine if the user has access to members of this profile
+      User user = getUser(request);
+      if (!ProjectUtils.hasAccess(project.getId(), user, "project-team-view")) {
+        return null;
+      }
       thisUserContributionLogList.setProjectId(project.getId());
     } else {
       thisUserContributionLogList.setInstanceId(PortalUtils.getInstance(request).getId());
@@ -114,11 +123,15 @@ public class TopContributionsViewer implements IPortletViewer {
     }
     thisUserContributionLogList.buildTopUsers(db, limit);
 
-    // Convert the user ids and points into a user list
-    ArrayList<User> topContributorList = prepareSortedList(thisUserContributionLogList);
-    request.setAttribute(TOP_CONTRIBUTOR_LIST, topContributorList);
+    if (thisUserContributionLogList.size() > 0) {
+      // Convert the user ids and points into a user list
+      ArrayList<User> topContributorList = prepareSortedList(thisUserContributionLogList);
+      request.setAttribute(TOP_CONTRIBUTOR_LIST, topContributorList);
 
-    return defaultView;
+      return defaultView;
+    } else {
+      return null;
+    }
   }
 
   /**

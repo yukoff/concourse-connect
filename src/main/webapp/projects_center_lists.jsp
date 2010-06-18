@@ -268,7 +268,7 @@
                     <%= toHtml(thisTask.getDescription()) %>
                 </ccp:evaluate>
                 <ccp:evaluate if="<%= hasText(thisTask.getNotes()) %>">
-                <a href="javascript:popURL('<%= ctx %>/ProjectManagementLists.do?command=Details&pid=<%= project.getId() %>&cid=<%= category.getId() %>&id=<%= thisTask.getId() %>&popup=true','List_Details','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle"/></a>
+                <a href="javascript:popURL('<%= ctx %>/ProjectManagementLists.do?command=Details&pid=<%= project.getId() %>&cid=<%= category.getId() %>&id=<%= thisTask.getId() %>&popup=true','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle"/></a>
                 </ccp:evaluate>
               </td>
             </tr>
@@ -281,7 +281,7 @@
                          showText='false'
                          count='<%= thisTask.getRatingCount() %>'
                          value='<%= thisTask.getRatingValue() %>'
-                         url='<%= ctx + "/ProjectManagementLists.do?command=SetRating&pid=" + thisTask.getProjectId() + "&id=" + thisTask.getId() + "&v=${vote}&out=text" %>'/>
+                         url='<%= ctx + "/ProjectManagementLists.do?command=SetRating&pid=" + thisTask.getProjectId() + "&id=" + thisTask.getId() + "&v={vote}&out=text" %>'/>
           </ccp:evaluate>
           <ccp:evaluate if="<%= thisTask.getLinkModuleId() != -1 && thisTask.getLinkItemId() != -1%>">
             <ccp:rating id='<%= String.valueOf(thisTask.getId()) %>'

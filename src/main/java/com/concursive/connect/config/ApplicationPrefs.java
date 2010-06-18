@@ -78,6 +78,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.security.Key;
 import java.sql.Connection;
+import java.text.NumberFormat;
 import java.util.*;
 import java.util.prefs.Preferences;
 
@@ -136,6 +137,7 @@ public class ApplicationPrefs {
   public final static String CONCURSIVE_SERVICES_SERVER = "CONCURSIVE_SERVICES.SERVER";
   public final static String CONCURSIVE_SERVICES_ID = "CONCURSIVE_SERVICES.ID";
   public final static String CONCURSIVE_SERVICES_KEY = "CONCURSIVE_SERVICES.KEY";
+  public final static String CONSUMER_SESSION_SUPPORT = "CONSUMER_SESSION_SUPPORT";  
   // Web Application Behavior Properties
   public final static String LOGIN_MODE = "LOGIN.MODE";
   public final static String PURPOSE = "PURPOSE";
@@ -163,14 +165,18 @@ public class ApplicationPrefs {
   public final static String USERS_CAN_START_PROJECTS = "START_PROJECTS";
   public final static String USERS_ARE_ANONYMOUS = "ANONYMOUS";
   public final static String DEFAULT_USER_PROFILE_ROLE = "DEFAULT_USER_PROFILE_ROLE";
+  public final static String DEFAULT_USER_PROFILE_TABS = "DEFAULT_USER_PROFILE_TABS";
   public final static String SHOW_TERMS_AND_CONDITIONS = "LICENSE";
   public final static String SEARCH_USES_LOCATION = "USE_LOCATIONS";
   public final static String LANGUAGE = "SYSTEM.LANGUAGE";
+  public final static String TIMEZONE = "SYSTEM.TIMEZONE";
+  public final static String CURRENCY = "SYSTEM.CURRENCY";
   public final static String LANGUAGES_SUPPORTED = "SUPPORTED.LANGUAGES";
   public final static String MAIN_PROFILE = "MAIN_PROFILE";
+  public final static String SHOW_HOLIDAYS = "HOLIDAYS";
   // Default values
   public final static String DEFAULT_NODE = "primary";
-  // Management CRM Settings
+  // Community Management Settings
   public final static String CONCURSIVE_CRM_SERVER = "CONCURSIVE_CRM.SERVER";
   public final static String CONCURSIVE_CRM_ID = "CONCURSIVE_CRM.ID";
   public final static String CONCURSIVE_CRM_CODE = "CONCURSIVE_CRM.CODE";
@@ -303,7 +309,8 @@ public class ApplicationPrefs {
       configureSystemSettings(context);
       configureCache(context);
       if (isConfigured()) {
-        if (ApplicationVersion.isOutOfDate(this) && "true".equals(get("AUTO_UPGRADE"))) {
+        if (ApplicationVersion.isOutOfDate(this)) {
+          LOG.info("Upgrade triggered... obtaining lock to continue");
           // Use a lock file to to start upgrading
           File upgradeLockFile = new File(fileLibrary + "upgrade.lock");
           FileChannel fileChannel = null;
@@ -316,7 +323,8 @@ public class ApplicationPrefs {
             // Reload the prefs to make sure the upgrade isn't already complete
             loadProperties(fileLibrary);
             if (ApplicationVersion.isOutOfDate(this)) {
-              // The application needs an update and auto upgrade is enabled
+              // The application needs an update
+              LOG.info("Installed version " + ApplicationVersion.getInstalledVersion(this) + " will be upgraded to " + ApplicationVersion.VERSION);
               performUpgrade(context);
             }
           } catch (Exception e) {
@@ -762,6 +770,9 @@ public class ApplicationPrefs {
     if (!this.has(SEARCH_USES_LOCATION)) {
       this.add(SEARCH_USES_LOCATION, "true");
     }
+    if (!this.has(SHOW_HOLIDAYS)) {
+      this.add(SHOW_HOLIDAYS, "true");
+    }
 
     // Portal
     if (!this.has(HOME_URL)) {
@@ -778,6 +789,12 @@ public class ApplicationPrefs {
     if (!this.has(LANGUAGE)) {
       this.add(LANGUAGE, "en_US");
     }
+    if (!this.has(TIMEZONE)) {
+      this.add(TIMEZONE, TimeZone.getDefault().getID());
+    }
+    if (!this.has(CURRENCY)) {
+      this.add(CURRENCY, NumberFormat.getCurrencyInstance().getCurrency().getCurrencyCode());
+    }
     if (!this.has(LANGUAGES_SUPPORTED)) {
       this.add(LANGUAGES_SUPPORTED, "en_US");
     }
@@ -787,10 +804,11 @@ public class ApplicationPrefs {
 
     // Dimdim service
     if (!this.has(DIMDIM_ENABLED)) {
-      this.add(DIMDIM_ENABLED, "true");
+      this.add(DIMDIM_ENABLED, "false");
     }
     if (!this.has(DIMDIM_API_DOMAIN)) {
-      this.add(DIMDIM_API_DOMAIN, "http://webmeeting.dimdim.com/portal");
+      // @note Dimdim public API is no longer available
+      //this.add(DIMDIM_API_DOMAIN, "http://webmeeting.dimdim.com/portal");
     }
   }
 
@@ -884,6 +902,9 @@ public class ApplicationPrefs {
     ConnectionPool commonCP = (ConnectionPool) context.getAttribute(Constants.CONNECTION_POOL);
     try {
       LOG.info("Upgrading the database...");
+
+      // Share the preferences with the upgrade scripts
+      context.setAttribute(Constants.APPLICATION_PREFS, this);
 
       // Determine the database connection to use
       ConnectionElement ce = new ConnectionElement();

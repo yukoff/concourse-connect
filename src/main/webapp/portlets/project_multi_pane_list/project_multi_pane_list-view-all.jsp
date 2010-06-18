@@ -51,8 +51,8 @@
 <div class="projectMultiPaneListContainer">
   <ul>
     <c:forEach items="${projectList}" var="project">
-      <c:set var="project" value="${project}"/>
-      <jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project"/>
+      <c:set var="project" value="${project}" scope="request"/>
+      <jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" scope="request"/>
       <li>
         <a href="${ctx}/show/${project.uniqueId}"><c:out value="${project.title}"/></a>
         <span>

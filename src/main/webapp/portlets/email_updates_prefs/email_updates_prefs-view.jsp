@@ -63,34 +63,35 @@
   }
 
   function <portlet:namespace/>sendRequest(url) {
-      var xmlHttpReq = myXMLHttpRequest();
-      xmlHttpReq.open('get', url);
-      xmlHttpReq.send(null);
+    var xmlHttpReq = myXMLHttpRequest();
+    url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
+    xmlHttpReq.open('get', url);
+    xmlHttpReq.send(null);
   }
 </script>
-<div class="">
-  <h3>Watch this Profile</h3>
-  <p>
-    Stay informed about <strong><c:out value="${project.title}"/></strong>. You can
-    receive emails from the owners of this profile and you can add this profile to
-    an automated email digest with all the latest activity sent right to you.<br/>
-    <br/>
-    Receive email regarding <strong><c:out value="${project.title}"/></strong> from the
-    profile owners?<br/>
-    <input type="radio" onclick="<portlet:namespace/>changeNotifications('true');" name="notification"
-           <c:if test="${member.notification}">checked="true"</c:if> id="notification">Yes
-    <input type="radio" onclick="<portlet:namespace/>changeNotifications('false');" name="notification"
-           <c:if test="${!member.notification}">checked="true"</c:if> id="notification">No <br /><br />
-    Receive automated email updates?<br/>  
-    <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_OFTEN %>);" name="emailNotification"
-           <c:if test="${member.emailUpdatesSchedule == 1}">checked="true"</c:if> id="emailNotification"> Often (every few hours)
-    <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_DAILY %>);" name="emailNotification"
-           <c:if test="${member.emailUpdatesSchedule == 2}">checked="true"</c:if> id="emailNotification"> Daily
-    <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_WEEKLY %>);" name="emailNotification"
-           <c:if test="${member.emailUpdatesSchedule == 3}">checked="true"</c:if> id="emailNotification"> Weekly
-    <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_MONTHLY %>);" name="emailNotification"
-           <c:if test="${member.emailUpdatesSchedule == 4}">checked="true"</c:if> id="emailNotification"> Monthly
-    <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_NEVER %>);" name="emailNotification"
-           <c:if test="${member.emailUpdatesSchedule == 0}">checked="true"</c:if> id="emailNotification"> Never
-  </p>
-</div>
+<h3>Your Email Digest Settings</h3>
+<p>
+  <%--
+  Stay informed about <strong><c:out value="${project.title}"/></strong>. You can
+  receive emails from the owners of this profile and you can add this profile to
+  an automated email digest with all the latest activity sent right to you.<br/>
+  <br/>
+  --%>
+  Receive email regarding <strong><c:out value="${project.title}"/></strong> from the
+  profile owners?<br/>
+  <input type="radio" onclick="<portlet:namespace/>changeNotifications('true');" name="notification"
+         <c:if test="${member.notification}">checked="true"</c:if> id="notification">Yes
+  <input type="radio" onclick="<portlet:namespace/>changeNotifications('false');" name="notification"
+         <c:if test="${!member.notification}">checked="true"</c:if> id="notification">No <br /><br />
+  Receive automated email updates?<br />
+  <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_OFTEN %>);" name="emailNotification"
+         <c:if test="${member.emailUpdatesSchedule == 1}">checked="true"</c:if> id="emailNotification">Often
+  <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_DAILY %>);" name="emailNotification"
+         <c:if test="${member.emailUpdatesSchedule == 2}">checked="true"</c:if> id="emailNotification">Daily
+  <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_WEEKLY %>);" name="emailNotification"
+         <c:if test="${member.emailUpdatesSchedule == 3}">checked="true"</c:if> id="emailNotification">Weekly
+  <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_MONTHLY %>);" name="emailNotification"
+         <c:if test="${member.emailUpdatesSchedule == 4}">checked="true"</c:if> id="emailNotification">Monthly
+  <input type="radio" onclick="<portlet:namespace/>changeSchedule(<%= TeamMember.EMAIL_NEVER %>);" name="emailNotification"
+         <c:if test="${member.emailUpdatesSchedule == 0}">checked="true"</c:if> id="emailNotification">Never
+</p>

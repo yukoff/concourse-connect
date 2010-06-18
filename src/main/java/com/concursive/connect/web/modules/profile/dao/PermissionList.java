@@ -232,6 +232,13 @@ public class PermissionList extends HashMap<String, Permission> {
     }
   }
 
+  public void setAccessLevel(String permissionName, int userLevel) {
+    Permission permission = this.get(permissionName);
+    if (permission != null) {
+      permission.setUserLevel(userLevel);
+    }
+  }
+
 
   /**
    * Description of the Method

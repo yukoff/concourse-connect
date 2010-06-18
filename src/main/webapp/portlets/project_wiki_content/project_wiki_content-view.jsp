@@ -46,13 +46,25 @@
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ page import="com.concursive.commons.text.StringUtils" %>
+<%@ page import="java.net.URLEncoder" %>
 <portlet:defineObjects/>
-<c:if test="${showTitle eq 'true'}">
-  <h2>
-    <c:if test="${!empty wiki.subject}">
-      <c:out value="${wiki.subject}" />
-    </c:if>
-  </h2>
+<%@ include file="../../initPage.jsp" %>
+<c:if test="${showEditLink eq 'true'}">
+  <ccp:permission name="project-wiki-add">
+    <jsp:useBean id="wikiName" class="java.lang.String" scope="request" />
+    <c:set var="wikiUrl">${ctx}/modify/${project.uniqueId}/wiki<ccp:evaluate if="${!empty wikiName}">/<%= StringUtils.replace(StringUtils.jsEscape(wikiName), "%20", "+") %></ccp:evaluate>?popup=true<ccp:evaluate if='<%= request.getAttribute("requestedURL") != null %>'>&returnURL=<%= URLEncoder.encode((String)request.getAttribute("requestedURL"), "UTF-8") %></ccp:evaluate></c:set>
+    <div class="editwiki">
+      <a href="javascript:popURL('${wikiUrl}','785','670','yes','yes');" class="external" title="Edit &#8220;<c:out value="${wikiName}"/>&#8221;">Edit</a>
+      <ccp:permission name="project-wiki-delete">
+        <c:set var="deleteUrl">${ctx}/show/${project.uniqueId}/wiki<ccp:evaluate if="${!empty wikiName}">/<%= StringUtils.replace(StringUtils.jsEscape(wikiName), "%20", "+") %></ccp:evaluate>?portlet-command=delete&popup=true<ccp:evaluate if='<%= request.getAttribute("requestedURL") != null %>'>&returnURL=<%= URLEncoder.encode((String)request.getAttribute("requestedURL"), "UTF-8") %></ccp:evaluate></c:set>
+        &bull; <a href="${deleteUrl}" rel="shadowbox" title="Delete &#8220;<c:out value="${wikiName}"/>&#8221;">Delete</a>
+      </ccp:permission>
+    </div>
+  </ccp:permission>
+</c:if>
+<c:if test="${showTitle eq 'true' && !empty wiki.subject}">
+  <h2><c:out value="${wiki.subject}" /></h2>
 </c:if>
 <c:choose>
   <c:when test="${!empty wiki.content}">

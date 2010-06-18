@@ -47,7 +47,6 @@ package com.concursive.connect.web.modules.members.portlets.main;
 
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
@@ -100,7 +99,7 @@ public class TeamMemberListViewer implements IPortletViewer {
     request.setAttribute(CURRENT_TEAM_MEMBER, PortalUtils.getCurrentTeamMember(request));
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Determine the paging url
     PortletURL renderURL = response.createRenderURL();

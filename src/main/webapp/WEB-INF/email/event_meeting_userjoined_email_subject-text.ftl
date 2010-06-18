@@ -1,1 +1,1 @@
-New user joined meeting
+New user joined event

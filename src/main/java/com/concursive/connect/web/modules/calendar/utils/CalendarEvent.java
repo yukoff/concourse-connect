@@ -400,7 +400,7 @@ public class CalendarEvent implements Comparable {
           "calendar.projectTickets", "Project Tickets") + "\" />";
     } else if (thisCategory.equalsIgnoreCase("Events")) {
       return "<img border=\"0\" src=\"" + contextPath + "/images/teamelements/join-16.gif\" align=\"texttop\" width=\"12\" height=\"12\" title=\"" + getLabel(
-          "calendar.Meeting", "Meeting") + "\" />";
+          "calendar.Event", "Event") + "\" />";
     } else if (thisCategory.equalsIgnoreCase("Milestone Start Dates")) {
       return "<img border=\"0\" src=\"" + contextPath + "/images/arrowright.gif\" align=\"texttop\" width=\"12\" height=\"12\" title=\"" + getLabel(
           "calendar.MilestoneStart", "Milestone Start") + "\" />";

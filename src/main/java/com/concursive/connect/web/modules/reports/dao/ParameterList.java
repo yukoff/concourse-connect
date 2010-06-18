@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.reports.dao;
 
 import com.concursive.commons.date.DateUtils;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.text.Template;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.utils.HtmlSelectProbabilityRange;
@@ -282,18 +283,30 @@ public class ParameterList extends ArrayList<Parameter> {
         }
         try {
           if (param.getName().startsWith("date_")) {
-            Timestamp tmpTimestamp = DateUtils.getUserToServerDateTime(
-                TimeZone.getTimeZone(UserUtils.getUserTimeZone(request)), DateFormat.SHORT, DateFormat.LONG, param.getValue(), UserUtils.getUserLocale(
-                    request));
-            SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(
-                DateFormat.SHORT, Locale.getDefault());
-            String date = formatter.format(tmpTimestamp);
-            param.setValue(date);
-            if (param.getName().equals("date_start")) {
-              startDate = tmpTimestamp;
+            if (StringUtils.hasText(param.getValue())) {
+              Timestamp tmpTimestamp = DateUtils.getUserToServerDateTime(
+                  TimeZone.getTimeZone(UserUtils.getUserTimeZone(request)), DateFormat.SHORT, DateFormat.LONG, param.getValue(), UserUtils.getUserLocale(request));
+              SimpleDateFormat formatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+              String date = formatter.format(tmpTimestamp);
+              param.setValue(date);
+              if (param.getName().equals("date_start")) {
+                startDate = tmpTimestamp;
+              }
+              if (param.getName().equals("date_end")) {
+                endDate = tmpTimestamp;
+              }
             }
-            if (param.getName().equals("date_end")) {
-              endDate = tmpTimestamp;
+            // Where clause for date fields
+            Parameter whereParam = this.getParameter(param.getName() + "_where");
+            if (whereParam != null) {
+              if (StringUtils.hasText(param.getValue())) {
+                // New case, replace query param with another param and parse (use the calculated value)
+                Template where = new Template(whereParam.getDescription());
+                where.addParseElement("$P{" + param.getName() + "}", param.getValue());
+                addParam(whereParam.getName(), where.getParsedText());
+              } else {
+                addParam(whereParam.getName(), " ");
+              }
             }
           }
         } catch (Exception e) {

@@ -79,7 +79,7 @@
 <div class="portletWrapper">
   <c:choose>
     <c:when test="${empty currentFolder || currentFolder.id == -1}">
-      <h1><ccp:tabLabel name="Documents" object="project"/></h1>
+      <%--<h1><ccp:tabLabel name="Documents" object="project"/></h1>--%>
     </c:when>
     <c:otherwise>
       <h1><c:out value="${currentFolder.subject}"/></h1>

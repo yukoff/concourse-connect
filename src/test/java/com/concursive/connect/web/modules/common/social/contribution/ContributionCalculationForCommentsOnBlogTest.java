@@ -106,7 +106,7 @@ public class ContributionCalculationForCommentsOnBlogTest extends AbstractConnec
     user1.setPassword("password");
     user1.setFirstName("first name");
     user1.setLastName("last name");
-    user1.setEmail("email@somecompany.com");
+    user1.setEmail("email" + System.currentTimeMillis() + "@somecompany.com");
     user1.setEnteredBy(USER_ID);
     user1.setModifiedBy(USER_ID);
     user1.setGroupId(GROUP_ID);
@@ -183,6 +183,7 @@ public class ContributionCalculationForCommentsOnBlogTest extends AbstractConnec
     project.delete(db, (String) null);
     
     //deleting test user
+    user1.getProfileProject().delete(db, null);
     user1.delete(db);
   }
 

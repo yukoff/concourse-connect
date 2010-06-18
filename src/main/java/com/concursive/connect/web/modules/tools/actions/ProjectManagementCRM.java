@@ -46,23 +46,22 @@
 package com.concursive.connect.web.modules.tools.actions;
 
 import com.concursive.commons.http.RequestUtils;
+import com.concursive.commons.text.StringUtils;
+import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.profile.dao.Project;
-import com.concursive.connect.config.ApplicationPrefs;
-import com.concursive.commons.web.mvc.actions.ActionContext;
-import com.concursive.commons.text.StringUtils;
+import com.concursive.crm.api.client.CRMConnection;
+import com.concursive.crm.api.client.DataRecord;
 
 import java.net.URLEncoder;
-import java.util.Random;
-import java.util.ArrayList;
 import java.sql.SQLException;
-
-import org.aspcfs.utils.CRMConnection;
-import org.aspcfs.apps.transfer.DataRecord;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
- * Action that redirects the current logged-in user to the Management CRM
+ * Action that redirects the current logged-in user to the Community Management application
  *
  * @author Ananth
  * @created Aug 7, 2009
@@ -89,7 +88,7 @@ public class ProjectManagementCRM extends GenericAction {
       }
       // if successful, send the redirect...
       String redirect = "MyCFS.do?command=Home";
-      String returnURL = (String) context.getRequest().getParameter("returnURL");
+      String returnURL = context.getRequest().getParameter("returnURL");
       if (returnURL != null) {
         try {
           returnURL = RequestUtils.getAbsoluteServerUrl(context.getRequest()) + URLEncoder.encode(returnURL, "UTF-8");

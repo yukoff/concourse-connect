@@ -146,6 +146,7 @@ public class URLControllerBean extends GenericBean {
     if (actionPath.startsWith("/")) {
       actionPath = actionPath.substring(1);
     }
+
     // Configure the action
     String[] thisAction = actionPath.split("/");
     if (thisAction.length > 0) {
@@ -203,6 +204,7 @@ public class URLControllerBean extends GenericBean {
         projectId = ProjectUtils.retrieveProjectIdFromUniqueId(projectTitle);
       }
     }
+    LOG.debug(toString());
   }
 
   public String getAction() {
@@ -246,6 +248,9 @@ public class URLControllerBean extends GenericBean {
   }
 
   public int getObjectValueAsInt() {
+    if (objectValue.contains(";jsessionid")) {
+      return Integer.parseInt(objectValue.substring(0, objectValue.indexOf(";jsessionid")));
+    }
     return Integer.parseInt(objectValue);
   }
 

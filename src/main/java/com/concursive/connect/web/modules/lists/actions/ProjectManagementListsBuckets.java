@@ -105,7 +105,7 @@ public final class ProjectManagementListsBuckets extends GenericAction {
       outlineList.buildList(db);
       HashMap<Integer, String> taskUrlMap = new HashMap<Integer, String>();
       for (Task t : outlineList) {
-        String linkItemUrl = TaskUtils.getLinkItemUrl(ctx(context), t);
+        String linkItemUrl = TaskUtils.getLinkItemUrl(getUser(context), ctx(context), t);
         if (linkItemUrl != null) {
           taskUrlMap.put(t.getId(), linkItemUrl);
         }
@@ -238,7 +238,7 @@ public final class ProjectManagementListsBuckets extends GenericAction {
       outlineList.buildList(db);
       HashMap<Integer, String> taskUrlMap = new HashMap<Integer, String>();
       for (Task t : outlineList) {
-        String linkItemUrl = TaskUtils.getLinkItemUrl(ctx(context), t);
+        String linkItemUrl = TaskUtils.getLinkItemUrl(getUser(context), ctx(context), t);
         if (linkItemUrl != null) {
           taskUrlMap.put(t.getId(), linkItemUrl);
         }

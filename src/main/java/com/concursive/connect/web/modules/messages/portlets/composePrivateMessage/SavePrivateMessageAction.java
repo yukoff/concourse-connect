@@ -94,7 +94,7 @@ public class SavePrivateMessageAction implements IPortletAction {
     }
 
     // Determine the database connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Track replies to previous messages
     PrivateMessage inboxPrivateMessage = null;

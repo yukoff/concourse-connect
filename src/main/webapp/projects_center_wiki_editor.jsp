@@ -61,10 +61,10 @@
 <%-- Editor must go here, before the body onload --%>
 <jsp:include page="tinymce_wiki_include.jsp" flush="true"/>
 <script language="javascript" type="text/javascript">
+  // initialize the editor
   initEditor('content');
+  // image constant
   var ilId = <%= wiki.getProjectId() %>;
-</script>
-<script language="JavaScript" type="text/javascript">
   function checkForm(form) {
     try { tinyMCE.triggerSave(false); } catch(e) { }
     var formTest = true;
@@ -113,7 +113,7 @@
           <%= toHtml(project.getTitle()) %>
         </ccp:evaluate>
       </legend>
-      <textarea tabindex="1" accesskey="," name="content" id="content" class="height300"><ccp:evaluate if="<%= hasText(wiki.getContent()) %>"><%= wikiHtml %><p>&nbsp;</p></ccp:evaluate></textarea>
+      <textarea tabindex="1" accesskey="," name="content" id="content" class="height400"><ccp:evaluate if="<%= hasText(wiki.getContent()) %>"><%= wikiHtml %><p>&nbsp;</p></ccp:evaluate></textarea>
       <input type="hidden" name="id" value="<%= wiki.getId() %>" />
       <input type="hidden" name="subject" value="<%= toHtmlValue(wiki.getSubject()) %>" />
       <input type="hidden" name="modified" value="<%= wiki.getModified() %>" />
@@ -122,10 +122,18 @@
       </ccp:evaluate>
       <c:if test="${'true' eq param.popup || 'true' eq popup}">
         <input type="hidden" name="popup" value="true"/>
-      </c:if>      
+        <input type="hidden" name="returnURL" value="${ctx}<%= toHtmlValue(request.getParameter("returnURL")) %>">
+      </c:if>
     </fieldset>
     <input type="submit" class="submit" name="save" value="<ccp:label name="button.savePage">Save Page</ccp:label>" />
-    <input type="button" class="cancel" name="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/wiki<ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">/<%= wiki.getSubjectLink() %></ccp:evaluate>';" />
-  </form>
+      <c:choose>
+        <c:when test="${'true' eq param.popup || 'true' eq popup}">
+          <input type="button" class="cancel" name="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.close();" />
+        </c:when>
+        <c:otherwise>
+          <input type="button" class="cancel" name="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/show/<%= project.getUniqueId() %>/wiki<ccp:evaluate if="<%= hasText(wiki.getSubject()) %>">/<%= wiki.getSubjectLink() %></ccp:evaluate>';" />
+        </c:otherwise>
+      </c:choose>
+   </form>
  </div>
 </div>

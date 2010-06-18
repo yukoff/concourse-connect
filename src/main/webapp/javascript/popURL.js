@@ -16,7 +16,7 @@
  * These terms must be included in any work that has ConcourseConnect components.
  * If you are developing and distributing open source applications under the
  * GNU Affero General Public License, then you are free to use ConcourseConnect
- * under the GNU Affero General Public License. �
+ * under the GNU Affero General Public License.
  *
  * If you are deploying a web site in which users interact with any portion of
  * ConcourseConnect over a network, the complete source code changes must be made
@@ -53,12 +53,12 @@
  * @arg5 = allow resize (yes/no)
  * @arg6 = show scroll bars (yes/no)
  */
-function popURL(filename, title, width, height, resize, bars) {
+function popURL(filename, width, height, resize, bars) {
   var posx = (screen.width - width)/2;
   var posy = (screen.height - height)/2;
   
   var params = 'WIDTH=' + width + ',HEIGHT=' + height + ',RESIZABLE=' + resize + ',SCROLLBARS=' + bars + ',STATUS=0,LEFT=' + posx + ',TOP=' + posy + ',screenX=' + posx + ',screenY=' + posy;
-  var newwin=window.open(filename, title, params);
+  var newwin=window.open(filename, '_blank', params);
     newwin.focus();
     if (newwin != null) {
       if (newwin.opener == null)

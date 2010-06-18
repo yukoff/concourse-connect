@@ -81,7 +81,7 @@ public class SaveClassifiedAdAction implements IPortletAction {
     User user = getUser(request);
 
     // Update the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     boolean recordInserted = false;
     int resultCount = -1;
 

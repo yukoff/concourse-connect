@@ -87,6 +87,19 @@ public class SaveAddWikiFormAction implements IPortletAction {
     }
 
     String title = request.getParameter("title");
+    // URL reserved
+    //    title = StringUtils.replace(title, "=", "_");
+    //    title = StringUtils.replace(title, ";", "_");
+    title = StringUtils.replace(title, "/", "_");
+    title = StringUtils.replace(title, "#", "_");
+    //    title = StringUtils.replace(title, "?", "_");
+    // Conformity
+    title = StringUtils.replace(title, "&apos;", "'");
+    title = StringUtils.replace(title, "&rsquo;", "'");
+    title = StringUtils.replace(title, "\u2019", "'");
+    title = StringUtils.replace(title, "\u0027", "'");
+    title = StringUtils.replace(title, "%u2019", "'");
+    title = StringUtils.replace(title, "&#8217;", "'");
     title = StringUtils.replace(StringUtils.jsEscape(title), "%20", "+");
 
     String templateId = request.getParameter("templateId");

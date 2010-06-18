@@ -90,6 +90,7 @@ public final class ContactUs extends GenericAction {
     try {
       db = getConnection(context);
       bean.setInstanceId(getInstance(context).getId());
+      bean.setEmailCopy(true);
       bean.save(context, db);
     } catch (Exception e) {
       e.printStackTrace(System.out);

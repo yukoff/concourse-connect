@@ -1,5 +1,5 @@
 #!/bin/sh
-//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/sjsxp-1.0.1.jar:lib/jsr173_1.0_api.jar:lib/log4j-1.2.15.jar bsh.Interpreter "$0" "$@"
+//bin/true; exec java -classpath .:lib/bsh-2.0b4.jar:lib/sjsxp-1.0.2.jar:lib/jsr173_1.0_api.jar:lib/log4j-1.2.15.jar:lib/commons-logging-1.1.1.jar bsh.Interpreter "$0" "$@"
 
 // Dynamically add to the classpath
 File libDir = new File("lib");
@@ -24,12 +24,14 @@ conn.setCode("plaintext-code-in-database");
 // To stream the HTTP result to a file  and conserve memory set a filename!
 File file = new File("backup_projects.xml");
 conn.setOutputFile(file);
+conn.setAutoGenerateMeta(true);
 
 // Save the projectList and all project-dependent data
 // Users are not backed up
 DataRecord record = new DataRecord();
 record.setName("projectList");
-record.addField("projectId", "2");
+//record.addField("projectId", "2");
+//record.addField("uniqueId", "main-profile");
 record.addField("profile", "false");
 record.setAction("backup");
 boolean success = conn.save(record);

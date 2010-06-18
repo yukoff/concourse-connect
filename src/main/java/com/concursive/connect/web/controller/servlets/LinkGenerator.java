@@ -226,29 +226,35 @@ public class LinkGenerator {
     String itemLink = null;
     if (linkModuleId != -1) {
       if (linkModuleId == Constants.PROJECT_CLASSIFIEDS_FILES) {
-        itemLink = "classified-ad/" + linkItemId;
+        itemLink = "/classified-ad/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECT_BLOG_FILES) {
-        itemLink = "post/" + linkItemId;
+        itemLink = "/post/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECT_AD_FILES) {
-        itemLink = "promotion/" + linkItemId;
+        itemLink = "/promotion/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECT_REVIEW_FILES) {
-        itemLink = "review/" + linkItemId;
+        itemLink = "/review/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECT_WIKI_FILES) {
-        itemLink = "wiki"; //TODO: needs to consider wiki subject
+        itemLink = "/wiki"; //TODO: needs to consider wiki subject
       } else if (linkModuleId == Constants.DISCUSSION_FILES_TOPIC) {
-        itemLink = "topic/" + linkItemId;
+        itemLink = "/topic/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECT_WIKI_COMMENT_FILES) {
-        itemLink = "wiki"; //TODO: needs to consider wiki subject
+        itemLink = "/wiki"; //TODO: needs to consider wiki subject
       } else if (linkModuleId == Constants.BLOG_POST_COMMENT_FILES) {
-        itemLink = "post/" + linkItemId;
+        itemLink = "/post/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECTS_FILES) {
-        itemLink = "file/" + linkItemId;
+        itemLink = "/file/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECTS_CALENDAR_EVENT_FILES) {
-        itemLink = "calendar/" + linkItemId;
+        itemLink = "/calendar/" + linkItemId;
       } else if (linkModuleId == Constants.PROJECT_IMAGE_FILES) {
         itemLink = "";
       } else if (linkModuleId == Constants.PROJECT_MESSAGES_FILES) {
-        itemLink = "message/inbox/" + linkItemId;
+        itemLink = "/message/inbox/" + linkItemId;
+      } else if (linkModuleId == Constants.PROJECT_WEBCAST_FILES) {
+        itemLink = "/webcasts";
+      } else if (linkModuleId == Constants.PROFILE_LINK) {
+        itemLink = "";
+      } else {
+        LOG.debug("linkModuleId was not found...");
       }
     }
     return itemLink;

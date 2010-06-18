@@ -98,6 +98,7 @@ public class UserUtilsTest extends AbstractConnectionPoolTest {
     User retrievedUser = UserUtils.loadUserFromGuid(db, guid);
     assertNotNull("UserUtils did not find a user", retrievedUser);
     // Delete the test user
+    user.getProfileProject().delete(db, null);
     user.delete(db);
   }
 

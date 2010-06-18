@@ -67,10 +67,10 @@
     <fieldset>
       <legend>
         <ccp:evaluate if="<%= meeting.getId() == -1 %>">
-            <ccp:label name="projectsCenterCalendar.add.newMeeting">New Event</ccp:label>
+            <ccp:label name="projectsCenterCalendar.add.newEvent">New Event</ccp:label>
         </ccp:evaluate>
         <ccp:evaluate if="<%= meeting.getId() > -1 %>">
-            <ccp:label name="projectsCenterCalendar.add.modifyMeeting">Modify Event</ccp:label>
+            <ccp:label name="projectsCenterCalendar.add.modifyEvent">Modify Event</ccp:label>
         </ccp:evaluate>
       </legend>
       <label for="title"><ccp:label name="projectsCenterCalendar.add.title">Title</ccp:label> <span class="required">*</span></label>
@@ -106,32 +106,36 @@
         <ccp:timeSelect baseName="endDate" value="<%= meeting.getEndDate() %>" timeZone="<%= User.getTimeZone() %>"/>
         <ccp:tz timestamp="<%= new Timestamp(System.currentTimeMillis()) %>" pattern="z"/>
       </fieldset>
-        <fieldset>
-          <legend><ccp:label name="projectsCenterCalendar.add.details">Details</ccp:label></legend>
-          <label for="allowUsersToJoin">
-            <input type="checkbox" name="allowUsersToJoin" id="allowUsersToJoin" value="on" <%= meeting.getAllowUsersToJoin() ? "checked" : "" %>/>
-            Allow any user to sign up for this meeting<br />
+      <fieldset>
+        <legend><ccp:label name="projectsCenterCalendar.add.details">Details</ccp:label></legend>
+        <label for="allowUsersToJoin">
+          <input type="checkbox" name="allowUsersToJoin" id="allowUsersToJoin" value="on" <%= meeting.getAllowUsersToJoin() ? "checked" : "" %>/>
+          Allow any user to sign up for this event<br />
+        </label>
+        <c:if test="${showDimDim eq 'true'}">
+          <label for="isDimdim">
+            <input type="checkbox" name="isDimdim" id="isDimdim" value="on" <%= meeting.getIsDimdim() ? "checked" : "" %>/>
+            Schedule a Dimdim web meeting and notify participants<br />
           </label>
-          <c:if test="${showDimDim eq 'true'}">
-            <label for="isDimdim">
-              <input type="checkbox" name="isDimdim" id="isDimdim" value="on" <%= meeting.getIsDimdim() ? "checked" : "" %>/>
-              Schedule a Dimdim web meeting and notify participants<br />
-            </label>
-          </c:if>
-        </fieldset>
-        <fieldset>
-          <legend>Participants</legend>
-          <label for="meetingInvitees">Please enter the names or email addresses of your invitees, separated by a comma.</label>
-          <%= showAttribute(request, "inviteesError") %>
-          <textarea id="meetingInvitees" name="meetingInvitees" class="height100"><%= meeting.getMeetingInvitees() %></textarea>
-          <c:if test="${!empty teamMembersList}">
-            <span class="characterCounter">You may also choose from the member list below.</span>
-          </c:if>
-          <c:forEach var="teamMember" items="${teamMembersList}" varStatus="loopStatus">
-            <c:set var="teamMember" scope="request" value="${teamMember}"/>
-            <a href="javascript:void(0);" onClick="addMember('${teamMember.profileProject.uniqueId}','<%= StringUtils.jsStringEscape(((User)request.getAttribute("teamMember")).getNameFirstLast()) %>'); void(0);"><u><c:out value="${teamMember.nameFirstLast}"/></u></a><c:if test="${!loopStatus.last}">,</c:if>
-          </c:forEach>
-        </fieldset>
+        </c:if>
+        <label for="isWebcast">
+          <input type="checkbox" name="isWebcast" id="isWebcast" value="on" <%= meeting.getIsWebcast() ? "checked" : "" %>/>
+          This is a webcast<br />
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Participants</legend>
+        <label for="meetingInvitees">Please enter the names or email addresses of your invitees, separated by a comma.</label>
+        <%= showAttribute(request, "inviteesError") %>
+        <textarea id="meetingInvitees" name="meetingInvitees" class="height100"><%= meeting.getMeetingInvitees() %></textarea>
+        <c:if test="${!empty teamMembersList}">
+          <span class="characterCounter">You may also choose from the member list below.</span>
+        </c:if>
+        <c:forEach var="teamMember" items="${teamMembersList}" varStatus="loopStatus">
+          <c:set var="teamMember" scope="request" value="${teamMember}"/>
+          <a href="javascript:void(0);" onClick="addMember('${teamMember.profileProject.uniqueId}','<%= StringUtils.jsStringEscape(((User)request.getAttribute("teamMember")).getNameFirstLast()) %>'); void(0);"><u><c:out value="${teamMember.nameFirstLast}"/></u></a><c:if test="${!loopStatus.last}">,</c:if>
+        </c:forEach>
+      </fieldset>
     </fieldset>
     <input type="submit" name="save" class="submit" value="<ccp:label name="button.save">Save</ccp:label>" onclick="calendarTrigger('startDate'); return checkFormEventMeetingAdd(this.form);" />
     <c:choose>

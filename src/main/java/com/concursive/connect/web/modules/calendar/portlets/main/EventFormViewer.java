@@ -122,7 +122,7 @@ public class EventFormViewer implements IPortletViewer {
     }
 
     // Determine the connection to use
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
 
     // Check the request for the record and provide a value for the request scope
     Meeting meeting = (Meeting) PortalUtils.getFormBean(request, MEETING, Meeting.class);

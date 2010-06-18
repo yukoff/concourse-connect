@@ -51,6 +51,7 @@ import com.concursive.connect.indexer.IIndexerSearch;
 import com.concursive.connect.indexer.IndexerQueryResultList;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.portal.IPortletViewer;
+import com.concursive.connect.web.portal.PortalUtils;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -73,7 +74,6 @@ public class SearchResultsByClassified implements IPortletViewer {
   // Context Parameters
   private static final String SEARCHER = "searcher";
   private static final String BASE_QUERY_STRING = "dataQueryString";
-  private static final String PROJECT_CATEGORY_LIST = "projectCategoryList";
   // Preferences
   private static final String PREFS_TITLE = "title";
   private static final String PREFS_LIMIT = "limit";
@@ -97,20 +97,23 @@ public class SearchResultsByClassified implements IPortletViewer {
       request.setAttribute(LIMIT, request.getPreferences().getValue(PREFS_LIMIT, "10"));
       String category = request.getPreferences().getValue(PREFS_CATEGORY_NAME, null);
       if (category != null) {
-        ProjectCategoryList categories = (ProjectCategoryList) request.getAttribute(PROJECT_CATEGORY_LIST);
+        ProjectCategoryList categories = (ProjectCategoryList) request.getAttribute(Constants.REQUEST_TAB_CATEGORY_LIST);
         int categoryId = categories.getIdFromValue(category);
         if (categoryId > -1) {
           queryString += " AND (projectCategoryId:" + categoryId + ")";
         }
       }
+      //fetch only classifieds in this instanceId
+      if (PortalUtils.getInstance(request).getId() != -1){
+      	queryString += " AND (instanceId:" + PortalUtils.getInstance(request).getId() + ")";
+      }
+      
       Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
       SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-      
       //Fetch only those that are published. TODO: performance testing as this results in a query explosion
       queryString += " AND (published:[20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "])");
       //Fetch only those that have not expired
       queryString += " NOT (expired:{20030101 TO " + String.valueOf(formatter.format(currentTimestamp) + "})");
-      
       
       // Customize the string
       queryString += " AND (type:classifieds) ";
@@ -119,6 +122,8 @@ public class SearchResultsByClassified implements IPortletViewer {
       IndexerQueryResultList query = new IndexerQueryResultList(queryString);
       query.setQueryIndexType(Constants.INDEXER_FULL);
       query.getPagedListInfo().setItemsPerPage(limit);
+      query.getPagedListInfo().setColumnToSortBy("modified");
+      query.getPagedListInfo().setSortOrder("desc");
       searcher.search(query);
       //Sort sort = new Sort("type");
       //Hits hits = searcher.search(query, sort);

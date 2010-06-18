@@ -56,6 +56,7 @@ import com.concursive.connect.web.modules.badges.dao.BadgeCategoryList;
 import com.concursive.connect.web.modules.badges.dao.BadgeList;
 import com.concursive.connect.web.modules.badges.utils.BadgeUtils;
 import com.concursive.connect.web.modules.documents.dao.FileItemList;
+import com.concursive.connect.web.modules.profile.dao.ProjectCategory;
 import com.concursive.connect.web.modules.profile.dao.ProjectCategoryList;
 import com.concursive.connect.web.utils.PagedListInfo;
 
@@ -106,26 +107,27 @@ public final class AdminBadges extends GenericAction {
       badgeCategoryList.setEnabled(Constants.TRUE);
       badgeCategoryList.buildList(db);
       context.getRequest().setAttribute("badgeCategoryList", badgeCategoryList);
-      context.getRequest().setAttribute("badgeCategoryList1", badgeCategoryList);
       if (badgeCategoryList.size() > 0 && !StringUtils.hasText(badgeCategoryId)) {
         badgeCategoryId = String.valueOf(badgeCategoryList.get(0).getId());
       }
 
       // Get badges
-      PagedListInfo adminBadgesInfo = this.getPagedListInfo(context, "adminBadgesInfo");
-      adminBadgesInfo.setLink(context, ctx(context) + "/AdminBadges.do?command=List");
-      BadgeList badgeList = new BadgeList();
-      badgeList.setPagedListInfo(adminBadgesInfo);
-      badgeList.setEnabled(Constants.TRUE);
-      if (!StringUtils.hasText(badgeCategoryId)) {
-        badgeList.setOnlyWithoutBadgeCategory(true);
-      } else {
-        badgeList.setCategoryId(badgeCategoryId);
+      if (StringUtils.hasText(badgeCategoryId)){
+	      PagedListInfo adminBadgesInfo = this.getPagedListInfo(context, "adminBadgesInfo");
+	      adminBadgesInfo.setLink(context, ctx(context) + "/AdminBadges.do?command=List");
+	      BadgeList badgeList = new BadgeList();
+	      badgeList.setPagedListInfo(adminBadgesInfo);
+	      badgeList.setEnabled(Constants.TRUE);
+	      badgeList.setCategoryId(badgeCategoryId);
+	      badgeList.setBuildLogos(true);
+	      badgeList.buildList(db);
+	      context.getRequest().setAttribute("badgeList", badgeList);
+	      
+	      BadgeCategory badgeCategory = new BadgeCategory(db, Integer.parseInt(badgeCategoryId));
+	      ProjectCategory projectCategory = new ProjectCategory(db, badgeCategory.getProjectCategoryId());
+	      context.getRequest().setAttribute("badgeCategory", badgeCategory);
+	      context.getRequest().setAttribute("projectCategory", projectCategory);
       }
-      badgeList.setBuildLogos(true);
-      badgeList.buildList(db);
-      context.getRequest().setAttribute("badgeList", badgeList);
-
       //Load project category drop-down list
       ProjectCategoryList projectCategoryList = new ProjectCategoryList();
       projectCategoryList.setTopLevelOnly(true);
@@ -201,8 +203,20 @@ public final class AdminBadges extends GenericAction {
         badge = BadgeUtils.loadBadge(badgeId);
         context.getRequest().setAttribute("badge", badge);
       }
+      BadgeCategory badgeCategory = null;
+      if (badge != null){
+      	badgeCategory = new BadgeCategory(db, badge.getCategoryId());
+      } else {
+      	badgeCategory = new BadgeCategory(db, Integer.parseInt(badgeCategoryIdString));
+      }
+      context.getRequest().setAttribute("badgeCategory", badgeCategory);
+      if (badgeCategory != null) {
+	      ProjectCategory projectCategory = new ProjectCategory(db, badgeCategory.getProjectCategoryId());
+	      context.getRequest().setAttribute("projectCategory", projectCategory);
+      }      
       BadgeCategoryList badgeCategoryList = new BadgeCategoryList();
       badgeCategoryList.setEnabled(Constants.TRUE);
+      badgeCategoryList.setProjectCategoryId(badgeCategory.getProjectCategoryId());
       badgeCategoryList.setEmptyHtmlSelectRecord("--None--");
       badgeCategoryList.buildList(db);
       context.getRequest().setAttribute("badgeCategoryList", badgeCategoryList);

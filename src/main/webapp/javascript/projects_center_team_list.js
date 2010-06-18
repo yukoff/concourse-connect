@@ -66,6 +66,7 @@ var teamMemberTooltipTargetId;
         teamMemberTooltipTargetId = target.id;
         // Load the tooltip
         var url = teamelements_ctx + "/ProjectManagementTeam.do?command=Tooltip&id=" + target.id + "&out=text";
+        url += ((url.indexOf('?') == -1)?'?':'&') + "rnd=" + new Date().valueOf().toString();
         xmlhttp.open('get', url);
         xmlhttp.onreadystatechange = function() {
           if (xmlhttp.readyState == 4) {

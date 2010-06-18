@@ -64,18 +64,9 @@
 <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" src="<%= ctx %>/javascript/confirmDelete.js"></SCRIPT>
 <script type="text/javascript">
   function showTemplates() {
-    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Templates&pid=<%= project.getId() %>&popup=true','Import_Templates','550','520','yes','yes');
+    popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Templates&pid=<%= project.getId() %>&popup=true','550','520','yes','yes');
   }
 </script>
-<table border="0" cellpadding="1" cellspacing="0" width="100%">
-  <tr class="subtab">
-    <td>
-      <img border="0" src="<%= ctx %>/images/icons/stock_list_bullet2-16.gif" align="absmiddle">
-      <ccp:label name="projectsCenterRequirements.outlines">Outlines</ccp:label>
-    </td>
-  </tr>
-</table>
-<br />
 <ccp:permission name="project-plan-outline-add">
   <img border="0" src="<%= ctx %>/images/icons/stock_new_bullet-16.gif" align="absmiddle">
   <a href="<%= ctx %>/ProjectManagementRequirements.do?command=Add&pid=<%= project.getId() %>"><ccp:label name="projectsCenterRequirements.newOutline">New Outline</ccp:label></a> |
@@ -152,10 +143,10 @@ String actionError = showError(request, "actionError");
             </td>
             <td valign="top">
               <a href="<%= ctx %>/show/<%= project.getUniqueId() %>/plan/<%= thisRequirement.getId() %>"><%= toHtml(thisRequirement.getShortDescription()) %></a>
-              <a href="javascript:popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=<%= project.getId() %>&rid=<%= thisRequirement.getId() %>&popup=true','Plan_Details','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absbottom" /></a>
+              <a href="javascript:popURL('<%= ctx %>/ProjectManagementRequirements.do?command=Details&pid=<%= project.getId() %>&rid=<%= thisRequirement.getId() %>&popup=true','650','375','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absbottom" /></a>
               <ccp:permission name="project-wiki-view">
                 <ccp:evaluate if="<%= hasText(thisRequirement.getWikiLink()) %>">
-                  <a href="javascript:popURL('<%= ctx %>/show/<%= project.getUniqueId() %>/wiki/<%= thisRequirement.getWikiSubject() %>?popup=true','Wiki','700','600','yes','yes');"><img src="<%= ctx %>/images/icons/stock_macro-objects-16.gif" border="0" align="absbottom" /></a>
+                  <a href="javascript:popURL('<%= ctx %>/show/<%= project.getUniqueId() %>/wiki/<%= thisRequirement.getWikiSubject() %>?popup=true','700','600','yes','yes');"><img src="<%= ctx %>/images/icons/stock_macro-objects-16.gif" border="0" align="absbottom" /></a>
                 </ccp:evaluate>
               </ccp:permission>
               <br />
@@ -224,7 +215,7 @@ String actionError = showError(request, "actionError");
       <td valign="top">
         <img border="0" src="<%= ctx %>/images/treespace.gif" align="absmiddle">
         <%= thisAssignment.getStatusGraphicTag(ctx) %>
-        <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Modify&pid=<%= project.getId() %>&aid=<%= thisAssignment.getId() %>&popup=true&return=ProjectRequirements&param=<%= project.getId() %>','Assignment','650','600','yes','yes');" style="text-decoration:none;color:black;" onMouseOver="this.style.color='blue';window.status='Update this assignment';return true;" onMouseOut="this.style.color='black';window.status='';return true;"><%= toHtml(thisAssignment.getRole()) %></a>
+        <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=Modify&pid=<%= project.getId() %>&aid=<%= thisAssignment.getId() %>&popup=true&return=ProjectRequirements&param=<%= project.getId() %>','650','600','yes','yes');" style="text-decoration:none;color:black;" onMouseOver="this.style.color='blue';window.status='Update this assignment';return true;" onMouseOut="this.style.color='black';window.status='';return true;"><%= toHtml(thisAssignment.getRole()) %></a>
         (<%
           Iterator assignedUsers = thisAssignment.getAssignedUserList().iterator();
           while (assignedUsers.hasNext()) {

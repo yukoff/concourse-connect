@@ -503,7 +503,7 @@ public class Parameter extends GenericBean {
       select.addItem("1", "Yes");
       select.addItem("0", "No");
       request.setAttribute(name, select);
-    } else if (name.startsWith("date_")) {
+    } else if (name.startsWith("date_") && !name.endsWith("_where")) {
       try {
         Timestamp tmpTimestamp = DateUtils.getUserToServerDateTime(
             null,

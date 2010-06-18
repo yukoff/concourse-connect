@@ -52,8 +52,8 @@ import com.concursive.connect.web.modules.badges.dao.ProjectBadge;
 import com.concursive.connect.web.modules.blog.dao.BlogPost;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
 import com.concursive.connect.web.modules.classifieds.dao.Classified;
-import com.concursive.connect.web.modules.discussion.dao.Topic;
 import com.concursive.connect.web.modules.discussion.dao.Forum;
+import com.concursive.connect.web.modules.discussion.dao.Topic;
 import com.concursive.connect.web.modules.documents.dao.FileFolder;
 import com.concursive.connect.web.modules.documents.dao.FileItem;
 import com.concursive.connect.web.modules.lists.dao.TaskCategory;
@@ -63,6 +63,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.promotions.dao.Ad;
 import com.concursive.connect.web.modules.reviews.dao.ProjectRating;
 import com.concursive.connect.web.modules.wiki.dao.Wiki;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Splits a wiki link into inter-project link properties.  This class was
@@ -73,6 +75,8 @@ import com.concursive.connect.web.modules.wiki.dao.Wiki;
  * @created April 11, 2007
  */
 public class WikiLink {
+
+  private static Log LOG = LogFactory.getLog(WikiLink.class);
 
   // constants
   public static final String SIMPLE = "simple";
@@ -87,9 +91,13 @@ public class WikiLink {
   private String status = "";
   public static final String rgex = "[|:]";
 
+  // resulting url value
+  private String url = "";
+
   /**
    * Method syntactic parsing of inter-project wiki links:
    * [[Wiki Article]]
+   * [[|Wiki Home]]
    * [[Wiki Article|Display Text]]
    * [[|{project id}:{area}|{entity id}|{alternate name}]]
    * [[|{project unique id}:{area}|{entity id}|{alternate name}]]
@@ -98,18 +106,32 @@ public class WikiLink {
    * Empty {project id} means the current project. Otherwise is project id field.
    * {area} is project, wiki, documents, tickets, etc.
    * {entity id} is an identifier, for wiki article name, tickets - ticket number, etc., can be null
-   * {alternate name} self explainative
+   * {alternate name} self-explanatory
    *
    * @param projectId  the default project id (the project id of this wiki entry for substitution)
    * @param wikiString link
    */
-  public WikiLink(int projectId, String wikiString) {
-    parseLink(wikiString);
-
+  public WikiLink(String wikiString, int projectId) {
     // Use the specified id
-    if (!StringUtils.hasText(project)) {
+    if (projectId != -1) {
       project = String.valueOf(projectId);
     }
+    // Parse the link
+    parseLink(wikiString);
+  }
+
+  /**
+   * When a WikiLink is needed by a WikiImage, it uses this method which uses
+   * the projectId first
+   *
+   * @param projectId
+   * @param wikiString
+   */
+  public WikiLink(int projectId, String wikiString) {
+    // Use the specified id
+    project = String.valueOf(projectId);
+    // Parse the link
+    parseLink(wikiString);
   }
 
   public WikiLink(String wikiString) {
@@ -124,28 +146,35 @@ public class WikiLink {
     }
 
     String rgex_ = "(http|https|ftp)://\\S+[\\S\\s]+";
+    String rgex_0 = "(mailto):\\S+@[\\S\\s]+";
     String rgex_1 = "(/)\\S+[\\S\\s]+";
     String rgex_2 = "[\\S\\s]+(|\\|)[\\S\\s]+";
     String rgex_3 = "\\|(|[\\S\\s])+:[\\S\\s]+";
 
-    boolean match = wikiString.matches(rgex_) || wikiString.matches(rgex_1);
+    boolean match = wikiString.matches(rgex_) || wikiString.matches(rgex_0) || wikiString.matches(rgex_1);
     boolean match2 = wikiString.matches(rgex_2) && !wikiString.startsWith("|");
     boolean match3 = wikiString.matches(rgex_3) || wikiString.startsWith("|");
 
     // References an external site - rgex_
     if (match) {
+      // [[http://external]]
+      LOG.debug("match condition");
       linkRgex_(wikiString, " ");
       status = REFERENCE;
     }
 
     // Link to another wiki entry  - rgex_2
     if (match2 && !match && !match3) {
+      // [[Wiki link]]
+      // [[Wiki Link|Renamed]]
+      LOG.debug("match2 condition");
       linkRgex_(wikiString, "|");
       status = SIMPLE;
     }
 
     // Wiki link to any profile - rgex_3
     if (match3) {
+      LOG.debug("match3 condition");
       linkRgex_3(wikiString);
       status = COMPLEX;
     }
@@ -158,6 +187,36 @@ public class WikiLink {
     if (StringUtils.hasText(project)) {
       if (!StringUtils.isNumber(project)) {
         project = String.valueOf(ProjectUtils.retrieveProjectIdFromUniqueId(project));
+      }
+    }
+
+    // Save the URL
+    if (WikiLink.REFERENCE.equals(this.getStatus())) {
+      url = this.getEntity();
+    } else {
+      Project thisProject = null;
+      if (this.getProjectId() > -1) {
+        thisProject = ProjectUtils.loadProject(this.getProjectId());
+      } else {
+        thisProject = new Project();
+      }
+      // Links...
+      if ("profile".equalsIgnoreCase(this.getArea())) {
+        // Links to a profile page
+        url = "/show/" + thisProject.getUniqueId();
+      } else if ("badge".equalsIgnoreCase(this.getArea())) {
+        // Links to a badge
+        url = "/badge/" + this.getEntityId();
+      } else if ("wiki".equalsIgnoreCase(this.getArea())) {
+        // Links to another wiki page
+        if (StringUtils.hasText(this.getEntity())) {
+          url = "/show/" + thisProject.getUniqueId() + "/wiki/" + this.getEntityTitle();
+        } else {
+          url = "/show/" + thisProject.getUniqueId() + "/wiki";
+        }
+        // @todo link to the edit page if the page doesn't exist and user has access to modify the page
+      } else {
+        url = "/show/" + thisProject.getUniqueId() + "/" + this.getArea().toLowerCase() + (StringUtils.hasText(this.getEntity()) ? "/" + this.getEntityId() : "");
       }
     }
   }
@@ -181,35 +240,57 @@ public class WikiLink {
 
   /**
    * Method syntactic parsing link type complex.
-   * Ex. 177:ticket|4736|Some Ticket
-   * Ex. :ticket|4736|Some Ticket
-   * Ex. :ticket|4736|
-   * Ex. :ticket|4736
-   * Ex. 6:wiki||
+   * Ex. |177:issue|4736|Some Ticket
+   * Ex. |:issue|4736|Some Ticket
+   * Ex. |:issue|4736|
+   * Ex. |:issue|4736
+   * Ex. |4075:wiki||
+   * Ex. |3995:calendar|
+   * Ex. |3995:calendar||See our calendar
+   * Ex. |Wiki Home
    *
    * @param str link
    */
-
   void linkRgex_3(String str) {
     String[] tokens = str.substring(1).split("[|]");
+    // [[|9999999:topic|3353|info]]
 
     // First token
     int projectIdx = tokens[0].indexOf(":");
-    if (projectIdx > -1) {
+    if (projectIdx > 0) {
+      // use the specified id, otherwise none was specified
       project = tokens[0].substring(0, projectIdx);
     }
-    area = tokens[0].substring(projectIdx + 1);
+
+    LOG.debug("Tokens: " + tokens.length);
 
     if (tokens.length == 1) {
+      // Determine if an area is specified, else use wiki as the default
+      if (projectIdx > -1) {
+        // [[9999999:topic]]
+        area = tokens[0].substring(projectIdx + 1);
+      } else {
+        // [[|hello]]
+        area = "wiki";
+        name = tokens[0];
+      }
       entity = "";
-      name = "the wiki";
+      if (projectIdx > -1 && StringUtils.hasText(tokens[0].substring(projectIdx + 1))) {
+        name = tokens[0].substring(projectIdx + 1);
+      }
     } else {
+      // First token
+      area = tokens[0].substring(projectIdx + 1);
+
       // Second token
       entity = tokens[1];
 
       // Third token
       if (tokens.length > 2 && StringUtils.hasText(tokens[2])) {
         name = tokens[2];
+      } else {
+        // @note this is set by linkRgex_; think about overriding
+        //name = area;
       }
     }
   }
@@ -240,18 +321,28 @@ public class WikiLink {
     return entity;
   }
 
-  public int getEntityId() {
+  public String getEntityId() {
     try {
-      return Integer.parseInt(entity);
+      return String.valueOf(Integer.parseInt(entity));
     }
     catch (NumberFormatException ex) {
-      // Do nothing
+      if ("app".equals(area)) {
+        return entity;
+      }
     }
-    return -1;
+    return "-1";
   }
 
   public String getEntityTitle() {
-    return (StringUtils.hasText(entity) ? StringUtils.replace(StringUtils.jsEscape(entity), "%20", "+") : "");
+    if (!StringUtils.hasText(entity)) {
+      return "";
+    }
+    String content = StringUtils.replace(StringUtils.jsEscape(entity), "%20", "+");
+    if (content.contains("&apos;")) {
+      // This is an invalid HTML character that is being introduced
+      content = StringUtils.replace(content, "&apos;", "%27");
+    }
+    return content;
   }
 
 
@@ -275,18 +366,43 @@ public class WikiLink {
     this.status = status;
   }
 
+  public String getUrl() {
+    return url;
+  }
+
+  public String getUrl(String contextPath) {
+    if (url != null && url.startsWith("/") && !url.startsWith(contextPath)) {
+      return contextPath + url;
+    } else {
+      return url;
+    }
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
   public String toString() {
     StringBuffer sb = new StringBuffer("============ WikiLink ============\n");
     sb.append("project: " + project + "\n");
     sb.append("area: " + area + "\n");
     sb.append("entity: " + entity + "\n");
+    sb.append("entityId: " + getEntityId() + "\n");
     sb.append("name: " + name + "\n");
     sb.append("status: " + status + "\n");
+    sb.append("url: " + url + "\n");
     return sb.toString();
   }
 
+  /**
+   * For checking permissions, the area must be mapped to a project permission
+   *
+   * @return
+   */
   public String getPermissionArea() {
-    if ("wiki".equals(area)) {
+    if ("profile".equals(area) || "app".equals(area)) {
+      return "profile";
+    } else if ("wiki".equals(area)) {
       return area;
     } else if ("list".equals(area)) {
       return "lists";
@@ -296,6 +412,8 @@ public class WikiLink {
       return "news";
     } else if ("event".equals(area)) {
       return "calendar";
+    } else if ("discussion".equals(area)) {
+      return "discussion-forums";
     } else if ("forum".equals(area)) {
       return "discussion-forums";
     } else if ("topic".equals(area)) {
@@ -420,6 +538,18 @@ public class WikiLink {
       link.append(rating.getTitle());
     }
     link.append("]]");
+
+    if (object instanceof Meeting) {
+      Meeting meeting = (Meeting) object;
+      if (meeting.getIsWebcast()) {
+        link.append(" ([[|");
+        link.append(meeting.getProjectId());
+        link.append(":webcasts|");
+        link.append("|");
+        link.append("Webcast");
+        link.append("]])");
+      } 
+    }
 
     return link.toString().trim();
   }

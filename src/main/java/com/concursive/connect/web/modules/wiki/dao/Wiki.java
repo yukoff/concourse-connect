@@ -158,7 +158,16 @@ public class Wiki extends GenericBean {
   }
 
   public String getSubjectLink() {
-    return StringUtils.replace(StringUtils.jsEscape(subject), "%20", "+");
+    // reserved   = ; / # ? : space
+    String link = subject;
+    //    link = StringUtils.replace(link, "=", "_");
+    //    link = StringUtils.replace(link, ";", "_");
+    link = StringUtils.replace(link, "/", "_");
+    link = StringUtils.replace(link, "#", "_");
+    //    link = StringUtils.replace(link, "?", "_");
+    link = StringUtils.replace(StringUtils.jsEscape(link), "%20", "+");
+    link = StringUtils.replace(link, "\"", "%22");
+    return link;
   }
 
   public void setSubject(String subject) {

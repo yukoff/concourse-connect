@@ -689,7 +689,7 @@ public final class ProjectManagementLists extends GenericAction {
       context.getRequest().setAttribute("ratingBean", thisRating);
       context.getRequest().setAttribute("showText", false);
       context.getRequest().setAttribute("url", context.getRequest().getContextPath() +
-          "/ProjectManagementLists.do?command=SetRating&pid=" + thisTask.getProjectId() + "&id=" + thisTask.getId() + "&v=${vote}&out=text");
+          "/ProjectManagementLists.do?command=SetRating&pid=" + thisTask.getProjectId() + "&id=" + thisTask.getId() + "&v={vote}&out=text");
       return "RatingOK";
     } catch (Exception errorMessage) {
       context.getRequest().setAttribute("Error", errorMessage);

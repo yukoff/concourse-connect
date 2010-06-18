@@ -46,12 +46,12 @@
 
 package com.concursive.connect.workflow.components.crm;
 
-import com.concursive.commons.api.DataRecord;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.demo.beans.DemoBean;
+import com.concursive.crm.api.client.DataRecord;
 
 /**
  * Prepares the Demo User information for sending to ConcourseSuite

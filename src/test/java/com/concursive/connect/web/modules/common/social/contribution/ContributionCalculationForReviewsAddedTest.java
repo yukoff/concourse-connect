@@ -106,7 +106,6 @@ public class ContributionCalculationForReviewsAddedTest extends AbstractConnecti
     newProjectRating.setTitle("Rating Title");
     newProjectRating.setComment("Rating Comment");
     newProjectRating.setEnteredBy(USER_ID);
-    newProjectRating.setModifiedBy(USER_ID);
     boolean ratingInserted = ProjectRating.save(db, newProjectRating);
     assertTrue("Project Rating was not inserted", ratingInserted);
     assertTrue("Project Rating  did not have an id", newProjectRating.getId() > -1);

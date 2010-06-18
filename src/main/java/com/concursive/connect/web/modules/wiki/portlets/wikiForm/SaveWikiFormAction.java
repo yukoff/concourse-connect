@@ -54,7 +54,8 @@ import com.concursive.connect.web.modules.wiki.dao.Wiki;
 import com.concursive.connect.web.modules.wiki.utils.CustomFormUtils;
 import com.concursive.connect.web.portal.IPortletAction;
 import com.concursive.connect.web.portal.PortalUtils;
-import static com.concursive.connect.web.portal.PortalUtils.*;
+import static com.concursive.connect.web.portal.PortalUtils.findProject;
+import static com.concursive.connect.web.portal.PortalUtils.processInsertHook;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -106,6 +107,8 @@ public class SaveWikiFormAction implements IPortletAction {
     String browser = null;
 
     // @todo Make this capability generic instead of using these defined fields...
+    // @note it would be nice to just take the filled in form and convert it to an email
+    // without the contactUsBean
     // Submit the data
     ContactUsBean bean = new ContactUsBean();
     bean.setDescription(request.getPreferences().getValue(PREF_TITLE, null));
@@ -135,8 +138,11 @@ public class SaveWikiFormAction implements IPortletAction {
     }
     // Everything is there... save it
     bean.setEmailCopy(true);
-    bean.save(PortalUtils.getConnection(request), PortalUtils.getApplicationPrefs(request),
-                            PortalUtils.getFreemarkerConfiguration(request), ipAddress, browser);
+    bean.save(PortalUtils.useConnection(request), PortalUtils.getApplicationPrefs(request),
+        PortalUtils.getFreemarkerConfiguration(request), ipAddress, browser);
+
+    // Send to workflow
+    processInsertHook(request, bean);
 
     // Show the success message
     return (PortalUtils.goToViewer(request, response, "success", bean));

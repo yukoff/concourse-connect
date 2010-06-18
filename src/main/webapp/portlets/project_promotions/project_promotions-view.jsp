@@ -55,40 +55,37 @@
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
 <%--@elvariable id="title" type="java.lang.String"--%>
 <%--@elvariable id="ad" type="com.concursive.connect.web.modules.promotions.dao.Ad"--%>
-  <h3><c:out value="${title}"/></h3>
-  <c:if test="${!empty adList}">
-    <ul>
-      <c:forEach items="${adList}" var="ad">
-        <jsp:useBean id="ad" type="com.concursive.connect.web.modules.promotions.dao.Ad" />
-<%
-  Project project = ProjectUtils.loadProject(ad.getProjectId());
-  request.setAttribute("thisProject", project);
-%>
-        <li>
-          <dl>
-            <dt><a href="${ctx}/show/${thisProject.uniqueId}/promotion/${ad.id}" title="<c:out value="${thisProject.title}"/> promotion details"><c:out value="${ad.heading}"/></a></dt>
-            <c:if test="${!empty ad.briefDescription1}"><dd><c:out value="${ad.briefDescription1}"/></dd></c:if>
-            <c:if test="${!empty ad.briefDescription2}"><dd><c:out value="${ad.briefDescription2}"/></dd></c:if>
-            <c:if test="<%= adList.getProjectId() == -1 %>">
-              <cite><c:out value="${thisProject.title}"/></cite>
+<h3><c:out value="${title}"/></h3>
+<c:if test="${!empty adList}">
+  <ul>
+    <c:forEach items="${adList}" var="ad">
+      <jsp:useBean id="ad" type="com.concursive.connect.web.modules.promotions.dao.Ad" />
+      <li>
+        <dl>
+          <dt><a href="${ctx}/show/${ad.project.uniqueId}/promotion/${ad.id}" title="<c:out value="${ad.project.title}"/> promotion details"><c:out value="${ad.heading}"/></a></dt>
+          <c:if test="${!empty ad.briefDescription1}"><dd><c:out value="${ad.briefDescription1}"/></dd></c:if>
+          <c:if test="${!empty ad.briefDescription2}"><dd><c:out value="${ad.briefDescription2}"/></dd></c:if>
+          <c:if test="<%= adList.getProjectId() == -1 %>">
+            <cite><c:out value="${ad.project.title}"/></cite>
+            <c:if test="${!empty ad.project.location}">- (<c:out value="${ad.project.location}"/>)</c:if>
+          </c:if>
+          <c:if test="<%= adList.getProjectId() > -1 %>">
+            <c:if test="${!empty ad.expirationDate}">
+              <c:set var="expirationDate"><ccp:tz timestamp="<%= ad.getExpirationDate() %>" dateOnly="true"/></c:set>
+              <dd>expires ${expirationDate}</dd>
             </c:if>
-            <c:if test="<%= adList.getProjectId() > -1 %>">
-              <c:if test="${!empty ad.expirationDate}">
-                <c:set var="expirationDate"><ccp:tz timestamp="<%= ad.getExpirationDate() %>" dateOnly="true"/></c:set>
-                <dd>expires ${expirationDate}</dd>
-              </c:if>
-              <c:if test="${!empty ad.webPage && !empty ad.destinationUrl && fn:startsWith(ad.destinationUrl, 'http')}">
-                <cite><a href="<c:out value="${ad.destinationUrl}"/>"><c:out value="${ad.webPage}"/></a></cite>
-              </c:if>
+            <c:if test="${!empty ad.webPage && !empty ad.destinationUrl && fn:startsWith(ad.destinationUrl, 'http')}">
+              <cite><a href="<c:out value="${ad.destinationUrl}"/>"><c:out value="${ad.webPage}"/></a></cite>
             </c:if>
-          </dl>
-        </li>
-      </c:forEach>
-    </ul>
-  </c:if>
-  <c:if test="${empty adList}">
-    <p>There are no promotions at this time, please check back later.</p>
-  </c:if>
+          </c:if>
+        </dl>
+      </li>
+    </c:forEach>
+  </ul>
+</c:if>
+<c:if test="${empty adList}">
+  <p>There are no promotions at this time, please check back later.</p>
+</c:if>
 <c:if test="${hasMore eq 'true'}">
   <p class="more"><a href="${ctx}${hasMoreURL}" title="<c:out value="${hasMoreTitle}"/>"><c:out value="${hasMoreTitle}"/></a></p>
 </c:if>

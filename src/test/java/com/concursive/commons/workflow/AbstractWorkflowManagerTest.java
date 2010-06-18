@@ -75,41 +75,18 @@ public abstract class AbstractWorkflowManagerTest extends AbstractConnectionPool
   protected Key key;
   protected ConcurrentHashMap<String, Object> globalParameters;
   protected User workflowUser;
-  protected Project workflowUserProfile;
   protected int USER_ID = -1;
 
   protected void setUp() throws Exception {
     super.setUp();
 
-    LookupList projectCategoryList = CacheUtils.getLookupList("lookup_project_category");
-    int projectCategory = projectCategoryList.getIdFromValue("People");
-
-    // Insert project
-    workflowUserProfile = new Project();
-    workflowUserProfile.setTitle("John Doe");
-    workflowUserProfile.setShortDescription("John Doe's Profile");
-    workflowUserProfile.setRequestDate(new Timestamp(System.currentTimeMillis()));
-    workflowUserProfile.setEstimatedCloseDate((Timestamp) null);
-    workflowUserProfile.setRequestedBy("Project SQL Test Requested By");
-    workflowUserProfile.setRequestedByDept("Project SQL Test Requested By Department");
-    workflowUserProfile.setBudgetCurrency("USD");
-    workflowUserProfile.setBudget("10000.75");
-    workflowUserProfile.setGroupId(1);
-    workflowUserProfile.setEnteredBy(1);
-    workflowUserProfile.setModifiedBy(1);
-    workflowUserProfile.setCategoryId(projectCategory);
-    workflowUserProfile.setProfile(true);
-    assertNotNull(workflowUserProfile);
-    boolean result = workflowUserProfile.insert(db);
-    assertTrue("Project was not inserted", result);
-
-    //add a new user
+    // Add a new user
     workflowUser = new User();
     workflowUser.setGroupId(1);
     workflowUser.setDepartmentId(1);
     workflowUser.setFirstName("John");
     workflowUser.setLastName("Doe");
-    workflowUser.setCompany("xxx");
+    workflowUser.setCompany("John Doe's Company");
     workflowUser.setEmail("jdoe" + System.currentTimeMillis() + "@concursive.com");
     workflowUser.setUsername(workflowUser.getEmail());
     workflowUser.setPassword("xxx");
@@ -118,9 +95,9 @@ public abstract class AbstractWorkflowManagerTest extends AbstractConnectionPool
     workflowUser.setEnabled(true);
     workflowUser.setStartPage(1);
     workflowUser.setRegistered(true);
-    workflowUser.setProfileProjectId(workflowUserProfile.getId());
     workflowUser.insert(db, "127.0.0.1", mockPrefs);
     assertTrue("Unable to add a user..", workflowUser.getId() != -1);
+    assertTrue("User does not have a profile..", workflowUser.getProfileProjectId() != -1);
 
     USER_ID = workflowUser.getId();
 
@@ -147,6 +124,7 @@ public abstract class AbstractWorkflowManagerTest extends AbstractConnectionPool
 
   protected void tearDown() throws Exception {
     // Delete the user and the user's profile
+    workflowUser.getProfileProject().delete(db, null);
     workflowUser.delete(db);
 
     processList = null;

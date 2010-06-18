@@ -91,6 +91,7 @@ public class ProjectFeatures extends GenericBean {
   private boolean showClassifieds = false;
   private boolean showAds = false;
   private boolean showMessages = false;
+  private boolean showWebcasts = false;
 
   // Tab name
   private String labelProfile = null;
@@ -110,6 +111,7 @@ public class ProjectFeatures extends GenericBean {
   private String labelClassifieds = null;
   private String labelAds = null;
   private String labelMessages = null;
+  private String labelWebcasts = null;
 
   // Tab order
   private int orderProfile = 1;
@@ -129,6 +131,7 @@ public class ProjectFeatures extends GenericBean {
   private int orderClassifieds = 15;
   private int orderAds = 16;
   private int orderMessages = 17;
+  private int orderWebcasts = 18;
 
   // Describing the tabs
   private String descriptionProfile = null;
@@ -147,7 +150,7 @@ public class ProjectFeatures extends GenericBean {
   private String descriptionClassifieds = null;
   private String descriptionAds = null;
   private String descriptionMessages = null;
-
+  private String descriptionWebcasts = null;
 
   /**
    * Constructor for the Project object
@@ -411,6 +414,18 @@ public class ProjectFeatures extends GenericBean {
     this.showNews = DatabaseUtils.parseBoolean(tmp);
   }
 
+  public boolean getShowWebcasts() {
+    return showWebcasts;
+  }
+
+  public void setShowWebcasts(boolean showWebcasts) {
+    this.showWebcasts = showWebcasts;
+  }
+
+  public void setShowWebcasts(String tmp) {
+    this.showWebcasts = DatabaseUtils.parseBoolean(tmp);
+  }
+
   public void setShowBlog(String tmp) {
     this.setShowNews(tmp);
   }
@@ -612,6 +627,14 @@ public class ProjectFeatures extends GenericBean {
 
   public void setLabelBlog(String tmp) {
     this.setLabelNews(tmp);
+  }
+
+  public String getLabelWebcasts() {
+    return labelWebcasts;
+  }
+
+  public void setLabelWebcasts(String labelWebcasts) {
+    this.labelWebcasts = labelWebcasts;
   }
 
 
@@ -865,6 +888,17 @@ public class ProjectFeatures extends GenericBean {
     this.orderMessages = Integer.parseInt(orderMessages);
   }
 
+  public int getOrderWebcasts() {
+    return orderWebcasts;
+  }
+
+  public void setOrderWebcasts(int orderWebcasts) {
+    this.orderWebcasts = orderWebcasts;
+  }
+
+  public void setOrderWebcasts(String orderWebcasts) {
+    this.orderWebcasts = Integer.parseInt(orderWebcasts);
+  }
 
   public int getId() {
     return id;
@@ -1428,6 +1462,13 @@ public class ProjectFeatures extends GenericBean {
     this.descriptionMessages = descriptionMessages;
   }
 
+  public String getDescriptionWebcasts() {
+    return descriptionWebcasts;
+  }
+
+  public void setDescriptionWebcasts(String descriptionWebcasts) {
+    this.descriptionWebcasts = descriptionWebcasts;
+  }
 
   /**
    * Updates the features of a project
@@ -1465,6 +1506,7 @@ public class ProjectFeatures extends GenericBean {
               "ads_enabled = ?, ads_label = ?, ads_order = ?, ads_description = ?, " +
               "profile_enabled = ?, profile_label = ?, profile_order = ?, profile_description = ?, " +
               "messages_enabled = ?, messages_label = ?, messages_order = ?, messages_description = ?, " +
+              "webcasts_enabled = ?, webcasts_label = ?, webcasts_order = ?, webcasts_description = ?, " +
               "modifiedby = ?, modified = CURRENT_TIMESTAMP " +
               "WHERE project_id = ? ");
       int i = 0;
@@ -1534,6 +1576,10 @@ public class ProjectFeatures extends GenericBean {
       pst.setString(++i, labelMessages);
       pst.setInt(++i, orderMessages);
       pst.setString(++i, descriptionMessages);
+      pst.setBoolean(++i, showWebcasts);
+      pst.setString(++i, labelWebcasts);
+      pst.setInt(++i, orderWebcasts);
+      pst.setString(++i, descriptionWebcasts);
       pst.setInt(++i, modifiedBy);
       pst.setInt(++i, id);
       resultCount = pst.executeUpdate();
@@ -1633,6 +1679,10 @@ public class ProjectFeatures extends GenericBean {
     labelMessages = rs.getString("messages_label");
     orderMessages = rs.getInt("messages_order");
     descriptionMessages = rs.getString("messages_description");
+    showWebcasts = rs.getBoolean("webcasts_enabled");
+    labelWebcasts = rs.getString("webcasts_label");
+    orderWebcasts = rs.getInt("webcasts_order");
+    descriptionWebcasts = rs.getString("webcasts_description");
     // NOTE: update the project buildRecord as well
   }
 

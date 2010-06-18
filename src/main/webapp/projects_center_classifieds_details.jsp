@@ -58,23 +58,21 @@
     <h1>
       <%--<img src="<%= ctx %>/images/icons/stock_announcement-16.gif" border="0" align="absmiddle">--%>
       <ccp:label name="projectsCenterClassifieds.details.details">Details</ccp:label>
-      <a href="${ctx}/show/${classified.project.uniqueId}/classifieds">Back to <ccp:tabLabel name="Classifieds" object="project"/></a>
+      <a href="${ctx}/show/${classified.project.uniqueId}/classifieds">Return to list</a>
     </h1>
   </ccp:evaluate>
   <div class="listingContainer">
     <div class="listingHeaderContainer">
       <h3><%= toHtml(classified.getTitle()) %></h3>
-      <div class="version">
-        <ccp:evaluate if="<%= classified.getPublishDate() == null %>">
-        	<ccp:label name="projectsCenterClassifieds.byClassified.draft">(Draft)</ccp:label>
-        </ccp:evaluate>
-            <ccp:evaluate if="<%= classified.isExpired() %>">
-              <ccp:label name="classified.expired">Expired</ccp:label>
-            </ccp:evaluate>
-            <ccp:evaluate if="<%= classified.isScheduledInFuture() %>">
-              <ccp:label name="classified.expired">Scheduled in future</ccp:label>
-            </ccp:evaluate>
-      </div>
+      <ccp:evaluate if="<%= classified.getPublishDate() == null %>">
+        <div class="portlet-message-alert"><p><ccp:label name="classified.unpublished">Unpublished</ccp:label></p></div>
+      </ccp:evaluate>
+      <ccp:evaluate if="<%= classified.isExpired() %>">
+        <div class="portlet-message-alert"><p><ccp:label name="classified.expired">Expired</ccp:label></p></div>
+      </ccp:evaluate>
+      <ccp:evaluate if="<%= classified.isScheduledInFuture() %>">
+        <div class="portlet-message-alert"><p><ccp:label name="classified.expired">Scheduled in future</ccp:label></p></div>
+      </ccp:evaluate>
       <div class="details">
           <ccp:evaluate if="<%= classified.getPublishDate() != null %>">
             <div>
@@ -86,6 +84,7 @@
             <div>
               <ccp:label name="classified.expires">Expires</ccp:label>
               <ccp:tz timestamp="<%= classified.getExpirationDate() %>" dateFormat="<%= DateFormat.LONG %>" />
+              (<ccp:tz timestamp="<%= classified.getExpirationDate() %>" pattern="relative" />)
             </div>
           </ccp:evaluate>
           <ccp:permission name="project-classifieds-admin">
@@ -149,7 +148,7 @@
                        showText='false'
                        count='<%= classified.getRatingCount() %>'
                        value='<%= classified.getRatingValue() %>'
-                       url='<%= ctx + "/ProjectManagementClassifieds.do?command=SetRating&pid=" + classified.getProjectId() + "&id=" + classified.getId() + "&v=${vote}&out=text" %>'/>
+                       url='<%= ctx + "/ProjectManagementClassifieds.do?command=SetRating&pid=" + classified.getProjectId() + "&id=" + classified.getId() + "&v={vote}&out=text" %>'/>
        </div>
      </div>
      <div class="listingBodyContainer">

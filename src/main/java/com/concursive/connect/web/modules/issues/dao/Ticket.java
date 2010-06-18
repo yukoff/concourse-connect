@@ -53,6 +53,7 @@ import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.Constants;
 import com.concursive.connect.web.controller.servlets.LinkGenerator;
 import com.concursive.connect.web.modules.ModuleUtils;
+import com.concursive.connect.web.modules.webcast.dao.Webcast;
 import com.concursive.connect.web.modules.blog.dao.BlogPost;
 import com.concursive.connect.web.modules.blog.dao.BlogPostComment;
 import com.concursive.connect.web.modules.calendar.dao.Meeting;
@@ -174,6 +175,7 @@ public class Ticket extends GenericBean {
   private BlogPostComment linkBlogPostComment = null;
   private FileItem linkFileItem = null;
   private Meeting linkMeeting = null;
+  private Webcast linkWebcast = null;
 
   private boolean foundTicketLinkObject = false;
 
@@ -2542,6 +2544,10 @@ public class Ticket extends GenericBean {
           linkMeeting = new Meeting(db, linkItemId);
         } else if (linkModuleId == Constants.PROJECT_IMAGE_FILES) {
           linkFileItem = new FileItem(db, linkItemId);
+        } else if (linkModuleId == Constants.PROJECT_WEBCAST_FILES) {
+          linkWebcast = new Webcast(db, linkItemId);
+        } else if (linkModuleId == Constants.PROFILE_LINK) {
+          //don't do anything since the link project is the one that needs to be displayed under "About this" section
         } else {
           foundTicketLinkObject = false;
         }

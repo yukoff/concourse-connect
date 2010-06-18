@@ -46,9 +46,7 @@
 package com.concursive.connect.web.modules.members.portlets;
 
 import com.concursive.connect.web.modules.login.dao.User;
-import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
-import com.concursive.connect.web.modules.members.dao.TeamMemberList;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.dao.ProjectList;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
@@ -101,7 +99,7 @@ public class PendingInvitationsPortlet extends GenericPortlet {
       if (project.getProfile() && user.getId() == project.getOwner()) {
 
         defaultView = VIEW_PAGE1;
-        Connection db = PortalUtils.getConnection(request);
+        Connection db = PortalUtils.useConnection(request);
         if ("setAccept".equals(viewType)) {
           String projectId = request.getParameter("projectId");
           String accept = request.getParameter("accept");

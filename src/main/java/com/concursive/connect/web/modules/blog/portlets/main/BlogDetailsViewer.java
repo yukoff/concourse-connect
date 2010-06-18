@@ -91,7 +91,7 @@ public class BlogDetailsViewer implements IPortletViewer {
     int recordId = getPageViewAsInt(request);
 
     // Load the record
-    Connection db = getConnection(request);
+    Connection db = useConnection(request);
     BlogPost thisArticle = new BlogPost(db, recordId, project.getId());
     request.setAttribute(BLOG, thisArticle);
 

@@ -60,7 +60,7 @@
 <jsp:useBean id="taskCategoryList" class="com.concursive.connect.web.modules.lists.dao.TaskCategoryList" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
-  <h1><ccp:tabLabel name="News" object="project"/></h1>
+  <%--<h1><ccp:tabLabel name="News" object="project"/></h1>--%>
   <%= showError(request, "actionError") %>
   <ccp:evaluate if="<%= newsList.isEmpty() %>">
     <ccp:label name="projectsCenterNews.noNews">No posts to display.</ccp:label>
@@ -85,23 +85,14 @@
           <portlet:param name="portlet-object" value="post"/>
           <portlet:param name="portlet-value" value="${thisArticle.id}"/>
         </portlet:renderURL>
-        <h3>
-          <a href="${detailsUrl}">
-            <%= toHtml(thisArticle.getSubject()) %>
-          </a>
-        </h3>
         <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.DRAFT %>">
-          <div class="portlet-message-alert">
-            DRAFT
-          </div>
+          <div class="portlet-message-alert">DRAFT</div>
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisArticle.getStatus() == BlogPost.UNAPPROVED %>">
-          <div class="portlet-message-alert">
-            FOR REVIEW
-          </div>
+          <div class="portlet-message-alert">FOR REVIEW</div>
         </ccp:evaluate>
       </div>
-      <ccp:permission name="any">
+      <ccp:permission name="project-news-edit,project-news-delete" if="any">
         <div class="permissions">
           <ccp:permission name="project-news-edit,project-news-delete" if="any">
             <portlet:renderURL var="updateUrl">
@@ -164,10 +155,10 @@
           </c:if>
         </div>
         <ul>
-          <li><span>Posted On:</span> <ccp:tz timestamp="<%= thisArticle.getStartDate() %>"
-                                              dateFormat="<%= DateFormat.LONG %>" pattern="MM/dd/yy' at 'h:mm a"/>
-          </li>
-          <li><span>Posted By:</span> <ccp:username id="<%= thisArticle.getEnteredBy() %>"/>
+          <li><h3><a href="${detailsUrl}"><%= toHtml(thisArticle.getSubject()) %></a></h3></li>
+          <li>
+            Posted by <ccp:username id="<%= thisArticle.getEnteredBy() %>"/>
+            on <ccp:tz timestamp="<%= thisArticle.getStartDate() %>" dateFormat="<%= DateFormat.LONG %>" />
           </li>
           <li>
             <ccp:evaluate if="<%= thisArticle.getId() > -1 && User.isLoggedIn() %>">
@@ -179,12 +170,12 @@
     </div>
     <div class="articleBody">
       <%= thisArticle.getIntro() %>
+      <c:if test="${!empty thisArticle.message}">
+        <span class="readMore">
+          &raquo; <a href="${detailsUrl}">Continue reading</a>
+        </span>
+      </c:if>
     </div>
-    <c:if test="${!empty thisArticle.message}">
-      <div>
-        (<a href="${detailsUrl}">read more</a>)
-      </div>
-    </c:if>
     <div class="articleFooter">
       <span class="comments">
         <c:set var="commentText">
@@ -212,7 +203,7 @@
       <span class="tagList">
         <portlet:renderURL var="setTagsUrl" windowState="maximized">
           <portlet:param name="portlet-command" value="setTags" />
-          <portlet:param name="portlet-object" value="<%= ModuleUtils.MODULENAME_BLOG_POST %>"/>
+          <portlet:param name="portlet-object" value="post"/>
           <portlet:param name="portlet-value" value="${thisArticle.id}"/>
           <portlet:param name="popup" value="true" />
         </portlet:renderURL>
@@ -224,7 +215,7 @@
         <li><a href="${detailsUrl}">Read full post</a></li>
         <li>
           <ccp:evaluate if="<%= thisArticle.getId() > -1 && User.isLoggedIn() %>">
-          <a href="javascript:showSpan('thisCommentWindow<%= thisArticle.getId() %>');window.scrollBy(0,1000);document.getElementById('comment').focus();">Add
+          <a href="javascript:showSpan('thisCommentWindow<%= thisArticle.getId() %>');window.scrollBy(0,10);document.getElementById('comment${thisArticle.id}').focus();">Add
             a comment</a>
          </ccp:evaluate>
         </li>
@@ -293,11 +284,9 @@
   }
 %>
 <c:if test="${projectNewsInfo.numberOfPages > 1}">
-  <div class="pagination">
-    <portlet:renderURL var="pagingUrl">
-      <portlet:param name="portlet-action" value="show"/>
-      <portlet:param name="portlet-object" value="blog"/>
-    </portlet:renderURL>
-    <ccp:paginationControl object="projectNewsInfo" url="${pagingUrl}"/>
-  </div>
+  <portlet:renderURL var="pagingUrl">
+    <portlet:param name="portlet-action" value="show"/>
+    <portlet:param name="portlet-object" value="blog"/>
+  </portlet:renderURL>
+  <ccp:paginationControl object="projectNewsInfo" url="${pagingUrl}"/>
 </c:if>

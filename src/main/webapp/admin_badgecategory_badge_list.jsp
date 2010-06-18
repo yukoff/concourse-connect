@@ -44,14 +44,16 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="com.concursive.connect.web.modules.badges.dao.Badge" %>
 <%@ page import="com.concursive.connect.web.modules.badges.dao.BadgeCategory" %>
 <jsp:useBean id="SKIN" class="java.lang.String" scope="application"/>
 <jsp:useBean id="badgeCategoryList" class="com.concursive.connect.web.modules.badges.dao.BadgeCategoryList" scope="request" />
-<jsp:useBean id="badgeCategoryList1" class="com.concursive.connect.web.modules.badges.dao.BadgeCategoryList" scope="request" />
+<jsp:useBean id="badgeCategory" class="com.concursive.connect.web.modules.badges.dao.BadgeCategory" scope="request" />
 <jsp:useBean id="badgeCategoryId" class="java.lang.String" scope="request"/>
 <jsp:useBean id="badgeList" class="com.concursive.connect.web.modules.badges.dao.BadgeList" scope="request" />
 <jsp:useBean id="projectCategoryList" class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" scope="request"/>
+<jsp:useBean id="projectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <a href="<%= ctx %>/admin">System Administration</a> >
 <a href="<%= ctx %>/AdminApplication.do">Manage Application Settings</a> > Badges<br />
@@ -104,79 +106,79 @@
     </td>
     <td width="80%" valign="top">
       <div id="badgeList">
-      <ccp:evaluate if='<%= !"true".equals(request.getAttribute("onlyBadges")) %>'>
-        <%-- Initialize the drop-down menus --%>
-        <%@ include file="initPopupMenu.jsp" %>
-        <%@ include file="admin_badge_list_menu.jspf" %>
-        <script language="JavaScript" type="text/javascript">
-          loadImages('select_<%= SKIN %>');
-        </script>
-        <a href="<%= ctx %>/AdminBadges.do?command=Modify&badgeCategoryId=<%= badgeCategoryId %>">Add Badge</a><br /><br />
-        <table class="pagedList">
-          <thead>
-            <tr>
-              <th>
-                  Action
-              </th>
-              <th width="10%">
-                  Logo
-              </th>
-              <th width="60%">
-                  Name
-              </th>
-              <th width="20%" nowrap>
-                  Badge Category
-              </th>
-              <th width="10%" nowrap>
-                  Enabled
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-        <%
-          if (badgeList.size() == 0) {
-        %>
-          <tr class="row2">
-            <td colspan="5">No badges to display.</td>
-          </tr>
-          <%
-          }
-          int count1 = 0;
-          int rowid1 = 0;
-          Iterator<Badge> badgeItr = badgeList.iterator();
-          while (badgeItr.hasNext()) {
-            ++count1;
-            rowid1 = (rowid1 != 1?1:2);
-            Badge thisBadge = badgeItr.next();
-        %>
-          <tr class="row<%=rowid1%>">
-            <td valign="top" align="center" nowrap>
-              <a href="javascript:displayMenu('select_<%= SKIN %><%= thisBadge.getId() %>','menuItem',<%= thisBadge.getId() %>, <%= thisBadge.getCategoryId() %>);"
-                 onMouseOver="over(0, <%= thisBadge.getId() %>)"
-                 onmouseout="out(0, <%= thisBadge.getId() %>); hideMenu('menuItem');"><img
-                 src="<%= ctx %>/images/select_<%= SKIN %>.gif" name="select_<%= SKIN %><%= thisBadge.getId() %>" id="select_<%= SKIN %><%= thisBadge.getId() %>" align="absmiddle" border="0"></a>
-            </td>
-            <td>
-              <ccp:evaluate if="<%= thisBadge.getLogoId() != -1 %>">
-              <%= thisBadge.getLogo().getFullImageFromAdmin(ctx) %>
-              </ccp:evaluate>&nbsp;
-            </td>
-            <td>
-              <a href="<%= ctx %>/AdminBadges.do?command=Modify&badgeId=<%= thisBadge.getId() %>"><%= toHtml(thisBadge.getTitle()) %></a>
-            </td>
-            <td>
-              <%= toHtml(badgeCategoryList1.getValueFromId(thisBadge.getCategoryId())) %>
-            </td>
-            <td>
-            <%= thisBadge.getEnabled()?"Yes":"No" %>
-            </td>
-          </tr>
-          <%
-          }
-        %>
-          </tbody>
-        </table>
+      <ccp:evaluate if="<%= StringUtils.hasText(badgeCategoryId) %>">
+	      <ccp:evaluate if='<%= !"true".equals(request.getAttribute("onlyBadges")) %>'>
+	        <%@ include file="initPopupMenu.jsp" %>
+	        <%@ include file="admin_badge_list_menu.jspf" %>
+	        <script language="JavaScript" type="text/javascript">
+	          loadImages('select_<%= SKIN %>');
+	        </script>
+	        <c:out value="${projectCategory.label}"/> &gt;
+          <c:out value="${badgeCategory.itemName}"/> &gt;
+          <a href="<%= ctx %>/AdminBadges.do?command=Modify&badgeCategoryId=<%= badgeCategoryId %>">Add Badge</a><br /><br />
+	        <table class="pagedList">
+	          <thead>
+	            <tr>
+	              <th>
+	                  Action
+	              </th>
+	              <th width="10%">
+	                  Logo
+	              </th>
+	              <th width="80%">
+	                  Name
+	              </th>
+	              <th width="10%" nowrap>
+	                  Enabled
+	              </th>
+	            </tr>
+	          </thead>
+	          <tbody>
+	        <%
+	          if (badgeList.size() == 0) {
+	        %>
+	          <tr class="row2">
+	            <td colspan="5">No badges to display.</td>
+	          </tr>
+	          <%
+	          }
+	          int count1 = 0;
+	          int rowid1 = 0;
+	          Iterator<Badge> badgeItr = badgeList.iterator();
+	          while (badgeItr.hasNext()) {
+	            ++count1;
+	            rowid1 = (rowid1 != 1?1:2);
+	            Badge thisBadge = badgeItr.next();
+	        %>
+	          <tr class="row<%=rowid1%>">
+	            <td valign="top" align="center" nowrap>
+	              <a href="javascript:displayMenu('select_<%= SKIN %><%= thisBadge.getId() %>','menuItem',<%= thisBadge.getId() %>, <%= thisBadge.getCategoryId() %>);"
+	                 onMouseOver="over(0, <%= thisBadge.getId() %>)"
+	                 onmouseout="out(0, <%= thisBadge.getId() %>); hideMenu('menuItem');"><img
+	                 src="<%= ctx %>/images/select_<%= SKIN %>.gif" name="select_<%= SKIN %><%= thisBadge.getId() %>" id="select_<%= SKIN %><%= thisBadge.getId() %>" align="absmiddle" border="0"></a>
+	            </td>
+	            <td>
+	              <ccp:evaluate if="<%= thisBadge.getLogoId() != -1 %>">
+	              <%= thisBadge.getLogo().getFullImageFromAdmin(ctx) %>
+	              </ccp:evaluate>&nbsp;
+	            </td>
+	            <td>
+	              <a href="<%= ctx %>/AdminBadges.do?command=Modify&badgeId=<%= thisBadge.getId() %>"><%= toHtml(thisBadge.getTitle()) %></a>
+	            </td>
+	            <td>
+	            <%= thisBadge.getEnabled()?"Yes":"No" %>
+	            </td>
+	          </tr>
+	          <%
+	          }
+	        %>
+	          </tbody>
+	        </table>
+	      </ccp:evaluate>
       </ccp:evaluate>
+      <ccp:evaluate if="<%= !StringUtils.hasText(badgeCategoryId) %>">
+       <b>Select a Category</b>
+       </ccp:evaluate>
       </div>
     </td>
   </tr>

@@ -49,8 +49,8 @@ import com.concursive.commons.db.ConnectionElement;
 import com.concursive.commons.db.ConnectionPool;
 import com.concursive.commons.http.CookieUtils;
 import com.concursive.commons.http.RequestUtils;
-import com.concursive.commons.web.mvc.servlets.ControllerHook;
 import com.concursive.commons.web.URLFactory;
+import com.concursive.commons.web.mvc.servlets.ControllerHook;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.beans.PortalBean;
 import com.concursive.connect.config.ApplicationPrefs;
@@ -83,6 +83,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Executed on every request to verify user is logged in, and that system
@@ -128,6 +129,7 @@ public class SecurityHook implements ControllerHook {
     // Set the layout relevant to this request
     if ("text".equals(request.getParameter("out")) ||
         "text".equals(request.getAttribute("out"))) {
+      // do not use a layout, send the raw output
     } else if ("true".equals(request.getParameter("popup"))) {
       request.setAttribute("PageLayout", "/layout1.jsp");
     } else if ("true".equals(request.getParameter("style"))) {
@@ -151,32 +153,44 @@ public class SecurityHook implements ControllerHook {
       clientType = new ClientType(request);
       request.getSession().setAttribute("clientType", clientType);
     }
-    if (clientType.getMobile()) {
-      request.setAttribute("PageLayout", "/layoutMobile.jsp");
-    }
-    // URL forwarding
-    String requestedURL = (String) request.getAttribute("requestedURL");
-    if (requestedURL == null && "GET".equals(request.getMethod()) && request.getParameter("redirectTo") == null) {
+    // @todo introduce when mobile is implemented
+//    if (clientType.getMobile()) {
+//      request.setAttribute("PageLayout", "/layoutMobile.jsp");
+//    }
+
+    // URL forwarding for MVC requests (*.do, etc.)
+    String requestedPath = (String) request.getAttribute("requestedURL");
+    if (requestedPath == null && "GET".equals(request.getMethod()) && request.getParameter("redirectTo") == null) {
       // Save the requestURI to be used downstream
       String contextPath = request.getContextPath();
       String uri = request.getRequestURI();
       String queryString = request.getQueryString();
-      requestedURL = uri.substring(contextPath.length()) + (queryString == null ? "" : "?" + queryString);
-      request.setAttribute("requestedURL", requestedURL);
+      requestedPath = uri.substring(contextPath.length()) + (queryString == null ? "" : "?" + queryString);
+      LOG.debug("Requested path: " + requestedPath);
+      request.setAttribute("requestedURL", requestedPath);
+
+      // It's important the user is using the correct URL for accessing content;
       // The portal has it's own redirect scheme, this is a general catch all
-      if (!s.startsWith("Portal") && uri.indexOf(".shtml") == -1) {
+      if (!s.startsWith("Portal") && uri.indexOf(".shtml") == -1 && prefs.has(ApplicationPrefs.WEB_DOMAIN_NAME)) {
         // Check to see if an old domain name is used
         PortalBean bean = new PortalBean(request);
-        String expectedURL = prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME);
-        if (expectedURL != null && requestedURL != null &&
+        String expectedDomainName = prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME);
+        if (expectedDomainName != null && requestedPath != null &&
             !"127.0.0.1".equals(bean.getServerName()) &&
+            !"127.0.0.1".equals(expectedDomainName) &&
             !"localhost".equals(bean.getServerName()) &&
-            !bean.getServerName().equals(expectedURL)) {
+            !"localhost".equals(expectedDomainName) &&
+            !bean.getServerName().equals(expectedDomainName) &&
+            !bean.getServerName().startsWith("10.") &&
+            !bean.getServerName().startsWith("172.") &&
+            !bean.getServerName().startsWith("192.")) {
           if (uri != null && !uri.substring(1).equals(prefs.get("PORTAL.INDEX"))) {
-            request.setAttribute("redirectTo", requestedURL.substring(requestedURL.lastIndexOf("/")));
+            String newUrl = URLFactory.createURL(prefs.getPrefs()) + requestedPath;
+            request.setAttribute("redirectTo", newUrl);
+            LOG.debug("redirectTo: " + newUrl);
+            request.removeAttribute("PageLayout");
+            return "Redirect301";
           }
-          request.removeAttribute("PageLayout");
-          return "Redirect301";
         }
       }
     }
@@ -226,8 +240,8 @@ public class SecurityHook implements ControllerHook {
       }
       // Make sure SSL is being used for this connection
       if (userSession.getId() > 0 && "true".equals(prefs.get("SSL")) && !"https".equals(request.getScheme())) {
-        LOG.info("Redirecting to..." + requestedURL);
-        request.setAttribute("redirectTo", "https://" + request.getServerName() + request.getContextPath() + requestedURL);
+        LOG.info("Redirecting to..." + requestedPath);
+        request.setAttribute("redirectTo", "https://" + request.getServerName() + request.getContextPath() + requestedPath);
         request.removeAttribute("PageLayout");
         return "Redirect301";
       }
@@ -268,43 +282,69 @@ public class SecurityHook implements ControllerHook {
           ProjectCategoryList categoryList = new ProjectCategoryList();
           categoryList.setEnabled(Constants.TRUE);
           categoryList.setTopLevelOnly(true);
-          if (!userSession.isLoggedIn()) {
-            categoryList.setSensitive(Constants.FALSE);
-          }
           categoryList.buildList(db);
           request.setAttribute(Constants.REQUEST_TAB_CATEGORY_LIST, categoryList);
+
+          // Determine the tab that needs to be highlighted
+          int chosenTabId = -1;
+          if (requestedPath != null) {
+            String chosenCategory = null;
+            String chosenTab = null;
+            if (requestedPath.length() > 0) {
+              chosenTab = requestedPath.substring(1);
+            }
+            LOG.debug("chosenTab? " + chosenTab);
+            if (chosenTab == null || "".equals(chosenTab)) {
+              LOG.debug("Setting tab to Home");
+              chosenTab = "home.shtml";
+            } else {
+              boolean foundChosenTab = false;
+              for (ProjectCategory projectCategory : categoryList) {
+                String categoryName = projectCategory.getDescription();
+                String normalizedCategoryTab = projectCategory.getNormalizedCategoryName().concat(".shtml");
+                if (chosenTab.startsWith(normalizedCategoryTab)) {
+                  foundChosenTab = true;
+                  chosenCategory = categoryName;
+                  chosenTabId = projectCategory.getId();
+                  LOG.debug("found: " + chosenCategory);
+                }
+              }
+              if (!foundChosenTab) {
+                LOG.debug("No tab to highlight");
+                chosenTab = "none";
+              }
+            }
+            request.setAttribute("chosenTab", chosenTab);
+            request.setAttribute("chosenCategory", chosenCategory);
+          }
+
+          // Go through the tabs and remove the ones the user shouldn't see, also check permission
+          if (!userSession.isLoggedIn()) {
+            boolean allowed = true;
+            Iterator i = categoryList.iterator();
+            while (i.hasNext()) {
+              ProjectCategory projectCategory = (ProjectCategory) i.next();
+              if (projectCategory.getSensitive()) {
+                if (chosenTabId == projectCategory.getId()) {
+                  allowed = false;
+                }
+                i.remove();
+              }
+            }
+            if (!allowed) {
+              // Redirect to the login, perhaps the page would exist then
+              String newUrl = URLFactory.createURL(prefs.getPrefs()) + "/login?redirectTo=" + requestedPath;
+              request.setAttribute("redirectTo", newUrl);
+              LOG.debug("redirectTo: " + newUrl);
+              request.removeAttribute("PageLayout");
+              return "Redirect301";
+            }
+          }
 
           // Category drop-down for search
           HtmlSelect thisSelect = categoryList.getHtmlSelect();
           thisSelect.addItem(-1, prefs.get("TITLE"), 0);
           request.setAttribute(Constants.REQUEST_MENU_CATEGORY_LIST, thisSelect);
-
-          //Determine the tab that needs to be highlighted
-          if (requestedURL != null) {
-            boolean foundChosenTab = false;
-            String chosenCategory = null;
-            String chosenTab = null;
-            if (requestedURL.length() > 0) {
-              chosenTab = requestedURL.substring(1);
-            }
-            if (chosenTab == null || chosenTab.indexOf(".shtml") == -1) {
-              chosenTab = "home.shtml";
-            } else {
-              for (ProjectCategory projectCategory : categoryList) {
-                String categoryName = projectCategory.getDescription();
-                String normalizedCategoryTab = projectCategory.getNormalizedCategoryName().concat(".shtml");
-                if (normalizedCategoryTab.equals(chosenTab)) {
-                  foundChosenTab = true;
-                  chosenCategory = categoryName;
-                }
-              }
-            }
-            if (!foundChosenTab) {
-              chosenTab = "home.shtml";
-            }
-            request.setAttribute("chosenTab", chosenTab);
-            request.setAttribute("chosenCategory", chosenCategory);
-          }
         }
       } catch (Exception e) {
         LOG.error("Global items error", e);

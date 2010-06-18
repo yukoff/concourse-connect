@@ -756,6 +756,15 @@
     </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
+    <servlet>
+    <servlet-name>CarouselPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>CarouselPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
   <servlet>
     <servlet-name>ProjectDownloadsPortlet</servlet-name>
     <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
@@ -996,6 +1005,33 @@
       <param-value>EmailUpdatesPortlet</param-value>
     </init-param>
     <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>PromotionSearchPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>PromotionSearchPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>ClassifiedSearchPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>ClassifiedSearchPortlet</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>WebcastPortlet</servlet-name>
+    <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
+    <init-param>
+      <param-name>portlet-name</param-name>
+      <param-value>WebcastPortlet</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <!-- Portlet Mappings -->
   <servlet-mapping>
@@ -1260,6 +1296,10 @@
     <servlet-name>ProjectWikiContentPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/ProjectWikiContentPortlet</url-pattern>
   </servlet-mapping>
+    <servlet-mapping>
+    <servlet-name>CarouselPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/CarouselPortlet</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ProjectDownloadsPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/ProjectDownloadsPortlet</url-pattern>
@@ -1372,6 +1412,18 @@
   <servlet-mapping>
     <servlet-name>EmailUpdatesPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/EmailUpdatesPortlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PromotionSearchPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/PromotionSearchPortlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ClassifiedSearchPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/ClassifiedSearchPortlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>WebcastPortlet</servlet-name>
+    <url-pattern>/PlutoInvoker/WebcastPortlet</url-pattern>
   </servlet-mapping>
   <!-- All iteam requests go through the framework controller -->
   <servlet-mapping>

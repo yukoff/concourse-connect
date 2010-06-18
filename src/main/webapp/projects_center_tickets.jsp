@@ -62,10 +62,9 @@
   loadImages('select_<%= SKIN %>');
 </script>
 <div class="portletWrapper">
-  <div class="profile-portlet-header">
-    <h1><ccp:label name="projectsCenterTickets.tickets">Tickets</ccp:label></h1>
-  </div>
-  <%-- Temp. fix for Weblogic --%>
+  <%--<div class="profile-portlet-header">--%>
+    <%--<h1><ccp:label name="projectsCenterTickets.tickets">Tickets</ccp:label></h1>--%>
+  <%--</div>--%>
   <%
   String actionError = showError(request, "actionError");
   %>
@@ -202,8 +201,6 @@
   </table>
   </div>
   <c:if test="${projectClassifiedsInfo.numberOfPages > 1}">
-    <div class="pagination">
-      <ccp:paginationControl object="projectTicketsInfo"/>
-    </div>
+    <ccp:paginationControl object="projectTicketsInfo"/>
   </c:if>
 </div>

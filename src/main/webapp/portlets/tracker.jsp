@@ -66,7 +66,7 @@ boolean hasAdminAccess = User.getAccessAdmin();
             <ccp:label name="tracker.usersOnline" param='<%= "usersOnline=" + Tracker.getGuestCount() + "|membersOnline=" + Tracker.getUserCount() %>'>
             We have <%= Tracker.getGuestCount() %>
             guest<ccp:evaluate if="<%= Tracker.getGuestCount() != 1 %>">s</ccp:evaluate> and
-            <a href="javascript:popURL('<%= ctx %>/AdminMembers.do?popup=true','ITEAM_Members','400','500','yes','yes');"><%= Tracker.getUserCount() %> member<ccp:evaluate if="<%= Tracker.getUserCount() != 1 %>">s</ccp:evaluate></a>
+            <a href="javascript:popURL('<%= ctx %>/AdminMembers.do?popup=true','400','500','yes','yes');"><%= Tracker.getUserCount() %> member<ccp:evaluate if="<%= Tracker.getUserCount() != 1 %>">s</ccp:evaluate></a>
             online.
             </ccp:label>
           </td>

@@ -75,26 +75,21 @@
     <c:if test="${hideBlogDetails eq 'false'}">
       <div class="articleHeader <ccp:permission if="any" name="project-news-edit,project-news-delete">admin</ccp:permission>">
         <div class="header">
-          <h2><%= toHtml(blog.getSubject()) %></h2>
-        <span class="red">
-        <ccp:evaluate if="<%= blog.getStatus() == BlogPost.DRAFT %>">
-          <div class="portlet-message-alert">DRAFT</div>
-        </ccp:evaluate>
-        <ccp:evaluate if="<%= blog.getStatus() == BlogPost.UNAPPROVED %>">
-          <div class="portlet-message-alert">FOR REVIEW</div>
-        </ccp:evaluate>
-        </span>
+          <ccp:evaluate if="<%= blog.getStatus() == BlogPost.DRAFT %>">
+            <div class="portlet-message-alert">DRAFT</div>
+          </ccp:evaluate>
+          <ccp:evaluate if="<%= blog.getStatus() == BlogPost.UNAPPROVED %>">
+            <div class="portlet-message-alert">FOR REVIEW</div>
+          </ccp:evaluate>
         </div>
         <ccp:permission name="project-news-edit,project-news-delete" if="any">
           <div class="permissions">
             <ccp:permission name="project-news-edit">
-              <%-- edit message --%>
               <portlet:renderURL var="updateUrl">
                 <portlet:param name="portlet-action" value="modify"/>
                 <portlet:param name="portlet-object" value="post"/>
                 <portlet:param name="portlet-value" value="${blog.id}"/>
               </portlet:renderURL>
-
 	            <a href="${updateUrl}"><img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" title="<ccp:label name="projectsCenterNews.byArticle.editThisItem">Edit this item</ccp:label>"></a>
               <%-- clone message --%>
               <portlet:actionURL var="cloneUrl">
@@ -137,8 +132,11 @@
             </c:if>
           </div>
           <ul>
-            <li><span>Posted On:</span> <ccp:tz timestamp="<%= blog.getStartDate() %>" dateFormat="<%= DateFormat.LONG %>" /></li>
-            <li><span>Posted By:</span> <ccp:username id="<%= blog.getEnteredBy() %>"/></li>
+            <li><h2><%= toHtml(blog.getSubject()) %></h2></li>
+            <li>
+              Posted by <ccp:username id="<%= blog.getEnteredBy() %>"/>
+              on <ccp:tz timestamp="<%= blog.getStartDate() %>" dateFormat="<%= DateFormat.LONG %>" />
+            </li>
             <li><ccp:evaluate if="<%= blog.getId() > -1 && User.isLoggedIn() %>">
                 <a href="javascript:showPanel('Send author a question','${ctx}/show/${thisUser.profileProject.uniqueId}/app/compose_message?module=blog&id=${blog.id}',700)" title="Send ${thisUser.profileProject.title} a message"><img src="${ctx}/images/icons/mail_pencil.png" alt="Message icon" align="top"> Send ${thisUser.profileProject.title} a message</a>
               </ccp:evaluate>
@@ -314,7 +312,7 @@
     </ccp:evaluate>
   </div>
 	<c:choose>
-	<c:when test="${(blog.id > -1)  && User.loggedIn }">
+	  <c:when test="${(blog.id > -1)  && User.loggedIn }">
       <a name="addComment"></a>
       <div class="formContainer" id="thisCommentWindow${blog.id}">
         <portlet:actionURL var="saveCommentUrl" portletMode="view">
@@ -337,14 +335,14 @@
           <input type="button" value="Cancel" onclick="hideSpan('thisCommentWindow${blog.id}')" class="cancel" />
         </form>
       </div>
-      </c:when>
-	  <c:otherwise>
-	      <div class="formContainer" id="thisCommentWindow${blog.id}">
+    </c:when>
+    <c:otherwise>
+        <div class="formContainer" id="thisCommentWindow${blog.id}">
               <p class="characterCounter">Sign in to add your comment.</p>
-		  </div>	
-	  </c:otherwise>
-	  </c:choose>      
-    </c:if>
+      </div>
+    </c:otherwise>
+  </c:choose>
+  </c:if>
   </div>
   <ccp:evaluate if="<%= isPopup(request) %>">
   <input type="button" class="cancel" value="<ccp:label name="button.close">Close</ccp:label>" onclick="window.close()"/>

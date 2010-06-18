@@ -85,7 +85,7 @@ public class MemberProfilePortlet extends GenericPortlet {
     boolean isActive = TeamMemberUtils.isActiveMember(user, project);
     if (isActive) {
       if (user.getProfileProjectId() != project.getId()) {
-        TeamMember member = TeamMemberUtils.getMember(user, project);
+        TeamMember member = project.getTeam().getTeamMember(user.getId());
         request.setAttribute(MEMBER, member);
 
         LookupList roleList = CacheUtils.getLookupList("lookup_project_role");

@@ -81,7 +81,7 @@ function initializeMap${mapId}(e) {
     var bounds = new GLatLngBounds();
     <c:forEach var="project" items="${projectList}" varStatus="status">
       <c:set var="project" value="${project}" scope="request"/>
-      <jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" />
+      <jsp:useBean id="project" type="com.concursive.connect.web.modules.profile.dao.Project" scope="request" />
       <c:choose>
         <c:when test="${empty project.address}">
           var thisIcon${status.count} = new GIcon();

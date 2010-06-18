@@ -1630,7 +1630,7 @@ public final class ProjectManagement extends GenericAction {
         for (Task t : outlineList) {
           //@TODO move this into TaskList to reduce overhead
           t.buildOwnerLinkedItemRating(db);
-          String linkItemUrl = TaskUtils.getLinkItemUrl(ctx(context), t);
+          String linkItemUrl = TaskUtils.getLinkItemUrl(thisUser, ctx(context), t);
           if (linkItemUrl != null) {
             taskUrlMap.put(t.getId(), linkItemUrl);
           }

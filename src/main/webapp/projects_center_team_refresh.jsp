@@ -54,6 +54,10 @@
     // close and redirect to the members page if on it
     response.setStatus(201);
     response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId());
+  } else if ("profile".equals(request.getParameter("show"))) {
+    // redirect to the profile page
+    response.setStatus(302);
+    response.setHeader("Location", request.getScheme() + "://" + getServerUrl(request) + "/show/" + project.getUniqueId());  
   } else {
     // redirect to the members page
     response.setStatus(302);

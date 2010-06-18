@@ -1047,6 +1047,50 @@
       <title>Send message to members</title>
     </portlet-info>
   </portlet>
+  <portlet>
+    <portlet-name>PromotionSearchPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.promotions.portlets.promotionSearch.PromotionSearchPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search for promotions</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>ClassifiedSearchPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.classifieds.portlets.classifiedSearch.ClassifiedSearchPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Search for classifieds</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>WebcastPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.webcast.portlets.main.WebcastPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Webcast</title>
+    </portlet-info>
+  </portlet>
+  <portlet>
+    <portlet-name>CarouselPortlet</portlet-name>
+    <portlet-class>com.concursive.connect.web.modules.common.social.images.portlets.CarouselPortlet</portlet-class>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>view</portlet-mode>
+    </supports>
+    <portlet-info>
+      <title>Shows Photo carousel</title>
+    </portlet-info>
+  </portlet>
   <custom-portlet-mode>
     <description>Provides administration functions</description>
     <name>config</name>

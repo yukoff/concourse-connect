@@ -55,8 +55,6 @@ import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 
 import java.sql.Connection;
-import java.text.NumberFormat;
-import java.util.TimeZone;
 
 /**
  * Description of the Class
@@ -240,15 +238,20 @@ public final class Profile extends GenericAction {
     }
     Connection db = null;
     try {
+      ApplicationPrefs prefs = getApplicationPrefs(context);
       db = getConnection(context);
       User thisUser = new User(db, this.getGroupId(context), getUserId(context));
       // Set a default time zone for user
       if (thisUser.getTimeZone() == null) {
-        thisUser.setTimeZone(TimeZone.getDefault().getID());
+        thisUser.setTimeZone(prefs.get(ApplicationPrefs.TIMEZONE));
       }
-      // Set a default currency for user
+      // Set a default currency
       if (thisUser.getCurrency() == null) {
-        thisUser.setCurrency(NumberFormat.getCurrencyInstance().getCurrency().getCurrencyCode());
+        thisUser.setCurrency(prefs.get(ApplicationPrefs.CURRENCY));
+      }
+      // Set a default locale
+      if (thisUser.getLanguage() == null) {
+        thisUser.setLanguage(prefs.get(ApplicationPrefs.LANGUAGE));
       }
       context.getRequest().setAttribute("User", thisUser);
     } catch (Exception e) {
@@ -296,5 +299,15 @@ public final class Profile extends GenericAction {
 
   public String executeCommandViewTime(ActionContext context) {
     return "ViewTimeOK";
+  }
+
+  public String executeCommandMyProfile(ActionContext context) {
+    // Make sure the user has a profile
+    User thisUser = getUser(context);
+    if (thisUser != null && thisUser.getProfileProject() != null) {
+      return "MyProfileOK";
+    }
+    context.getRequest().setAttribute("Error", "This page requires a valid user profile");
+    return ("SystemError");
   }
 }

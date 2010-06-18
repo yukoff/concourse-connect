@@ -67,7 +67,7 @@
         <c:set var="title">${document.title}</c:set>
         <%
           Project project = ProjectUtils.loadProject((Integer.parseInt((String)pageContext.getAttribute("projectId"))));
-          pageContext.setAttribute("project",project);
+          request.setAttribute("project",project);
         %>
         <li>
           <c:choose>
@@ -94,8 +94,6 @@
       </c:if>
     </ol>
     <c:if test="${!empty hasPaging && !empty searchInfo && searchInfo.numberOfPages > 1}">
-      <div class="pagination">
-        <ccp:paginationControl object="searchInfo"/>
-      </div>
+      <ccp:paginationControl object="searchInfo"/>
     </c:if>
 </c:if>

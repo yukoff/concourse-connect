@@ -204,7 +204,7 @@
             <value><![CDATA[Statistik]]></value>
         </param>
         <param name="tracker.usersOnline">
-            <value><![CDATA[Derzeit sind ${usersOnline} Gäste und <a href="javascript:popURL('AdminMembers.do?popup=true','ITEAM_Members','400','500','yes','yes');">${membersOnline} Mitglieder</a> online.]]></value>
+            <value><![CDATA[Derzeit sind ${usersOnline} Gäste und <a href="javascript:popURL('AdminMembers.do?popup=true','400','500','yes','yes');">${membersOnline} Mitglieder</a> online.]]></value>
         </param>
         <param name="tracker.usersRegistered">
             <value><![CDATA[Insgesamt sind ${members} Mitglieder registriert.]]></value>

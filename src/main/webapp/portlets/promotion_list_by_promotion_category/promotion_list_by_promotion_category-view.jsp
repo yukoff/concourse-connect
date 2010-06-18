@@ -48,15 +48,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="com.concursive.commons.text.StringUtils" %>
-<jsp:useBean id="promotionList" class="com.concursive.connect.web.modules.promotions.dao.AdList" scope="request"/>
+<jsp:useBean id="promotionList" class="com.concursive.connect.indexer.IndexerQueryResultList" scope="request"/>
 <jsp:useBean id="promotionCategory" class="com.concursive.connect.web.modules.promotions.dao.AdCategory" scope="request"/>
 <portlet:defineObjects/>
 <c:set var="ctx" value="${renderRequest.contextPath}" scope="request"/>
   <c:if test="${empty promotionCategory.itemName}">
-    <h3><c:out value="${title}"/></h3>
+    <h2><c:out value="${title}"/></h2>
   </c:if>
   <c:if test="${!empty promotionCategory.itemName}">
-    <h3>Promotions (<c:out value="${promotionCategory.itemName}"/>)</h3>
+    <h2>Promotions (<c:out value="${promotionCategory.itemName}"/>)</h2>
   </c:if>
   <c:if test="${empty promotionList}">
     No promotions found.
@@ -70,10 +70,14 @@
         <c:forEach items="${promotionList}" var="promotion">
           <li>
 	          <dl>
-    	      	<dt><a href="${ctx}/show/${promotion.project.uniqueId}/promotion/${promotion.id}" title="<c:out value="${promotion.heading}"/>"><c:out value="${promotion.heading}"/></a></dt>
-	            <c:if test="${!empty promotion.content}">
-	            	<dd><c:out value="${promotion.content}"/></dd>
+    	      	<dt><a href="${ctx}/show/${promotion.projectUniqueId}/promotion/${promotion.objectId}" title="<c:out value="${promotion.title}"/>"><c:out value="${promotion.title}"/></a></dt>
+	            <c:if test="${!empty promotion.contents}">
+	            	<dd><c:out value="${promotion.contents}"/></dd>
 	            </c:if>
+              <cite>
+                <c:out value="${promotion.projectTitle}"/>
+                  <c:if test="${!empty promotion.projectLocation}">- (<c:out value="${promotion.projectLocation}"/>)</c:if>
+              </cite>
 	          </dl>  
         </c:forEach>
       </c:if>
@@ -87,15 +91,35 @@
 		  		</c:when>
 		  		<c:otherwise>
 		  			<c:set var="sortURL">
-		  				?sort=${sortOrder}
+		  				sort=${sortOrder}
+		  			</c:set>
+		  		</c:otherwise>
+		  	</c:choose>
+		  	<c:choose>
+		  		<c:when test="${empty query}">
+		  			<c:set var="queryString" />
+		  		</c:when>
+		  		<c:otherwise>
+		  			<c:set var="queryString">
+		  				query=${query}
+		  			</c:set>
+		  		</c:otherwise>
+		  	</c:choose>
+		  	<c:choose>
+		  		<c:when test="${empty location}">
+		  			<c:set var="locationString" />
+		  		</c:when>
+		  		<c:otherwise>
+		  			<c:set var="locationString">
+		  				location=${location}
 		  			</c:set>
 		  		</c:otherwise>
 		  	</c:choose>
 	      <c:if test="${!empty promotionCategory.itemName}">
-	        <ccp:paginationControl object="promotionListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(StringUtils.replace(promotionCategory.getItemName().toLowerCase()," ", "_")) %>' urlSuffix='${sortURL}' />
+	        <ccp:paginationControl object="promotionListInfo" url='<%= hasMoreURL + "/" + StringUtils.toHtmlValue(promotionCategory.getNormalizedCategoryName()) + "/" + promotionCategory.getId() %>' urlParams='${sortURL},${queryString},${locationString}' />
 	      </c:if>
 	      <c:if test="${empty promotionCategory.itemName}">
-	        <ccp:paginationControl object="promotionListInfo" url='<%= hasMoreURL %>' urlSuffix='${sortURL}' />
+	        <ccp:paginationControl object="promotionListInfo" url='<%= hasMoreURL %>' urlParams='${sortURL},${queryString},${locationString}' />
 	      </c:if>
 	    </c:if>
 	  </c:if>

@@ -74,6 +74,8 @@ public class SetupRegistrationBean extends GenericBean {
   private boolean proxy = false;
   private String proxyHost = null;
   private String proxyPort = null;
+  private String proxyUsername = null;
+  private String proxyPassword = null;
   private String vendor = null;
   private String url = null;
 
@@ -206,6 +208,22 @@ public class SetupRegistrationBean extends GenericBean {
 
   public void setProxyPort(String proxyPort) {
     this.proxyPort = proxyPort;
+  }
+
+  public String getProxyUsername() {
+    return proxyUsername;
+  }
+
+  public void setProxyUsername(String proxyUsername) {
+    this.proxyUsername = proxyUsername;
+  }
+
+  public String getProxyPassword() {
+    return proxyPassword;
+  }
+
+  public void setProxyPassword(String proxyPassword) {
+    this.proxyPassword = proxyPassword;
   }
 
   public String getVendor() {

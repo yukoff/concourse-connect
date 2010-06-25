@@ -164,6 +164,10 @@
             <input type="text" size="30" name="proxyHost" value="<%= toHtmlValue(registrationBean.getProxyHost()) %>" />
             <label>Proxy Port:</label>
             <input type="text" size="5" name="proxyPort" value="<%= toHtmlValue(registrationBean.getProxyPort()) %>" />
+            <label>Proxy Username:</label>
+            <input type="text" size="30" name="proxyUsername" value="<%= toHtmlValue(registrationBean.getProxyUsername()) %>" />
+            <label>Proxy Password:</label>
+            <input type="password" size="30" name="proxyPassword" value="<%= toHtmlValue(registrationBean.getProxyPassword()) %>" />
           </fieldset>
         </div>
         <br style="clear:both">

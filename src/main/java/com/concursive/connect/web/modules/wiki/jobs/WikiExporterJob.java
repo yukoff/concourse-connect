@@ -109,6 +109,9 @@ public class WikiExporterJob implements StatefulJob {
         WikiExportBean bean = (WikiExportBean) exportList.get(0);
         LOG.debug("Exporting a wiki (" + bean.getWikiId() + ")...");
         User user = UserUtils.loadUser(bean.getUserId());
+        if (user == null) {
+          user = UserUtils.createGuestUser();
+        }
         // Load the project
         Project thisProject = new Project(db, bean.getProjectId());
         // Load the wiki

@@ -111,9 +111,13 @@ public class UserUtils {
   }
 
   public static User loadUser(int userId) {
-    Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_USER_CACHE);
-    Element element = cache.get(userId);
-    return (User) element.getObjectValue();
+    if (userId > -1) {
+      Ehcache cache = CacheUtils.getCache(Constants.SYSTEM_USER_CACHE);
+      Element element = cache.get(userId);
+      return (User) element.getObjectValue();
+    } else {
+      return null;
+    }
   }
 
   /**

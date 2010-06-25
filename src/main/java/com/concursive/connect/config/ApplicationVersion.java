@@ -56,9 +56,9 @@ package com.concursive.connect.config;
  */
 public class ApplicationVersion {
   public final static String TITLE = "ConcourseConnect";
-  public final static String VERSION = "2.0 (2010-06-17)";
-  public final static String APP_VERSION = "2010-06-17";
-  public final static String DB_VERSION = "2010-06-17";
+  public final static String VERSION = "2.0.1 (2010-06-25)";
+  public final static String APP_VERSION = "2010-06-25";
+  public final static String DB_VERSION = "2010-06-25";
 
 
   /**

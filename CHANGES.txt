@@ -10,6 +10,14 @@ and implementations, including customization and development, please join
 the ConcourseConnect community at:
 http://www.concursive.com/show/concourseconnect-support
 
+2.0.1 (June 26, 2010)
+
+  Minor Improvements:
+    Exporting a wiki could stop if a non-logged in user attempted this
+    Added proxy user/password settings by request
+    Compiled for JDK 1.5 and above
+
+
 2.0 (June 16, 2010)
 
   ** Important notes **

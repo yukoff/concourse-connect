@@ -389,6 +389,7 @@
            destdir="${build.classes.dir}"
            verbose="off"
            optimize="on"
+           source="1.5" target="1.5"
            deprecation="off">
       <classpath>
         <path refid="web.classpath"/>
@@ -404,6 +405,7 @@
                destdir="${build.classes.dir}"
                verbose="off"
                optimize="on"
+               source="1.5" target="1.5"
                deprecation="off">
           <classpath>
             <path refid="web.classpath"/>

@@ -2,13 +2,22 @@
 ConcourseConnect 2.0
 Copyright (C) 2010 Concursive Corporation.
 Change Log
-June 16, 2010
+August 20, 2010
 ----------------------------------------------------------------------------
 
 If you are interested in collaborating on various social networking topics
 and implementations, including customization and development, please join
 the ConcourseConnect community at:
 http://www.concursive.com/show/concourseconnect-support
+
+2.0.2 (August 20, 2010)
+
+  Minor Improvements:
+    Web site guests could not access wiki links, even if guests had permission
+    The contact us form now submits the radio button value that the user chooses
+    When upgrading from certain versions, the upgrade could fail due to a script
+      running out of order
+
 
 2.0.1 (June 26, 2010)
 

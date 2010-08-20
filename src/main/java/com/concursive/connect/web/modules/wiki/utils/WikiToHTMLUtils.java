@@ -1119,6 +1119,10 @@ public class WikiToHTMLUtils {
     try {
       thisUser = UserUtils.loadUser(userId);
     } catch (Exception notAUser) {
+      LOG.warn("hasUserProjectAccess: userId error - " + userId);
+    }
+    // Setup the user as a guest
+    if (thisUser == null) {
       LOG.debug("hasUserProjectAccess: userId not found - " + userId + " - using a guest user");
       thisUser = UserUtils.createGuestUser();
     }

@@ -276,6 +276,13 @@ public class ContactUsBean extends GenericBean {
     return formData;
   }
 
+  public void setFormData(String formData) {
+  	this.formData = new String[1];
+  	this.formData[0] = formData;
+    formDataList.add(formData);
+    this.formDataString = "[" + formData + "]";
+  }
+
   public void setFormData(String[] formData) {
     StringBuffer sbf = new StringBuffer();
     if (formData != null) {

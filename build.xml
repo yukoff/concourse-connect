@@ -389,7 +389,7 @@
            destdir="${build.classes.dir}"
            verbose="off"
            optimize="on"
-           source="1.5" target="1.5"
+           source="1.5" target="1.6"
            deprecation="off">
       <classpath>
         <path refid="web.classpath"/>
@@ -405,7 +405,7 @@
                destdir="${build.classes.dir}"
                verbose="off"
                optimize="on"
-               source="1.5" target="1.5"
+               source="1.5" target="1.6"
                deprecation="off">
           <classpath>
             <path refid="web.classpath"/>
@@ -664,7 +664,7 @@
     <javac srcdir="${dist.dir}/${project.war.finalName}/WEB-INF/src" excludes="**/*.smap"
            destdir="${dist.dir}/${project.war.finalName}/WEB-INF/compiled"
            debug="off" failonerror="true"
-           source="1.5" target="1.5"
+           source="1.5" target="1.6"
            optimize="on">
       <classpath>
         <pathelement location="${dist.dir}/${project.war.finalName}/WEB-INF/compiled"/>

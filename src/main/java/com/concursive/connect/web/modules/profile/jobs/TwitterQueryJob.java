@@ -66,6 +66,7 @@ import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Tweet;
 import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
@@ -119,7 +120,8 @@ public class TwitterQueryJob implements StatefulJob {
       }
 
       // Get the Twitter search results
-      Twitter twitter = new Twitter(TWITTER_BASE_URL);
+      //Twitter twitter = new Twitter(TWITTER_BASE_URL);
+      Twitter twitter = new TwitterFactory().getInstance();
       QueryResult result = twitter.search(query);
       LOG.debug("Found and retrieved " + result.getTweets().size() + " tweet(s).");
 

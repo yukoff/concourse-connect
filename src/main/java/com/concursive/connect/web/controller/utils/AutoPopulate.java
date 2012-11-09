@@ -88,9 +88,9 @@ public class AutoPopulate extends BeanUtils {
       if (thisUser.getTimeZone() != null) {
         ArrayList timeParams = (ArrayList) ObjectUtils.getObject(bean, "TimeZoneParams");
         if (timeParams != null) {
-          Calendar cal = Calendar.getInstance();
           Iterator i = timeParams.iterator();
           while (i.hasNext()) {
+            Calendar cal = Calendar.getInstance();
             // The property that can be set
             String name = (String) i.next();
             // See if it is in the request

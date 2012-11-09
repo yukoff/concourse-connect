@@ -146,6 +146,7 @@ public class Constants {
   public static final String SESSION_USER = "User";
   public static final String SESSION_CONNECTION_ELEMENT = "ConnectionElement";
   public static final String SESSION_SEARCH_BEAN = "searchBean";
+  public static final String SESSION_CLIENT_TYPE = "clientType";
 
   // Cookie attribute names
   public static final String COOKIE_USER_GUID = "USER_GUID";
@@ -161,10 +162,25 @@ public class Constants {
   public static final String REQUEST_PRIVATE_MESSAGE_COUNT = "requestPrivateMessageCount";
   public static final String REQUEST_MENU_CATEGORY_LIST = "menuCategoryList";
   public static final String REQUEST_TAB_CATEGORY_LIST = "tabCategoryList";
+  public static final String REQUEST_USER = "user";
+  public static final String REQUEST_CLIENT_TYPE = "clientType";
   public static final String REQUEST_PROJECT = "project";
   public static final String REQUEST_PROJECT_BADGE_LIST = "requestProjectBadgeList";
   public static final String REQUEST_MAIN_PROFILE = "requestMainProfile";
   public static final String REQUEST_GENERATED_TITLE = "requestGeneratedTitle";
   public static final String REQUEST_GENERATED_CATEGORY = "requestGeneratedCategory";
+  public static final String REQUEST_LOGIN_USER_ID = "requestLoginUserId";
+  public static final String REQUEST_CURRENT_TEAM_MEMBER = "currentMember";
+  public static final String REQUEST_CURRENT_USER = "requestCurrentUser";
+  public static final String REQUEST_PAGE_LAYOUT = "PageLayout";
+  public static final String REQUEST_PAGE_TITLE_INCLUDE = "requestPageTitleInclude";
+  public static final String REQUEST_PAGE_DESCRIPTION_INCLUDE = "requestPageDescriptionInclude";
+  public static final String REQUEST_TEMPLATE = "Template";
+  public static final String REQUEST_COOKIE_BEAN_ARRAY = "requestCookieBeanArray";
 
+  // Global request parameter names
+  public static final String REQUEST_PARAM_POPUP = "popup";
+  public static final String REQUEST_PARAM_STYLE = "style";
+  public static final String REQUEST_PARAM_INLINE = "inline";
+  public static final String REQUEST_PARAM_APP = "app";
 }

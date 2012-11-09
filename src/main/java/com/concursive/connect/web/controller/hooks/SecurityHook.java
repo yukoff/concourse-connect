@@ -113,7 +113,7 @@ public class SecurityHook implements ControllerHook {
     ServletConfig config = servlet.getServletConfig();
     ServletContext context = config.getServletContext();
     // Application wide preferences
-    ApplicationPrefs prefs = (ApplicationPrefs) context.getAttribute("applicationPrefs");
+    ApplicationPrefs prefs = (ApplicationPrefs) context.getAttribute(Constants.APPLICATION_PREFS);
     // Get the intended action, if going to the login module, then let it proceed
     String s = request.getServletPath();
     int slash = s.lastIndexOf("/");
@@ -148,11 +148,7 @@ public class SecurityHook implements ControllerHook {
       return null;
     }
     // Detect mobile users and mobile formatting
-    ClientType clientType = (ClientType) request.getSession().getAttribute("clientType");
-    if (clientType == null) {
-      clientType = new ClientType(request);
-      request.getSession().setAttribute("clientType", clientType);
-    }
+//    ClientType clientType = (ClientType) request.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     // @todo introduce when mobile is implemented
 //    if (clientType.getMobile()) {
 //      request.setAttribute("PageLayout", "/layoutMobile.jsp");

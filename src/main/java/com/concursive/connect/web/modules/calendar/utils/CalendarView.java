@@ -48,10 +48,7 @@ package com.concursive.connect.web.modules.calendar.utils;
 import com.concursive.commons.date.DateUtils;
 import com.concursive.commons.objects.ObjectUtils;
 import com.concursive.commons.text.StringUtils;
-import com.concursive.connect.web.modules.calendar.utils.holidays.CAHolidays;
-import com.concursive.connect.web.modules.calendar.utils.holidays.DEHolidays;
-import com.concursive.connect.web.modules.calendar.utils.holidays.UKHolidays;
-import com.concursive.connect.web.modules.calendar.utils.holidays.USHolidays;
+import com.concursive.connect.web.modules.calendar.utils.holidays.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -1565,15 +1562,19 @@ public class CalendarView {
    */
   public void addHolidays(int theYear) {
     if (locale != null) {
-      //TODO: use reflection to add holidays
+      //TODO: use reflection to add holidays; support for states
       if ("US".equals(locale.getCountry())) {
         USHolidays.addTo(this, theYear);
+      } else if ("AU".equals(locale.getCountry())) {
+        AUHolidays.addTo(this, theYear);
       } else if ("CA".equals(locale.getCountry())) {
         CAHolidays.addTo(this, theYear);
       } else if ("DE".equals(locale.getCountry())) {
         DEHolidays.addTo(this, theYear);
       } else if ("UK".equals(locale.getCountry())) {
         UKHolidays.addTo(this, theYear);
+      } else if ("IN".equals(locale.getCountry())) {
+        INHolidays.addTo(this, theYear);
       }
     }
   }

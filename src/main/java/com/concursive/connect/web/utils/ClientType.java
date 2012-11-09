@@ -53,6 +53,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 /**
  * Utility to determine the client's browser type.<br>
@@ -87,12 +88,15 @@ public class ClientType implements Serializable {
   private int type = -1;
   private int id = -1;
   private double version = -1;
+  private String versionString = null;
   private int os = WINDOWS;
   private String language = "en_US";
   private String referer = null;
   private boolean mobileFound = false;
   private boolean mobile = false;
   private boolean bot = false;
+  // MVC Token
+  private String token = UUID.randomUUID().toString();
 
   final static long serialVersionUID = 8345658414124283570L;
 
@@ -109,7 +113,21 @@ public class ClientType implements Serializable {
    * @param request Description of the Parameter
    */
   public ClientType(HttpServletRequest request) {
-    this.setParameters(request);
+    try {
+      this.setParameters(request);
+    } catch (Exception e) {
+      // The string that caused the error
+      String header = request.getHeader("USER-AGENT");
+      if (header == null) {
+        header = request.getHeader("User-Agent");
+      }
+      if (header == null) {
+        header = request.getHeader("user-agent");
+      }
+      if (header != null) {
+        LOG.error("Could not set parameters for: " + header);
+      }
+    }
   }
 
 
@@ -138,37 +156,49 @@ public class ClientType implements Serializable {
 
     if (header != null) {
       header = header.toLowerCase();
-      LOG.trace("Client browser header string: " + header);
+      LOG.debug("Client browser header string: " + header);
       // Determine OS
-      if (header.indexOf("linux") > -1) {
+      if (header.contains("linux")) {
         os = LINUX;
-      } else if (header.indexOf("mac_powerpc") > -1) {
+      } else if (header.contains("mac_powerpc")) {
         os = MAC;
-      } else if (header.indexOf("macintosh") > -1) {
+      } else if (header.contains("macintosh")) {
         os = MAC;
       }
 
-      if (header.indexOf("msie") > -1) {
+      if (header.contains("msie")) {
+        //User-Agent: mozilla/5.0 (compatible; msie 9.0; windows nt 6.0; wow64; trident/5.0)
+        //User-Agent: mozilla/4.0 (compatible; msie 8.0; windows nt 6.0; wow64; trident/4.0; slcc1; .net clr 2.0.50727; media center pc 5.0; .net clr 3.0.30729)
+        //User-Agent: mozilla/4.0 (compatible; msie 7.0; windows nt 6.0; wow64; slcc1; .net clr 2.0.50727; media center pc 5.0; .net clr 3.0.30729)
         //User-Agent: mozilla/4.0 (compatible; msie 6.0; windows 98; .net clr 1.0.3705)
         //User-Agent: mozilla/4.0 (compatible; msie 5.01; windows nt 5.0)
         this.id = IE;
         //Search for "msie x"
-        version = parseVersion(header.substring(header.indexOf("msie ") + 5,
-            header.indexOf(";", header.indexOf("msie "))));
-      } else if (header.indexOf("applewebkit") > -1) {
+        int idx = header.indexOf("msie ");
+        if (idx + 5 < header.length() && header.indexOf(";", idx) > -1) {
+          version = parseVersion(header.substring(header.indexOf("msie ") + 5,
+              header.indexOf(";", header.indexOf("msie "))));
+        }
+      } else if (header.contains("applewebkit")) {
+        //User-Agent: mozilla/5.0 (macintosh; intel mac os x 10_8) applewebkit/536.25 (khtml, like gecko) version/6.0 safari/536.25
+        //User-Agent: mozilla/5.0 (macintosh; intel mac os x 10_8_0) applewebkit/535.2 (khtml, like gecko) chrome/15.0.854.0 safari/535.2
         //User-Agent: mozilla/5.0 (macintosh; u; ppc mac os x; en) applewebkit/125.2 (khtml, like gecko) safari/125.7
-        //mozilla/5.0 (macintosh; u; ppc mac os x; en) applewebkit/125.2 (khtml, like gecko) safari/125.8
+        //User-Agent: mozilla/5.0 (macintosh; u; ppc mac os x; en) applewebkit/125.2 (khtml, like gecko) safari/125.8
         this.id = APPLEWEBKIT;
-        version = parseVersion(header.substring(header.indexOf("applewebkit") + 12, header.indexOf("(khtml")));
         // Header String: mozilla/5.0 (iphone; u; cpu like mac os x; en) applewebkit/420+ (khtml, like gecko) version/3.0 mobile/1a543a safari/419.3
         // Browser Id: applewebkit
         // Browser Version: 420.0
-        if (header.indexOf("mobile") > -1) {
+        if (header.contains("mobile") || header.contains("iphone")) {
           mobileFound = true;
           mobile = true;
         }
-      } else if (header.indexOf("opera") > -1) {
-        //Opera likes to impersonate other browsers
+        int idx = header.indexOf("applewebkit/");
+        if (idx + 12 < header.length() && header.indexOf("(khtml", idx) > -1) {
+          version = parseVersion(header.substring(idx + 12, header.indexOf("(khtml")));
+        }
+      } else if (header.contains("opera")) {
+        //User-Agent: opera/9.80 (macintosh; intel mac os x 10.8.0; u; en) presto/2.10.289 version/12.01
+        //User-Agent: opera/9.80 (macintosh; intel mac os x; u; en) presto/2.2.15 version/10.00
         //User-Agent: mozilla/4.0 (compatible; msie 6.0; msie 5.5; windows 98) opera 7.02  [en]
         //User-Agent: mozilla/3.0 (windows 98; u) opera 7.02  [en]
         //User-Agent: opera/9.25 (macintosh; intel mac os x; u; en)
@@ -179,15 +209,20 @@ public class ClientType implements Serializable {
         if (header.indexOf("(", header.indexOf("opera")) != -1) {
           version = parseVersion(header.substring(header.indexOf("opera") + 5, header.indexOf("(", header.indexOf("opera"))).trim());
         }
-      } else if (header.indexOf("mozilla") > -1) {
+      } else if (header.contains("mozilla")) {
+        //User-Agent: mozilla/5.0 (macintosh; intel mac os x 10.8; rv:7.0.1) gecko/20100101 firefox/7.0.1
         //User-Agent: mozilla/5.0 (x11; u; linux i686; en-us; rv:1.3b) gecko/20030211
         //User-Agent: mozilla/5.0 (macintosh; u; ppc mac os x; en-us; rv:1.0.1) gecko/20021104 chimera/0.6
         //User-Agent: mozilla/5.0 (x11; u; linux i686; en-us; rv:1.0.1) gecko/20020830
         //User-Agent: mozilla/5.0 (windows; u; win98; en-us; rv:1.0.2) gecko/20030208 netscape/7.02
-        if (header.indexOf("gecko/") > -1 && header.indexOf("rv:") > -1) {
+        if (header.contains("gecko/") && header.contains("rv:")) {
           this.id = MOZILLA;
-          version = parseVersion(header.substring(header.indexOf("rv:") + 3, header.indexOf(") gecko")));
-        } else if (header.indexOf("gecko") > -1) {
+          int idx = header.indexOf("rv:");
+          if (idx + 3 < header.length() && header.indexOf(")", idx) > -1) {
+            version = parseVersion(header.substring(idx + 3, header.indexOf(")", idx)));
+            versionString = header.substring(idx + 3, header.indexOf(")", idx));
+          }
+        } else if (header.contains("gecko")) {
           this.id = NETSCAPE;
           version = 6;
         } else {
@@ -195,35 +230,64 @@ public class ClientType implements Serializable {
           this.id = NETSCAPE;
           this.version = 4;
         }
+      } else if (header.contains("iphone") || header.contains("appcelerator titanium")) {
+        // handles requests from iOS devices using this platform
+        this.id = APPLEWEBKIT;
+        mobileFound = true;
+        mobile = true;
       } else {
         this.id = NETSCAPE;
         this.version = 4;
       }
 
       // Test for a few bots to reduce tracker counts
-      if (header.indexOf("Googlebot") > -1) {
+      if (header.contains("googlebot/")) {
+        // Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
         bot = true;
-      } else if (header.indexOf("Yahoo! Slurp") > -1) {
+      } else if (header.contains("yahoo! slurp")) {
+        // Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)
         bot = true;
-      } else if (header.indexOf("search.msn.com/msnbot") > -1) {
+      } else if (header.contains("bingbot/")) {
+        // Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
         bot = true;
-      } else if (header.indexOf("VoilaBot") > -1) {
+      } else if (header.contains("msnbot-media/")) {
+        // msnbot-media/1.1 (+http://search.msn.com/msnbot.htm)
         bot = true;
-      } else if (header.indexOf("ZyBorg") > -1) {
+      } else if (header.contains("baiduspider/")) {
+        // Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)
         bot = true;
-      } else if (header.indexOf("FAST-WebCrawler") > -1) {
+      } else if (header.contains("yandexbot/")) {
+        // Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)
         bot = true;
-      } else if (header.indexOf("DeepIndex") > -1) {
+      } else if (header.contains("ezooms/")) {
+        // Mozilla/5.0 (compatible; Ezooms/1.0; ezooms.bot@gmail.com)
         bot = true;
-      } else if (header.indexOf("Ask Jeeves") > -1) {
+      } else if (header.contains("seznambot/")) {
+        // SeznamBot/3.0 (+http://fulltext.sblog.cz/)
+        // SeznamBot/2.0 (+http://fulltext.sblog.cz/robot/)
+        // SeznamBot/3.0-beta (+http://fulltext.sblog.cz/)
         bot = true;
-      } else if (header.indexOf("Gigabot") > -1) {
+      } else if (header.contains("y!j-bro/yfsj crawler")) {
+        // Y!J-BRO/YFSJ crawler (compatible; Mozilla 4.0; MSIE 5.5; http://help.yahoo.co.jp/help/jp/search/indexing/indexing-15.html; YahooFeedSeekerJp/2.0)
         bot = true;
-      } else if (header.indexOf("Openbot") > -1) {
+      } else if (header.contains("voilabot")) {
+        bot = true;
+      } else if (header.contains("zyborg")) {
+        bot = true;
+      } else if (header.contains("fast-webcrawler")) {
+        bot = true;
+      } else if (header.contains("deepindex")) {
+        bot = true;
+      } else if (header.contains("ask jeeves")) {
+        bot = true;
+      } else if (header.contains("gigabot")) {
+        bot = true;
+      } else if (header.contains("openbot")) {
         bot = true;
       }
       LOG.trace("Browser Id: " + getBrowserId());
       LOG.trace("Browser Version: " + getBrowserVersion());
+      LOG.trace("Browser VersionString: " + versionString);
       LOG.trace("Browser O/S: " + getOsString());
     }
     String acceptLanguage = request.getHeader("Accept-Language");
@@ -231,7 +295,7 @@ public class ClientType implements Serializable {
       StringTokenizer languages = new StringTokenizer(acceptLanguage, ",");
       if (languages.hasMoreTokens()) {
         String firstLanguage = languages.nextToken();
-        if (firstLanguage.indexOf(";") > -1) {
+        if (firstLanguage.contains(";")) {
           firstLanguage = firstLanguage.substring(0, firstLanguage.indexOf(";"));
         }
         firstLanguage = firstLanguage.trim();
@@ -375,6 +439,20 @@ public class ClientType implements Serializable {
     this.bot = bot;
   }
 
+  public String getToken() {
+    return token;
+  }
+
+  /**
+   * Update the token so the previous cannot be used
+   *
+   * @return
+   */
+  public String updateToken() {
+    token = UUID.randomUUID().toString();
+    return token;
+  }
+
   /**
    * Gets the browserId attribute of the ClientType object
    *
@@ -448,7 +526,7 @@ public class ClientType implements Serializable {
     try {
       return Double.parseDouble(versionText);
     } catch (Exception e) {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       boolean hasPoint = false;
       for (int i = 0; i < versionText.length(); i++) {
         char c = versionText.charAt(i);
@@ -471,20 +549,15 @@ public class ClientType implements Serializable {
     }
   }
 
-
-  /**
-   * Description of the Method
-   *
-   * @return Description of the Return Value
-   */
-  public boolean showApplet() {
-    //if ((id == APPLEWEBKIT && version < 312) ||
-    if (id == APPLEWEBKIT ||
-        (id == IE && version >= 5 && version < 5.5)) {
+  public boolean hasMultiUpload() {
+    // Safari 4 and Firefox 3.6
+    if ((id == APPLEWEBKIT && version >= 528) ||
+        (id == MOZILLA &&
+            (version >= 2 ||
+                (versionString != null && versionString.startsWith("1.9.2"))))) {
       return true;
     } else {
       return false;
     }
   }
 }
-

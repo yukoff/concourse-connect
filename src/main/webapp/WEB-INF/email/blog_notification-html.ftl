@@ -32,7 +32,7 @@
         </td>
       </tr>
       <tr>
-        <td style="background#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
+        <td style="background:#f1f4f8; text-align:right; padding:10px 10px 0 0; ">
           <p style="font-size:smaller">Powered by <a style="color:#3f86f8" href="http://www.concursive.com/show/concourseconnect" title="ConcourseConnect - Overview - Concursive - Business Social Software Platform">ConcourseConnect - Business Social Software</a></p>
           <br/>
         </td>

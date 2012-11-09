@@ -56,6 +56,14 @@
       com.concursive.connect.web.listeners.SessionListener
     </listener-class>
   </listener>
+  <filter>
+    <filter-name>ClientTypeRequestFilter</filter-name>
+    <filter-class>com.concursive.connect.web.filters.ClientTypeRequestFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>ClientTypeRequestFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   <!-- When a file is not specified -->
   <servlet>
     <servlet-name>WelcomeServlet</servlet-name>
@@ -1267,7 +1275,6 @@
     <servlet-name>TagCloudResultsCategoryCountsPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/TagCloudResultsCategoryCountsPortlet</url-pattern>
   </servlet-mapping>
-
   <servlet-mapping>
     <servlet-name>PrivateMessagesPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/PrivateMessagesPortlet</url-pattern>
@@ -1425,7 +1432,7 @@
     <servlet-name>WebcastPortlet</servlet-name>
     <url-pattern>/PlutoInvoker/WebcastPortlet</url-pattern>
   </servlet-mapping>
-  <!-- All iteam requests go through the framework controller -->
+  <!-- All mvc requests go through the framework controller -->
   <servlet-mapping>
     <servlet-name>Controller</servlet-name>
     <url-pattern>*.do</url-pattern>
@@ -1596,7 +1603,6 @@
     <servlet-name>URLController</servlet-name>
     <url-pattern>/management-crm/*</url-pattern>
   </servlet-mapping>
-
   <servlet-mapping>
     <servlet-name>Captcha</servlet-name>
     <url-pattern>/Captcha.png</url-pattern>
@@ -1605,7 +1611,6 @@
     <servlet-name>PackServlet</servlet-name>
     <url-pattern>*.pack</url-pattern>
   </servlet-mapping>
-
   <servlet-mapping>
     <servlet-name>WelcomeServlet</servlet-name>
     <url-pattern>/WelcomeServlet</url-pattern>

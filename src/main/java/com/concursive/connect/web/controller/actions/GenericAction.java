@@ -49,6 +49,7 @@ package com.concursive.connect.web.controller.actions;
 import com.concursive.commons.db.ConnectionElement;
 import com.concursive.commons.db.ConnectionPool;
 import com.concursive.commons.http.RequestUtils;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.commons.workflow.ObjectHookAction;
 import com.concursive.commons.workflow.ObjectHookManager;
@@ -64,6 +65,7 @@ import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.utils.ClientType;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import com.concursive.connect.scheduler.JobEvent;
@@ -177,6 +179,10 @@ public class GenericAction implements java.io.Serializable {
    * @return The user value
    */
   protected static User getUser(ActionContext context) {
+    User user = (User) context.getRequest().getAttribute(Constants.REQUEST_CURRENT_USER);
+    if (user != null) {
+      return user;
+    }
     return (User) context.getSession().getAttribute(Constants.SESSION_USER);
   }
 
@@ -188,7 +194,7 @@ public class GenericAction implements java.io.Serializable {
    * @return The userId value
    */
   protected static int getUserId(ActionContext context) {
-    return ((User) context.getSession().getAttribute(Constants.SESSION_USER)).getId();
+    return getUser(context).getId();
   }
 
 
@@ -199,7 +205,7 @@ public class GenericAction implements java.io.Serializable {
    * @return The groupId value
    */
   protected int getGroupId(ActionContext context) {
-    return ((User) context.getSession().getAttribute(Constants.SESSION_USER)).getGroupId();
+    return getUser(context).getGroupId();
   }
 
 
@@ -210,7 +216,7 @@ public class GenericAction implements java.io.Serializable {
    * @return The userRange value
    */
   protected String getUserRange(ActionContext context) {
-    return ((User) context.getSession().getAttribute(Constants.SESSION_USER)).getIdRange();
+    return getUser(context).getIdRange();
   }
 
 
@@ -229,7 +235,7 @@ public class GenericAction implements java.io.Serializable {
     context.getRequest().setAttribute("errors", errors);
     if (errors.size() > 0) {
       if (context.getRequest().getAttribute("actionError") == null) {
-        context.getRequest().setAttribute("actionError", "Form could not be submitted, review messages below.");
+        context.getRequest().setAttribute("actionError", "The form could not be submitted, please review the messages below.");
       }
     }
   }
@@ -477,6 +483,28 @@ public class GenericAction implements java.io.Serializable {
     return getApplicationPrefs(context).has(name);
   }
 
+  public static ClientType getClientType(ActionContext context) {
+    ClientType clientType = (ClientType) context.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
+    if (clientType == null) {
+      clientType = new ClientType(context.getRequest());
+      context.getSession().setAttribute(Constants.SESSION_CLIENT_TYPE, clientType);
+    } else if (clientType.getId() == -1) {
+      clientType.setParameters(context.getRequest());
+    }
+    return clientType;
+  }
+
+  /**
+   * Compares the form's token to the value in the session
+   *
+   * @param context
+   * @return
+   */
+  protected static boolean hasMatchingFormToken(ActionContext context) {
+    ClientType clientType = getClientType(context);
+    String requestToken = context.getRequest().getParameter("token");
+    return (clientType != null && requestToken != null && StringUtils.hasText(clientType.getToken()) && requestToken.equals(clientType.getToken()));
+  }
 
   /**
    * Gets the applicationPrefs attribute of the GenericAction object
@@ -484,7 +512,7 @@ public class GenericAction implements java.io.Serializable {
    * @param context Description of the Parameter
    * @return The applicationPrefs value
    */
-  protected ApplicationPrefs getApplicationPrefs(ActionContext context) {
+  protected static ApplicationPrefs getApplicationPrefs(ActionContext context) {
     return ApplicationPrefs.getApplicationPrefs(context.getServletContext());
   }
 

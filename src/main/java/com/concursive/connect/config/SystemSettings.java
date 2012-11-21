@@ -54,6 +54,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Handles storing and retrieving installation specific properties
@@ -93,7 +94,7 @@ public class SystemSettings extends GenericBean {
         return true;
       }
       // Add the hidden fields...
-      ArrayList hookNodes = XMLUtils.getElements(hiddenElements, "field");
+      List hookNodes = XMLUtils.getElements(hiddenElements, "field");
       Iterator hookElements = hookNodes.iterator();
       while (hookElements.hasNext()) {
         Element hookElement = (Element) hookElements.next();

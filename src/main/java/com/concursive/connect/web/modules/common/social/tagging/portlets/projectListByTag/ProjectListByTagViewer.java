@@ -126,7 +126,7 @@ public class ProjectListByTagViewer implements IPortletViewer {
       // Get the projects that match a tag
       TagList projectListByTag = new TagList();
       projectListByTag.setInstanceId(PortalUtils.getInstance(request).getId());
-      if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+      if (PortalUtils.isPortletInProtectedMode(request) && PortalUtils.getUser(request).getId() > 0) {
         projectListByTag.setForParticipant(Constants.TRUE);
       } else {
         // Use the most generic settings since this portlet is cached
@@ -181,7 +181,7 @@ public class ProjectListByTagViewer implements IPortletViewer {
         }
         projectList.setPagedListInfo(projectListInfo);
         // Show only the listings that the user has access to
-        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+        if (PortalUtils.isPortletInProtectedMode(request) && PortalUtils.getUser(request).getId() > 0) {
           projectList.setForParticipant(Constants.TRUE);
         } else {
           // Use the most generic settings since this portlet is cached

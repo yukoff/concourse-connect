@@ -51,6 +51,7 @@ import com.concursive.commons.email.SMTPMessageFactory;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.commons.workflow.ObjectHookComponent;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
@@ -130,7 +131,7 @@ public class SendPrivateMessageNotification extends ObjectHookComponent implemen
       if (users.size() > 0) {
 
         SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(context.getApplicationPrefs());
-        message.setFrom(context.getParameter("EMAILADDRESS"));
+      message.setFrom(context.getParameter(ComponentContext.APPLICATION_EMAIL_ADDRESS));
         message.setType("text/html");
 
         // Send to each user
@@ -151,7 +152,7 @@ public class SendPrivateMessageNotification extends ObjectHookComponent implemen
 
           Map bodyMappings = new HashMap();
           bodyMappings.put("site", new HashMap());
-          ((Map) bodyMappings.get("site")).put("title", context.getApplicationPrefs().get("TITLE"));
+        ((Map) bodyMappings.get("site")).put("title", context.getApplicationPrefs().get(ApplicationPrefs.WEB_PAGE_TITLE));
           bodyMappings.put("project", thisProject);
           bodyMappings.put("user", senderUser);
           bodyMappings.put("teamMember", teamMemberUser);

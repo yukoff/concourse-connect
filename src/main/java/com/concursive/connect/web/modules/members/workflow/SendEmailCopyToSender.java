@@ -51,6 +51,7 @@ import com.concursive.commons.email.SMTPMessageFactory;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.beans.TeamMemberEmailBean;
@@ -102,7 +103,7 @@ public class SendEmailCopyToSender extends ObjectHookComponent implements Compon
 
       Map bodyMappings = new HashMap();
       bodyMappings.put("site", new HashMap());
-      ((Map) bodyMappings.get("site")).put("title", prefs.get("TITLE"));
+      ((Map) bodyMappings.get("site")).put("title", prefs.get(ApplicationPrefs.WEB_PAGE_TITLE));
       
       bodyMappings.put("user",  new HashMap());
       ((Map) bodyMappings.get("user")).put("nameFirstLast", user.getNameFirstLast());
@@ -127,7 +128,7 @@ public class SendEmailCopyToSender extends ObjectHookComponent implements Compon
 
       // Send the message
       SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs);
-      message.setFrom(prefs.get("EMAILADDRESS"));
+      message.setFrom(context.getParameter(ComponentContext.APPLICATION_EMAIL_ADDRESS));
       message.addTo(user.getEmail());
       // Set the subject from the template
       StringWriter inviteSubjectTextWriter = new StringWriter();

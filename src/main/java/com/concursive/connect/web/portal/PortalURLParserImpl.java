@@ -211,6 +211,7 @@ public class PortalURLParserImpl implements PortalURLParser {
     } else {
       url.append("&");
     }
+    LOG.debug("appendParameter: " + parameter);
     url.append(parameter);
   }
 
@@ -263,6 +264,7 @@ public class PortalURLParserImpl implements PortalURLParser {
           }
         }
       } else if (param.getValues() != null && param.getValues().length > 0) {
+        LOG.debug("Appending parameters...");
         // Encode the parameter ONLY if it targets the currently being rendered portlet
 //        if (param.getWindowId().equals(portalURL.getRenderPath())) {
         String valueString = encodeMultiValues(param.getValues());

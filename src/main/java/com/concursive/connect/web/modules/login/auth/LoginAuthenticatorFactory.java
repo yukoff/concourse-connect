@@ -95,10 +95,9 @@ public class LoginAuthenticatorFactory {
     Connection db = null;
     String className = null;
     try {
-      String loginMode = ((ApplicationPrefs) context.getServletContext().getAttribute("applicationPrefs")).get("LOGIN.MODE");
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("LoginAuthenticatorFactory-> Seeking Login Authenticator for Mode: " + loginMode);
-      }
+      String loginMode = ((ApplicationPrefs) context.getServletContext().getAttribute("applicationPrefs")).get(ApplicationPrefs.LOGIN_MODE);
+      LOG.debug("Seeking Login Authenticator for Mode: " + loginMode);
+
       // Get connection
       db = sqlDriver.getConnection(ce);
       // Get specified authentication class

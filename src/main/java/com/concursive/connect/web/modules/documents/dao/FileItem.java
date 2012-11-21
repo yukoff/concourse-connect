@@ -1603,12 +1603,16 @@ public class FileItem extends GenericBean {
    */
   private boolean isValid() {
     if (linkModuleId == -1 || linkItemId == -1) {
+      LOG.debug("linkModuleId=" + linkModuleId);
+      LOG.debug("linkItemId=" + linkItemId);
       errors.put("actionError", "Id not specified");
     }
     if (!StringUtils.hasText(subject)) {
+      LOG.debug("subject=" + subject);
       errors.put("subjectError", "Required field");
     }
     if (!StringUtils.hasText(clientFilename)) {
+      LOG.debug("clientFilename=" + clientFilename);
       errors.put("clientFilenameError", "Required field");
     }
     return !hasErrors();

@@ -56,6 +56,8 @@ import com.concursive.connect.web.webdav.dao.WebdavModuleList;
 import com.concursive.connect.web.webdav.servlets.WebdavServlet;
 import org.apache.catalina.servlets.DefaultServlet;
 import org.apache.catalina.util.MD5Encoder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,6 +78,8 @@ import java.util.StringTokenizer;
  * @created November 2, 2004
  */
 public class WebdavManager {
+
+  private static Log LOG = LogFactory.getLog(WebdavManager.class);
 
   protected static MessageDigest md5Helper = null;
 
@@ -464,6 +468,7 @@ public class WebdavManager {
   public static boolean checkAuthentication(HttpServletRequest req) throws Exception {
     String argHeader = req.getHeader("Authorization");
     if (argHeader == null || !argHeader.startsWith("Digest")) {
+      LOG.debug("Missing Digest in header");
       return false;
     }
     return true;

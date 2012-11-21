@@ -289,7 +289,7 @@ public class SendUserNotification extends ObjectHookComponent implements Compone
         User thisUser = UserUtils.loadUser(Integer.parseInt(fromId));
         mail.setFrom(thisUser.getEmail());
       } else {
-        mail.setFrom(context.getParameter("EMAILADDRESS"));
+        mail.setFrom(context.getParameter(ComponentContext.APPLICATION_EMAIL_ADDRESS));
       }
       mail.setType("text/html");
       mail.setSubject(context.getParameter(SUBJECT));

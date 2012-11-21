@@ -157,7 +157,7 @@ public class ClassifiedListViewer implements IPortletViewer {
       classifiedList.setProjectId(project.getId());
     }
     if (PortalUtils.getDashboardPortlet(request).isCached()) {
-      if (PortalUtils.canShowSensitiveData(request)) {
+      if (PortalUtils.isPortletInProtectedMode(request)) {
         // Use the most generic settings since this portlet is cached
         classifiedList.setForParticipant(Constants.TRUE);
       } else {

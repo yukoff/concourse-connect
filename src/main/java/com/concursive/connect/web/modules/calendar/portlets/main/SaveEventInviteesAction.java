@@ -95,8 +95,7 @@ public class SaveEventInviteesAction implements IPortletAction {
     // Reload the meeting information
     int meetingId = Integer.parseInt(request.getParameter("meetingId"));
     LOG.debug("Loading the meetingId: " + meetingId);
-    Meeting meeting = new Meeting();
-    meeting.queryRecord(db, meetingId);
+    Meeting meeting = new Meeting(db, meetingId);
 
     // Verify permissions
     User user = getUser(request);

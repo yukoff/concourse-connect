@@ -287,7 +287,7 @@ public class SendProjectToFriendPortlet extends GenericPortlet {
   private int sendEmailMessage(ActionRequest request, Project project, String subject, String sentFromEmail, String sendToEmail, ApplicationPrefs prefs) {
     try {
       SMTPMessage messageToSend = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-      messageToSend.setFrom(prefs.get("EMAILADDRESS"));
+      messageToSend.setFrom(prefs.get(ApplicationPrefs.EMAILADDRESS));
       messageToSend.addReplyTo(sentFromEmail);
       messageToSend.setTo(sendToEmail);
       messageToSend.setType("text/html");

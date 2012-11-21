@@ -417,7 +417,7 @@ public class RegisterBean extends GenericBean {
       Captcha captchaValue = (Captcha) session.getAttribute(Captcha.NAME);
       session.removeAttribute(Captcha.NAME);
       if (captchaValue == null) {
-        System.out.println("RegisterBean-> Could not find captcha session variable for comparison to user input");
+        LOG.warn("RegisterBean-> Could not find captcha session variable for comparison to user input");
       }
       if (captchaValue == null || captcha == null ||
           !captchaValue.isCorrect(captcha)) {
@@ -426,17 +426,17 @@ public class RegisterBean extends GenericBean {
         session.setAttribute("TE-REGISTER-CAPTCHA-PASSED", "passed");
       }
     }
-    if (email == null || "".equals(email.trim())) {
+    if (!StringUtils.hasText(email)) {
       errors.put("emailError", "Required field");
     } else {
       if (!EmailUtils.checkEmail(email)) {
         errors.put("emailError", "Check the email address entered");
       }
     }
-    if (nameFirst == null || "".equals(nameFirst.trim())) {
+    if (!StringUtils.hasText(nameFirst)) {
       errors.put("nameFirstError", "Required field");
     }
-    if (nameLast == null || "".equals(nameLast.trim())) {
+    if (!StringUtils.hasText(nameLast)) {
       errors.put("nameLastError", "Required field");
     }
     if (!StringUtils.hasText(country)) {

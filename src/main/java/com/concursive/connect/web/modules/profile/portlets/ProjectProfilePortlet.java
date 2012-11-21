@@ -372,7 +372,7 @@ public class ProjectProfilePortlet extends GenericPortlet {
         }
         // Determine which projects can be shown
         if ("true".equals(publicOnly)) {
-          if (PortalUtils.canShowSensitiveData(request)) {
+          if (PortalUtils.isPortletInProtectedMode(request)) {
             // Limit the data to a participant
             projectList.setForParticipant(Constants.TRUE);
           } else {

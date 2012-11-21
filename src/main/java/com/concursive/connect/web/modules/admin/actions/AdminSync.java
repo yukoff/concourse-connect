@@ -214,7 +214,7 @@ public final class AdminSync extends GenericAction {
       context.getRequest().setAttribute("apiClientId", context.getRequest().getParameter("apiClientId"));
       context.getRequest().setAttribute("apiCode", context.getRequest().getParameter("apiCode"));
 
-      context.getRequest().setAttribute("actionError", "Could not connect to the suite.");
+      context.getRequest().setAttribute("actionError", "Could not connect to the CRM");
       return executeCommandDefault(context);
     }
     return "StartSyncOK";

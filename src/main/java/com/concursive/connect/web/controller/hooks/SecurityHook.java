@@ -130,28 +130,28 @@ public class SecurityHook implements ControllerHook {
     if ("text".equals(request.getParameter("out")) ||
         "text".equals(request.getAttribute("out"))) {
       // do not use a layout, send the raw output
-    } else if ("true".equals(request.getParameter("popup"))) {
-      request.setAttribute("PageLayout", "/layout1.jsp");
-    } else if ("true".equals(request.getParameter("style"))) {
-      request.setAttribute("PageLayout", "/layout1.jsp");
+    } else if ("true".equals(request.getParameter(Constants.REQUEST_PARAM_POPUP))) {
+      request.setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
+    } else if ("true".equals(request.getParameter(Constants.REQUEST_PARAM_STYLE))) {
+      request.setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
     } else {
-      request.setAttribute("PageLayout", context.getAttribute("Template"));
+      request.setAttribute(Constants.REQUEST_PAGE_LAYOUT, context.getAttribute(Constants.REQUEST_TEMPLATE));
     }
     // If going to Setup then allow
     if (s.startsWith("Setup")) {
-      request.setAttribute("PageLayout", "/layout1.jsp");
+      request.setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
       return null;
     }
     // If going to Upgrade then allow
     if (s.startsWith("Upgrade")) {
-      request.setAttribute("PageLayout", "/layout1.jsp");
+      request.setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
       return null;
     }
     // Detect mobile users and mobile formatting
 //    ClientType clientType = (ClientType) request.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     // @todo introduce when mobile is implemented
 //    if (clientType.getMobile()) {
-//      request.setAttribute("PageLayout", "/layoutMobile.jsp");
+//      request.setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layoutMobile.jsp");
 //    }
 
     // URL forwarding for MVC requests (*.do, etc.)
@@ -167,7 +167,7 @@ public class SecurityHook implements ControllerHook {
 
       // It's important the user is using the correct URL for accessing content;
       // The portal has it's own redirect scheme, this is a general catch all
-      if (!s.startsWith("Portal") && uri.indexOf(".shtml") == -1 && prefs.has(ApplicationPrefs.WEB_DOMAIN_NAME)) {
+      if (!s.startsWith("Portal") && !uri.contains(".shtml") && prefs.has(ApplicationPrefs.WEB_DOMAIN_NAME)) {
         // Check to see if an old domain name is used
         PortalBean bean = new PortalBean(request);
         String expectedDomainName = prefs.get(ApplicationPrefs.WEB_DOMAIN_NAME);
@@ -184,7 +184,7 @@ public class SecurityHook implements ControllerHook {
             String newUrl = URLFactory.createURL(prefs.getPrefs()) + requestedPath;
             request.setAttribute("redirectTo", newUrl);
             LOG.debug("redirectTo: " + newUrl);
-            request.removeAttribute("PageLayout");
+            request.removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
             return "Redirect301";
           }
         }
@@ -213,7 +213,7 @@ public class SecurityHook implements ControllerHook {
     }
     // Continue with session creation...
     User userSession = sessionValidator.validateSession(context, request, response);
-    ConnectionElement ceSession = (ConnectionElement) request.getSession().getAttribute("ConnectionElement");
+    ConnectionElement ceSession = (ConnectionElement) request.getSession().getAttribute(Constants.SESSION_CONNECTION_ELEMENT);
     // The user is going to the portal so get them guest credentials if they need them
     if ("true".equals(prefs.get("PORTAL")) ||
         s.startsWith("Register") ||
@@ -225,20 +225,20 @@ public class SecurityHook implements ControllerHook {
       if (userSession == null || ceSession == null) {
         // Allow portal mode to create a default session with guest capabilities
         userSession = UserUtils.createGuestUser();
-        request.getSession().setAttribute("User", userSession);
+        request.getSession().setAttribute(Constants.SESSION_USER, userSession);
         // Give them a connection element
         ceSession = new ConnectionElement();
         ceSession.setDriver(prefs.get("SITE.DRIVER"));
         ceSession.setUrl(prefs.get("SITE.URL"));
         ceSession.setUsername(prefs.get("SITE.USER"));
         ceSession.setPassword(prefs.get("SITE.PASSWORD"));
-        request.getSession().setAttribute("ConnectionElement", ceSession);
+        request.getSession().setAttribute(Constants.SESSION_CONNECTION_ELEMENT, ceSession);
       }
       // Make sure SSL is being used for this connection
       if (userSession.getId() > 0 && "true".equals(prefs.get("SSL")) && !"https".equals(request.getScheme())) {
         LOG.info("Redirecting to..." + requestedPath);
         request.setAttribute("redirectTo", "https://" + request.getServerName() + request.getContextPath() + requestedPath);
-        request.removeAttribute("PageLayout");
+        request.removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
         return "Redirect301";
       }
       // Generate global items
@@ -332,7 +332,7 @@ public class SecurityHook implements ControllerHook {
               String newUrl = URLFactory.createURL(prefs.getPrefs()) + "/login?redirectTo=" + requestedPath;
               request.setAttribute("redirectTo", newUrl);
               LOG.debug("redirectTo: " + newUrl);
-              request.removeAttribute("PageLayout");
+            request.removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
               return "Redirect301";
             }
           }
@@ -358,11 +358,11 @@ public class SecurityHook implements ControllerHook {
         failedSession.addError("actionError", "* Please login, your session has expired");
         failedSession.checkURL(request);
         request.setAttribute("LoginBean", failedSession);
-        request.removeAttribute("PageLayout");
+        request.removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
         return "SecurityCheck";
       } else {
         // The user should have a valid login now, so let them proceed
-        LOG.debug("Security passed.");
+        LOG.debug("Security passed: " + userSession.getId() + " (" + userSession.getUsername() + ")");
       }
     }
     // Generate user's global items

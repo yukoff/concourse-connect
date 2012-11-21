@@ -83,9 +83,7 @@ public class ProjectManagementCRM extends GenericAction {
     }
     String token = generateRandomToken();
     if (sendToken(prefs, getUser(context), token)) {
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("ProjectManagementCRM-> sending redirect");
-      }
+      LOG.debug("sending redirect");
       // if successful, send the redirect...
       String redirect = "MyCFS.do?command=Home";
       String returnURL = context.getRequest().getParameter("returnURL");
@@ -99,6 +97,7 @@ public class ProjectManagementCRM extends GenericAction {
       context.getRequest().setAttribute("redirectTo", prefs.get(ApplicationPrefs.CONCURSIVE_CRM_SERVER) + "/" + redirect + "&token=" + token + (returnURL != null ? "&returnURL=" + returnURL : ""));
       return ("Redirect301");
     } else {
+      LOG.warn("sendToken failed");
       return "CRMError";
     }
   }
@@ -122,9 +121,7 @@ public class ProjectManagementCRM extends GenericAction {
       if (crmAccountId != -1) {
         String token = generateRandomToken();
         if (sendToken(prefs, getUser(context), token)) {
-          if (System.getProperty("DEBUG") != null) {
-            System.out.println("ProjectManagementCRM-> sending redirect");
-          }
+          LOG.debug("sending redirect");
           // if successful, send the redirect...
           String redirect = "module/accounts/show/" + crmAccountId;
           String returnURL = (String) context.getRequest().getParameter("returnURL");
@@ -144,7 +141,7 @@ public class ProjectManagementCRM extends GenericAction {
         return "CRMError";
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error("showAccount error", e);
     }
     if (System.getProperty("DEBUG") != null) {
       System.out.println("ProjectManagementTools-> End reached");
@@ -205,9 +202,7 @@ public class ProjectManagementCRM extends GenericAction {
 
     boolean success = conn.save(record);
     if (!success) {
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("ProjectManagementCRM-> sendToken error: " + conn.getLastResponse());
-      }
+      LOG.warn("sendToken error: " + conn.getLastResponse());
     }
     return success;
   }

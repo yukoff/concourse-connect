@@ -96,7 +96,7 @@ public class SessionValidatorFactory {
     Connection db = null;
     String className = null;
     try {
-      String loginMode = ((ApplicationPrefs) context.getAttribute("applicationPrefs")).get("LOGIN.MODE");
+      String loginMode = ((ApplicationPrefs) context.getAttribute("applicationPrefs")).get(ApplicationPrefs.LOGIN_MODE);
       LOG.debug("Seeking Session Authenticator for Mode: " + loginMode);
       // Get connection
       db = sqlDriver.getConnection(ce);

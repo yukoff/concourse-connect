@@ -62,7 +62,7 @@ import java.util.Iterator;
  * @version $Id$
  * @created Feb 9, 2007
  */
-public class AttachmentList extends ArrayList {
+public class AttachmentList extends ArrayList<Attachment> {
 
   private int productId = -1;
   private String productIdRange = null;
@@ -191,9 +191,7 @@ public class AttachmentList extends ArrayList {
 
   public int getAllowBeforeCheckoutCount() {
     int count = 0;
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Attachment thisAttachment = (Attachment) i.next();
+    for (Attachment thisAttachment : this) {
       if (thisAttachment.getAllowBeforeCheckout()) {
         ++count;
       }
@@ -203,9 +201,7 @@ public class AttachmentList extends ArrayList {
 
   public int getAllowAfterCheckoutCount() {
     int count = 0;
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Attachment thisAttachment = (Attachment) i.next();
+    for (Attachment thisAttachment : this) {
       if (thisAttachment.getAllowAfterCheckout()) {
         ++count;
       }
@@ -215,9 +211,7 @@ public class AttachmentList extends ArrayList {
 
   public int getSendAsEmailCount() {
     int count = 0;
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Attachment thisAttachment = (Attachment) i.next();
+    for (Attachment thisAttachment : this) {
       if (thisAttachment.getSendAsEmail()) {
         ++count;
       }
@@ -225,11 +219,9 @@ public class AttachmentList extends ArrayList {
     return count;
   }
 
-  public ArrayList getAllowBeforeCheckoutList() {
-    ArrayList list = new ArrayList();
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Attachment thisAttachment = (Attachment) i.next();
+  public ArrayList<Attachment> getAllowBeforeCheckoutList() {
+    ArrayList<Attachment> list = new ArrayList<Attachment>();
+    for (Attachment thisAttachment : this) {
       if (thisAttachment.getAllowBeforeCheckout()) {
         list.add(thisAttachment);
       }
@@ -237,11 +229,9 @@ public class AttachmentList extends ArrayList {
     return list;
   }
 
-  public ArrayList getAllowAfterCheckoutList() {
-    ArrayList list = new ArrayList();
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Attachment thisAttachment = (Attachment) i.next();
+  public ArrayList<Attachment> getAllowAfterCheckoutList() {
+    ArrayList<Attachment> list = new ArrayList<Attachment>();
+    for (Attachment thisAttachment : this) {
       if (thisAttachment.getAllowAfterCheckout()) {
         list.add(thisAttachment);
       }
@@ -249,11 +239,9 @@ public class AttachmentList extends ArrayList {
     return list;
   }
 
-  public ArrayList getSendAsEmailList() {
-    ArrayList list = new ArrayList();
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Attachment thisAttachment = (Attachment) i.next();
+  public ArrayList<Attachment> getSendAsEmailList() {
+    ArrayList<Attachment> list = new ArrayList<Attachment>();
+    for (Attachment thisAttachment : this) {
       if (thisAttachment.getSendAsEmail()) {
         list.add(thisAttachment);
       }

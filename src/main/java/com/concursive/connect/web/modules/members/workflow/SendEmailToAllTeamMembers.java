@@ -51,6 +51,7 @@ import com.concursive.commons.email.SMTPMessageFactory;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.beans.TeamMemberEmailBean;
@@ -112,7 +113,7 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
 
 	          Map bodyMappings = new HashMap();
 	          bodyMappings.put("site", new HashMap());
-	          ((Map) bodyMappings.get("site")).put("title", prefs.get("TITLE"));
+            ((Map) bodyMappings.get("site")).put("title", prefs.get(ApplicationPrefs.WEB_PAGE_TITLE));
 	          bodyMappings.put("project",  new HashMap());
 	          ((Map) bodyMappings.get("project")).put("title", project.getTitle());
 	          ((Map) bodyMappings.get("project")).put("profileUrl", url + "/show/" + project.getUniqueId());
@@ -140,7 +141,7 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
 	
 	          // Send the message
 	          SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs);
-	          message.setFrom(prefs.get("EMAILADDRESS"));
+            message.setFrom(context.getParameter(ComponentContext.APPLICATION_EMAIL_ADDRESS));
 	          message.addTo(UserUtils.loadUser(teamMember.getUserId()).getEmail());
 	          // Set the subject from the template
 	          StringWriter inviteSubjectTextWriter = new StringWriter();
@@ -163,7 +164,7 @@ public class SendEmailToAllTeamMembers extends ObjectHookComponent implements Co
         }
       }
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+      LOG.error("Send email to all members error", e);
     } finally {
       freeConnection(context, db);
     }

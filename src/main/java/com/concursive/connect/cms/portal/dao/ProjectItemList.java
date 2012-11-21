@@ -289,12 +289,13 @@ public class ProjectItemList extends ArrayList<ProjectItem> {
 
     // Put into something manageable
     ArrayList<String> arrayList = new ArrayList<String>();
-    for (int i = 0; i < params.length; i++) {
-      System.out.println("LookupItem-> Name: " + names[i]);
-      System.out.println("LookupItem-> Param: " + params[i]);
-      arrayList.add(params[i]);
+    if (params != null && names != null) {
+      for (int i = 0; i < params.length; i++) {
+        System.out.println("LookupItem-> Name: " + names[i]);
+        System.out.println("LookupItem-> Param: " + params[i]);
+        arrayList.add(params[i]);
+      }
     }
-
     // BEGIN TRANSACTION
 
     // Iterate through this list
@@ -302,14 +303,15 @@ public class ProjectItemList extends ArrayList<ProjectItem> {
     while (items.hasNext()) {
       ProjectItem thisItem = (ProjectItem) items.next();
       // If item is not in the passed array, then disable the entry
-      if (!arrayList.contains(String.valueOf(thisItem.getId()))) {
+      if (arrayList.isEmpty() || !arrayList.contains(String.valueOf(thisItem.getId()))) {
         thisItem.setEnabled(false);
         thisItem.update(db, table);
         items.remove();
       }
     }
 
-    // Iterate through the array
+    // Add new items and restore inactivated items
+    if (params != null && names != null) {
     for (int i = 0; i < params.length; i++) {
       if (System.getProperty("DEBUG") != null) {
         System.out.println("LookupItem-> Name: " + names[i]);
@@ -343,6 +345,7 @@ public class ProjectItemList extends ArrayList<ProjectItem> {
         updateName(db, Integer.parseInt(params[i]), names[i], table);
         updateLevel(db, Integer.parseInt(params[i]), i + 1, table);
       }
+    }
     }
 
     // END TRANSACTION

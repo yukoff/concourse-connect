@@ -669,6 +669,7 @@ public class WikiPDFUtils {
 
           if (rowCount == 1) {
             // Parse and validate the style input
+            LOG.debug("Checking style value: " + cellData);
             if (cellData.startsWith("{") && cellData.endsWith("}")) {
               String[] style = cellData.substring(1, cellData.length() - 1).split(":");
               String attribute = style[0].trim();
@@ -679,6 +680,8 @@ public class WikiPDFUtils {
                 if (StringUtils.hasAllowedOnly("0123456789%.", value)) {
                   cStyle.put(cellCount, attribute + ": " + value + ";");
                 }
+              } else {
+                LOG.debug("Unsupported style: " + cellData);
               }
               canOutput = false;
             }

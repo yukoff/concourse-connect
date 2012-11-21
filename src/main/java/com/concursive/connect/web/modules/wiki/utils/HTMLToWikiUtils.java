@@ -784,6 +784,7 @@ public class HTMLToWikiUtils {
 
     // Object (w/out embed)
     if (element.hasAttribute("value")) {
+          LOG.trace("  value");
       //<object width="400" height="300" value="http://vimeo.com/moogaloop.swf?clip_id=11513988&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1">
       String video = element.getAttribute("value");
       if (video.contains("http://www.vimeo.com/") || video.contains("http://vimeo.com/")) {
@@ -804,6 +805,7 @@ public class HTMLToWikiUtils {
         LOG.error("Could not create URL", e);
       }
     } else if (element.hasAttribute("data")) {
+      LOG.trace("  data");
       //<object width="425" height="344" type="application/x-shockwave-flash" data="http://www.youtube.com/v/CreiaYbjda4"></object>
       String video = element.getAttribute("data");
 
@@ -825,6 +827,7 @@ public class HTMLToWikiUtils {
         LOG.error("Could not create URL", e);
       }
     } else {
+      LOG.trace("  checking nodes");
       // Parse the object parameters
 
       // <object width=\"425\" height=\"344\">\n
@@ -839,6 +842,7 @@ public class HTMLToWikiUtils {
       for (int i = 0; i < objectNodes.getLength(); i++) {
         // For each object, parse the params
         Node node = objectNodes.item(i);
+        LOG.trace("    " + ((Element) node).getTagName());
         if (node.getNodeType() == Node.ELEMENT_NODE && "param".equals(((Element) node).getTagName())) {
           if ("movie".equals(((Element) node).getAttribute("name"))) {
             String video = ((Element) node).getAttribute("value");

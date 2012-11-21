@@ -765,7 +765,9 @@ public class TeamMember extends GenericBean {
       }
       throw new SQLException(e.getMessage());
     } finally {
-      db.setAutoCommit(true);
+      if (commit) {
+        db.setAutoCommit(true);
+      }
     }
     CacheUtils.invalidateValue(Constants.SYSTEM_PROJECT_CACHE, projectId);
     return true;
@@ -843,7 +845,9 @@ public class TeamMember extends GenericBean {
       }
       throw new SQLException(e.getMessage());
     } finally {
-      db.setAutoCommit(true);
+      if (commit) {
+        db.setAutoCommit(true);
+      }
     }
     return (resultCount > 0);
   }

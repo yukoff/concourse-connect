@@ -261,9 +261,7 @@ public class BlogPostCategoryList extends ArrayList<BlogPostCategory> {
   }
 
   public int getIdFromValue(String name) {
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      BlogPostCategory thisCategory = (BlogPostCategory) i.next();
+    for (BlogPostCategory thisCategory : this) {
       if (thisCategory.getName().equals(name)) {
         return thisCategory.getId();
       }
@@ -282,9 +280,7 @@ public class BlogPostCategoryList extends ArrayList<BlogPostCategory> {
   public String getHtmlSelect(String selectName, int selectedId) {
     HtmlSelect thisSelect = new HtmlSelect();
     thisSelect.addItem(-1, "-- None --");
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      BlogPostCategory thisCategory = (BlogPostCategory) i.next();
+    for (BlogPostCategory thisCategory : this) {
       thisSelect.addItem(
           thisCategory.getId(),
           thisCategory.getName());
@@ -300,9 +296,7 @@ public class BlogPostCategoryList extends ArrayList<BlogPostCategory> {
    */
   public HtmlSelect getHtmlSelect() {
     HtmlSelect thisSelect = new HtmlSelect();
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      BlogPostCategory thisCategory = (BlogPostCategory) i.next();
+    for (BlogPostCategory thisCategory : this) {
       thisSelect.addItem(
           thisCategory.getId(),
           thisCategory.getName());
@@ -454,9 +448,7 @@ public class BlogPostCategoryList extends ArrayList<BlogPostCategory> {
   }
 
   public void insert(Connection db, HashMap map) throws SQLException {
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      BlogPostCategory category = (BlogPostCategory) i.next();
+    for (BlogPostCategory category : this) {
       int currentId = category.getId();
       category.setId(-1);
       category.setProjectId(projectId);

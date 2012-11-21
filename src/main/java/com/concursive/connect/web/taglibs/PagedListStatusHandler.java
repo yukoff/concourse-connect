@@ -442,7 +442,7 @@ public class PagedListStatusHandler extends BodyTagSupport {
           }
         }
         String returnAction = pageContext.getRequest().getParameter("return");
-        ClientType clientType = (ClientType) pageContext.getSession().getAttribute("clientType");
+        ClientType clientType = (ClientType) pageContext.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
         if ((clientType == null || !clientType.getMobile()) && (returnAction == null || !returnAction.equals("details"))) {
           //The status cell on the right
           out.write("<td valign=\"bottom\" align=\"" + (showControlOnly ? "center" : "right") + "\" nowrap>");

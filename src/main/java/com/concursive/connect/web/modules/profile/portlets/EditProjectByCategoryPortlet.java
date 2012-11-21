@@ -55,6 +55,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.CountrySelect;
 import com.concursive.connect.web.utils.PagedListInfo;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -69,6 +71,8 @@ import java.util.HashMap;
  * @created October 14, 2008
  */
 public class EditProjectByCategoryPortlet extends GenericPortlet {
+
+  private static Log LOG = LogFactory.getLog(EditProjectByCategoryPortlet.class);
 
   // Pages
   private static final String EDIT_PAGE = "/portlets/edit_project_by_category/project_by_category-edit.jsp";
@@ -170,6 +174,7 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
           // Build display preferences for editing
           String categoryName = getProjectCategoryName(db, project);
           if (StringUtils.hasText(categoryName)) {
+            LOG.debug("Finding display preferences for: " + categoryName);
             HashMap<String, String> preferenceMap = getDisplayPreferences(request, categoryName);
             request.setAttribute(PREFERENCE_MAP, preferenceMap);
           }
@@ -192,7 +197,7 @@ public class EditProjectByCategoryPortlet extends GenericPortlet {
           context.getRequestDispatcher(defaultView);
       requestDispatcher.include(request, response);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("view", e);
       throw new PortletException(e);
     }
   }

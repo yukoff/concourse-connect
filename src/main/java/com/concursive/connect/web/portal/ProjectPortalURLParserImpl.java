@@ -320,6 +320,8 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
 
       PortalURLParameter param = (PortalURLParameter) it.next();
 
+      LOG.debug("Checking: " + param.getName());
+
       if ("portlet-action".equals(param.getName())) {
         continue;
       } else if ("portlet-object".equals(param.getName())) {
@@ -343,12 +345,14 @@ public class ProjectPortalURLParserImpl implements PortalURLParser {
       // Encode action params in the query appended at the end of the URL.
       if (portalURL.getActionWindow() != null
           && portalURL.getActionWindow().equals(param.getWindowId())) {
+        LOG.debug("Appending actionWindow parameters");
         for (int i = 0; i < param.getValues().length; i++) {
           if (StringUtils.hasText(param.getValues()[i])) {
             appendParameter(buffer, param.getName() + "=" + param.getValues()[i]);
           }
         }
       } else if (param.getValues() != null && param.getValues().length > 0) {
+         LOG.debug("Appending parameters... " + param.getWindowId());
         // Encode the parameter ONLY if it targets the currently being rendered portlet
         if (param.getWindowId().equals(portalURL.getRenderPath())) {
           // The Project Portal uses clean URLs, so portlet window targeting is not used

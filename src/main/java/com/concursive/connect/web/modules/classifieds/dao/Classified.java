@@ -153,6 +153,9 @@ public class Classified extends GenericBean {
     }
     rs.close();
     pst.close();
+    if (id == -1) {
+      throw new SQLException("Record not found");
+    }
   }
 
 

@@ -47,6 +47,7 @@
 package com.concursive.connect.web.modules.login.beans;
 
 import com.concursive.commons.codec.PasswordHash;
+import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.webdav.servlets.WebdavServlet;
 
@@ -172,10 +173,10 @@ public class Password extends GenericBean {
    * @return The valid value
    */
   public boolean isValid() {
-    if (password == null || password.trim().equals("")) {
+    if (!StringUtils.hasText(password)) {
       errors.put("passwordError", "Password is required");
     }
-    if (newPassword1 == null || newPassword1.trim().equals("")) {
+    if (!StringUtils.hasText(newPassword1)) {
       errors.put("newPasswordError", "New password is required");
     }
     if (!newPassword1.equals(newPassword2)) {

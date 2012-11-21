@@ -473,7 +473,7 @@ public class ShippingAddress extends GenericBean {
    */
   public String toString() {
     StringBuffer out = new StringBuffer();
-    out.append("==[ Billing ]========================================\r\n");
+    out.append("==[ Shipping ]========================================\r\n");
     out.append("First Name: " + StringUtils.toString(this.getNameFirst()) + "\r\n");
     out.append("Last Name: " + StringUtils.toString(this.getNameLast()) + "\r\n");
     out.append("Organization: " + StringUtils.toString(this.getOrganization()) + "\r\n");

@@ -49,6 +49,7 @@ package com.concursive.connect.web.modules.demo.actions;
 import bsh.Interpreter;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.Constants;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.demo.beans.DemoBean;
 import com.concursive.connect.web.modules.login.dao.User;
@@ -117,7 +118,7 @@ public final class Demo extends GenericAction {
       return "DemoFormError";
     }
     // Record the referer
-    ClientType clientType = (ClientType) context.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) context.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     bean.setIpAddress(context.getIpAddress());
     bean.setUserBrowser(context.getBrowser());
     if (clientType != null) {

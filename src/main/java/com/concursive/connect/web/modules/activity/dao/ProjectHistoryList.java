@@ -59,10 +59,7 @@ import com.concursive.connect.web.utils.PagedListInfo;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 /**
  * A collection of ProjectHistory objects

@@ -148,7 +148,7 @@ public class RecentBlogPostsViewer implements IPortletViewer {
         }
       }
       if (PortalUtils.getDashboardPortlet(request).isCached()) {
-        if (PortalUtils.canShowSensitiveData(request) || privateCategory) {
+        if (PortalUtils.isPortletInProtectedMode(request) || privateCategory) {
           // Use the most generic settings since this portlet is cached
           blogPostList.setForParticipant(Constants.TRUE);
         } else {

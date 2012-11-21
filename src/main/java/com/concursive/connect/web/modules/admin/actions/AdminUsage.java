@@ -73,7 +73,7 @@ import java.text.NumberFormat;
 public final class AdminUsage extends GenericAction {
 
   /**
-   * Description of the Method
+   * Load information about the system
    *
    * @param context Description of the Parameter
    * @return Description of the Return Value

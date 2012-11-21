@@ -159,7 +159,7 @@ public final class Portal extends GenericAction {
             return ("-none-");
           }
           if ("text".equals(context.getRequest().getParameter("out"))) {
-            context.getRequest().removeAttribute("PageLayout");
+            context.getRequest().removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
           }
           return "ShowPortalPageOK";
         }
@@ -176,7 +176,7 @@ public final class Portal extends GenericAction {
       }
 
       if (LOG.isDebugEnabled()) {
-        ClientType clientType = (ClientType) context.getSession().getAttribute("clientType");
+        ClientType clientType = (ClientType) context.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
         LOG.debug("Client language: " + clientType.getLanguage());
         LOG.trace(bean.toString());
       }
@@ -208,7 +208,7 @@ public final class Portal extends GenericAction {
       db = getConnection(context);
       // Load the requested portal project
       projects.buildList(db);
-      if (projects.size() > 0) {
+      if (!projects.isEmpty()) {
         // Get only the first returned (should only be one, but could be more)
         Project portal = (Project) projects.get(0);
         // Query the list item
@@ -248,7 +248,7 @@ public final class Portal extends GenericAction {
       db = getConnection(context);
       // Load the requested portal project
       projects.buildList(db);
-      if (projects.size() > 0) {
+      if (!projects.isEmpty()) {
         // Get only the first returned (should only be one, but could be more)
         Project portal = projects.get(0);
         // Query the list item
@@ -765,7 +765,7 @@ public final class Portal extends GenericAction {
           }
         }
         context.getRequest().setAttribute("popup", "true");
-        context.getRequest().setAttribute("PageLayout", "/layout1.jsp");
+        context.getRequest().setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
         // Image List
         FileItemList files = new FileItemList();
         files.setLinkModuleId(Constants.BLOG_POST_FILES);

@@ -157,7 +157,7 @@ public class DashboardList extends ArrayList<Dashboard> {
         return dashboard;
       }
     }
-    if (this.size() > 0) {
+    if (!this.isEmpty()) {
       return (Dashboard) this.get(0);
     } else {
       return null;

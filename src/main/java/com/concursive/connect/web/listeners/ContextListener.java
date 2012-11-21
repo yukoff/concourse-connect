@@ -51,6 +51,7 @@ import com.concursive.commons.workflow.ObjectHookManager;
 import com.concursive.commons.workflow.WorkflowManager;
 import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.utils.Tracker;
+import com.concursive.connect.config.ApplicationVersion;
 import com.concursive.connect.indexer.IIndexerService;
 import com.concursive.connect.indexer.IndexerFactory;
 import com.concursive.connect.scheduler.ScheduledJobs;
@@ -100,6 +101,7 @@ public class ContextListener implements ServletContextListener {
   public void contextInitialized(ServletContextEvent event) {
     ServletContext context = event.getServletContext();
     LOG.info("Initializing");
+    LOG.info("Version: " + ApplicationVersion.VERSION);
     // Start the connection pool
     try {
       ConnectionPool cp = new ConnectionPool();
@@ -223,7 +225,7 @@ public class ContextListener implements ServletContextListener {
       context.removeAttribute(Constants.WORKFLOW_MANAGER);
     }
 
-    //De-register the remote wsrp producer
+    // Unregister the remote wsrp producer
     ProducerRegistry producerRegistry = ProducerRegistryImpl.getInstance();
     ProducerImpl producer = (ProducerImpl) producerRegistry
         .getProducer(PortletManager.CONCURSIVE_WSRP_PRODUCER_ID);

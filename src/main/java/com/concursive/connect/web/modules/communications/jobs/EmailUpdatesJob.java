@@ -145,8 +145,8 @@ public class EmailUpdatesJob implements StatefulJob {
               //Try to send the email
               LOG.debug("Sending email...");
               SMTPMessage email = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-              email.setFrom(prefs.get("EMAILADDRESS"));
-              email.addReplyTo(prefs.get("EMAILADDRESS"));
+                email.setFrom(prefs.get(ApplicationPrefs.EMAILADDRESS));
+                email.addReplyTo(prefs.get(ApplicationPrefs.EMAILADDRESS));
               email.addTo(user.getEmail());
               email.setSubject(subject);
               email.setType("text/html");

@@ -65,7 +65,7 @@ import java.util.Iterator;
  * @version $Id$
  * @created September 21, 2004
  */
-public class OptionList extends ArrayList {
+public class OptionList extends ArrayList<Option> {
 
   private PagedListInfo pagedListInfo = null;
   private int enabled = Constants.UNDEFINED;
@@ -252,9 +252,7 @@ public class OptionList extends ArrayList {
     rs.close();
     pst.close();
     // Build resources
-    Iterator o = this.iterator();
-    while (o.hasNext()) {
-      Option option = (Option) o.next();
+    for (Option option : this) {
       option.buildResources(db);
     }
   }
@@ -309,9 +307,7 @@ public class OptionList extends ArrayList {
     while ((optionParam = request.getParameter("optionCount" + (++optionCount))) != null) {
       String optionValue = request.getParameter("option" + optionParam);
       // Set the selected value
-      Iterator i = this.iterator();
-      while (i.hasNext()) {
-        Option thisOption = (Option) i.next();
+      for (Option thisOption : this) {
         if (thisOption.getId() == Integer.parseInt(optionParam)) {
           thisOption.setDefaultValue(optionValue);
           break;
@@ -348,9 +344,7 @@ public class OptionList extends ArrayList {
    * @return The valid value
    */
   public boolean isValid() {
-    Iterator o = this.iterator();
-    while (o.hasNext()) {
-      Option thisOption = (Option) o.next();
+    for (Option thisOption : this) {
       if (!thisOption.isValid()) {
         return false;
       }
@@ -361,9 +355,7 @@ public class OptionList extends ArrayList {
 
   public String getConfigurationErrors() {
     StringBuffer sb = new StringBuffer();
-    Iterator o = this.iterator();
-    while (o.hasNext()) {
-      Option thisOption = (Option) o.next();
+    for (Option thisOption : this) {
       if (thisOption.getLastError() != null) {
         if (sb.length() > 0) {
           sb.append("; ");
@@ -386,9 +378,7 @@ public class OptionList extends ArrayList {
    * @throws SQLException Description of the Exception
    */
   public boolean insert(Connection db) throws SQLException {
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Option thisOption = (Option) i.next();
+    for (Option thisOption : this) {
       thisOption.setOrderItemId(orderItemId);
       thisOption.insert(db);
     }
@@ -403,9 +393,7 @@ public class OptionList extends ArrayList {
    */
   public String getConfiguredSummary() {
     StringBuffer sb = new StringBuffer();
-    Iterator o = this.iterator();
-    while (o.hasNext()) {
-      Option thisOption = (Option) o.next();
+    for (Option thisOption : this) {
       String text = thisOption.getConfiguredSummary();
       if (text != null) {
         if (sb.length() > 0) {
@@ -419,9 +407,7 @@ public class OptionList extends ArrayList {
 
   public String getInvoiceText() {
     StringBuffer sb = new StringBuffer();
-    Iterator o = this.iterator();
-    while (o.hasNext()) {
-      Option thisOption = (Option) o.next();
+    for (Option thisOption : this) {
       String text = thisOption.getInvoiceText();
       if (text != null && !"".equals(text)) {
         sb.append("; ");

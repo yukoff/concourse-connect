@@ -48,6 +48,8 @@ package com.concursive.connect.web.modules.login.actions;
 
 import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.Constants;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
@@ -81,7 +83,7 @@ public final class LoginReject extends GenericAction {
     try {
       // Decode the user id
       String codedData = context.getRequest().getParameter("data");
-      Key key = (Key) context.getServletContext().getAttribute("TEAM.KEY");
+      Key key = (Key) context.getServletContext().getAttribute(ApplicationPrefs.TEAM_KEY);
       String data = PrivateString.decrypt(key, codedData);
       //Process it into properties
       int userId = -1;
@@ -101,7 +103,7 @@ public final class LoginReject extends GenericAction {
       // Verify the user's info by loading it
       db = getConnection(context);
       User thisUser = new User(db, getUser(context).getGroupId(), userId);
-      context.getRequest().setAttribute("user", thisUser);
+      context.getRequest().setAttribute(Constants.REQUEST_USER, thisUser);
       // Get the team member to display the inviter
       TeamMember thisMember = new TeamMember(db, projectId, userId);
       context.getRequest().setAttribute("teamMember", thisMember);
@@ -119,7 +121,7 @@ public final class LoginReject extends GenericAction {
     try {
       // Decode the user id
       String codedData = context.getRequest().getParameter("data");
-      Key key = (Key) context.getServletContext().getAttribute("TEAM.KEY");
+      Key key = (Key) context.getServletContext().getAttribute(ApplicationPrefs.TEAM_KEY);
       String data = PrivateString.decrypt(key, codedData);
       //Process it into properties
       int userId = -1;
@@ -139,7 +141,7 @@ public final class LoginReject extends GenericAction {
       db = getConnection(context);
       // Verify the user's info by loading it
       User thisUser = new User(db, getUser(context).getGroupId(), userId);
-      context.getRequest().setAttribute("user", thisUser);
+      context.getRequest().setAttribute(Constants.REQUEST_USER, thisUser);
       // Get the team member to display the invitee
       TeamMember previousMemberStatus = new TeamMember(db, projectId, userId);
       TeamMember thisMember = new TeamMember(db, projectId, userId);

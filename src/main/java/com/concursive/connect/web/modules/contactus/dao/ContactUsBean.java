@@ -396,7 +396,7 @@ public class ContactUsBean extends GenericBean {
       message.setType("text/html");
       message.setTo(UserAdmins.getEmailAddresses(db));
       message.addReplyTo(email);
-      message.setFrom(prefs.get("EMAILADDRESS"));
+      message.setFrom(prefs.get(ApplicationPrefs.EMAILADDRESS));
       message.setSubject(form + " Form");
       // Populate the message template
       Template template = configuration.getTemplate("contact_us_email_notification-html.ftl");

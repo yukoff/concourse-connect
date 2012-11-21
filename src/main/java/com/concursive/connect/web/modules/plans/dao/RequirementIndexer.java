@@ -53,6 +53,8 @@ import com.concursive.connect.indexer.IndexerContext;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -72,6 +74,8 @@ import java.sql.SQLException;
  * @created May 27, 2004
  */
 public class RequirementIndexer implements Indexer {
+
+  private static Log LOG = LogFactory.getLog(RequirementIndexer.class);
 
   /**
    * Given a database and a Lucene writer, this method will add content to the
@@ -106,7 +110,7 @@ public class RequirementIndexer implements Indexer {
     }
     rs.close();
     pst.close();
-    System.out.println("RequirementIndexer-> Finished: " + count);
+    LOG.info("RequirementIndexer-> Finished: " + count);
   }
 
 
@@ -151,7 +155,7 @@ public class RequirementIndexer implements Indexer {
     }
     writer.addDocument(document);
     if (System.getProperty("DEBUG") != null && modified) {
-      System.out.println("RequirementIndexer-> Added: " + requirement.getId());
+      LOG.debug("RequirementIndexer-> Added: " + requirement.getId());
     }
   }
 

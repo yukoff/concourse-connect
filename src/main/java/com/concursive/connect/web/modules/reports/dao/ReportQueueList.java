@@ -63,7 +63,7 @@ import java.util.Iterator;
  * @author matt rajkowski
  * @created October 1, 2003
  */
-public class ReportQueueList extends ArrayList {
+public class ReportQueueList extends ArrayList<ReportQueue> {
 
   private PagedListInfo pagedListInfo = null;
   private int enteredBy = -1;
@@ -626,10 +626,8 @@ public class ReportQueueList extends ArrayList {
   }
 
   public void delete(Connection db, String basePath) throws SQLException {
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      ReportQueue queue = (ReportQueue) i.next();
-      queue.delete(db, basePath);
+    for (ReportQueue thisQueue : this) {
+      thisQueue.delete(db, basePath);
     }
   }
 

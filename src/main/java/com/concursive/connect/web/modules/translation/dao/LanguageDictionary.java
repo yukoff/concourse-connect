@@ -51,8 +51,8 @@ import com.concursive.commons.text.Template;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Description of the Class
@@ -612,8 +612,8 @@ public class LanguageDictionary extends GenericBean {
       if (!"".equals(this.getParamValue1().trim())) {
         Template srcTemplate = new Template(this.getDefaultValue());
         Template destTemplate = new Template(this.getParamValue1());
-        ArrayList var1 = srcTemplate.getVariables();
-        ArrayList var2 = destTemplate.getVariables();
+        List var1 = srcTemplate.getVariables();
+        List var2 = destTemplate.getVariables();
         if (var1.size() != var2.size()) {
           return false;
         } else {

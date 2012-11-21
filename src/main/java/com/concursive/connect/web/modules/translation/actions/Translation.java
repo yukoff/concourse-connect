@@ -58,7 +58,7 @@ import com.concursive.connect.web.utils.PagedListInfo;
 
 import java.sql.Connection;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Description of the Class
@@ -309,7 +309,7 @@ public final class Translation extends GenericAction {
     ContactUsBean bean = (ContactUsBean) context.getFormBean();
     bean.isValid(context.getSession());
 
-    HashMap errors = bean.getError();
+    Map errors = bean.getError();
 
     if (bean.getNameFirst() == null || bean.getNameFirst().trim().length() == 0) {
       errors.put("nameFirstError", "Required field");

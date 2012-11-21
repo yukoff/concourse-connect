@@ -209,7 +209,7 @@ public final class BlogActions extends GenericAction {
       if (1 == 1) {
         ApplicationPrefs prefs = getApplicationPrefs(context);
         SMTPMessage mail = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-        mail.setFrom(this.getPref(context, "EMAILADDRESS"));
+        mail.setFrom(this.getPref(context, ApplicationPrefs.EMAILADDRESS));
         mail.addReplyTo(getUser(context).getEmail());
         mail.setType("text/html");
         mail.addTo(getUser(context).getEmail());
@@ -261,7 +261,7 @@ public final class BlogActions extends GenericAction {
       if (1 == 1) {
         ApplicationPrefs prefs = getApplicationPrefs(context);
         SMTPMessage mail = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-        mail.setFrom(this.getPref(context, "EMAILADDRESS"));
+        mail.setFrom(this.getPref(context, ApplicationPrefs.EMAILADDRESS));
         mail.setType("text/html");
         mail.setSubject("[" + thisProject.getTitle() + "] Blog Post");
         // Populate the message template
@@ -512,7 +512,7 @@ public final class BlogActions extends GenericAction {
           }
         }
         context.getRequest().setAttribute("popup", "true");
-        context.getRequest().setAttribute("PageLayout", "/layout1.jsp");
+        context.getRequest().setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
         // Image List
         FileItemList imageList = new FileItemList();
         imageList.setLinkModuleId(Constants.PROJECT_BLOG_FILES);

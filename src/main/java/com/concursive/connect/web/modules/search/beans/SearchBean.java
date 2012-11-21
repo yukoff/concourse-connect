@@ -49,6 +49,8 @@ import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.search.utils.SearchUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +64,8 @@ import java.util.Map;
  * @created May 17, 2004
  */
 public class SearchBean extends GenericBean {
+
+  private static Log LOG = LogFactory.getLog(SearchBean.class);
 
   public final static int UNDEFINED = -1;
   // constant scopes
@@ -425,16 +429,14 @@ public class SearchBean extends GenericBean {
       return false;
     }
     valid = true;
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("SearchBean-> Terms: (" + terms.size() + ") " + terms.toString());
-    }
+      LOG.debug("SearchBean-> Terms: (" + terms.size() + ") " + terms.toString());
+
     if (location != null) {
       parsedLocation = parseToAllowedSearch(location);
       if (parsedLocation != null) {
         locationTerms = SearchUtils.parseSearchTerms(parsedLocation);
-        if (System.getProperty("DEBUG") != null) {
-          System.out.println("SearchBean-> Location: (" + locationTerms.size() + ") " + locationTerms.toString());
-        }
+        LOG.debug("SearchBean-> Location: (" + locationTerms.size() + ") " + locationTerms.toString());
+
       }
     }
     return true;

@@ -49,6 +49,8 @@ package com.concursive.connect.web.modules.productcatalog.beans;
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.connect.web.modules.productcatalog.dao.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -63,6 +65,8 @@ import java.util.Iterator;
  * @created September 21, 2004
  */
 public class OrderBean extends GenericBean {
+
+  private static final Log LOG = LogFactory.getLog(OrderBean.class);
 
   private int id = -1;
   private String ipAddress = null;
@@ -312,9 +316,7 @@ public class OrderBean extends GenericBean {
    */
   public boolean requiresContactInformation() {
     // If any product requires billing, then show the form
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+    for (Product thisProduct : productList) {
       if (thisProduct.getContactInformationRequired() && !contactInformation.isValid()) {
         return true;
       }
@@ -333,9 +335,7 @@ public class OrderBean extends GenericBean {
       return false;
     }
     // If any product requires billing, then show the form
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+    for (Product thisProduct : productList) {
       if (thisProduct.getBillingAddressRequired() && !billing.isValid()) {
         return true;
       }
@@ -345,9 +345,7 @@ public class OrderBean extends GenericBean {
 
   public boolean showBillingAddress() {
     // If any product requires billing, then show the form
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+    for (Product thisProduct : productList) {
       if (thisProduct.getBillingAddressRequired()) {
         return true;
       }
@@ -365,9 +363,7 @@ public class OrderBean extends GenericBean {
     if (shipping.isValid()) {
       return false;
     }
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+    for (Product thisProduct : productList) {
       if (thisProduct.getShippingAddressRequired() &&
           (!billing.getUseForShipping() && !shipping.isValid())) {
         return true;
@@ -377,9 +373,7 @@ public class OrderBean extends GenericBean {
   }
 
   public boolean showShippingAddress() {
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+    for (Product thisProduct : productList) {
       if (thisProduct.getShippingAddressRequired() &&
           !billing.getUseForShipping()) {
         return true;
@@ -398,9 +392,7 @@ public class OrderBean extends GenericBean {
     if (payment.isValid()) {
       return false;
     }
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+    for (Product thisProduct : productList) {
       if (thisProduct.getPaymentRequired() && !payment.isValid()) {
         return true;
       }
@@ -409,9 +401,7 @@ public class OrderBean extends GenericBean {
   }
 
   public boolean showPayment() {
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+    for (Product thisProduct : productList) {
       if (thisProduct.getPaymentRequired()) {
         return true;
       }
@@ -421,9 +411,7 @@ public class OrderBean extends GenericBean {
 
   public double getChargeAmount() {
     double chargeAmount = 0.0;
-    Iterator p = productList.iterator();
-    while (p.hasNext()) {
-      Product thisProduct = (Product) p.next();
+     for (Product thisProduct : productList) {
       if (thisProduct.getPaymentRequired()) {
         chargeAmount += thisProduct.getTotalPrice();
       }
@@ -482,7 +470,7 @@ public class OrderBean extends GenericBean {
       return true;
     } catch (Exception e) {
       db.rollback();
-      e.printStackTrace(System.out);
+      LOG.error("insert", e);
       throw new SQLException("Could not save");
     } finally {
       db.setAutoCommit(true);

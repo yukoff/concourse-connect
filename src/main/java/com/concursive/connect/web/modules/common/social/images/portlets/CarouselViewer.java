@@ -65,7 +65,7 @@ public class CarouselViewer implements IPortletViewer {
     User user = getUser(request);
 
     // If this is a sensitive site, and the user isn't logged in, then don't show
-    if (PortalUtils.canShowSensitiveData(request) && !user.isLoggedIn()) {
+    if (PortalUtils.isPortletInProtectedMode(request) && !user.isLoggedIn()) {
       return null;
     }
 

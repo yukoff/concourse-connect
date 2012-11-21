@@ -48,6 +48,7 @@ package com.concursive.connect.cms.portal.utils;
 import com.concursive.commons.http.RequestUtils;
 import com.concursive.commons.web.URLFactory;
 import com.concursive.commons.web.mvc.actions.ActionContext;
+import com.concursive.connect.Constants;
 import com.concursive.connect.cms.portal.beans.PortalBean;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.blog.dao.BlogPostList;
@@ -86,7 +87,7 @@ public class WebPortalUtils {
       }
       redirect = redirect.trim();
       context.getRequest().setAttribute("redirectTo", redirect);
-      context.getRequest().removeAttribute("PageLayout");
+      context.getRequest().removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
       return true;
     }
     return false;
@@ -122,14 +123,14 @@ public class WebPortalUtils {
       String newUrl = URLFactory.createURL(expectedURL);
       // Send a redirect
       context.getRequest().setAttribute("redirectTo", newUrl + uri);
-      context.getRequest().removeAttribute("PageLayout");
+      context.getRequest().removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
       return true;
     }
     return false;
   }
 
   public static void checkForLanguageInURL(HttpServletRequest request) {
-    ClientType clientType = (ClientType) request.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) request.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     WebSiteLanguageList webSiteLanguageList = (WebSiteLanguageList) request.getAttribute("webSiteLanguageList");
     // The url already contains a language, and it's different from the clientType...
     String urlLanguage = webSiteLanguageList.getLanguage(request);
@@ -139,7 +140,7 @@ public class WebPortalUtils {
   }
 
   public static void checkForLanguageSelection(HttpServletRequest request, PortalBean bean) {
-    ClientType clientType = (ClientType) request.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) request.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     WebSiteLanguageList webSiteLanguageList = (WebSiteLanguageList) request.getAttribute("webSiteLanguageList");
     // The user is changing languages using the drop-down
     if (webSiteLanguageList.getLanguage(bean.getLanguage()) != null) {
@@ -150,7 +151,7 @@ public class WebPortalUtils {
   }
 
   public static void checkForValidClientLanguage(HttpServletRequest request) {
-    ClientType clientType = (ClientType) request.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) request.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     WebSiteLanguageList webSiteLanguageList = (WebSiteLanguageList) request.getAttribute("webSiteLanguageList");
     // The user has a language that isn't a match with enabled web sites
     if (webSiteLanguageList.getLanguage(clientType.getLanguage()) == null) {
@@ -160,7 +161,7 @@ public class WebPortalUtils {
   }
 
   public static boolean clientLanguageMatchesURL(HttpServletRequest request) {
-    ClientType clientType = (ClientType) request.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) request.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     WebSiteLanguageList webSiteLanguageList = (WebSiteLanguageList) request.getAttribute("webSiteLanguageList");
     //Portal-> URI: /index.shtml   <--->   Portal-> URL: http://127.0.0.1:8080/index.shtml
     //Portal-> URI: /en_AU/index.shtml   <--->   Portal-> URL: http://127.0.0.1:8080/en_AU/index.shtml
@@ -177,7 +178,7 @@ public class WebPortalUtils {
 
   public static boolean isChangingLanguage(ActionContext context, ApplicationPrefs prefs, PortalBean bean) {
     // Base the response on the user's preferred language
-    ClientType clientType = (ClientType) context.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) context.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     if (clientType == null) {
       return false;
     }
@@ -214,7 +215,7 @@ public class WebPortalUtils {
 
       String url = RequestUtils.getAbsoluteServerUrl(context.getRequest()) + webSiteLanguage + uriToUse;
       context.getRequest().setAttribute("redirectTo", url);
-      context.getRequest().removeAttribute("PageLayout");
+      context.getRequest().removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
       return true;
     }
     // Make sure the bean has the proper matching language
@@ -225,7 +226,7 @@ public class WebPortalUtils {
   public static boolean hasRedirect(ActionContext context, PortalBean bean) {
     if (bean.getRedirect() != null) {
       context.getRequest().setAttribute("redirectTo", bean.getRedirect());
-      context.getRequest().removeAttribute("PageLayout");
+      context.getRequest().removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
       return true;
     }
     return false;

@@ -73,6 +73,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -116,7 +117,7 @@ public class TransactionItem {
   private StringBuffer errorMessage = new StringBuffer();
   private RecordList recordList = null;
   private TransactionMeta meta = null;
-  private HashMap<String, String> ignoredProperties = null;
+  private Map<String, String> ignoredProperties = null;
   private PacketContext packetContext = null;
   private TransactionContext transactionContext = null;
   private boolean shareKey = false;
@@ -735,7 +736,7 @@ public class TransactionItem {
       if (result instanceof Boolean && !((Boolean) result)) {
         LOG.debug("Object failed...");
         if (object instanceof GenericBean) {
-          HashMap<String, String> errors = ((GenericBean) object).getErrors();
+          Map<String, String> errors = ((GenericBean) object).getErrors();
           for (String errorKey : errors.keySet()) {
             String errorText = errors.get(errorKey);
             LOG.debug(" " + errorText);

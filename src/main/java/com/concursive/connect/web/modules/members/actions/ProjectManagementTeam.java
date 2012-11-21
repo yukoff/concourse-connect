@@ -190,7 +190,7 @@ public final class ProjectManagementTeam extends GenericAction {
       }
       // Send the message
       SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-      message.setFrom(prefs.get("EMAILADDRESS"));
+      message.setFrom(prefs.get(ApplicationPrefs.EMAILADDRESS));
       message.addReplyTo(getUser(context).getEmail(), getUser(context).getNameFirstLast());
       message.addTo(thisUser.getEmail());
       // Set the subject from the template
@@ -216,6 +216,7 @@ public final class ProjectManagementTeam extends GenericAction {
       thisMember.updateStatus(db);
       context.getRequest().setAttribute("invitationList", invitations);
     } catch (Exception errorMessage) {
+      LOG.error("resendInvitation", errorMessage);
       context.getRequest().setAttribute("Error", errorMessage);
       return ("SystemError");
     } finally {

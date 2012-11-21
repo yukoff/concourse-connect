@@ -142,7 +142,7 @@ public final class AdminBadges extends GenericAction {
     }
     if ("true".equals(context.getRequest().getParameter("onlyBadges"))) {
       context.getRequest().setAttribute("onlyBadges", "true");
-      context.getRequest().setAttribute("PageLayout", "/layout1.jsp");
+      context.getRequest().setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
       return "ListOK";
     }
     return "ListAllOK";

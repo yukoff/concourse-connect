@@ -128,9 +128,7 @@ public class ReportsJob implements StatefulJob {
 
   private void runReports(ReportQueueList queue, Connection db, SchedulerContext schedulerContext, ServletContext servletContext, ApplicationPrefs prefs, String fs) throws Exception {
     //Iterate the list
-    Iterator list = queue.iterator();
-    while (list.hasNext()) {
-      ReportQueue thisQueue = (ReportQueue) list.next();
+    for (ReportQueue thisQueue : queue) {
       // For previously executed and re-schedued, change the status back to queued
       if (thisQueue.getStatus() == ReportQueue.STATUS_SCHEDULED) {
         thisQueue.setStatus(ReportQueue.STATUS_QUEUED);
@@ -307,8 +305,8 @@ public class ReportsJob implements StatefulJob {
         if (thisQueue.getSendEmail()) {
           LOG.debug("Send email as requested by the user");
           SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-          message.setFrom(prefs.get("EMAILADDRESS"));
-          message.addReplyTo(prefs.get("EMAILADDRESS"));
+          message.setFrom(prefs.get(ApplicationPrefs.EMAILADDRESS));
+          message.addReplyTo(prefs.get(ApplicationPrefs.EMAILADDRESS));
           message.addTo(user.getEmail());
           message.setSubject(thisReport.getTitle());
           message.setType("text/html");

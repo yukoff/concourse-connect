@@ -132,7 +132,7 @@ public class ProjectWikiContentViewer implements IPortletViewer {
       user = UserUtils.createGuestUser();
     }
     // Determine if the user has access to the content
-    if (PortalUtils.canShowSensitiveData(request)) {
+    if (PortalUtils.isPortletInProtectedMode(request)) {
       LOG.debug("Allowing... ");
     } else if (!ProjectUtils.hasAccess(project.getId(), user, "project-profile-view")) {
       LOG.debug("Skipping... no access to view the profile");

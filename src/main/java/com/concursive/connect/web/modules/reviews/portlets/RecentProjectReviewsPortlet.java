@@ -165,7 +165,7 @@ public class RecentProjectReviewsPortlet extends GenericPortlet {
         projectRatingList.setOpenProjectsOnly(true);
         if ("-1".equals(projectId)) {
           if (PortalUtils.getDashboardPortlet(request).isCached() || privateCategory) {
-            if (PortalUtils.canShowSensitiveData(request)) {
+              if (PortalUtils.isPortletInProtectedMode(request)) {
               // Use the most generic settings since this portlet is cached
               projectRatingList.setForParticipant(Constants.TRUE);
             } else {

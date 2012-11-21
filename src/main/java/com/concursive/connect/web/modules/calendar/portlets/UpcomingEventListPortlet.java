@@ -177,7 +177,7 @@ public class UpcomingEventListPortlet extends GenericPortlet {
         } else {
           events.setInstanceId(PortalUtils.getInstance(request).getId());
           if (PortalUtils.getDashboardPortlet(request).isCached()) {
-            if (PortalUtils.canShowSensitiveData(request)) {
+            if (PortalUtils.isPortletInProtectedMode(request)) {
               // Use the most generic settings since this portlet is cached
               events.setForParticipant(Constants.TRUE);
             } else {

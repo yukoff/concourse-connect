@@ -151,7 +151,7 @@ public class ProjectPortalUtils {
         }
         if (dashboardPage == null) {
           LOG.warn("Page not found: " + page);
-          System.out.println("ProjectManagement-> * PAGE NOT FOUND *");
+          System.out.println("ProjectPortalUtils-> * PAGE NOT FOUND *");
           return null;
         }
         dashboardPage.setProjectId(thisProject.getId());

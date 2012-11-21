@@ -78,7 +78,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -226,7 +226,7 @@ public class GenericAction implements java.io.Serializable {
    * @param context Description of the Parameter
    * @param errors  Description of the Parameter
    */
-  protected void processErrors(ActionContext context, HashMap errors) {
+  protected void processErrors(ActionContext context, Map errors) {
     for (Object o : errors.keySet()) {
       String errorKey = (String) o;
       String errorMsg = (String) errors.get(errorKey);
@@ -673,13 +673,13 @@ public class GenericAction implements java.io.Serializable {
     Project project = ProjectUtils.loadProject(projectId);
     // Check the user's permission
     User thisUser = getUser(context);
-    if (thisUser.getAccessAdmin()) {
+    if (thisUser != null && thisUser.getAccessAdmin()) {
       return project;
     }
     // Allowed reasons to retrieve a project (permissions will be validated elsewhere)
-    if (project.getTeam().hasUserId(thisUser.getId()) ||
+    if (thisUser != null && project.getTeam().hasUserId(thisUser.getId()) ||
         project.getFeatures().getAllowGuests() ||
-        (thisUser.isLoggedIn() && project.getFeatures().getAllowParticipants()) ||
+        (thisUser != null && thisUser.isLoggedIn() && project.getFeatures().getAllowParticipants()) ||
         project.getPortal()) {
       return project;
     }

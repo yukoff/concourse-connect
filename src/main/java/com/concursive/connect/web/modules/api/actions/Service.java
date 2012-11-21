@@ -55,6 +55,7 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.commons.workflow.ObjectHookManager;
 import com.concursive.commons.xml.XMLUtils;
+import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.controller.actions.GenericAction;
 import com.concursive.connect.web.modules.api.beans.AuthenticationItem;
@@ -99,11 +100,9 @@ public final class Service extends GenericAction {
       // use XMLStreamReader for future processing
 
       XMLUtils xml = new XMLUtils(RequestUtils.getData(context.getRequest()), true);
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("Service-> Parsing data");
-      }
+      LOG.debug("Parsing data");
 
-      ApplicationPrefs applicationPrefs = (ApplicationPrefs) context.getServletContext().getAttribute("applicationPrefs");
+      ApplicationPrefs applicationPrefs = (ApplicationPrefs) context.getServletContext().getAttribute(Constants.APPLICATION_PREFS);
 
       // Verify the client
       AuthenticationItem auth = new AuthenticationItem();

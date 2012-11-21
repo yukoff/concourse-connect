@@ -2001,7 +2001,7 @@ public class User extends GenericBean {
     //send the confirmation message
     SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
     message.setTo(email);
-    message.setFrom(prefs.get("EMAILADDRESS"));
+    message.setFrom(prefs.get(ApplicationPrefs.EMAILADDRESS));
     message.setSubject("Your Password");
     message.setType("text/html");
     try {

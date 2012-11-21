@@ -323,9 +323,7 @@ public class PermissionList extends HashMap<String, Permission> {
       PermissionLookupList list = new PermissionLookupList();
       list.setIncludeEnabled(Constants.TRUE);
       list.buildList(db);
-      Iterator i = list.iterator();
-      while (i.hasNext()) {
-        PermissionLookup thisPermission = (PermissionLookup) i.next();
+      for (PermissionLookup thisPermission : list) {
         pst = db.prepareStatement(
             "INSERT INTO project_permissions " +
                 "(project_id, permission_id, userlevel) VALUES (?, ?, ?) ");
@@ -339,9 +337,7 @@ public class PermissionList extends HashMap<String, Permission> {
   }
 
   public void insert(Connection db) throws SQLException {
-    Iterator i = this.values().iterator();
-    while (i.hasNext()) {
-      Permission permission = (Permission) i.next();
+    for (Permission permission : this.values()) {
       permission.setId(-1);
       permission.setProjectId(projectId);
       permission.insert(db);

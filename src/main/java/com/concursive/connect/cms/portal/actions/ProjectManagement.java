@@ -360,7 +360,7 @@ public final class ProjectManagement extends GenericAction {
     context.getRequest().setAttribute("issueList", topicList);
     context.getRequest().setAttribute("fileItemList", fileItemList);
     context.getRequest().setAttribute("wikiList", wikiList);
-    ClientType clientType = (ClientType) context.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) context.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     if (clientType != null && clientType.getMobile()) {
       return "MobileOverviewOK";
     }
@@ -1000,7 +1000,7 @@ public final class ProjectManagement extends GenericAction {
       fileItemList.setLinkItemId(projectId);
       fileItemList.setFilename(filename);
       fileItemList.buildList(db);
-      if (fileItemList.size() > 0) {
+      if (!fileItemList.isEmpty()) {
         fileItem = fileItemList.get(0);
         if (showThumbnail) {
           thumbnail = ThumbnailUtils.retrieveThumbnail(db, fileItem, 0, 0, this.getPath(context, "projects"));

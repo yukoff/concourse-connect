@@ -115,7 +115,7 @@ public final class ProjectManagementClassifieds extends GenericAction {
         db = getConnection(context);
         itemToDownload.updateCounter(db);
       } else {
-        System.err.println(new java.util.Date() + ":: ProjectManagementClassified-> Trying to send a file that does not exist");
+        LOG.error("Trying to send a file that does not exist");
       }
     } catch (java.net.SocketException se) {
       //User either canceled the download or lost connection

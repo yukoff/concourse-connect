@@ -60,7 +60,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.File;
 import java.sql.Connection;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: matt rajkowski
@@ -142,7 +142,7 @@ public class RestoreService implements CustomActionHandler {
       ObjectUtils.setParam(object, uniqueField, -1);
 
       // If this object references any of the shared keys, then substitute the value before calling insert
-      HashMap<String, String> lookups = factory.retrieveLookupNames(transactionItem.getName());
+      Map<String, String> lookups = factory.retrieveLookupNames(transactionItem.getName());
       for (String thisField : lookups.keySet()) {
         String thisLookup = lookups.get(thisField);
         String mapValue = transactionContext.getPropertyMap().get(thisLookup + "." + ObjectUtils.getParam(object, thisField));

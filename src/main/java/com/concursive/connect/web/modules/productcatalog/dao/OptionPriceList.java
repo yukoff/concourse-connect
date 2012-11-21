@@ -64,7 +64,7 @@ import java.util.Iterator;
  * @version $Id$
  * @created September 21, 2004
  */
-public class OptionPriceList extends ArrayList {
+public class OptionPriceList extends ArrayList<OptionPrice> {
 
   private PagedListInfo pagedListInfo = null;
   private int enabled = Constants.UNDEFINED;
@@ -265,9 +265,7 @@ public class OptionPriceList extends ArrayList {
    */
   public double findAmountBasedOnQuantity(double quantity) {
     double amount = 0;
-    Iterator p = this.iterator();
-    while (p.hasNext()) {
-      OptionPrice optionPrice = (OptionPrice) p.next();
+    for (OptionPrice optionPrice : this) {
       if (optionPrice.getRangeLow() == -1 && quantity <= optionPrice.getRangeHigh()) {
 
 /*
@@ -307,9 +305,7 @@ public class OptionPriceList extends ArrayList {
 
   public String getInvoiceText(double quantity) {
     String description = "";
-    Iterator p = this.iterator();
-    while (p.hasNext()) {
-      OptionPrice optionPrice = (OptionPrice) p.next();
+    for (OptionPrice optionPrice : this) {
       if (optionPrice.getRangeLow() == -1 && quantity <= optionPrice.getRangeHigh()) {
         description = optionPrice.getInvoiceText();
       }
@@ -332,9 +328,7 @@ public class OptionPriceList extends ArrayList {
    */
   public double findAmountBasedOnSelection(int value) {
     double amount = 0;
-    Iterator p = this.iterator();
-    while (p.hasNext()) {
-      OptionPrice optionPrice = (OptionPrice) p.next();
+    for (OptionPrice optionPrice : this) {
       if (value == optionPrice.getValueId()) {
         amount = optionPrice.getPriceAmount();
       }
@@ -351,9 +345,7 @@ public class OptionPriceList extends ArrayList {
    */
   public double getQtyMultiplier(double quantity) {
     double multiplier = 1;
-    Iterator p = this.iterator();
-    while (p.hasNext()) {
-      OptionPrice optionPrice = (OptionPrice) p.next();
+    for (OptionPrice optionPrice : this) {
       if (optionPrice.getRangeLow() == -1 && quantity <= optionPrice.getRangeHigh()) {
         multiplier = optionPrice.getQtyMultiplier(quantity);
       }
@@ -375,9 +367,7 @@ public class OptionPriceList extends ArrayList {
    * @return The quantityValid value
    */
   public boolean isQuantityValid(double quantity) {
-    Iterator p = this.iterator();
-    while (p.hasNext()) {
-      OptionPrice optionPrice = (OptionPrice) p.next();
+    for (OptionPrice optionPrice : this) {
       if (optionPrice.getRangeLow() == -1 && quantity <= optionPrice.getRangeHigh()) {
         if (optionPrice.getInvalid()) {
           return false;
@@ -405,10 +395,8 @@ public class OptionPriceList extends ArrayList {
    * @return Description of the Return Value
    */
   public double findMultiplier(int value) {
-    double multiplier = 1;
-    Iterator p = this.iterator();
-    while (p.hasNext()) {
-      OptionPrice optionPrice = (OptionPrice) p.next();
+    double multiplier = 1.0;
+    for (OptionPrice optionPrice : this) {
       if (value == optionPrice.getValueId()) {
         multiplier = optionPrice.getPriceMultiplier();
       }
@@ -424,10 +412,8 @@ public class OptionPriceList extends ArrayList {
    * @return Description of the Return Value
    */
   public double findAddOn(int value) {
-    double addOn = 0;
-    Iterator p = this.iterator();
-    while (p.hasNext()) {
-      OptionPrice optionPrice = (OptionPrice) p.next();
+    double addOn = 0.0;
+    for (OptionPrice optionPrice : this) {
       if (value == optionPrice.getValueId()) {
         addOn = optionPrice.getPriceAddOn();
       }

@@ -67,7 +67,7 @@ import java.util.Locale;
  * @version $Id$
  * @created September 21, 2004
  */
-public class OptionValueList extends ArrayList {
+public class OptionValueList extends ArrayList<OptionValue> {
 
   private PagedListInfo pagedListInfo = null;
   private int enabled = Constants.UNDEFINED;
@@ -270,9 +270,7 @@ public class OptionValueList extends ArrayList {
   public String getHtmlSelect(String selectName, String defaultKey) {
     HtmlSelect thisSelect = new HtmlSelect();
     //thisSelect.addItem(-1, "-- None --");
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      OptionValue optionValue = (OptionValue) i.next();
+    for (OptionValue optionValue : this) {
       thisSelect.addItem(
           optionValue.getId(),
           optionValue.getDescription());
@@ -292,9 +290,7 @@ public class OptionValueList extends ArrayList {
   public String getHtmlSelect(String selectName, String defaultKey, OptionPriceList priceList) {
     HtmlSelect thisSelect = new HtmlSelect();
     //thisSelect.addItem(-1, "-- None --");
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      OptionValue optionValue = (OptionValue) i.next();
+    for (OptionValue optionValue : this) {
       double amount = 0;
       amount = priceList.findAmountBasedOnSelection(optionValue.getId());
       if (amount > 0) {
@@ -318,9 +314,7 @@ public class OptionValueList extends ArrayList {
    * @return The selectedValue value
    */
   public String getSelectedValue(int valueId) {
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      OptionValue optionValue = (OptionValue) i.next();
+    for (OptionValue optionValue : this) {
       if (optionValue.getId() == valueId) {
         return optionValue.getDescription();
       }

@@ -48,6 +48,8 @@ package com.concursive.connect.web.modules.productcatalog.dao;
 
 import com.concursive.commons.db.DatabaseUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -64,6 +66,8 @@ import java.util.Currency;
  * @created September 21, 2004
  */
 public class Product extends GenericBean {
+
+  private static final Log LOG = LogFactory.getLog(Product.class);
 
   private int id = -1;
   private int orderId = -1;
@@ -235,7 +239,7 @@ public class Product extends GenericBean {
    * @return The priceDescription value
    */
   public String getPriceDescription() {
-    return priceDescription + optionList.getInvoiceText();
+    return priceDescription + ((optionList != null) ?optionList.getInvoiceText() : "");
   }
 
 
@@ -658,6 +662,7 @@ public class Product extends GenericBean {
   public double getTotalPrice() {
     try {
       if (optionList == null) {
+        LOG.error("optionList IS NULL, but is expected");
         return -1;
       }
       // Calculate price

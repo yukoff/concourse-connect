@@ -95,7 +95,7 @@ public class SaveActivityInputAction implements IPortletAction {
           projectHistory.setDescription(WikiLink.generateLink(user.getProfileProject()) + ": " + body);
         } else {
           // ex. on another profile
-          projectHistory.setDescription(WikiLink.generateLink(user.getProfileProject()) + "  @" + WikiLink.generateLink(project) + ": " + body);
+          projectHistory.setDescription(WikiLink.generateLink(user.getProfileProject()) + " @" + WikiLink.generateLink(project) + ": " + body);
         }
         projectHistory.setLinkItemId(project.getId());
         projectHistory.setLinkObject(ProjectHistoryList.ACTIVITY_ENTRY_OBJECT);

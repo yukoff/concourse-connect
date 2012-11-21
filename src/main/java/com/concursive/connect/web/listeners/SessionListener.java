@@ -92,7 +92,7 @@ public class SessionListener implements HttpSessionAttributeListener, HttpSessio
    */
   public void attributeAdded(HttpSessionBindingEvent event) {
     ServletContext context = event.getSession().getServletContext();
-    if ("User".equals(event.getName())) {
+    if (Constants.SESSION_USER.equals(event.getName())) {
       // Process the user session
       User thisUser = (User) event.getValue();
       thisUser.setSessionId(event.getSession().getId());
@@ -111,7 +111,7 @@ public class SessionListener implements HttpSessionAttributeListener, HttpSessio
   public void attributeRemoved(HttpSessionBindingEvent event) {
     ServletContext context = event.getSession().getServletContext();
     //System.out.println("SessionListener-> removed: " + event.getName());
-    if ("User".equals(event.getName())) {
+    if (Constants.SESSION_USER.equals(event.getName())) {
       User thisUser = (User) event.getValue();
       Tracker tracker = (Tracker) context.getAttribute(Constants.USER_SESSION_TRACKER);
       tracker.remove(thisUser);
@@ -128,7 +128,7 @@ public class SessionListener implements HttpSessionAttributeListener, HttpSessio
     // This event has a handle to the old User object
     ServletContext context = event.getSession().getServletContext();
     //System.out.println("SessionListener-> replaced: " + event.getName());
-    if ("User".equals(event.getName())) {
+    if (Constants.SESSION_USER.equals(event.getName())) {
       // New user
       User thisUser = (User) event.getSession().getAttribute(Constants.SESSION_USER);
       thisUser.setSessionId(event.getSession().getId());

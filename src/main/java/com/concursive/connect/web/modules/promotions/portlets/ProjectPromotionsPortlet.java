@@ -54,6 +54,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.modules.promotions.dao.AdList;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.PagedListInfo;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -66,6 +68,8 @@ import java.sql.Connection;
  * @created July 10, 2008
  */
 public class ProjectPromotionsPortlet extends GenericPortlet {
+
+  private static Log LOG = LogFactory.getLog(ProjectPromotionsPortlet.class);
 
   // Pages
   private static final String VIEW_PAGE = "/portlets/project_promotions/project_promotions-view.jsp";
@@ -156,7 +160,7 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
         adList.setProjectId(project.getId());
       }
       if (PortalUtils.getDashboardPortlet(request).isCached()) {
-        if (PortalUtils.canShowSensitiveData(request)) {
+        if (PortalUtils.isPortletInProtectedMode(request)) {
           // Use the most generic settings since this portlet is cached
           adList.setForParticipant(Constants.TRUE);
         } else {
@@ -189,6 +193,7 @@ public class ProjectPromotionsPortlet extends GenericPortlet {
         requestDispatcher.include(request, response);
       }
     } catch (Exception e) {
+      LOG.error("doView", e);
       throw new PortletException(e.getMessage());
     }
   }

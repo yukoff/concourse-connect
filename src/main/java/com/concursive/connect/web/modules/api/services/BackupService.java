@@ -195,7 +195,7 @@ public class BackupService implements CustomActionHandler {
       }
 
       // For each referenced object add them to the backup
-      ArrayList<PropertyList> names = factory.retrieveDependentNames(thisRecord.getName());
+      List<PropertyList> names = factory.retrieveDependentNames(thisRecord.getName());
       for (PropertyList thisProperty : names) {
         String dependentListClass = factory.retrieveClassName(thisProperty.getId() + "List");
         if (dependentListClass == null) {

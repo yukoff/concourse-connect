@@ -407,9 +407,7 @@ public class ReplyList extends ArrayList<Reply> {
   }
 
   public void delete(Connection db, String basePath) throws SQLException {
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      Reply thisReply = (Reply) i.next();
+    for (Reply thisReply : this) {
       thisReply.setProjectId(projectId);
       thisReply.setCategoryId(categoryId);
       thisReply.delete(db, basePath);

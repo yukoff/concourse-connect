@@ -101,7 +101,7 @@ public class RegisterPortlet extends GenericPortlet {
       ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
       boolean showLicense = "true".equals(prefs.get(ApplicationPrefs.SHOW_TERMS_AND_CONDITIONS));
       boolean invitationOnly = false;
-      if ("false".equals(prefs.get("REGISTER"))) {
+      if ("false".equals(prefs.get(ApplicationPrefs.USERS_CAN_REGISTER))) {
         invitationOnly = true;
       }
 
@@ -194,7 +194,7 @@ public class RegisterPortlet extends GenericPortlet {
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
     boolean showLicense = "true".equals(prefs.get(ApplicationPrefs.SHOW_TERMS_AND_CONDITIONS));
     boolean invitationOnly = false;
-    if ("false".equals(prefs.get("REGISTER"))) {
+    if ("false".equals(prefs.get(ApplicationPrefs.USERS_CAN_REGISTER))) {
       invitationOnly = true;
     }
 

@@ -493,7 +493,7 @@ public class WikiToHTMLUtils {
       in.close();
       return sb.toString();
     } catch (Exception e) {
-      LOG.error(e);
+      LOG.error("getHTML", e);
     }
     LOG.warn("Could not convert wiki markup");
     return "Content cannot be displayed due to a parsing error, use markup mode to find the error";
@@ -1178,7 +1178,7 @@ public class WikiToHTMLUtils {
             SimpleDateFormat dateFormatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(dateFormat, locale);
             calendarValue = dateFormatter.format(timestamp);
           } catch (Exception e) {
-            LOG.error(e);
+            LOG.error("toHtmlFormField calendar", e);
           }
         }
         // Output with a calendar control
@@ -1285,7 +1285,7 @@ public class WikiToHTMLUtils {
             SimpleDateFormat dateFormatter = (SimpleDateFormat) SimpleDateFormat.getDateInstance(dateFormat, locale);
             calendarValue = dateFormatter.format(timestamp);
           } catch (Exception e) {
-            LOG.error(e);
+            LOG.error("toHtml calendar", e);
           }
         }
         return StringUtils.toHtml(calendarValue);
@@ -1332,7 +1332,7 @@ public class WikiToHTMLUtils {
           }
           return (StringUtils.toHtml(formatter.format(StringUtils.getDoubleNumber(field.getValue()))));
         } catch (Exception e) {
-          LOG.error(e.getMessage());
+          LOG.error("toHtml currency", e);
         }
         return StringUtils.toHtml(field.getValue());
       case CustomFormField.EMAIL:

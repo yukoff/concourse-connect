@@ -117,7 +117,7 @@ public class NewProjectsByCategoryViewer implements IPortletViewer {
       projectList.setApprovedOnly(true);
       projectList.setOpenProjectsOnly(true);
       if (PortalUtils.getDashboardPortlet(request).isCached()) {
-        if (PortalUtils.canShowSensitiveData(request)) {
+        if (PortalUtils.isPortletInProtectedMode(request)) {
           // Use the most generic settings since this portlet is cached
           projectList.setForParticipant(Constants.TRUE);
         } else {

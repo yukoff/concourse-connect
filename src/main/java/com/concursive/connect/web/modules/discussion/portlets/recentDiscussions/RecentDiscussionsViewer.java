@@ -143,7 +143,7 @@ public class RecentDiscussionsViewer implements IPortletViewer {
         }
       }
       if (PortalUtils.getDashboardPortlet(request).isCached()) {
-        if (PortalUtils.canShowSensitiveData(request) || privateCategory) {
+        if (PortalUtils.isPortletInProtectedMode(request) || privateCategory) {
           // Use the most generic settings since this portlet is cached
           recentTopicList.setForParticipant(Constants.TRUE);
         } else {

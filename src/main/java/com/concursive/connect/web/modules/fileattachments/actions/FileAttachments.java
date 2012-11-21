@@ -247,7 +247,7 @@ public final class FileAttachments extends GenericAction {
           File thisFile = newFileInfo.getLocalFile();
           if (thisFile.exists()) {
             thisFile.delete();
-            System.out.println("FileAttachments-> Unallowed file deleted");
+            LOG.warn("FileAttachments-> Unallowed file deleted");
           }
         }
         return "PermissionError";

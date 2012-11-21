@@ -256,7 +256,7 @@ public final class ProjectManagementWiki extends GenericAction {
           }
         }
         context.getRequest().setAttribute("popup", "true");
-        context.getRequest().setAttribute("PageLayout", "/layout1.jsp");
+        context.getRequest().setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
         // Image List
         FileItemList imageList = new FileItemList();
         imageList.setLinkModuleId(Constants.PROJECT_WIKI_FILES);

@@ -76,9 +76,7 @@ import java.sql.Timestamp;
 public class LoginAuthenticator extends GenericAction implements ILoginAuthenticator {
 
   public String authenticateLogin(ActionContext context) {
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("Login-> Logging in...");
-    }
+    LOG.debug("Logging in...");
     LoginBean loginBean = (LoginBean) context.getFormBean();
     loginBean.checkURL(context.getRequest());
     if (!loginBean.isValid()) {
@@ -97,9 +95,7 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
         (ConnectionPool) context.getServletContext().getAttribute("ConnectionPool");
     if (sqlDriver == null) {
       loginBean.addError("actionError", "Access not allowed due to system error!");
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("Login-> Database attribute not found...");
-      }
+      LOG.error("Login-> Database attribute not found...");
       return "LoginRetry";
     }
     User thisUser = null;
@@ -108,9 +104,7 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
     boolean upgradeMode = false;
     try {
       db = sqlDriver.getConnection(ce);
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("Login-> Got database connection...");
-      }
+      LOG.debug("Login-> Got database connection...");
       // Check to see if system is upgraded
       if (ApplicationVersion.isOutOfDate(prefs)) {
         upgradeMode = true;
@@ -186,7 +180,7 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
       }
     } catch (Exception e) {
       loginBean.addError("actionError", e.getMessage());
-      e.printStackTrace(System.out);
+      LOG.error("authenticateLogin", e);
     } finally {
       sqlDriver.free(db);
     }
@@ -219,7 +213,7 @@ public class LoginAuthenticator extends GenericAction implements ILoginAuthentic
   public String authenticateLogout(ActionContext context) {
     // Re-use the ClientType language
     String previousLanguage = null;
-    ClientType clientType = (ClientType) context.getSession().getAttribute("clientType");
+    ClientType clientType = (ClientType) context.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
     if (clientType != null) {
       previousLanguage = clientType.getLanguage();
       // Let the portal know about the language choice

@@ -91,7 +91,7 @@ public class CalendarViewer implements IPortletViewer {
 
     // Check the user's permissions
     User user = getUser(request);
-    if (!ProjectUtils.hasAccess(project.getId(), user, "project-calendar-view")) {
+    if (project != null && !ProjectUtils.hasAccess(project.getId(), user, "project-calendar-view")) {
       throw new PortletException("Unauthorized to view in this project");
     }
 

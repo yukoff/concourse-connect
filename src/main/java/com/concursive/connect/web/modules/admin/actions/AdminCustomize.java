@@ -190,7 +190,7 @@ public final class AdminCustomize extends GenericAction {
       Set<String> colorSchemes = context.getServletContext().getResourcePaths("/themes/" + selectedTheme + "/color-schemes/");
       context.getRequest().setAttribute("colorSchemes", colorSchemes);
     }
-    context.getRequest().setAttribute("PageLayout", "/layout1.jsp");
+    context.getRequest().setAttribute(Constants.REQUEST_PAGE_LAYOUT, "/layout1.jsp");
     return "ColorSchemesOK";
   }
 }

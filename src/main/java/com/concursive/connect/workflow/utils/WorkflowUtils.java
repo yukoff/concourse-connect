@@ -63,7 +63,7 @@ public class WorkflowUtils {
         }
       }
 
-      // Find jobs in the fileLibrary
+      // Find workflow in the fileLibrary
       LOG.info("Checking for custom workflow...");
       File workflowDirectory = new File(hookManager.getApplicationPrefs().get(ApplicationPrefs.FILE_LIBRARY_PATH) + "workflow");
       if (workflowDirectory.exists() && workflowDirectory.isDirectory()) {

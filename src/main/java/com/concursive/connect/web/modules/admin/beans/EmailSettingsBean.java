@@ -150,8 +150,8 @@ public class EmailSettingsBean {
    * @throws IOException Description of the Exception
    */
   public void load(ApplicationPrefs prefs, String filePath) throws IOException {
-    mailServer = prefs.get("MAILSERVER");
-    emailAddress = prefs.get("EMAILADDRESS");
+    mailServer = prefs.get(ApplicationPrefs.MAILSERVER);
+    emailAddress = prefs.get(ApplicationPrefs.EMAILADDRESS);
     isLoaded = true;
   }
 

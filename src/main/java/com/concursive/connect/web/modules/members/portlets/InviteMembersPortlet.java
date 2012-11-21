@@ -575,7 +575,7 @@ public class InviteMembersPortlet extends GenericPortlet {
     Iterator<String> keyIterator = members.keySet().iterator();
     while (keyIterator.hasNext()) {
       String profileId = keyIterator.next();
-      if (members.get(profileId).equals(NO_MATCH_FOUND) && (profileId.indexOf("(") != -1)) {
+      if (members.get(profileId).equals(NO_MATCH_FOUND) && profileId.contains("(")) {
         // Find user by unique profileId
         String[] arrNameProfile = profileId.split("\\(");
         int endIndex = arrNameProfile[1].indexOf(")") < 0 ? arrNameProfile[1].length() : arrNameProfile[1].indexOf(")");
@@ -595,7 +595,7 @@ public class InviteMembersPortlet extends GenericPortlet {
     keyIterator = members.keySet().iterator();
     while (keyIterator.hasNext()) {
       String email = keyIterator.next();
-      if (members.get(email).equals(NO_MATCH_FOUND) && (email.indexOf("@") != -1)) {
+      if (members.get(email).equals(NO_MATCH_FOUND) && email.contains("@")) {
         // Find user by email address
         String strEmail = email.trim();
         HashMap<String, String> mapEmail = DimDimUtils.processEmail(strEmail);
@@ -613,7 +613,7 @@ public class InviteMembersPortlet extends GenericPortlet {
     keyIterator = members.keySet().iterator();
     while (keyIterator.hasNext()) {
       String name = keyIterator.next();
-      if (members.get(name).equals(NO_MATCH_FOUND) && (name.indexOf("@") == -1)) {
+      if (members.get(name).equals(NO_MATCH_FOUND) && !name.contains("@")) {
         String[] nameParts = name.split(" ");
         UserList userList = new UserList();
         if (nameParts.length == 1) {
@@ -711,7 +711,7 @@ public class InviteMembersPortlet extends GenericPortlet {
   private void checkDuplicates(LinkedHashMap<String, String> members, String member, String userId) {
     Iterator<String> memIterator = members.keySet().iterator();
     while (memIterator.hasNext()) {
-      String keyName = (String) memIterator.next();
+      String keyName = memIterator.next();
       String idValue = members.get(keyName);
 
       //check only previous values and not entire list

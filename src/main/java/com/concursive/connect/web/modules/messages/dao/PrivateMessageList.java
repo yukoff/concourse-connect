@@ -591,9 +591,7 @@ public class PrivateMessageList extends ArrayList<PrivateMessage> {
 
   public void delete(Connection db) throws SQLException {
     //TODO:kailash need to accommodate for parent id dependency (or) remove the database dependency
-    Iterator<PrivateMessage> privateMessageItr = this.iterator();
-    while (privateMessageItr.hasNext()) {
-      PrivateMessage privateMessage = privateMessageItr.next();
+    for (PrivateMessage privateMessage : this) {
       privateMessage.delete(db);
     }
   }

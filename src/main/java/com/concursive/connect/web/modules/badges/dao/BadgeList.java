@@ -305,9 +305,7 @@ public class BadgeList extends ArrayList<Badge> {
    * @throws java.sql.SQLException
    */
   private void buildLogos(Connection db) throws SQLException {
-    Iterator<Badge> badgeItr = this.iterator();
-    while (badgeItr.hasNext()) {
-      Badge badge = badgeItr.next();
+    for (Badge badge : this) {
       badge.buildLogo(db);
     }
   }
@@ -367,9 +365,7 @@ public class BadgeList extends ArrayList<Badge> {
    * @param basePath
    */
   public void delete(Connection db, String basePath) throws SQLException {
-    Iterator<Badge> badgeItr = this.iterator();
-    while (badgeItr.hasNext()) {
-      Badge badge = badgeItr.next();
+    for (Badge badge : this) {
       badge.delete(db, basePath);
     }
   }

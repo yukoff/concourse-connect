@@ -99,7 +99,7 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
       Object object = transactionItem.getObject();
       ApplicationPrefs prefs = transactionItem.getPacketContext().getApplicationPrefs();
       ActionContext actionContext = transactionItem.getPacketContext().getActionContext();
-      Key key = (Key) actionContext.getServletContext().getAttribute("TEAM.KEY");
+      Key key = (Key) actionContext.getServletContext().getAttribute(ApplicationPrefs.TEAM_KEY);
 
       // Prepare the response, a list of contactEmailAddress with a status will be returned
       transactionItem.getRecordList().setName("contactEmailAddress");
@@ -170,7 +170,7 @@ public class ProjectProfileInvitesService implements CustomActionHandler {
 
           //Prepare the invitation
           SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs.getPrefs());
-          message.setFrom(prefs.get("EMAILADDRESS"));
+          message.setFrom(prefs.get(ApplicationPrefs.EMAILADDRESS));
           //message.addReplyTo(applicationPrefs.get()contact.getEmail(), getUser(context).getNameFirstLast());
           message.setTo(contact.getEmail1());
           message.setSubject(projectMessage.getSubject());

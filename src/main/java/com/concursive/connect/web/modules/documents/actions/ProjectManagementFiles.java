@@ -122,7 +122,7 @@ public final class ProjectManagementFiles extends GenericAction {
           File thisFile = newFileInfo.getLocalFile();
           if (thisFile.exists()) {
             thisFile.delete();
-            System.out.println("FileAttachments-> Unallowed file deleted");
+            LOG.warn("FileAttachments-> Unallowed file deleted");
           }
         }
         return "PermissionError";
@@ -292,7 +292,7 @@ public final class ProjectManagementFiles extends GenericAction {
       // User either canceled the download or lost connection
     } catch (Exception e) {
       errorMessage = e;
-      System.out.println(e.toString());
+      LOG.error("file download", e);
     } finally {
       this.freeConnection(context, db);
     }

@@ -85,7 +85,7 @@ public class ForumListViewer implements IPortletViewer {
 
     // Check the user's permissions
     User user = getUser(request);
-    if (!ProjectUtils.hasAccess(project.getId(), user, "project-discussion-forums-view")) {
+    if (project == null || !ProjectUtils.hasAccess(project.getId(), user, "project-discussion-forums-view")) {
       throw new PortletException("Unauthorized to view in this project");
     }
 

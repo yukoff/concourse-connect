@@ -53,6 +53,7 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.workflow.ComponentContext;
 import com.concursive.commons.workflow.ComponentInterface;
 import com.concursive.commons.workflow.ObjectHookComponent;
+import com.concursive.connect.config.ApplicationPrefs;
 import com.concursive.connect.web.modules.login.dao.User;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
@@ -101,7 +102,7 @@ public class SendInvitationMessageToTeamMember extends ObjectHookComponent imple
         String url = context.getParameter(URL);
         if (teamMemberUser != null) {
           Map<String, String> prefs = context.getApplicationPrefs();
-          Key key = (Key) context.getAttribute("TEAM.KEY");
+          Key key = (Key) context.getAttribute(ApplicationPrefs.TEAM_KEY);
           // Initialize the message template
           freemarker.template.Template inviteSubject = null;
           freemarker.template.Template inviteBody = null;
@@ -141,7 +142,7 @@ public class SendInvitationMessageToTeamMember extends ObjectHookComponent imple
 
           // Send the message
           SMTPMessage message = SMTPMessageFactory.createSMTPMessageInstance(prefs);
-          message.setFrom(prefs.get("EMAILADDRESS"));
+          message.setFrom(context.getParameter(ComponentContext.APPLICATION_EMAIL_ADDRESS));
           message.addReplyTo(user.getEmail(), user.getNameFirstLast());
           message.addTo(teamMemberUser.getEmail());
           // Set the subject from the template

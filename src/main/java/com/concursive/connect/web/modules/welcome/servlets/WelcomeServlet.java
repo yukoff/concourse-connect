@@ -92,7 +92,7 @@ public class WelcomeServlet extends HttpServlet {
       }
       request.setAttribute("requestedURL", requestedURL);
       // Configure the user's client
-      ClientType clientType = (ClientType) request.getSession().getAttribute("clientType");
+      ClientType clientType = (ClientType) request.getSession().getAttribute(Constants.SESSION_CLIENT_TYPE);
       if (clientType == null) {
         clientType = new ClientType();
         clientType.setParameters(request);

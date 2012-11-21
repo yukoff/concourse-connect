@@ -101,7 +101,7 @@ public class InstanceCacheEntryFactory implements CacheEntryFactory {
         list.setDomainName(domainName);
         list.setContext(context);
         list.buildList(db);
-        if (list.size() > 0) {
+        if (!list.isEmpty()) {
           return list.get(0);
         }
       } else {

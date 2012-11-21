@@ -60,6 +60,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.concursive.connect.Constants;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.sql.Connection;
@@ -125,7 +126,7 @@ public class URLControllerServlet extends HttpServlet {
         String newUrl = URLFactory.createURL(prefs.getPrefs()) + path;
         request.setAttribute("redirectTo", newUrl);
         LOG.debug("redirectTo: " + newUrl);
-        request.removeAttribute("PageLayout");
+        request.removeAttribute(Constants.REQUEST_PAGE_LAYOUT);
         redirect = true;
       }
     }

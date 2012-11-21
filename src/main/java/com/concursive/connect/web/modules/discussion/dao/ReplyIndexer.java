@@ -53,6 +53,8 @@ import com.concursive.connect.indexer.IndexerContext;
 import com.concursive.connect.web.modules.login.utils.UserUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
@@ -71,6 +73,8 @@ import java.sql.SQLException;
  * @created May 27, 2004
  */
 public class ReplyIndexer implements Indexer {
+
+  private static Log LOG = LogFactory.getLog(ReplyIndexer.class);
 
   /**
    * Given a database and a Lucene writer, this method will add content to the
@@ -106,7 +110,7 @@ public class ReplyIndexer implements Indexer {
     }
     rs.close();
     pst.close();
-    System.out.println("IssueReplyIndexer-> Finished: " + count);
+    LOG.info("IssueReplyIndexer Finished: " + count);
   }
 
 
@@ -150,7 +154,7 @@ public class ReplyIndexer implements Indexer {
     }
     writer.addDocument(document);
     if (System.getProperty("DEBUG") != null && modified) {
-      System.out.println("IssueReplyIndexer-> Added: " + reply.getId());
+      LOG.debug("IssueReplyIndexer Added: " + reply.getId());
     }
   }
 

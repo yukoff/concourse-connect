@@ -171,7 +171,7 @@ public class ActivityStreamViewer implements IPortletViewer {
       }
       // Since this is a category page, determine which data is shown
       if (PortalUtils.getDashboardPortlet(request).isCached()) {
-        if (PortalUtils.canShowSensitiveData(request)) {
+        if (PortalUtils.isPortletInProtectedMode(request)) {
           // Limit the data to a participant
           projectHistoryList.setForParticipant(Constants.TRUE);
         } else {

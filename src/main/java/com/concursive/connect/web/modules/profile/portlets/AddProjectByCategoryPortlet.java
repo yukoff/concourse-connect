@@ -60,6 +60,8 @@ import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
 import com.concursive.connect.web.portal.PortalUtils;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.StateSelect;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.portlet.*;
 import java.io.IOException;
@@ -382,7 +384,7 @@ public class AddProjectByCategoryPortlet extends GenericPortlet {
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.debug("processAction", e);
       throw new IOException("Exception in AddProjectByCategoryPortlet");
     }
   }

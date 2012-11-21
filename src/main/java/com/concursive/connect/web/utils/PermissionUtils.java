@@ -128,7 +128,7 @@ public class PermissionUtils {
       }
       // Deny if not found
       if (thisProject == null) {
-        LOG.warn("Project is null");
+        LOG.debug("Project is null");
         return false;
       }
 

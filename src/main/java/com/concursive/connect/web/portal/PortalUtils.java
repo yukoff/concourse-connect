@@ -52,6 +52,7 @@ import com.concursive.commons.text.StringUtils;
 import com.concursive.commons.web.mvc.beans.GenericBean;
 import com.concursive.commons.workflow.ObjectHookAction;
 import com.concursive.commons.workflow.ObjectHookManager;
+import com.concursive.connect.Constants;
 import com.concursive.connect.cache.utils.CacheUtils;
 import com.concursive.connect.cms.portal.dao.DashboardPage;
 import com.concursive.connect.cms.portal.dao.DashboardPortlet;
@@ -149,7 +150,7 @@ public class PortalUtils {
   }
 
   public static User getUser(PortletRequest request) {
-    return (User) request.getAttribute("user");
+    return (User) request.getAttribute(Constants.REQUEST_USER);
   }
 
   public static ApplicationPrefs getApplicationPrefs(PortletRequest request) {
@@ -182,7 +183,7 @@ public class PortalUtils {
   }
 
   public static Key getApplicationKey(PortletRequest request) {
-    return (Key) request.getAttribute("TEAM.KEY");
+    return (Key) request.getAttribute(ApplicationPrefs.TEAM_KEY);
   }
 
   public static String getApplicationUrl(PortletRequest request) {
@@ -321,7 +322,7 @@ public class PortalUtils {
 
   private static void process(PortletRequest request, int action, Object previousObject, Object object) {
     // Required objects for workflow
-    User user = (User) request.getAttribute("user");
+    User user = (User) request.getAttribute(Constants.REQUEST_USER);
     int userId = -1;
     if (user != null) {
       userId = user.getId();
@@ -376,7 +377,7 @@ public class PortalUtils {
     return (serverName + (port != 80 && port != 443 ? ":" + String.valueOf(port) : ""));
   }
 
-  public static void processErrors(PortletRequest request, HashMap errors) {
+  public static void processErrors(PortletRequest request, Map errors) {
     for (Object o : errors.keySet()) {
       String errorKey = (String) o;
       String errorMsg = (String) errors.get(errorKey);
@@ -485,7 +486,7 @@ public class PortalUtils {
     // TODO: currently for ticket and ticket history
     //ObjectUtils.invokeMethod(bean, "setRequestItems", new HttpRequestContext(request));
     // Check for valid user
-    User thisUser = (User) request.getAttribute("user");
+    User thisUser = (User) request.getAttribute(Constants.REQUEST_USER);
     if (thisUser != null) {
       // Populate date/time fields using the user's timezone and locale
       if (thisUser.getTimeZone() != null) {
@@ -768,7 +769,7 @@ public class PortalUtils {
     }
   }
 
-  public static boolean canShowSensitiveData(PortletRequest request) {
+  public static boolean isPortletInProtectedMode(PortletRequest request) {
     // Use the application prefs
     ApplicationPrefs prefs = PortalUtils.getApplicationPrefs(request);
     return PortalUtils.getDashboardPortlet(request).isSensitive() &&

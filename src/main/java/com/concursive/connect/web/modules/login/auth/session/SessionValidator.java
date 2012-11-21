@@ -99,14 +99,14 @@ public class SessionValidator implements ISessionValidator {
       }
       LOG.debug("Cookie found with guid: " + guid);
       // Retrieve prefs to see if user with guid exists
-      ApplicationPrefs prefs = (ApplicationPrefs) context.getAttribute("applicationPrefs");
+      ApplicationPrefs prefs = (ApplicationPrefs) context.getAttribute(Constants.APPLICATION_PREFS);
       // Connection info
       ConnectionElement ce = new ConnectionElement();
       ce.setDriver(prefs.get("SITE.DRIVER"));
       ce.setUrl(prefs.get("SITE.URL"));
       ce.setUsername(prefs.get("SITE.USER"));
       ce.setPassword(prefs.get("SITE.PASSWORD"));
-      ConnectionPool sqlDriver = (ConnectionPool) context.getAttribute("ConnectionPool");
+      ConnectionPool sqlDriver = (ConnectionPool) context.getAttribute(Constants.CONNECTION_POOL);
       Connection db = null;
       try {
         db = sqlDriver.getConnection(ce);

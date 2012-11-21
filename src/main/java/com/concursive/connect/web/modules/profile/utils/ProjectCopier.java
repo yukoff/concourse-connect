@@ -66,6 +66,8 @@ import com.concursive.connect.web.modules.profile.dao.PermissionList;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.wiki.dao.WikiList;
 import com.concursive.connect.web.utils.LookupList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -82,6 +84,8 @@ import java.util.HashMap;
 
 public class ProjectCopier {
 
+  private static Log LOG = LogFactory.getLog(ProjectCopier.class);
+
   public static Project clone(CloneBean bean, Connection db, int groupId, int userId) throws SQLException {
     Project project = null;
     try {
@@ -90,12 +94,9 @@ public class ProjectCopier {
       int oldProjectId = bean.getProjectId();
 
       // Load permissions and resources for this member
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("ProjectCopier-> ProjectId: " + oldProjectId);
-      }
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("ProjectCopier-> UserId: " + userId);
-      }
+      LOG.debug("ProjectCopier-> ProjectId: " + oldProjectId);
+      LOG.debug("ProjectCopier-> UserId: " + userId);
+
       User user = UserUtils.loadUser(userId);
 
       LookupList roleList = new LookupList(db, "lookup_project_role");
@@ -256,9 +257,8 @@ public class ProjectCopier {
       // Wiki
       if (bean.getCloneWiki() &&
           hasPermission(db, project, user, member, "project-wiki-view", roleList)) {
-        if (System.getProperty("DEBUG") != null) {
-          System.out.println("ProjectCopier-> Inserting wiki");
-        }
+        LOG.debug("ProjectCopier-> Inserting wiki");
+
         // The wiki items
         WikiList wikiList = new WikiList();
         wikiList.setProjectId(oldProjectId);
@@ -343,8 +343,7 @@ public class ProjectCopier {
       }
       db.commit();
     } catch (Exception e) {
-      System.out.println("ProjectCopier-> ERROR: " + e.getMessage());
-      e.printStackTrace(System.out);
+       LOG.error("clone", e);
       db.rollback();
     } finally {
       db.setAutoCommit(true);
@@ -373,9 +372,8 @@ public class ProjectCopier {
       db.setAutoCommit(false);
 
       // Load permissions and resources for this member
-      if (System.getProperty("DEBUG") != null) {
-        System.out.println("ProjectCopier-> RequirementId: " + requirementId);
-      }
+      LOG.debug("ProjectCopier-> RequirementId: " + requirementId);
+
       Project project = new Project(db, bean.getProjectId());
       TeamMember member = new TeamMember(db, project.getId(), userId);
       User user = UserUtils.loadUser(userId);
@@ -401,8 +399,7 @@ public class ProjectCopier {
       }
       db.commit();
     } catch (Exception e) {
-      System.out.println("ProjectCopier-> ERROR: " + e.getMessage());
-      e.printStackTrace(System.out);
+      LOG.error("ProjectCopier-> cloneRequirement", e);
       db.rollback();
     } finally {
       db.setAutoCommit(true);

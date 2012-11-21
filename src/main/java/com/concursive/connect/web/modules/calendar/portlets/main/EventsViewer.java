@@ -92,6 +92,9 @@ public class EventsViewer implements IPortletViewer {
 
     // Determine the project container to use
     Project project = findProject(request);
+    if (project != null) {
+      LOG.debug("Using project: " + project.getTitle());
+    }
 
     // Check the user's permissions
     User user = getUser(request);

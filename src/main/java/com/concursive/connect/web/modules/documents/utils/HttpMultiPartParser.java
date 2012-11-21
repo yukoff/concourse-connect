@@ -49,6 +49,8 @@ package com.concursive.connect.web.modules.documents.utils;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -101,6 +103,7 @@ import java.util.StringTokenizer;
  * @created December 6, 2001
  */
 public class HttpMultiPartParser {
+  protected static final Log LOG = LogFactory.getLog(HttpMultiPartParser.class);
   private final String fs = System.getProperty("file.separator");
   private final int ONE_MB = 1024 * 1024 * 1;
   private boolean useUniqueName = false;
@@ -343,17 +346,13 @@ public class HttpMultiPartParser {
     String contentType = request.getHeader("Content-type");
     //TODO: use the contentLength for a progress bar
     int contentLength = request.getContentLength();
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("HttpMultiPartParser-> Length: " + contentLength);
-    }
+    LOG.debug("HttpMultiPartParser Length: " + contentLength);
     if ((contentType == null) || (!contentType.startsWith("multipart/"))) {
       throw new IllegalArgumentException("Not a multipart message");
     }
     int boundaryIndex = contentType.indexOf("boundary=");
     String boundary = contentType.substring(boundaryIndex + 9);
-    if (System.getProperty("DEBUG") != null) {
-      System.out.println("HttpMultiPartParser-> Request boundary: " + boundary);
-    }
+    LOG.debug("Request boundary: " + boundary);
     ServletInputStream is = request.getInputStream();
     if (is == null) {
       throw new IllegalArgumentException("InputStream");
@@ -384,6 +383,7 @@ public class HttpMultiPartParser {
     }
     //Continue with the rest of the lines
     while (line != null) {
+      LOG.trace(line);
       // Process boundary line  ----------------------------------------
       if (line == null || !line.startsWith(boundary)) {
         return dataTable;
@@ -503,9 +503,7 @@ public class HttpMultiPartParser {
             sb.append(line);
           }
         }
-        if (System.getProperty("DEBUG") != null) {
-          System.out.println("HttpMultiPartParser-> Adding param: " + paramName);
-        }
+        LOG.debug(" HttpMultiPartParser ->Adding param: " + paramName);
         dataTable.put(paramName, sb.toString());
         continue;
       }
@@ -611,10 +609,11 @@ public class HttpMultiPartParser {
           }
         }
         if (validFile) {
+          LOG.debug("Adding file param: " + fileInfo.getName());
           dataTable.put(paramName, fileInfo);
         }
       } catch (Exception e) {
-        System.out.println("HttpMultiPartParser-> error: " + e.getMessage());
+        LOG.error("HttpMultiPartParser-> error: " + e.getMessage(), e);
         if (os != null) {
           os.close();
         }
@@ -622,7 +621,7 @@ public class HttpMultiPartParser {
           File thisFile = new File(path);
           if (thisFile.exists()) {
             thisFile.delete();
-            System.out.println("HttpMultiPartParser-> Temporary file deleted");
+            LOG.warn("HttpMultiPartParser-> Temporary file deleted");
           }
         }
       }

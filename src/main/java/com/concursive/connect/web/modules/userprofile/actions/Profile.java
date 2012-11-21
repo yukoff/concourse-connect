@@ -211,6 +211,7 @@ public final class Profile extends GenericAction {
         db = getConnection(context);
         password.update(db);
       } catch (Exception e) {
+        LOG.debug("Update password error", e);
       } finally {
         freeConnection(context, db);
       }

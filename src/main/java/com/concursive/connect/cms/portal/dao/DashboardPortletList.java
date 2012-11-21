@@ -48,6 +48,8 @@ package com.concursive.connect.cms.portal.dao;
 import com.concursive.commons.xml.XMLUtils;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 
 import java.sql.Connection;
@@ -65,6 +67,8 @@ import java.util.Iterator;
  * @created January 20, 2008
  */
 public class DashboardPortletList extends ArrayList<DashboardPortlet> {
+
+  private static Log LOG = LogFactory.getLog(DashboardPortletList.class);
 
   private int pageId = -1;
 
@@ -132,12 +136,20 @@ public class DashboardPortletList extends ArrayList<DashboardPortlet> {
     // Pages have rows
     ArrayList rows = new ArrayList();
     XMLUtils.getAllChildren(xml.getDocumentElement(), "row", rows);
+    // ERROR if no rows found
+    if (rows.isEmpty()) {
+      LOG.error("buildTemporaryList-> rows is empty");
+    }
     Iterator i = rows.iterator();
     while (i.hasNext()) {
       Element rowEl = (Element) i.next();
       // Rows have columns
       ArrayList columns = new ArrayList();
       XMLUtils.getAllChildren(rowEl, "column", columns);
+      // ERROR if no columns found
+      if (columns.isEmpty()) {
+        LOG.error("buildTemporaryList-> columns is empty");
+      }
       Iterator j = columns.iterator();
       while (j.hasNext()) {
         Element columnEl = (Element) j.next();

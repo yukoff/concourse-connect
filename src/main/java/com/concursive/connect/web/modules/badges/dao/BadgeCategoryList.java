@@ -403,9 +403,7 @@ public class BadgeCategoryList extends ArrayList<BadgeCategory> {
    * @param basePath
    */
   public void delete(Connection db, String basePath) throws SQLException {
-    Iterator<BadgeCategory> badgeCategoryItr = this.iterator();
-    while (badgeCategoryItr.hasNext()) {
-      BadgeCategory badgeCategory = badgeCategoryItr.next();
+    for (BadgeCategory badgeCategory : this) {
       badgeCategory.delete(db, basePath);
     }
   }
@@ -415,9 +413,7 @@ public class BadgeCategoryList extends ArrayList<BadgeCategory> {
    * @param db
    */
   private void buildLogos(Connection db) throws SQLException {
-    Iterator<BadgeCategory> badgeCategoryItr = this.iterator();
-    while (badgeCategoryItr.hasNext()) {
-      BadgeCategory badgeCategory = badgeCategoryItr.next();
+    for (BadgeCategory badgeCategory : this) {
       badgeCategory.buildLogo(db);
     }
   }

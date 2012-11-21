@@ -253,9 +253,7 @@ public class TaskCategoryList extends ArrayList<TaskCategory> {
     rs.close();
     pst.close();
 
-    Iterator categories = this.iterator();
-    while (categories.hasNext()) {
-      TaskCategory thisCategory = (TaskCategory) categories.next();
+    for (TaskCategory thisCategory : this) {
       thisCategory.buildResources(db);
     }
   }
@@ -328,9 +326,7 @@ public class TaskCategoryList extends ArrayList<TaskCategory> {
   public String getHtmlSelect(String selectName, int selectedId) {
     HtmlSelect thisSelect = new HtmlSelect();
     thisSelect.addItem(-1, "-- None --");
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      TaskCategory thisCategory = (TaskCategory) i.next();
+    for (TaskCategory thisCategory : this) {
       thisSelect.addItem(
           thisCategory.getId(),
           thisCategory.getDescription());
@@ -372,9 +368,7 @@ public class TaskCategoryList extends ArrayList<TaskCategory> {
    */
   public HtmlSelect getHtmlSelect() {
     HtmlSelect thisSelect = new HtmlSelect();
-    Iterator i = this.iterator();
-    while (i.hasNext()) {
-      TaskCategory thisCategory = (TaskCategory) i.next();
+    for (TaskCategory thisCategory : this) {
       thisSelect.addItem(
           thisCategory.getId(),
           thisCategory.getDescription());

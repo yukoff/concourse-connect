@@ -130,7 +130,7 @@ public class TagCloudProjectCategoryCountsViewer implements IPortletViewer {
         // Get this project's tag cloud
         UniqueTagList tagList = new UniqueTagList();
         tagList.setInstanceId(PortalUtils.getInstance(request).getId());
-        if (PortalUtils.canShowSensitiveData(request) && PortalUtils.getUser(request).getId() > 0) {
+        if (PortalUtils.isPortletInProtectedMode(request) && PortalUtils.getUser(request).getId() > 0) {
           tagList.setForParticipant(Constants.TRUE);
         } else {
           // Use the most generic settings since this portlet is cached

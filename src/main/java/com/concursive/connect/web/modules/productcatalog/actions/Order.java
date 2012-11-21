@@ -49,6 +49,8 @@ package com.concursive.connect.web.modules.productcatalog.actions;
 import com.concursive.commons.codec.PrivateString;
 import com.concursive.commons.email.SMTPMessage;
 import com.concursive.commons.email.SMTPMessageFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import com.concursive.commons.web.mvc.actions.ActionContext;
 import com.concursive.connect.Constants;
 import com.concursive.connect.config.ApplicationPrefs;
@@ -75,6 +77,8 @@ import java.util.StringTokenizer;
  * @created September 21, 2004
  */
 public final class Order extends GenericAction {
+
+	private static final Log LOG = LogFactory.getLog(Order.class);
 
   /**
    * Description of the Method
@@ -238,7 +242,7 @@ public final class Order extends GenericAction {
       OrderBean orderBean = (OrderBean) context.getFormBean();
       return "OrderListOK";
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+			LOG.error("executeCommandList", e);
     }
     return "OrderCatalogError";
   }
@@ -263,7 +267,7 @@ public final class Order extends GenericAction {
       orderBean.remove(Integer.parseInt(uniqueId));
       return "OrderListOK";
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+				LOG.error("executeCommandRemove", e);
     }
     return "OrderCatalogError";
   }
@@ -331,6 +335,7 @@ public final class Order extends GenericAction {
       if (context.getRequest().getAttribute("actionError") != null) {
         return "OrderSystemError";
       }
+	  LOG.debug("Order entry triggered");
       db = getConnection(context);
       synchronized (this) {
         if (!orderBean.isSaved()) {
@@ -536,7 +541,7 @@ public final class Order extends GenericAction {
         thisItem = new FileItem(db, thisAttachment.getFileId());
       }
     } catch (Exception e) {
-      e.printStackTrace(System.out);
+			LOG.error("executeCommandDownloadAttachment", e);
     } finally {
       freeConnection(context, db);
     }

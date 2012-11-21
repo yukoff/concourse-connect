@@ -55,6 +55,7 @@ import org.w3c.dom.Element;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The preferences for a specific instance of a portlet
@@ -157,8 +158,8 @@ public class DashboardPortletPrefs extends GenericBean {
   public String[] getValues() throws Exception {
     // De-serialize for the preferences API
     XMLUtils xml = new XMLUtils(value);
-    ArrayList<Element> arrayList = XMLUtils.getElements(xml.getDocumentElement(), "value");
-    ArrayList<String> valueList = new ArrayList<String>();
+    List<Element> arrayList = XMLUtils.getElements(xml.getDocumentElement(), "value");
+    List<String> valueList = new ArrayList<String>();
     Iterator i = (arrayList.iterator());
     while (i.hasNext()) {
       String text = XMLUtils.getNodeText((Element) i.next());

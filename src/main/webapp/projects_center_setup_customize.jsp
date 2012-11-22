@@ -189,6 +189,7 @@
           </tr>
         </table>
       </fieldset>
+      <input type="hidden" name="token" value="${clientType.token}" />
       <input type="submit" class="submit" value="<ccp:label name="button.update">Update</ccp:label>">
       <input type="button" class="cancel" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='${ctx}/show/${project.uniqueId}/setup'">
     </form>

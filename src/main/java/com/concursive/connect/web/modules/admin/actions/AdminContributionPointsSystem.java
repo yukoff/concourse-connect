@@ -67,6 +67,7 @@ public class AdminContributionPointsSystem extends GenericAction {
   //attributes
   public static final String ERROR_PERMISSION = "PermissionError";
   public static final String ERROR_SYSTEM = "SystemError";
+  public static final String ERROR_TOKEN = "TokenError";
   public static final String ERROR = "Error";
   public static final String ERROR_VALIDATION_MSG = "Points should be a positive integer value";
   public static final String LOOKUP_CONTRIBUTION_LIST = "lookupContributionList";
@@ -115,6 +116,9 @@ public class AdminContributionPointsSystem extends GenericAction {
   public String executeCommandSave(ActionContext context) {
     if (!getUser(context).getAccessAdmin()) {
       return ERROR_PERMISSION;
+    }
+    if (!hasMatchingFormToken(context)) {
+      return ERROR_TOKEN;
     }
     Connection db = null;
     try {

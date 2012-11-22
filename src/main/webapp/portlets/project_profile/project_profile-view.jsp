@@ -426,7 +426,7 @@ Can be removed and made into a seperate portlet --%>
           <span class="street-address"><c:out value="${project.address}"/></span>
         </c:if>
         <c:if test="${!empty project.city && !empty project.state}">
-          <span class="regoin"><c:out value="${project.city}"/></span>, <span class="locality"><c:out
+          <span class="region"><c:out value="${project.city}"/></span>, <span class="locality"><c:out
             value="${project.state}"/></span>
         </c:if>
         <c:if test="${!empty project.postalCode}">

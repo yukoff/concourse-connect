@@ -123,6 +123,9 @@ public final class AdminUsage extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     getApplicationPrefs(context).configureWorkflowManager(context.getServletContext());
     return "ReloadWorkflowsOK";
   }
@@ -138,6 +141,9 @@ public final class AdminUsage extends GenericAction {
   public String executeCommandStoreURL(ActionContext context) {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
+    }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
     }
     ApplicationPrefs prefs = getApplicationPrefs(context);
     String url = URLFactory.createURL(prefs.getPrefs());

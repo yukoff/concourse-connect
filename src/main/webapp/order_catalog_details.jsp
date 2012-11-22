@@ -160,10 +160,8 @@
                       <ccp:evaluate if="<%= product.getOptionList().size() > 0 %>">
                         <%
                           int optionCount = 0;
-                          Iterator i = product.getOptionList().iterator();
-                          while (i.hasNext()) {
+                    for (Option thisOption : product.getOptionList()) {
                             ++optionCount;
-                            Option thisOption = (Option) i.next();
                         %>
                         <ccp:evaluate if="<%= thisOption.getType() == Option.TYPE_INTEGER %>">
                           <input type="hidden" name="optionCount<%= optionCount %>"

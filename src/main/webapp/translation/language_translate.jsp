@@ -134,10 +134,10 @@ Details
       <ccp:evaluate if="<%= hasReturn(dictionaryItem.getDefaultValue()) %>">
         <td valign="top">
           <%--<%= toHtml(dictionaryItem.getDefaultValue()) %>--%>
-          <textarea cols="49" rows="8" wrap="off"><%= toString(dictionaryItem.getDefaultValue()).trim() %></textarea>
+          <textarea cols="49" rows="8" wrap="off"><c:out value="<%= dictionaryItem.getDefaultValue() %>" /></textarea>
         </td>
         <td>
-          <textarea name="paramValue<%= dictionaryItem.getId() %>" cols="49" rows="8" wrap="off"><%= toString(dictionaryItem.getParamValue1()) %></textarea>
+          <textarea name="paramValue<%= dictionaryItem.getId() %>" cols="49" rows="8" wrap="off"><c:out value="<%= dictionaryItem.getParamValue1() %>" /></textarea>
           <ccp:evaluate if='<%= hasText((String) request.getAttribute(dictionaryItem.getId() + "Error")) %>'>
             <br />
             <%= showAttribute(request, "paramValue" + dictionaryItem.getId() + "Error") %>

@@ -111,6 +111,9 @@ public final class AdminCustomize extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     Connection db = null;
     int count = 0;
     try {

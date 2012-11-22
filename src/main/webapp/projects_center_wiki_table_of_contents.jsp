@@ -49,7 +49,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" scope="request" />
 <%@ include file="initPage.jsp" %>
 <portlet:defineObjects/>
-<h3>${title}</h3>
+<h3><c:out value="${title}" /></h3>
 <ol>
   <%--@elvariable id="wikiContext" type="com.concursive.connect.web.modules.wiki.utils.WikiToHTMLContext"--%>
   <c:forEach items="${wikiContext.headerAnchors}" var="anchor">

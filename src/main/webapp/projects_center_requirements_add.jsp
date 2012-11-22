@@ -139,7 +139,7 @@
           <table border="0" cellpadding="0" cellspacing="0" class="empty">
             <tr>
               <td>
-                <textarea name="description" cols="55" rows="8"><%= toString(Requirement.getDescription()) %></textarea><br />
+                <textarea name="description" cols="55" rows="8"><c:out value="<%= Requirement.getDescription() %>" /></textarea><br />
                 <%= showAttribute(request, "descriptionError") %>
               </td>
               <td valign="top">

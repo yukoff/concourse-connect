@@ -45,6 +45,7 @@
   --%>
 <%@ taglib uri="/WEB-INF/portlet.tld" prefix="portlet" %>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="session"/>
 <jsp:useBean id="clientType" class="com.concursive.connect.web.utils.ClientType" scope="session"/>
 <jsp:useBean id="content" class="java.lang.String" scope="request"/>
@@ -61,7 +62,7 @@
 <portlet:actionURL var="submitContentUrl" portletMode="view" />
 <form method="POST" name="<portlet:namespace/>inputForm" action="<%= pageContext.getAttribute("submitContentUrl") %>" onSubmit="return checkForm<portlet:namespace/>(this)">
   <div width="100%">
-    <textarea rows="20" id="<portlet:namespace/>content" name="content" cols="80"><%= toString( (String) renderRequest.getAttribute("content")) %></textarea>
+    <textarea rows="20" id="<portlet:namespace/>content" name="content" cols="80"><c:out value='<%= (String) renderRequest.getAttribute("content") %>' /></textarea>
   </div>
   <input type="submit" name="Save" value="Save" />
   <input type="button" value="Cancel" onClick="window.location.href='<%= pageContext.getAttribute("submitContentUrl") %>'" />

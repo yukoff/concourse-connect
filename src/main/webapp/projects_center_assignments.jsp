@@ -265,7 +265,7 @@
              onmouseout="window.status='';hideMenu('menuActivity');"><%= toHtml(thisAssignment.getRole()) %></a>
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisRequirement.getReadOnly() %>">
-          <%= toHtml(thisAssignment.getRole()) %>
+          <c:out value="<%= thisAssignment.getRole() %>" />
         </ccp:evaluate>
         <ccp:evaluate if="<%= thisAssignment.hasNotes() %>">
           <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= thisAssignment.getProjectId() %>&aid=<%= thisAssignment.getId() %>&popup=true','400','500','yes','yes');"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></a>
@@ -293,14 +293,14 @@
         }
 %>
       <ccp:evaluate if="<%= thisAssignment.getAssignedUserList().size() > 0 && StringUtils.hasText(thisAssignment.getResponsible()) %>"><br /></ccp:evaluate>
-      <%= toHtml(thisAssignment.getResponsible()) %>
+      <c:out value="<%= thisAssignment.getResponsible() %>" />
     </td>
     <td valign="top" align="center" nowrap>
-      <%= thisAssignment.getEstimatedLoeString() %>
+      <c:out value="<%= thisAssignment.getEstimatedLoeString() %>" />
     </td>
     <td valign="top" align="center" nowrap>
       <ccp:evaluate if="<%= thisAssignment.isOverBudget() %>"><font color="red"></ccp:evaluate>
-      <%= thisAssignment.getActualLoeString() %>
+      <c:out value="<%= thisAssignment.getActualLoeString() %>" />
       <ccp:evaluate if="<%= thisAssignment.isOverBudget() %>"></font></ccp:evaluate>
     </td>
     <td valign="top" align="center" nowrap>

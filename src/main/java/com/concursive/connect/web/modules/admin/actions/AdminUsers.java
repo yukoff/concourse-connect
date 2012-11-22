@@ -188,6 +188,9 @@ public final class AdminUsers extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     User prevUser = null;
     User thisUser = (User) context.getFormBean();
     Connection db = null;

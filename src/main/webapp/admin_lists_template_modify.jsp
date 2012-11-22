@@ -95,7 +95,7 @@ Adding a new document folder template
             <table border="0" cellpadding="0" cellspacing="0" class="empty" width="100%">
               <tr>
                 <td>
-              <textarea name="listNames" cols="30" rows="5"><%=toString(listsTemplate.getListNames())%></textarea>
+                  <textarea name="listNames" cols="30" rows="5"><c:out value="<%= listsTemplate.getListNames() %>" /></textarea>
                 </td>
                 <td nowrap="nowrap" valign="top" align="left" width="100%">
                   <span class="required">*</span>

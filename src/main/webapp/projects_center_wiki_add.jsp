@@ -106,7 +106,7 @@
             </label>
           </div>
           <div class="wikiBody">
-            <textarea name="content" id="content" rows="25" class="height400"><%= toString(wiki.getContent()) %></textarea>
+            <textarea name="content" id="content" rows="25" class="height400"><c:out value="<%= wiki.getContent() %>" /></textarea>
           </div>
         </div>
         <input type="hidden" name="id" value="<%= wiki.getId() %>" />

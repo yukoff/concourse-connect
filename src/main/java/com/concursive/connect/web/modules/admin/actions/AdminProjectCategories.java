@@ -177,6 +177,9 @@ public final class AdminProjectCategories extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     Connection db = null;
     boolean recordUpdated = false;
     try {
@@ -213,6 +216,9 @@ public final class AdminProjectCategories extends GenericAction {
   public String executeCommandDelete(ActionContext context) {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
+    }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
     }
     Connection db = null;
     try {

@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="documentFolderTemplate" class="com.concursive.connect.web.modules.documents.dao.DocumentFolderTemplate" scope="request" />
 <jsp:useBean id="projectCategoryList" class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" scope="request"/>
 <%@ include file="initPage.jsp" %>
@@ -95,7 +96,7 @@ Adding a new document folder template
             <table border="0" cellpadding="0" cellspacing="0" class="empty" width="100%">
               <tr>
                 <td>
-              <textarea name="folderNames" cols="30" rows="5"><%=toString(documentFolderTemplate.getFolderNames())%></textarea>
+                <textarea name="folderNames" cols="30" rows="5"><c:out value="<%= documentFolderTemplate.getFolderNames() %>" /></textarea>
                 </td>
                 <td nowrap="nowrap" valign="top" align="left" width="100%">
                   <span class="required">*</span>

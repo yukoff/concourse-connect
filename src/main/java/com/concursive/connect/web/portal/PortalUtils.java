@@ -65,6 +65,7 @@ import com.concursive.connect.web.modules.login.utils.InstanceUtils;
 import com.concursive.connect.web.modules.members.dao.TeamMember;
 import com.concursive.connect.web.modules.profile.dao.Project;
 import com.concursive.connect.web.modules.profile.utils.ProjectUtils;
+import com.concursive.connect.web.utils.ClientType;
 import com.concursive.connect.web.utils.LookupList;
 import com.concursive.connect.web.utils.PagedListInfo;
 import freemarker.template.Configuration;
@@ -302,6 +303,16 @@ public class PortalUtils {
       }
     }
     return null;
+  }
+
+    public static ClientType getClientType(PortletRequest request) {
+    return (ClientType) request.getAttribute(Constants.REQUEST_CLIENT_TYPE);
+  }
+
+  public static boolean hasMatchingFormToken(PortletRequest request) {
+    ClientType clientType = getClientType(request);
+    String requestToken = request.getParameter("token");
+    return (clientType != null && requestToken != null && StringUtils.hasText(clientType.getToken()) && requestToken.equals(clientType.getToken()));
   }
 
   public static void processInsertHook(PortletRequest request, Object object) {

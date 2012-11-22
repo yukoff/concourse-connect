@@ -92,6 +92,9 @@ public final class Search extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     Connection db = null;
     try {
       // Use the configured indexer

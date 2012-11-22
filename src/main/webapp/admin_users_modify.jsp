@@ -296,7 +296,7 @@ User Details<br />
     </tr>
   </tbody>
 </table>
-
+  <input type="hidden" name="token" value="${clientType.token}" />
 <input type="submit" value="Save" />
 <input type="button" value="Cancel" onClick="window.location.href='<%= ctx %>/AdminUserDetails.do?command=Details&id=<%= thisUser.getId() %>'" />
 </form>

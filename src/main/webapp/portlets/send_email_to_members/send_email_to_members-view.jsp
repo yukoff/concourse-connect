@@ -101,6 +101,7 @@
 	  </c:otherwise>
 	  </c:choose>
     </fieldset>
+      <input type="hidden" name="token" value="${clientType.token}" />
     <input type="submit" value="Send Email" class="submit">
     <c:choose>
       <c:when test="${'true' eq popup}">

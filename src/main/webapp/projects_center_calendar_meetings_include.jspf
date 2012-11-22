@@ -103,7 +103,7 @@
           <c:if test="${!empty thisMeeting.location}">
             <span class="location">
               <span class="at">&#64;</span>
-              <%= toHtml(thisMeeting.getLocation()) %>
+              <c:out value="${thisMeeting.location}" />
             </span>
           </c:if>
           <%-- show duration --%>

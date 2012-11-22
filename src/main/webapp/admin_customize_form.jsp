@@ -214,6 +214,7 @@
           <input type="hidden" name="colorScheme" value="<%= applicationPrefs.get(ApplicationPrefs.COLOR_SCHEME) %>"/>
          </div> 
         </fieldset>
+         <input type="hidden" name="token" value="${clientType.token}" />
         <input type="submit" name="Save" value="<ccp:label name="button.save">Save</ccp:label>" class="submit" />
 		<input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="javascript:this.form.dosubmit.value='false';window.location.href='<%= ctx %>/admin'">
 		<input type="hidden" name="dosubmit" value="true">

@@ -149,7 +149,7 @@
 				<input type="text" id="name" name="subject" size="57" maxlength="255" value="<%= toHtmlValue(reply.getSubject()) %>"><font color="red">*</font>
         <label for="messageBody"><ccp:label name="projectsCenterIssues.reply.message">Message <span class="required">*</span></ccp:label></label>
         <%= showAttribute(request, "bodyError") %>
-        <textarea rows="10" name="body" id="messageBody" cols="70"><%= toString(reply.getBody()) %></textarea>
+        <textarea rows="10" name="body" id="messageBody" cols="70"><c:out value="<%= reply.getBody() %>" /></textarea>
         <ccp:evaluate if="<%= forum.getAllowFileAttachments() && reply.getId() == -1 %>">
           <label>File Attachments</label>
           <%

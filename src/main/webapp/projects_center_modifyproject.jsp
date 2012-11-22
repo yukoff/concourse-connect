@@ -292,6 +292,7 @@
       <input type="hidden" name="subCategory2Id" value="<%= project.getSubCategory2Id() %>">
       <input type="hidden" name="subCategory3Id" value="<%= project.getSubCategory3Id() %>">
       <input type="hidden" name="owner" value="<%= project.getOwner() %>">
+      <input type="hidden" name="token" value="${clientType.token}" />
       <input type="submit" value="<ccp:label name="button.update">Update</ccp:label>" class="submit">
       <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Details&pid=<%= project.getId() %>'" class="cancel">
       </form>

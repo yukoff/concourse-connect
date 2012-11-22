@@ -165,6 +165,9 @@
         <%= showAttribute(request, "descriptionError") %>
         <textarea name="description" class="height100"><%= toString(contactUs.getDescription()) %></textarea>
       </fieldset>
+      <c:if test="${!empty contactUs.token}">
+        <input type="hidden" name="token" value="${contactUs.token}"/>
+      </c:if>
       <input type="hidden" name="after_submit" value="after_submit_url"/>
       <input type="submit" value="submit" name="submit" class="submit"/>
     </div>

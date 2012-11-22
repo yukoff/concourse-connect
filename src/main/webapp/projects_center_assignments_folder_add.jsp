@@ -134,7 +134,7 @@
           <table border="0" cellpadding="0" cellspacing="0" class="empty">
             <tr>
               <td>
-                <textarea rows="8" name="description" cols="55"><%= toString(assignmentFolder.getDescription()) %></textarea><br>
+                <textarea rows="8" name="description" cols="55"><c:out value="<%= assignmentFolder.getDescription() %>" /></textarea><br />
                 <%= showAttribute(request, "descriptionError") %>
               </td>
               <td valign="top">

@@ -156,7 +156,7 @@
   calendarView.setDay(day);
 
   //set the timezone if the user is logged in
-  User thisUser = (User) request.getSession().getAttribute("User");
+  User thisUser = (User) request.getSession().getAttribute(Constants.SESSION_USER);
   if (thisUser != null && thisUser.getId() != -1) {
     calendarView.setTimeZone(TimeZone.getTimeZone(thisUser.getTimeZone()));
   } else if (timeZone != null) {

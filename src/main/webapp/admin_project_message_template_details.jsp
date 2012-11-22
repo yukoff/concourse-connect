@@ -83,7 +83,7 @@ Project Message Template Details
       <tr class="containerBody">
         <td nowrap class="formLabel" valign="top"><ccp:label name="messageTemplate.content">Content</ccp:label></td>
         <td>
-          <%= toString(messageTemplate.getContent()) %>
+          <c:out value="<%= messageTemplate.getContent() %>" />
         </td>
       </tr>
     </tbody>

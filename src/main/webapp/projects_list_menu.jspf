@@ -103,34 +103,34 @@
 
   //Menu link functions
   function goProject() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&pid=' + thisProjectId;
   }
   function goNews() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=News&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=News&pid=' + thisProjectId;
   }
   function goDiscussion() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Issues_Categories&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=Issues_Categories&pid=' + thisProjectId;
   }
   function goDocuments() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=File_Library&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=File_Library&pid=' + thisProjectId;
   }
   function goLists() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Lists_Categories&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=Lists_Categories&pid=' + thisProjectId;
   }
   function goPlan() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Requirements&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=Requirements&pid=' + thisProjectId;
   }
   function goTickets() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Tickets&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=Tickets&pid=' + thisProjectId;
   }
   function goTeam() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Team&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=Team&pid=' + thisProjectId;
   }
   function goDetails() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Details&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=Details&pid=' + thisProjectId;
   }
   function goPermissions() {
-    window.location.href='<%= ctx %>/ProjectManagement.do?command=ProjectCenter&section=Setup&pid=' + thisProjectId;
+    window.location.href='${ctx}/ProjectManagement.do?command=ProjectCenter&section=Setup&pid=' + thisProjectId;
   }
   function cloneProject() {
     popURL('CloneProject.do?command=Wizard&projectId=' + thisProjectId + '&popup=true','500','550','yes','yes');
@@ -142,7 +142,7 @@
       <tr id="menuProject" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goProject()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToProjectCenter">Go to Project Center</ccp:label>
@@ -151,7 +151,7 @@
       <tr id="menuNews" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goNews()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToNews">Go to News</ccp:label>
@@ -160,7 +160,7 @@
       <tr id="menuDiscussion" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goDiscussion()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToDiscussion">Go to Discussion</ccp:label>
@@ -169,7 +169,7 @@
       <tr id="menuDocuments" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goDocuments()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToDocuments">Go to Documents</ccp:label>
@@ -178,7 +178,7 @@
       <tr id="menuLists" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goLists()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToLists">Go to Lists</ccp:label>
@@ -187,7 +187,7 @@
       <tr id="menuPlan" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goPlan()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToPlan">Go to Plan</ccp:label>
@@ -196,7 +196,7 @@
       <tr id="menuTickets" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goTickets()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToTickets">Go to Tickets</ccp:label>
@@ -205,7 +205,7 @@
       <tr id="menuTeam" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goTeam()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToTeam">Go to Team</ccp:label>
@@ -214,7 +214,7 @@
       <tr id="menuDetails" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goDetails()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToDetails">Go to Details</ccp:label>
@@ -223,7 +223,7 @@
       <tr id="menuPermissions" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="goPermissions()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_edit-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.goToPermissions">Go to Permissions</ccp:label>
@@ -233,7 +233,7 @@
       <tr id="menuClone" onmouseover="cmOver(this)" onmouseout="cmOut(this)"
           onclick="cloneProject()">
         <th>
-          <img src="<%= ctx %>/images/icons/stock_copy-16.gif" border="0" align="absmiddle" height="16" width="16"/>
+          <img src="${ctx}/images/icons/stock_copy-16.gif" border="0" align="absmiddle" height="16" width="16" />
         </th>
         <td width="100%">
           <ccp:label name="projectsList.menu.cloneProject">Clone Project</ccp:label>

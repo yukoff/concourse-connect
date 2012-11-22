@@ -109,6 +109,7 @@
           <p>Trouble reading? <a href="javascript:newCaptcha('captimg');" class="lightBlue noUnderline">Try another word</a></p>
         </c:if>
       </fieldset>
+    <input type="hidden" name="token" value="${clientType.token}" />
       <input type="submit" class="submit" value="Submit" />
       <c:choose>
         <c:when test="${'true' eq param.popup || 'true' eq popup}">

@@ -118,6 +118,7 @@
             </c:forEach>
             </tbody>
           </table>
+          <input type="hidden" name="token" value="${clientType.token}" />
           <input type="submit" value="<ccp:label name="button.save">Save</ccp:label>">
           <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="window.location.href='${ctx}/AdminApplication.do'">
         </c:if>

@@ -98,7 +98,7 @@
       if (error == null) {
         error = request.getParameter(errorEntry);
       }
-      if (error != null) {
+      if (StringUtils.hasText(error)) {
         return (showSpace ? "&nbsp;<br />" : "") + "<div class=\"portlet-message-error\"><p>" + toHtml(error) + "</p></div>";
       } else {
         return (showSpace ? "&nbsp;" : "");

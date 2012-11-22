@@ -113,7 +113,7 @@
           <%= toHtml(project.getTitle()) %>
         </ccp:evaluate>
       </legend>
-      <textarea tabindex="1" accesskey="," name="content" id="content" class="height400"><ccp:evaluate if="<%= hasText(wiki.getContent()) %>"><%= wikiHtml %><p>&nbsp;</p></ccp:evaluate></textarea>
+      <textarea tabindex="1" accesskey="," name="content" id="content" class="height400"><ccp:evaluate if="<%= hasText(wiki.getContent()) %>"><c:out value="<%= wikiHtml %>" /><p>&nbsp;</p></ccp:evaluate></textarea>
       <input type="hidden" name="id" value="<%= wiki.getId() %>" />
       <input type="hidden" name="subject" value="<%= toHtmlValue(wiki.getSubject()) %>" />
       <input type="hidden" name="modified" value="<%= wiki.getModified() %>" />

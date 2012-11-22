@@ -47,7 +47,7 @@
 <%@ page import="java.util.*" %>
 <jsp:useBean id="User" class="com.concursive.connect.web.modules.login.dao.User" scope="request"/>
 <%@ include file="initPage.jsp" %>
-<form name="user" method="post" action="<%= ctx %>/Profile.do?command=SaveContactInformation&auto-populate=true">
+<form name="user" method="post" action="${ctx}/Profile.do?command=SaveContactInformation&auto-populate=true">
 <%= showError(request, "actionError", false) %>
 <table class="pagedList">
   <thead>
@@ -82,6 +82,7 @@
     </tr>
   </tbody>
 </table>
+    <input type="hidden" name="token" value="${clientType.token}" />
 <input type="submit" value="<ccp:label name="button.update">Update</ccp:label>"/>
 <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onclick="window.location.href='<%= ctx %>/Profile.do'"/>
 </form>

@@ -121,7 +121,7 @@
 
           <label for="content"><ccp:label name="projectsCenterClassifieds.add.description">Description <span class="required">*</span></ccp:label></label>
           <%= showAttribute(request, "descriptionError") %>
-          <textarea rows="5" cols="60" id="content" name="description"><%= toString(classified.getDescription()) %></textarea>
+          <textarea rows="5" cols="60" id="content" name="description"><c:out value="<%= classified.getDescription() %>" /></textarea>
           <%--
           <ccp:permission name="project-classifieds-admin">
             <fieldset>

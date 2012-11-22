@@ -255,7 +255,7 @@
           <table border="0" class="empty">
             <tr>
               <td>
-                <textarea name="additionalNote" cols="55" rows="2"><%= toString(Assignment.getAdditionalNote()) %></textarea>
+                <textarea name="additionalNote" cols="55" rows="2"><c:out value="<%= Assignment.getAdditionalNote() %>" /></textarea>
               </td>
               <td valign="top" nowrap>
                 <a href="javascript:popURL('<%= ctx %>/ProjectManagementAssignments.do?command=ShowNotes&pid=<%= Assignment.getProjectId() %>&aid=<%= Assignment.getId() %>&popup=true','400','500','yes','yes');"><ccp:evaluate if="<%= Assignment.hasNotes() %>"><img src="<%= ctx %>/images/icons/stock_insert-note-16.gif" border="0" align="absmiddle" alt="Review all notes"/></ccp:evaluate><ccp:evaluate if="<%= !Assignment.hasNotes() %>"><img src="<%= ctx %>/images/icons/stock_insert-note-gray-16.gif" border="0" align="absmiddle" alt="Review all notes"/></ccp:evaluate></a>

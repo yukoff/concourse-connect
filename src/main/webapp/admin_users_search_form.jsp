@@ -95,6 +95,7 @@
           <label for="">Web Content Author</label>
           <%= HtmlSelectChoice.getSelect("contentEditor", adminSearchUserForm.getContentEditor()) %>
         </fieldset>
+        <input type="hidden" name="token" value="${clientType.token}" />
         <input type="submit" name="Search" value="Search" class="submit" />
         <input type="button" name="Clear" value="Clear" onClick="clearForm()" class="cancel" />
       </form>

@@ -93,6 +93,7 @@
           <input type="hidden" name="terms" value="${registerBean.terms}" />
         </c:if>
         <input type="hidden" name="currentPage" value="verify" />
+    <input type="hidden" name="token" value="${clientType.token}" />
         <input type="submit" class="submit" name="submitAction" value="Submit" />
         <input type="submit" class="cancel" name="submitAction" value="Back" />
         <c:choose>

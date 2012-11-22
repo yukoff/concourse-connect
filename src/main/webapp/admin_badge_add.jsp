@@ -108,7 +108,7 @@
             Description
           </td>
           <td>
-            <textarea rows="3" cols="50" name="description"><%= toString(badge.getDescription()) %></textarea>
+            <textarea rows="3" cols="50" name="description"><c:out value="<%= badge.getDescription() %>" /></textarea>
           </td>
         </tr>
         <tr class="containerBody">

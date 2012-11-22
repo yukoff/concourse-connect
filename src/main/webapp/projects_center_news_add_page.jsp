@@ -118,7 +118,7 @@
           <table border="0" cellpadding="0" cellspacing="0" class="empty">
             <tr>
               <td>
-                <textarea rows="20" id="message" name="message" cols="80"><%= toString(newsArticle.getMessage()) %></textarea>
+                <textarea rows="20" id="message" name="message" cols="80"><c:out value="<%= newsArticle.getMessage() %>" /></textarea>
               </td>
               <td valign="top">
                 <font color="red">*</font>

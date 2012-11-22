@@ -82,6 +82,7 @@
 			<span class="error"><%= showAttribute(request, "emailError") %></span>
       <input type="text" name="email" id="email" value="<%= toHtmlValue(request.getParameter("email")) %>" />
       </fieldset>
+      <input type="hidden" name="token" value="${clientType.token}" />
       <input type="submit" class="submit" systran="yes" border="0" alt="Continue" name="Continue" />
       </form>
     </div>

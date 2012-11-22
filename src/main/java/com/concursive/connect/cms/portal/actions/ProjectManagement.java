@@ -692,6 +692,9 @@ public final class ProjectManagement extends GenericAction {
       if (!hasProjectAccess(context, thisProject.getId(), "project-setup-permissions")) {
         return "PermissionError";
       }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
+      }
       PermissionList.updateProjectPermissions(db, context.getRequest(), Integer.parseInt(projectId));
       // Redirect back to the setup page
       context.getRequest().setAttribute("project", thisProject);
@@ -721,6 +724,9 @@ public final class ProjectManagement extends GenericAction {
       thisProject.buildPermissionList(db);
       if (!hasProjectAccess(context, thisProject.getId(), "project-details-edit")) {
         return "PermissionError";
+      }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
       }
       thisProject.setModifiedBy(getUserId(context));
       // Only allow projects to be set as public by those with authority
@@ -788,6 +794,9 @@ public final class ProjectManagement extends GenericAction {
       if (!hasProjectAccess(context, thisProject.getId(), "project-details-edit")) {
         return "PermissionError";
       }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
+      }
       thisProject.setOwner(-1);
       thisProject.update(db);
       context.getRequest().setAttribute("project", thisProject);
@@ -817,6 +826,9 @@ public final class ProjectManagement extends GenericAction {
       if (!hasProjectAccess(context, thisProject.getId(), "project-details-edit")) {
         return "PermissionError";
       }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
+      }
       thisProject.setOwner(newOwnerId);
       thisProject.update(db);
       context.getRequest().setAttribute("project", thisProject);
@@ -844,6 +856,9 @@ public final class ProjectManagement extends GenericAction {
       thisProject.buildPermissionList(db);
       if (!hasProjectAccess(context, thisProject.getId(), "project-setup-customize")) {
         return "PermissionError";
+      }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
       }
       thisProject.setModifiedBy(getUserId(context));
       resultCount = thisProject.updateFeatures(db);
@@ -883,6 +898,9 @@ public final class ProjectManagement extends GenericAction {
       thisProject.buildPermissionList(db);
       if (!hasProjectAccess(context, thisProject.getId(), "project-setup-style")) {
         return "PermissionError";
+      }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
       }
       thisProject.setModifiedBy(getUserId(context));
       thisProject.updateStyle(db);
@@ -1726,6 +1744,9 @@ public final class ProjectManagement extends GenericAction {
    * @return Description of the Return Value
    */
   public String executeCommandDeleteProject(ActionContext context) {
+      if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     Connection db = null;
     //Params
     String projectId = context.getRequest().getParameter("pid");
@@ -1758,6 +1779,9 @@ public final class ProjectManagement extends GenericAction {
     if (getUser(context).getId() < 0) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     Connection db = null;
     //Params
     String projectId = context.getRequest().getParameter("pid");
@@ -1789,6 +1813,9 @@ public final class ProjectManagement extends GenericAction {
   public String executeCommandRejectProject(ActionContext context) {
     if (getUser(context).getId() < 0) {
       return "PermissionError";
+    }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
     }
     Connection db = null;
     //Params

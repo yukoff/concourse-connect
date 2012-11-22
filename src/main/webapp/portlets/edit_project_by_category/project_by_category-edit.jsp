@@ -253,6 +253,7 @@
             <textarea id="description" name="description" class="height200">${projectBean.description}</textarea>
 			  </c:if>
 	    </fieldset>
+      <input type="hidden" name="token" value="${clientType.token}" />
       <c:if test="${'true' eq param.popup || 'true' eq popup}">
         <input type="hidden" name="popup" value="true" />
         <input type="hidden" name="close" value="true" />

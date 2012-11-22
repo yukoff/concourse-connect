@@ -225,7 +225,10 @@ public class RegisterPortlet extends GenericPortlet {
     }
 
     try {
-      if ("form".equals(currentPage)) {
+      // Make sure the user had a matching token before processing the form
+      if (!PortalUtils.hasMatchingFormToken(request)) {
+        LOG.warn("Request token is not a match");
+      } else if ("form".equals(currentPage)) {
         // Validate the terms
         if (showLicense && !bean.getTerms()) {
           bean.getErrors().put("termsError", "You must check the terms of use");

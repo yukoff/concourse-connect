@@ -144,6 +144,7 @@
       </p>
     </ccp:evaluate>
     </div>
+    <input type="hidden" name="token" value="${clientType.token}" />
 		<input type="hidden" name="dosubmit" value="true" />
   </form>
 </div>

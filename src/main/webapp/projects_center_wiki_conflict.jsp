@@ -94,12 +94,12 @@
       <p>If you do not update the top pane with your changes, then your changes will be lost.</p>
     </div>
     <ccp:label name="projectsCenterWiki.conflict.finalVersion">Final version:</ccp:label><br />
-    <textarea tabindex="1" accesskey="," name="content" id="content" rows="15" cols="80" style="width:100%;"><%= toString(originalWiki.getContent()) %></textarea>
+    <textarea tabindex="1" accesskey="," name="content" id="content" rows="15" cols="80" style="width:100%;"><c:out value="<%= originalWiki.getContent() %>" /></textarea>
     <div class="wikiHeader">
       <label for="temporaryContent"><ccp:label name="projectsCenterWiki.conflict.conflictingVersion">Conflicting version:</ccp:label></label>
     </div>
     <div class="wikiBody">      
-      <textarea tabindex="1" accesskey="," name="temporaryContent" id="temporaryContent" rows="15" cols="80" style="width:100%;"><%= toString(wiki.getContent()) %></textarea>
+      <textarea tabindex="1" accesskey="," name="temporaryContent" id="temporaryContent" rows="15" cols="80" style="width:100%;"><c:out value="<%= wiki.getContent() %>" /></textarea>
       <input type="hidden" name="id" value="<%= originalWiki.getId() %>" />
       <input type="hidden" name="subject" value="<%= toHtmlValue(originalWiki.getSubject()) %>" />
       <input type="hidden" name="modified" value="<%= originalWiki.getModified() %>" />

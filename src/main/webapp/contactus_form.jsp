@@ -146,7 +146,7 @@
         <table border="0" cellpadding="0" cellspacing="0" border="0" class="empty">
         <tr>
           <td>
-            <textarea rows="8" name="description" cols="30" wrap="soft"><%= toString(contactUs.getDescription()) %></textarea>
+            <textarea rows="8" name="description" cols="30" wrap="soft"><c:out value="<%= contactUs.getDescription() %>" /></textarea>
           </td>
           <td valign="top">
             <font color="red">*</font>

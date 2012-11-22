@@ -103,6 +103,9 @@ public final class AdminSync extends GenericAction {
     if (!getUser(context).getAccessAdmin()) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     boolean isValid = false;
     String serverURL = null;
     String apiClientId = null;

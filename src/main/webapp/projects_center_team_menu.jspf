@@ -75,11 +75,11 @@
   <c:choose>
     <c:when test="${canUnsetOwner}">
      if(isOwner) {
-      oMenu.addItem({ text: "Revoke Ownership", url: "${ctx}/ProjectManagement.do?command=RemoveOwner&pid=${project.id}" });
+      oMenu.addItem({ text: "Revoke Ownership", url: "${ctx}/ProjectManagement.do?command=RemoveOwner&pid=${project.id}&token=${clientType.token}" });
      }
     </c:when>
     <c:when test="${canSetOwner}">
-      oMenu.addItem({ text: "Set as Owner", url: "${ctx}/ProjectManagement.do?command=SetOwner&pid=${project.id}&owner="+userId });
+      oMenu.addItem({ text: "Set as Owner", url: "${ctx}/ProjectManagement.do?command=SetOwner&pid=${project.id}&owner="+userId+"&token=${clientType.token}" });
     </c:when>
   </c:choose>
       <ccp:permission name="project-team-edit">
@@ -146,19 +146,19 @@
   }
   //Menu link functions
   function addAccessToTools() {
-    document.location.href='${ctx}/ProjectManagementTeam.do?command=UpdateTools&pid=${project.id}&id=' + thisItemId + '&enable=true';
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=UpdateTools&pid=${project.id}&id=' + thisItemId + '&enable=true&token=${clientType.token}';
   }
   function revokeAccessToTools() {
-    document.location.href='${ctx}/ProjectManagementTeam.do?command=UpdateTools&pid=${project.id}&id=' + thisItemId + '&enable=false';
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=UpdateTools&pid=${project.id}&id=' + thisItemId + '&enable=false&token=${clientType.token}';
   }
   function approveMembership() {
-    document.location.href='${ctx}/ProjectManagementTeam.do?command=ApproveOrDenyRequestToBecomeMember&pid=${project.id}&id=' + thisItemId + '&approval=true';
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ApproveOrDenyRequestToBecomeMember&pid=${project.id}&id=' + thisItemId + '&approval=true&token=${clientType.token}';
   }
   function denyMembership() {
-    document.location.href='${ctx}/ProjectManagementTeam.do?command=ApproveOrDenyRequestToBecomeMember&pid=${project.id}&id=' + thisItemId + '&approval=false';
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ApproveOrDenyRequestToBecomeMember&pid=${project.id}&id=' + thisItemId + '&approval=false&token=${clientType.token}';
   }
   function resendInvitation() {
-    document.location.href='${ctx}/ProjectManagementTeam.do?command=ResendInvitation&pid=${project.id}&id=' + thisItemId;
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ResendInvitation&pid=${project.id}&id=' + thisItemId + '&token=${clientType.token}';
   }
   function removeFromProfile() {
     <portlet:actionURL var="deleteUrl">
@@ -167,7 +167,7 @@
     confirmDelete('${deleteUrl}&member=' + thisItemId);
   }
   function changeRole(p_sType, p_aArgs, p_oValue) {
-    document.location.href='${ctx}/ProjectManagementTeam.do?command=ChangeRole&pid=${project.id}&id=' + thisItemId + '&role=' + p_oValue;
+    document.location.href='${ctx}/ProjectManagementTeam.do?command=ChangeRole&pid=${project.id}&id=' + thisItemId + '&role=' + p_oValue + '&token=${clientType.token}';
   }
 </script>
 

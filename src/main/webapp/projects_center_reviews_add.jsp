@@ -139,7 +139,7 @@
         <span class="characterCounter">100 characters max</span>
         <label for="comment"><ccp:label name="projectsCenterReviews.add.typeInYourreview">Type in your review <span class="required">*</span></ccp:label></label>
         <%= showAttribute(request, "commentError") %>
-        <textarea id="comment" name="comment"><%= toString(projectRating.getComment()) %></textarea>
+        <textarea id="comment" name="comment"><c:out value="<%= projectRating.getComment() %>" /></textarea>
         <div class="outline">
           <label for="rating"><ccp:label name="projectsCenterReviews.add.howDoYouRate">How do you rate this item? <span class="required">*</span></ccp:label></label>
           <%= showAttribute(request, "ratingError") %>

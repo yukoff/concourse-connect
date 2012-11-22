@@ -180,6 +180,7 @@
   </table>
   <input type="hidden" name="popup" value="<%= toHtmlValue(request.getParameter("popup")) %>" />
   <input type="hidden" name="projectId" value="<%= project.getId() %>" />
+  <input type="hidden" name="token" value="${clientType.token}" />
   <input type="submit" name="<ccp:label name="button.save">Save</ccp:label>" value="<ccp:label name="button.save">Save</ccp:label>" />
   <input type="button" name="<ccp:label name="button.cancel">Cancel</ccp:label>" value="Cancel" onClick="window.close();" />
 </form>

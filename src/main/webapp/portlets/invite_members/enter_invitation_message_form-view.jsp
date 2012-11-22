@@ -100,7 +100,7 @@
 	      	<br /><br />
 			<textarea name="optionalMessage" id="<portlet:namespace/>optionalMessage" cols="80" rows="10"><c:out value="${optionalMessage}" /></textarea>
 			<br /><br />
-  		</fieldset>
+        <input type="hidden" name="token" value="${clientType.token}" />
      <input type="hidden" name="sourcePage" value="getInvitationMessage" />
 	    <c:if test="${'true' eq param.popup || 'true' eq popup}">
 	      <input type="hidden" name="popup" value="true" />

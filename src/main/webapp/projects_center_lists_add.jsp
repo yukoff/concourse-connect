@@ -144,7 +144,7 @@
       <tr class="containerBody">
         <td nowrap class="formLabel" valign="top"><ccp:label name="projectsCenterLists.add.notes">Notes</ccp:label></td>
         <td>
-          <TEXTAREA NAME="notes" ROWS="8" COLS="55"><%= toString(Task.getNotes()) %></TEXTAREA>
+              <TEXTAREA NAME="notes" ROWS="8" COLS="55"><c:out value="<%= Task.getNotes() %>" /></TEXTAREA>
         </td>
       </tr>
 

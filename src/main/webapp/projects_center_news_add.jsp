@@ -115,9 +115,9 @@
     <input type="text" name="subject" id="subject" value="<%= toHtmlValue(blog.getSubject()) %>" />
     <span class="characterCounter">255 characters max</span>
     <label for="intro"><ccp:label name="projectsCenterNews.add.summaryOrIntroduction">Summary or Introduction</ccp:label></label>
-    <textarea id="intro" name="intro"><%= toString(blog.getIntro()) %></textarea>
+    <textarea id="intro" name="intro"><c:out value="<%= blog.getIntro() %>" /></textarea>
     <ccp:label name="projectsCenterNews.add.body">Body</ccp:label>
-    <textarea rows="20" id="message" name="message" class="height400"><%= toString(blog.getMessage()) %></textarea>
+    <textarea rows="20" id="message" name="message" class="height400"><c:out value="<%= blog.getMessage() %>" /></textarea>
 
     <fieldset>
       <legend><ccp:label name="projectsCenterNews.add.startDate">Start Date/Time</ccp:label></legend>

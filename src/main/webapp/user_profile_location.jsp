@@ -102,6 +102,7 @@
     </tr>
   </tbody>
 </table>
+<input type="hidden" name="token" value="${clientType.token}" />
 <input type="submit" value="<ccp:label name="button.update">Update</ccp:label>"/>
 <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onclick="window.location.href='<%= ctx %>/Profile.do'"/>
 </form>

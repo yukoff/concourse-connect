@@ -75,7 +75,7 @@
         <textarea rows="30" cols="100" id="style" name="style"><c:if test="${!empty project.style}"><%= project.getStyle() %></c:if></textarea>
         <label><input type="checkbox" name="styleEnabled" value="true" ${styleEnabledChecked}/><ccp:label name="projectsCenterSetup.style.styleEnabled">Enable Style</ccp:label></label>
       </fieldset>
-      
+      <input type="hidden" name="token" value="${clientType.token}" />
       <input type="button" value="<ccp:label name="button.preview">Preview</ccp:label>" onClick="document.previewForm.style.value=document.inputCSSForm.style.value;document.previewForm.submit();" class="submit"/>
       <input type="submit" value="<ccp:label name="button.update">Update</ccp:label>" class="submit"/>
       <input type="button" value="<ccp:label name="button.clear">Clear</ccp:label>" onClick="document.inputCSSForm.style.value=''"  class="cancel"/>

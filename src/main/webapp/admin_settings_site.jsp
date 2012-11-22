@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="siteSettings" class="com.concursive.connect.web.modules.setup.beans.SiteSettingsBean" scope="request"/>
 <%@ include file="initPage.jsp" %>
 <a href="<%= ctx %>/admin">System Administration</a> >
@@ -105,7 +106,7 @@ Site Defaults<br />
     <tr class="containerBody">
       <td class="formLabel" valign="top">Invitation Message</td>
       <td>
-        <textarea rows="8" name="invitationMessage" cols="80"><%= toString(siteSettings.getInvitationMessage()) %></textarea>
+        <textarea rows="8" name="invitationMessage" cols="80"><c:out value="<%= siteSettings.getInvitationMessage() %>" /></textarea>
       </td>
     </tr>
   </tbody>

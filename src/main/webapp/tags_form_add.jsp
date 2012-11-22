@@ -101,7 +101,7 @@
 		<fieldset>
 			<legend>Add/Modify Tags</legend>
 			<label for="tagsText">Your Tags</label>
-			<textarea id="tagsText" name="tagsText" cols="30" rows="3"><%= toString(userTags.getTagsAsString())%></textarea>
+			<textarea id="tagsText" name="tagsText" cols="30" rows="3"><c:out value="<%= userTags.getTagsAsString() %>" /></textarea>
 			<span class="characterCounter">Separate multiple tags with a comma. 128 characters max per tag</span>
 			<c:if test="${!empty userRecentTags || !empty popularTags}">
 				<span><br />You can also choose from the list below:</span>

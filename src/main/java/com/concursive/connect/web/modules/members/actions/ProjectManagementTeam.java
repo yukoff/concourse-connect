@@ -103,6 +103,9 @@ public final class ProjectManagementTeam extends GenericAction {
       if (!hasProjectAccess(context, thisProject.getId(), "project-team-edit-role")) {
         return "PermissionError";
       }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
+      }
       context.getRequest().setAttribute("project", thisProject);
       //load the team member record
       TeamMember prevMember = new TeamMember(db, Integer.parseInt(projectId), Integer.parseInt(userId));
@@ -141,6 +144,9 @@ public final class ProjectManagementTeam extends GenericAction {
       Project thisProject = retrieveAuthorizedProject(projectId, context);
       if (!hasProjectAccess(context, thisProject.getId(), "project-team-edit")) {
         return "PermissionError";
+      }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
       }
       if (!"true".equals(getPref(context, "INVITE")) &&
           !getUser(context).getAccessInvite()) {
@@ -371,6 +377,9 @@ public final class ProjectManagementTeam extends GenericAction {
       Project targetProject = retrieveAuthorizedProject(projectId, context);
       if (!hasProjectAccess(context, targetProject.getId(), "project-team-edit")) {
         return "PermissionError";
+      }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
       }
       // Check for an existing team member record
       TeamMember prevMember = new TeamMember(db, targetProject.getId(), Integer.parseInt(idStr));
@@ -704,6 +713,9 @@ public final class ProjectManagementTeam extends GenericAction {
       project = retrieveAuthorizedProject(projectId, context);
       if (!hasProjectAccess(context, project.getId(), "project-team-tools")) {
         return "PermissionError";
+      }
+      if (!hasMatchingFormToken(context)) {
+        return "TokenError";
       }
       context.getRequest().setAttribute("project", project);
       // Update the target user's status

@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="wikiTemplate" class="com.concursive.connect.web.modules.wiki.dao.WikiTemplate" scope="request" />
 <jsp:useBean id="projectCategoryList" class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" scope="request"/>
 <%@ include file="initPage.jsp" %>
@@ -108,7 +109,7 @@ Adding a new wiki template
             <table border="0" cellpadding="0" cellspacing="0" class="empty" width="100%">
               <tr>
                 <td width="100%">
-                  <textarea name="content" id="content" rows="25" cols="80" style="width:100%;"><%= toString(wikiTemplate.getContent()) %></textarea>
+                  <textarea name="content" id="content" rows="25" cols="80" style="width:100%;"><c:out value="<%= wikiTemplate.getContent() %>" /></textarea>
                 </td>
                 <td nowrap="nowrap" valign="top">
                   <span class="required">*</span>

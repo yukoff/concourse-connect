@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="discussionForumTemplate" class="com.concursive.connect.web.modules.discussion.dao.DiscussionForumTemplate" scope="request" />
 <jsp:useBean id="projectCategoryList" class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" scope="request"/>
 <%@ include file="initPage.jsp" %>
@@ -95,7 +96,7 @@ Adding a new discussion forum template
             <table border="0" cellpadding="0" cellspacing="0" class="empty" width="100%">
               <tr>
                 <td>
-              <textarea name="forumNames" cols="30" rows="5"><%=toString(discussionForumTemplate.getForumNames())%></textarea>
+                  <textarea name="forumNames" cols="30" rows="5"><c:out value="<%= discussionForumTemplate.getForumNames() %>" /></textarea>
                 </td>
                 <td nowrap="nowrap" valign="top" align="left" width="100%">
                   <span class="required">*</span>

@@ -157,7 +157,7 @@ are limited to 45 days)</ccp:label>
 
           <label for="content"><ccp:label name="projectsCenterAds.add.contents">Contents <span class="required">*</span></ccp:label></label>
           <%= showAttribute(request, "contentError") %>
-          <textarea rows="5" id="content" name="content"><%= toString(promotion.getContent()) %></textarea>
+          <textarea rows="5" id="content" name="content"><c:out value="<%= promotion.getContent() %>" /></textarea>
           <span class="characterCounter">2048 characters max</span>
 
           <label for="webPage">Display URL</label>

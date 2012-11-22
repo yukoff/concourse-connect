@@ -81,6 +81,10 @@ public final class ResetPassword extends GenericAction {
       context.getRequest().setAttribute("redirectTo", url);
       return "Redirect301";
     }
+         // Make sure the request has a token
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     //Check parameters
     String email = context.getRequest().getParameter("email");
     if (email == null || email.equals("")) {

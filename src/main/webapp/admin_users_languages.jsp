@@ -66,7 +66,7 @@ String webSitesUrl = ctx + "/AdminUserDetails.do?command=WebSites&id=" + thisUse
 %>
 <a href="<%= ctx %>/admin">System Administration</a> >
 <a href="<%= ctx %>/AdminUsers.do">Manage Users</a> >
-<a href="<%= ctx %>/AdminUsers.do?command=Search">Search Results</a> >
+<a href="${ctx}/AdminUsers.do?command=Search&token=${clientType.token}">Search Results</a> >
 Language Details<br />
 <br />
 <table border="0" width="100%">

@@ -190,8 +190,8 @@
                             <c:if test="${!empty project.addressLine3}"><span class="address3"><c:out value="${project.addressLine3}"/></span></c:if>
                             <c:if test="${!empty project.location}">
                                 <span class="street-address">
-                                  <c:if test="${!empty project.city}"><span class="locality">${project.city}</span>,</c:if>
-                                  <c:if test="${!empty project.state}"><span class="region">${project.state}</span></c:if>
+                                        <c:if test="${!empty project.city}"><span class="locality"><c:out value="${project.city}"/></span>,</c:if>
+                                        <c:if test="${!empty project.state}"><span class="region"><c:out value="${project.state}"/></span></c:if>
                                   <c:if test="${!empty project.postalCode}"><span class="postal-code">${project.postalCode}</span></c:if>
                                 <c:if test="${!empty project.country && project.country ne 'UNITED STATES'}">
                                   <span class="country-name"><c:out value="${project.country}"/></span>
@@ -200,7 +200,7 @@
                             </c:if>
                           </address>
                           <c:if test="${!empty project.webPage}">
-                          	<span class="url"><a href="${project.webPage}" target="_blank"><c:out value="${project.webPage}"/></a></span>
+                                  <span class="url"><a href="<c:out value="${project.webPage}"/>" target="_blank"><c:out value="${project.webPage}"/></a></span>
                           </c:if>
                         </ccp:evaluate>
                       </ccp:include>

@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.concursive.connect.web.modules.documents.dao.FileItem" %>
 <%@ page import="com.concursive.connect.Constants" %>
 <jsp:useBean id="projectCategory" class="com.concursive.connect.web.modules.profile.dao.ProjectCategory" scope="request" />
@@ -180,7 +181,7 @@ Add Site Category
           Style
         </td>
         <td>
-          <textarea name="style" cols="80" rows="10"><%= toString(projectCategory.getStyle()) %></textarea>
+          <textarea name="style" cols="80" rows="10"><c:out value="<%= projectCategory.getStyle() %>" /></textarea>
         </td>
        </tr>
       <tr class="containerBody">
@@ -198,6 +199,7 @@ Add Site Category
     </tbody>
   </table>
   <input type="hidden" name="id" value="<%= projectCategory.getId() %>">
+  <input type="hidden" name="token" value="${clientType.token}" />
   <input type="hidden" name="dosubmit" value="true">
   <input type="submit" value="<ccp:label name="button.save">Save</ccp:label>">
   <input type="button" value="<ccp:label name="button.cancel">Cancel</ccp:label>" onClick="this.form.dosubmit.value='false';window.location.href='<%= ctx %>/AdminProjectCategories.do?command=List'">

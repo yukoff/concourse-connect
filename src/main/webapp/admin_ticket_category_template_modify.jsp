@@ -44,6 +44,7 @@
   ~ by Concursive Corporation
   --%>
 <%@ taglib uri="/WEB-INF/concourseconnect-taglib.tld" prefix="ccp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="ticketCategoryTemplate" class="com.concursive.connect.web.modules.issues.dao.TicketCategoryTemplate" scope="request" />
 <jsp:useBean id="projectCategoryList" class="com.concursive.connect.web.modules.profile.dao.ProjectCategoryList" scope="request"/>
 <%@ include file="initPage.jsp" %>
@@ -95,7 +96,7 @@ Adding a new ticket category template
             <table border="0" cellpadding="0" cellspacing="0" class="empty" width="100%">
               <tr>
                 <td>
-              <textarea name="ticketCategories" cols="30" rows="5"><%=toString(ticketCategoryTemplate.getTicketCategories())%></textarea>
+                  <textarea name="ticketCategories" cols="30" rows="5"><c:out value="<%= ticketCategoryTemplate.getTicketCategories() %>" /></textarea>
                 </td>
                 <td nowrap="nowrap" valign="top" align="left" width="100%">
                   <span class="required">*</span>

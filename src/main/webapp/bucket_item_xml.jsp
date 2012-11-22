@@ -48,5 +48,5 @@
 <response>
   <xId><%= request.getParameter("id") %></xId>
   <id><%= task.getId() %></id>
-  <description><%= toHtml(task.getDescription()) %></description>
+  <description><%= StringUtils.toHtmlValue(task.getDescription()) %></description>
 </response>

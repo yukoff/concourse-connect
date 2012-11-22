@@ -135,6 +135,9 @@ public final class Profile extends GenericAction {
     if (!getUser(context).getAccessUserSettings()) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     User thisUser = (User) context.getFormBean();
     Connection db = null;
     try {
@@ -201,6 +204,9 @@ public final class Profile extends GenericAction {
     }
     if (!getUser(context).getAccessUserSettings()) {
       return "PermissionError";
+    }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
     }
     Password password = (Password) context.getFormBean();
     if (password.isValid()) {
@@ -277,6 +283,9 @@ public final class Profile extends GenericAction {
     }
     if (!getUser(context).getAccessUserSettings()) {
       return "PermissionError";
+    }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
     }
     String timeZone = context.getRequest().getParameter("timeZone");
     String currency = context.getRequest().getParameter("currency");

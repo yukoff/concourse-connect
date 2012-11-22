@@ -88,7 +88,7 @@
             <tr class="containerBody">
               <td class="formLabel">Version</td>
               <td>
-                <%= applicationVersion %>
+            <c:out value="${applicationVersion}" />
               </td>
             </tr>
             <c:if test="${!empty serviceId}">
@@ -122,33 +122,33 @@
               <td nowrap class="formLabel">Database Connection Pools</td>
               <td>
                 Web-Tier:
-                <%= ConnectionPool.toString() %>
+            <c:out value="<%= ConnectionPool.toString() %>" />
                 <%= (ConnectionPool.getMaxStatus() ? "<font color=\"red\">All connections are full!</font>":"") %><br />
                 <%-- TODO: Cache ConnectionPool --%>
                 <%-- Scheduler ConnectionPool --%>
                 <ccp:evaluate if="<%= connectionPoolScheduler != null %>">
                   Scheduler:
-                  <%= connectionPoolScheduler.toString() %>
+              <c:out value="<%= connectionPoolScheduler.toString() %>" />
                   <%= connectionPoolScheduler.getMaxStatus() ? "<font color=\"red\">All connections are full!</font>":"" %><br />
                 </ccp:evaluate>
                 <%-- Workflow ConnectionPool --%>
                 Workflow:
-                <%= ObjectHookManager.getConnectionPool().toString() %>
+            <c:out value="<%= ObjectHookManager.getConnectionPool().toString() %>" />
                 <%= (ObjectHookManager.getConnectionPool().getMaxStatus() ? "<font color=\"red\">All connections are full!</font>":"") %><br />
                 <%-- RSS ConnectionPool --%>
                 RSS Feeds:
-                <%= ConnectionPoolRSS.toString() %>
+            <c:out value="<%= ConnectionPoolRSS.toString() %>" />
                 <%= (ConnectionPoolRSS.getMaxStatus() ? "<font color=\"red\">All connections are full!</font>":"") %><br />
                 API:
-                <%= ConnectionPoolAPI.toString() %>
+            <c:out value="<%= ConnectionPoolAPI.toString() %>" />
                 <%= (ConnectionPoolAPI.getMaxStatus() ? "<font color=\"red\">All connections are full!</font>":"") %><br />
               </td>
             </tr>
             <tr class="containerBody">
               <td nowrap class="formLabel">Lucene RAM Index</td>
               <td>
-                Ram Index: <%= toHtml(projectIndex) %>
-                [<a href='javascript:showPanel("Project%20Reindex","<%= ctx %>/Search.do?command=IndexProjects",400)'>Reindex</a>]
+                Ram Index: <c:out value="${projectIndex}" />
+                [<a href='javascript:showPanel("Project%20Reindex","<%= ctx %>/Search.do?command=IndexProjects&token=${clientType.token}",400)'>Reindex</a>]
               </td>
             </tr>
             <tr class="containerBody">
@@ -162,19 +162,19 @@
               <td nowrap class="formLabel">Rules Engine</td>
               <td>
                 Rules: <%= ObjectHookManager.getProcessList().size() %>; Hooks: <%= ObjectHookManager.getHookList().size() %>
-                [<a href="<%= ctx %>/AdminUsage.do?command=ReloadWorkflows">Reload</a>]
+                [<a href="<%= ctx %>/AdminUsage.do?command=ReloadWorkflows&token=${clientType.token}">Reload</a>]
               </td>
             </tr>
             <tr class="containerBody">
               <td nowrap class="formLabel">Storage Path</td>
               <td>
-                <%= toHtml(diskPath) %>
+            <c:out value="${diskPath}" />
               </td>
             </tr>
             <tr class="containerBody">
               <td nowrap class="formLabel">Free Disk Space</td>
               <td>
-                <%= toHtml(diskFree) %>
+            <c:out value="${diskFree}" />
               </td>
             </tr>
           </tbody>
@@ -193,19 +193,19 @@
             <tr class="containerBody">
               <td nowrap class="formLabel">Total Profiles</td>
               <td>
-                <%= toHtml(projectCount) %>
+            <c:out value="${projectCount}" />
               </td>
             </tr>
             <tr class="containerBody">
               <td nowrap class="formLabel">Total Users</td>
               <td>
-                <%= toHtml(userCount) %>
+            <c:out value="${userCount}" />
               </td>
             </tr>
             <tr class="containerBody">
               <td nowrap class="formLabel">Document Size</td>
               <td>
-                <%= toHtml(fileSize) %>
+            <c:out value="${fileSize}" />
               </td>
             </tr>
           </tbody>

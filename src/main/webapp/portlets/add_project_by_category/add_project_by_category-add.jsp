@@ -372,7 +372,7 @@
           <c:if test='${showLongDescription == "true"}'>
             <label for="description">Description<span class="required">*</span></label>
             <%= showAttribute(request, "descriptionError") %>
-            <textarea id="description" name="description" class="height200"><%= toString(project.getDescription()) %></textarea>
+            <textarea id="description" name="description" class="height200"><c:out value="<%= project.getDescription() %>" /></textarea>
           </c:if>
           <c:if test='${showKeywords == "true"}'>
             <label for="keywords">Keywords<span class="required">*</span> (comma-separated)</label>
@@ -460,6 +460,7 @@
         </label>
       </fieldset>
     </c:if>
+    <input type="hidden" name="token" value="${clientType.token}" />
     <input type="submit" class="submit" name="save" value="<ccp:label name="button.save">Save</ccp:label>" />
   </form>
 </div>

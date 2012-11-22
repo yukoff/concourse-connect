@@ -93,6 +93,9 @@ public class SendEmailToMembersAction implements IPortletAction {
     if (!ProjectUtils.hasAccess(project.getId(), user, "project-team-email")) {
       throw new PortletException("Unauthorized to send email in this project");
     }
+    if (!PortalUtils.hasMatchingFormToken(request)) {
+      throw new PortletException("Missing token");
+    }
 
     // Validate the form
     if (!StringUtils.hasText(emailBean.getBody())) {

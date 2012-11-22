@@ -171,7 +171,7 @@ function hideSubCats(subCatID, value) {
       <legend><ccp:label name="projectsCenterTickets.add.classification">Classification</ccp:label></legend>
       <label for="issue"><ccp:label name="projectsCenterTickets.add.issue">Issue <span class="required">*</span></ccp:label></label>
       <%= showAttribute(request, "problemError") %></span>
-      <textarea name="problem" cols="55" rows="8"><%= toString(ticket.getProblem()) %></textarea>
+      <textarea name="problem" cols="55" rows="8"><c:out value="<%= ticket.getProblem() %>" /></textarea>
       <ccp:evaluate if="<%= CategoryList.size() > 0 %>">
         <%-- Categories --%>
         <div class="multiColumnContainer">
@@ -286,7 +286,7 @@ function hideSubCats(subCatID, value) {
       <fieldset id="<ccp:label name="projectsCenterTickets.add.communication">Communication</ccp:label>">
         <legend><ccp:label name="projectsCenterTickets.add.communication">Communication</ccp:label></legend>
         <label for="comment"><ccp:label name="projectsCenterTickets.add.addComments">Add Comments</ccp:label></label>
-        <textarea name="comment" cols="55" rows="5"><%= toString(ticket.getComment()) %></textarea>
+        <textarea name="comment" cols="55" rows="5"><c:out value="<%= ticket.getComment() %>" /></textarea>
       </fieldset>
     </ccp:permission>
     <%-- Resolution --%>
@@ -299,7 +299,7 @@ function hideSubCats(subCatID, value) {
           <%-- edit --%>
         </ccp:evaluate>
         <label for="solution"><ccp:label name="projectsCenterTickets.add.solution">Solution</ccp:label></label>
-        <textarea name="solution" cols="55" rows="8"><%= toString(ticket.getSolution()) %></textarea>
+        <textarea name="solution" cols="55" rows="8"><c:out value="<%= ticket.getSolution() %>" /></textarea>
         <%= showAttribute(request, "readyForClose") %>
         <label for="ticketReadyToClose">
           <input type="checkbox" name="readyForClose" id="ticketReadyToClose" value="ON"<ccp:evaluate if="<%= ticket.getReadyForClose() %>"> checked</ccp:evaluate>>

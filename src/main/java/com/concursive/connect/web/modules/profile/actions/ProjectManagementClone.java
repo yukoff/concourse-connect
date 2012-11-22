@@ -92,6 +92,9 @@ public final class ProjectManagementClone extends GenericAction {
     if (getUser(context).getId() < 0) {
       return "PermissionError";
     }
+    if (!hasMatchingFormToken(context)) {
+      return "TokenError";
+    }
     if (!getUser(context).getAccessAddProjects()) {
       return "PermissionError";
     }

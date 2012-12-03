@@ -1,14 +1,26 @@
 ----------------------------------------------------------------------------
 ConcourseConnect 2.0
-Copyright (C) 2010 Concursive Corporation.
+Copyright (C) 2012 Concursive Corporation.
 Change Log
-August 20, 2010
+December 3, 2012
 ----------------------------------------------------------------------------
 
 If you are interested in collaborating on various social networking topics
 and implementations, including customization and development, please join
 the ConcourseConnect community at:
 http://www.concursive.com/show/concourseconnect-support
+
+2.0.3 (December 3, 2012)
+
+  This update is recommended for all installations and improves the performance,
+  security and functionality.
+
+  Improvements:
+
+    Tomcat 7 compatibility fixes
+    PostgreSQL 9 driver
+    Security fixes for CONCOURSECONNECT-SA-CORE-2012-001
+
 
 2.0.2 (August 20, 2010)
 

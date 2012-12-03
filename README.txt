@@ -1,13 +1,19 @@
-ConcourseConnect
 
+  _____                                    _____                       __
+ / ___/__  ___  _______  __ _________ ___ / ___/__  ___  ___  ___ ____/ /_
+/ /__/ _ \/ _ \/ __/ _ \/ // / __(_-</ -_) /__/ _ \/ _ \/ _ \/ -_) __/ __/
+\___/\___/_//_/\__/\___/\_,_/_/ /___/\__/\___/\___/_//_/_//_/\__/\__/\__/
+
+ConcourseConnect
+http://www.concursive.com/show/concourseconnect
 
 ----------------------------------------------------------------------------
 | LEGAL                                                                    |
 ----------------------------------------------------------------------------
 
 ConcourseConnect
-Copyright 2010 Concursive Corporation
-http://www.concursive.com
+Copyright 2007-2012 Concursive Corporation
+http://www.concursive.com/
 
 Concursive ConcourseConnect is free software: you can redistribute it and/or
 modify it under the terms of the GNU Affero General Public License as published
@@ -80,11 +86,11 @@ scripts and is available at the http://www.concursive.com web site.
 
 Deploying from a .war file:
 
-1. Install Java JRE 6
+1. Install Java SDK
    http://www.java.com/en/download/manual.jsp
-2. Install Apache Tomcat Web Application Server 6.0
+2. Install Apache Tomcat Web Application Server
    http://tomcat.apache.org
-3. Install PostgreSQL Database Server 8.4
+3. Install PostgreSQL Database Server
    http://www.postgresql.org
 4. Copy the connect.war file into Tomcat's webapp directory
 5. Access the web app using a browser at "http://localhost:8080/connect"
@@ -130,16 +136,16 @@ included ant script altogether.
 
 The following software is required to package and test ConcourseConnect:
 
-  Java 6 SDK
-  http://java.sun.com
+  Java SE
+  http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
-  Apache Tomcat 6.0
+  Apache Tomcat
   http://tomcat.apache.org
 
-  Apache Ant 1.7.1 (required)
+  Apache Ant 1.8
   http://ant.apache.org
 
-  Postgresql 8.4
+  Postgresql
   http://www.postgresql.org
 
 Steps for packaging the source:

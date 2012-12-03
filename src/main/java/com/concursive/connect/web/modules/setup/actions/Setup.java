@@ -316,7 +316,8 @@ public final class Setup extends GenericAction {
       if (success) {
         prefs.add(ApplicationPrefs.CONCURSIVE_SERVICES_ID, bean.getId());
         prefs.add(ApplicationPrefs.CONCURSIVE_SERVICES_KEY, bean.getKey());
-        prefs.add(ApplicationPrefs.CONCURSIVE_SERVICES_SERVER, bean.getUrl());
+        // @note turned off by default now
+        //prefs.add(ApplicationPrefs.CONCURSIVE_SERVICES_SERVER, bean.getUrl());
       }
     } catch (ClassNotFoundException e) {
       context.getRequest().setAttribute("actionError", "A registration component is missing");
